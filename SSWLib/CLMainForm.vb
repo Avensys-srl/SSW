@@ -85,7 +85,7 @@ Public Class CLMainForm
         End If
     End Sub
 
-    Private Sub CLMainForm_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Async Sub CLMainForm_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
         Dim state As String
         Dim language As CLLanguage
@@ -197,6 +197,8 @@ Public Class CLMainForm
         CO2LevelFill()
 
         'CLModule.Environment.ExportModelsToCsv("d:\temp\environment.txt")
+
+        Await UpdateManager.CheckForSoftwareUpdate()
     End Sub
 
     Private Sub tsmiFile_Exit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsmiFile_Exit.Click
