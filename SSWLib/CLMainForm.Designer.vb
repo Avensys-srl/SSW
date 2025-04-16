@@ -23,29 +23,29 @@ Partial Class CLMainForm
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim DataGridViewCellStyle14 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle15 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle16 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(CLMainForm))
-        Dim ChartArea5 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
-        Dim Series5 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
-        Dim ChartArea6 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
-        Dim Series6 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
-        Dim ChartArea7 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
-        Dim Series7 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
-        Dim DataGridViewCellStyle17 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle25 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle26 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle18 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle19 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle20 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle21 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle22 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle23 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle24 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim ChartArea8 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
-        Dim Legend2 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
-        Dim Series8 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
+        Dim ChartArea1 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
+        Dim Series1 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
+        Dim ChartArea2 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
+        Dim Series2 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
+        Dim ChartArea3 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
+        Dim Series3 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle12 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle13 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle10 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle11 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim ChartArea4 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
+        Dim Legend1 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
+        Dim Series4 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
         Me.mnsMain = New System.Windows.Forms.MenuStrip()
         Me.tsmiFile = New System.Windows.Forms.ToolStripMenuItem()
         Me.tsmiFile_GenerateReport = New System.Windows.Forms.ToolStripMenuItem()
@@ -78,6 +78,7 @@ Partial Class CLMainForm
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
         Me.pnlPerformance_Data = New System.Windows.Forms.Panel()
         Me.grbPerformance_TemperatureConditions = New System.Windows.Forms.GroupBox()
+        Me.btnEN308 = New System.Windows.Forms.Button()
         Me.txbPerformance_RHReturnInlet = New System.Windows.Forms.TextBox()
         Me.txbPerformance_ReturnInletTemperature = New System.Windows.Forms.TextBox()
         Me.txbPerformance_RHFreshInlet = New System.Windows.Forms.TextBox()
@@ -229,7 +230,6 @@ Partial Class CLMainForm
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.txbAccessory_OutputData_CWDSensibleHeat = New System.Windows.Forms.TextBox()
-        Me.bsrUnitCalculator = New System.Windows.Forms.BindingSource(Me.components)
         Me.Label3 = New System.Windows.Forms.Label()
         Me.txbAccessory_OutputData_CWDHeatTransferred = New System.Windows.Forms.TextBox()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
@@ -328,6 +328,7 @@ Partial Class CLMainForm
         Me.pnlMain = New System.Windows.Forms.Panel()
         Me.sfdSavePdf = New System.Windows.Forms.SaveFileDialog()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
+        Me.bsrUnitCalculator = New System.Windows.Forms.BindingSource(Me.components)
         Me.mnsMain.SuspendLayout()
         Me.tbpPerformance.SuspendLayout()
         CType(Me.spcPerformance, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -386,7 +387,6 @@ Partial Class CLMainForm
         Me.tbpAccessory.SuspendLayout()
         Me.grbAccessory_OutputData.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
-        CType(Me.bsrUnitCalculator, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox2.SuspendLayout()
         Me.grbAccessory_EHD.SuspendLayout()
         Me.grbAccessory_HWD.SuspendLayout()
@@ -401,6 +401,7 @@ Partial Class CLMainForm
         Me.grbCO2Level_Room.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlMain.SuspendLayout()
+        CType(Me.bsrUnitCalculator, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'mnsMain
@@ -463,80 +464,80 @@ Partial Class CLMainForm
         '
         Me.tsmiOption_Language.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsmiOption_Language_EN, Me.tsmiOption_Language_DE, Me.tsmiOption_Language_FR, Me.tsmiOption_Language_NL, Me.tsmiOption_Language_PL, Me.tsmiOption_Language_SL, Me.tsmiOption_Language_RO, Me.tsmiOption_Language_BG, Me.tsmiOption_Language_HU, Me.tsmiOption_Language_IT, Me.tsmiOption_Language_DA})
         Me.tsmiOption_Language.Name = "tsmiOption_Language"
-        Me.tsmiOption_Language.Size = New System.Drawing.Size(180, 22)
+        Me.tsmiOption_Language.Size = New System.Drawing.Size(126, 22)
         Me.tsmiOption_Language.Text = "Language"
         '
         'tsmiOption_Language_EN
         '
         Me.tsmiOption_Language_EN.Name = "tsmiOption_Language_EN"
-        Me.tsmiOption_Language_EN.Size = New System.Drawing.Size(180, 22)
+        Me.tsmiOption_Language_EN.Size = New System.Drawing.Size(130, 22)
         Me.tsmiOption_Language_EN.Text = "English"
         '
         'tsmiOption_Language_DE
         '
         Me.tsmiOption_Language_DE.Name = "tsmiOption_Language_DE"
-        Me.tsmiOption_Language_DE.Size = New System.Drawing.Size(180, 22)
+        Me.tsmiOption_Language_DE.Size = New System.Drawing.Size(130, 22)
         Me.tsmiOption_Language_DE.Text = "Deutsch"
         '
         'tsmiOption_Language_FR
         '
         Me.tsmiOption_Language_FR.Name = "tsmiOption_Language_FR"
-        Me.tsmiOption_Language_FR.Size = New System.Drawing.Size(180, 22)
+        Me.tsmiOption_Language_FR.Size = New System.Drawing.Size(130, 22)
         Me.tsmiOption_Language_FR.Text = "Français"
         '
         'tsmiOption_Language_NL
         '
         Me.tsmiOption_Language_NL.Name = "tsmiOption_Language_NL"
-        Me.tsmiOption_Language_NL.Size = New System.Drawing.Size(180, 22)
+        Me.tsmiOption_Language_NL.Size = New System.Drawing.Size(130, 22)
         Me.tsmiOption_Language_NL.Text = "Dutch"
         '
         'tsmiOption_Language_PL
         '
         Me.tsmiOption_Language_PL.Name = "tsmiOption_Language_PL"
-        Me.tsmiOption_Language_PL.Size = New System.Drawing.Size(180, 22)
+        Me.tsmiOption_Language_PL.Size = New System.Drawing.Size(130, 22)
         Me.tsmiOption_Language_PL.Text = "Polacco"
         '
         'tsmiOption_Language_SL
         '
         Me.tsmiOption_Language_SL.Name = "tsmiOption_Language_SL"
-        Me.tsmiOption_Language_SL.Size = New System.Drawing.Size(180, 22)
+        Me.tsmiOption_Language_SL.Size = New System.Drawing.Size(130, 22)
         Me.tsmiOption_Language_SL.Text = "Sloveno"
         '
         'tsmiOption_Language_RO
         '
         Me.tsmiOption_Language_RO.Name = "tsmiOption_Language_RO"
-        Me.tsmiOption_Language_RO.Size = New System.Drawing.Size(180, 22)
+        Me.tsmiOption_Language_RO.Size = New System.Drawing.Size(130, 22)
         Me.tsmiOption_Language_RO.Text = "Rumeno"
         '
         'tsmiOption_Language_BG
         '
         Me.tsmiOption_Language_BG.Name = "tsmiOption_Language_BG"
-        Me.tsmiOption_Language_BG.Size = New System.Drawing.Size(180, 22)
+        Me.tsmiOption_Language_BG.Size = New System.Drawing.Size(130, 22)
         Me.tsmiOption_Language_BG.Text = "Bulgaro"
         '
         'tsmiOption_Language_HU
         '
         Me.tsmiOption_Language_HU.Name = "tsmiOption_Language_HU"
-        Me.tsmiOption_Language_HU.Size = New System.Drawing.Size(180, 22)
+        Me.tsmiOption_Language_HU.Size = New System.Drawing.Size(130, 22)
         Me.tsmiOption_Language_HU.Text = "Hungarian"
         '
         'tsmiOption_Language_IT
         '
         Me.tsmiOption_Language_IT.Name = "tsmiOption_Language_IT"
-        Me.tsmiOption_Language_IT.Size = New System.Drawing.Size(180, 22)
+        Me.tsmiOption_Language_IT.Size = New System.Drawing.Size(130, 22)
         Me.tsmiOption_Language_IT.Text = "Italiano"
         '
         'tsmiOption_Language_DA
         '
         Me.tsmiOption_Language_DA.Name = "tsmiOption_Language_DA"
-        Me.tsmiOption_Language_DA.Size = New System.Drawing.Size(180, 22)
+        Me.tsmiOption_Language_DA.Size = New System.Drawing.Size(130, 22)
         Me.tsmiOption_Language_DA.Text = "Dansk"
         '
         'tsmiOption_Unit
         '
         Me.tsmiOption_Unit.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsmiOption_Unit_SI, Me.tsmiOption_Unit_IP})
         Me.tsmiOption_Unit.Name = "tsmiOption_Unit"
-        Me.tsmiOption_Unit.Size = New System.Drawing.Size(180, 22)
+        Me.tsmiOption_Unit.Size = New System.Drawing.Size(126, 22)
         Me.tsmiOption_Unit.Text = "Unit"
         Me.tsmiOption_Unit.Visible = False
         '
@@ -654,6 +655,7 @@ Partial Class CLMainForm
         Me.grbPerformance_TemperatureConditions.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.grbPerformance_TemperatureConditions.Controls.Add(Me.btnEN308)
         Me.grbPerformance_TemperatureConditions.Controls.Add(Me.txbPerformance_RHReturnInlet)
         Me.grbPerformance_TemperatureConditions.Controls.Add(Me.txbPerformance_ReturnInletTemperature)
         Me.grbPerformance_TemperatureConditions.Controls.Add(Me.txbPerformance_RHFreshInlet)
@@ -669,6 +671,16 @@ Partial Class CLMainForm
         Me.grbPerformance_TemperatureConditions.TabStop = False
         Me.grbPerformance_TemperatureConditions.Text = "Temperature Conditions"
         '
+        'btnEN308
+        '
+        Me.btnEN308.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnEN308.Location = New System.Drawing.Point(227, 21)
+        Me.btnEN308.Name = "btnEN308"
+        Me.btnEN308.Size = New System.Drawing.Size(126, 49)
+        Me.btnEN308.TabIndex = 8
+        Me.btnEN308.Text = "EN308"
+        Me.btnEN308.UseVisualStyleBackColor = True
+        '
         'txbPerformance_RHReturnInlet
         '
         Me.txbPerformance_RHReturnInlet.AcceptsReturn = True
@@ -676,7 +688,7 @@ Partial Class CLMainForm
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txbPerformance_RHReturnInlet.Location = New System.Drawing.Point(161, 110)
         Me.txbPerformance_RHReturnInlet.Name = "txbPerformance_RHReturnInlet"
-        Me.txbPerformance_RHReturnInlet.Size = New System.Drawing.Size(192, 20)
+        Me.txbPerformance_RHReturnInlet.Size = New System.Drawing.Size(60, 20)
         Me.txbPerformance_RHReturnInlet.TabIndex = 7
         Me.txbPerformance_RHReturnInlet.Text = "60"
         '
@@ -687,7 +699,7 @@ Partial Class CLMainForm
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txbPerformance_ReturnInletTemperature.Location = New System.Drawing.Point(161, 79)
         Me.txbPerformance_ReturnInletTemperature.Name = "txbPerformance_ReturnInletTemperature"
-        Me.txbPerformance_ReturnInletTemperature.Size = New System.Drawing.Size(192, 20)
+        Me.txbPerformance_ReturnInletTemperature.Size = New System.Drawing.Size(60, 20)
         Me.txbPerformance_ReturnInletTemperature.TabIndex = 5
         Me.txbPerformance_ReturnInletTemperature.Text = "20"
         '
@@ -698,7 +710,7 @@ Partial Class CLMainForm
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txbPerformance_RHFreshInlet.Location = New System.Drawing.Point(161, 50)
         Me.txbPerformance_RHFreshInlet.Name = "txbPerformance_RHFreshInlet"
-        Me.txbPerformance_RHFreshInlet.Size = New System.Drawing.Size(192, 20)
+        Me.txbPerformance_RHFreshInlet.Size = New System.Drawing.Size(60, 20)
         Me.txbPerformance_RHFreshInlet.TabIndex = 3
         Me.txbPerformance_RHFreshInlet.Text = "80"
         '
@@ -709,7 +721,7 @@ Partial Class CLMainForm
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txbPerformance_FreshInletTemperature.Location = New System.Drawing.Point(161, 21)
         Me.txbPerformance_FreshInletTemperature.Name = "txbPerformance_FreshInletTemperature"
-        Me.txbPerformance_FreshInletTemperature.Size = New System.Drawing.Size(192, 20)
+        Me.txbPerformance_FreshInletTemperature.Size = New System.Drawing.Size(60, 20)
         Me.txbPerformance_FreshInletTemperature.TabIndex = 1
         Me.txbPerformance_FreshInletTemperature.Text = "-10"
         '
@@ -1340,24 +1352,24 @@ Partial Class CLMainForm
         Me.dgvPerformance_SoundPower.BackgroundColor = System.Drawing.SystemColors.Window
         Me.dgvPerformance_SoundPower.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.dgvPerformance_SoundPower.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
-        DataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle14.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle14.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle14.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle14.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle14.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgvPerformance_SoundPower.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle14
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvPerformance_SoundPower.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
         Me.dgvPerformance_SoundPower.ColumnHeadersHeight = 40
         Me.dgvPerformance_SoundPower.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing
-        DataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle15.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle15.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle15.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle15.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle15.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle15.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgvPerformance_SoundPower.DefaultCellStyle = DataGridViewCellStyle15
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgvPerformance_SoundPower.DefaultCellStyle = DataGridViewCellStyle2
         Me.dgvPerformance_SoundPower.Dock = System.Windows.Forms.DockStyle.Top
         Me.dgvPerformance_SoundPower.GridColor = System.Drawing.Color.Silver
         Me.dgvPerformance_SoundPower.Location = New System.Drawing.Point(3, 37)
@@ -1365,14 +1377,14 @@ Partial Class CLMainForm
         Me.dgvPerformance_SoundPower.Name = "dgvPerformance_SoundPower"
         Me.dgvPerformance_SoundPower.ReadOnly = True
         Me.dgvPerformance_SoundPower.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None
-        DataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle16.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle16.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle16.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle16.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle16.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle16.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgvPerformance_SoundPower.RowHeadersDefaultCellStyle = DataGridViewCellStyle16
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvPerformance_SoundPower.RowHeadersDefaultCellStyle = DataGridViewCellStyle3
         Me.dgvPerformance_SoundPower.RowHeadersVisible = False
         Me.dgvPerformance_SoundPower.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
         Me.dgvPerformance_SoundPower.ScrollBars = System.Windows.Forms.ScrollBars.None
@@ -2087,49 +2099,49 @@ Partial Class CLMainForm
         '
         'crtPerformance_Chart1
         '
-        ChartArea5.AxisX.IntervalOffsetType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number
-        ChartArea5.Name = "ChartArea1"
-        Me.crtPerformance_Chart1.ChartAreas.Add(ChartArea5)
+        ChartArea1.AxisX.IntervalOffsetType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number
+        ChartArea1.Name = "ChartArea1"
+        Me.crtPerformance_Chart1.ChartAreas.Add(ChartArea1)
         Me.crtPerformance_Chart1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.crtPerformance_Chart1.Location = New System.Drawing.Point(3, 3)
         Me.crtPerformance_Chart1.Name = "crtPerformance_Chart1"
-        Series5.ChartArea = "ChartArea1"
-        Series5.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline
-        Series5.Legend = "Legend1"
-        Series5.Name = "Series1"
-        Me.crtPerformance_Chart1.Series.Add(Series5)
+        Series1.ChartArea = "ChartArea1"
+        Series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline
+        Series1.Legend = "Legend1"
+        Series1.Name = "Series1"
+        Me.crtPerformance_Chart1.Series.Add(Series1)
         Me.crtPerformance_Chart1.Size = New System.Drawing.Size(362, 213)
         Me.crtPerformance_Chart1.TabIndex = 7
         Me.crtPerformance_Chart1.Text = "Chart1"
         '
         'crtPerformance_Chart2
         '
-        ChartArea6.AxisX.IntervalOffsetType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number
-        ChartArea6.Name = "ChartArea1"
-        Me.crtPerformance_Chart2.ChartAreas.Add(ChartArea6)
+        ChartArea2.AxisX.IntervalOffsetType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number
+        ChartArea2.Name = "ChartArea1"
+        Me.crtPerformance_Chart2.ChartAreas.Add(ChartArea2)
         Me.crtPerformance_Chart2.Dock = System.Windows.Forms.DockStyle.Fill
         Me.crtPerformance_Chart2.Location = New System.Drawing.Point(371, 3)
         Me.crtPerformance_Chart2.Name = "crtPerformance_Chart2"
-        Series6.ChartArea = "ChartArea1"
-        Series6.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline
-        Series6.Name = "Series1"
-        Me.crtPerformance_Chart2.Series.Add(Series6)
+        Series2.ChartArea = "ChartArea1"
+        Series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline
+        Series2.Name = "Series1"
+        Me.crtPerformance_Chart2.Series.Add(Series2)
         Me.crtPerformance_Chart2.Size = New System.Drawing.Size(362, 213)
         Me.crtPerformance_Chart2.TabIndex = 8
         Me.crtPerformance_Chart2.Text = "Chart2"
         '
         'crtPerformance_Chart3
         '
-        ChartArea7.AxisX.IntervalOffsetType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number
-        ChartArea7.Name = "ChartArea1"
-        Me.crtPerformance_Chart3.ChartAreas.Add(ChartArea7)
+        ChartArea3.AxisX.IntervalOffsetType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number
+        ChartArea3.Name = "ChartArea1"
+        Me.crtPerformance_Chart3.ChartAreas.Add(ChartArea3)
         Me.crtPerformance_Chart3.Dock = System.Windows.Forms.DockStyle.Fill
         Me.crtPerformance_Chart3.Location = New System.Drawing.Point(739, 3)
         Me.crtPerformance_Chart3.Name = "crtPerformance_Chart3"
-        Series7.ChartArea = "ChartArea1"
-        Series7.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline
-        Series7.Name = "Series1"
-        Me.crtPerformance_Chart3.Series.Add(Series7)
+        Series3.ChartArea = "ChartArea1"
+        Series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline
+        Series3.Name = "Series1"
+        Me.crtPerformance_Chart3.Series.Add(Series3)
         Me.crtPerformance_Chart3.Size = New System.Drawing.Size(362, 213)
         Me.crtPerformance_Chart3.TabIndex = 9
         Me.crtPerformance_Chart3.Text = "Generate Report"
@@ -2210,35 +2222,35 @@ Partial Class CLMainForm
         Me.dgvSAP.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.dgvSAP.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
-        DataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle17.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle17.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle17.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle17.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle17.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle17.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgvSAP.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle17
+        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvSAP.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle4
         Me.dgvSAP.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvSAP.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.dgvSAP_ExhaustTerminalConfiguration, Me.dgvSAP_TotalExhaustFlowRate, Me.dgvSAP_TotalSupplyFlowRate, Me.dgvSAP_RegulationLevel, Me.dgvSAP_SpecificFanPower, Me.dgvSAP_HeatExchangeEfficiency, Me.dgvSAP_EnergySavingTrustBestPracticePerformanceCompliant})
-        DataGridViewCellStyle25.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle25.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle25.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle25.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle25.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle25.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle25.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgvSAP.DefaultCellStyle = DataGridViewCellStyle25
+        DataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle12.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle12.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle12.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle12.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgvSAP.DefaultCellStyle = DataGridViewCellStyle12
         Me.dgvSAP.Location = New System.Drawing.Point(8, 31)
         Me.dgvSAP.Name = "dgvSAP"
         Me.dgvSAP.ReadOnly = True
-        DataGridViewCellStyle26.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle26.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle26.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle26.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle26.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle26.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle26.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgvSAP.RowHeadersDefaultCellStyle = DataGridViewCellStyle26
+        DataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle13.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle13.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle13.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle13.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle13.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvSAP.RowHeadersDefaultCellStyle = DataGridViewCellStyle13
         Me.dgvSAP.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
         Me.dgvSAP.ScrollBars = System.Windows.Forms.ScrollBars.None
         Me.dgvSAP.Size = New System.Drawing.Size(1101, 200)
@@ -2246,8 +2258,8 @@ Partial Class CLMainForm
         '
         'dgvSAP_ExhaustTerminalConfiguration
         '
-        DataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.dgvSAP_ExhaustTerminalConfiguration.DefaultCellStyle = DataGridViewCellStyle18
+        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.dgvSAP_ExhaustTerminalConfiguration.DefaultCellStyle = DataGridViewCellStyle5
         Me.dgvSAP_ExhaustTerminalConfiguration.HeaderText = "Exhaust terminal configuration"
         Me.dgvSAP_ExhaustTerminalConfiguration.Name = "dgvSAP_ExhaustTerminalConfiguration"
         Me.dgvSAP_ExhaustTerminalConfiguration.ReadOnly = True
@@ -2255,8 +2267,8 @@ Partial Class CLMainForm
         '
         'dgvSAP_TotalExhaustFlowRate
         '
-        DataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.dgvSAP_TotalExhaustFlowRate.DefaultCellStyle = DataGridViewCellStyle19
+        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.dgvSAP_TotalExhaustFlowRate.DefaultCellStyle = DataGridViewCellStyle6
         Me.dgvSAP_TotalExhaustFlowRate.HeaderText = "Total exhaust flow rate [l/s]"
         Me.dgvSAP_TotalExhaustFlowRate.Name = "dgvSAP_TotalExhaustFlowRate"
         Me.dgvSAP_TotalExhaustFlowRate.ReadOnly = True
@@ -2264,8 +2276,8 @@ Partial Class CLMainForm
         '
         'dgvSAP_TotalSupplyFlowRate
         '
-        DataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.dgvSAP_TotalSupplyFlowRate.DefaultCellStyle = DataGridViewCellStyle20
+        DataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.dgvSAP_TotalSupplyFlowRate.DefaultCellStyle = DataGridViewCellStyle7
         Me.dgvSAP_TotalSupplyFlowRate.HeaderText = "Total supply flow rate [l/s]"
         Me.dgvSAP_TotalSupplyFlowRate.Name = "dgvSAP_TotalSupplyFlowRate"
         Me.dgvSAP_TotalSupplyFlowRate.ReadOnly = True
@@ -2273,18 +2285,18 @@ Partial Class CLMainForm
         '
         'dgvSAP_RegulationLevel
         '
-        DataGridViewCellStyle21.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.dgvSAP_RegulationLevel.DefaultCellStyle = DataGridViewCellStyle21
+        DataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.dgvSAP_RegulationLevel.DefaultCellStyle = DataGridViewCellStyle8
         Me.dgvSAP_RegulationLevel.HeaderText = "Regulation Level [%]"
         Me.dgvSAP_RegulationLevel.Name = "dgvSAP_RegulationLevel"
         Me.dgvSAP_RegulationLevel.ReadOnly = True
         '
         'dgvSAP_SpecificFanPower
         '
-        DataGridViewCellStyle22.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle22.Format = "N2"
-        DataGridViewCellStyle22.NullValue = Nothing
-        Me.dgvSAP_SpecificFanPower.DefaultCellStyle = DataGridViewCellStyle22
+        DataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle9.Format = "N2"
+        DataGridViewCellStyle9.NullValue = Nothing
+        Me.dgvSAP_SpecificFanPower.DefaultCellStyle = DataGridViewCellStyle9
         Me.dgvSAP_SpecificFanPower.HeaderText = "Specific fan power [W/l/s]"
         Me.dgvSAP_SpecificFanPower.Name = "dgvSAP_SpecificFanPower"
         Me.dgvSAP_SpecificFanPower.ReadOnly = True
@@ -2292,10 +2304,10 @@ Partial Class CLMainForm
         '
         'dgvSAP_HeatExchangeEfficiency
         '
-        DataGridViewCellStyle23.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle23.Format = "N2"
-        DataGridViewCellStyle23.NullValue = Nothing
-        Me.dgvSAP_HeatExchangeEfficiency.DefaultCellStyle = DataGridViewCellStyle23
+        DataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle10.Format = "N2"
+        DataGridViewCellStyle10.NullValue = Nothing
+        Me.dgvSAP_HeatExchangeEfficiency.DefaultCellStyle = DataGridViewCellStyle10
         Me.dgvSAP_HeatExchangeEfficiency.HeaderText = "Heat exchange effiency [%]"
         Me.dgvSAP_HeatExchangeEfficiency.Name = "dgvSAP_HeatExchangeEfficiency"
         Me.dgvSAP_HeatExchangeEfficiency.ReadOnly = True
@@ -2303,10 +2315,10 @@ Partial Class CLMainForm
         '
         'dgvSAP_EnergySavingTrustBestPracticePerformanceCompliant
         '
-        DataGridViewCellStyle24.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle24.BackColor = System.Drawing.Color.Red
-        DataGridViewCellStyle24.ForeColor = System.Drawing.Color.White
-        Me.dgvSAP_EnergySavingTrustBestPracticePerformanceCompliant.DefaultCellStyle = DataGridViewCellStyle24
+        DataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle11.BackColor = System.Drawing.Color.Red
+        DataGridViewCellStyle11.ForeColor = System.Drawing.Color.White
+        Me.dgvSAP_EnergySavingTrustBestPracticePerformanceCompliant.DefaultCellStyle = DataGridViewCellStyle11
         Me.dgvSAP_EnergySavingTrustBestPracticePerformanceCompliant.HeaderText = "Energy Saving Trust Best Practice Performance Compliant"
         Me.dgvSAP_EnergySavingTrustBestPracticePerformanceCompliant.Name = "dgvSAP_EnergySavingTrustBestPracticePerformanceCompliant"
         Me.dgvSAP_EnergySavingTrustBestPracticePerformanceCompliant.ReadOnly = True
@@ -2377,10 +2389,6 @@ Partial Class CLMainForm
         Me.txbAccessory_OutputData_CWDSensibleHeat.ReadOnly = True
         Me.txbAccessory_OutputData_CWDSensibleHeat.Size = New System.Drawing.Size(87, 20)
         Me.txbAccessory_OutputData_CWDSensibleHeat.TabIndex = 9
-        '
-        'bsrUnitCalculator
-        '
-        Me.bsrUnitCalculator.DataSource = GetType(SSW.CLUnitCalculator)
         '
         'Label3
         '
@@ -2841,19 +2849,19 @@ Partial Class CLMainForm
         '
         Me.crtCO2Level_Chart1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        ChartArea8.Name = "ChartArea1"
-        Me.crtCO2Level_Chart1.ChartAreas.Add(ChartArea8)
-        Legend2.Enabled = False
-        Legend2.Name = "Legend1"
-        Me.crtCO2Level_Chart1.Legends.Add(Legend2)
+        ChartArea4.Name = "ChartArea1"
+        Me.crtCO2Level_Chart1.ChartAreas.Add(ChartArea4)
+        Legend1.Enabled = False
+        Legend1.Name = "Legend1"
+        Me.crtCO2Level_Chart1.Legends.Add(Legend1)
         Me.crtCO2Level_Chart1.Location = New System.Drawing.Point(348, 6)
         Me.crtCO2Level_Chart1.Name = "crtCO2Level_Chart1"
-        Series8.ChartArea = "ChartArea1"
-        Series8.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline
-        Series8.IsVisibleInLegend = False
-        Series8.Legend = "Legend1"
-        Series8.Name = "Series1"
-        Me.crtCO2Level_Chart1.Series.Add(Series8)
+        Series4.ChartArea = "ChartArea1"
+        Series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline
+        Series4.IsVisibleInLegend = False
+        Series4.Legend = "Legend1"
+        Series4.Name = "Series1"
+        Me.crtCO2Level_Chart1.Series.Add(Series4)
         Me.crtCO2Level_Chart1.Size = New System.Drawing.Size(758, 572)
         Me.crtCO2Level_Chart1.TabIndex = 2
         Me.crtCO2Level_Chart1.Text = "Chart1"
@@ -3320,6 +3328,10 @@ Partial Class CLMainForm
         '
         Me.ToolTip1.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info
         '
+        'bsrUnitCalculator
+        '
+        Me.bsrUnitCalculator.DataSource = GetType(SSW.CLUnitCalculator)
+        '
         'CLMainForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -3329,7 +3341,7 @@ Partial Class CLMainForm
         Me.Controls.Add(Me.mnsMain)
         Me.MainMenuStrip = Me.mnsMain
         Me.Name = "CLMainForm"
-        Me.Text = "CLRC(3) Selection Software"
+        Me.Text = "CLRC Selection Software"
         Me.WindowState = System.Windows.Forms.FormWindowState.Maximized
         Me.mnsMain.ResumeLayout(False)
         Me.mnsMain.PerformLayout()
@@ -3414,7 +3426,6 @@ Partial Class CLMainForm
         Me.grbAccessory_OutputData.PerformLayout()
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
-        CType(Me.bsrUnitCalculator, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox2.ResumeLayout(False)
         Me.GroupBox2.PerformLayout()
         Me.grbAccessory_EHD.ResumeLayout(False)
@@ -3438,6 +3449,7 @@ Partial Class CLMainForm
         Me.grbCO2Level_Room.PerformLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlMain.ResumeLayout(False)
+        CType(Me.bsrUnitCalculator, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -3729,4 +3741,5 @@ Partial Class CLMainForm
     Friend WithEvents rdb_qtm_easy As RadioButton
     Friend WithEvents chb_qtm_ACTIVA As CheckBox
     Friend WithEvents tsmiOption_Language_DA As ToolStripMenuItem
+    Friend WithEvents btnEN308 As Button
 End Class

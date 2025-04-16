@@ -3701,6 +3701,11 @@ Public Class CLMainForm
         Calculate()
     End Sub
 
-
+    Private Sub EN308_Click(sender As Object, e As EventArgs) Handles btnEN308.Click
+        txbPerformance_FreshInletTemperature.Text = 5
+        txbPerformance_RHFreshInlet.Text = 72
+        txbPerformance_ReturnInletTemperature.Text = 25
+        txbPerformance_RHReturnInlet.Text = 28
+    End Sub
 End Class
 
