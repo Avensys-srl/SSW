@@ -1,0 +1,4 @@
+CLCommonLib	../../CLCommonLib/CLCommonLib/CLCommonLib.csproj	../packages/CLCommonLib.2018.1.10.9265/lib/net35-client/CLCommonLib.dll
+CLDataCentralCommonLib	../../CLDataCentralCommonLib/CLDataCentralCommonLib/CLDataCentralCommonLib.csproj	../packages/CLDataCentralCommonLib.2018.1.10.9272/lib/net40/CLDataCentralCommonLib.dll
+CLDataCentralLTModel	../../CLDataCentralLTModel/CLDataCentralLTModel/CLDataCentralLTModel.csproj	../packages/CLDataCentralLTModel.2018.1.10.9282/lib/net40/CLDataCentralLTModel.dll
+CLEFCommonLib	../../CLEFCommonLib/CLEFCommonLib/CLEFCommonLib.csproj	../packages/CLEFCommonLib.2017.12.4.11112/lib/net40/CLEFCommonLib.dll

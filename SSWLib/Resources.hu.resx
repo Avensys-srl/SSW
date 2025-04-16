@@ -1,0 +1,531 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="About" xml:space="preserve">
+    <value>A szoftverről</value>
+  </data>
+  <data name="AirflowPressure" xml:space="preserve">
+    <value>Légmennyiség / Nyomás</value>
+  </data>
+  <data name="CO2Level" xml:space="preserve">
+    <value>CO2 szint</value>
+  </data>
+  <data name="CO2Level_AddToReport" xml:space="preserve">
+    <value>Hozzáadás a jelentéshez</value>
+  </data>
+  <data name="CO2Level_Parameters" xml:space="preserve">
+    <value>Beállítások</value>
+  </data>
+  <data name="CO2Level_Parameters_Af_area" xml:space="preserve">
+    <value>Légmennyiség területenként</value>
+  </data>
+  <data name="CO2Level_Parameters_Af_demand" xml:space="preserve">
+    <value>Kért légmennyiség</value>
+  </data>
+  <data name="CO2Level_Parameters_Af_person" xml:space="preserve">
+    <value>Légmennyiség személyenként</value>
+  </data>
+  <data name="CO2Level_Parameters_Af_set" xml:space="preserve">
+    <value>Légmennyiség beállítás</value>
+  </data>
+  <data name="CO2Level_Parameters_CalcMet" xml:space="preserve">
+    <value>Számítási módszer</value>
+  </data>
+  <data name="CO2Level_Parameters_CalcMet_Fixed_Af" xml:space="preserve">
+    <value>Állandó légmennyiség</value>
+  </data>
+  <data name="CO2Level_Parameters_CalcMet_MaxCO2" xml:space="preserve">
+    <value>Max. CO2 szint</value>
+  </data>
+  <data name="CO2Level_Parameters_CalcMet_PersonRelated" xml:space="preserve">
+    <value>Kapcsolattartó</value>
+  </data>
+  <data name="CO2Level_Parameters_checkwp" xml:space="preserve">
+    <value>Munkapont ellenőrzése</value>
+  </data>
+  <data name="CO2Level_Parameters_ExtCO2" xml:space="preserve">
+    <value>Külső CO2 szint</value>
+  </data>
+  <data name="CO2Level_Parameters_MaxCO2" xml:space="preserve">
+    <value>Max. CO2 szint</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset" xml:space="preserve">
+    <value>Standard előbeállítás</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_01" xml:space="preserve">
+    <value>Nincs</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_02" xml:space="preserve">
+    <value>101. közlemény : Max 1000 ppm CO2</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_03" xml:space="preserve">
+    <value>EN15251 kat. I,B1: 10 l/s szem. &amp; 0,5 l/s m2</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_04" xml:space="preserve">
+    <value>EN15251 kat. I,B2: 10 l/s szem. &amp; 1,0 l/s m2</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_05" xml:space="preserve">
+    <value>EN15251 kat. I,B3: 10 l/s szem. &amp; 2,0 l/s m2</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_06" xml:space="preserve">
+    <value>EN15251 kat. II,B1: 7 l/s szem. &amp; 0,35 l/s m2</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_07" xml:space="preserve">
+    <value>EN15251 kat. II,B2: 7 l/s szem. &amp; 0,7 l/s m2</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_08" xml:space="preserve">
+    <value>EN15251 kat. II,B3: 7 l/s szem. &amp; 1,4 l/s m2</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_09" xml:space="preserve">
+    <value>EN15251 kat. III,B1: 4 l/s szem. &amp; 0,2 l/s m2</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_10" xml:space="preserve">
+    <value>EN15251 kat. III,B2: 4 l/s szem. &amp; 0,4 l/s m2</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_11" xml:space="preserve">
+    <value>EN15251 kat. III,B3: 4 l/s szem. &amp; 0,8 l/s m2</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_12" xml:space="preserve">
+    <value>EN15251 cat I: C02 max 700 ppm</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_13" xml:space="preserve">
+    <value>EN15251 cat II: C02 max 850 ppm</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_14" xml:space="preserve">
+    <value>EN15251 cat III: C02 max 1150 ppm</value>
+  </data>
+  <data name="CO2Level_PeriodOfTime" xml:space="preserve">
+    <value>Időtartam</value>
+  </data>
+  <data name="CO2Level_Room" xml:space="preserve">
+    <value>Helyiség</value>
+  </data>
+  <data name="CO2Level_Room_Height" xml:space="preserve">
+    <value>Magasság</value>
+  </data>
+  <data name="CO2Level_Room_Length" xml:space="preserve">
+    <value>Hossz</value>
+  </data>
+  <data name="CO2Level_Room_Witdh" xml:space="preserve">
+    <value>Szélesség</value>
+  </data>
+  <data name="CO2Level_Usage" xml:space="preserve">
+    <value>Használatban</value>
+  </data>
+  <data name="CO2Level_Usage_Break" xml:space="preserve">
+    <value>Használaton kívül</value>
+  </data>
+  <data name="CO2Level_Usage_CO2prod" xml:space="preserve">
+    <value>CO2 kibocsátás</value>
+  </data>
+  <data name="CO2Level_Usage_LevelAct" xml:space="preserve">
+    <value>Tevékenység szintje</value>
+  </data>
+  <data name="CO2Level_Usage_People" xml:space="preserve">
+    <value>Emberek</value>
+  </data>
+  <data name="CO2Level_Usage_Period" xml:space="preserve">
+    <value>Időszak</value>
+  </data>
+  <data name="CO2Level_Usage_Presence" xml:space="preserve">
+    <value>Jelenlét</value>
+  </data>
+  <data name="CommercialSheet" xml:space="preserve">
+    <value>Kereskedelmi adatlap</value>
+  </data>
+  <data name="ElectricPowerInput" xml:space="preserve">
+    <value>Elektromos betáplálás</value>
+  </data>
+  <data name="ExternalLeakage" xml:space="preserve">
+    <value>Külső szivárgás</value>
+  </data>
+  <data name="InternalLeakage" xml:space="preserve">
+    <value>Belső szivárgás</value>
+  </data>
+  <data name="IOM" xml:space="preserve">
+    <value>IOM</value>
+  </data>
+  <data name="MainForm_AirFlow" xml:space="preserve">
+    <value>Légmennyiség</value>
+  </data>
+  <data name="MainForm_CantSaveFile" xml:space="preserve">
+    <value>A file nem menthető</value>
+  </data>
+  <data name="MainForm_Certification" xml:space="preserve">
+    <value>Tanúsítvány</value>
+  </data>
+  <data name="MainForm_Date" xml:space="preserve">
+    <value>Dátum</value>
+  </data>
+  <data name="MainForm_Efficiency" xml:space="preserve">
+    <value>Hatásfok</value>
+  </data>
+  <data name="MainForm_ElectricalPerformances" xml:space="preserve">
+    <value>Elektromos teljesítmény</value>
+  </data>
+  <data name="MainForm_ExhaustOutletTemperature" xml:space="preserve">
+    <value>Kidobó oldali léghőm.</value>
+  </data>
+  <data name="MainForm_FileSaved" xml:space="preserve">
+    <value>File mentve</value>
+  </data>
+  <data name="MainForm_FreshInletTemperature" xml:space="preserve">
+    <value>Friss levegő oldali léghőm.</value>
+  </data>
+  <data name="MainForm_GridSAP_Date" xml:space="preserve">
+    <value>Dátum</value>
+  </data>
+  <data name="MainForm_GridSAP_EnergySavingTrustBestPracticePerformanceCompliant" xml:space="preserve">
+    <value>Energiatakarékossági megbízhatóság (a tapasztalatok alapján)</value>
+  </data>
+  <data name="MainForm_GridSAP_EstimatedSAPTestTable" xml:space="preserve">
+    <value>Becsült SAP teszttáblázat</value>
+  </data>
+  <data name="MainForm_GridSAP_ExhaustTerminalConfiguration" xml:space="preserve">
+    <value>Kidobott oldali beállítás</value>
+  </data>
+  <data name="MainForm_GridSAP_HeatExchangeEffiency" xml:space="preserve">
+    <value>Hővisszanyerő hatásfok</value>
+  </data>
+  <data name="MainForm_GridSAP_RegulationLevel" xml:space="preserve">
+    <value>Szabályozási szint</value>
+  </data>
+  <data name="MainForm_GridSAP_SpecificFanPower" xml:space="preserve">
+    <value>Specifikus ventilátor teljesítmény</value>
+  </data>
+  <data name="MainForm_GridSAP_TotalExhaustFlowRate" xml:space="preserve">
+    <value>Össz. elszívott légmennyiég</value>
+  </data>
+  <data name="MainForm_GridSAP_TotalSupplyFlowRate" xml:space="preserve">
+    <value>Össz. befúvott légmennyiég</value>
+  </data>
+  <data name="MainForm_GridSAP_UnitSelected" xml:space="preserve">
+    <value>Kiválasztott géptípus</value>
+  </data>
+  <data name="MainForm_HeatExchangerPerformances" xml:space="preserve">
+    <value>Hővisszanyerő teljesítménye</value>
+  </data>
+  <data name="MainForm_HeatTransferred" xml:space="preserve">
+    <value>Visszanyert hőmennyiség</value>
+  </data>
+  <data name="MainForm_LatentHeat" xml:space="preserve">
+    <value>Rejtett hő</value>
+  </data>
+  <data name="MainForm_MaxPressure" xml:space="preserve">
+    <value>Max nyomás</value>
+  </data>
+  <data name="MainForm_Menu_About" xml:space="preserve">
+    <value>A szoftverről</value>
+  </data>
+  <data name="MainForm_Menu_File" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="MainForm_Menu_File_Exit" xml:space="preserve">
+    <value>Kilépés</value>
+  </data>
+  <data name="MainForm_Menu_File_GenerateReport" xml:space="preserve">
+    <value>Jelentés készítése</value>
+  </data>
+  <data name="MainForm_Menu_Option" xml:space="preserve">
+    <value>Opció</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language" xml:space="preserve">
+    <value>Nyelv</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Bulgarian" xml:space="preserve">
+    <value>Bolgár</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Deutsch" xml:space="preserve">
+    <value>Német</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Dutch" xml:space="preserve">
+    <value>Holland</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_English" xml:space="preserve">
+    <value>Angol</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Français" xml:space="preserve">
+    <value>Francia</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Italian" xml:space="preserve">
+    <value>Olasz</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Polish" xml:space="preserve">
+    <value>Lengyel</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Romanian" xml:space="preserve">
+    <value>Román</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Slovenian" xml:space="preserve">
+    <value>Szlovén</value>
+  </data>
+  <data name="MainForm_Menu_Option_Unit" xml:space="preserve">
+    <value>Egység</value>
+  </data>
+  <data name="MainForm_Menu_Option_Unit_IP" xml:space="preserve">
+    <value>I.P.</value>
+  </data>
+  <data name="MainForm_Menu_Option_Unit_SI" xml:space="preserve">
+    <value>S.I.</value>
+  </data>
+  <data name="MainForm_PassiveHouse" xml:space="preserve">
+    <value>Passzívház</value>
+  </data>
+  <data name="MainForm_PassiveHouseElectricalEfficienty" xml:space="preserve">
+    <value>Passzívház terület elektromos hatásfok</value>
+  </data>
+  <data name="MainForm_Performance" xml:space="preserve">
+    <value>Teljesítmény</value>
+  </data>
+  <data name="MainForm_PowerInput" xml:space="preserve">
+    <value>Elektromos telj. felvétel</value>
+  </data>
+  <data name="MainForm_PowerSupply" xml:space="preserve">
+    <value>Elektromos betáplálás</value>
+  </data>
+  <data name="MainForm_Pressure" xml:space="preserve">
+    <value>Nyomás</value>
+  </data>
+  <data name="MainForm_RegulationLevel" xml:space="preserve">
+    <value>Szabályozási szint</value>
+  </data>
+  <data name="MainForm_ReturnInletTemperature" xml:space="preserve">
+    <value>Visszaszívott hőmérséklet</value>
+  </data>
+  <data name="MainForm_RHExhaustOutletTemperature" xml:space="preserve">
+    <value>R.H.</value>
+  </data>
+  <data name="MainForm_RHFreshInletTemperature" xml:space="preserve">
+    <value>R.H.</value>
+  </data>
+  <data name="MainForm_RHReturnInletTemperature" xml:space="preserve">
+    <value>R.H.</value>
+  </data>
+  <data name="MainForm_RHSupplyOutletTemperature" xml:space="preserve">
+    <value>R.H.</value>
+  </data>
+  <data name="MainForm_SEL" xml:space="preserve">
+    <value>SPI</value>
+  </data>
+  <data name="MainForm_SensibleHeat" xml:space="preserve">
+    <value>Érezhető hő</value>
+  </data>
+  <data name="MainForm_SFP" xml:space="preserve">
+    <value>SFP</value>
+  </data>
+  <data name="MainForm_ShowPassiveHouseArea" xml:space="preserve">
+    <value>Passzívház terület mutatása</value>
+  </data>
+  <data name="MainForm_ShowSELArea" xml:space="preserve">
+    <value>SEL terület mutatása</value>
+  </data>
+  <data name="MainForm_ShowSFPArea" xml:space="preserve">
+    <value>SFP terület mutatása</value>
+  </data>
+  <data name="MainForm_SingleBranch" xml:space="preserve">
+    <value>Elágazás</value>
+  </data>
+  <data name="MainForm_SupplyOutletTemperature" xml:space="preserve">
+    <value>Befúvási hőmérséklet</value>
+  </data>
+  <data name="MainForm_TemperatureConditionsAndUmidity" xml:space="preserve">
+    <value>Hőmérséklet és páratartalom</value>
+  </data>
+  <data name="MainForm_Unit" xml:space="preserve">
+    <value>Berendezés</value>
+  </data>
+  <data name="MainForm_UnitSelected" xml:space="preserve">
+    <value>Kiválasztott berendezés</value>
+  </data>
+  <data name="MainForm_UnitSelection" xml:space="preserve">
+    <value>Berendezés kiválasztása</value>
+  </data>
+  <data name="MainForm_UpdateSAPTable" xml:space="preserve">
+    <value>SAP tábla frissítése</value>
+  </data>
+  <data name="MainForm_WaterProduced" xml:space="preserve">
+    <value>Kondenz termelés</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Nem</value>
+  </data>
+  <data name="NoiseLevel" xml:space="preserve">
+    <value>Akusztikai szint</value>
+  </data>
+  <data name="Page" xml:space="preserve">
+    <value>Oldal</value>
+  </data>
+  <data name="PDF_RegLev" xml:space="preserve">
+    <value>Szab. Szint</value>
+  </data>
+  <data name="PDF_WorkingArea" xml:space="preserve">
+    <value>Munkaterület</value>
+  </data>
+  <data name="PDF_WorkingPoint" xml:space="preserve">
+    <value>Munkapont</value>
+  </data>
+  <data name="PerformancesAccordanceWith" xml:space="preserve">
+    <value>A megadott teljesítmények az alábbiak szerint számítva:</value>
+  </data>
+  <data name="PleaseWaitForm_Message" xml:space="preserve">
+    <value>Kérjük, várjon egy kis ideig…</value>
+  </data>
+  <data name="Release" xml:space="preserve">
+    <value>Szoftver kiadás</value>
+  </data>
+  <data name="SaveCommercialSheet" xml:space="preserve">
+    <value>Kereskedelmi adatlap mentése</value>
+  </data>
+  <data name="SaveIOM" xml:space="preserve">
+    <value>IOM-nt mentés</value>
+  </data>
+  <data name="Series" xml:space="preserve">
+    <value>Sorozat</value>
+  </data>
+  <data name="SoundPower" xml:space="preserve">
+    <value>Hanteljesítmény szint</value>
+  </data>
+  <data name="Sound_Breakout" xml:space="preserve">
+    <value>Burkolat</value>
+  </data>
+  <data name="Sound_Exhaust" xml:space="preserve">
+    <value>Kidobás</value>
+  </data>
+  <data name="Sound_Fresh" xml:space="preserve">
+    <value>Friss</value>
+  </data>
+  <data name="Sound_Return" xml:space="preserve">
+    <value>Elszívás</value>
+  </data>
+  <data name="Sound_Supply" xml:space="preserve">
+    <value>Befúvás</value>
+  </data>
+  <data name="Sound_Total" xml:space="preserve">
+    <value>Összesen</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Igen</value>
+  </data>
+  <data name="Legal_Notice" xml:space="preserve">
+    <value>Jogi nyilatkozat: Az adatok meghatározott működési pontokon kerültek tesztelésre a fent említett szabványoknak megfelelően. A valós helyzet eltérhet a normatív esettől. A fennmaradó adatok extrapolálásra kerültek. Ha az installáció különösen érzékeny a zajadatokra, kérjük, lépjen kapcsolatba velünk (a szoftver nem tanúsított). A breakout számítás az ASHRAE Handbook - HVAC Applications, 47. fejezet szabvány szerint történik.</value>
+  </data>
+  <data name="RegLev_Note" xml:space="preserve">
+    <value>Bizonyos esetekben nem lehet lineáris kapcsolat a szabályozási szint és az egységen lévő kapcsolat között</value>
+  </data>
+</root>

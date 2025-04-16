@@ -1,0 +1,3 @@
+[NF] Interfacciamento con il database centrale
+[NF] Aggiunta funzionalità delle filiali
+[NF] Aggiunta lingua ungherese

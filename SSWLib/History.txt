@@ -1,0 +1,17 @@
+﻿+------------------------------------------------------------------------------
+| 1.0.4 | --/--/2014 | PM | - Localizzazione
++-------+------------+----+----------------------------------------------------
+| 1.0.5 | 03/06/2014 | PM | - Aggiunti i dati della potenza sonora (sia a video
+|       |            |    |   che su report)
+|       |            | PM | - Sostituita la generazione del report PDF di
+|       |            |    |   iText con il motore dei report di Microsoft.
+|       |            | PM | - Aggiunta la possibilità di scegliere la serie
+|       |            | PM | - Aggiunta la scelta della serie (serie 3, serie 5)
+|       |            | PM | - Aggiunta la possibilità di generare la brochure
+|       |            |    |   commerciale
++-------+------------+----+----------------------------------------------------
+| 1.0.6 | 06/06/2014 | PM | - Integrazione calcolo accessori CWD/HWD/EHD
+|       |            |    |   (presente ma non attiva)
++-------+------------+----+----------------------------------------------------
+| 1.0.7 | 06/06/2014 | PM | - Cambio nome file brochure commerciale
++-------+------------+----+----------------------------------------------------

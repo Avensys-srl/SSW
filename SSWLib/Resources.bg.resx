@@ -1,0 +1,438 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="About" xml:space="preserve">
+    <value>Информация</value>
+  </data>
+  <data name="AirflowPressure" xml:space="preserve">
+    <value>Дебит / Напор</value>
+  </data>
+  <data name="CommercialSheet" xml:space="preserve">
+    <value>Каталог</value>
+  </data>
+  <data name="ElectricPowerInput" xml:space="preserve">
+    <value>Електрическа мощност</value>
+  </data>
+  <data name="ExternalLeakage" xml:space="preserve">
+    <value>Загуби (външен)</value>
+  </data>
+  <data name="InternalLeakage" xml:space="preserve">
+    <value>Загуби (вътрешен)</value>
+  </data>
+  <data name="MainForm_AirFlow" xml:space="preserve">
+    <value>Дебит</value>
+  </data>
+  <data name="MainForm_CantSaveFile" xml:space="preserve">
+    <value>Файлът не може да бъде запазен</value>
+  </data>
+  <data name="MainForm_Certification" xml:space="preserve">
+    <value>Сертификати</value>
+  </data>
+  <data name="MainForm_Close" xml:space="preserve">
+    <value>Затвори</value>
+  </data>
+  <data name="MainForm_Date" xml:space="preserve">
+    <value>Дата</value>
+  </data>
+  <data name="MainForm_Efficiency" xml:space="preserve">
+    <value>Ефективност</value>
+  </data>
+  <data name="MainForm_ElectricalPerformances" xml:space="preserve">
+    <value>Електрически характеристики</value>
+  </data>
+  <data name="MainForm_ExhaustOutletTemperature" xml:space="preserve">
+    <value>Температура на изхвърляния въздух</value>
+  </data>
+  <data name="MainForm_FileSaved" xml:space="preserve">
+    <value>Файлът е запазен</value>
+  </data>
+  <data name="MainForm_FreshInletTemperature" xml:space="preserve">
+    <value>Температура на пресния въздух</value>
+  </data>
+  <data name="MainForm_GridSAP_Date" xml:space="preserve">
+    <value>Дата</value>
+  </data>
+  <data name="MainForm_GridSAP_EnergySavingTrustBestPracticePerformanceCompliant" xml:space="preserve">
+    <value>Енергоспестяване </value>
+  </data>
+  <data name="MainForm_GridSAP_EstimatedSAPTestTable" xml:space="preserve">
+    <value>Estimated SAP Test Table</value>
+  </data>
+  <data name="MainForm_GridSAP_ExhaustTerminalConfiguration" xml:space="preserve">
+    <value>Конфигурация на отработен въздух</value>
+  </data>
+  <data name="MainForm_GridSAP_HeatExchangeEffiency" xml:space="preserve">
+    <value>Ефективност на рекуператора</value>
+  </data>
+  <data name="MainForm_GridSAP_RegulationLevel" xml:space="preserve">
+    <value>Ниво на регулиране</value>
+  </data>
+  <data name="MainForm_GridSAP_SpecificFanPower" xml:space="preserve">
+    <value>Моюност на вентилатора</value>
+  </data>
+  <data name="MainForm_GridSAP_TotalExhaustFlowRate" xml:space="preserve">
+    <value>Дебит на изхвърляния въздух</value>
+  </data>
+  <data name="MainForm_GridSAP_TotalSupplyFlowRate" xml:space="preserve">
+    <value>Дебит на пресния въздух</value>
+  </data>
+  <data name="MainForm_GridSAP_UnitSelected" xml:space="preserve">
+    <value>Агрегатът е избран</value>
+  </data>
+  <data name="MainForm_HeatExchangerPerformances" xml:space="preserve">
+    <value>Данни за рекуператора</value>
+  </data>
+  <data name="MainForm_HeatTransferred" xml:space="preserve">
+    <value>Пренос на топлина</value>
+  </data>
+  <data name="MainForm_InputData" xml:space="preserve">
+    <value>Входящи данни</value>
+  </data>
+  <data name="MainForm_LatentHeat" xml:space="preserve">
+    <value>Latent Heat</value>
+  </data>
+  <data name="MainForm_MaxPressure" xml:space="preserve">
+    <value>Максимално налягане</value>
+  </data>
+  <data name="MainForm_Menu_About" xml:space="preserve">
+    <value>Информация</value>
+  </data>
+  <data name="MainForm_Menu_File" xml:space="preserve">
+    <value>Файл</value>
+  </data>
+  <data name="MainForm_Menu_File_Exit" xml:space="preserve">
+    <value>Изход</value>
+  </data>
+  <data name="MainForm_Menu_File_GenerateReport" xml:space="preserve">
+    <value>Разпечатка</value>
+  </data>
+  <data name="MainForm_Menu_File_Open" xml:space="preserve">
+    <value>Отвори</value>
+  </data>
+  <data name="MainForm_Menu_Option" xml:space="preserve">
+    <value>Опции</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language" xml:space="preserve">
+    <value>Език</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Bulgarian" xml:space="preserve">
+    <value>български</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Deutsch" xml:space="preserve">
+    <value>Немски</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Dutch" xml:space="preserve">
+    <value>Холандски</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_English" xml:space="preserve">
+    <value>Английски</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Français" xml:space="preserve">
+    <value>Френски</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Italian" xml:space="preserve">
+    <value>Италиански</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Polish" xml:space="preserve">
+    <value>Полски</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Romanian" xml:space="preserve">
+    <value>Pумънски</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Slovenian" xml:space="preserve">
+    <value>Словенски</value>
+  </data>
+  <data name="MainForm_Menu_Option_SelectMode" xml:space="preserve">
+    <value>Избери режим</value>
+  </data>
+  <data name="MainForm_Menu_Option_SelectMode_Checking" xml:space="preserve">
+    <value>Проверка</value>
+  </data>
+  <data name="MainForm_Menu_Option_SelectMode_Design" xml:space="preserve">
+    <value>Дизайн</value>
+  </data>
+  <data name="MainForm_Menu_Option_Unit" xml:space="preserve">
+    <value>Агрегат</value>
+  </data>
+  <data name="MainForm_Menu_Option_Unit_IP" xml:space="preserve">
+    <value>I.P.</value>
+  </data>
+  <data name="MainForm_Menu_Option_Unit_SI" xml:space="preserve">
+    <value>S.I.</value>
+  </data>
+  <data name="MainForm_PassiveHouse" xml:space="preserve">
+    <value>Пасивна къша</value>
+  </data>
+  <data name="MainForm_PassiveHouseElectricalEfficienty" xml:space="preserve">
+    <value>Ефективност на пасивна къша</value>
+  </data>
+  <data name="MainForm_Performance" xml:space="preserve">
+    <value>Характеристика</value>
+  </data>
+  <data name="MainForm_Performances" xml:space="preserve">
+    <value>Характеристики</value>
+  </data>
+  <data name="MainForm_PowerInput" xml:space="preserve">
+    <value>Електрическа мощност</value>
+  </data>
+  <data name="MainForm_PowerSupply" xml:space="preserve">
+    <value>Напрежение</value>
+  </data>
+  <data name="MainForm_Pressure" xml:space="preserve">
+    <value>Налягане</value>
+  </data>
+  <data name="MainForm_RegulationLevel" xml:space="preserve">
+    <value>Ниво на регулиране</value>
+  </data>
+  <data name="MainForm_ReturnInletTemperature" xml:space="preserve">
+    <value>Темп. На изхвърляния въздух</value>
+  </data>
+  <data name="MainForm_RHExhaustOutletTemperature" xml:space="preserve">
+    <value>R.H.</value>
+  </data>
+  <data name="MainForm_RHFreshInletTemperature" xml:space="preserve">
+    <value>R.H.</value>
+  </data>
+  <data name="MainForm_RHReturnInletTemperature" xml:space="preserve">
+    <value>R.H.</value>
+  </data>
+  <data name="MainForm_RHSupplyOutletTemperature" xml:space="preserve">
+    <value>R.H.</value>
+  </data>
+  <data name="MainForm_SEL" xml:space="preserve">
+    <value>SEL</value>
+  </data>
+  <data name="MainForm_SelectPdfFile" xml:space="preserve">
+    <value>Избор на pdf файл</value>
+  </data>
+  <data name="MainForm_SensibleHeat" xml:space="preserve">
+    <value>Осезаема топлина</value>
+  </data>
+  <data name="MainForm_SFP" xml:space="preserve">
+    <value>SFP</value>
+  </data>
+  <data name="MainForm_ShowPassiveHouseArea" xml:space="preserve">
+    <value>Площ на пасивната къща</value>
+  </data>
+  <data name="MainForm_ShowSELArea" xml:space="preserve">
+    <value>Покажи избраната зона</value>
+  </data>
+  <data name="MainForm_ShowSFPArea" xml:space="preserve">
+    <value>Покажи SFP зона</value>
+  </data>
+  <data name="MainForm_SingleBranch" xml:space="preserve">
+    <value>Клон</value>
+  </data>
+  <data name="MainForm_SupplyOutletTemperature" xml:space="preserve">
+    <value>Температура на подавания въздух</value>
+  </data>
+  <data name="MainForm_TemperatureConditionsAndUmidity" xml:space="preserve">
+    <value>Температура и влажност</value>
+  </data>
+  <data name="MainForm_Unit" xml:space="preserve">
+    <value>Агрегат</value>
+  </data>
+  <data name="MainForm_UnitSelected" xml:space="preserve">
+    <value>Избран</value>
+  </data>
+  <data name="MainForm_UnitSelection" xml:space="preserve">
+    <value>Селеция</value>
+  </data>
+  <data name="MainForm_UpdateSAPTable" xml:space="preserve">
+    <value>Update SAP Table</value>
+  </data>
+  <data name="MainForm_WaterProduced" xml:space="preserve">
+    <value>Количество конденз</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Не</value>
+  </data>
+  <data name="NoiseLevel" xml:space="preserve">
+    <value>Звуково ниво</value>
+  </data>
+  <data name="Page" xml:space="preserve">
+    <value>Страница</value>
+  </data>
+  <data name="PDF_HeatExchangerPerformances" xml:space="preserve">
+    <value>Характеристики на рекуператора</value>
+  </data>
+  <data name="PDF_RegLev" xml:space="preserve">
+    <value>Регулиране на нивото</value>
+  </data>
+  <data name="PDF_TemperatureConditions" xml:space="preserve">
+    <value>Температурни условия</value>
+  </data>
+  <data name="PDF_WorkingArea" xml:space="preserve">
+    <value>Работна зона</value>
+  </data>
+  <data name="PDF_WorkingPoint" xml:space="preserve">
+    <value>Работна точка</value>
+  </data>
+  <data name="PerformancesAccordanceWith" xml:space="preserve">
+    <value>Всички данни са в съответствие с:</value>
+  </data>
+  <data name="PleaseWaitForm_Message" xml:space="preserve">
+    <value>Моля изчакайте...</value>
+  </data>
+  <data name="Release" xml:space="preserve">
+    <value>Версия на програмата</value>
+  </data>
+  <data name="SaveCommercialSheet" xml:space="preserve">
+    <value>Запази каталог</value>
+  </data>
+  <data name="Series" xml:space="preserve">
+    <value>Серия</value>
+  </data>
+  <data name="SoundInlet" xml:space="preserve">
+    <value>Вход</value>
+  </data>
+  <data name="SoundOutlet" xml:space="preserve">
+    <value>Изход</value>
+  </data>
+  <data name="SoundPower" xml:space="preserve">
+    <value>Звукова мощност</value>
+  </data>
+  <data name="Sound_Breakout" xml:space="preserve">
+    <value>Breakout</value>
+  </data>
+  <data name="Sound_Exhaust" xml:space="preserve">
+    <value>Отработен</value>
+  </data>
+  <data name="Sound_Fresh" xml:space="preserve">
+    <value>Пресен</value>
+  </data>
+  <data name="Sound_Return" xml:space="preserve">
+    <value>Връщащ</value>
+  </data>
+  <data name="Sound_Supply" xml:space="preserve">
+    <value>Подаван</value>
+  </data>
+  <data name="Sound_Total" xml:space="preserve">
+    <value>Тотал</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Да</value>
+  </data>
+  <data name="Legal_Notice" xml:space="preserve">
+    <value>Правно уведомление: Данните са тествани при специфични работни точки в съответствие с посочените по-горе стандарти. Реалният случай може да се различава от нормативния. Останалите данни са екстраполирани. В случай на инсталация, която е особено чувствителна към шумови данни, моля, свържете се с нас (софтуерът не е сертифициран). Изчисляването на breakout се извършва според стандарта ASHRAE Handbook - HVAC Applications, Глава 47.</value>
+  </data>
+  <data name="RegLev_Note" xml:space="preserve">
+    <value>В някои случаи може да няма линейна връзка между регулиращото ниво и тази на уреда</value>
+  </data>
+</root>

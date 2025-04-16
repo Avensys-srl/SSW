@@ -1,0 +1,1566 @@
+﻿Imports System.IO
+
+Public Enum CLModelSerieId
+    Serie3
+    Serie5
+    Serie7
+    Serie8
+End Enum
+
+Public Enum CLFinStep
+    _2_1
+    _2_5
+End Enum
+
+Public Enum CLHeaderType
+
+    _1
+    _3_4
+
+End Enum
+
+Public Structure CLAccessoryWaterCoil
+    Public FinsStep As CLFinStep
+    Public Length As Double
+    Public Height As Double
+    Public NumerOfRows As Double
+    Public NumerOfCircuits As Double
+    Public HeaderType As CLHeaderType
+End Structure
+
+Public Class CLSerie
+
+    Public Id As CLModelSerieId
+    Public Name As String
+    Public SecondaryName As String
+    Public Enabled As Boolean
+
+    Public Sub New()
+
+        Me.Id = CLModelSerieId.Serie3
+        Me.Name = ""
+        Me.SecondaryName = ""
+        Me.Enabled = True
+
+    End Sub
+End Class
+
+Public Class CLModel
+
+    Public Sub New()
+
+        Me.Serie = Nothing
+        Me.Name = ""
+        Me.SecondaryName = ""
+        Me.Modrec = ""
+        Me.Lenrec = 0
+        Me.Filter_area = 0
+        Me.Motor_type = ""
+        Me.Q = Nothing
+        Me.Pa = Nothing
+        Me.W = Nothing
+        Me.Sound_Inlet = Nothing
+        Me.Sound_Outlet = Nothing
+        Me.PDFCommercialSheets = {}
+        Me.Enabled = True
+        Me.DimensionA = 0
+        Me.DimensionB = 0
+        Me.DimensionC = 0
+
+    End Sub
+
+    Public Name As String
+    Public Size As Integer
+    Public AeraulicConnection As String
+    Public SecondaryName As String
+    Public Serie As CLSerie
+    Public Enabled As Boolean
+    Public Modrec As String
+    Public Lenrec As Double
+    Public Filter_area As Double
+    Public Motor_type As String
+    Public Q() As Double
+    Public Pa() As Double
+    Public W() As Double
+
+    Public Sound_Inlet() As Double
+    Public Sound_Outlet() As Double
+
+    Public PDFCommercialSheets() As String
+    Public PDFIOM As String
+
+    Public CWC As CLAccessoryWaterCoil
+    Public HWC As CLAccessoryWaterCoil
+
+    Public DimensionA As Int32
+    Public DimensionB As Int32
+    Public DimensionC As Int32
+
+    Public Function CalculateTotalSound(sound() As Double) As Double
+
+        Dim sum As Double
+
+        For Each soundItem As Double In sound
+            sum += 10 ^ (soundItem / 10)
+        Next
+
+        Return Math.Round(10 * Math.Log10(sum), 1)
+    End Function
+
+    Public ReadOnly Property InletTotal As Double
+        Get
+            Return CalculateTotalSound(Sound_Inlet)
+        End Get
+    End Property
+
+    Public ReadOnly Property OutletTotal As Double
+        Get
+            Return CalculateTotalSound(Sound_Outlet)
+        End Get
+    End Property
+
+End Class
+
+Public Class CLLanguage
+
+    Sub New(code As String,
+        name As String)
+        m_Code = code
+        m_Name = name
+        m_Enabled = True
+    End Sub
+
+    Private m_Code As String
+    Public ReadOnly Property Code As String
+
+        Get
+            Return m_Code
+        End Get
+
+    End Property
+
+    Private m_Name As String
+    Public ReadOnly Property Name As String
+
+        Get
+            Return m_Name
+        End Get
+
+    End Property
+
+    Private m_Enabled As Boolean
+    Public Property Enabled As Boolean
+
+        Get
+            Return m_Enabled
+        End Get
+        Set(value As Boolean)
+            m_Enabled = value
+        End Set
+
+    End Property
+
+End Class
+
+Public Class CLEnvironment
+
+    Public Const LanguageCode_BG As String = "bg"
+    Public Const LanguageCode_DE As String = "de"
+    Public Const LanguageCode_EN As String = "en"
+    Public Const LanguageCode_FR As String = "fr"
+    Public Const LanguageCode_IT As String = "it"
+    Public Const LanguageCode_NL As String = "nl"
+    Public Const LanguageCode_PL As String = "pl"
+    Public Const LanguageCode_RO As String = "ro"
+    Public Const LanguageCode_SL As String = "sl"
+
+    Public Const SerieCode_3 As String = "3"
+    Public Const SerieCode_5 As String = "QUANTUM"
+    Public Const SerieCode_8 As String = "8"
+    Public Const SerieCode_7 As String = "7"
+
+    Public Const ModelCode_CLRC_13_SSC As String = "CLRC 13 SSC"
+    Public Const ModelCode_CLRC_13_OSC As String = "CLRC 13 OSC"
+    Public Const ModelCode_CLRC_23 As String = "CLRC 23"
+    Public Const ModelCode_CLRC_33 As String = "CLRC 33"
+    Public Const ModelCode_CLRC_43 As String = "CLRC 43"
+    Public Const ModelCode_CLRC_53 As String = "CLRC 53"
+    Public Const ModelCode_CLRC_73 As String = "CLRC 73"
+    Public Const ModelCode_CLRC_93 As String = "CLRC 93"
+    Public Const ModelCode_CLRC_123 As String = "CLRC 123"
+    Public Const ModelCode_CLRC_163 As String = "CLRC 163"
+    Public Const ModelCode_CLRC_223 As String = "CLRC 223"
+    Public Const ModelCode_CLRC_323 As String = "CLRC 323"
+    Public Const ModelCode_CLRC_423 As String = "CLRC 423"
+    Public Const ModelCode_CLRC_543 As String = "CLRC 543"
+
+    Public Const ModelCode_QUANTUM_25 As String = "QUANTUM 25"
+    Public Const ModelCode_QUANTUM_35 As String = "QUANTUM 35"
+    Public Const ModelCode_QUANTUM_45 As String = "QUANTUM 45"
+    Public Const ModelCode_QUANTUM_55 As String = "QUANTUM 55"
+
+    Public Const ModelCode_CLRC_28_SSC As String = "CLRC 028 SSC"
+
+    Public Const ModelCode_CLRC_047_CDR As String = "CLRC 047 CDR"
+    Public Const ModelCode_CLRC_047_CFD As String = "CLRC 047 CFD"
+    Public Const ModelCode_CLRC_047_HOC As String = "CLRC 047 HOC"
+    Public Const ModelCode_CLRC_047_TSC As String = "CLRC 047 TSC"
+    Public Const ModelCode_CLRC_077_CDR As String = "CLRC 077 CDR"
+    Public Const ModelCode_CLRC_077_CFD As String = "CLRC 077 CFD"
+    Public Const ModelCode_CLRC_077_HOC As String = "CLRC 077 HOC"
+    Public Const ModelCode_CLRC_077_TSC As String = "CLRC 077 TSC"
+    Public Const ModelCode_CLRC_127_CDR As String = "CLRC 127 CDR"
+    Public Const ModelCode_CLRC_127_CFD As String = "CLRC 127 CFD"
+    Public Const ModelCode_CLRC_127_HOC As String = "CLRC 127 HOC"
+    Public Const ModelCode_CLRC_127_TSC As String = "CLRC 127 TSC"
+
+
+    Public Class CLModelDimension
+        Public Size As Integer
+        Public AeraulicConnection As String
+        Public Orientation As String
+        Public DimensionA As Integer
+        Public DimensionB As Integer
+        Public DimensionC As Integer
+    End Class
+
+    Public Sub New()
+
+        Dim serie3 As New CLSerie With {.Id = CLModelSerieId.Serie3,
+         .Name = "3",
+         .SecondaryName = .Name}
+        Dim serie5 As New CLSerie With {.Id = CLModelSerieId.Serie5,
+           .Name = "QUANTUM",
+           .SecondaryName = .Name}
+        Dim serie8 As New CLSerie With {.Id = CLModelSerieId.Serie8,
+           .Name = "8",
+           .SecondaryName = .Name}
+        Dim serie7 As New CLSerie With {.Id = CLModelSerieId.Serie7,
+           .Name = "7",
+           .SecondaryName = .Name}
+
+        ' Languages
+        m_Languages.Add(New CLLanguage(LanguageCode_IT, "ITALIAN"))
+        m_Languages.Add(New CLLanguage(LanguageCode_DE, "DEUTSCH"))
+        m_Languages.Add(New CLLanguage(LanguageCode_EN, "ENGLISH"))
+        m_Languages.Add(New CLLanguage(LanguageCode_FR, "FRANÇAIS"))
+        m_Languages.Add(New CLLanguage(LanguageCode_NL, "DUTCH"))
+        m_Languages.Add(New CLLanguage(LanguageCode_PL, "POLISH"))
+        m_Languages.Add(New CLLanguage(LanguageCode_SL, "SLOVENIAN"))
+        m_Languages.Add(New CLLanguage(LanguageCode_BG, "BULGARIAN"))
+        m_Languages.Add(New CLLanguage(LanguageCode_RO, "ROMANIAN"))
+
+        ' Series
+        m_Series.Add(serie3)
+        m_Series.Add(serie5)
+        m_Series.Add(serie7)
+        m_Series.Add(serie8)
+
+        ' Serie 3
+        m_Models.Add(New CLModel With
+        {
+         .Serie = serie3,
+         .Name = "CLRC 13 OSC",
+         .Size = 13,
+         .AeraulicConnection = "OSC",
+         .SecondaryName = .Name,
+         .Modrec = "MODEL 3",
+         .Lenrec = 0.36,
+         .Filter_area = 0.4,
+         .Motor_type = "140x60",
+         .Q = {5, 60.0, 108.57, 123.05, 137.53, 152.0, 166.48, 180.96},
+         .Pa = {382.9, 260.7, 161.35, 131.73, 102.17, 72.65, 43.17, 13.75},
+         .W = {35.0, 43.0, 49.0, 50.5, 50.0, 50.0, 50.5, 51.5},
+         .Sound_Inlet = {44.1, 42.3, 41.7, 41.1, 33.1, 31.0, 22.5, 13.6},
+         .Sound_Outlet = {50.5, 54.2, 58.2, 57.6, 59.3, 55.4, 55.0, 51.3},
+         .PDFCommercialSheets = {"OSC_13_%LanguageCode%_AETDOCCOM01V??.pdf"},
+         .PDFIOM = "",
+         .CWC = New CLAccessoryWaterCoil With
+         {
+          .NumerOfRows = 3,
+          .Height = 150,
+          .Length = 250,
+          .FinsStep = CLFinStep._2_5,
+          .NumerOfCircuits = 2,
+          .HeaderType = CLHeaderType._3_4
+         },
+         .HWC = New CLAccessoryWaterCoil With
+         {
+          .NumerOfRows = 1,
+          .Height = 150,
+          .Length = 150,
+          .FinsStep = CLFinStep._2_1,
+          .NumerOfCircuits = 1,
+          .HeaderType = CLHeaderType._3_4
+         }
+        })
+
+
+        m_Models.Add(New CLModel With
+        {
+         .Serie = serie3,
+         .Name = "CLRC 13 SSC",
+         .Size = 13,
+         .AeraulicConnection = "SSC",
+         .SecondaryName = .Name,
+         .Modrec = "MODEL 3",
+         .Lenrec = 0.36,
+         .Filter_area = 0.4,
+         .Motor_type = "140x60",
+         .Q = {5.0, 50.0, 79.62, 115.81, 152.0, 173.72, 195.43, 209.91},
+         .Pa = {200.0, 185.0, 170.73, 151.54, 122.65, 83.46, 44.37, 15.05},
+         .W = {30.0, 35.0, 38.3, 39.2, 39.5, 40.0, 40.25, 40.5},
+         .Sound_Inlet = {44.1, 42.3, 41.7, 41.1, 33.1, 31.0, 22.5, 13.6},
+         .Sound_Outlet = {50.5, 54.2, 58.2, 57.6, 59.3, 55.4, 55.0, 51.3},
+         .PDFCommercialSheets = {"SSC_13_%LanguageCode%_AETDOCCOM01V??.pdf"},
+         .PDFIOM = "",
+         .CWC = New CLAccessoryWaterCoil With
+         {
+          .NumerOfRows = 3,
+          .Height = 150,
+          .Length = 250,
+          .FinsStep = CLFinStep._2_5,
+          .NumerOfCircuits = 2,
+        .HeaderType = CLHeaderType._3_4
+         },
+        .HWC = New CLAccessoryWaterCoil With
+        {
+         .NumerOfRows = 1,
+         .Height = 150,
+         .Length = 150,
+         .FinsStep = CLFinStep._2_1,
+         .NumerOfCircuits = 1,
+         .HeaderType = CLHeaderType._3_4
+        }
+        })
+
+        m_Models.Add(New CLModel With
+        {
+         .Serie = serie3,
+         .Name = "CLRC 23",
+         .Size = 23,
+         .AeraulicConnection = Nothing,
+         .SecondaryName = .Name,
+         .Modrec = "MODEL 2",
+         .Lenrec = 0.4,
+         .Filter_area = 0.4,
+         .Motor_type = "140x60",
+         .Q = {0.01, 14.47645895, 123.0499011, 238.8615726, 311.2438674},
+         .Pa = {315.5, 300.0, 211.7, 116.5, 21.1},
+         .W = {40.8, 43.5, 59.5, 69.5, 72.5},
+         .Sound_Inlet = {53.2, 50.2, 48.7, 47.5, 38.2, 35.8, 26.3, 16.5},
+         .Sound_Outlet = {60.3, 63.3, 67, 65.7, 67.2, 62.8, 62.3, 58.5},
+         .PDFCommercialSheets = {"???_23_%LanguageCode%_AETDOCCOM01V??.pdf"},
+         .PDFIOM = "",
+         .CWC = New CLAccessoryWaterCoil With
+         {
+          .NumerOfRows = 3,
+          .Height = 150,
+          .Length = 250,
+          .FinsStep = CLFinStep._2_5,
+          .NumerOfCircuits = 2,
+          .HeaderType = CLHeaderType._3_4
+         },
+         .HWC = New CLAccessoryWaterCoil With
+         {
+          .NumerOfRows = 1,
+          .Height = 150,
+          .Length = 150,
+          .FinsStep = CLFinStep._2_1,
+          .NumerOfCircuits = 1,
+          .HeaderType = CLHeaderType._3_4
+         }
+        })
+
+        m_Models.Add(New CLModel With
+        {
+         .Serie = serie3,
+         .Name = "CLRC 33",
+         .Size = 33,
+         .AeraulicConnection = Nothing,
+         .SecondaryName = .Name,
+         .Modrec = "MODEL 1",
+         .Lenrec = 0.4,
+         .Filter_area = 0.0,
+         .Motor_type = "160x60",
+         .Q = {173.72, 209.91, 275.05, 325.72, 369.15, 405.34},
+         .Pa = {248.66, 227.55, 178.66, 122.15, 85.61, 38.82},
+         .W = {89.5, 92.4, 95.0, 99.0, 101.0, 106.0},
+         .Sound_Inlet = {57.8, 54.1, 52.2, 50.8, 40.7, 38.2, 28.2, 18.0},
+         .Sound_Outlet = {65.2, 67.9, 71.4, 69.8, 71.2, 66.5, 66.0, 62.1},
+         .PDFCommercialSheets = {"???_33_%LanguageCode%_AETDOCCOM01V??.pdf"},
+         .PDFIOM = "",
+         .CWC = New CLAccessoryWaterCoil With
+         {
+          .NumerOfRows = 3,
+          .Height = 250,
+          .Length = 350,
+          .FinsStep = CLFinStep._2_1,
+          .NumerOfCircuits = 4,
+          .HeaderType = CLHeaderType._3_4
+         },
+         .HWC = New CLAccessoryWaterCoil With
+         {
+          .NumerOfRows = 1,
+          .Height = 250,
+          .Length = 350,
+          .FinsStep = CLFinStep._2_1,
+          .NumerOfCircuits = 2,
+          .HeaderType = CLHeaderType._3_4
+         }
+        })
+
+        m_Models.Add(New CLModel With
+        {
+         .Serie = serie3,
+         .Name = "CLRC 43",
+         .Size = 43,
+         .AeraulicConnection = Nothing,
+         .SecondaryName = .Name,
+         .Modrec = "MODEL 1",
+         .Lenrec = 0.6,
+         .Filter_area = 0.4,
+         .Motor_type = "220x45",
+         .Q = {0.01, 101.787602, 203.575204, 282.7433388, 395.8406744, 508.9380099},
+         .Pa = {434.4, 380.5, 301.9, 213.8, 117.4, 32.2},
+         .W = {155.6, 160.0, 164.0, 167.5, 172.0, 177.0},
+         .Sound_Inlet = {51.7, 57.4, 59.9, 61.2, 52.4, 47.4, 42.1, 28.9},
+         .Sound_Outlet = {57.7, 67.7, 72.7, 79.8, 75.4, 70.9, 66.6, 55.6},
+         .PDFCommercialSheets = {"???_43_%LanguageCode%_AETDOCCOM01V??.pdf"},
+         .PDFIOM = "",
+         .CWC = New CLAccessoryWaterCoil With
+         {
+          .NumerOfRows = 3,
+          .Height = 250,
+          .Length = 350,
+          .FinsStep = CLFinStep._2_1,
+          .NumerOfCircuits = 4,
+          .HeaderType = CLHeaderType._3_4
+         },
+         .HWC = New CLAccessoryWaterCoil With
+         {
+          .NumerOfRows = 1,
+          .Height = 250,
+          .Length = 350,
+          .FinsStep = CLFinStep._2_1,
+          .NumerOfCircuits = 2,
+          .HeaderType = CLHeaderType._3_4
+         }
+        })
+
+        m_Models.Add(New CLModel With
+        {
+         .Serie = serie3,
+         .Name = "CLRC 53",
+         .Size = 53,
+         .AeraulicConnection = Nothing,
+         .SecondaryName = .Name,
+         .Modrec = "MODEL 2",
+         .Lenrec = 0.8,
+         .Filter_area = 0.4,
+         .Motor_type = "220x45",
+         .Q = {0.01, 127.5846907, 203.7364129, 263.0225781, 349.4050656, 423.1505482, 491.6565078, 584.6665028},
+         .Pa = {566.5, 502.0, 445.1, 378.5, 295.0, 223.0, 158.7, 95.0},
+         .W = {161.11, 172.0, 174.0, 177.5, 178.5, 180.0, 180.5, 181.0},
+         .Sound_Inlet = {52.5, 53.4, 54.4, 48.8, 49.5, 42.3, 33.4, 20.5},
+         .Sound_Outlet = {60.6, 64.2, 69, 75, 71, 73, 70.7, 59},
+         .PDFCommercialSheets = {"???_53_%LanguageCode%_AETDOCCOM01V??.pdf"},
+         .PDFIOM = "",
+         .CWC = New CLAccessoryWaterCoil With
+         {
+          .NumerOfRows = 3,
+          .Height = 250,
+          .Length = 350,
+          .FinsStep = CLFinStep._2_1,
+          .NumerOfCircuits = 4,
+          .HeaderType = CLHeaderType._3_4
+         },
+         .HWC = New CLAccessoryWaterCoil With
+         {
+          .NumerOfRows = 1,
+          .Height = 250,
+          .Length = 350,
+          .FinsStep = CLFinStep._2_1,
+          .NumerOfCircuits = 2,
+          .HeaderType = CLHeaderType._3_4
+         }
+        })
+
+        m_Models.Add(New CLModel With
+        {
+         .Serie = serie3,
+         .Name = "CLRC 73",
+         .Size = 73,
+         .AeraulicConnection = Nothing,
+         .SecondaryName = .Name,
+         .Modrec = "MODEL 1",
+         .Lenrec = 0.65,
+         .Filter_area = 0,
+         .Motor_type = "310x70",
+         .Q = {790.0, 700.0, 598.0, 290.0, 100.0},
+         .Pa = {86.0, 168.4, 252.9, 466.6, 571.2},
+         .W = {254.0, 249.0, 243.0, 217.0, 201.0},
+         .Sound_Inlet = {41.8, 42.3, 39.2, 40.6, 39.5, 39.7, 36.4, 30.3},
+         .Sound_Outlet = {52.3, 57.1, 58.4, 57.0, 60.1, 61.9, 59.4, 55.9},
+         .PDFCommercialSheets = {"???_73_%LanguageCode%_AETDOCCOM01V??.pdf"},
+         .PDFIOM = "",
+         .CWC = New CLAccessoryWaterCoil With
+         {
+          .NumerOfRows = 3,
+          .Height = 400,
+          .Length = 400,
+          .FinsStep = CLFinStep._2_1,
+          .NumerOfCircuits = 6,
+          .HeaderType = CLHeaderType._3_4
+         },
+         .HWC = New CLAccessoryWaterCoil With
+         {
+          .NumerOfRows = 1,
+          .Height = 400,
+          .Length = 400,
+          .FinsStep = CLFinStep._2_1,
+          .NumerOfCircuits = 3,
+          .HeaderType = CLHeaderType._3_4
+         }
+        })
+
+        m_Models.Add(New CLModel With
+        {
+         .Serie = serie3,
+         .Name = "CLRC 93",
+         .Size = 93,
+         .AeraulicConnection = Nothing,
+         .SecondaryName = .Name,
+         .Modrec = "MODEL 1",
+         .Lenrec = 0.9,
+         .Filter_area = 0.4,
+         .Motor_type = "310x70",
+         .Q = {0.01, 198.0, 396.0, 594.0, 792.0, 990.0, 1044.0},
+         .Pa = {823.29, 720.79, 598.87, 452.33, 275.94, 64.51, 0.08},
+         .W = {306, 333, 360, 387, 405, 427.5, 427.5},
+         .Sound_Inlet = {42.6, 43.1, 39.8, 41.2, 40.1, 40.3, 36.8, 30.7},
+         .Sound_Outlet = {53.2, 58, 59.2, 57.7, 60.8, 62.6, 60.1, 56.6},
+         .PDFCommercialSheets = {"???_93_%LanguageCode%_AETDOCCOM01V??.pdf"},
+         .PDFIOM = "",
+         .CWC = New CLAccessoryWaterCoil With
+         {
+          .NumerOfRows = 3,
+          .Height = 400,
+          .Length = 400,
+          .FinsStep = CLFinStep._2_1,
+          .NumerOfCircuits = 6,
+          .HeaderType = CLHeaderType._3_4
+         },
+         .HWC = New CLAccessoryWaterCoil With
+         {
+          .NumerOfRows = 1,
+          .Height = 400,
+          .Length = 400,
+          .FinsStep = CLFinStep._2_1,
+          .NumerOfCircuits = 3,
+          .HeaderType = CLHeaderType._3_4
+         }
+        })
+
+        m_Models.Add(New CLModel With
+        {
+         .Serie = serie3,
+         .Name = "CLRC 123",
+         .Size = 123,
+         .AeraulicConnection = Nothing,
+         .SecondaryName = .Name,
+         .Modrec = "MODEL 1",
+         .Lenrec = 1.3,
+         .Filter_area = 0.4,
+         .Motor_type = "310x70",
+         .Q = {0.01, 400, 800.0, 1200, 1400},
+         .Pa = {748, 594.722, 414.886, 148.495, 0.34},
+         .W = {340.0, 400, 450, 475, 470},
+         .Sound_Inlet = {47.5, 47.4, 43.4, 44.6, 43.2, 43.3, 39.7, 33.3},
+         .Sound_Outlet = {58.8, 63.3, 64, 62.1, 65.2, 67.1, 64.4, 60.9},
+         .PDFCommercialSheets = {"???_123_%LanguageCode%_AETDOCCOM01V??.pdf"},
+         .PDFIOM = "",
+         .CWC = New CLAccessoryWaterCoil With
+         {
+          .NumerOfRows = 3,
+          .Height = 400,
+          .Length = 550,
+          .FinsStep = CLFinStep._2_1,
+          .NumerOfCircuits = 8,
+          .HeaderType = CLHeaderType._3_4
+         },
+         .HWC = New CLAccessoryWaterCoil With
+         {
+          .NumerOfRows = 1,
+          .Height = 400,
+          .Length = 550,
+          .FinsStep = CLFinStep._2_1,
+          .NumerOfCircuits = 4,
+          .HeaderType = CLHeaderType._3_4
+         }
+        })
+
+        m_Models.Add(New CLModel With
+        {
+         .Serie = serie3,
+         .Name = "CLRC 163",
+         .Size = 163,
+         .AeraulicConnection = Nothing,
+         .SecondaryName = .Name,
+         .Modrec = "MODEL 1",
+         .Lenrec = 2,
+         .Filter_area = 0.4,
+         .Motor_type = "310x70",
+         .Q = {0.01, 400.0, 800.0, 1200.0, 1600.0, 2000.0, 2020.0},
+         .Pa = {808.0, 672.79, 547.16, 391.11, 214.64, 7.75, 0.11},
+         .W = {350.0, 400.0, 450.0, 480.0, 500.0, 498.0, 495.0},
+         .Sound_Inlet = {53.9, 50.9, 41.8, 41.8, 42.8, 40.2, 41.3, 37.8},
+         .Sound_Outlet = {65.4, 70.7, 66.1, 67.1, 70, 69.4, 68.5, 64},
+         .PDFCommercialSheets = {"???_163_%LanguageCode%_AETDOCCOM01V??.pdf"},
+         .PDFIOM = "",
+         .CWC = New CLAccessoryWaterCoil With
+         {
+          .NumerOfRows = 3,
+          .Height = 500,
+          .Length = 550,
+          .FinsStep = CLFinStep._2_1,
+          .NumerOfCircuits = 10,
+        .HeaderType = CLHeaderType._3_4
+         },
+        .HWC = New CLAccessoryWaterCoil With
+        {
+         .NumerOfRows = 1,
+         .Height = 500,
+         .Length = 550,
+         .FinsStep = CLFinStep._2_1,
+         .NumerOfCircuits = 5,
+         .HeaderType = CLHeaderType._3_4
+        }
+        })
+
+        m_Models.Add(New CLModel With
+        {
+         .Serie = serie3,
+         .Name = "CLRC 223",
+         .Size = 223,
+         .AeraulicConnection = Nothing,
+         .SecondaryName = .Name,
+         .Modrec = "MODEL 1",
+         .Lenrec = 2.6,
+         .Filter_area = 0.4,
+         .Motor_type = "310x70",
+         .Q = {0.01, 352.784, 997.824, 1537.75, 2087.098, 2286.302, 2340.104, 2392.698, 2717.661, 2913.951},
+         .Pa = {715.0, 611.304, 531.435, 411.783, 257.652, 207.783, 181.391, 167.0, 75.374, 18.791},
+         .W = {922.5, 925.5, 927.5, 925.0, 917.5, 900.5, 889.0, 888.0, 873.25, 863.0},
+         .Sound_Inlet = {47.1, 53.7, 58.2, 60.7, 60.6, 57.7, 53.9, 49.1},
+         .Sound_Outlet = {54.9, 60.9, 70.8, 73.1, 75, 72.4, 68, 61.4},
+         .PDFCommercialSheets = {"???_223_%LanguageCode%_AETDOCCOM01V??.pdf"},
+         .PDFIOM = "",
+         .CWC = New CLAccessoryWaterCoil With
+         {
+          .NumerOfRows = 3,
+          .Height = 500,
+          .Length = 700,
+          .FinsStep = CLFinStep._2_1,
+          .NumerOfCircuits = 11,
+          .HeaderType = CLHeaderType._3_4
+         },
+         .HWC = New CLAccessoryWaterCoil With
+         {
+          .NumerOfRows = 1,
+          .Height = 500,
+          .Length = 700,
+          .FinsStep = CLFinStep._2_1,
+          .NumerOfCircuits = 6,
+          .HeaderType = CLHeaderType._3_4
+         }
+        })
+
+        m_Models.Add(New CLModel With
+        {
+         .Serie = serie3,
+         .Name = "CLRC 323",
+         .Size = 323,
+         .AeraulicConnection = Nothing,
+         .SecondaryName = .Name,
+         .Modrec = "MODEL 1",
+         .Lenrec = 3.2,
+         .Filter_area = 0.4,
+         .Motor_type = "310x70",
+         .Q = {0.01, 415.04, 1173.91, 1809.117, 2455.41, 2689.767, 2753.064, 2814.938, 3197.248, 3428.178},
+         .Pa = {715.0, 611.304, 531.435, 411.783, 257.652, 207.783, 181.391, 167.0, 75.374, 18.791},
+         .W = {922.5, 925.5, 927.5, 925.0, 917.5, 900.5, 889.0, 888.0, 873.25, 863.0},
+         .Sound_Inlet = {51.3, 57.8, 62.3, 64.6, 64.4, 61.3, 57.4, 52.5},
+         .Sound_Outlet = {59.5, 65.4, 75.4, 77.5, 79.4, 76.6, 72, 65.3},
+         .PDFCommercialSheets = {"???_323_%LanguageCode%_AETDOCCOM01V??.pdf"},
+         .PDFIOM = "",
+         .CWC = New CLAccessoryWaterCoil With
+         {
+          .NumerOfRows = 4,
+          .Height = 600,
+          .Length = 700,
+          .FinsStep = CLFinStep._2_5,
+          .NumerOfCircuits = 18,
+        .HeaderType = CLHeaderType._1
+         },
+        .HWC = New CLAccessoryWaterCoil With
+        {
+         .NumerOfRows = 1,
+         .Height = 600,
+         .Length = 700,
+         .FinsStep = CLFinStep._2_1,
+         .NumerOfCircuits = 8,
+         .HeaderType = CLHeaderType._1
+        }
+        })
+
+        m_Models.Add(New CLModel With
+        {
+         .Serie = serie3,
+         .Name = "CLRC 423",
+         .Size = 423,
+         .AeraulicConnection = Nothing,
+         .SecondaryName = .Name,
+         .Modrec = "MODEL 1",
+         .Lenrec = 4,
+         .Filter_area = 0.4,
+         .Motor_type = "310x70",
+         .Q = {0.01, 581.056, 1643.475, 2532.764, 3437.574, 3765.673, 3854.289, 3940.914, 4476.147, 4799.449},
+         .Pa = {715.0, 611.304, 531.435, 411.783, 257.652, 207.783, 181.391, 167.0, 75.374, 18.791},
+         .W = {1383.75, 1388.25, 1391.25, 1387.5, 1376.25, 1350.75, 1333.5, 1332.0, 1309.875, 1294.5},
+         .Sound_Inlet = {56.4, 62.8, 67.1, 69.3, 68.9, 65.6, 61.4, 56.5},
+         .Sound_Outlet = {65, 70.7, 80.9, 82.8, 84.6, 81.7, 76.8, 69.9},
+         .PDFCommercialSheets = {"???_423_%LanguageCode%_AETDOCCOM01V??.pdf"},
+         .PDFIOM = "",
+         .CWC = New CLAccessoryWaterCoil With
+         {
+          .NumerOfRows = 4,
+          .Height = 600,
+          .Length = 800,
+          .FinsStep = CLFinStep._2_5,
+          .NumerOfCircuits = 18,
+          .HeaderType = CLHeaderType._1
+         },
+         .HWC = New CLAccessoryWaterCoil With
+         {
+          .NumerOfRows = 1,
+          .Height = 600,
+          .Length = 800,
+          .FinsStep = CLFinStep._2_1,
+          .NumerOfCircuits = 10,
+          .HeaderType = CLHeaderType._1
+         }
+        })
+
+        m_Models.Add(New CLModel With
+        {
+         .Serie = serie3,
+         .Name = "CLRC 543",
+         .Size = 543,
+         .AeraulicConnection = Nothing,
+         .SecondaryName = .Name,
+         .Modrec = "MODEL 1",
+         .Lenrec = 4,
+         .Filter_area = 0.4,
+         .Motor_type = "310x70",
+         .Q = {0.01, 684.816, 1936.952, 2985.044, 4051.426, 4438.115, 4542.555, 4644.648, 5275.459, 5656.493},
+         .Pa = {715.0, 611.304, 531.435, 411.783, 257.652, 207.783, 181.391, 167.0, 75.374, 18.791},
+         .W = {1383.75, 1388.25, 1391.25, 1387.5, 1376.25, 1350.75, 1333.5, 1332.0, 1309.875, 1294.5},
+         .Sound_Inlet = {60.5, 66.7, 71, 72.9, 72.3, 68.8, 64.5, 59.4},
+         .Sound_Outlet = {69.5, 75, 85.4, 87.1, 88.8, 85.7, 80.6, 73.5},
+         .PDFCommercialSheets = {"???_543_%LanguageCode%_AETDOCCOM01V??.pdf"},
+         .PDFIOM = "",
+         .CWC = New CLAccessoryWaterCoil With
+         {
+          .NumerOfRows = 5,
+          .Height = 650,
+          .Length = 900,
+          .FinsStep = CLFinStep._2_5,
+          .NumerOfCircuits = 26,
+          .HeaderType = CLHeaderType._1
+         },
+         .HWC = New CLAccessoryWaterCoil With
+         {
+          .NumerOfRows = 1,
+          .Height = 700,
+          .Length = 800,
+          .FinsStep = CLFinStep._2_1,
+          .NumerOfCircuits = 10,
+          .HeaderType = CLHeaderType._1
+         }
+        })
+
+
+        ' Serie 5
+        '------------------------------------------
+
+        m_Models.Add(New CLModel With
+        {
+         .Serie = serie5,
+         .Name = "QUANTUM 25",
+         .Size = 25,
+         .AeraulicConnection = Nothing,
+         .SecondaryName = .Name,
+         .Modrec = "MODEL 1",
+         .Lenrec = 0.4,
+         .Motor_type = "140x60",
+         .Q = {63.7, 180.96, 278.67, 356.84},
+         .Pa = {210.46, 158.75, 110.89, 60.58},
+         .W = {34.0, 48.0, 60.0, 70.5},
+         .Sound_Inlet = {48.7, 49.5, 52.8, 46.7, 32.2, 20.2, 16.3, 10.4},
+         .Sound_Outlet = {54.4, 57.7, 58.2, 58.2, 53.4, 49.2, 48.3, 39.9},
+         .PDFCommercialSheets = {"QTM_25_%LanguageCode%_AETDOCCOM01V??.pdf"},
+         .PDFIOM = "",
+         .CWC = New CLAccessoryWaterCoil With
+         {
+          .NumerOfRows = 3,
+          .Height = 150,
+          .Length = 250,
+          .FinsStep = CLFinStep._2_5,
+          .NumerOfCircuits = 2,
+          .HeaderType = CLHeaderType._3_4
+         },
+         .HWC = New CLAccessoryWaterCoil With
+         {
+          .NumerOfRows = 1,
+          .Height = 150,
+          .Length = 150,
+          .FinsStep = CLFinStep._2_1,
+          .NumerOfCircuits = 1,
+          .HeaderType = CLHeaderType._3_4
+         }
+        })
+
+        m_Models.Add(New CLModel With
+        {
+         .Serie = serie5,
+         .Name = "QUANTUM 35",
+         .Size = 35,
+         .AeraulicConnection = Nothing,
+         .SecondaryName = .Name,
+         .Modrec = "MODEL 1",
+         .Lenrec = 0.4,
+         .Motor_type = "160x60",
+         .Q = {43.43, 224.39, 318.48, 434.29, 470.48},
+         .Pa = {320.22, 255.77, 211.62, 121.6, 75.35},
+         .W = {50.5, 77.5, 89.5, 109.0, 113.5},
+         .Sound_Inlet = {51.7, 52.6, 56.1, 49.5, 33.8, 20.7, 16.6, 10.2},
+         .Sound_Outlet = {57.8, 61.5, 62.0, 62.0, 56.8, 52.2, 51.2, 42.1},
+         .PDFCommercialSheets = {"QTM_35_%LanguageCode%_AETDOCCOM01V??.pdf"},
+         .PDFIOM = "",
+         .CWC = New CLAccessoryWaterCoil With
+         {
+          .NumerOfRows = 3,
+          .Height = 250,
+          .Length = 350,
+          .FinsStep = CLFinStep._2_1,
+          .NumerOfCircuits = 4,
+          .HeaderType = CLHeaderType._3_4
+         },
+         .HWC = New CLAccessoryWaterCoil With
+         {
+          .NumerOfRows = 1,
+          .Height = 250,
+          .Length = 350,
+          .FinsStep = CLFinStep._2_1,
+          .NumerOfCircuits = 2,
+          .HeaderType = CLHeaderType._3_4
+         }
+        })
+
+        m_Models.Add(New CLModel With
+        {
+         .Serie = serie5,
+         .Name = "QUANTUM 45",
+         .Size = 45,
+         .AeraulicConnection = Nothing,
+         .SecondaryName = .Name,
+         .Modrec = "MODEL 1",
+         .Lenrec = 0.4,
+         .Motor_type = "160x60",
+         .Q = {50.67, 289.53, 398.1, 477.72, 506.68},
+         .Pa = {420.29, 309.6, 218.15, 126.14, 79.4},
+         .W = {68.5, 107.5, 125.0, 130.0, 132.5},
+         .Sound_Inlet = {51.6, 52.5, 56.1, 49.4, 33.6, 20.5, 16.3, 9.8},
+         .Sound_Outlet = {57.8, 61.5, 62.0, 62.0, 56.8, 52.1, 51.1, 42.0},
+         .PDFCommercialSheets = {"QTM_45_%LanguageCode%_AETDOCCOM01V??.pdf"},
+         .PDFIOM = "",
+         .CWC = New CLAccessoryWaterCoil With
+         {
+          .NumerOfRows = 3,
+          .Height = 250,
+          .Length = 350,
+          .FinsStep = CLFinStep._2_1,
+          .NumerOfCircuits = 4,
+          .HeaderType = CLHeaderType._3_4
+         },
+         .HWC = New CLAccessoryWaterCoil With
+         {
+          .NumerOfRows = 1,
+          .Height = 250,
+          .Length = 350,
+          .FinsStep = CLFinStep._2_1,
+          .NumerOfCircuits = 2,
+          .HeaderType = CLHeaderType._3_4
+         }
+        })
+
+        m_Models.Add(New CLModel With
+        {
+         .Serie = serie5,
+         .Name = "QUANTUM 55",
+         .Size = 55,
+         .AeraulicConnection = Nothing,
+         .SecondaryName = .Name,
+         .Modrec = "MODEL 1",
+         .Lenrec = 0.4,
+         .Motor_type = "160x60",
+         .Q = {57.91, 202.67, 354.67, 448.77, 499.44, 542.87, 571.8},
+         .Pa = {580.38, 504.7, 414.41, 323.06, 268.57, 153.75, 87.4},
+         .W = {105.0, 122.5, 147.0, 152.5, 155.0, 150.5, 150.0},
+         .Sound_Inlet = {52.0, 52.9, 56.5, 49.8, 33.9, 20.7, 16.5, 10.0},
+         .Sound_Outlet = {58.2, 61.9, 62.4, 62.4, 57.2, 52.5, 51.5, 42.3},
+         .PDFCommercialSheets = {"QTM_55_%LanguageCode%_AETDOCCOM01V??.pdf"},
+         .PDFIOM = "",
+         .CWC = New CLAccessoryWaterCoil With
+         {
+          .NumerOfRows = 3,
+          .Height = 250,
+          .Length = 350,
+          .FinsStep = CLFinStep._2_1,
+          .NumerOfCircuits = 4,
+          .HeaderType = CLHeaderType._3_4
+         },
+         .HWC = New CLAccessoryWaterCoil With
+         {
+          .NumerOfRows = 1,
+          .Height = 250,
+          .Length = 350,
+          .FinsStep = CLFinStep._2_1,
+          .NumerOfCircuits = 2,
+          .HeaderType = CLHeaderType._3_4
+         }
+        })
+
+        ' Serie 8
+        '------------------------------------------
+
+        m_Models.Add(New CLModel With
+        {
+         .Serie = serie8,
+         .Name = "CLRC 028 SSC",
+         .Size = 28,
+         .AeraulicConnection = "SSC",
+         .SecondaryName = .Name,
+         .Modrec = "MODEL 2",
+         .Lenrec = 0.27,
+         .Filter_area = 0.4,
+         .Motor_type = "133x45",
+         .Q = {57.4322407, 154.6252634, 203.2217748, 251.8182861, 313.6683915},
+         .Pa = {271.0, 207.4, 162.7, 119.5, 60.2},
+         .W = {42.5, 46, 47.5, 49, 52.5},
+         .Sound_Inlet = {51.0, 57.6, 53.1, 47.5, 42.2, 32.6, 31.0, 22.8},
+         .Sound_Outlet = {57.2, 66.3, 65.4, 62.3, 62.1, 54.8, 56.7, 52.6},
+         .PDFCommercialSheets = {"???_28_%LanguageCode%_AETDOCCOM01V??.pdf"},
+         .PDFIOM = "",
+         .CWC = New CLAccessoryWaterCoil With
+         {
+          .NumerOfRows = 3,
+          .Height = 150,
+          .Length = 250,
+          .FinsStep = CLFinStep._2_5,
+          .NumerOfCircuits = 2,
+          .HeaderType = CLHeaderType._3_4
+         },
+         .HWC = New CLAccessoryWaterCoil With
+         {
+          .NumerOfRows = 1,
+          .Height = 150,
+          .Length = 150,
+          .FinsStep = CLFinStep._2_1,
+          .NumerOfCircuits = 1,
+          .HeaderType = CLHeaderType._3_4
+         }
+        })
+
+        ' Serie 7
+        '------------------------------------------
+        m_Models.Add(New CLModel With
+        {
+         .Serie = serie7,
+         .Name = "CLRC 047 CFD",
+         .Size = 47,
+         .AeraulicConnection = "CFD",
+         .SecondaryName = .Name,
+         .Modrec = "MODEL 2",
+         .Lenrec = 1,
+         .Filter_area = 0,
+         .Motor_type = "133x45",
+         .Q = {43.429, 115.811, 202.67, 325.72, 492.199},
+         .Pa = {270.2, 221.5, 184.7, 132.2, 37.7},
+         .W = {62.5, 69.0, 70.0, 72.5, 75.0},
+         .Sound_Inlet = {53.1, 59.7, 55.2, 49.6, 44.3, 34.8, 33.2, 25.0},
+         .Sound_Outlet = {59.4, 68.5, 67.5, 64.4, 64.2, 56.9, 58.8, 54.8},
+         .PDFCommercialSheets = {"CFD_47_%LanguageCode%_AETDOCCOM01V??.pdf"},
+         .PDFIOM = "CFD_47_%LanguageCode%_AETDOCIOM01V??.pdf"
+        })
+
+        m_Models.Add(New CLModel With
+        {
+         .Serie = serie7,
+         .Name = "CLRC 047 CDR",
+         .Size = 47,
+         .AeraulicConnection = "CDR",
+         .SecondaryName = .Name,
+         .Modrec = "MODEL 2",
+         .Lenrec = 1,
+         .Filter_area = 0,
+         .Motor_type = "133x45",
+         .Q = {43.429, 115.811, 202.67, 325.72, 492.199},
+         .Pa = {270.2, 221.5, 184.7, 132.2, 37.7},
+         .W = {62.5, 69.0, 70.0, 72.5, 75.0},
+         .Sound_Inlet = {53.1, 59.7, 55.2, 49.6, 44.3, 34.8, 33.2, 25.0},
+         .Sound_Outlet = {59.4, 68.5, 67.5, 64.4, 64.2, 56.9, 58.8, 54.8},
+         .PDFCommercialSheets = {"CDR_47_%LanguageCode%_AETDOCCOM01V??.pdf"},
+         .PDFIOM = "CDR_47_%LanguageCode%_AETDOCIOM01V??.pdf"
+        })
+
+        m_Models.Add(New CLModel With
+        {
+         .Serie = serie7,
+         .Name = "CLRC 047 HOC",
+         .Size = 47,
+         .AeraulicConnection = "HOC",
+         .SecondaryName = .Name,
+         .Modrec = "MODEL 2",
+         .Lenrec = 1,
+         .Filter_area = 0,
+         .Motor_type = "133x45",
+         .Q = {43.429, 108.573, 166.479, 318.482, 419.817},
+         .Pa = {210.2, 151.4, 123.2, 61.6, 30.2},
+         .W = {47.5, 50.0, 52.0, 55.0, 58.0},
+         .Sound_Inlet = {53.1, 59.7, 55.2, 49.6, 44.3, 34.8, 33.2, 25.0},
+         .Sound_Outlet = {59.4, 68.5, 67.5, 64.4, 64.2, 56.9, 58.8, 54.8},
+         .PDFCommercialSheets = {"HOC_47_%LanguageCode%_AETDOCCOM01V??.pdf"},
+         .PDFIOM = "HOC_47_%LanguageCode%_AETDOCIOM01V??.pdf"
+        })
+
+        m_Models.Add(New CLModel With
+        {
+         .Serie = serie7,
+         .Name = "CLRC 047 TSC",
+         .Size = 47,
+         .AeraulicConnection = "TSC",
+         .SecondaryName = .Name,
+         .Modrec = "MODEL 2",
+         .Lenrec = 1,
+         .Filter_area = 0,
+         .Motor_type = "133x45",
+         .Q = {43.429, 108.573, 166.479, 318.482, 419.817},
+         .Pa = {210.2, 151.4, 123.2, 61.6, 30.2},
+         .W = {47.5, 50.0, 52.0, 55.0, 58.0},
+         .Sound_Inlet = {53.1, 59.7, 55.2, 49.6, 44.3, 34.8, 33.2, 25.0},
+         .Sound_Outlet = {59.4, 68.5, 67.5, 64.4, 64.2, 56.9, 58.8, 54.8},
+         .PDFCommercialSheets = {"TSC_47_%LanguageCode%_AETDOCCOM01V??.pdf"},
+         .PDFIOM = "TSC_47_%LanguageCode%_AETDOCIOM01V??.pdf"
+        })
+
+        m_Models.Add(New CLModel With
+        {
+         .Serie = serie7,
+         .Name = "CLRC 077 CFD",
+         .Size = 77,
+         .AeraulicConnection = "CFD",
+         .SecondaryName = .Name,
+         .Modrec = "MODEL 2",
+         .Lenrec = 1.5,
+         .Filter_area = 0,
+         .Motor_type = "133x45",
+         .Q = {113.097, 248.814, 395.84, 599.415, 723.822},
+         .Pa = {430.6, 352.9, 257.4, 116.9, 34.6},
+         .W = {121.0, 137.5, 141.5, 142.5, 145.5},
+         .Sound_Inlet = {55.1, 61.6, 57.2, 51.6, 46.3, 36.7, 35.1, 26.9},
+         .Sound_Outlet = {61.3, 70.4, 69.5, 66.3, 66.1, 58.9, 60.7, 56.7},
+         .PDFCommercialSheets = {"CFD_77_%LanguageCode%_AETDOCCOM01V??.pdf"},
+         .PDFIOM = "CFD_77_%LanguageCode%_AETDOCIOM01V??.pdf"
+        })
+
+        m_Models.Add(New CLModel With
+        {
+         .Serie = serie7,
+         .Name = "CLRC 077 CDR",
+         .Size = 77,
+         .AeraulicConnection = "CDR",
+         .SecondaryName = .Name,
+         .Modrec = "MODEL 2",
+         .Lenrec = 1.5,
+         .Filter_area = 0,
+         .Motor_type = "133x45",
+         .Q = {113.097, 248.814, 395.84, 599.415, 723.822},
+         .Pa = {430.6, 352.9, 257.4, 116.9, 34.6},
+         .W = {121.0, 137.5, 141.5, 142.5, 145.5},
+         .Sound_Inlet = {55.1, 61.6, 57.2, 51.6, 46.3, 36.7, 35.1, 26.9},
+         .Sound_Outlet = {61.3, 70.4, 69.5, 66.3, 66.1, 58.9, 60.7, 56.7},
+         .PDFCommercialSheets = {"CDR_77_%LanguageCode%_AETDOCCOM01V??.pdf"},
+         .PDFIOM = "CDR_77_%LanguageCode%_AETDOCIOM01V??.pdf"
+        })
+
+        m_Models.Add(New CLModel With
+        {
+         .Serie = serie7,
+         .Name = "CLRC 077 HOC",
+         .Size = 77,
+         .AeraulicConnection = "HOC",
+         .SecondaryName = .Name,
+         .Modrec = "MODEL 2",
+         .Lenrec = 1.5,
+         .Filter_area = 0,
+         .Motor_type = "133x45",
+         .Q = {113.097, 248.814, 395.84, 599.415, 723.822},
+         .Pa = {210.6, 162.9, 127.4, 66.9, 34.6},
+         .W = {111.5, 110.0, 111.0, 112.5, 117.5},
+         .Sound_Inlet = {55.1, 61.6, 57.2, 51.6, 46.3, 36.7, 35.1, 26.9},
+         .Sound_Outlet = {61.3, 70.4, 69.5, 66.3, 66.1, 58.9, 60.7, 56.7},
+         .PDFCommercialSheets = {"HOC_77_%LanguageCode%_AETDOCCOM01V??.pdf"},
+         .PDFIOM = "HOC_77_%LanguageCode%_AETDOCIOM01V??.pdf"
+        })
+
+        m_Models.Add(New CLModel With
+        {
+         .Serie = serie7,
+         .Name = "CLRC 077 TSC",
+         .Size = 77,
+         .AeraulicConnection = "TSC",
+         .SecondaryName = .Name,
+         .Modrec = "MODEL 2",
+         .Lenrec = 1.5,
+         .Filter_area = 0,
+         .Motor_type = "133x45",
+         .Q = {113.097, 248.814, 395.84, 599.415, 723.822},
+         .Pa = {210.6, 162.9, 127.4, 66.9, 34.6},
+         .W = {111.5, 110.0, 111.0, 112.5, 117.5},
+         .Sound_Inlet = {55.1, 61.6, 57.2, 51.6, 46.3, 36.7, 35.1, 26.9},
+         .Sound_Outlet = {61.3, 70.4, 69.5, 66.3, 66.1, 58.9, 60.7, 56.7},
+         .PDFCommercialSheets = {"TSC_77_%LanguageCode%_AETDOCCOM01V??.pdf"},
+         .PDFIOM = "TSC_77_%LanguageCode%_AETDOCIOM01V??.pdf"
+        })
+
+        m_Models.Add(New CLModel With
+        {
+         .Serie = serie7,
+         .Name = "CLRC 127 CFD",
+         .Size = 127,
+         .AeraulicConnection = "CFD",
+         .SecondaryName = .Name,
+         .Modrec = "MODEL 2",
+         .Lenrec = 1.5,
+         .Filter_area = 0,
+         .Motor_type = "250x52",
+         .Q = {229.72, 494.8, 671.51, 936.58, 1290.0},
+         .Pa = {511.0, 384.7, 308.7, 196.9, 52.0},
+         .W = {285.0, 291.5, 298.5, 300.5, 302.5},
+         .Sound_Inlet = {57.0, 63.6, 59.1, 53.5, 48.2, 38.7, 37.0, 28.8},
+         .Sound_Outlet = {63.2, 72.3, 71.4, 68.3, 68.1, 60.8, 62.7, 58.6},
+         .PDFCommercialSheets = {"CFD_127_%LanguageCode%_AETDOCCOM01V??.pdf"},
+         .PDFIOM = "CFD_127_%LanguageCode%_AETDOCIOM01V??.pdf"
+        })
+
+        m_Models.Add(New CLModel With
+        {
+         .Serie = serie7,
+         .Name = "CLRC 127 CDR",
+         .Size = 127,
+         .AeraulicConnection = "CDR",
+         .SecondaryName = .Name,
+         .Modrec = "MODEL 2",
+         .Lenrec = 1.5,
+         .Filter_area = 0,
+         .Motor_type = "250x52",
+         .Q = {229.72, 494.8, 671.51, 936.58, 1290.0},
+         .Pa = {511.0, 384.7, 308.7, 196.9, 52.0},
+         .W = {285.0, 291.5, 298.5, 300.5, 302.5},
+         .Sound_Inlet = {57.0, 63.6, 59.1, 53.5, 48.2, 38.7, 37.0, 28.8},
+         .Sound_Outlet = {63.2, 72.3, 71.4, 68.3, 68.1, 60.8, 62.7, 58.6},
+         .PDFCommercialSheets = {"CDR_127_%LanguageCode%_AETDOCCOM01V??.pdf"},
+         .PDFIOM = "CDR_127_%LanguageCode%_AETDOCIOM01V??.pdf"
+        })
+
+        m_Models.Add(New CLModel With
+        {
+         .Serie = serie7,
+         .Name = "CLRC 127 HOC",
+         .Size = 127,
+         .AeraulicConnection = "HOC",
+         .SecondaryName = .Name,
+         .Modrec = "MODEL 2",
+         .Lenrec = 1.5,
+         .Filter_area = 0,
+         .Motor_type = "250x52",
+         .Q = {229.728, 494.8, 671.515, 936.587, 1201.659},
+         .Pa = {251.0, 184.7, 158.7, 96.9, 47.7},
+         .W = {159.0, 162.5, 161.0, 160.0, 165.0},
+         .Sound_Inlet = {57.0, 63.6, 59.1, 53.5, 48.2, 38.7, 37.0, 28.8},
+         .Sound_Outlet = {63.2, 72.3, 71.4, 68.3, 68.1, 60.8, 62.7, 58.6},
+         .PDFCommercialSheets = {"HOC_127_%LanguageCode%_AETDOCCOM01V??.pdf"},
+         .PDFIOM = "HOC_127_%LanguageCode%_AETDOCIOM01V??.pdf"
+        })
+
+        m_Models.Add(New CLModel With
+        {
+         .Serie = serie7,
+         .Name = "CLRC 127 TSC",
+         .Size = 127,
+         .AeraulicConnection = "TSC",
+         .SecondaryName = .Name,
+         .Modrec = "MODEL 2",
+         .Lenrec = 1.5,
+         .Filter_area = 0,
+         .Motor_type = "250x52",
+         .Q = {229.728, 494.8, 671.515, 936.587, 1201.659},
+         .Pa = {251.0, 184.7, 158.7, 96.9, 47.7},
+         .W = {159.0, 162.5, 161.0, 160.0, 165.0},
+         .Sound_Inlet = {57.0, 63.6, 59.1, 53.5, 48.2, 38.7, 37.0, 28.8},
+         .Sound_Outlet = {63.2, 72.3, 71.4, 68.3, 68.1, 60.8, 62.7, 58.6},
+         .PDFCommercialSheets = {"TSC_127_%LanguageCode%_AETDOCCOM01V??.pdf"},
+         .PDFIOM = "TSC_127_%LanguageCode%_AETDOCIOM01V??.pdf"
+        })
+
+        For Each model As CLModel In m_Models
+            If Not model.Serie Is serie5 Then
+                Continue For
+            End If
+
+            For counter As Integer = 0 To model.Sound_Inlet.Length - 1
+                model.Sound_Inlet(counter) = Math.Round(model.Sound_Inlet(counter) * 0.865, 1)
+            Next
+
+            For counter As Integer = 0 To model.Sound_Outlet.Length - 1
+                model.Sound_Outlet(counter) = Math.Round(model.Sound_Outlet(counter) * 0.865, 1)
+            Next
+
+        Next
+        ModelDimensions_Initialize()
+
+        CLSSWInfo.Current.PrepareEnvironment(Me)
+
+        ' Update Translate names
+        'For Each keyValuePair As KeyValuePair(Of String, String) In CLSSWInfo.Current.UnitTranslateNames
+        '	Dim unit As CLUnit = FindByName(keyValuePair.Key)
+        '	If Not unit Is Nothing Then
+        '		unit.SecondaryName = keyValuePair.Value
+        '	End If
+        'Next
+
+    End Sub
+
+#Region "====[ Models ]===="
+
+    Private m_Models As New List(Of CLModel)
+
+    Public ReadOnly Property Models As CLModel()
+        Get
+            Return m_Models.ToArray()
+        End Get
+    End Property
+
+    Public ReadOnly Property ModelCount As Integer
+        Get
+            Return m_Models.Count
+        End Get
+    End Property
+
+    Public Function FindModelByName(ByVal name As String) As CLModel
+        For Each unit As CLModel In m_Models
+            If unit.Name = name Then
+                Return unit
+            End If
+        Next
+        Return Nothing
+    End Function
+
+    Public Function FindModelBySecondaryName(ByVal secondaryName As String) As CLModel
+        For Each unit As CLModel In m_Models
+            If unit.SecondaryName = secondaryName Then
+                Return unit
+            End If
+        Next
+
+        Return Nothing
+    End Function
+
+    Public Function GetModel(ByVal index As Integer) As CLModel
+        Return m_Models(index)
+    End Function
+
+    Public Sub DisableAllModels()
+        For Each model As CLModel In m_Models
+            model.Enabled = False
+        Next
+    End Sub
+
+    Public Sub SetModelsEnable(serieId As String, enabled As Boolean)
+        For Each model As CLModel In m_Models
+            If model.Serie.Id <> serieId Then
+                Continue For
+            End If
+            model.Enabled = enabled
+        Next
+    End Sub
+
+#End Region
+
+#Region "====[ Series ]===="
+
+    Private m_Series As New List(Of CLSerie)
+
+    Public ReadOnly Property Series As CLSerie()
+
+        Get
+            Return m_Series.ToArray()
+        End Get
+
+    End Property
+
+    Public ReadOnly Property SerieCount As Integer
+
+        Get
+            Return m_Series.Count
+        End Get
+
+    End Property
+
+    Public Function FindSerieByName(ByVal name As String) As CLSerie
+        For Each serie As CLSerie In m_Series
+            If serie.Name = name Then
+                Return serie
+            End If
+        Next
+        Return Nothing
+    End Function
+
+    Public Function FindSerieBySecondaryName(ByVal secondaryName As String) As CLSerie
+        For Each serie As CLSerie In m_Series
+            If serie.SecondaryName = secondaryName Then
+                Return serie
+            End If
+        Next
+
+        Return Nothing
+    End Function
+
+    Public Function GetSerie(ByVal index As Integer) As CLSerie
+        Return m_Series(index)
+    End Function
+
+    Public Sub DisableAllSeries()
+        For Each serie As CLSerie In m_Series
+            serie.Enabled = False
+        Next
+    End Sub
+
+#End Region
+
+#Region "====[ Languages ]===="
+
+    Private m_Languages As New List(Of CLLanguage)
+
+    Public ReadOnly Property Languages As CLLanguage()
+
+        Get
+            Return m_Languages.ToArray()
+        End Get
+
+    End Property
+
+    Public ReadOnly Property LanguageCount As Integer
+
+        Get
+            Return m_Languages.Count
+        End Get
+
+    End Property
+
+    Public Function FindLanguage(ByVal code As String) As CLLanguage
+        For Each language As CLLanguage In m_Languages
+            If language.Code = code Then
+                Return language
+            End If
+        Next
+        Return Nothing
+    End Function
+
+    Public Function GetLanguage(ByVal index As Integer) As CLLanguage
+        Return m_Languages(index)
+    End Function
+
+    Public Sub DisableAllLanguages()
+        For Each language As CLLanguage In m_Languages
+            language.Enabled = False
+        Next
+    End Sub
+
+#End Region
+
+#Region "====[ ModelDimensions ]===="
+
+    Private m_ModelDimensions As CLModelDimension()
+
+    Public Sub ModelDimensions_Initialize()
+
+        m_ModelDimensions =
+        {
+            New CLModelDimension With {.Size = 123, .AeraulicConnection = "OSC", .Orientation = "HOR", .DimensionA = 1580, .DimensionB = 1230, .DimensionC = 480},
+            New CLModelDimension With {.Size = 123, .AeraulicConnection = "OSC", .Orientation = "VER", .DimensionA = 1580, .DimensionB = 1230, .DimensionC = 480},
+            New CLModelDimension With {.Size = 123, .AeraulicConnection = "SSC", .Orientation = "VER", .DimensionA = 1830, .DimensionB = 1130, .DimensionC = 480},
+            New CLModelDimension With {.Size = 13, .AeraulicConnection = "OSC", .Orientation = "HOR", .DimensionA = 460, .DimensionB = 1020, .DimensionC = 185},
+            New CLModelDimension With {.Size = 13, .AeraulicConnection = "OSC", .Orientation = "VER", .DimensionA = 460, .DimensionB = 1020, .DimensionC = 185},
+            New CLModelDimension With {.Size = 13, .AeraulicConnection = "SSC", .Orientation = "VER", .DimensionA = 670, .DimensionB = 500, .DimensionC = 300},
+            New CLModelDimension With {.Size = 163, .AeraulicConnection = "OSC", .Orientation = "HOR", .DimensionA = 1250, .DimensionB = 1600, .DimensionC = 650},
+            New CLModelDimension With {.Size = 163, .AeraulicConnection = "OSC", .Orientation = "VER", .DimensionA = 1250, .DimensionB = 1250, .DimensionC = 820},
+            New CLModelDimension With {.Size = 163, .AeraulicConnection = "SSC", .Orientation = "VER", .DimensionA = 1750, .DimensionB = 1350, .DimensionC = 820},
+            New CLModelDimension With {.Size = 223, .AeraulicConnection = "OSC", .Orientation = "HOR", .DimensionA = 1550, .DimensionB = 1600, .DimensionC = 650},
+            New CLModelDimension With {.Size = 223, .AeraulicConnection = "OSC", .Orientation = "VER", .DimensionA = 1550, .DimensionB = 1250, .DimensionC = 820},
+            New CLModelDimension With {.Size = 223, .AeraulicConnection = "SSC", .Orientation = "VER", .DimensionA = 2000, .DimensionB = 1350, .DimensionC = 820},
+            New CLModelDimension With {.Size = 23, .AeraulicConnection = "OSC", .Orientation = "HOR", .DimensionA = 580, .DimensionB = 1110, .DimensionC = 265},
+            New CLModelDimension With {.Size = 23, .AeraulicConnection = "OSC", .Orientation = "VER", .DimensionA = 580, .DimensionB = 1110, .DimensionC = 265},
+            New CLModelDimension With {.Size = 23, .AeraulicConnection = "SSC", .Orientation = "VER", .DimensionA = 665, .DimensionB = 815, .DimensionC = 300},
+            New CLModelDimension With {.Size = 25, .AeraulicConnection = "", .Orientation = "HOR", .DimensionA = 700, .DimensionB = 750, .DimensionC = 490},
+            New CLModelDimension With {.Size = 25, .AeraulicConnection = "", .Orientation = "VER", .DimensionA = 700, .DimensionB = 750, .DimensionC = 490},
+            New CLModelDimension With {.Size = 323, .AeraulicConnection = "OSC", .Orientation = "HOR", .DimensionA = 1850, .DimensionB = 1600, .DimensionC = 650},
+            New CLModelDimension With {.Size = 323, .AeraulicConnection = "OSC", .Orientation = "VER", .DimensionA = 1850, .DimensionB = 1250, .DimensionC = 820},
+            New CLModelDimension With {.Size = 323, .AeraulicConnection = "SSC", .Orientation = "VER", .DimensionA = 2400, .DimensionB = 1500, .DimensionC = 820},
+            New CLModelDimension With {.Size = 33, .AeraulicConnection = "OSC", .Orientation = "HOR", .DimensionA = 580, .DimensionB = 1110, .DimensionC = 265},
+            New CLModelDimension With {.Size = 33, .AeraulicConnection = "OSC", .Orientation = "VER", .DimensionA = 580, .DimensionB = 1110, .DimensionC = 265},
+            New CLModelDimension With {.Size = 33, .AeraulicConnection = "SSC", .Orientation = "VER", .DimensionA = 665, .DimensionB = 815, .DimensionC = 300},
+            New CLModelDimension With {.Size = 35, .AeraulicConnection = "", .Orientation = "HOR", .DimensionA = 700, .DimensionB = 750, .DimensionC = 490},
+            New CLModelDimension With {.Size = 35, .AeraulicConnection = "", .Orientation = "VER", .DimensionA = 700, .DimensionB = 750, .DimensionC = 490},
+            New CLModelDimension With {.Size = 423, .AeraulicConnection = "OSC", .Orientation = "HOR", .DimensionA = 2250, .DimensionB = 1600, .DimensionC = 650},
+            New CLModelDimension With {.Size = 423, .AeraulicConnection = "OSC", .Orientation = "VER", .DimensionA = 2250, .DimensionB = 1250, .DimensionC = 820},
+            New CLModelDimension With {.Size = 423, .AeraulicConnection = "SSC", .Orientation = "VER", .DimensionA = 2800, .DimensionB = 1550, .DimensionC = 820},
+            New CLModelDimension With {.Size = 43, .AeraulicConnection = "OSC", .Orientation = "HOR", .DimensionA = 670, .DimensionB = 1178, .DimensionC = 315},
+            New CLModelDimension With {.Size = 43, .AeraulicConnection = "OSC", .Orientation = "VER", .DimensionA = 670, .DimensionB = 1178, .DimensionC = 315},
+            New CLModelDimension With {.Size = 43, .AeraulicConnection = "SSC", .Orientation = "VER", .DimensionA = 590, .DimensionB = 1060, .DimensionC = 580},
+            New CLModelDimension With {.Size = 45, .AeraulicConnection = "", .Orientation = "HOR", .DimensionA = 700, .DimensionB = 750, .DimensionC = 490},
+            New CLModelDimension With {.Size = 45, .AeraulicConnection = "", .Orientation = "VER", .DimensionA = 700, .DimensionB = 750, .DimensionC = 490},
+            New CLModelDimension With {.Size = 53, .AeraulicConnection = "OSC", .Orientation = "HOR", .DimensionA = 865, .DimensionB = 1178, .DimensionC = 315},
+            New CLModelDimension With {.Size = 53, .AeraulicConnection = "OSC", .Orientation = "VER", .DimensionA = 865, .DimensionB = 1178, .DimensionC = 315},
+            New CLModelDimension With {.Size = 53, .AeraulicConnection = "SSC", .Orientation = "VER", .DimensionA = 1080, .DimensionB = 970, .DimensionC = 300},
+            New CLModelDimension With {.Size = 543, .AeraulicConnection = "SSC", .Orientation = "VER", .DimensionA = 2800, .DimensionB = 1500, .DimensionC = 1120},
+            New CLModelDimension With {.Size = 55, .AeraulicConnection = "", .Orientation = "HOR", .DimensionA = 700, .DimensionB = 750, .DimensionC = 490},
+            New CLModelDimension With {.Size = 55, .AeraulicConnection = "", .Orientation = "VER", .DimensionA = 700, .DimensionB = 750, .DimensionC = 490},
+            New CLModelDimension With {.Size = 73, .AeraulicConnection = "OSC", .Orientation = "HOR", .DimensionA = 1180, .DimensionB = 1230, .DimensionC = 480},
+            New CLModelDimension With {.Size = 73, .AeraulicConnection = "OSC", .Orientation = "VER", .DimensionA = 1180, .DimensionB = 1230, .DimensionC = 480},
+            New CLModelDimension With {.Size = 73, .AeraulicConnection = "SSC", .Orientation = "VER", .DimensionA = 1530, .DimensionB = 1130, .DimensionC = 480},
+            New CLModelDimension With {.Size = 93, .AeraulicConnection = "OSC", .Orientation = "HOR", .DimensionA = 1180, .DimensionB = 1230, .DimensionC = 480},
+            New CLModelDimension With {.Size = 93, .AeraulicConnection = "OSC", .Orientation = "VER", .DimensionA = 1180, .DimensionB = 1230, .DimensionC = 480},
+            New CLModelDimension With {.Size = 93, .AeraulicConnection = "SSC", .Orientation = "VER", .DimensionA = 1530, .DimensionB = 1130, .DimensionC = 480}
+        }
+    End Sub
+
+    Public ReadOnly Property ModelDimensions As CLModelDimension()
+        Get
+            Return m_ModelDimensions.ToArray()
+        End Get
+    End Property
+
+    Public ReadOnly Property ModelDimensionCount As Integer
+        Get
+            Return m_ModelDimensions.Count
+        End Get
+    End Property
+
+    Public Function FindModelDimensionsByModel(model As CLModel) As CLModelDimension()
+
+        If model.AeraulicConnection Is Nothing Then
+            Return m_ModelDimensions.Where(Function(x) x.Size = model.Size).ToArray()
+        End If
+
+        Return m_ModelDimensions.Where(Function(x) x.Size = model.Size AndAlso x.AeraulicConnection = model.AeraulicConnection).ToArray()
+    End Function
+
+#End Region
+
+    Private Function ArrayToString(array As Array)
+
+        Dim values As String = ""
+        For Each item As Object In array
+            values += IIf(values = "", "", ";") + item.ToString()
+        Next
+
+        Return values
+    End Function
+
+    Public Sub ExportModelsToCsv(path As String)
+
+        Using stream As StreamWriter = New StreamWriter(path)
+            Dim line As String
+
+            line = ""
+            line += "Name|"
+            line += "Size|"
+            line += "AeraulicConnection|"
+            line += "Serie|"
+            line += "Modrec|"
+            line += "Lenrec|"
+            line += "Filter_area|"
+            line += "Motor_type|"
+            line += "Q|"
+            line += "Pa|"
+            line += "W|"
+            line += "Sound_Inlet|"
+            line += "Sound_Outlet|"
+            line += "CWC_FinStep|"
+            line += "CWC.HeaderType|"
+            line += "CWC.Height|"
+            line += "CWC.Length|"
+            line += "CWC.NumerOfCircuits|"
+            line += "CWC.NumerOfRows|"
+            line += "HWC_FinStep|"
+            line += "HWC.HeaderType|"
+            line += "HWC.Height|"
+            line += "HWC.Length|"
+            line += "HWC.NumerOfCircuits|"
+            line += "HWC.NumerOfRows|"
+            line += "DimensionA|"
+            line += "DimensionB|"
+            line += "DimensionC|"
+            stream.WriteLine(line)
+
+            For Each model As CLModel In m_Models
+
+                line = ""
+                line += model.Name + "|"
+                line += model.Size.ToString() + "|"
+                line += model.AeraulicConnection + "|"
+                line += model.Serie.Name + "|"
+                line += model.Modrec + "|"
+                line += model.Lenrec.ToString() + "|"
+                line += model.Filter_area.ToString() + "|"
+                line += model.Motor_type + "|"
+                line += ArrayToString(model.Q) + "|"
+                line += ArrayToString(model.Pa) + "|"
+                line += ArrayToString(model.W) + "|"
+                line += ArrayToString(model.Sound_Inlet) + "|"
+                line += ArrayToString(model.Sound_Outlet) + "|"
+                line += model.CWC.FinsStep.ToString() + "|"
+                line += model.CWC.HeaderType.ToString() + "|"
+                line += model.CWC.Height.ToString() + "|"
+                line += model.CWC.Length.ToString() + "|"
+                line += model.CWC.NumerOfCircuits.ToString() + "|"
+                line += model.CWC.NumerOfRows.ToString() + "|"
+                line += model.HWC.FinsStep.ToString() + "|"
+                line += model.HWC.HeaderType.ToString() + "|"
+                line += model.HWC.Height.ToString() + "|"
+                line += model.HWC.Length.ToString() + "|"
+                line += model.HWC.NumerOfCircuits.ToString() + "|"
+                line += model.HWC.NumerOfRows.ToString() + "|"
+                line += model.DimensionA.ToString() + "|"
+                line += model.DimensionB.ToString() + "|"
+                line += model.DimensionC.ToString() + "|"
+
+                stream.WriteLine(line)
+            Next
+        End Using
+
+    End Sub
+End Class

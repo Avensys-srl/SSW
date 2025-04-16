@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<desktop scan="4" scanned="20161024164328" built="20161024165035" lang="cs" pane="TLogPane" col="2" row="..\..\SSWLib\Resources.en.resx.CLAbout">
+  <language id="it" autoime="0" autokeyboard="0"/>
+  <language id="fr" autoime="0" autokeyboard="0"/>
+  <language id="de" autoime="0" autokeyboard="0"/>
+  <language id="nl" autoime="0" autokeyboard="0"/>
+  <language id="sl" autoime="0" autokeyboard="0"/>
+  <language id="pl" autoime="0" autokeyboard="0"/>
+  <language id="cs" autoime="0" autokeyboard="0"/>
+  <sheet>
+    <columns>
+      <item class="TFlagsColumn" width="31"/>
+      <item class="TPathColumn" width="153"/>
+      <item class="TTranslationStatusColumn" width="94"/>
+      <item class="TOriginalColumn" width="307"/>
+      <item class="TTranslationColumn" lang="cs" width="308"/>
+    </columns>
+  </sheet>
+  <path>
+    <item>All</item>
+  </path>
+  <reports>
+    <item class="TStatisticsReport" kinds="[]"/>
+  </reports>
+</desktop>

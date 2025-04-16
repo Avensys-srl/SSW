@@ -1,0 +1,417 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="About" xml:space="preserve">
+    <value>A propos</value>
+  </data>
+  <data name="AirflowPressure" xml:space="preserve">
+    <value>Débit d'air  / Pression </value>
+  </data>
+  <data name="CommercialSheet" xml:space="preserve">
+    <value>Documentation commercilae</value>
+  </data>
+  <data name="ElectricPowerInput" xml:space="preserve">
+    <value>Puissance électrique</value>
+  </data>
+  <data name="ExternalLeakage" xml:space="preserve">
+    <value>Etanchéité externe</value>
+  </data>
+  <data name="InternalLeakage" xml:space="preserve">
+    <value>Etanchéité interne</value>
+  </data>
+  <data name="MainForm_AirFlow" xml:space="preserve">
+    <value>Débit d'air </value>
+  </data>
+  <data name="MainForm_CantSaveFile" xml:space="preserve">
+    <value>Impossible de sauvegarder le fichier</value>
+  </data>
+  <data name="MainForm_Certification" xml:space="preserve">
+    <value>Certifications</value>
+  </data>
+  <data name="MainForm_Close" xml:space="preserve">
+    <value>Fermer</value>
+  </data>
+  <data name="MainForm_Date" xml:space="preserve">
+    <value>Date </value>
+  </data>
+  <data name="MainForm_Efficiency" xml:space="preserve">
+    <value>Rendement</value>
+  </data>
+  <data name="MainForm_ElectricalPerformances" xml:space="preserve">
+    <value>Données électriques</value>
+  </data>
+  <data name="MainForm_ExhaustOutletTemperature" xml:space="preserve">
+    <value>Temp. d'air vicié</value>
+  </data>
+  <data name="MainForm_FileSaved" xml:space="preserve">
+    <value>Fichier sauvergardé</value>
+  </data>
+  <data name="MainForm_FreshInletTemperature" xml:space="preserve">
+    <value>Temp. Air neuf</value>
+  </data>
+  <data name="MainForm_GridSAP_Date" xml:space="preserve">
+    <value>Date </value>
+  </data>
+  <data name="MainForm_GridSAP_UnitSelected" xml:space="preserve">
+    <value>Appareil sélectionné</value>
+  </data>
+  <data name="MainForm_HeatExchangerPerformances" xml:space="preserve">
+    <value>Performances échangeur</value>
+  </data>
+  <data name="MainForm_HeatTransferred" xml:space="preserve">
+    <value>Puissance récupérée</value>
+  </data>
+  <data name="MainForm_InputData" xml:space="preserve">
+    <value>Données en entrée</value>
+  </data>
+  <data name="MainForm_LatentHeat" xml:space="preserve">
+    <value>Chaleur latente</value>
+  </data>
+  <data name="MainForm_MaxPressure" xml:space="preserve">
+    <value>Pression statique</value>
+  </data>
+  <data name="MainForm_Menu_About" xml:space="preserve">
+    <value>A propos</value>
+  </data>
+  <data name="MainForm_Menu_File" xml:space="preserve">
+    <value>Fichier </value>
+  </data>
+  <data name="MainForm_Menu_File_Exit" xml:space="preserve">
+    <value>Quitter</value>
+  </data>
+  <data name="MainForm_Menu_File_GenerateReport" xml:space="preserve">
+    <value>Générer rapport </value>
+  </data>
+  <data name="MainForm_Menu_File_Open" xml:space="preserve">
+    <value>Ouvrir</value>
+  </data>
+  <data name="MainForm_Menu_Option" xml:space="preserve">
+    <value>Option </value>
+  </data>
+  <data name="MainForm_Menu_Option_Language" xml:space="preserve">
+    <value>Langue</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Bulgarian" xml:space="preserve">
+    <value>Bulgare</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Deutsch" xml:space="preserve">
+    <value>Allemand</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Dutch" xml:space="preserve">
+    <value>Hollandais</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_English" xml:space="preserve">
+    <value>Anglais</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Français" xml:space="preserve">
+    <value>Français</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Italian" xml:space="preserve">
+    <value>Italien</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Polish" xml:space="preserve">
+    <value>Polonais</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Romanian" xml:space="preserve">
+    <value>Roumain</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Slovenian" xml:space="preserve">
+    <value>Slovène</value>
+  </data>
+  <data name="MainForm_Menu_Option_SelectMode" xml:space="preserve">
+    <value>Sélectionner mode </value>
+  </data>
+  <data name="MainForm_Menu_Option_SelectMode_Checking" xml:space="preserve">
+    <value>Vérification</value>
+  </data>
+  <data name="MainForm_Menu_Option_SelectMode_Design" xml:space="preserve">
+    <value>Conception </value>
+  </data>
+  <data name="MainForm_Menu_Option_Unit" xml:space="preserve">
+    <value>Appareil </value>
+  </data>
+  <data name="MainForm_Menu_Option_Unit_IP" xml:space="preserve">
+    <value>I.P.</value>
+  </data>
+  <data name="MainForm_Menu_Option_Unit_SI" xml:space="preserve">
+    <value>S.I.</value>
+  </data>
+  <data name="MainForm_PassiveHouse" xml:space="preserve">
+    <value>Passive House</value>
+  </data>
+  <data name="MainForm_PassiveHouseElectricalEfficienty" xml:space="preserve">
+    <value>Visualisation zone Passive House</value>
+  </data>
+  <data name="MainForm_Performance" xml:space="preserve">
+    <value>Mesure</value>
+  </data>
+  <data name="MainForm_Performances" xml:space="preserve">
+    <value>Mesures </value>
+  </data>
+  <data name="MainForm_PowerInput" xml:space="preserve">
+    <value>Consommation</value>
+  </data>
+  <data name="MainForm_PowerSupply" xml:space="preserve">
+    <value>Consommation</value>
+  </data>
+  <data name="MainForm_Pressure" xml:space="preserve">
+    <value>Pression </value>
+  </data>
+  <data name="MainForm_RegulationLevel" xml:space="preserve">
+    <value>Niveau de régulation </value>
+  </data>
+  <data name="MainForm_ReturnInletTemperature" xml:space="preserve">
+    <value>Temp. d'air extrait</value>
+  </data>
+  <data name="MainForm_RHExhaustOutletTemperature" xml:space="preserve">
+    <value>HR Air vicié</value>
+  </data>
+  <data name="MainForm_RHFreshInletTemperature" xml:space="preserve">
+    <value>HR Air neuf</value>
+  </data>
+  <data name="MainForm_RHReturnInletTemperature" xml:space="preserve">
+    <value>HR Air extrait</value>
+  </data>
+  <data name="MainForm_RHSupplyOutletTemperature" xml:space="preserve">
+    <value>HR Air soufflé</value>
+  </data>
+  <data name="MainForm_SEL" xml:space="preserve">
+    <value>SEL</value>
+  </data>
+  <data name="MainForm_SelectPdfFile" xml:space="preserve">
+    <value>Sélectionner un fichier pdf</value>
+  </data>
+  <data name="MainForm_SensibleHeat" xml:space="preserve">
+    <value>Chaleur sensible</value>
+  </data>
+  <data name="MainForm_SFP" xml:space="preserve">
+    <value>SFP</value>
+  </data>
+  <data name="MainForm_ShowPassiveHouseArea" xml:space="preserve">
+    <value>Démonstration zone maison passive</value>
+  </data>
+  <data name="MainForm_ShowSELArea" xml:space="preserve">
+    <value>Visualisation zone SEL</value>
+  </data>
+  <data name="MainForm_ShowSFPArea" xml:space="preserve">
+    <value>Visualisation zone SFP</value>
+  </data>
+  <data name="MainForm_SingleBranch" xml:space="preserve">
+    <value>Un seul flux</value>
+  </data>
+  <data name="MainForm_SupplyOutletTemperature" xml:space="preserve">
+    <value>Temp. d’air soufflé</value>
+  </data>
+  <data name="MainForm_TemperatureConditionsAndUmidity" xml:space="preserve">
+    <value>Humidité et conditions de température </value>
+  </data>
+  <data name="MainForm_Unit" xml:space="preserve">
+    <value>Appareil</value>
+  </data>
+  <data name="MainForm_UnitSelected" xml:space="preserve">
+    <value>Appareil sélectionné</value>
+  </data>
+  <data name="MainForm_UnitSelection" xml:space="preserve">
+    <value>Sélection appareil </value>
+  </data>
+  <data name="MainForm_UpdateSAPTable" xml:space="preserve">
+    <value>Mise à jour tableau SAP</value>
+  </data>
+  <data name="MainForm_WaterProduced" xml:space="preserve">
+    <value>Condensation</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Non </value>
+  </data>
+  <data name="NoiseLevel" xml:space="preserve">
+    <value>Niveau sonore</value>
+  </data>
+  <data name="Page" xml:space="preserve">
+    <value>Page</value>
+  </data>
+  <data name="PDF_HeatExchangerPerformances" xml:space="preserve">
+    <value>Performances échangeur</value>
+  </data>
+  <data name="PDF_RegLev" xml:space="preserve">
+    <value>Niveau de régulation </value>
+  </data>
+  <data name="PDF_TemperatureConditions" xml:space="preserve">
+    <value>Conditions de température</value>
+  </data>
+  <data name="PDF_WorkingArea" xml:space="preserve">
+    <value>Zone de fonctionnement </value>
+  </data>
+  <data name="PDF_WorkingPoint" xml:space="preserve">
+    <value>Point de fonctionnement</value>
+  </data>
+  <data name="PerformancesAccordanceWith" xml:space="preserve">
+    <value>Toutes les mesures ont été effectuées selon:</value>
+  </data>
+  <data name="PleaseWaitForm_Message" xml:space="preserve">
+    <value>Merci de patienter quelques secondes….</value>
+  </data>
+  <data name="Release" xml:space="preserve">
+    <value>Version Logiciel</value>
+  </data>
+  <data name="SaveCommercialSheet" xml:space="preserve">
+    <value>Sauvegarder fiche commerciale </value>
+  </data>
+  <data name="Legal_Notice" xml:space="preserve">
+    <value>Avis légal : Les données ont été testées à des points de fonctionnement spécifiques conformément aux normes mentionnées ci-dessus. Le cas réel peut différer du cas normatif. Les autres données ont été extrapolées. Si l'installation est particulièrement sensible aux données de bruit, veuillez nous contacter (le logiciel n'est pas certifié). Le calcul du breakout est effectué selon la norme ASHRAE Handbook - HVAC Applications, Chapitre 47.</value>
+  </data>
+  <data name="RegLev_Note" xml:space="preserve">
+    <value>Dans certains cas, il peut ne pas y avoir de relation linéaire entre le niveau de régulation et celui de l’unité.</value>
+  </data>
+  <data name="SaveIOM" xml:space="preserve">
+    <value>Sauvegarder manuel d'utilisation</value>
+  </data>
+  <data name="Series" xml:space="preserve">
+    <value>Séries / Modèles</value>
+  </data>
+  <data name="SoundInlet" xml:space="preserve">
+    <value>Aspiration</value>
+  </data>
+  <data name="SoundOutlet" xml:space="preserve">
+    <value>Refoulement</value>
+  </data>
+  <data name="SoundPower" xml:space="preserve">
+    <value>Puissance sonore</value>
+  </data>
+  <data name="Sound_Breakout" xml:space="preserve">
+    <value>Rayonné</value>
+  </data>
+  <data name="Sound_Exhaust" xml:space="preserve">
+    <value>Refoulement</value>
+  </data>
+  <data name="Sound_Fresh" xml:space="preserve">
+    <value>Air neuf</value>
+  </data>
+  <data name="Sound_Return" xml:space="preserve">
+    <value>Extraction</value>
+  </data>
+  <data name="Sound_Supply" xml:space="preserve">
+    <value>Soufflage</value>
+  </data>
+  <data name="Sound_Total" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Oui</value>
+  </data>
+</root>

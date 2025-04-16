@@ -1,0 +1,354 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="About" xml:space="preserve">
+    <value>O programu</value>
+  </data>
+  <data name="AirflowPressure" xml:space="preserve">
+    <value>Pretok zraka / Tlak</value>
+  </data>
+  <data name="CommercialSheet" xml:space="preserve">
+    <value>Komercialni izpis</value>
+  </data>
+  <data name="ElectricPowerInput" xml:space="preserve">
+    <value>Električna moč</value>
+  </data>
+  <data name="ExternalLeakage" xml:space="preserve">
+    <value>Tesnost odvod (lekaža)</value>
+  </data>
+  <data name="InternalLeakage" xml:space="preserve">
+    <value>Tesnost dovod (lekaža)</value>
+  </data>
+  <data name="MainForm_AirFlow" xml:space="preserve">
+    <value>Pretok zraka</value>
+  </data>
+  <data name="MainForm_Certification" xml:space="preserve">
+    <value>Certificiranje</value>
+  </data>
+  <data name="MainForm_Date" xml:space="preserve">
+    <value>Datum</value>
+  </data>
+  <data name="MainForm_Efficiency" xml:space="preserve">
+    <value>Učinkovitost</value>
+  </data>
+  <data name="MainForm_ElectricalPerformances" xml:space="preserve">
+    <value>Električne karakteristike</value>
+  </data>
+  <data name="MainForm_ExhaustOutletTemperature" xml:space="preserve">
+    <value>Temperatura zavrženi zrak</value>
+  </data>
+  <data name="MainForm_FileSaved" xml:space="preserve">
+    <value>Datoteka shranjena</value>
+  </data>
+  <data name="MainForm_FreshInletTemperature" xml:space="preserve">
+    <value>Temperatura sveži zrak</value>
+  </data>
+  <data name="MainForm_GridSAP_Date" xml:space="preserve">
+    <value>Datum</value>
+  </data>
+  <data name="MainForm_GridSAP_UnitSelected" xml:space="preserve">
+    <value>Enota Izbrano</value>
+  </data>
+  <data name="MainForm_HeatExchangerPerformances" xml:space="preserve">
+    <value>Karakteristike toplotnega izmenjevalca</value>
+  </data>
+  <data name="MainForm_HeatTransferred" xml:space="preserve">
+    <value>Prenos toplote</value>
+  </data>
+  <data name="MainForm_LatentHeat" xml:space="preserve">
+    <value>Latentna toplota</value>
+  </data>
+  <data name="MainForm_MaxPressure" xml:space="preserve">
+    <value>Maksimalni tlak</value>
+  </data>
+  <data name="MainForm_Menu_About" xml:space="preserve">
+    <value>O programu</value>
+  </data>
+  <data name="MainForm_Menu_File" xml:space="preserve">
+    <value>Datoteka</value>
+  </data>
+  <data name="MainForm_Menu_File_Exit" xml:space="preserve">
+    <value>Izhod</value>
+  </data>
+  <data name="MainForm_Menu_File_GenerateReport" xml:space="preserve">
+    <value>Ustvari poročilo</value>
+  </data>
+  <data name="MainForm_Menu_Option" xml:space="preserve">
+    <value>Možnosti</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language" xml:space="preserve">
+    <value>Jezik</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Bulgarian" xml:space="preserve">
+    <value>Bolgarski</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Deutsch" xml:space="preserve">
+    <value>Nemški</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Dutch" xml:space="preserve">
+    <value>Nizozemski</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_English" xml:space="preserve">
+    <value>Angleški</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Français" xml:space="preserve">
+    <value>Francoski</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Italian" xml:space="preserve">
+    <value>Italijanski</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Polish" xml:space="preserve">
+    <value>Poljski</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Romanian" xml:space="preserve">
+    <value>Rumunský</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Slovenian" xml:space="preserve">
+    <value>Slovenščina</value>
+  </data>
+  <data name="MainForm_Menu_Option_Unit" xml:space="preserve">
+    <value>Enota</value>
+  </data>
+  <data name="MainForm_Menu_Option_Unit_IP" xml:space="preserve">
+    <value>I.P.</value>
+  </data>
+  <data name="MainForm_Menu_Option_Unit_SI" xml:space="preserve">
+    <value>S.I.</value>
+  </data>
+  <data name="MainForm_PassiveHouse" xml:space="preserve">
+    <value>Pasivna hiša</value>
+  </data>
+  <data name="MainForm_PassiveHouseElectricalEfficienty" xml:space="preserve">
+    <value>Pasivna hiša - električna učinkovitost</value>
+  </data>
+  <data name="MainForm_Performance" xml:space="preserve">
+    <value>Karakteristika</value>
+  </data>
+  <data name="MainForm_PowerInput" xml:space="preserve">
+    <value>Električna moč</value>
+  </data>
+  <data name="MainForm_PowerSupply" xml:space="preserve">
+    <value>Električno Napajanje</value>
+  </data>
+  <data name="MainForm_Pressure" xml:space="preserve">
+    <value>Tlak</value>
+  </data>
+  <data name="MainForm_RegulationLevel" xml:space="preserve">
+    <value>Stopnja regulacije</value>
+  </data>
+  <data name="MainForm_ReturnInletTemperature" xml:space="preserve">
+    <value>Temperatura odvodnega zraka</value>
+  </data>
+  <data name="MainForm_RHExhaustOutletTemperature" xml:space="preserve">
+    <value>R.H.</value>
+  </data>
+  <data name="MainForm_RHFreshInletTemperature" xml:space="preserve">
+    <value>R.H.</value>
+  </data>
+  <data name="MainForm_RHReturnInletTemperature" xml:space="preserve">
+    <value>R.H.</value>
+  </data>
+  <data name="MainForm_RHSupplyOutletTemperature" xml:space="preserve">
+    <value>R.H.</value>
+  </data>
+  <data name="MainForm_SEL" xml:space="preserve">
+    <value>SEL</value>
+  </data>
+  <data name="MainForm_SensibleHeat" xml:space="preserve">
+    <value>Senzibilna toplota</value>
+  </data>
+  <data name="MainForm_SFP" xml:space="preserve">
+    <value>SFP (specifična priključna moč ventilatorja)</value>
+  </data>
+  <data name="MainForm_ShowPassiveHouseArea" xml:space="preserve">
+    <value>Prikaži območje pasivne hiše</value>
+  </data>
+  <data name="MainForm_ShowSELArea" xml:space="preserve">
+    <value>Prikaži SEL območje</value>
+  </data>
+  <data name="MainForm_ShowSFPArea" xml:space="preserve">
+    <value>Prikaži SFP območje</value>
+  </data>
+  <data name="MainForm_SingleBranch" xml:space="preserve">
+    <value>En ventilator</value>
+  </data>
+  <data name="MainForm_SupplyOutletTemperature" xml:space="preserve">
+    <value>Temperatura dovodnega zraka</value>
+  </data>
+  <data name="MainForm_TemperatureConditionsAndUmidity" xml:space="preserve">
+    <value>Temperaturnih pogojih in vlažnost</value>
+  </data>
+  <data name="MainForm_Unit" xml:space="preserve">
+    <value>Enota</value>
+  </data>
+  <data name="MainForm_UnitSelected" xml:space="preserve">
+    <value>Izbor modela enote</value>
+  </data>
+  <data name="MainForm_UnitSelection" xml:space="preserve">
+    <value>Izbran model enote</value>
+  </data>
+  <data name="MainForm_UpdateSAPTable" xml:space="preserve">
+    <value>Posodobitev tabele SAP</value>
+  </data>
+  <data name="MainForm_WaterProduced" xml:space="preserve">
+    <value>Količina kondenzata</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Ne</value>
+  </data>
+  <data name="NoiseLevel" xml:space="preserve">
+    <value>Raven hrupa</value>
+  </data>
+  <data name="Page" xml:space="preserve">
+    <value>Stran</value>
+  </data>
+  <data name="PDF_RegLev" xml:space="preserve">
+    <value>Stopnja regulacije</value>
+  </data>
+  <data name="PDF_WorkingArea" xml:space="preserve">
+    <value>Delovno območje</value>
+  </data>
+  <data name="PDF_WorkingPoint" xml:space="preserve">
+    <value>Obratovalna točka</value>
+  </data>
+  <data name="PerformancesAccordanceWith" xml:space="preserve">
+    <value>Vse karakteristike so podane v skladu z:</value>
+  </data>
+  <data name="PleaseWaitForm_Message" xml:space="preserve">
+    <value>Prosimo, počakajte le nekaj sekund ...</value>
+  </data>
+  <data name="SaveCommercialSheet" xml:space="preserve">
+    <value>Shrani komercialni izpis</value>
+  </data>
+  <data name="Series" xml:space="preserve">
+    <value>Serija</value>
+  </data>
+  <data name="SoundPower" xml:space="preserve">
+    <value>Zvočna moč</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Da</value>
+  </data>
+  <data name="Legal_Notice" xml:space="preserve">
+    <value>Pravno obvestilo: Podatki so bili preizkušeni na določenih delovnih točkah v skladu z zgoraj navedenimi standardi. Dejanski primer se lahko razlikuje od normativnega primera. Preostali podatki so bili ekstrapolirani. V primeru, da je namestitev posebej občutljiva na podatke o hrupu, nas prosimo kontaktirajte (programska oprema ni certificirana). Izračun breakout-a se izvaja v skladu s standardom ASHRAE Handbook - HVAC Applications, Poglavje 47.</value>
+  </data>
+  <data name="RegLev_Note" xml:space="preserve">
+    <value>V nekaterih primerih ne obstaja linearno razmerje med regulacijsko stopnjo in nivojem regulacije na enoti</value>
+  </data>
+</root>

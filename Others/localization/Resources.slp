@@ -1,0 +1,860 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<document created="20161024142626" version="4.0.353" date="20161024165009" scan="4" scanned="20161024164328">
+  <lang id="it"/>
+  <lang id="fr"/>
+  <lang id="de"/>
+  <lang id="nl"/>
+  <lang id="sl"/>
+  <lang id="pl"/>
+  <lang id="cs"/>
+  <source class="TNetResourceSource" name="..\..\SSWLib\Resources.en.resx" original="en" date="20161024100814" righttoleft="nrlNone">
+    <outputfile dir="..\Others\localization" localized="Resources.&lt;net&gt;.&lt;ext&gt;"/>
+    <excludeddatatypes>
+      <class>TBinaryData</class>
+      <class>TColorData</class>
+      <class>TImeData</class>
+      <class>TPictureData</class>
+      <class>TReadingOrderData</class>
+      <class>TFontData</class>
+    </excludeddatatypes>
+    <mappings>
+      <keyword name="Button" class="TVisButton"/>
+      <keyword name="CheckBox" class="TVisCheckBox"/>
+      <keyword name="ComboBox" class="TVisComboBox"/>
+      <keyword name="DataGrid" class="TVisGrid"/>
+      <keyword name="GroupBox" class="TVisGroupBox"/>
+      <keyword name="Label" class="TVisLabel"/>
+      <keyword name="ListBox" class="TVisListBox"/>
+      <keyword name="Panel" class="TVisPanel"/>
+      <keyword name="RadioButton" class="TVisRadioButton"/>
+      <keyword name="TextBox" class="TVisEdit"/>
+    </mappings>
+    <row id="CLAbout">
+      <native>About</native>
+      <lang id="it" date="20161024142931">Info</lang>
+      <lang id="fr" date="20161024144546">Information</lang>
+      <lang id="de" date="20161024144656">Info</lang>
+      <lang id="nl" date="20161024144837">Over</lang>
+      <lang id="sl" date="20161024144855">O programu</lang>
+      <lang id="pl" date="20161024144931">O programie</lang>
+      <lang id="cs" date="20161024164718">Info</lang>
+    </row>
+    <row id="CLAboutBoxForm_AirflowPressure" locked="1">@@CLAirflowPressure</row>
+    <row id="CLAboutBoxForm_ElectricPowerInput" locked="1">@@CLElectricPowerInput</row>
+    <row id="CLAboutBoxForm_ExternalLeakage" locked="1">@@CLExternalLeakage</row>
+    <row id="CLAboutBoxForm_InternalLeakage" locked="1">@@CLInternalLeakage</row>
+    <row id="CLAboutBoxForm_NoiseLevel" locked="1">@@CLNoiseLevel</row>
+    <row id="CLAboutBoxForm_Title" locked="1">@@CLPerformancesAccordanceWith</row>
+    <row id="CLAirflowPressure">
+      <native>Airflow / Pressure</native>
+      <lang id="it" date="20161024142931">Portata aria/Pressione</lang>
+      <lang id="fr" date="20161024144546">Débit d'air  / Pression </lang>
+      <lang id="de" date="20161024144656">Luftmenge/Druck</lang>
+      <lang id="nl" date="20161024144837">Luchtdebiet/druk</lang>
+      <lang id="sl" date="20161024144855">Pretok zraka / Tlak</lang>
+      <lang id="pl" date="20161024144931">Przepływ powietrza / Ciśnienie</lang>
+      <lang id="cs" date="20161024164718">Vzduchový výkon / Tlak</lang>
+    </row>
+    <row id="CLCommercialSheet">
+      <native>Commercial Sheet</native>
+      <lang id="it" date="20161024145429">Scheda Commerciale</lang>
+      <lang id="fr" date="20161024150041">Fiche Commerciale</lang>
+      <lang id="sl" date="20161024150406">Komercialni izpis</lang>
+      <lang id="pl" date="20161024144931">Karta katalogowa</lang>
+      <lang id="cs" date="20161024164718">Katalogový list</lang>
+    </row>
+    <row id="CLElectricPowerInput">
+      <native>Electric Power Input</native>
+      <lang id="it" date="20161024142931">Potenza elettrica</lang>
+      <lang id="fr" date="20161024144546">Puissance électrique</lang>
+      <lang id="de" date="20161024144656">Leistungsaufnahme</lang>
+      <lang id="nl" date="20161024144837">Vermogen</lang>
+      <lang id="sl" date="20161024144855">Električna moč</lang>
+      <lang id="pl" date="20161024144931">Pobór mocy</lang>
+      <lang id="cs" date="20161024164718">Elektrický příkon</lang>
+    </row>
+    <row id="CLExternalLeakage">
+      <native>External Leakage</native>
+      <lang id="it" date="20161024142931">Tenuta verso l'esterno</lang>
+      <lang id="fr" date="20161024144546">Etanchéité externe</lang>
+      <lang id="de" date="20161024144656">Externe Leckage</lang>
+      <lang id="nl" date="20161024144837">Externe lek</lang>
+      <lang id="sl" date="20161024144855">Tesnost odvod (lekaža)</lang>
+      <lang id="pl" date="20161024144931">Przeciek zewnętrzny</lang>
+      <lang id="cs" date="20161024164718">Vnější těsnost</lang>
+    </row>
+    <row id="CLGlic_Etil">Glic. Etil.</row>
+    <row id="CLGlic_Prop">Glic. Prop.</row>
+    <row id="CLInternalLeakage">
+      <native>Internal Leakage</native>
+      <lang id="it" date="20161024142931">Tenuta interna</lang>
+      <lang id="fr" date="20161024144546">Etanchéité interne</lang>
+      <lang id="de" date="20161024144656">Interne Leckage</lang>
+      <lang id="nl" date="20161024144837">Interne lek</lang>
+      <lang id="sl" date="20161024144855">Tesnost dovod (lekaža)</lang>
+      <lang id="pl" date="20161024144931">Przeciek wewnętrzny</lang>
+      <lang id="cs" date="20161024164718">Vnitřní těsnost</lang>
+    </row>
+    <row id="CLMainForm_AirFlow">
+      <native>Air Flow</native>
+      <lang id="it" date="20161024142931">Portata aria</lang>
+      <lang id="fr" date="20161024144546">Débit d'air </lang>
+      <lang id="de" date="20161024144656">Luftmenge</lang>
+      <lang id="nl" date="20161024144837">Lucht debiet</lang>
+      <lang id="sl" date="20161024144855">Pretok zraka</lang>
+      <lang id="pl" date="20161024144931">Przepływ powietrza</lang>
+      <lang id="cs" date="20161024164718">Vzduchový výkon</lang>
+    </row>
+    <row id="CLMainForm_Certification">
+      <native>Certification</native>
+      <lang id="it" date="20161024142931">Certificazioni</lang>
+      <lang id="fr" date="20161024144546">Certifications</lang>
+      <lang id="de" date="20161024144656">Zertifikat</lang>
+      <lang id="nl" date="20161024144837">Certificaat</lang>
+      <lang id="sl" date="20161024144855">Certificiranje</lang>
+      <lang id="pl" date="20161024144931">Certyfikacja</lang>
+      <lang id="cs" date="20161024164718">Certifikace</lang>
+    </row>
+    <row id="CLMainForm_Date">
+      <native>Date</native>
+      <lang id="it" date="20161024142931">Data</lang>
+      <lang id="fr" date="20161024144546">Date </lang>
+      <lang id="de" date="20161024144656">Datum</lang>
+      <lang id="nl" date="20161024144837">Datum</lang>
+      <lang id="sl" date="20161024144855">Datum</lang>
+      <lang id="pl" date="20161024144931">Data</lang>
+      <lang id="cs" date="20161024164718">Datum</lang>
+    </row>
+    <row id="CLMainForm_Efficiency">
+      <native>Efficiency</native>
+      <lang id="it" date="20161024142931">Rendimento</lang>
+      <lang id="fr" date="20161024144546">Efficacité</lang>
+      <lang id="de" date="20161024144656">Wirkungsgrad</lang>
+      <lang id="nl" date="20161024144837">Rendement</lang>
+      <lang id="sl" date="20161024144855">Učinkovitost</lang>
+      <lang id="pl" date="20161024144931">Sprawność</lang>
+      <lang id="cs" date="20161024164718">Účinnost</lang>
+    </row>
+    <row id="CLMainForm_ElectricalPerformances">
+      <native>Electrical Performances</native>
+      <lang id="it" date="20161024142931">Performances</lang>
+      <lang id="fr" date="20161024144546">Données électriques</lang>
+      <lang id="de" date="20161024144656">Elektrischer Wirkungsgrad</lang>
+      <lang id="nl" date="20161024144837">Elektrisch verbruik</lang>
+      <lang id="sl" date="20161024144855">Električne karakteristike</lang>
+      <lang id="pl" date="20161024144931">Sprawność wentylatora</lang>
+      <lang id="cs" date="20161024164718">Elektrický příkon</lang>
+    </row>
+    <row id="CLMainForm_ExhaustOutletTemperature">
+      <native>Exhaust Outlet Temp.</native>
+      <lang id="it" date="20161024142931">Temp. Aria espulsa</lang>
+      <lang id="fr" date="20161024144546">Temp. d'air vicié</lang>
+      <lang id="de" date="20161024144656">Fortlufttemperatur</lang>
+      <lang id="nl" date="20161024144837">Afblaas temperatuur</lang>
+      <lang id="sl" date="20161024144855">Temperatura zavrženi zrak</lang>
+      <lang id="pl" date="20161024144931">Temp. na wyrzucie</lang>
+      <lang id="cs" date="20161024164718">Tepl. odpadního vzduchu</lang>
+    </row>
+    <row id="CLMainForm_FileSaved">
+      <native>File saved</native>
+      <lang id="it" date="20161024142931">File salvato</lang>
+      <lang id="fr" date="20161024144546">Fichier sauvergardé</lang>
+      <lang id="de" date="20161024144656">Datei gespeichert</lang>
+      <lang id="nl" date="20161024144837">Bestand opgeslagen</lang>
+      <lang id="sl" date="20161024144855">Datoteka shranjena</lang>
+      <lang id="pl" date="20161024144931">Plik zapisany</lang>
+      <lang id="cs" date="20161024164718">Soubor uložen</lang>
+    </row>
+    <row id="CLMainForm_FreshInletTemperature">
+      <native>Fresh Inlet Temp.</native>
+      <lang id="it" date="20161024142931">Temp. Aria di rinnovo</lang>
+      <lang id="fr" date="20161024144546">Temp. Air neuf</lang>
+      <lang id="de" date="20161024144656">Frischlufttemperatur</lang>
+      <lang id="nl" date="20161024144837">Verse lucht temperatuur</lang>
+      <lang id="sl" date="20161024144855">Temperatura sveži zrak</lang>
+      <lang id="pl" date="20161024144931">Temp. świeżego powietrza</lang>
+      <lang id="cs" date="20161024164718">Tepl. čerstvého vzduchu</lang>
+    </row>
+    <row id="CLMainForm_GridSAP_Date">
+      <native>Date</native>
+      <lang id="it" date="20161024142931">Data</lang>
+      <lang id="fr" date="20161024144546">Date </lang>
+      <lang id="de" date="20161024144656">Datum</lang>
+      <lang id="nl" date="20161024144837">Datum</lang>
+      <lang id="sl" date="20161024144855">Datum</lang>
+      <lang id="pl" date="20161024144931">Data</lang>
+      <lang id="cs" date="20161024164718">Datum</lang>
+    </row>
+    <row id="CLMainForm_GridSAP_EnergySavingTrustBestPracticePerformanceCompliant">
+      <native>Energy Saving Trust Best Practice Performance Compliant</native>
+      <lang id="cs" date="20161024164718">Úspora energie</lang>
+    </row>
+    <row id="CLMainForm_GridSAP_EstimatedSAPTestTable">
+      <native>Estimated SAP Test Table</native>
+      <lang id="cs" date="20161024164718">Odhad SAP test. Tabulka</lang>
+    </row>
+    <row id="CLMainForm_GridSAP_ExhaustTerminalConfiguration">
+      <native>Exhaust terminal configuration</native>
+      <lang id="pl" date="20161024144931">Położenie wyrzutni</lang>
+      <lang id="cs" date="20161024164718">Nastavení výfuku</lang>
+    </row>
+    <row id="CLMainForm_GridSAP_HeatExchangeEffiency">
+      <native>Heat exchange effiency</native>
+      <lang id="pl" date="20161024144931">Sprawność odzysku ciepła</lang>
+      <lang id="cs" date="20161024164718">Účinnost rekuperace</lang>
+    </row>
+    <row id="CLMainForm_GridSAP_RegulationLevel">
+      <native>Regulation Level</native>
+      <lang id="pl" date="20161024144931">Poziom regulacji</lang>
+      <lang id="cs" date="20161024164718">Úroveň regulace</lang>
+    </row>
+    <row id="CLMainForm_GridSAP_SpecificFanPower">
+      <native>Specific fan power</native>
+      <lang id="pl" date="20161024144931">Współczynnik mocy właściwej</lang>
+      <lang id="cs" date="20161024164718">Měrný příkon ventilátoru</lang>
+    </row>
+    <row id="CLMainForm_GridSAP_TotalExhaustFlowRate">
+      <native>Total exhaust flow rate</native>
+      <lang id="pl" date="20161024144931">Strumień powietrza wyrzucanego</lang>
+      <lang id="cs" date="20161024164718">Celkový odvodní průtok</lang>
+    </row>
+    <row id="CLMainForm_GridSAP_TotalSupplyFlowRate">
+      <native>Total supply flow rate</native>
+      <lang id="pl" date="20161024144931">Strumień powietrza zewnętrznego</lang>
+      <lang id="cs" date="20161024164718">Celkový přívodní průtok</lang>
+    </row>
+    <row id="CLMainForm_GridSAP_UnitSelected">
+      <native>Unit Selected</native>
+      <lang id="it" date="20161024142931">Unità selezionata</lang>
+      <lang id="fr" date="20161024144546">Appareil sélectionné</lang>
+      <lang id="de" date="20161024144656">Ausgewähltes Gerät</lang>
+      <lang id="nl" date="20161024144837">Geselecteerde unit</lang>
+      <lang id="sl" date="20161024144855">Enota Izbrano</lang>
+      <lang id="pl" date="20161024144931">Wybrany model</lang>
+      <lang id="cs" date="20161024164718">Výběr jednotky</lang>
+    </row>
+    <row id="CLMainForm_HeatExchangerPerformances">
+      <native>Heat Exchanger Performances</native>
+      <lang id="it" date="20161024142931">Performances scambiatore</lang>
+      <lang id="fr" date="20161024144546">Performances échangeur</lang>
+      <lang id="de" date="20161024144656">Wärmetauscherleistung</lang>
+      <lang id="nl" date="20161024144837">Terugwinprestaties</lang>
+      <lang id="sl" date="20161024144855">Karakteristike toplotnega izmenjevalca</lang>
+      <lang id="pl" date="20161024144931">Parametry wymiennika ciepła</lang>
+      <lang id="cs" date="20161024164718">Výkon rekuperace</lang>
+    </row>
+    <row id="CLMainForm_HeatTransferred">
+      <native>Heat Transferred</native>
+      <lang id="it" date="20161024142931">Calore scambiato</lang>
+      <lang id="fr" date="20161024144546">Puissance récupérée</lang>
+      <lang id="de" date="20161024144656">Wärmeübertrag</lang>
+      <lang id="nl" date="20161024144837">Warmte overdracht</lang>
+      <lang id="sl" date="20161024144855">Prenos toplote</lang>
+      <lang id="pl" date="20161024144931">Ciepło przekazane</lang>
+      <lang id="cs" date="20161024164718">Přenesené teplo</lang>
+    </row>
+    <row id="CLMainForm_LatentHeat">
+      <native>Latent Heat</native>
+      <lang id="it" date="20161024142931">Calore latente</lang>
+      <lang id="fr" date="20161024144546">Chaleur latente</lang>
+      <lang id="de" date="20161024144656">Latente Wärme</lang>
+      <lang id="nl" date="20161024144837">Latente warmte</lang>
+      <lang id="sl" date="20161024144855">Latentna toplota</lang>
+      <lang id="pl" date="20161024144931">Ciepło utajone</lang>
+      <lang id="cs" date="20161024164718">Latentní teplo</lang>
+    </row>
+    <row id="CLMainForm_MaxPressure">
+      <native>Max Pressure</native>
+      <lang id="it" date="20161024142931">Pressione Max.</lang>
+      <lang id="fr" date="20161024144546">Pression statique</lang>
+      <lang id="de" date="20161024144656">Max. Druck</lang>
+      <lang id="nl" date="20161024144837">Maximum druk</lang>
+      <lang id="sl" date="20161024144855">Maksimalni tlak</lang>
+      <lang id="pl" date="20161024144931">Ciśnienie maksymalne</lang>
+      <lang id="cs" date="20161024164718">Max. tlak</lang>
+    </row>
+    <row id="CLMainForm_Menu_About">
+      <native>About</native>
+      <lang id="it" date="20161024142931">Info</lang>
+      <lang id="fr" date="20161024144546">Information</lang>
+      <lang id="de" date="20161024144656">Info</lang>
+      <lang id="nl" date="20161024144837">Over</lang>
+      <lang id="sl" date="20161024144855">O programu</lang>
+      <lang id="pl" date="20161024144931">O programie</lang>
+      <lang id="cs" date="20161024164718">Info</lang>
+    </row>
+    <row id="CLMainForm_Menu_File">
+      <native>File</native>
+      <lang id="it" date="20161024142931">File</lang>
+      <lang id="fr" date="20161024144546">Fichier </lang>
+      <lang id="de" date="20161024144656">Datei</lang>
+      <lang id="nl" date="20161024144837">Bestand</lang>
+      <lang id="sl" date="20161024144855">Datoteka</lang>
+      <lang id="pl" date="20161024144931">Plik</lang>
+      <lang id="cs" date="20161024164718">Soubor</lang>
+    </row>
+    <row id="CLMainForm_Menu_File_Exit">
+      <native>Exit</native>
+      <lang id="it" date="20161024142931">Uscita</lang>
+      <lang id="fr" date="20161024144546">Sortie</lang>
+      <lang id="de" date="20161024144656">Program beenden</lang>
+      <lang id="nl" date="20161024144837">Sluiten</lang>
+      <lang id="sl" date="20161024144855">Izhod</lang>
+      <lang id="pl" date="20161024144931">Zamknij program</lang>
+      <lang id="cs" date="20161024164718">Exit</lang>
+    </row>
+    <row id="CLMainForm_Menu_File_GenerateReport">
+      <native>Generate report</native>
+      <lang id="it" date="20161024142931">Genera report</lang>
+      <lang id="fr" date="20161024144546">Générer rapport </lang>
+      <lang id="de" date="20161024144656">Bericht erzeugen</lang>
+      <lang id="nl" date="20161024144837">Opslaan</lang>
+      <lang id="sl" date="20161024144855">Ustvari poročilo</lang>
+      <lang id="pl" date="20161024144931">Generuj raport</lang>
+      <lang id="cs" date="20161024164718">Generuj zprávu</lang>
+    </row>
+    <row id="CLMainForm_Menu_Option">
+      <native>Option</native>
+      <lang id="it" date="20161024142931">Opzioni</lang>
+      <lang id="fr" date="20161024144546">Option </lang>
+      <lang id="de" date="20161024144656">Option</lang>
+      <lang id="nl" date="20161024144837">Optie</lang>
+      <lang id="sl" date="20161024144855">Možnosti</lang>
+      <lang id="pl" date="20161024144931">Opcje</lang>
+      <lang id="cs" date="20161024164718">Možnosti</lang>
+    </row>
+    <row id="CLMainForm_Menu_Option_Language">
+      <native>Language</native>
+      <lang id="it" date="20161024142931">Lingua</lang>
+      <lang id="fr" date="20161024144546">Langue</lang>
+      <lang id="de" date="20161024144656">Sprache</lang>
+      <lang id="nl" date="20161024144837">Taal</lang>
+      <lang id="sl" date="20161024144855">Jezik</lang>
+      <lang id="pl" date="20161024144931">Język</lang>
+      <lang id="cs" date="20161024164718">Jazyk</lang>
+    </row>
+    <row id="CLMainForm_Menu_Option_Language_Deutsch">
+      <native>Deutsch</native>
+      <lang id="it" date="20161024142931">Tedesco</lang>
+      <lang id="fr" date="20161024144546">Allemand</lang>
+      <lang id="de" date="20161024144656">Deutsch</lang>
+      <lang id="nl" date="20161024144837">Duits</lang>
+      <lang id="sl" date="20161024144855">Nemški</lang>
+      <lang id="pl" date="20161024144931">Niemiecki</lang>
+      <lang id="cs" date="20161024164718">Němčina</lang>
+    </row>
+    <row id="CLMainForm_Menu_Option_Language_Dutch">
+      <native>Dutch</native>
+      <lang id="it" date="20161024142931">Olandese</lang>
+      <lang id="fr" date="20161024144546">Hollandais</lang>
+      <lang id="de" date="20161024144656">Holländisch</lang>
+      <lang id="nl" date="20161024144837">Nederlands</lang>
+      <lang id="sl" date="20161024144855">Nizozemski</lang>
+      <lang id="pl" date="20161024144931">Duński</lang>
+      <lang id="cs" date="20161024164718">Nizozemština</lang>
+    </row>
+    <row id="CLMainForm_Menu_Option_Language_English">
+      <native>English</native>
+      <lang id="it" date="20161024142931">Inglese</lang>
+      <lang id="fr" date="20161024144546">Anglais</lang>
+      <lang id="de" date="20161024144656">Englisch</lang>
+      <lang id="nl" date="20161024144837">Engels</lang>
+      <lang id="sl" date="20161024144855">Angleški</lang>
+      <lang id="pl" date="20161024144931">Angielski</lang>
+      <lang id="cs" date="20161024164718">Angličtina</lang>
+    </row>
+    <row id="CLMainForm_Menu_Option_Language_Français">
+      <native>Français</native>
+      <lang id="it" date="20161024142931">Francese</lang>
+      <lang id="fr" date="20161024144546">Français</lang>
+      <lang id="de" date="20161024144656">Französich</lang>
+      <lang id="nl" date="20161024144837">Frans</lang>
+      <lang id="sl" date="20161024144855">Francoski</lang>
+      <lang id="pl" date="20161024144931">Francuski</lang>
+      <lang id="cs" date="20161024164718">Francoužština</lang>
+    </row>
+    <row id="CLMainForm_Menu_Option_Language_Italian">
+      <native>Italian</native>
+      <lang id="it" date="20161024142931">Italiano</lang>
+      <lang id="fr" date="20161024144546">Italien</lang>
+      <lang id="de" date="20161024144656">Italienisch</lang>
+      <lang id="nl" date="20161024144837">Italiaans</lang>
+      <lang id="sl" date="20161024144855">Italijanski</lang>
+      <lang id="pl" date="20161024144931">Włoski</lang>
+      <lang id="cs" date="20161024164718">Italština</lang>
+    </row>
+    <row id="CLMainForm_Menu_Option_Language_Polish">
+      <native>Polish</native>
+      <lang id="it" date="20161024142931">Polacco</lang>
+      <lang id="fr" date="20161024144546">Polonais</lang>
+      <lang id="de" date="20161024144656">Polnisch</lang>
+      <lang id="nl" date="20161024144837">Pools</lang>
+      <lang id="sl" date="20161024144855">Poljski</lang>
+      <lang id="pl" date="20161024144931">Polski</lang>
+      <lang id="cs" date="20161024164718">Polština</lang>
+    </row>
+    <row id="CLMainForm_Menu_Option_Language_Slovenian">
+      <native>Slovenian</native>
+      <lang id="it" date="20161024142931">Sloveno</lang>
+      <lang id="fr" date="20161024144546">Slovène</lang>
+      <lang id="de" date="20161024144656">Slowenisch</lang>
+      <lang id="nl" date="20161024144837">Sloveens</lang>
+      <lang id="sl" date="20161024144855">Slovenščina</lang>
+      <lang id="pl" date="20161024144931">Słoweński</lang>
+      <lang id="cs" date="20161024164718">Slovenština</lang>
+    </row>
+    <row id="CLMainForm_Menu_Option_Unit">
+      <native>Unit</native>
+      <lang id="it" date="20161024142931">Unità di misura</lang>
+      <lang id="fr" date="20161024144546">Appareil </lang>
+      <lang id="de" date="20161024144656">Gerät</lang>
+      <lang id="nl" date="20161024144837">Unit</lang>
+      <lang id="sl" date="20161024144855">Enota</lang>
+      <lang id="pl" date="20161024144931">Jednostki</lang>
+      <lang id="cs" date="20161024164718">Jednotky</lang>
+    </row>
+    <row id="CLMainForm_Menu_Option_Unit_IP">
+      <native>I.P.</native>
+      <lang id="it" date="20161024142931">I.P.</lang>
+      <lang id="fr" date="20161024144546">I.P.</lang>
+      <lang id="de" date="20161024144656">I.P.</lang>
+      <lang id="nl" date="20161024144837">I.P.</lang>
+      <lang id="sl" date="20161024144855">I.P.</lang>
+      <lang id="pl" date="20161024144931">IP</lang>
+      <lang id="cs" date="20161024164718">I.P.</lang>
+    </row>
+    <row id="CLMainForm_Menu_Option_Unit_SI">
+      <native>S.I.</native>
+      <lang id="it" date="20161024142931">S.I.</lang>
+      <lang id="fr" date="20161024144546">S.I.</lang>
+      <lang id="de" date="20161024144656">S.I.</lang>
+      <lang id="nl" date="20161024144837">S.I.</lang>
+      <lang id="sl" date="20161024144855">S.I.</lang>
+      <lang id="pl" date="20161024144931">SI</lang>
+      <lang id="cs" date="20161024164718">S.I.</lang>
+    </row>
+    <row id="CLMainForm_PassiveHouse">
+      <native>Passive House</native>
+      <lang id="it" date="20161024142931">Passiv Haus</lang>
+      <lang id="fr" date="20161024144546">Passive House</lang>
+      <lang id="de" date="20161024144656">Passiv Haus</lang>
+      <lang id="nl" date="20161024144837">Passief Huis</lang>
+      <lang id="sl" date="20161024144855">Pasivna hiša</lang>
+      <lang id="pl" date="20161024144931">Warunek domu pasywnego</lang>
+      <lang id="cs" date="20161024164718">Passive House</lang>
+    </row>
+    <row id="CLMainForm_PassiveHouseElectricalEfficienty">
+      <native>Passive House Electr. Eff.</native>
+      <lang id="it" date="20161024142931">Rendimento elettrico passiv haus</lang>
+      <lang id="fr" date="20161024144546">Visualisation zone passive house</lang>
+      <lang id="de" date="20161024144656">Passiv Haus Elektrischer Wirkungsgrad</lang>
+      <lang id="nl" date="20161024144837">Passief Huis Elektr. Rendement</lang>
+      <lang id="sl" date="20161024144855">Pasivna hiša - električna učinkovitost</lang>
+      <lang id="pl" date="20161024144931">Sprawność silnika</lang>
+      <lang id="cs" date="20161024164718">Passive house účinnost</lang>
+    </row>
+    <row id="CLMainForm_Performance">
+      <native>Performance</native>
+      <lang id="it" date="20161024142931">Performance</lang>
+      <lang id="fr" date="20161024144546">Mesure</lang>
+      <lang id="de" date="20161024144656">Leistung</lang>
+      <lang id="nl" date="20161024144837">Prestatie</lang>
+      <lang id="sl" date="20161024144855">Karakteristika</lang>
+      <lang id="pl" date="20161024144931">Parametry obliczeniowe</lang>
+      <lang id="cs" date="20161024164718">Výkon</lang>
+    </row>
+    <row id="CLMainForm_PowerInput">
+      <native>Power Input</native>
+      <lang id="it" date="20161024142931">Assorbimento di potenza</lang>
+      <lang id="fr" date="20161024144546">Consommation</lang>
+      <lang id="de" date="20161024144656">Leistungsaufnahme</lang>
+      <lang id="nl" date="20161024144837">Voedingsaansluiting</lang>
+      <lang id="sl" date="20161024144855">Električna moč</lang>
+      <lang id="pl" date="20161024144931">Pobór mocy</lang>
+      <lang id="cs" date="20161024164718">Příkon</lang>
+    </row>
+    <row id="CLMainForm_PowerSupply">
+      <native>Power Supply</native>
+      <lang id="it" date="20161024142931">Potenza assorbita</lang>
+      <lang id="fr" date="20161024144546">Consommation</lang>
+      <lang id="de" date="20161024144656">Leistungsaufnahme</lang>
+      <lang id="nl" date="20161024144837">Voeding</lang>
+      <lang id="sl" date="20161024144855">Električno Napajanje</lang>
+      <lang id="pl" date="20161024160144" status="3">Zasilanie</lang>
+      <lang id="cs" date="20161024164718">Napájení</lang>
+    </row>
+    <row id="CLMainForm_Pressure">
+      <native>Pressure</native>
+      <lang id="it" date="20161024142931">Pressione</lang>
+      <lang id="fr" date="20161024144546">Pression </lang>
+      <lang id="de" date="20161024144656">Druck</lang>
+      <lang id="nl" date="20161024144837">Druk</lang>
+      <lang id="sl" date="20161024144855">Tlak</lang>
+      <lang id="pl" date="20161024144931">Ciśnienie</lang>
+      <lang id="cs" date="20161024164718">Tlak</lang>
+    </row>
+    <row id="CLMainForm_RegulationLevel">
+      <native>Regulation Level</native>
+      <lang id="it" date="20161024142931">Livello di regolazione</lang>
+      <lang id="fr" date="20161024144546">Niveau de régulation </lang>
+      <lang id="de" date="20161024144656">Regulierungsniveau</lang>
+      <lang id="nl" date="20161024144837">Regel niveau</lang>
+      <lang id="sl" date="20161024144855">Stopnja regulacije</lang>
+      <lang id="pl" date="20161024144931">Poziom regulacji</lang>
+      <lang id="cs" date="20161024164718">Úroveň regulace</lang>
+    </row>
+    <row id="CLMainForm_ReturnInletTemperature">
+      <native>Return Inlet Temp.</native>
+      <lang id="it" date="20161024142931">Temperatura aria di ripresa</lang>
+      <lang id="fr" date="20161024144546">Temp. d'air en reprise</lang>
+      <lang id="de" date="20161024144656">Ablufttemperatur</lang>
+      <lang id="nl" date="20161024144837">Extractie temperatuur</lang>
+      <lang id="sl" date="20161024144855">Temperatura odvodnega zraka</lang>
+      <lang id="pl" date="20161024144931">Temp. na powrocie</lang>
+      <lang id="cs" date="20161024164718">Tepl. odváděného vz.</lang>
+    </row>
+    <row id="CLMainForm_RHExhaustOutletTemperature">
+      <native>R.H.</native>
+      <lang id="it" date="20161024142931">R.H.</lang>
+      <lang id="fr" date="20161024144546">Hygro. Relat. Air vicié</lang>
+      <lang id="de" date="20161024144656">R.H.</lang>
+      <lang id="nl" date="20161024144837">R.H.</lang>
+      <lang id="sl" date="20161024144855">R.H.</lang>
+      <lang id="pl" date="20161024144931">RH</lang>
+      <lang id="cs" date="20161024164718">R.H.</lang>
+    </row>
+    <row id="CLMainForm_RHFreshInletTemperature">
+      <native>R.H.</native>
+      <lang id="it" date="20161024142931">R.H.</lang>
+      <lang id="fr" date="20161024144546">Hygro. Relat. Air neuf.</lang>
+      <lang id="de" date="20161024144656">R.H.</lang>
+      <lang id="nl" date="20161024144837">R.H.</lang>
+      <lang id="sl" date="20161024144855">R.H.</lang>
+      <lang id="pl" date="20161024144931">RH</lang>
+      <lang id="cs" date="20161024164718">R.H.</lang>
+    </row>
+    <row id="CLMainForm_RHReturnInletTemperature">
+      <native>R.H.</native>
+      <lang id="it" date="20161024142931">R.H.</lang>
+      <lang id="fr" date="20161024144546">Hygro. Relat. Air repris</lang>
+      <lang id="de" date="20161024144656">R.H.</lang>
+      <lang id="nl" date="20161024144837">R.H.</lang>
+      <lang id="sl" date="20161024144855">R.H.</lang>
+      <lang id="pl" date="20161024144931">RH</lang>
+      <lang id="cs" date="20161024164718">R.H.</lang>
+    </row>
+    <row id="CLMainForm_RHSupplyOutletTemperature">
+      <native>R.H.</native>
+      <lang id="it" date="20161024142931">R.H.</lang>
+      <lang id="fr" date="20161024144546">Hygro. Relat. Air soufflé</lang>
+      <lang id="de" date="20161024144656">R.H.</lang>
+      <lang id="nl" date="20161024144837">R.H.</lang>
+      <lang id="sl" date="20161024144855">R.H.</lang>
+      <lang id="pl" date="20161024144931">RH</lang>
+      <lang id="cs" date="20161024164718">R.H.</lang>
+    </row>
+    <row id="CLMainForm_SEL">
+      <native>SEL</native>
+      <lang id="it" date="20161024145451">SEL</lang>
+      <lang id="fr" date="20161024150107">SEL</lang>
+      <lang id="de" date="20161024150209">SEL</lang>
+      <lang id="nl" date="20161024150305">SEL</lang>
+      <lang id="sl" date="20161024150438">SEL</lang>
+      <lang id="pl" date="20161024144931">SEL gęstość energii</lang>
+      <lang id="cs" date="20161024164718">SEL</lang>
+    </row>
+    <row id="CLMainForm_SensibleHeat">
+      <native>Sensible Heat</native>
+      <lang id="it" date="20161024142931">Calore sensibile</lang>
+      <lang id="fr" date="20161024144546">Chaleur sensible</lang>
+      <lang id="de" date="20161024144656">Sensible Wärme</lang>
+      <lang id="nl" date="20161024144837">Voelbare warmte</lang>
+      <lang id="sl" date="20161024144855">Senzibilna toplota</lang>
+      <lang id="pl" date="20161024144931">Ciepło odczuwalne</lang>
+      <lang id="cs" date="20161024164718">Citelné teplo</lang>
+    </row>
+    <row id="CLMainForm_SFP">
+      <native>SFP</native>
+      <lang id="it" date="20161024142931">SFP</lang>
+      <lang id="fr" date="20161024144546">SFP</lang>
+      <lang id="de" date="20161024144656">SFP</lang>
+      <lang id="nl" date="20161024144837">SFP</lang>
+      <lang id="sl" date="20161024144855">SFP (specifična priključna moč ventilatorja)</lang>
+      <lang id="pl" date="20161024144931">SFP moc właściwa wentylatora</lang>
+      <lang id="cs" date="20161024164718">SFP</lang>
+    </row>
+    <row id="CLMainForm_ShowPassiveHouseArea">
+      <native>Show Passive House Area</native>
+      <lang id="it" date="20161024142931">Mostra area Passiv Haus</lang>
+      <lang id="fr" date="20161024144546">Démonstration zone maison passive</lang>
+      <lang id="de" date="20161024144656">Passiv Haus Bereich anzeigen</lang>
+      <lang id="nl" date="20161024144837">Tonen Passiv Haus gebied</lang>
+      <lang id="sl" date="20161024144855">Prikaži območje pasivne hiše</lang>
+      <lang id="pl" date="20161024144931">Pokaż obszar pracy domu pasywnego</lang>
+      <lang id="cs" date="20161024164718">Passive House zbrazení</lang>
+    </row>
+    <row id="CLMainForm_ShowSELArea">
+      <native>Show SEL Area</native>
+      <lang id="it" date="20161024145225">Mostra area SEL</lang>
+      <lang id="fr" date="20161024150116">Visualisation zone SEL</lang>
+      <lang id="de" date="20161024150205">SEL Bereich anzeigen</lang>
+      <lang id="nl" date="20161024150303">Tonen SEL gebied</lang>
+      <lang id="sl" date="20161024150424">Prikaži SEL območje</lang>
+      <lang id="pl" date="20161024144931">Pokaż obszar pracy, gdy SEL...</lang>
+      <lang id="cs" date="20161024164718">Zobraz SEL oblast</lang>
+    </row>
+    <row id="CLMainForm_ShowSFPArea">
+      <native>Show SFP Area</native>
+      <lang id="it" date="20161024142931">Mostra area SFP</lang>
+      <lang id="fr" date="20161024144546">Visualisation zone SFP</lang>
+      <lang id="de" date="20161024144656">SFP Bereich anzeigen</lang>
+      <lang id="nl" date="20161024144837">Tonen SFP gebied</lang>
+      <lang id="sl" date="20161024144855">Prikaži SFP območje</lang>
+      <lang id="pl" date="20161024144931">Pokaż obszar pracy, gdy SFP...</lang>
+      <lang id="cs" date="20161024164718">Zobrazení SFP </lang>
+    </row>
+    <row id="CLMainForm_SingleBranch">
+      <native>single branch</native>
+      <lang id="it" date="20161024142931">Singolo ramo</lang>
+      <lang id="fr" date="20161024144546">Un seul flux</lang>
+      <lang id="de" date="20161024144656">Leistungs je Ventilator</lang>
+      <lang id="nl" date="20161024144837">enkele ventilator</lang>
+      <lang id="sl" date="20161024144855">En ventilator</lang>
+      <lang id="pl" date="20161024144931">jeden wentylator</lang>
+      <lang id="cs" date="20161024164718">Jedna větev</lang>
+    </row>
+    <row id="CLMainForm_SupplyOutletTemperature">
+      <native>Supply Outlet Temp.</native>
+      <lang id="it" date="20161024142931">Temperatura aria immessa</lang>
+      <lang id="fr" date="20161024144546">Température d’air soufflé</lang>
+      <lang id="de" date="20161024144656">Zulufttemperatur</lang>
+      <lang id="nl" date="20161024144837">Pulsie Temperatuur</lang>
+      <lang id="sl" date="20161024144855">Temperatura dovodnega zraka</lang>
+      <lang id="pl" date="20161024144931">Temp. na nawiewie</lang>
+      <lang id="cs" date="20161024164718">Tepl. upraveného vz.</lang>
+    </row>
+    <row id="CLMainForm_TemperatureConditionsAndUmidity">
+      <native>Temperature Conditions and humidity</native>
+      <lang id="it" date="20161024142931">Condizioni Temperatura e umidità</lang>
+      <lang id="fr" date="20161024144546">Humidité et conditions de température </lang>
+      <lang id="de" date="20161024144656">Temperatur Bedingungen und Feuchtigkeit</lang>
+      <lang id="nl" date="20161024144837">Temperatuur condities en vochtigheid</lang>
+      <lang id="sl" date="20161024144855">Temperaturnih pogojih in vlažnost</lang>
+      <lang id="pl" date="20161024144931">Temperatura i wilgotność</lang>
+      <lang id="cs" date="20161024164718">Teplotní podmínky a vlhkost</lang>
+    </row>
+    <row id="CLMainForm_Unit">
+      <native>Unit</native>
+      <lang id="it" date="20161024142931">Unità</lang>
+      <lang id="fr" date="20161024144546">Appareil</lang>
+      <lang id="de" date="20161024144656">Gerät</lang>
+      <lang id="nl" date="20161024144837">Unit</lang>
+      <lang id="sl" date="20161024144855">Enota</lang>
+      <lang id="pl" date="20161024144931">Model</lang>
+      <lang id="cs" date="20161024164718">Jednotka</lang>
+    </row>
+    <row id="CLMainForm_UnitSelected">
+      <native>Unit Selected</native>
+      <lang id="it" date="20161024142931">Unità selezionata</lang>
+      <lang id="fr" date="20161024144546">Appareil sélectionné</lang>
+      <lang id="de" date="20161024144656">Ausgewähltes Gerät</lang>
+      <lang id="nl" date="20161024144837">Geselecteerde unit</lang>
+      <lang id="sl" date="20161024144855">Izbor modela enote</lang>
+      <lang id="pl" date="20161024144931">Wybrany model</lang>
+      <lang id="cs" date="20161024164718">Vybraná jednotka</lang>
+    </row>
+    <row id="CLMainForm_UnitSelection">
+      <native>Unit Selection</native>
+      <lang id="it" date="20161024142931">Selezione unità</lang>
+      <lang id="fr" date="20161024144546">Sélection appareil </lang>
+      <lang id="de" date="20161024144656">Gerätauswahl</lang>
+      <lang id="nl" date="20161024144837">Unit selectie</lang>
+      <lang id="sl" date="20161024144855">Izbran model enote</lang>
+      <lang id="pl" date="20161024144931">Wybór modelu</lang>
+      <lang id="cs" date="20161024164718">Výběr jednotky</lang>
+    </row>
+    <row id="CLMainForm_UpdateSAPTable">
+      <native>Update SAP Table</native>
+      <lang id="it" date="20161024142931">Aggiorna tabella SAP</lang>
+      <lang id="fr" date="20161024144546">Mise à jour tableau SAP</lang>
+      <lang id="de" date="20161024144656">SAP-Tabelle aktualisieren</lang>
+      <lang id="nl" date="20161024144837">SAP tabel updaten</lang>
+      <lang id="sl" date="20161024144855">Posodobitev tabele SAP</lang>
+      <lang id="pl" date="20161024144931">Aktualizacja tabeli SAP</lang>
+      <lang id="cs" date="20161024164718">Aktualizuj SAP tab.</lang>
+    </row>
+    <row id="CLMainForm_WaterProduced">
+      <native>Water produced</native>
+      <lang id="it" date="20161024142931">Acqua prodotta</lang>
+      <lang id="fr" date="20161024144546">Condensation</lang>
+      <lang id="de" date="20161024144656">Kondensiertes Wasser</lang>
+      <lang id="nl" date="20161024144837">Geproduceerd water</lang>
+      <lang id="sl" date="20161024144855">Količina kondenzata</lang>
+      <lang id="pl" date="20161024144931">Ilość kondensatu</lang>
+      <lang id="cs" date="20161024164718">Kondenzát</lang>
+    </row>
+    <row id="CLNo">
+      <native>No</native>
+      <lang id="it" date="20161024142931">No</lang>
+      <lang id="fr" date="20161024144546">Non </lang>
+      <lang id="de" date="20161024144656">Nein</lang>
+      <lang id="nl" date="20161024144837">Neen</lang>
+      <lang id="sl" date="20161024144855">Ne</lang>
+      <lang id="pl" date="20161024144931">Nie</lang>
+      <lang id="cs" date="20161024164718">Ne</lang>
+    </row>
+    <row id="CLNoiseLevel">
+      <native>Noise Level</native>
+      <lang id="it" date="20161024142931">Livello sonoro</lang>
+      <lang id="fr" date="20161024144546">Niveau sonore</lang>
+      <lang id="de" date="20161024144656">Schallleistung</lang>
+      <lang id="nl" date="20161024144837">Geluidsniveau</lang>
+      <lang id="sl" date="20161024144855">Raven hrupa</lang>
+      <lang id="pl" date="20161024144931">Poziom hałasu</lang>
+      <lang id="cs" date="20161024164718">Hladina hluku</lang>
+    </row>
+    <row id="CLPage">
+      <native>Page</native>
+      <lang id="it" date="20161024142931">Pagina</lang>
+      <lang id="fr" date="20161024144546">Page</lang>
+      <lang id="de" date="20161024144656">Seite</lang>
+      <lang id="nl" date="20161024144837">Pagina</lang>
+      <lang id="sl" date="20161024144855">Stran</lang>
+      <lang id="pl" date="20161024144931">Strona</lang>
+      <lang id="cs" date="20161024164718">Str.</lang>
+    </row>
+    <row id="CLPDF_RegLev">
+      <native>Reg. Lev.</native>
+      <lang id="it" date="20161024142931">Livello di regolazione</lang>
+      <lang id="fr" date="20161024144546">Niveau de régulation </lang>
+      <lang id="de" date="20161024144656">Regulierungsniveau</lang>
+      <lang id="nl" date="20161024144837">Regeling niveau</lang>
+      <lang id="sl" date="20161024144855">Stopnja regulacije</lang>
+      <lang id="pl" date="20161024144931">Poziom regulacji</lang>
+      <lang id="cs" date="20161024164718">Úroveň regulace</lang>
+    </row>
+    <row id="CLPDF_WorkingArea">
+      <native>Working Area</native>
+      <lang id="it" date="20161024142931">Area di lavoro</lang>
+      <lang id="fr" date="20161024144546">Zone de travail </lang>
+      <lang id="de" date="20161024144656">Arbeitsbereich</lang>
+      <lang id="nl" date="20161024144837">Werkgebied</lang>
+      <lang id="sl" date="20161024144855">Delovno območje</lang>
+      <lang id="pl" date="20161024144931">Obszar pracy</lang>
+      <lang id="cs" date="20161024164718">Pracovní oblast</lang>
+    </row>
+    <row id="CLPDF_WorkingPoint">
+      <native>Working Point</native>
+      <lang id="it" date="20161024142931">Punto di lavoro</lang>
+      <lang id="fr" date="20161024144546">Point de fonctionnement</lang>
+      <lang id="de" date="20161024144656">Arbeitspunkt</lang>
+      <lang id="nl" date="20161024144837">Werk punt</lang>
+      <lang id="sl" date="20161024144855">Obratovalna točka</lang>
+      <lang id="pl" date="20161024144931">Punkt pracy</lang>
+      <lang id="cs" date="20161024164718">Pracovní bod</lang>
+    </row>
+    <row id="CLPerformancesAccordanceWith">
+      <native>All performances has been carried out in accordance with:</native>
+      <lang id="it" date="20161024142931">Tutte le misure sono effettuate secondo:</lang>
+      <lang id="fr" date="20161024144546">Toutes les mesures ont été effectuées selon =</lang>
+      <lang id="de" date="20161024144656">Prüfung entsprechend folgender Normen:</lang>
+      <lang id="nl" date="20161024144837">Alle meetingen werden uitgevoerd volgens:</lang>
+      <lang id="sl" date="20161024144855">Vse karakteristike so podane v skladu z:</lang>
+      <lang id="pl" date="20161024144931">Wszystkie wskaźniki podane zgodnie z:</lang>
+      <lang id="cs" date="20161024164718">Všechna měření byla provedena v souladu s:</lang>
+    </row>
+    <row id="CLPleaseWaitForm_Message">
+      <native>Please wait just few seconds...</native>
+      <lang id="it" date="20161024142931">Attendere qualche secondo ...</lang>
+      <lang id="fr" date="20161024144546">Merci de patienter quelques secondes….</lang>
+      <lang id="de" date="20161024144656">Nur wenige Sekunden Geduld</lang>
+      <lang id="nl" date="20161024144837">Even geduld aub</lang>
+      <lang id="sl" date="20161024144855">Prosimo, počakajte le nekaj sekund ...</lang>
+      <lang id="pl" date="20161024144931">Proszę poczekać kilka sekund...</lang>
+      <lang id="cs" date="20161024164718">Prosím, čekejte…</lang>
+    </row>
+    <row id="CLRelease">
+      <native>Software Release</native>
+      <lang id="it" date="20161024145548">Software Release</lang>
+      <lang id="pl" date="20161024144931">Wersja programu</lang>
+      <lang id="cs" date="20161024164718">Verze softwaru</lang>
+    </row>
+    <row id="CLSaveCommercialSheet">
+      <native>Save commercial sheet</native>
+      <lang id="it" date="20161024142931">Salva scheda commerciale</lang>
+      <lang id="fr" date="20161024144546">Sauvegarder fiche commerciale </lang>
+      <lang id="de" date="20161024144656">Geschäftsblatt speichern</lang>
+      <lang id="sl" date="20161024144855">Shrani komercialni izpis</lang>
+      <lang id="pl" date="20161024144931">Zapisz kartę katalogową</lang>
+      <lang id="cs" date="20161024164718">Ulož katalogový list</lang>
+    </row>
+    <row id="CLSeries">
+      <native>Series</native>
+      <lang id="it" date="20161024142931">Serie</lang>
+      <lang id="fr" date="20161024144546">Séries / Modèles</lang>
+      <lang id="de" date="20161024144656">Serien</lang>
+      <lang id="sl" date="20161024144855">Serija</lang>
+      <lang id="pl" date="20161024144931">Seria</lang>
+      <lang id="cs" date="20161024164718">Série</lang>
+    </row>
+    <row id="CLSoundPower">
+      <native>Sound Power</native>
+      <lang id="it" date="20161024142931">Potenza sonora</lang>
+      <lang id="fr" date="20161024144546">Niveau de puissance sonore</lang>
+      <lang id="de" date="20161024144656">Schallleistung</lang>
+      <lang id="sl" date="20161024144855">Zvočna moč</lang>
+      <lang id="pl" date="20161024144931">Moc akustyczna</lang>
+      <lang id="cs" date="20161024164718">Akustický výkon</lang>
+    </row>
+    <row id="CLSound_Breakout">
+      <native>Breakout</native>
+      <lang id="it" date="20161024145451">Breakout</lang>
+      <lang id="pl" date="20161024144931">Do otoczenia</lang>
+      <lang id="cs" date="20161024164718"> </lang>
+    </row>
+    <row id="CLSound_Exhaust">
+      <native>Exhaust</native>
+      <lang id="it" date="20161024145451">Exhaust</lang>
+      <lang id="pl" date="20161024144931">Wyrzut</lang>
+      <lang id="cs" date="20161024164718">Výfuk</lang>
+    </row>
+    <row id="CLSound_Fresh">
+      <native>Fresh</native>
+      <lang id="it" date="20161024145451">Fresh</lang>
+      <lang id="pl" date="20161024144931">Czerpnia</lang>
+      <lang id="cs" date="20161024164718">Čerstvý</lang>
+    </row>
+    <row id="CLSound_Return">
+      <native>Return</native>
+      <lang id="it" date="20161024145451">Return</lang>
+      <lang id="pl" date="20161024144931">Wywiew</lang>
+      <lang id="cs" date="20161024164718">Zpět</lang>
+    </row>
+    <row id="CLSound_Supply">
+      <native>Supply</native>
+      <lang id="it" date="20161024145459">Supply</lang>
+      <lang id="pl" date="20161024144931">Nawiew</lang>
+      <lang id="cs" date="20161024164718">Přívod</lang>
+    </row>
+    <row id="CLSound_Total">
+      <native>Total</native>
+      <lang id="it" date="20161024145454">Totale</lang>
+      <lang id="pl" date="20161024160244" status="3">Hałas liniowy [dB]</lang>
+      <lang id="cs" date="20161024164718">Celkem</lang>
+    </row>
+    <row id="CLWater">
+      <native>Water</native>
+      <lang id="it" date="20161024145539">Acqua</lang>
+    </row>
+    <row id="CLYes">
+      <native>Yes</native>
+      <lang id="it" date="20161024142931">Si</lang>
+      <lang id="fr" date="20161024144546">Oui </lang>
+      <lang id="de" date="20161024144656">Ja</lang>
+      <lang id="nl" date="20161024144837">Ja</lang>
+      <lang id="sl" date="20161024144855">Da</lang>
+      <lang id="pl" date="20161024144931">Tak</lang>
+      <lang id="cs" date="20161024164718">Ano</lang>
+    </row>
+  </source>
+</document>

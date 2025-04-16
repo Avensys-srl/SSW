@@ -1,0 +1,597 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="About" xml:space="preserve">
+    <value>Om</value>
+  </data>
+  <data name="AboutBoxForm_AirflowPressure" xml:space="preserve">
+    <value>@@AirflowPressure</value>
+  </data>
+  <data name="AboutBoxForm_ElectricPowerInput" xml:space="preserve">
+    <value>@@ElectricPowerInput</value>
+  </data>
+  <data name="AboutBoxForm_ExternalLeakage" xml:space="preserve">
+    <value>@@ExternalLeakage</value>
+  </data>
+  <data name="AboutBoxForm_InternalLeakage" xml:space="preserve">
+    <value>@@InternalLeakage</value>
+  </data>
+  <data name="AboutBoxForm_NoiseLevel" xml:space="preserve">
+    <value>@@NoiseLevel</value>
+  </data>
+  <data name="AboutBoxForm_Title" xml:space="preserve">
+    <value>@@PerformancesAccordanceWith</value>
+  </data>
+  <data name="AirflowPressure" xml:space="preserve">
+    <value>Luftstrøm/tryk</value>
+  </data>
+  <data name="CO2Level" xml:space="preserve">
+    <value>CO2 niveau</value>
+  </data>
+  <data name="CO2Level_AddToReport" xml:space="preserve">
+    <value>Tilføj til rapport</value>
+  </data>
+  <data name="CO2Level_Parameters" xml:space="preserve">
+    <value>Parametre</value>
+  </data>
+  <data name="CO2Level_Parameters_Af_area" xml:space="preserve">
+    <value>Luftstrøm pr. område</value>
+  </data>
+  <data name="CO2Level_Parameters_Af_demand" xml:space="preserve">
+    <value>Efterspurgt luftstrøm</value>
+  </data>
+  <data name="CO2Level_Parameters_Af_person" xml:space="preserve">
+    <value>Luftstrøm per person</value>
+  </data>
+  <data name="CO2Level_Parameters_Af_set" xml:space="preserve">
+    <value>Indstil luftstrøm</value>
+  </data>
+  <data name="CO2Level_Parameters_CalcMet" xml:space="preserve">
+    <value>Beregningsmetode</value>
+  </data>
+  <data name="CO2Level_Parameters_CalcMet_Fixed_Af" xml:space="preserve">
+    <value>Fast flowhastighed</value>
+  </data>
+  <data name="CO2Level_Parameters_CalcMet_MaxCO2" xml:space="preserve">
+    <value>Maks. CO2 niveau</value>
+  </data>
+  <data name="CO2Level_Parameters_CalcMet_PersonRelated" xml:space="preserve">
+    <value>Person relateret</value>
+  </data>
+  <data name="CO2Level_Parameters_checkwp" xml:space="preserve">
+    <value>Tjek arbejdspunktet</value>
+  </data>
+  <data name="CO2Level_Parameters_ExtCO2" xml:space="preserve">
+    <value>Udendørs CO2-niveau</value>
+  </data>
+  <data name="CO2Level_Parameters_MaxCO2" xml:space="preserve">
+    <value>Maks. CO2 niveau</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset" xml:space="preserve">
+    <value>Standard forudindstilling</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_01" xml:space="preserve">
+    <value>Ingen</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_02" xml:space="preserve">
+    <value>Bygningsbulletin 101 : Max 1000 ppm CO2</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_03" xml:space="preserve">
+    <value>EN15251 kat I,B1: 10 l/s pers &amp; 0,5 l/s m2</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_04" xml:space="preserve">
+    <value>EN15251 kat I,B2: 10 l/s pers &amp; 1,0 l/s m2</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_05" xml:space="preserve">
+    <value>EN15251 kat I,B3: 10 l/s pers &amp; 2,0 l/s m2</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_06" xml:space="preserve">
+    <value>EN15251 kat II,B1: 7 l/s pers &amp; 0,35 l/s m2</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_07" xml:space="preserve">
+    <value>EN15251 kat II,B2: 7 l/s pers &amp; 0,7 l/s m2</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_08" xml:space="preserve">
+    <value>EN15251 kat II,B3: 7 l/s pers &amp; 1,4 l/s m2</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_09" xml:space="preserve">
+    <value>EN15251 kat III,B1: 4 l/s pers &amp; 0,2 l/s m2</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_10" xml:space="preserve">
+    <value>EN15251 kat III,B2: 4 l/s pers &amp; 0,4 l/s m2</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_11" xml:space="preserve">
+    <value>EN15251 kat III,B3: 4 l/s pers &amp; 0,8 l/s m2</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_12" xml:space="preserve">
+    <value>EN15251 kat I: C02 max 700 ppm</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_13" xml:space="preserve">
+    <value>EN15251 kat II: C02 max 850 ppm</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_14" xml:space="preserve">
+    <value>EN15251 kat III: C02 max 1150 ppm</value>
+  </data>
+  <data name="CO2Level_PeriodOfTime" xml:space="preserve">
+    <value>Tidsrum</value>
+  </data>
+  <data name="CO2Level_Room" xml:space="preserve">
+    <value>Værelse</value>
+  </data>
+  <data name="CO2Level_Room_Height" xml:space="preserve">
+    <value>Højde</value>
+  </data>
+  <data name="CO2Level_Room_Length" xml:space="preserve">
+    <value>Længde</value>
+  </data>
+  <data name="CO2Level_Room_Witdh" xml:space="preserve">
+    <value>Witdh</value>
+  </data>
+  <data name="CO2Level_Usage" xml:space="preserve">
+    <value>Brug</value>
+  </data>
+  <data name="CO2Level_Usage_Break" xml:space="preserve">
+    <value>Pause</value>
+  </data>
+  <data name="CO2Level_Usage_CO2prod" xml:space="preserve">
+    <value>CO2 produktion</value>
+  </data>
+  <data name="CO2Level_Usage_LevelAct" xml:space="preserve">
+    <value>Aktivitetsniveau</value>
+  </data>
+  <data name="CO2Level_Usage_People" xml:space="preserve">
+    <value>Mennesker</value>
+  </data>
+  <data name="CO2Level_Usage_Period" xml:space="preserve">
+    <value>Periode</value>
+  </data>
+  <data name="CO2Level_Usage_Presence" xml:space="preserve">
+    <value>Tilstedeværelse</value>
+  </data>
+  <data name="CommercialSheet" xml:space="preserve">
+    <value>Handelsblad</value>
+  </data>
+  <data name="ElectricPowerInput" xml:space="preserve">
+    <value>Elektrisk strømindgang</value>
+  </data>
+  <data name="ExternalLeakage" xml:space="preserve">
+    <value>Ekstern lækage</value>
+  </data>
+  <data name="InternalLeakage" xml:space="preserve">
+    <value>Intern lækage</value>
+  </data>
+  <data name="IOM" xml:space="preserve">
+    <value>IOM</value>
+  </data>
+  <data name="Item_Code" xml:space="preserve">
+    <value>Varekodning</value>
+  </data>
+  <data name="Legal_Notice" xml:space="preserve">
+    <value>Juridisk meddelelse: Dataene er testet ved specifikke driftsbetingelser i overensstemmelse med de ovennævnte standarder. Den reelle situation kan afvige fra den normative. De resterende data er ekstrapoleret. Hvis installationen er særligt følsom over for støjdata, bedes du kontakte os (softwaren er ikke certificeret). Breakout-beregningen udføres i henhold til standarden ASHRAE Handbook - HVAC Applications, Kapitel 47.</value>
+  </data>
+  <data name="MainForm" xml:space="preserve">
+    <value>Forestillinger</value>
+  </data>
+  <data name="MainForm_AirFlow" xml:space="preserve">
+    <value>Luftstrøm</value>
+  </data>
+  <data name="MainForm_CantSaveFile" xml:space="preserve">
+    <value>Filen kan ikke gemmes</value>
+  </data>
+  <data name="MainForm_Certification" xml:space="preserve">
+    <value>Certificering</value>
+  </data>
+  <data name="MainForm_Close" xml:space="preserve">
+    <value>Tæt</value>
+  </data>
+  <data name="MainForm_Date" xml:space="preserve">
+    <value>Dato</value>
+  </data>
+  <data name="MainForm_Efficiency" xml:space="preserve">
+    <value>Effektivitet</value>
+  </data>
+  <data name="MainForm_ElectricalPerformances" xml:space="preserve">
+    <value>Elektriske præstationer</value>
+  </data>
+  <data name="MainForm_ExhaustOutletTemperature" xml:space="preserve">
+    <value>Udstødningsudtag Temp.</value>
+  </data>
+  <data name="MainForm_FileSaved" xml:space="preserve">
+    <value>Filen er gemt</value>
+  </data>
+  <data name="MainForm_FreshInletTemperature" xml:space="preserve">
+    <value>Frisk indløbstemp.</value>
+  </data>
+  <data name="MainForm_GridSAP_Date" xml:space="preserve">
+    <value>Dato</value>
+  </data>
+  <data name="MainForm_GridSAP_EnergySavingTrustBestPracticePerformanceCompliant" xml:space="preserve">
+    <value>Energibesparende tillid er i overensstemmelse med bedste praksis</value>
+  </data>
+  <data name="MainForm_GridSAP_EstimatedSAPTestTable" xml:space="preserve">
+    <value>Estimeret SAP-testtabel</value>
+  </data>
+  <data name="MainForm_GridSAP_ExhaustTerminalConfiguration" xml:space="preserve">
+    <value>Konfiguration af udstødningsterminal</value>
+  </data>
+  <data name="MainForm_GridSAP_HeatExchangeEffiency" xml:space="preserve">
+    <value>Varmevekslingseffektivitet</value>
+  </data>
+  <data name="MainForm_GridSAP_RegulationLevel" xml:space="preserve">
+    <value>Reguleringsniveau</value>
+  </data>
+  <data name="MainForm_GridSAP_SpecificFanPower" xml:space="preserve">
+    <value>Specifik blæsereffekt</value>
+  </data>
+  <data name="MainForm_GridSAP_TotalExhaustFlowRate" xml:space="preserve">
+    <value>Samlet udstødningsflowhastighed</value>
+  </data>
+  <data name="MainForm_GridSAP_TotalSupplyFlowRate" xml:space="preserve">
+    <value>Samlet forsyningsflowhastighed</value>
+  </data>
+  <data name="MainForm_GridSAP_UnitSelected" xml:space="preserve">
+    <value>Enhed valgt</value>
+  </data>
+  <data name="MainForm_HeatExchangerPerformances" xml:space="preserve">
+    <value>Varmevekslerydelser</value>
+  </data>
+  <data name="MainForm_HeatTransferred" xml:space="preserve">
+    <value>Varme overført</value>
+  </data>
+  <data name="MainForm_InputData" xml:space="preserve">
+    <value>Input data</value>
+  </data>
+  <data name="MainForm_LatentHeat" xml:space="preserve">
+    <value>Latent varme</value>
+  </data>
+  <data name="MainForm_MaxPressure" xml:space="preserve">
+    <value>Max tryk</value>
+  </data>
+  <data name="MainForm_Menu_About" xml:space="preserve">
+    <value>Om</value>
+  </data>
+  <data name="MainForm_Menu_File" xml:space="preserve">
+    <value>Fil</value>
+  </data>
+  <data name="MainForm_Menu_File_Exit" xml:space="preserve">
+    <value>Afslut</value>
+  </data>
+  <data name="MainForm_Menu_File_GenerateReport" xml:space="preserve">
+    <value>Generer rapport</value>
+  </data>
+  <data name="MainForm_Menu_File_Open" xml:space="preserve">
+    <value>Åben</value>
+  </data>
+  <data name="MainForm_Menu_Option" xml:space="preserve">
+    <value>Mulighed</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language" xml:space="preserve">
+    <value>Sprog</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Bulgarian" xml:space="preserve">
+    <value>bulgarsk</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Deutsch" xml:space="preserve">
+    <value>Deutsch</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Dutch" xml:space="preserve">
+    <value>hollandske</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_English" xml:space="preserve">
+    <value>engelsk</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Français" xml:space="preserve">
+    <value>Français</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Italian" xml:space="preserve">
+    <value>italiensk</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Polish" xml:space="preserve">
+    <value>Polere</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Romanian" xml:space="preserve">
+    <value>rumænsk</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Slovenian" xml:space="preserve">
+    <value>slovensk</value>
+  </data>
+  <data name="MainForm_Menu_Option_SelectMode" xml:space="preserve">
+    <value>Vælg tilstand</value>
+  </data>
+  <data name="MainForm_Menu_Option_SelectMode_Checking" xml:space="preserve">
+    <value>Tjekker</value>
+  </data>
+  <data name="MainForm_Menu_Option_SelectMode_Design" xml:space="preserve">
+    <value>Design</value>
+  </data>
+  <data name="MainForm_Menu_Option_Unit" xml:space="preserve">
+    <value>Enhed</value>
+  </data>
+  <data name="MainForm_Menu_Option_Unit_IP" xml:space="preserve">
+    <value>IP</value>
+  </data>
+  <data name="MainForm_Menu_Option_Unit_SI" xml:space="preserve">
+    <value>SI</value>
+  </data>
+  <data name="MainForm_MoistureRecovery" xml:space="preserve">
+    <value>Fugtgenvinding</value>
+  </data>
+  <data name="MainForm_PassiveHouse" xml:space="preserve">
+    <value>Passivhus</value>
+  </data>
+  <data name="MainForm_PassiveHouseElectricalEfficienty" xml:space="preserve">
+    <value>Passivhus El. Eff.</value>
+  </data>
+  <data name="MainForm_Performance" xml:space="preserve">
+    <value>Ydeevne</value>
+  </data>
+  <data name="MainForm_Performances" xml:space="preserve">
+    <value>Forestillinger</value>
+  </data>
+  <data name="MainForm_PowerInput" xml:space="preserve">
+    <value>Strømindgang</value>
+  </data>
+  <data name="MainForm_PowerSupply" xml:space="preserve">
+    <value>Strømforsyning</value>
+  </data>
+  <data name="MainForm_Pressure" xml:space="preserve">
+    <value>Tryk</value>
+  </data>
+  <data name="MainForm_RegulationLevel" xml:space="preserve">
+    <value>Regulerende niveau</value>
+  </data>
+  <data name="MainForm_ReturnInletTemperature" xml:space="preserve">
+    <value>Returindløbstemp.</value>
+  </data>
+  <data name="MainForm_RHExhaustOutletTemperature" xml:space="preserve">
+    <value>RH</value>
+  </data>
+  <data name="MainForm_RHFreshInletTemperature" xml:space="preserve">
+    <value>RH</value>
+  </data>
+  <data name="MainForm_RHReturnInletTemperature" xml:space="preserve">
+    <value>RH</value>
+  </data>
+  <data name="MainForm_RHSupplyOutletTemperature" xml:space="preserve">
+    <value>RH</value>
+  </data>
+  <data name="MainForm_SEL" xml:space="preserve">
+    <value>SPI</value>
+  </data>
+  <data name="MainForm_SelectPdfFile" xml:space="preserve">
+    <value>Vælg en pdf-fil</value>
+  </data>
+  <data name="MainForm_SensibleHeat" xml:space="preserve">
+    <value>Fornuftig varme</value>
+  </data>
+  <data name="MainForm_SFP" xml:space="preserve">
+    <value>SFP</value>
+  </data>
+  <data name="MainForm_ShowERPArea" xml:space="preserve">
+    <value>Vis ERP 2018-området</value>
+  </data>
+  <data name="MainForm_ShowPassiveHouseArea" xml:space="preserve">
+    <value>Vis passivhusområdet</value>
+  </data>
+  <data name="MainForm_ShowSELArea" xml:space="preserve">
+    <value>Vis SEL-området</value>
+  </data>
+  <data name="MainForm_ShowSFPArea" xml:space="preserve">
+    <value>Vis SFP-område</value>
+  </data>
+  <data name="MainForm_SingleBranch" xml:space="preserve">
+    <value>enkelt gren</value>
+  </data>
+  <data name="MainForm_SupplyOutletTemperature" xml:space="preserve">
+    <value>Forsyningsudløbstemp.</value>
+  </data>
+  <data name="MainForm_TemperatureConditionsAndUmidity" xml:space="preserve">
+    <value>Temperaturforhold og luftfugtighed</value>
+  </data>
+  <data name="MainForm_Unit" xml:space="preserve">
+    <value>Enhed</value>
+  </data>
+  <data name="MainForm_UnitSelected" xml:space="preserve">
+    <value>Enhed valgt</value>
+  </data>
+  <data name="MainForm_UnitSelection" xml:space="preserve">
+    <value>Valg af enhed</value>
+  </data>
+  <data name="MainForm_UpdateSAPTable" xml:space="preserve">
+    <value>Opdater SAP-tabel</value>
+  </data>
+  <data name="MainForm_WaterProduced" xml:space="preserve">
+    <value>Vand produceret</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Ingen</value>
+  </data>
+  <data name="NoiseLevel" xml:space="preserve">
+    <value>Støjniveau</value>
+  </data>
+  <data name="Page" xml:space="preserve">
+    <value>Side</value>
+  </data>
+  <data name="PDF_HeatExchangerPerformances" xml:space="preserve">
+    <value>Varmevekslerydelser</value>
+  </data>
+  <data name="PDF_RegLev" xml:space="preserve">
+    <value>Reg. Lev.</value>
+  </data>
+  <data name="PDF_TemperatureConditions" xml:space="preserve">
+    <value>Temperaturforhold</value>
+  </data>
+  <data name="PDF_WorkingArea" xml:space="preserve">
+    <value>Arbejdsområde</value>
+  </data>
+  <data name="PDF_WorkingPoint" xml:space="preserve">
+    <value>Arbejdspunkt</value>
+  </data>
+  <data name="PerformancesAccordanceWith" xml:space="preserve">
+    <value>Alle forestillinger er udført i overensstemmelse med:</value>
+  </data>
+  <data name="PleaseWaitForm_Message" xml:space="preserve">
+    <value>Vent venligst et par sekunder...</value>
+  </data>
+  <data name="RegLev_Note" xml:space="preserve">
+    <value>I nogle tilfælde er der muligvis ikke et lineært forhold mellem reguleringsniveauet og det på enheden</value>
+  </data>
+  <data name="Release" xml:space="preserve">
+    <value>Softwareudgivelse</value>
+  </data>
+  <data name="SaveCommercialSheet" xml:space="preserve">
+    <value>Gem reklameark</value>
+  </data>
+  <data name="SaveIOM" xml:space="preserve">
+    <value>Gem IOM</value>
+  </data>
+  <data name="Series" xml:space="preserve">
+    <value>Serie</value>
+  </data>
+  <data name="SoundInlet" xml:space="preserve">
+    <value>Fjord</value>
+  </data>
+  <data name="SoundOutlet" xml:space="preserve">
+    <value>Udtag</value>
+  </data>
+  <data name="SoundPower" xml:space="preserve">
+    <value>Lydstyrke</value>
+  </data>
+  <data name="Sound_Breakout" xml:space="preserve">
+    <value>Udbrud</value>
+  </data>
+  <data name="Sound_Exhaust" xml:space="preserve">
+    <value>Udstødning</value>
+  </data>
+  <data name="Sound_Fresh" xml:space="preserve">
+    <value>Frisk</value>
+  </data>
+  <data name="Sound_Return" xml:space="preserve">
+    <value>Vend tilbage</value>
+  </data>
+  <data name="Sound_Supply" xml:space="preserve">
+    <value>Levere</value>
+  </data>
+  <data name="Sound_Total" xml:space="preserve">
+    <value>i alt</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Ja</value>
+  </data>
+</root>

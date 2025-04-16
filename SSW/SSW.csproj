@@ -1,0 +1,1096 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
+  <PropertyGroup Condition="'$(COMPUTERNAME)' == 'ENEA-PC'">
+    <IncludeCSS>false</IncludeCSS>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(IncludeCSS)' == ''">
+    <IncludeCSS>true</IncludeCSS>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C1D4FD86-A1FA-4F7C-9BEC-E96F5F5D95D4}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SSW</RootNamespace>
+    <AssemblyName>SSW</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>&lt;Project Location In Database&gt;</SccProjectName>
+    <SccLocalPath>&lt;Local Binding Root of Project&gt;</SccLocalPath>
+    <SccAuxPath>&lt;Source Control Database&gt;</SccAuxPath>
+    <SccProvider>Mercurial Source Control Package</SccProvider>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>false</MapFileExtensions>
+    <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
+    <ApplicationRevision>2</ApplicationRevision>
+    <ApplicationVersion>1.3.0.2</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;_PROFILE_CL</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>SSW.CLProgram</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CL|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\CL\</OutputPath>
+    <DefineConstants>_PROFILE_CL</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisLogFile>bin\Debug\WESSW.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <Optimize>true</Optimize>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'AC|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\AC\</OutputPath>
+    <DefineConstants>TRACE;_PROFILE_AC</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisLogFile>bin\Debug\WESSW.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <Optimize>true</Optimize>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'AL|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\AL\</OutputPath>
+    <DefineConstants>TRACE;_PROFILE_AL</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisLogFile>bin\Debug\WESSW.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <Optimize>true</Optimize>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CV|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\CV\</OutputPath>
+    <DefineConstants>TRACE;_PROFILE_CV</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisLogFile>bin\Debug\WESSW.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+    <Optimize>true</Optimize>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DAN|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\DAN\</OutputPath>
+    <DefineConstants>TRACE;_PROFILE_DAN</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisLogFile>bin\Debug\WESSW.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+    <Optimize>true</Optimize>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'FA|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\FA\</OutputPath>
+    <DefineConstants>TRACE;_PROFILE_FA</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisLogFile>bin\Debug\WESSW.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <Optimize>true</Optimize>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'FAI|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\FAI\</OutputPath>
+    <DefineConstants>TRACE;_PROFILE_FAI</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisLogFile>bin\Debug\WESSW.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <Optimize>true</Optimize>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'FS|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\FS\</OutputPath>
+    <DefineConstants>TRACE;_PROFILE_FS</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisLogFile>bin\Debug\WESSW.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <Optimize>true</Optimize>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'FT|x86'">
+    <OutputPath>bin\x86\FT\</OutputPath>
+    <DefineConstants>TRACE;_PROFILE_FT</DefineConstants>
+    <PlatformTarget>x86</PlatformTarget>
+    <Optimize>true</Optimize>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'NL|x86'">
+    <OutputPath>bin\x86\NL\</OutputPath>
+    <DefineConstants>TRACE;_PROFILE_NL</DefineConstants>
+    <PlatformTarget>x86</PlatformTarget>
+    <Optimize>true</Optimize>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'WE|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\WE\</OutputPath>
+    <DefineConstants>TRACE;_PROFILE_WE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisLogFile>bin\Debug\WESSW.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+    <Optimize>true</Optimize>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'SU|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\SU\</OutputPath>
+    <DefineConstants>TRACE;_PROFILE_SU</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisLogFile>bin\Debug\WESSW.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <Optimize>true</Optimize>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>81F07AD38DF70CA9553B69DC806B28BDFB79E5D8</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>ssw.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'SIG|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\SIG\</OutputPath>
+    <DefineConstants>TRACE;_PROFILE_SIG</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'SKL|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\SKL\</OutputPath>
+    <DefineConstants>TRACE;_PROFILE_SKL</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>
+    </DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\CL_icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'AV|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\AV\</OutputPath>
+    <DefineConstants>_PROFILE_AV</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'IN|x86'">
+    <ApplicationIcon>Resources\IN_icon.ico</ApplicationIcon>
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\IN\</OutputPath>
+    <DefineConstants>_PROFILE_IN</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>ssw.pfx</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="alglib.net, Version=3.18.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\alglib.net.3.18.2\lib\net45\alglib.net.dll</HintPath>
+    </Reference>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.9.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
+      <HintPath>..\packages\BouncyCastle.1.8.9\lib\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServerCompact, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.SqlServerCompact.6.4.4\lib\net45\EntityFramework.SqlServerCompact.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.5.13.3, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.13.3\lib\itextsharp.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp.xtra, Version=5.5.13.3, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\itextsharp.xtra.5.5.13.3\lib\itextsharp.xtra.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.Common, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportViewer.Windows.11.0.3452\lib\net40\Microsoft.ReportViewer.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.DataVisualization, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportViewer.Windows.11.0.3452\lib\net40\Microsoft.ReportViewer.DataVisualization.DLL</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.ProcessingObjectModel, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportViewer.Windows.11.0.3452\lib\net40\Microsoft.ReportViewer.ProcessingObjectModel.DLL</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WinForms, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportViewer.Windows.11.0.3452\lib\net40\Microsoft.ReportViewer.WinForms.DLL</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Types, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.Types.14.0.1016.290\lib\net40\Microsoft.SqlServer.Types.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.SqlServerCe, Version=4.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.Compact.4.0.8876.1\lib\net40\System.Data.SqlServerCe.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <Choose>
+    <!-- Profile AC -->
+    <When Condition="'$(Configuration)' == 'AC'">
+      <PropertyGroup>
+        <ApplicationIcon>Resources\AC_icon.ico</ApplicationIcon>
+      </PropertyGroup>
+      <ItemGroup>
+        <EmbeddedResource Include="Resources\AC_icon.ico">
+        </EmbeddedResource>
+      </ItemGroup>
+    </When>
+    <!-- Profile AL -->
+    <When Condition="'$(Configuration)' == 'AL'">
+      <PropertyGroup>
+        <ApplicationIcon>Resources\AL_icon.ico</ApplicationIcon>
+      </PropertyGroup>
+      <ItemGroup>
+        <EmbeddedResource Include="Resources\AL_icon.ico">
+        </EmbeddedResource>
+      </ItemGroup>
+    </When>
+    <!-- Profile CL -->
+    <When Condition="'$(Configuration)' == 'CL' Or '$(Configuration)' == 'Debug'">
+      <PropertyGroup>
+        <ApplicationIcon>Resources\CL_icon.ico</ApplicationIcon>
+      </PropertyGroup>
+      <ItemGroup>
+        <EmbeddedResource Include="Resources\CL_icon.ico">
+        </EmbeddedResource>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\OSC_123_EN_AETDOCCOM01V01.pdf">
+          <Link>css\OSC_123_EN_AETDOCCOM01V01.pdf</Link>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\OSC_13_EN_AETDOCCOM01V01.pdf">
+          <Link>css\OSC_13_EN_AETDOCCOM01V01.pdf</Link>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\OSC_163_EN_AETDOCCOM01V01.pdf">
+          <Link>css\OSC_163_EN_AETDOCCOM01V01.pdf</Link>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\OSC_223_EN_AETDOCCOM01V01.pdf">
+          <Link>css\OSC_223_EN_AETDOCCOM01V01.pdf</Link>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\OSC_23_EN_AETDOCCOM01V01.pdf">
+          <Link>css\OSC_23_EN_AETDOCCOM01V01.pdf</Link>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\OSC_323_EN_AETDOCCOM01V01.pdf">
+          <Link>css\OSC_323_EN_AETDOCCOM01V01.pdf</Link>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\OSC_423_EN_AETDOCCOM01V01.pdf">
+          <Link>css\OSC_423_EN_AETDOCCOM01V01.pdf</Link>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\OSC_43_EN_AETDOCCOM01V01.pdf">
+          <Link>css\OSC_43_EN_AETDOCCOM01V01.pdf</Link>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\OSC_53_EN_AETDOCCOM01V01.pdf">
+          <Link>css\OSC_53_EN_AETDOCCOM01V01.pdf</Link>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\OSC_73_EN_AETDOCCOM01V01.pdf">
+          <Link>css\OSC_73_EN_AETDOCCOM01V01.pdf</Link>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\OSC_93_EN_AETDOCCOM01V01.pdf">
+          <Link>css\OSC_93_EN_AETDOCCOM01V01.pdf</Link>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\QTM_25_EN_AETDOCCOM01V01.pdf">
+          <Link>css\QTM_25_EN_AETDOCCOM01V01.pdf</Link>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\QTM_35_EN_AETDOCCOM01V01.pdf">
+          <Link>css\QTM_35_EN_AETDOCCOM01V01.pdf</Link>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\QTM_45_EN_AETDOCCOM01V01.pdf">
+          <Link>css\QTM_45_EN_AETDOCCOM01V01.pdf</Link>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\QTM_55_EN_AETDOCCOM01V01.pdf">
+          <Link>css\QTM_55_EN_AETDOCCOM01V01.pdf</Link>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\SSC_123_EN_AETDOCCOM01V01.pdf">
+          <Link>css\SSC_123_EN_AETDOCCOM01V01.pdf</Link>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\SSC_13_EN_AETDOCCOM01V01.pdf">
+          <Link>css\SSC_13_EN_AETDOCCOM01V01.pdf</Link>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\SSC_163_EN_AETDOCCOM01V01.pdf">
+          <Link>css\SSC_163_EN_AETDOCCOM01V01.pdf</Link>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\SSC_223_EN_AETDOCCOM01V01.pdf">
+          <Link>css\SSC_223_EN_AETDOCCOM01V01.pdf</Link>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\SSC_23_EN_AETDOCCOM01V01.pdf">
+          <Link>css\SSC_23_EN_AETDOCCOM01V01.pdf</Link>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\SSC_323_EN_AETDOCCOM01V01.pdf">
+          <Link>css\SSC_323_EN_AETDOCCOM01V01.pdf</Link>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\SSC_33_EN_AETDOCCOM01V01.pdf">
+          <Link>css\SSC_33_EN_AETDOCCOM01V01.pdf</Link>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\SSC_423_EN_AETDOCCOM01V01.pdf">
+          <Link>css\SSC_423_EN_AETDOCCOM01V01.pdf</Link>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\SSC_43_EN_AETDOCCOM01V01.pdf">
+          <Link>css\SSC_43_EN_AETDOCCOM01V01.pdf</Link>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\SSC_53_EN_AETDOCCOM01V01.pdf">
+          <Link>css\SSC_53_EN_AETDOCCOM01V01.pdf</Link>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\SSC_543_EN_AETDOCCOM01V01.pdf">
+          <Link>css\SSC_543_EN_AETDOCCOM01V01.pdf</Link>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\SSC_73_EN_AETDOCCOM01V01.pdf">
+          <Link>css\SSC_73_EN_AETDOCCOM01V01.pdf</Link>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\SSC_93_EN_AETDOCCOM01V01.pdf">
+          <Link>css\SSC_93_EN_AETDOCCOM01V01.pdf</Link>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\OSC_33_EN_AETDOCCOM01V01.pdf">
+          <Link>css\OSC_33_EN_AETDOCCOM01V01.pdf</Link>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\HOC_47_EN_AETDOCCOM01V01.pdf">
+          <Link>css\HOC_47_EN_AETDOCCOM01V01.pdf</Link>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\HOC_77_EN_AETDOCCOM01V01.pdf">
+          <Link>css\HOC_77_EN_AETDOCCOM01V01.pdf</Link>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\HOC_127_EN_AETDOCCOM01V01.pdf">
+          <Link>css\HOC_127_EN_AETDOCCOM01V01.pdf</Link>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\TSC_47_EN_AETDOCCOM01V01.pdf">
+          <Link>css\TSC_47_EN_AETDOCCOM01V01.pdf</Link>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\TSC_77_EN_AETDOCCOM01V01.pdf">
+          <Link>css\TSC_77_EN_AETDOCCOM01V01.pdf</Link>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\TSC_127_EN_AETDOCCOM01V01.pdf">
+          <Link>css\TSC_127_EN_AETDOCCOM01V01.pdf</Link>
+        </Content>
+      </ItemGroup>
+    </When>
+    <!-- Profile CV -->
+    <When Condition="'$(Configuration)' == 'CV'">
+      <PropertyGroup>
+        <ApplicationIcon>Resources\CV_icon.ico</ApplicationIcon>
+      </PropertyGroup>
+      <ItemGroup>
+        <EmbeddedResource Include="Resources\CV_icon.ico">
+        </EmbeddedResource>
+      </ItemGroup>
+    </When>
+    <!-- Profile DAN -->
+    <When Condition="'$(Configuration)' == 'DAN'">
+      <PropertyGroup>
+        <ApplicationIcon>Resources\DAN_icon.ico</ApplicationIcon>
+      </PropertyGroup>
+      <ItemGroup>
+        <EmbeddedResource Include="Resources\DAN_icon.ico">
+        </EmbeddedResource>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\OSC_123_EN_AETDOCCOM01V01.pdf">
+          <Link>css\OSC_123_EN_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\OSC_13_EN_AETDOCCOM01V01.pdf">
+          <Link>css\OSC_13_EN_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\OSC_163_EN_AETDOCCOM01V01.pdf">
+          <Link>css\OSC_163_EN_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\OSC_223_EN_AETDOCCOM01V01.pdf">
+          <Link>css\OSC_223_EN_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\OSC_23_EN_AETDOCCOM01V01.pdf">
+          <Link>css\OSC_23_EN_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\OSC_323_EN_AETDOCCOM01V01.pdf">
+          <Link>css\OSC_323_EN_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\OSC_33_EN_AETDOCCOM01V01.pdf">
+          <Link>css\OSC_33_EN_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\OSC_423_EN_AETDOCCOM01V01.pdf">
+          <Link>css\OSC_423_EN_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\OSC_43_EN_AETDOCCOM01V01.pdf">
+          <Link>css\OSC_43_EN_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\OSC_53_EN_AETDOCCOM01V01.pdf">
+          <Link>css\OSC_53_EN_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\OSC_73_EN_AETDOCCOM01V01.pdf">
+          <Link>css\OSC_73_EN_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\OSC_93_EN_AETDOCCOM01V01.pdf">
+          <Link>css\OSC_93_EN_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\QTM_25_EN_AETDOCCOM01V01.pdf">
+          <Link>css\QTM_25_EN_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\QTM_35_EN_AETDOCCOM01V01.pdf">
+          <Link>css\QTM_35_EN_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\QTM_45_EN_AETDOCCOM01V01.pdf">
+          <Link>css\QTM_45_EN_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\QTM_55_EN_AETDOCCOM01V01.pdf">
+          <Link>css\QTM_55_EN_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\SSC_123_EN_AETDOCCOM01V01.pdf">
+          <Link>css\SSC_123_EN_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\SSC_13_EN_AETDOCCOM01V01.pdf">
+          <Link>css\SSC_13_EN_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\SSC_163_EN_AETDOCCOM01V01.pdf">
+          <Link>css\SSC_163_EN_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\SSC_223_EN_AETDOCCOM01V01.pdf">
+          <Link>css\SSC_223_EN_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\SSC_23_EN_AETDOCCOM01V01.pdf">
+          <Link>css\SSC_23_EN_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\SSC_323_EN_AETDOCCOM01V01.pdf">
+          <Link>css\SSC_323_EN_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\SSC_33_EN_AETDOCCOM01V01.pdf">
+          <Link>css\SSC_33_EN_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\SSC_423_EN_AETDOCCOM01V01.pdf">
+          <Link>css\SSC_423_EN_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\SSC_43_EN_AETDOCCOM01V01.pdf">
+          <Link>css\SSC_43_EN_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\SSC_53_EN_AETDOCCOM01V01.pdf">
+          <Link>css\SSC_53_EN_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\SSC_543_EN_AETDOCCOM01V01.pdf">
+          <Link>css\SSC_543_EN_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\SSC_73_EN_AETDOCCOM01V01.pdf">
+          <Link>css\SSC_73_EN_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\SSC_93_EN_AETDOCCOM01V01.pdf">
+          <Link>css\SSC_93_EN_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+      </ItemGroup>
+    </When>
+    <!-- Profile FA -->
+    <When Condition="'$(Configuration)' == 'FA'">
+      <PropertyGroup>
+        <ApplicationIcon>Resources\FA_icon.ico</ApplicationIcon>
+      </PropertyGroup>
+      <ItemGroup>
+        <EmbeddedResource Include="Resources\FA_icon.ico">
+        </EmbeddedResource>
+      </ItemGroup>
+    </When>
+    <!-- Profile FAI -->
+    <When Condition="'$(Configuration)' == 'FAI'">
+      <PropertyGroup>
+        <ApplicationIcon>Resources\FAI_icon.ico</ApplicationIcon>
+      </PropertyGroup>
+      <ItemGroup>
+        <EmbeddedResource Include="Resources\FAI_icon.ico">
+        </EmbeddedResource>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\OSC_123_IT_AETDOCCOM01V01.pdf">
+          <Link>css\OSC_123_IT_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\OSC_13_IT_AETDOCCOM01V01.pdf">
+          <Link>css\OSC_13_IT_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\OSC_163_IT_AETDOCCOM01V01.pdf">
+          <Link>css\OSC_163_IT_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\OSC_223_IT_AETDOCCOM01V01.pdf">
+          <Link>css\OSC_223_IT_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\OSC_23_IT_AETDOCCOM01V01.pdf">
+          <Link>css\OSC_23_IT_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\OSC_323_IT_AETDOCCOM01V01.pdf">
+          <Link>css\OSC_323_IT_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\OSC_33_IT_AETDOCCOM01V01.pdf">
+          <Link>css\OSC_33_IT_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\OSC_423_IT_AETDOCCOM01V01.pdf">
+          <Link>css\OSC_423_IT_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\OSC_43_IT_AETDOCCOM01V01.pdf">
+          <Link>css\OSC_43_IT_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\OSC_53_IT_AETDOCCOM01V01.pdf">
+          <Link>css\OSC_53_IT_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\OSC_73_IT_AETDOCCOM01V01.pdf">
+          <Link>css\OSC_73_IT_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\OSC_93_IT_AETDOCCOM01V01.pdf">
+          <Link>css\OSC_93_IT_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\SSC_123_IT_AETDOCCOM01V01.pdf">
+          <Link>css\SSC_123_IT_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\SSC_13_IT_AETDOCCOM01V01.pdf">
+          <Link>css\SSC_13_IT_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\SSC_163_IT_AETDOCCOM01V01.pdf">
+          <Link>css\SSC_163_IT_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\SSC_223_IT_AETDOCCOM01V01.pdf">
+          <Link>css\SSC_223_IT_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\SSC_23_IT_AETDOCCOM01V01.pdf">
+          <Link>css\SSC_23_IT_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\SSC_323_IT_AETDOCCOM01V01.pdf">
+          <Link>css\SSC_323_IT_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\SSC_423_IT_AETDOCCOM01V01.pdf">
+          <Link>css\SSC_423_IT_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\SSC_43_IT_AETDOCCOM01V01.pdf">
+          <Link>css\SSC_43_IT_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\SSC_53_IT_AETDOCCOM01V01.pdf">
+          <Link>css\SSC_53_IT_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\SSC_543_IT_AETDOCCOM01V01.pdf">
+          <Link>css\SSC_543_IT_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\SSC_93_IT_AETDOCCOM01V01.pdf">
+          <Link>css\SSC_93_IT_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\QTM_25_IT_AETDOCCOM01V01.pdf">
+          <Link>css\QTM_25_IT_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\QTM_35_IT_AETDOCCOM01V01.pdf">
+          <Link>css\QTM_35_IT_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\QTM_45_IT_AETDOCCOM01V01.pdf">
+          <Link>css\QTM_45_IT_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\QTM_55_IT_AETDOCCOM01V01.pdf">
+          <Link>css\QTM_55_IT_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+      </ItemGroup>
+    </When>
+    <!-- Profile FS -->
+    <When Condition="'$(Configuration)' == 'FS'">
+      <PropertyGroup>
+        <ApplicationIcon>Resources\FS_icon.ico</ApplicationIcon>
+      </PropertyGroup>
+      <ItemGroup>
+        <EmbeddedResource Include="Resources\FS_icon.ico">
+        </EmbeddedResource>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FS\OSC_13_PL_AETDOCCOM01V01.pdf">
+          <Link>css\OSC_13_PL_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FS\QTM_25_PL_AETDOCCOM01V01.pdf">
+          <Link>css\QTM_25_PL_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FS\QTM_35_PL_AETDOCCOM01V01.pdf">
+          <Link>css\QTM_35_PL_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FS\QTM_45_PL_AETDOCCOM01V01.pdf">
+          <Link>css\QTM_45_PL_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FS\QTM_55_PL_AETDOCCOM01V01.pdf">
+          <Link>css\QTM_55_PL_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FS\SSC_13_PL_AETDOCCOM01V01.pdf">
+          <Link>css\SSC_13_PL_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+      </ItemGroup>
+    </When>
+    <!-- Profile FT -->
+    <When Condition="'$(Configuration)' == 'FT'">
+      <PropertyGroup>
+        <ApplicationIcon>Resources\FT_icon.ico</ApplicationIcon>
+      </PropertyGroup>
+      <ItemGroup>
+        <EmbeddedResource Include="Resources\FT_icon.ico">
+        </EmbeddedResource>
+      </ItemGroup>
+    </When>
+    <!-- Profile NL -->
+    <When Condition="'$(Configuration)' == 'NL'">
+      <PropertyGroup>
+        <ApplicationIcon>Resources\NL_icon.ico</ApplicationIcon>
+      </PropertyGroup>
+      <ItemGroup>
+        <EmbeddedResource Include="Resources\NL_icon.ico">
+        </EmbeddedResource>
+      </ItemGroup>
+    </When>
+    <!-- Profile IN -->
+    <When Condition="'$(Configuration)' == 'IN'">
+      <PropertyGroup>
+        <ApplicationIcon>Resources\IN_icon.ico</ApplicationIcon>
+      </PropertyGroup>
+      <ItemGroup>
+        <EmbeddedResource Include="Resources\IN_icon.ico">
+        </EmbeddedResource>
+      </ItemGroup>
+    </When>
+    <!-- Profile SU -->
+    <When Condition="'$(Configuration)' == 'SU'">
+      <PropertyGroup>
+        <ApplicationIcon>Resources\SU_icon.ico</ApplicationIcon>
+      </PropertyGroup>
+      <ItemGroup>
+        <EmbeddedResource Include="Resources\SU_icon.ico">
+        </EmbeddedResource>
+      </ItemGroup>
+    </When>
+    <!-- Profile WE -->
+    <When Condition="'$(Configuration)' == 'WE'">
+      <PropertyGroup>
+        <ApplicationIcon>Resources\WE_icon.ico</ApplicationIcon>
+      </PropertyGroup>
+      <ItemGroup>
+        <EmbeddedResource Include="Resources\WE_icon.ico">
+        </EmbeddedResource>
+      </ItemGroup>
+    </When>
+    <!-- Profile SIG -->
+    <When Condition="'$(Configuration)' == 'SIG'">
+      <PropertyGroup>
+        <ApplicationIcon>Resources\CAIROX.ico</ApplicationIcon>
+      </PropertyGroup>
+      <ItemGroup>
+        <EmbeddedResource Include="Resources\CAIROX.ico">
+        </EmbeddedResource>
+        <!--<Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\SIG\HOC_47_EN_AETDOCCOM01V01.pdf">
+          <Link>css\HOC_47_EN_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\SIG\HOC_77_EN_AETDOCCOM01V01.pdf">
+          <Link>css\HOC_77_EN_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\SIG\HOC_127_EN_AETDOCCOM01V01.pdf">
+          <Link>css\HOC_127_EN_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\SIG\TSC_47_EN_AETDOCCOM01V01.pdf">
+          <Link>css\TSC_47_EN_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\SIG\TSC_77_EN_AETDOCCOM01V01.pdf">
+          <Link>css\TSC_77_EN_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\SIG\TSC_127_EN_AETDOCCOM01V01.pdf">
+          <Link>css\TSC_127_EN_AETDOCCOM01V01.pdf</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>-->
+      </ItemGroup>
+    </When>
+    <!-- Profile AV -->
+    <When Condition="'$(Configuration)' == 'AV'">
+      <PropertyGroup>
+        <ApplicationIcon>Resources\AV_icon.ico</ApplicationIcon>
+      </PropertyGroup>
+      <ItemGroup>
+        <EmbeddedResource Include="Resources\AV_icon.ico">
+        </EmbeddedResource>
+      </ItemGroup>
+    </When>
+    <!-- Profile SKL -->
+    <When Condition="'$(Configuration)' == 'SKL'">
+      <PropertyGroup>
+        <ApplicationIcon>Resources\SKL_icon.ico</ApplicationIcon>
+      </PropertyGroup>
+      <ItemGroup>
+        <EmbeddedResource Include="Resources\SKL_icon.ico">
+        </EmbeddedResource>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <ItemGroup>
+    <Compile Include="CLProgram.cs" />
+    <Compile Include="CLSSWInfo_AC.cs" />
+    <Compile Include="CLSSWInfo_AL.cs" />
+    <Compile Include="CLSSWInfo_IN.cs" />
+    <Compile Include="CLSSWInfo_CL.cs" />
+    <Compile Include="CLSSWInfo_CV.cs" />
+    <Compile Include="CLSSWInfo_DAN.cs" />
+    <Compile Include="CLSSWInfo_FA.cs" />
+    <Compile Include="CLSSWInfo_FAI.cs" />
+    <Compile Include="CLSSWInfo_FS.cs" />
+    <Compile Include="CLSSWInfo_FT.cs" />
+    <Compile Include="CLSSWInfo_NL.cs" />
+    <Compile Include="CLSSWInfo_SKL.cs" />
+    <Compile Include="CLSSWInfo_SU.cs" />
+    <Compile Include="CLSSWInfo_WE.cs" />
+    <Compile Include="CLSSWInfo_SIG.cs" />
+    <Compile Include="CLSSWInfo_AV.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="SqlServerTypes\Loader.cs" />
+    <Content Include="..\SSWLib\CLMainReport.rdlc">
+      <Link>CLMainReport.rdlc</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Properties\app.manifest" />
+    <None Include="Resources\CAIROX.ico" />
+    <Content Include="SqlServerTypes\readme.htm" />
+    <Content Include="SqlServerTypes\x64\msvcr120.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SqlServerTypes\x64\SqlServerSpatial140.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SqlServerTypes\x86\msvcr120.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SqlServerTypes\x86\SqlServerSpatial140.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Resources\AC_icon.ico" />
+    <None Include="Resources\AL_icon.ico" />
+    <None Include="Resources\CV_icon.ico" />
+    <None Include="Resources\DAN_icon.ico" />
+    <None Include="Resources\FA_icon.ico" />
+    <None Include="Resources\FAI_icon.ico" />
+    <None Include="Resources\FS_icon.ico" />
+    <None Include="Resources\FT_icon.ico" />
+    <None Include="Resources\NL_icon.ico" />
+    <None Include="Resources\SIG_CAIROX_icon.ico" />
+    <None Include="Resources\SIG_icon.ico" />
+    <None Include="Resources\IN_icon.ico" />
+    <None Include="Resources\SU_icon.ico" />
+    <None Include="Resources\WE_icon.ico" />
+    <Content Include="Resources\AV_icon.ico" />
+    <Content Include="Resources\SKL_icon.ico" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+    <None Include="Properties\DataSources\CLMainReportDataSet.datasource" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <None Include="ssw.pfx" />
+    <None Include="ssw5.pfx" />
+    <None Include="SSW_1_TemporaryKey.pfx" />
+    <None Include="SSW_2_TemporaryKey.pfx" />
+    <None Include="SSW_3_TemporaryKey.pfx" />
+    <None Include="SSW_4_Key.pfx" />
+    <None Include="SSW_4_TemporaryKey.pfx" />
+    <None Include="SSW_ChiaveTemporanea.pfx" />
+    <None Include="SSW_TemporaryKey.pfx" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 Client Profile %28x86 e x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.4.5">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 4.5</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <PublishFile Include="Microsoft.ReportViewer.DataVisualization">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>Assembly</FileType>
+    </PublishFile>
+    <PublishFile Include="Microsoft.ReportViewer.ProcessingObjectModel">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>Assembly</FileType>
+    </PublishFile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SSWLib\SSWLib.vbproj">
+      <Project>{f82f8be5-a948-4cda-a7ea-c73b204115c0}</Project>
+      <Name>SSWLib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="BeforeBuild">
+    <Message Text="CIAOOOOO" />
+  </Target>
+  <PropertyGroup>
+    <PostBuildEvent>
+    if not exist "$(TargetDir)x86" md "$(TargetDir)x86"
+    xcopy /s /y "$(SolutionDir)packages\Microsoft.SqlServer.Compact.4.0.8876.1\NativeBinaries\x86\*.*" "$(TargetDir)x86"
+    if not exist "$(TargetDir)amd64" md "$(TargetDir)amd64"
+    xcopy /s /y "$(SolutionDir)packages\Microsoft.SqlServer.Compact.4.0.8876.1\NativeBinaries\amd64\*.*" "$(TargetDir)amd64"</PostBuildEvent>
+  </PropertyGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Questo progetto fa riferimento a uno o più pacchetti NuGet che non sono presenti in questo computer. Usare lo strumento di ripristino dei pacchetti NuGet per scaricarli. Per altre informazioni, vedere http://go.microsoft.com/fwlink/?LinkID=322105. Il file mancante è {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
+  </Target>
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="AfterBuild">
+  </Target>
+
+  -->
+</Project>
