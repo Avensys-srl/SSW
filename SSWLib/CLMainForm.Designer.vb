@@ -78,6 +78,7 @@ Partial Class CLMainForm
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
         Me.pnlPerformance_Data = New System.Windows.Forms.Panel()
         Me.grbPerformance_TemperatureConditions = New System.Windows.Forms.GroupBox()
+        Me.btn_Default = New System.Windows.Forms.Button()
         Me.btnEN308 = New System.Windows.Forms.Button()
         Me.txbPerformance_RHReturnInlet = New System.Windows.Forms.TextBox()
         Me.txbPerformance_ReturnInletTemperature = New System.Windows.Forms.TextBox()
@@ -230,6 +231,7 @@ Partial Class CLMainForm
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.txbAccessory_OutputData_CWDSensibleHeat = New System.Windows.Forms.TextBox()
+        Me.bsrUnitCalculator = New System.Windows.Forms.BindingSource(Me.components)
         Me.Label3 = New System.Windows.Forms.Label()
         Me.txbAccessory_OutputData_CWDHeatTransferred = New System.Windows.Forms.TextBox()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
@@ -328,7 +330,6 @@ Partial Class CLMainForm
         Me.pnlMain = New System.Windows.Forms.Panel()
         Me.sfdSavePdf = New System.Windows.Forms.SaveFileDialog()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
-        Me.bsrUnitCalculator = New System.Windows.Forms.BindingSource(Me.components)
         Me.mnsMain.SuspendLayout()
         Me.tbpPerformance.SuspendLayout()
         CType(Me.spcPerformance, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -387,6 +388,7 @@ Partial Class CLMainForm
         Me.tbpAccessory.SuspendLayout()
         Me.grbAccessory_OutputData.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
+        CType(Me.bsrUnitCalculator, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox2.SuspendLayout()
         Me.grbAccessory_EHD.SuspendLayout()
         Me.grbAccessory_HWD.SuspendLayout()
@@ -401,7 +403,6 @@ Partial Class CLMainForm
         Me.grbCO2Level_Room.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlMain.SuspendLayout()
-        CType(Me.bsrUnitCalculator, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'mnsMain
@@ -655,6 +656,7 @@ Partial Class CLMainForm
         Me.grbPerformance_TemperatureConditions.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.grbPerformance_TemperatureConditions.Controls.Add(Me.btn_Default)
         Me.grbPerformance_TemperatureConditions.Controls.Add(Me.btnEN308)
         Me.grbPerformance_TemperatureConditions.Controls.Add(Me.txbPerformance_RHReturnInlet)
         Me.grbPerformance_TemperatureConditions.Controls.Add(Me.txbPerformance_ReturnInletTemperature)
@@ -670,6 +672,16 @@ Partial Class CLMainForm
         Me.grbPerformance_TemperatureConditions.TabIndex = 1
         Me.grbPerformance_TemperatureConditions.TabStop = False
         Me.grbPerformance_TemperatureConditions.Text = "Temperature Conditions"
+        '
+        'btn_Default
+        '
+        Me.btn_Default.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btn_Default.Location = New System.Drawing.Point(227, 79)
+        Me.btn_Default.Name = "btn_Default"
+        Me.btn_Default.Size = New System.Drawing.Size(126, 49)
+        Me.btn_Default.TabIndex = 8
+        Me.btn_Default.Text = "Default"
+        Me.btn_Default.UseVisualStyleBackColor = True
         '
         'btnEN308
         '
@@ -2390,6 +2402,10 @@ Partial Class CLMainForm
         Me.txbAccessory_OutputData_CWDSensibleHeat.Size = New System.Drawing.Size(87, 20)
         Me.txbAccessory_OutputData_CWDSensibleHeat.TabIndex = 9
         '
+        'bsrUnitCalculator
+        '
+        Me.bsrUnitCalculator.DataSource = GetType(SSW.CLUnitCalculator)
+        '
         'Label3
         '
         Me.Label3.AutoSize = True
@@ -3328,10 +3344,6 @@ Partial Class CLMainForm
         '
         Me.ToolTip1.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info
         '
-        'bsrUnitCalculator
-        '
-        Me.bsrUnitCalculator.DataSource = GetType(SSW.CLUnitCalculator)
-        '
         'CLMainForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -3426,6 +3438,7 @@ Partial Class CLMainForm
         Me.grbAccessory_OutputData.PerformLayout()
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
+        CType(Me.bsrUnitCalculator, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox2.ResumeLayout(False)
         Me.GroupBox2.PerformLayout()
         Me.grbAccessory_EHD.ResumeLayout(False)
@@ -3449,7 +3462,6 @@ Partial Class CLMainForm
         Me.grbCO2Level_Room.PerformLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlMain.ResumeLayout(False)
-        CType(Me.bsrUnitCalculator, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -3742,4 +3754,5 @@ Partial Class CLMainForm
     Friend WithEvents chb_qtm_ACTIVA As CheckBox
     Friend WithEvents tsmiOption_Language_DA As ToolStripMenuItem
     Friend WithEvents btnEN308 As Button
+    Friend WithEvents btn_Default As Button
 End Class

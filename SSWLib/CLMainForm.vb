@@ -3708,6 +3708,15 @@ Public Class CLMainForm
         txbPerformance_RHFreshInlet.Text = 72
         txbPerformance_ReturnInletTemperature.Text = 25
         txbPerformance_RHReturnInlet.Text = 28
+        Calculate()
+    End Sub
+
+    Private Sub btn_Default_Click(sender As Object, e As EventArgs) Handles btn_Default.Click
+        txbPerformance_FreshInletTemperature.Text = -10
+        txbPerformance_RHFreshInlet.Text = 80
+        txbPerformance_ReturnInletTemperature.Text = 20
+        txbPerformance_RHReturnInlet.Text = 60
+        Calculate()
     End Sub
 End Class
 
