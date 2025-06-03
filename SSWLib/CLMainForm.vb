@@ -1361,8 +1361,17 @@ Public Class CLMainForm
         reportViewForm.SetReport(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "CLMainReport.rdlc"), _
         reportDataSources.ToArray(), Microsoft.Reporting.WinForms.DisplayMode.PrintLayout)
 
+        Dim nomeFileSuffisso As String
+
+        If (m_Note_Text.Text.Length()) Then
+            nomeFileSuffisso = m_Note_Text.Text.Replace(" ", "_") & "_"
+        Else
+            nomeFileSuffisso = ""
+        End If
+
         reportViewForm.WindowState = FormWindowState.Maximized
-        reportViewForm.rpvReport.LocalReport.DisplayName = SelectedHeatRecoveryModelCustomerName & "_" &
+        reportViewForm.rpvReport.LocalReport.DisplayName = nomeFileSuffisso &
+            SelectedHeatRecoveryModelCustomerName & "_" &
             workingPointDataRow.AirFlow_Value & "_" &
             workingPointDataRow.MaxPressure_Value & "_" &
             "Report_" & Environment.PrimaryLanguageCode

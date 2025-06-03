@@ -7,18 +7,18 @@
 <DiagramLayout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ex:showrelationlabel="False" ViewPortX="9" ViewPortY="105" xmlns:ex="urn:schemas-microsoft-com:xml-msdatasource-layout-extended" xmlns="urn:schemas-microsoft-com:xml-msdatasource-layout">
   <Shapes>
     <Shape ID="DesignTable:HeaderDataTable" ZOrder="1" X="28" Y="350" Height="28" Width="177" AdapterExpanded="true" DataTableExpanded="false" OldAdapterHeight="0" OldDataTableHeight="215" SplitterPosition="24" />
-    <Shape ID="DesignTable:PerformanceAccordanceDataTable" ZOrder="14" X="288" Y="115" Height="26" Width="261" AdapterExpanded="true" DataTableExpanded="false" OldAdapterHeight="0" OldDataTableHeight="210" SplitterPosition="22" />
+    <Shape ID="DesignTable:PerformanceAccordanceDataTable" ZOrder="14" X="288" Y="115" Height="28" Width="261" AdapterExpanded="true" DataTableExpanded="false" OldAdapterHeight="0" OldDataTableHeight="210" SplitterPosition="24" />
     <Shape ID="DesignTable:WorkingPointDataTable" ZOrder="11" X="23" Y="176" Height="28" Width="206" AdapterExpanded="true" DataTableExpanded="false" OldAdapterHeight="0" OldDataTableHeight="272" SplitterPosition="24" />
     <Shape ID="DesignTable:TemperatureConditionsAndHumidityDataTable" ZOrder="12" X="269" Y="170" Height="26" Width="273" AdapterExpanded="true" DataTableExpanded="false" OldAdapterHeight="0" OldDataTableHeight="312" SplitterPosition="22" />
-    <Shape ID="DesignTable:HeatExchangerPerformancesDataTable" ZOrder="6" X="53" Y="489" Height="26" Width="346" AdapterExpanded="true" DataTableExpanded="false" OldAdapterHeight="0" OldDataTableHeight="211" SplitterPosition="22" />
+    <Shape ID="DesignTable:HeatExchangerPerformancesDataTable" ZOrder="6" X="53" Y="489" Height="28" Width="346" AdapterExpanded="true" DataTableExpanded="false" OldAdapterHeight="0" OldDataTableHeight="211" SplitterPosition="24" />
     <Shape ID="DesignTable:SoundPowerDataTableOld" ZOrder="9" X="30" Y="404" Height="26" Width="198" AdapterExpanded="true" DataTableExpanded="false" OldAdapterHeight="0" OldDataTableHeight="1393" SplitterPosition="22" />
     <Shape ID="DesignTable:DiagramDataTable" ZOrder="13" X="22" Y="226" Height="26" Width="171" AdapterExpanded="true" DataTableExpanded="false" OldAdapterHeight="0" OldDataTableHeight="121" SplitterPosition="22" />
     <Shape ID="DesignTable:SAPDataTable" ZOrder="10" X="274" Y="247" Height="26" Width="325" AdapterExpanded="true" DataTableExpanded="false" OldAdapterHeight="0" OldDataTableHeight="194" SplitterPosition="22" />
     <Shape ID="DesignTable:SAPItemsDataTable" ZOrder="8" X="45" Y="451" Height="26" Width="222" AdapterExpanded="true" DataTableExpanded="false" OldAdapterHeight="0" OldDataTableHeight="143" SplitterPosition="22" />
     <Shape ID="DesignTable:SoundPowerDataTable" ZOrder="4" X="445" Y="302" Height="276" Width="198" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="24" SplitterPosition="272" />
     <Shape ID="DesignTable:SoundPowerHeaderDataTable" ZOrder="3" X="19" Y="298" Height="28" Width="240" AdapterExpanded="true" DataTableExpanded="false" OldAdapterHeight="0" OldDataTableHeight="253" SplitterPosition="24" />
-    <Shape ID="DesignTable:CO2LevelRoom" ZOrder="7" X="894" Y="196" Height="164" Width="152" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="160" />
-    <Shape ID="DesignTable:CO2LevelUse" ZOrder="5" X="1121" Y="131" Height="249" Width="278" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="245" />
+    <Shape ID="DesignTable:CO2LevelRoom" ZOrder="7" X="661" Y="257" Height="164" Width="152" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="160" />
+    <Shape ID="DesignTable:CO2LevelUse" ZOrder="5" X="689" Y="479" Height="249" Width="278" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="245" />
     <Shape ID="DesignTable:CO2LevelParameters" ZOrder="2" X="627" Y="161" Height="28" Width="184" AdapterExpanded="true" DataTableExpanded="false" OldAdapterHeight="0" OldDataTableHeight="398" SplitterPosition="24" />
   </Shapes>
   <Connectors />

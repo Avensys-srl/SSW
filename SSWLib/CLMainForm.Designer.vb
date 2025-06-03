@@ -2077,6 +2077,7 @@ Partial Class CLMainForm
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.m_Note_Text.Location = New System.Drawing.Point(52, 10)
+        Me.m_Note_Text.MaxLength = 100
         Me.m_Note_Text.Multiline = True
         Me.m_Note_Text.Name = "m_Note_Text"
         Me.m_Note_Text.ScrollBars = System.Windows.Forms.ScrollBars.Both
@@ -2088,9 +2089,9 @@ Partial Class CLMainForm
         Me.Label8.AutoSize = True
         Me.Label8.Location = New System.Drawing.Point(7, 10)
         Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(30, 13)
+        Me.Label8.Size = New System.Drawing.Size(27, 13)
         Me.Label8.TabIndex = 2
-        Me.Label8.Text = "Note"
+        Me.Label8.Text = "Ref."
         '
         'tlpPerformance_Graphs
         '
