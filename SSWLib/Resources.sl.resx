@@ -351,4 +351,10 @@
   <data name="RegLev_Note" xml:space="preserve">
     <value>V nekaterih primerih ne obstaja linearno razmerje med regulacijsko stopnjo in nivojem regulacije na enoti</value>
   </data>
+  <data name="MainForm_Summer" xml:space="preserve">
+    <value>Poletje</value>
+  </data>
+  <data name="MainForm_Winter" xml:space="preserve">
+    <value>Zima</value>
+  </data>
 </root>

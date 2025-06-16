@@ -414,4 +414,10 @@
   <data name="Yes" xml:space="preserve">
     <value>Oui</value>
   </data>
+  <data name="MainForm_Summer" xml:space="preserve">
+    <value>Été</value>
+  </data>
+  <data name="MainForm_Winter" xml:space="preserve">
+    <value>Hiver</value>
+  </data>
 </root>

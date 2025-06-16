@@ -594,4 +594,10 @@
   <data name="MainForm_MoistureRecovery" xml:space="preserve">
     <value>Moisture recovery</value>
   </data>
+  <data name="MainForm_Summer" xml:space="preserve">
+    <value>Summer</value>
+  </data>
+  <data name="MainForm_Winter" xml:space="preserve">
+    <value>Winter</value>
+  </data>
 </root>

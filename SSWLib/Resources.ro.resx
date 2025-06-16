@@ -426,4 +426,10 @@
   <data name="RegLev_Note" xml:space="preserve">
     <value>În unele cazuri, nu există o relație liniară între nivelul de reglare și cel de pe unitate</value>
   </data>
+  <data name="MainForm_Summer" xml:space="preserve">
+    <value>Vară</value>
+  </data>
+  <data name="MainForm_Winter" xml:space="preserve">
+    <value>Iarnă</value>
+  </data>
 </root>

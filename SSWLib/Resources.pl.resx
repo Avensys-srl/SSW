@@ -435,4 +435,10 @@
   <data name="RegLev_Note" xml:space="preserve">
     <value>W niektórych przypadkach może nie być liniowej zależności między poziomem regulacji a poziomem na urządzeniu</value>
   </data>
+  <data name="MainForm_Summer" xml:space="preserve">
+    <value>Lato</value>
+  </data>
+  <data name="MainForm_Winter" xml:space="preserve">
+    <value>Zima</value>
+  </data>
 </root>

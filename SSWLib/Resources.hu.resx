@@ -528,4 +528,10 @@
   <data name="RegLev_Note" xml:space="preserve">
     <value>Bizonyos esetekben nem lehet lineáris kapcsolat a szabályozási szint és az egységen lévő kapcsolat között</value>
   </data>
+  <data name="MainForm_Summer" xml:space="preserve">
+    <value>Nyár</value>
+  </data>
+  <data name="MainForm_Winter" xml:space="preserve">
+    <value>Tél</value>
+  </data>
 </root>

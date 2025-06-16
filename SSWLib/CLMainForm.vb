@@ -1642,6 +1642,12 @@ Public Class CLMainForm
 
         tbpData_ElectricalPerformances.Text = Environment.Localization.GetString(CLMessageResources.MainForm_ElectricalPerformances.ToString())
 
+        btn_summer.Text = Environment.Localization.GetString(CLMessageResources.MainForm_Summer.ToString())
+
+        btn_winter.Text = Environment.Localization.GetString(CLMessageResources.MainForm_Winter.ToString())
+
+
+
         lblPerformance_ElectricalPerformances_PowerInput.Text = String.Format("{0} [{1}] ({2})", _
            Environment.Localization.GetString(CLMessageResources.MainForm_PowerInput.ToString()), _
            "W", _
@@ -3720,11 +3726,19 @@ Public Class CLMainForm
         Calculate()
     End Sub
 
-    Private Sub btn_Default_Click(sender As Object, e As EventArgs) Handles btn_Default.Click
+    Private Sub btn_Default_Click(sender As Object, e As EventArgs) Handles btn_winter.Click
         txbPerformance_FreshInletTemperature.Text = -10
         txbPerformance_RHFreshInlet.Text = 80
         txbPerformance_ReturnInletTemperature.Text = 20
         txbPerformance_RHReturnInlet.Text = 60
+        Calculate()
+    End Sub
+
+    Private Sub btn_summer_Click(sender As Object, e As EventArgs) Handles btn_summer.Click
+        txbPerformance_FreshInletTemperature.Text = 32
+        txbPerformance_RHFreshInlet.Text = 80
+        txbPerformance_ReturnInletTemperature.Text = 26
+        txbPerformance_RHReturnInlet.Text = 50
         Calculate()
     End Sub
 End Class

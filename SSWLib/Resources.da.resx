@@ -498,6 +498,9 @@
   <data name="MainForm_SingleBranch" xml:space="preserve">
     <value>enkelt gren</value>
   </data>
+  <data name="MainForm_Summer" xml:space="preserve">
+    <value>Sommer</value>
+  </data>
   <data name="MainForm_SupplyOutletTemperature" xml:space="preserve">
     <value>Forsyningsudløbstemp.</value>
   </data>
@@ -518,6 +521,9 @@
   </data>
   <data name="MainForm_WaterProduced" xml:space="preserve">
     <value>Vand produceret</value>
+  </data>
+  <data name="MainForm_Winter" xml:space="preserve">
+    <value>Vinter</value>
   </data>
   <data name="No" xml:space="preserve">
     <value>Ingen</value>

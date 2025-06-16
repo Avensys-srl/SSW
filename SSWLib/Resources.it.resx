@@ -516,4 +516,10 @@
   <data name="MainForm_MoistureRecovery" xml:space="preserve">
     <value>Umidità Recuperata</value>
   </data>
+  <data name="MainForm_Summer" xml:space="preserve">
+    <value>Estate</value>
+  </data>
+  <data name="MainForm_Winter" xml:space="preserve">
+    <value>Inverno</value>
+  </data>
 </root>

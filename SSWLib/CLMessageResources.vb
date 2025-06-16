@@ -31,6 +31,8 @@ Public Enum CLMessageResources
     MainForm_Performance
     MainForm_Certification
     MainForm_UpdateSAPTable
+    MainForm_Winter
+    MainForm_Summer
     Yes
     No
     MainForm_FileSaved

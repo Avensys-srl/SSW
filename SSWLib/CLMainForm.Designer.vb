@@ -78,7 +78,8 @@ Partial Class CLMainForm
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
         Me.pnlPerformance_Data = New System.Windows.Forms.Panel()
         Me.grbPerformance_TemperatureConditions = New System.Windows.Forms.GroupBox()
-        Me.btn_Default = New System.Windows.Forms.Button()
+        Me.btn_summer = New System.Windows.Forms.Button()
+        Me.btn_winter = New System.Windows.Forms.Button()
         Me.btnEN308 = New System.Windows.Forms.Button()
         Me.txbPerformance_RHReturnInlet = New System.Windows.Forms.TextBox()
         Me.txbPerformance_ReturnInletTemperature = New System.Windows.Forms.TextBox()
@@ -656,7 +657,8 @@ Partial Class CLMainForm
         Me.grbPerformance_TemperatureConditions.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.grbPerformance_TemperatureConditions.Controls.Add(Me.btn_Default)
+        Me.grbPerformance_TemperatureConditions.Controls.Add(Me.btn_summer)
+        Me.grbPerformance_TemperatureConditions.Controls.Add(Me.btn_winter)
         Me.grbPerformance_TemperatureConditions.Controls.Add(Me.btnEN308)
         Me.grbPerformance_TemperatureConditions.Controls.Add(Me.txbPerformance_RHReturnInlet)
         Me.grbPerformance_TemperatureConditions.Controls.Add(Me.txbPerformance_ReturnInletTemperature)
@@ -673,22 +675,32 @@ Partial Class CLMainForm
         Me.grbPerformance_TemperatureConditions.TabStop = False
         Me.grbPerformance_TemperatureConditions.Text = "Temperature Conditions"
         '
-        'btn_Default
+        'btn_summer
         '
-        Me.btn_Default.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btn_Default.Location = New System.Drawing.Point(227, 79)
-        Me.btn_Default.Name = "btn_Default"
-        Me.btn_Default.Size = New System.Drawing.Size(126, 49)
-        Me.btn_Default.TabIndex = 8
-        Me.btn_Default.Text = "Default"
-        Me.btn_Default.UseVisualStyleBackColor = True
+        Me.btn_summer.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btn_summer.Location = New System.Drawing.Point(227, 96)
+        Me.btn_summer.Name = "btn_summer"
+        Me.btn_summer.Size = New System.Drawing.Size(126, 32)
+        Me.btn_summer.TabIndex = 8
+        Me.btn_summer.Text = "Summer"
+        Me.btn_summer.UseVisualStyleBackColor = True
+        '
+        'btn_winter
+        '
+        Me.btn_winter.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btn_winter.Location = New System.Drawing.Point(227, 58)
+        Me.btn_winter.Name = "btn_winter"
+        Me.btn_winter.Size = New System.Drawing.Size(126, 32)
+        Me.btn_winter.TabIndex = 8
+        Me.btn_winter.Text = "Winter"
+        Me.btn_winter.UseVisualStyleBackColor = True
         '
         'btnEN308
         '
         Me.btnEN308.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnEN308.Location = New System.Drawing.Point(227, 21)
         Me.btnEN308.Name = "btnEN308"
-        Me.btnEN308.Size = New System.Drawing.Size(126, 49)
+        Me.btnEN308.Size = New System.Drawing.Size(126, 31)
         Me.btnEN308.TabIndex = 8
         Me.btnEN308.Text = "EN308"
         Me.btnEN308.UseVisualStyleBackColor = True
@@ -3755,5 +3767,6 @@ Partial Class CLMainForm
     Friend WithEvents chb_qtm_ACTIVA As CheckBox
     Friend WithEvents tsmiOption_Language_DA As ToolStripMenuItem
     Friend WithEvents btnEN308 As Button
-    Friend WithEvents btn_Default As Button
+    Friend WithEvents btn_winter As Button
+    Friend WithEvents btn_summer As Button
 End Class
