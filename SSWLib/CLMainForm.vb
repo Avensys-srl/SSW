@@ -3741,5 +3741,13 @@ Public Class CLMainForm
         txbPerformance_RHReturnInlet.Text = 50
         Calculate()
     End Sub
+
+    Private Sub btnEN13141_Click(sender As Object, e As EventArgs) Handles btnEN13141.Click
+        txbPerformance_FreshInletTemperature.Text = 7
+        txbPerformance_RHFreshInlet.Text = 70
+        txbPerformance_ReturnInletTemperature.Text = 20
+        txbPerformance_RHReturnInlet.Text = 37
+        Calculate()
+    End Sub
 End Class
 

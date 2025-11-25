@@ -1118,26 +1118,32 @@ Public Module CLModule
 
     Function sound_power_correction(ByVal reg As Double, qref As Double, pref As Double, q1 As Double, p1 As Double, sound_value As Double) As Double
 
-        Dim k1, k2, k3, corr_reg, b1, b2, corr_flow, new_sound As Double
+        'Dim k1, k2, k3, corr_reg, b1, b2, corr_flow, new_sound As Double
 
-        k1 = -0.0000508304
-        k2 = 0.010028623
-        k3 = 0.505101875
-        b1 = 0.12782
-        b2 = -7
+        'k1 = -0.0000508304
+        'k2 = 0.010028623
+        'k3 = 0.505101875
+        'b1 = 0.12782
+        'b2 = -7
 
-        If reg = 100 Then
-            corr_reg = 1
-        Else
-            corr_reg = k1 * reg ^ 2 + k2 * reg + k3
+        'If reg = 100 Then
+        '    corr_reg = 1
+        'Else
+        '    corr_reg = k1 * reg ^ 2 + k2 * reg + k3
 
-        End If
+        'End If
 
-        corr_flow = b1 * Math.Log10(p1 / pref) + b2 * Math.Log10(q1 / qref)
+        'corr_flow = b1 * Math.Log10(p1 / pref) + b2 * Math.Log10(q1 / qref)
 
-        new_sound = corr_reg * sound_value - corr_flow
+        'new_sound = corr_reg * sound_value - corr_flow
+
+        Dim new_sound As Double
+
+        new_sound = (sound_value) + 55 * Math.Log10(reg / 100)
 
         Return new_sound
+
+
 
     End Function
 

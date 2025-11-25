@@ -258,10 +258,10 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>81F07AD38DF70CA9553B69DC806B28BDFB79E5D8</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>9ED05E1AE4441D2E7925C94020F9D40BFFA0CD56</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>ssw.pfx</ManifestKeyFile>
+    <ManifestKeyFile>SSW_5_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
@@ -998,6 +998,7 @@
     <None Include="SSW_3_TemporaryKey.pfx" />
     <None Include="SSW_4_Key.pfx" />
     <None Include="SSW_4_TemporaryKey.pfx" />
+    <None Include="SSW_5_TemporaryKey.pfx" />
     <None Include="SSW_ChiaveTemporanea.pfx" />
     <None Include="SSW_TemporaryKey.pfx" />
   </ItemGroup>
