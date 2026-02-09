@@ -1,12 +1,12 @@
 # SSW – Selection Software Workbench
 
-SSW is a Windows desktop selection tool (WinForms) built for multiple HVAC/ventilation manufacturers. The same codebase is compiled into different branded editions (profiles) that customize product data, branding, and customer information. The solution contains a C# WinForms application and a VB.NET class library that holds most UI and domain logic.
+SSW is a Windows desktop selection tool (WinForms) built for multiple HVAC/ventilation manufacturers. The same codebase is compiled into different editions (profiles) that customize product data, branding, and customer information. The solution contains a C# WinForms application and a VB.NET class library that holds most UI and domain logic.
 
 This repository targets the .NET Framework and uses SQL Server Compact for the local data store, Entity Framework for data access, and ReportViewer/iTextSharp for report generation.
 
 ## Key Capabilities
 
-- Branded builds for multiple OEMs via compile-time profiles.
+- Multiple OEM builds via compile-time profiles.
 - Unit selection and performance calculations for heat recovery and related components.
 - Local product data storage in SQL Server Compact (`.sdf`) files.
 - Multi-language UI resources.
@@ -20,28 +20,28 @@ This repository targets the .NET Framework and uses SQL Server Compact for the l
 - `3rd/`: third-party binaries (e.g., `COILcalc.dll`).
 - `packages/`: NuGet packages (legacy `packages.config` restore).
 
-## Branded Profiles
+## Profiles
 
 Profiles are controlled by conditional compilation symbols (`_PROFILE_*`) defined per solution configuration. Choose the configuration that matches the target customer.
 
 Profiles defined in `SSW/CLProgram.cs`:
 
-- `AC` – Air Car Selection Software
-- `AL` – Allvotech AG Selection Software
-- `AV` – Avensys Selection Software
-- `CL` – Climalombarda Selection Software
-- `CV` – Climavent Selection Software
-- `DAN` – Dan-Poltherm Selection Software
-- `FA` – France Air Selection Software
-- `FAI` – France Air Italia Selection Software
-- `FS` – Flop System Program Doboru REKU
-- `FT` – Felsinea Tech Selection Software
-- `IN` – Inatherm BV Selection Software
-- `NL` – Nordluft Selection Software
-- `SIG` – CAIROX Selection Software
-- `SKL` – S-Klima Selection Software
-- `SU` – Sunwood Selection Software
-- `WE` – Weger Selection Software
+- `AC`
+- `AL`
+- `AV`
+- `CL`
+- `CV`
+- `DAN`
+- `FA`
+- `FAI`
+- `FS`
+- `FT`
+- `IN`
+- `NL`
+- `SIG`
+- `SKL`
+- `SU`
+- `WE`
 
 Each profile maps to an `SSWInfo` class (`SSW/CLSSWInfo_*.cs`) that provides customer data, branding, and default language.
 
@@ -125,4 +125,3 @@ No license file is present in this repository. Treat the code and assets as prop
 - **Missing packages**: run NuGet restore; the project will fail with a clear error if EF or SQL Server Types packages are missing.
 - **Missing data**: ensure `data\DataCentral.sdf` exists in the output folder for the profile.
 - **Wrong branding**: verify the selected solution configuration matches the intended profile (`AC`, `CL`, `SIG`, etc.).
-
