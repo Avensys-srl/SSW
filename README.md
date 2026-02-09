@@ -1,0 +1,128 @@
+# SSW – Selection Software Workbench
+
+SSW is a Windows desktop selection tool (WinForms) built for multiple HVAC/ventilation manufacturers. The same codebase is compiled into different branded editions (profiles) that customize product data, branding, and customer information. The solution contains a C# WinForms application and a VB.NET class library that holds most UI and domain logic.
+
+This repository targets the .NET Framework and uses SQL Server Compact for the local data store, Entity Framework for data access, and ReportViewer/iTextSharp for report generation.
+
+## Key Capabilities
+
+- Branded builds for multiple OEMs via compile-time profiles.
+- Unit selection and performance calculations for heat recovery and related components.
+- Local product data storage in SQL Server Compact (`.sdf`) files.
+- Multi-language UI resources.
+- Report generation using Microsoft ReportViewer and PDF export (iTextSharp).
+
+## Solution Structure
+
+- `SSW.sln`: Visual Studio solution.
+- `SSW/`: C# WinForms executable (entry point, profile selection, build configurations).
+- `SSWLib/`: VB.NET class library with UI forms and domain logic.
+- `3rd/`: third-party binaries (e.g., `COILcalc.dll`).
+- `packages/`: NuGet packages (legacy `packages.config` restore).
+
+## Branded Profiles
+
+Profiles are controlled by conditional compilation symbols (`_PROFILE_*`) defined per solution configuration. Choose the configuration that matches the target customer.
+
+Profiles defined in `SSW/CLProgram.cs`:
+
+- `AC` – Air Car Selection Software
+- `AL` – Allvotech AG Selection Software
+- `AV` – Avensys Selection Software
+- `CL` – Climalombarda Selection Software
+- `CV` – Climavent Selection Software
+- `DAN` – Dan-Poltherm Selection Software
+- `FA` – France Air Selection Software
+- `FAI` – France Air Italia Selection Software
+- `FS` – Flop System Program Doboru REKU
+- `FT` – Felsinea Tech Selection Software
+- `IN` – Inatherm BV Selection Software
+- `NL` – Nordluft Selection Software
+- `SIG` – CAIROX Selection Software
+- `SKL` – S-Klima Selection Software
+- `SU` – Sunwood Selection Software
+- `WE` – Weger Selection Software
+
+Each profile maps to an `SSWInfo` class (`SSW/CLSSWInfo_*.cs`) that provides customer data, branding, and default language.
+
+## Tech Stack
+
+- .NET Framework 4.8
+- C# (WinForms) + VB.NET class library
+- Entity Framework 6 (SQL Server Compact provider)
+- Microsoft SQL Server Compact 4.0
+- Microsoft ReportViewer (WinForms)
+- iTextSharp (PDF output)
+- alglib.net (math)
+- BouncyCastle (crypto)
+
+## Prerequisites
+
+- Windows
+- Visual Studio 2019 or newer with ".NET desktop development" workload
+- .NET Framework 4.8 Targeting Pack
+
+Optional for runtime distribution:
+
+- Microsoft SQL Server Compact 4.0 runtime (native binaries are copied post-build)
+
+## Build
+
+1. Open `SSW.sln` in Visual Studio.
+1. Restore NuGet packages (solution uses `packages.config`).
+1. Select the desired **configuration** (e.g., `CL|x86`, `AC|x86`, etc.).
+1. Build the solution.
+
+The `SSW` project includes a post-build step that copies SQL Server Compact native binaries into `x86` and `amd64` folders in the output directory.
+
+## Run
+
+Run from Visual Studio (Start) or execute the built binary directly:
+
+- `SSW\bin\x86\<PROFILE>\SSW.exe`
+
+Example:
+
+- `SSW\bin\x86\CL\SSW.exe`
+
+## Data Files
+
+At runtime the application expects a SQL Server Compact data file:
+
+- `data\DataCentral.sdf` located next to the executable.
+
+When a debugger is attached, the application can redirect the data path to a network share (see `SSW/CLProgram.cs`). For normal runs, ensure the `data` folder is present in the output directory with the correct `.sdf` file for the chosen profile.
+
+## Localization
+
+Localized resources live in `SSWLib/Resources.*.resx`. Available resource languages in this repo include:
+
+- `bg`, `da`, `de`, `en`, `fr`, `hu`, `it`, `nl`, `pl`, `ro`, `sl`
+
+## Reporting
+
+Report generation uses Microsoft ReportViewer. Output templates are deployed alongside the binaries (e.g., `CLMainReport.rdlc` in `bin` folders).
+
+## Signing and Publish
+
+The `SSW` project includes multiple `.pfx` key files and ClickOnce settings in the project file. If you publish or sign builds, verify the correct key and publishing settings for the target customer.
+
+## Dependencies
+
+See:
+
+- `SSW/packages.config`
+- `SSWLib/packages.config`
+
+These define all NuGet dependencies and versions used by each project.
+
+## License
+
+No license file is present in this repository. Treat the code and assets as proprietary unless a license is added.
+
+## Troubleshooting
+
+- **Missing packages**: run NuGet restore; the project will fail with a clear error if EF or SQL Server Types packages are missing.
+- **Missing data**: ensure `data\DataCentral.sdf` exists in the output folder for the profile.
+- **Wrong branding**: verify the selected solution configuration matches the intended profile (`AC`, `CL`, `SIG`, etc.).
+
