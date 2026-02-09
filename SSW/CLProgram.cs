@@ -164,15 +164,8 @@ namespace SSW
 
 				string	sswDCLitePath	= Path.Combine( Path.GetDirectoryName( Application.ExecutablePath ), "data", "DataCentral.sdf" );
 			
-				if (Debugger.IsAttached)
-				{
-					if (Environment.MachineName == "ENEA-PC")
-						sswDCLitePath	= Path.Combine( @"D:\job\Climalombarda\shared\SSWDCLite",
-							string.Format("{0}-SSWDataCentral.sdf", CLSSWProfile.Code));
-					else
-						sswDCLitePath	= Path.Combine( @"\\server_av\TECHNO\TECHNO_SOFT\App\Shared\SSWDCLite",
-							string.Format("{0}-SSWDataCentral.sdf", CLSSWProfile.Code));
-				}
+				// Debug builds should still use the local data file next to the executable.
+				// This avoids hardcoded machine/network paths causing missing DB errors.
 
 
 
