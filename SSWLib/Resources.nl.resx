@@ -1,110 +1,52 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<root>
-  <!-- 
-    Microsoft ResX Schema 
-    
-    Version 2.0
-    
-    The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes 
-    associated with the data types.
-    
-    Example:
-    
-    ... ado.net/XML headers & schema ...
-    <resheader name="resmimetype">text/microsoft-resx</resheader>
-    <resheader name="version">2.0</resheader>
-    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
-    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
-    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
-    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
-    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-        <value>[base64 mime encoded serialized .NET Framework object]</value>
-    </data>
-    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
-        <comment>This is a comment</comment>
-    </data>
-                
-    There are any number of "resheader" rows that contain simple 
-    name/value pairs.
-    
-    Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
-    text/value conversion through the TypeConverter architecture. 
-    Classes that don't support this are serialized and stored with the 
-    mimetype set.
-    
-    The mimetype is used for serialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not 
-    extensible. For a given mimetype the value must be set accordingly:
-    
-    Note - application/x-microsoft.net.object.binary.base64 is the format 
-    that the ResXResourceWriter will generate, however the reader can 
-    read any of the formats listed below.
-    
-    mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
-            : and then encoded with base64 encoding.
-    
-    mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
-            : and then encoded with base64 encoding.
-
-    mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array 
-            : using a System.ComponentModel.TypeConverter
-            : and then encoded with base64 encoding.
-    -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
-    <xsd:element name="root" msdata:IsDataSet="true">
-      <xsd:complexType>
-        <xsd:choice maxOccurs="unbounded">
-          <xsd:element name="metadata">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
-              </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="assembly">
-            <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="data">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="resheader">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
-            </xsd:complexType>
-          </xsd:element>
-        </xsd:choice>
-      </xsd:complexType>
-    </xsd:element>
-  </xsd:schema>
+<?xml version='1.0' encoding='utf-8'?>
+<root xmlns:ns1="urn:schemas-microsoft-com:xml-msdata" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  
+  <xs:schema id="root">
+    <xs:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xs:element name="root" ns1:IsDataSet="true">
+      <xs:complexType>
+        <xs:choice maxOccurs="unbounded">
+          <xs:element name="metadata">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="value" type="xsd:string" minOccurs="0" />
+              </xs:sequence>
+              <xs:attribute name="name" use="required" type="xsd:string" />
+              <xs:attribute name="type" type="xsd:string" />
+              <xs:attribute name="mimetype" type="xsd:string" />
+              <xs:attribute ref="xml:space" />
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="assembly">
+            <xs:complexType>
+              <xs:attribute name="alias" type="xsd:string" />
+              <xs:attribute name="name" type="xsd:string" />
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="data">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="value" type="xsd:string" minOccurs="0" ns1:Ordinal="1" />
+                <xs:element name="comment" type="xsd:string" minOccurs="0" ns1:Ordinal="2" />
+              </xs:sequence>
+              <xs:attribute name="name" type="xsd:string" use="required" ns1:Ordinal="1" />
+              <xs:attribute name="type" type="xsd:string" ns1:Ordinal="3" />
+              <xs:attribute name="mimetype" type="xsd:string" ns1:Ordinal="4" />
+              <xs:attribute ref="xml:space" />
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="resheader">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="value" type="xsd:string" minOccurs="0" ns1:Ordinal="1" />
+              </xs:sequence>
+              <xs:attribute name="name" type="xsd:string" use="required" />
+            </xs:complexType>
+          </xs:element>
+        </xs:choice>
+      </xs:complexType>
+    </xs:element>
+  </xs:schema>
   <resheader name="resmimetype">
     <value>text/microsoft-resx</value>
   </resheader>
@@ -232,25 +174,25 @@
     <value>Taal</value>
   </data>
   <data name="MainForm_Menu_Option_Language_Deutsch" xml:space="preserve">
-    <value>Duits</value>
+    <value>Deutsch</value>
   </data>
   <data name="MainForm_Menu_Option_Language_Dutch" xml:space="preserve">
     <value>Nederlands</value>
   </data>
   <data name="MainForm_Menu_Option_Language_English" xml:space="preserve">
-    <value>Engels</value>
+    <value>English</value>
   </data>
   <data name="MainForm_Menu_Option_Language_Français" xml:space="preserve">
-    <value>Frans</value>
+    <value>Français</value>
   </data>
   <data name="MainForm_Menu_Option_Language_Italian" xml:space="preserve">
-    <value>Italiaans</value>
+    <value>Italiano</value>
   </data>
   <data name="MainForm_Menu_Option_Language_Polish" xml:space="preserve">
-    <value>Pools</value>
+    <value>Polski</value>
   </data>
   <data name="MainForm_Menu_Option_Language_Slovenian" xml:space="preserve">
-    <value>Sloveens</value>
+    <value>Slovenščina</value>
   </data>
   <data name="MainForm_Menu_Option_SelectMode" xml:space="preserve">
     <value>Selecteer modus</value>
@@ -438,4 +380,4 @@
   <data name="MainForm_Winter" xml:space="preserve">
     <value>Winter</value>
   </data>
-</root>
+<data name="MainForm_Menu_Option_Language_Romanian" xml:space="preserve"><value>Română</value></data><data name="MainForm_Menu_Option_Language_Bulgarian" xml:space="preserve"><value>Български</value></data><data name="MainForm_Menu_Option_Language_Hungarian" xml:space="preserve"><value>Magyar</value></data><data name="MainForm_Menu_Option_Language_Danish" xml:space="preserve"><value>Dansk</value></data><data name="AboutBoxForm_AirflowPressure" xml:space="preserve"><value>@@AirflowPressure</value></data><data name="AboutBoxForm_ElectricPowerInput" xml:space="preserve"><value>@@ElectricPowerInput</value></data><data name="AboutBoxForm_ExternalLeakage" xml:space="preserve"><value>@@ExternalLeakage</value></data><data name="AboutBoxForm_InternalLeakage" xml:space="preserve"><value>@@InternalLeakage</value></data><data name="AboutBoxForm_NoiseLevel" xml:space="preserve"><value>@@NoiseLevel</value></data><data name="AboutBoxForm_Title" xml:space="preserve"><value>@@PerformancesAccordanceWith</value></data><data name="CO2Level" xml:space="preserve"><value>CO2‑niveau</value></data><data name="CO2Level_AddToReport" xml:space="preserve"><value>Toevoegen aan rapport</value></data><data name="CO2Level_Parameters" xml:space="preserve"><value>Parameters</value></data><data name="CO2Level_Parameters_Af_area" xml:space="preserve"><value>Luchtdebiet per oppervlak</value></data><data name="CO2Level_Parameters_Af_demand" xml:space="preserve"><value>Gevraagd luchtdebiet</value></data><data name="CO2Level_Parameters_Af_person" xml:space="preserve"><value>Luchtdebiet per persoon</value></data><data name="CO2Level_Parameters_Af_set" xml:space="preserve"><value>Ingestelde luchtdebiet</value></data><data name="CO2Level_Parameters_CalcMet" xml:space="preserve"><value>Berekeningsmethode</value></data><data name="CO2Level_Parameters_CalcMet_Fixed_Af" xml:space="preserve"><value>Vast debiet</value></data><data name="CO2Level_Parameters_CalcMet_MaxCO2" xml:space="preserve"><value>Max. CO2‑niveau</value></data><data name="CO2Level_Parameters_CalcMet_PersonRelated" xml:space="preserve"><value>Persoonsgebonden</value></data><data name="CO2Level_Parameters_checkwp" xml:space="preserve"><value>Werkpunt controleren</value></data><data name="CO2Level_Parameters_ExtCO2" xml:space="preserve"><value>Buiten CO2‑niveau</value></data><data name="CO2Level_Parameters_MaxCO2" xml:space="preserve"><value>Max. CO2‑niveau</value></data><data name="CO2Level_Parameters_StandardPreset" xml:space="preserve"><value>Standaardinstelling</value></data><data name="CO2Level_Parameters_StandardPreset_01" xml:space="preserve"><value>Geen</value></data><data name="CO2Level_Parameters_StandardPreset_02" xml:space="preserve"><value>Building bulletin 101 : Max 1000 ppm CO2</value></data><data name="CO2Level_Parameters_StandardPreset_03" xml:space="preserve"><value>EN15251 cat I,B1: 10 l/s pers &amp; 0,5 l/s m2</value></data><data name="CO2Level_Parameters_StandardPreset_04" xml:space="preserve"><value>EN15251 cat I,B2: 10 l/s pers &amp; 1,0 l/s m2</value></data><data name="CO2Level_Parameters_StandardPreset_05" xml:space="preserve"><value>EN15251 cat I,B3: 10 l/s pers &amp; 2,0 l/s m2</value></data><data name="CO2Level_Parameters_StandardPreset_06" xml:space="preserve"><value>EN15251 cat II,B1: 7 l/s pers &amp; 0,35 l/s m2</value></data><data name="CO2Level_Parameters_StandardPreset_07" xml:space="preserve"><value>EN15251 cat II,B2: 7 l/s pers &amp; 0,7 l/s m2</value></data><data name="CO2Level_Parameters_StandardPreset_08" xml:space="preserve"><value>EN15251 cat II,B3: 7 l/s pers &amp; 1,4 l/s m2</value></data><data name="CO2Level_Parameters_StandardPreset_09" xml:space="preserve"><value>EN15251 cat III,B1: 4 l/s pers &amp; 0,2 l/s m2</value></data><data name="CO2Level_Parameters_StandardPreset_10" xml:space="preserve"><value>EN15251 cat III,B2: 4 l/s pers &amp; 0,4 l/s m2</value></data><data name="CO2Level_Parameters_StandardPreset_11" xml:space="preserve"><value>EN15251 cat III,B3: 4 l/s pers &amp; 0,8 l/s m2</value></data><data name="CO2Level_Parameters_StandardPreset_12" xml:space="preserve"><value>EN15251 cat I: C02 max 700 ppm</value></data><data name="CO2Level_Parameters_StandardPreset_13" xml:space="preserve"><value>EN15251 cat II: C02 max 850 ppm</value></data><data name="CO2Level_Parameters_StandardPreset_14" xml:space="preserve"><value>EN15251 cat III: C02 max 1150 ppm</value></data><data name="CO2Level_PeriodOfTime" xml:space="preserve"><value>Tijdsduur</value></data><data name="CO2Level_Room" xml:space="preserve"><value>Ruimte</value></data><data name="CO2Level_Room_Height" xml:space="preserve"><value>Hoogte</value></data><data name="CO2Level_Room_Length" xml:space="preserve"><value>Lengte</value></data><data name="CO2Level_Room_Witdh" xml:space="preserve"><value>Breedte</value></data><data name="CO2Level_Usage" xml:space="preserve"><value>Gebruik</value></data><data name="CO2Level_Usage_Break" xml:space="preserve"><value>Pauze</value></data><data name="CO2Level_Usage_CO2prod" xml:space="preserve"><value>CO2‑productie</value></data><data name="CO2Level_Usage_LevelAct" xml:space="preserve"><value>Activiteitsniveau</value></data><data name="CO2Level_Usage_People" xml:space="preserve"><value>Personen</value></data><data name="CO2Level_Usage_Period" xml:space="preserve"><value>Periode</value></data><data name="CO2Level_Usage_Presence" xml:space="preserve"><value>Aanwezigheid</value></data><data name="IOM" xml:space="preserve"><value>IOM</value></data><data name="MainForm" xml:space="preserve"><value>Prestaties</value></data><data name="MainForm_Menu_Option_Language_Bulgarian" xml:space="preserve"><value>Bulgarski</value></data><data name="MainForm_Menu_Option_Language_Romanian" xml:space="preserve"><value>Română</value></data><data name="SaveIOM" xml:space="preserve"><value>IOM opslaan</value></data><data name="Item_Code" xml:space="preserve"><value>Artikelcodering</value></data><data name="MainForm_MoistureRecovery" xml:space="preserve"><value>Vochtterugwinning</value></data></root>

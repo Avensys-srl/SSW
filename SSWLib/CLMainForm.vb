@@ -1685,6 +1685,9 @@ Public Class CLMainForm
         tsmiOption_Language_SL.Text = Environment.Localization.GetString(CLMessageResources.MainForm_Menu_Option_Language_Slovenian.ToString())
         tsmiOption_Language_BG.Text = Environment.Localization.GetString(CLMessageResources.MainForm_Menu_Option_Language_Bulgarian.ToString())
         tsmiOption_Language_RO.Text = Environment.Localization.GetString(CLMessageResources.MainForm_Menu_Option_Language_Romanian.ToString())
+        tsmiOption_Language_HU.Text = Environment.Localization.GetString(CLMessageResources.MainForm_Menu_Option_Language_Hungarian.ToString())
+        tsmiOption_Language_DA.Text = Environment.Localization.GetString(CLMessageResources.MainForm_Menu_Option_Language_Danish.ToString())
+        tsmiOption_Language_RO.Text = Environment.Localization.GetString(CLMessageResources.MainForm_Menu_Option_Language_Romanian.ToString())
 
         tsmiOption_Unit.Text = Environment.Localization.GetString(CLMessageResources.MainForm_Menu_Option_Unit.ToString())
         tsmiOption_Unit_IP.Text = Environment.Localization.GetString(CLMessageResources.MainForm_Menu_Option_Unit_IP.ToString())
