@@ -3,6 +3,7 @@ Imports iTextSharp.text
 Imports iTextSharp.text.pdf
 Imports System.Drawing.Imaging
 Imports System.Globalization
+Imports System.Net
 Imports System.Windows.Forms.DataVisualization.Charting
 Imports ClimaLombarda.Common
 Imports ClimaLombarda.Common.UI
@@ -2004,33 +2005,218 @@ Public Class CLMainForm
         Return Not String.IsNullOrEmpty(CommercialSheet_GetFiles(languageCode, True, shortname))
     End Function
 
+    Private Sub CommercialSheet_Log(message As String)
+        Try
+            Dim line As String = String.Format("{0:yyyy-MM-dd HH:mm:ss.fff} | {1}", DateTime.Now, message)
+            Debug.WriteLine(line)
+
+            Dim logPath As String = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "commercialsheet_lookup.log")
+            File.AppendAllText(logPath, line & System.Environment.NewLine)
+        Catch
+        End Try
+    End Sub
+
     Private Function CommercialSheet_GetFiles(languageCode As String, useEnLanguageWhenNotExist As Boolean, shortname As String) As String
 
         Dim dcHeatRecoveryModel As CLDCHeatRecoveryModel = SelectedHeatRecoveryModel
 
-        If dcHeatRecoveryModel Is Nothing OrElse String.IsNullOrEmpty(dcHeatRecoveryModel.PDFCommercialSheets) _
-            OrElse Not Directory.Exists(PDFDocumentDirectory) Then
+        If dcHeatRecoveryModel Is Nothing OrElse Not Directory.Exists(PDFDocumentDirectory) Then
+            CommercialSheet_Log("Lookup skipped: model is Nothing or css directory does not exist.")
             Return ""
         End If
 
-        Dim cssPdfFiles() As String
-        Dim pdfFiles As New List(Of String)
+        Dim serieCode As String = ""
+        Dim serieName As String = ""
+        Dim modelName As String = ""
+        Dim serieDirectory As String
+        Dim languageDirectory As String
+        Dim pdfFile As String
+        Dim normalizedLanguageCode As String = languageCode
 
-        cssPdfFiles = Directory.GetFiles(PDFDocumentDirectory, dcHeatRecoveryModel.PDFCommercialSheets.Replace("%LanguageCode%", languageCode).Replace("%ShortName%", shortname))
+        Try
+            serieCode = CStr(CallByName(dcHeatRecoveryModel.CLSerie, "Code", CallType.Get))
+        Catch
+            serieCode = ""
+        End Try
 
-        For Each pdfFile As String In cssPdfFiles
-            pdfFiles.Add(pdfFile)
-        Next
+        Try
+            serieName = CStr(CallByName(dcHeatRecoveryModel.CLSerie, "Name", CallType.Get))
+        Catch
+            serieName = ""
+        End Try
 
-        If pdfFiles.Count = 0 AndAlso useEnLanguageWhenNotExist AndAlso languageCode <> "EN" Then
-            Return CommercialSheet_GetFiles("EN", False, Environment.Branch.ShortName)
+        modelName = SelectedHeatRecoveryModelCustomerName
+        If String.IsNullOrWhiteSpace(modelName) Then
+            Try
+                modelName = CStr(CallByName(dcHeatRecoveryModel, "Name", CallType.Get))
+            Catch
+                modelName = ""
+            End Try
         End If
 
-        If pdfFiles.Count = 0 Then
+        If String.IsNullOrWhiteSpace(serieCode) AndAlso String.IsNullOrWhiteSpace(serieName) _
+            OrElse String.IsNullOrWhiteSpace(modelName) Then
+            CommercialSheet_Log(String.Format("Lookup skipped: serieCode='{0}', serieName='{1}', modelName='{2}'", serieCode, serieName, modelName))
             Return ""
         End If
-        Return pdfFiles(0)
 
+        If Not String.IsNullOrWhiteSpace(serieCode) Then
+            serieDirectory = Path.Combine(PDFDocumentDirectory, CommercialSheet_GetSerieFolderName(serieCode))
+        Else
+            serieDirectory = Path.Combine(PDFDocumentDirectory, "S" & serieName.Trim())
+        End If
+
+        If Not String.IsNullOrWhiteSpace(normalizedLanguageCode) Then
+            normalizedLanguageCode = normalizedLanguageCode.Trim().ToUpperInvariant()
+            If normalizedLanguageCode.Contains("-"c) Then
+                normalizedLanguageCode = normalizedLanguageCode.Split("-"c)(0)
+            End If
+        End If
+
+        languageDirectory = Path.Combine(serieDirectory, normalizedLanguageCode)
+
+        If Not String.IsNullOrWhiteSpace(serieCode) Then
+            Dim expectedFileName As String = CommercialSheet_BuildExpectedFileName(modelName, normalizedLanguageCode, shortname)
+            If Not String.IsNullOrEmpty(expectedFileName) Then
+                If String.Equals(shortname, "AV", StringComparison.OrdinalIgnoreCase) Then
+                    pdfFile = CommercialSheet_GetOnlineFile(serieCode.Trim(), normalizedLanguageCode, expectedFileName, shortname)
+                    If Not String.IsNullOrEmpty(pdfFile) Then
+                        CommercialSheet_Log("FOUND ONLINE (preferred for AV): " & pdfFile)
+                        Return pdfFile
+                    End If
+                End If
+            End If
+        End If
+
+        pdfFile = CommercialSheet_BuildAndFindFile(languageDirectory, modelName, normalizedLanguageCode, shortname)
+        If Not String.IsNullOrEmpty(pdfFile) Then
+            CommercialSheet_Log("FOUND LOCAL: " & pdfFile)
+            Return pdfFile
+        End If
+
+        If useEnLanguageWhenNotExist AndAlso normalizedLanguageCode <> "EN" Then
+            CommercialSheet_Log(String.Format("Fallback to EN from language '{0}'", normalizedLanguageCode))
+            Return CommercialSheet_GetFiles("EN", False, shortname)
+        End If
+
+        CommercialSheet_Log("NOT FOUND for current lookup.")
+        Return ""
+
+    End Function
+
+    Private Function CommercialSheet_GetSerieFolderName(serieCode As String) As String
+
+        Dim normalizedSerieCode As String = If(serieCode, "").Trim().ToUpperInvariant()
+        If normalizedSerieCode = "32" Then
+            Return "SA"
+        End If
+
+        Return "S" & normalizedSerieCode
+
+    End Function
+
+    Private Function CommercialSheet_BuildExpectedFileName(modelName As String, languageCode As String, shortname As String) As String
+
+        Dim cleanedModelName As String = modelName.Replace(ChrW(160), " "c)
+        Dim tokens() As String = cleanedModelName.Split(New Char() {" "c, ControlChars.Tab}, StringSplitOptions.RemoveEmptyEntries)
+        If tokens.Length >= 3 Then
+            Return String.Format("{0}_{1}_{2}_{3}.pdf",
+                tokens(2).ToUpperInvariant(),
+                tokens(1).ToUpperInvariant(),
+                languageCode.ToUpperInvariant(),
+                shortname.ToUpperInvariant())
+        End If
+
+        If tokens.Length = 2 Then
+            Return String.Format("{0}_{1}_{2}.pdf",
+                tokens(1).ToUpperInvariant(),
+                languageCode.ToUpperInvariant(),
+                shortname.ToUpperInvariant())
+        End If
+
+        If tokens.Length < 2 Then
+            CommercialSheet_Log(String.Format("Model name tokens < 2: modelName='{0}'", modelName))
+            Return ""
+        End If
+
+        Return ""
+
+    End Function
+
+    Private Function CommercialSheet_BuildAndFindFile(directoryPath As String, modelName As String, languageCode As String, shortname As String) As String
+
+        If String.IsNullOrWhiteSpace(directoryPath) OrElse String.IsNullOrWhiteSpace(modelName) _
+            OrElse Not Directory.Exists(directoryPath) Then
+            CommercialSheet_Log(String.Format("Directory missing or invalid: '{0}'", directoryPath))
+            Return ""
+        End If
+
+        Dim fileName As String = CommercialSheet_BuildExpectedFileName(modelName, languageCode, shortname)
+        If String.IsNullOrEmpty(fileName) Then
+            Return ""
+        End If
+
+        Dim fullPath As String = Path.Combine(directoryPath, fileName)
+        CommercialSheet_Log(String.Format("Trying: model='{0}', serieDir='{1}', language='{2}', shortname='{3}', fullPath='{4}'",
+            modelName,
+            directoryPath,
+            languageCode,
+            shortname,
+            fullPath))
+
+        If File.Exists(fullPath) Then
+            Return fullPath
+        End If
+
+        Return ""
+
+    End Function
+
+    Private Function CommercialSheet_GetOnlineFile(serieCode As String, languageCode As String, fileName As String, shortname As String) As String
+
+        Dim baseUrl As String = ""
+
+        If String.Equals(shortname, "AV", StringComparison.OrdinalIgnoreCase) Then
+            baseUrl = "https://www.avensys-srl.com/ftproot/DOCUMENTS/Commercial_leaflets/1_VENTILATION_HEAT_RECOVERY/1_Heat_recovery_units/LEAFLETS"
+        End If
+
+        If String.IsNullOrWhiteSpace(baseUrl) Then
+            CommercialSheet_Log(String.Format("No online base URL configured for shortname '{0}'", shortname))
+            Return ""
+        End If
+
+        Dim serieFolder As String = CommercialSheet_GetSerieFolderName(serieCode)
+        Dim langFolder As String = languageCode.Trim().ToUpperInvariant()
+        Dim url As String = String.Format("{0}/{1}/{2}/{3}", baseUrl.TrimEnd("/"c), serieFolder, langFolder, fileName)
+
+        Dim cacheDirectory As String = Path.Combine(Path.GetTempPath(), "SSW", "CommercialSheetCache", serieFolder, langFolder)
+        Dim cachedFilePath As String = Path.Combine(cacheDirectory, fileName)
+
+        If File.Exists(cachedFilePath) Then
+            CommercialSheet_Log("Using cached online file: " & cachedFilePath)
+            Return cachedFilePath
+        End If
+
+        Try
+            Directory.CreateDirectory(cacheDirectory)
+
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 Or SecurityProtocolType.Tls11 Or SecurityProtocolType.Tls
+            Using client As New WebClient()
+                CommercialSheet_Log("Trying online URL: " & url)
+                client.DownloadFile(url, cachedFilePath)
+            End Using
+
+            Return cachedFilePath
+        Catch ex As Exception
+            CommercialSheet_Log(String.Format("Online download failed. URL='{0}' Error='{1}'", url, ex.Message))
+            If File.Exists(cachedFilePath) Then
+                Try
+                    File.Delete(cachedFilePath)
+                Catch
+                End Try
+            End If
+            Return ""
+        End Try
 
     End Function
 
