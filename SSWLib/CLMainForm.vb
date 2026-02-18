@@ -31,6 +31,12 @@ Public Class CLMainForm
         ' Chiamata richiesta dalla finestra di progettazione.
         InitializeComponent()
 
+        Try
+            tsmiOption_CommercialSheetAutoSync.Checked = My.Settings.CommercialSheetAutoSyncEnabled
+        Catch
+            tsmiOption_CommercialSheetAutoSync.Checked = True
+        End Try
+
         Me.Icon = Environment.SSWInfo.EmbeddedIcon
 
         Dim culture As CultureInfo
@@ -1693,6 +1699,7 @@ Public Class CLMainForm
         tsmiOption_Unit.Text = Environment.Localization.GetString(CLMessageResources.MainForm_Menu_Option_Unit.ToString())
         tsmiOption_Unit_IP.Text = Environment.Localization.GetString(CLMessageResources.MainForm_Menu_Option_Unit_IP.ToString())
         tsmiOption_Unit_SI.Text = Environment.Localization.GetString(CLMessageResources.MainForm_Menu_Option_Unit_SI.ToString())
+        tsmiOption_CommercialSheetAutoSync.Text = Environment.Localization.GetString(CLMessageResources.MainForm_Menu_Option_CommercialSheetAutoSync.ToString())
 
         tsmiAbout.Text = Environment.Localization.GetString(CLMessageResources.MainForm_Menu_About.ToString())
 
@@ -2020,8 +2027,8 @@ Public Class CLMainForm
 
         Dim dcHeatRecoveryModel As CLDCHeatRecoveryModel = SelectedHeatRecoveryModel
 
-        If dcHeatRecoveryModel Is Nothing OrElse Not Directory.Exists(PDFDocumentDirectory) Then
-            CommercialSheet_Log("Lookup skipped: model is Nothing or css directory does not exist.")
+        If dcHeatRecoveryModel Is Nothing Then
+            CommercialSheet_Log("Lookup skipped: model is Nothing.")
             Return ""
         End If
 
@@ -2078,7 +2085,7 @@ Public Class CLMainForm
         If Not String.IsNullOrWhiteSpace(serieCode) Then
             Dim expectedFileName As String = CommercialSheet_BuildExpectedFileName(modelName, normalizedLanguageCode, shortname)
             If Not String.IsNullOrEmpty(expectedFileName) Then
-                If String.Equals(shortname, "AV", StringComparison.OrdinalIgnoreCase) Then
+                If String.Equals(shortname, "AV", StringComparison.OrdinalIgnoreCase) AndAlso tsmiOption_CommercialSheetAutoSync.Checked Then
                     pdfFile = CommercialSheet_GetOnlineFile(serieCode.Trim(), normalizedLanguageCode, expectedFileName, shortname)
                     If Not String.IsNullOrEmpty(pdfFile) Then
                         CommercialSheet_Log("FOUND ONLINE (preferred for AV): " & pdfFile)
@@ -2103,6 +2110,16 @@ Public Class CLMainForm
         Return ""
 
     End Function
+
+    Private Sub tsmiOption_CommercialSheetAutoSync_Click(sender As Object, e As EventArgs) Handles tsmiOption_CommercialSheetAutoSync.Click
+        Try
+            My.Settings.CommercialSheetAutoSyncEnabled = tsmiOption_CommercialSheetAutoSync.Checked
+            My.Settings.Save()
+        Catch
+        End Try
+
+        tsmiFile_SaveCommercialSheet.Enabled = CommercialSheet_CanGenerate(Environment.PrimaryLanguageCode, Environment.Branch.ShortName)
+    End Sub
 
     Private Function CommercialSheet_GetSerieFolderName(serieCode As String) As String
 
@@ -2189,31 +2206,25 @@ Public Class CLMainForm
         Dim langFolder As String = languageCode.Trim().ToUpperInvariant()
         Dim url As String = String.Format("{0}/{1}/{2}/{3}", baseUrl.TrimEnd("/"c), serieFolder, langFolder, fileName)
 
-        Dim cacheDirectory As String = Path.Combine(Path.GetTempPath(), "SSW", "CommercialSheetCache", serieFolder, langFolder)
-        Dim cachedFilePath As String = Path.Combine(cacheDirectory, fileName)
-
-        If File.Exists(cachedFilePath) Then
-            CommercialSheet_Log("Using cached online file: " & cachedFilePath)
-            Return cachedFilePath
-        End If
+        Dim targetDirectory As String = Path.Combine(PDFDocumentDirectory, serieFolder, langFolder)
+        Dim targetFilePath As String = Path.Combine(targetDirectory, fileName)
 
         Try
-            Directory.CreateDirectory(cacheDirectory)
+            Directory.CreateDirectory(targetDirectory)
 
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 Or SecurityProtocolType.Tls11 Or SecurityProtocolType.Tls
             Using client As New WebClient()
                 CommercialSheet_Log("Trying online URL: " & url)
-                client.DownloadFile(url, cachedFilePath)
+                client.DownloadFile(url, targetFilePath)
             End Using
 
-            Return cachedFilePath
+            CommercialSheet_Log("Downloaded/updated local css file: " & targetFilePath)
+            Return targetFilePath
         Catch ex As Exception
             CommercialSheet_Log(String.Format("Online download failed. URL='{0}' Error='{1}'", url, ex.Message))
-            If File.Exists(cachedFilePath) Then
-                Try
-                    File.Delete(cachedFilePath)
-                Catch
-                End Try
+            If File.Exists(targetFilePath) Then
+                CommercialSheet_Log("Online failed, using existing local css file: " & targetFilePath)
+                Return targetFilePath
             End If
             Return ""
         End Try

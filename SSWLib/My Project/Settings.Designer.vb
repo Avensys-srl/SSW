@@ -63,6 +63,18 @@ Namespace My
                 Return CType(Me("Database1ConnectionString"),String)
             End Get
         End Property
+
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("True")>  _
+        Public Property CommercialSheetAutoSyncEnabled() As Boolean
+            Get
+                Return CType(Me("CommercialSheetAutoSyncEnabled"),Boolean)
+            End Get
+            Set
+                Me("CommercialSheetAutoSyncEnabled") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

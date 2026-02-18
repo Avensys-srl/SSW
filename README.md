@@ -1,4 +1,4 @@
-# SSW – Selection Software Workbench
+﻿# SSW - Selection Software Workbench
 
 SSW is a Windows desktop selection tool (WinForms) built for multiple HVAC/ventilation manufacturers. The same codebase is compiled into different editions (profiles) that customize product data, branding, and customer information. The solution contains a C# WinForms application and a VB.NET class library that holds most UI and domain logic.
 
@@ -56,6 +56,10 @@ Each profile maps to an `SSWInfo` class (`SSW/CLSSWInfo_*.cs`) that provides cus
 - alglib.net (math)
 - BouncyCastle (crypto)
 
+## Current Version
+
+- Application version: `1.3.0.36`
+
 ## Prerequisites
 
 - Windows
@@ -69,9 +73,9 @@ Optional for runtime distribution:
 ## Build
 
 1. Open `SSW.sln` in Visual Studio.
-1. Restore NuGet packages (solution uses `packages.config`).
-1. Select the desired **configuration** (e.g., `CL|x86`, `AC|x86`, etc.).
-1. Build the solution.
+2. Restore NuGet packages (solution uses `packages.config`).
+3. Select the desired configuration (e.g., `CL|x86`, `AC|x86`, etc.).
+4. Build the solution.
 
 The `SSW` project includes a post-build step that copies SQL Server Compact native binaries into `x86` and `amd64` folders in the output directory.
 
@@ -91,7 +95,7 @@ At runtime the application expects a SQL Server Compact data file:
 
 - `data\DataCentral.sdf` located next to the executable.
 
-When a debugger is attached, the application can redirect the data path to a network share (see `SSW/CLProgram.cs`). For normal runs, ensure the `data` folder is present in the output directory with the correct `.sdf` file for the chosen profile.
+For normal runs, ensure the `data` folder is present in the output directory with the correct `.sdf` file for the chosen profile.
 
 ## Localization
 
@@ -102,6 +106,58 @@ Localized resources live in `SSWLib/Resources.*.resx`. Available resource langua
 ## Reporting
 
 Report generation uses Microsoft ReportViewer. Output templates are deployed alongside the binaries (e.g., `CLMainReport.rdlc` in `bin` folders).
+
+## Commercial Sheet Lookup
+
+Commercial Sheet lookup is implemented in `SSWLib/CLMainForm.vb` and is based on folder structure + model naming.
+
+### Local Folder Structure
+
+- Base folder: `css` next to executable (`SSW\bin\x86\<PROFILE>\css`)
+- Serie folder: `S<SerieCode>` (example: `S0`)
+- Language folder: `<LANG>` (example: `EN`, `IT`)
+- File name pattern:
+  - Standard models (3 or more tokens): `token[2]_token[1]_<LANG>_<SHORTNAME>.pdf`
+  - Models with 2 tokens: `token[1]_<LANG>_<SHORTNAME>.pdf`
+
+Example:
+
+- Model name: `PRIME 030BD OSC`
+- Profile shortname: `AV`
+- Language: `EN`
+- Expected file: `OSC_030BD_EN_AV.pdf`
+- Expected path: `...\css\S0\EN\OSC_030BD_EN_AV.pdf`
+
+### Exceptions
+
+- Serie code `32` maps to folder `SA` (instead of `S32`).
+- If selected language is not available, fallback language is `EN`.
+
+### Online Fallback (AV Only)
+
+For profile shortname `AV`, lookup tries online first, then local fallback:
+
+- Base URL:
+  - `https://www.avensys-srl.com/ftproot/DOCUMENTS/Commercial_leaflets/1_VENTILATION_HEAT_RECOVERY/1_Heat_recovery_units/LEAFLETS`
+- Same structure from serie folder onward:
+  - `/<Sxx or SA>/<LANG>/<FILENAME>.pdf`
+- Downloaded files are stored/updated directly in local `css`:
+  - `SSW\bin\x86\<PROFILE>\css\<Sxx or SA>\<LANG>\<FILENAME>.pdf`
+
+For non-AV profiles, lookup is local only.
+
+### Diagnostic Log
+
+Commercial Sheet lookup writes diagnostics to:
+
+- `SSW\bin\x86\<PROFILE>\commercialsheet_lookup.log`
+
+Log includes:
+
+- full path being tried
+- fallback to `EN`
+- found/not found status
+- online URL attempts and errors
 
 ## Signing and Publish
 
@@ -122,6 +178,11 @@ No license file is present in this repository. Treat the code and assets as prop
 
 ## Troubleshooting
 
-- **Missing packages**: run NuGet restore; the project will fail with a clear error if EF or SQL Server Types packages are missing.
-- **Missing data**: ensure `data\DataCentral.sdf` exists in the output folder for the profile.
-- **Wrong branding**: verify the selected solution configuration matches the intended profile (`AC`, `CL`, `SIG`, etc.).
+- Missing packages: run NuGet restore; the project will fail with a clear error if EF or SQL Server Types packages are missing.
+- Missing data: ensure `data\DataCentral.sdf` exists in the output folder for the profile.
+- Wrong branding: verify the selected solution configuration matches the intended profile (`AC`, `CL`, `SIG`, etc.).
+- Commercial Sheet disabled:
+  - check `commercialsheet_lookup.log`
+  - verify serie folder (`S<code>` or `SA` for serie `32`)
+  - verify language folder and final file name pattern
+  - for `AV`, verify internet access to the configured online base URL

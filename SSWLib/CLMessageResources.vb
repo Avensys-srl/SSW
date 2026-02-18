@@ -98,6 +98,7 @@ Public Enum CLMessageResources
     MainForm_Menu_Option_Unit
     MainForm_Menu_Option_Unit_SI
     MainForm_Menu_Option_Unit_IP
+    MainForm_Menu_Option_CommercialSheetAutoSync
 
 	' GRIP SAP
     MainForm_GridSAP_ExhaustTerminalConfiguration

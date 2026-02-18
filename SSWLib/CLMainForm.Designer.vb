@@ -70,6 +70,7 @@ Partial Class CLMainForm
         Me.tsmiOption_Unit = New System.Windows.Forms.ToolStripMenuItem()
         Me.tsmiOption_Unit_SI = New System.Windows.Forms.ToolStripMenuItem()
         Me.tsmiOption_Unit_IP = New System.Windows.Forms.ToolStripMenuItem()
+        Me.tsmiOption_CommercialSheetAutoSync = New System.Windows.Forms.ToolStripMenuItem()
         Me.tsmiBranchs = New System.Windows.Forms.ToolStripMenuItem()
         Me.tsmiAbout = New System.Windows.Forms.ToolStripMenuItem()
         Me.tbpPerformance = New System.Windows.Forms.TabPage()
@@ -458,7 +459,7 @@ Partial Class CLMainForm
         '
         'tsmiOption
         '
-        Me.tsmiOption.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsmiOption_Language, Me.tsmiOption_Unit})
+        Me.tsmiOption.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsmiOption_Language, Me.tsmiOption_Unit, Me.tsmiOption_CommercialSheetAutoSync})
         Me.tsmiOption.Name = "tsmiOption"
         Me.tsmiOption.Size = New System.Drawing.Size(56, 20)
         Me.tsmiOption.Text = "Option"
@@ -560,6 +561,15 @@ Partial Class CLMainForm
         Me.tsmiOption_Unit_IP.Name = "tsmiOption_Unit_IP"
         Me.tsmiOption_Unit_IP.Size = New System.Drawing.Size(90, 22)
         Me.tsmiOption_Unit_IP.Text = "I.P."
+        '
+        'tsmiOption_CommercialSheetAutoSync
+        '
+        Me.tsmiOption_CommercialSheetAutoSync.Checked = True
+        Me.tsmiOption_CommercialSheetAutoSync.CheckOnClick = True
+        Me.tsmiOption_CommercialSheetAutoSync.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.tsmiOption_CommercialSheetAutoSync.Name = "tsmiOption_CommercialSheetAutoSync"
+        Me.tsmiOption_CommercialSheetAutoSync.Size = New System.Drawing.Size(242, 22)
+        Me.tsmiOption_CommercialSheetAutoSync.Text = "Commercial Sheets Auto Sync"
         '
         'tsmiBranchs
         '
@@ -3782,4 +3792,5 @@ Partial Class CLMainForm
     Friend WithEvents btn_winter As Button
     Friend WithEvents btn_summer As Button
     Friend WithEvents btnEN13141 As Button
+    Friend WithEvents tsmiOption_CommercialSheetAutoSync As ToolStripMenuItem
 End Class
