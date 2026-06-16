@@ -27,6 +27,7 @@
         Me.lblApplicationRelease = New System.Windows.Forms.Label()
         Me.lblApplicationName = New System.Windows.Forms.Label()
         Me.Button1 = New System.Windows.Forms.Button()
+        Me.btnChangelog = New System.Windows.Forms.Button()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.lblInternalLeakageTitle = New System.Windows.Forms.Label()
         Me.lblAirflowPressureTitle = New System.Windows.Forms.Label()
@@ -77,6 +78,15 @@
         Me.Button1.Size = New System.Drawing.Size(68, 26)
         Me.Button1.TabIndex = 5
         Me.Button1.Text = "&OK"
+        '
+        'btnChangelog
+        '
+        Me.btnChangelog.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnChangelog.Location = New System.Drawing.Point(12, 403)
+        Me.btnChangelog.Name = "btnChangelog"
+        Me.btnChangelog.Size = New System.Drawing.Size(86, 26)
+        Me.btnChangelog.TabIndex = 6
+        Me.btnChangelog.Text = "Changelog"
         '
         'TableLayoutPanel1
         '
@@ -273,6 +283,7 @@
         Me.Controls.Add(Me.pnlCustomerInfo)
         Me.Controls.Add(Me.TableLayoutPanel1)
         Me.Controls.Add(Me.Button1)
+        Me.Controls.Add(Me.btnChangelog)
         Me.Controls.Add(Me.lblApplicationName)
         Me.Controls.Add(Me.lblTitle)
         Me.Controls.Add(Me.lblApplicationRelease)
@@ -295,6 +306,7 @@
     Friend WithEvents lblApplicationRelease As System.Windows.Forms.Label
     Friend WithEvents lblApplicationName As System.Windows.Forms.Label
     Friend WithEvents Button1 As System.Windows.Forms.Button
+    Friend WithEvents btnChangelog As System.Windows.Forms.Button
     Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents lblExternalLeakageTitle As System.Windows.Forms.Label
     Friend WithEvents lblInternalLeakageTitle As System.Windows.Forms.Label

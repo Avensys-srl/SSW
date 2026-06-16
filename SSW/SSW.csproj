@@ -41,7 +41,7 @@
     <MapFileExtensions>false</MapFileExtensions>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <ApplicationRevision>2</ApplicationRevision>
-    <ApplicationVersion>1.3.0.36</ApplicationVersion>
+    <ApplicationVersion>1.3.0.39</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -955,6 +955,10 @@
     <Content Include="..\SSWLib\CLMainReport.rdlc">
       <Link>CLMainReport.rdlc</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\SSWLib\History.txt">
+      <Link>History.txt</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="Properties\app.manifest" />
     <None Include="Resources\CAIROX.ico" />

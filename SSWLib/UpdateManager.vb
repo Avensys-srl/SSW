@@ -5,6 +5,8 @@ Imports System.Text.Json ' Or Newtonsoft.Json if you prefer/use that
 ' Helper class to deserialize the JSON response from the PHP script
 Public Class SoftwareVersionInfo
     Public Property latest_version As String
+    Public Property download_url As String
+    Public Property filename As String
     Public Property [error] As String ' Correct property name with []
 End Class
 
@@ -110,37 +112,19 @@ Public Class UpdateManager
         If currentAppVersion IsNot Nothing AndAlso latestServerVersion IsNot Nothing Then ' Start If 6 (Check both versions exist)
             Try ' Start Try 5 (Comparison)
                 If latestServerVersion > currentAppVersion Then ' Start If 7 (Compare versions)
-                    ' --- DOWNLOAD MODIFICATION ---
-                    ' 1. Prepare message and buttons
                     Dim message As String = $"New update available!{vbCrLf}{vbCrLf}" &
                                             $"Current version: {currentAppVersion}{vbCrLf}" &
                                             $"New version: {latestServerVersion}{vbCrLf}{vbCrLf}" &
-                                            "Download now?" ' Question in English
-                    Dim title As String = "Software Update Available" ' Title in English
-                    Dim buttons As MessageBoxButtons = MessageBoxButtons.YesNo ' Standard Yes/No buttons
+                                            "Download and start the installer now?"
+                    Dim title As String = "Software Update Available"
+                    Dim buttons As MessageBoxButtons = MessageBoxButtons.YesNo
                     Dim icon As MessageBoxIcon = MessageBoxIcon.Information
 
-                    ' 2. Show MessageBox and get user response
                     Dim userChoice As DialogResult = MessageBox.Show(message, title, buttons, icon)
 
-                    ' 3. Check if user clicked "Yes"
                     If userChoice = DialogResult.Yes Then
-                        ' 4. Start download by opening URL in default browser
-                        Dim downloadUrl As String = "https://www.avensys-srl.com/api/ssw_download.php"
-                        Try
-                            Dim psi As New ProcessStartInfo()
-                            psi.FileName = downloadUrl
-                            psi.UseShellExecute = True ' Important to open URL/file with associated app
-                            Process.Start(psi)
-                        Catch ex As Exception
-                            ' Handle potential errors opening the URL
-                            MessageBox.Show($"Could not start the browser for download.{vbCrLf}" &
-                                            $"Error: {ex.Message}{vbCrLf}{vbCrLf}" &
-                                            $"You can download the update manually from:{vbCrLf}{downloadUrl}",
-                                            "Download Error", MessageBoxButtons.OK, MessageBoxIcon.Error) ' Title and message in English
-                        End Try
+                        Await DownloadAndStartInstaller(versionInfo)
                     End If
-                    ' --- END DOWNLOAD MODIFICATION ---
 
                 Else ' Else for If 7 (Versions are same or current is newer)
                     ' Optional: Show message that app is up to date (perhaps only in debug mode)
@@ -156,5 +140,47 @@ Public Class UpdateManager
         ' If the function reaches here without prior errors, the Task completes normally.
 
     End Function ' End Function CheckForSoftwareUpdate
+
+    Private Shared Async Function DownloadAndStartInstaller(versionInfo As SoftwareVersionInfo) As Task
+        Dim downloadUrl As String = versionInfo.download_url
+        If String.IsNullOrWhiteSpace(downloadUrl) Then
+            downloadUrl = "https://www.avensys-srl.com/api/ssw_download.php"
+        End If
+
+        Dim fileName As String = versionInfo.filename
+        If String.IsNullOrWhiteSpace(fileName) Then
+            fileName = System.IO.Path.GetFileName(New Uri(downloadUrl).LocalPath)
+        End If
+        If String.IsNullOrWhiteSpace(fileName) Then
+            fileName = "SSW_Update.exe"
+        End If
+
+        Dim localPath As String = System.IO.Path.Combine(System.IO.Path.GetTempPath(), fileName)
+
+        Try
+            Using client As New HttpClient()
+                client.Timeout = TimeSpan.FromMinutes(10)
+
+                Using response As HttpResponseMessage = Await client.GetAsync(downloadUrl)
+                    If Not response.IsSuccessStatusCode Then
+                        Throw New InvalidOperationException($"Download failed: {response.StatusCode} - {response.ReasonPhrase}")
+                    End If
+
+                    Dim data As Byte() = Await response.Content.ReadAsByteArrayAsync()
+                    System.IO.File.WriteAllBytes(localPath, data)
+                End Using
+            End Using
+
+            Dim psi As New ProcessStartInfo()
+            psi.FileName = localPath
+            psi.UseShellExecute = True
+            Process.Start(psi)
+        Catch ex As Exception
+            MessageBox.Show($"Could not download or start the update installer.{vbCrLf}" &
+                            $"Error: {ex.Message}{vbCrLf}{vbCrLf}" &
+                            $"You can download it manually from:{vbCrLf}{downloadUrl}",
+                            "Download Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+    End Function
 
 End Class

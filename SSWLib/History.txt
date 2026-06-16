@@ -1,17 +1,43 @@
-﻿+------------------------------------------------------------------------------
-| 1.0.4 | --/--/2014 | PM | - Localizzazione
-+-------+------------+----+----------------------------------------------------
-| 1.0.5 | 03/06/2014 | PM | - Aggiunti i dati della potenza sonora (sia a video
-|       |            |    |   che su report)
-|       |            | PM | - Sostituita la generazione del report PDF di
-|       |            |    |   iText con il motore dei report di Microsoft.
-|       |            | PM | - Aggiunta la possibilità di scegliere la serie
-|       |            | PM | - Aggiunta la scelta della serie (serie 3, serie 5)
-|       |            | PM | - Aggiunta la possibilità di generare la brochure
-|       |            |    |   commerciale
-+-------+------------+----+----------------------------------------------------
-| 1.0.6 | 06/06/2014 | PM | - Integrazione calcolo accessori CWD/HWD/EHD
-|       |            |    |   (presente ma non attiva)
-+-------+------------+----+----------------------------------------------------
-| 1.0.7 | 06/06/2014 | PM | - Cambio nome file brochure commerciale
-+-------+------------+----+----------------------------------------------------
+SSW Changelog
+=============
+
+1.3.0.39 - 2026-06-16
+---------------------
+- Added Inno Setup installer generation with automatic signing.
+- Added automatic installer copy to the release distribution folder.
+- Added update API support for installer packages while keeping legacy package compatibility.
+- Improved the application update flow to download and start the installer after user confirmation.
+
+1.3.0.38 - 2026-06-16
+---------------------
+- Added a Changelog button to the About window.
+- Changelog is loaded from the local History.txt file, so it works with the private repository.
+- Confirmed the motor sound power correction coefficient.
+
+1.3.0.37
+--------
+- Maintenance release.
+
+1.3.0.36
+--------
+- Improved commercial sheet lookup for AV local and online sources.
+- Added configurable commercial sheet auto-sync persistence.
+- Fixed resource encoding issues.
+
+1.3.0.35
+--------
+- Aligned translations from the English master resources.
+- Added missing localization keys.
+- Kept language selection labels in their native language.
+
+1.3.0.31
+--------
+- Added Winter and Summer buttons with related translations.
+
+1.3.0.30
+--------
+- Fixed report generation issues.
+
+1.3.0.28
+--------
+- Added the EN308 button.
