@@ -1,6 +1,12 @@
 SSW Changelog
 =============
 
+1.3.0.41 - 2026-06-17
+---------------------
+- Fixed blank pages in generated reports when the sound table includes the EN ISO 16032 row.
+- Split the main report layout so the CO2 section is only loaded when explicitly included.
+- Hid the SAP report container when SAP data is not shown, preventing empty page breaks.
+
 1.3.0.40 - 2026-06-17
 ---------------------
 - Added visible progress feedback while downloading update installers.

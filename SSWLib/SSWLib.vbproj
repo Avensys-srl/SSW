@@ -437,6 +437,9 @@
     <Content Include="CLMainReport.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="CLMainReportWithCO2.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <EmbeddedResource Include="CLPleaseWaitForm.resx">
       <DependentUpon>CLPleaseWaitForm.vb</DependentUpon>
     </EmbeddedResource>

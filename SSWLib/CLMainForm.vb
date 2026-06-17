@@ -1365,7 +1365,8 @@ Public Class CLMainForm
 
         waitForm.Hide()
 
-        reportViewForm.SetReport(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "CLMainReport.rdlc"), _
+        Dim reportFileName As String = If(chbCO2Level_addtoreport.Checked, "CLMainReportWithCO2.rdlc", "CLMainReport.rdlc")
+        reportViewForm.SetReport(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), reportFileName), _
         reportDataSources.ToArray(), Microsoft.Reporting.WinForms.DisplayMode.PrintLayout)
 
         Dim nomeFileSuffisso As String
