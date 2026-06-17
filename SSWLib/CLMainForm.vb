@@ -2515,6 +2515,7 @@ Public Class CLMainForm
                 Next
 
             ElseIf dcHeatRecoveryModel.Code.Contains("QUARK 025") Then
+                soundValues = New Double(7) {}
                 soundValues(0) = 54.7
                 soundValues(1) = 50.7
                 soundValues(2) = 35.8
@@ -2524,6 +2525,7 @@ Public Class CLMainForm
                 soundValues(6) = 27.9
                 soundValues(7) = 19.9
             ElseIf dcHeatRecoveryModel.Code.Contains("QUARK 035") Then
+                soundValues = New Double(7) {}
                 Dim corr As Double
                 corr = 1.145
                 soundValues(0) = 54.7 * corr

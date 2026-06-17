@@ -1,4 +1,5 @@
 ﻿Imports System.Net.Http
+Imports System.IO
 Imports System.Text.Json ' Or Newtonsoft.Json if you prefer/use that
 
 
@@ -156,26 +157,42 @@ Public Class UpdateManager
         End If
 
         Dim localPath As String = System.IO.Path.Combine(System.IO.Path.GetTempPath(), fileName)
+        Dim progressForm As DownloadProgressForm = Nothing
 
         Try
             Using client As New HttpClient()
                 client.Timeout = TimeSpan.FromMinutes(10)
 
-                Using response As HttpResponseMessage = Await client.GetAsync(downloadUrl)
+                progressForm = New DownloadProgressForm()
+                progressForm.Show()
+                progressForm.Refresh()
+
+                Using response As HttpResponseMessage = Await client.GetAsync(downloadUrl, HttpCompletionOption.ResponseHeadersRead)
                     If Not response.IsSuccessStatusCode Then
                         Throw New InvalidOperationException($"Download failed: {response.StatusCode} - {response.ReasonPhrase}")
                     End If
 
-                    Dim data As Byte() = Await response.Content.ReadAsByteArrayAsync()
-                    System.IO.File.WriteAllBytes(localPath, data)
+                    Dim totalBytes As Long? = response.Content.Headers.ContentLength
+                    Using sourceStream As Stream = Await response.Content.ReadAsStreamAsync()
+                        Using targetStream As New FileStream(localPath, FileMode.Create, FileAccess.Write, FileShare.None)
+                            Await CopyToFileWithProgress(sourceStream, targetStream, totalBytes, progressForm)
+                        End Using
+                    End Using
                 End Using
             End Using
+
+            progressForm.Close()
+            progressForm = Nothing
 
             Dim psi As New ProcessStartInfo()
             psi.FileName = localPath
             psi.UseShellExecute = True
             Process.Start(psi)
         Catch ex As Exception
+            If progressForm IsNot Nothing Then
+                progressForm.Close()
+            End If
+
             MessageBox.Show($"Could not download or start the update installer.{vbCrLf}" &
                             $"Error: {ex.Message}{vbCrLf}{vbCrLf}" &
                             $"You can download it manually from:{vbCrLf}{downloadUrl}",
@@ -183,4 +200,83 @@ Public Class UpdateManager
         End Try
     End Function
 
+    Private Shared Async Function CopyToFileWithProgress(sourceStream As Stream,
+                                                         targetStream As Stream,
+                                                         totalBytes As Long?,
+                                                         progressForm As DownloadProgressForm) As Task
+        Dim buffer(81919) As Byte
+        Dim downloadedBytes As Long = 0
+        Dim bytesRead As Integer = Await sourceStream.ReadAsync(buffer, 0, buffer.Length)
+
+        While bytesRead > 0
+            Await targetStream.WriteAsync(buffer, 0, bytesRead)
+            downloadedBytes += bytesRead
+            progressForm.UpdateProgress(downloadedBytes, totalBytes)
+            Application.DoEvents()
+
+            bytesRead = Await sourceStream.ReadAsync(buffer, 0, buffer.Length)
+        End While
+    End Function
+
+End Class
+
+Friend Class DownloadProgressForm
+    Inherits Form
+
+    Private ReadOnly progressBar As ProgressBar
+    Private ReadOnly statusLabel As Label
+
+    Public Sub New()
+        Text = "Software Update"
+        FormBorderStyle = FormBorderStyle.FixedDialog
+        StartPosition = FormStartPosition.CenterScreen
+        MaximizeBox = False
+        MinimizeBox = False
+        ShowInTaskbar = False
+        ControlBox = False
+        Width = 420
+        Height = 135
+
+        statusLabel = New Label()
+        statusLabel.AutoSize = False
+        statusLabel.Left = 16
+        statusLabel.Top = 18
+        statusLabel.Width = 370
+        statusLabel.Height = 22
+        statusLabel.Text = "Downloading update..."
+
+        progressBar = New ProgressBar()
+        progressBar.Left = 16
+        progressBar.Top = 50
+        progressBar.Width = 370
+        progressBar.Height = 22
+        progressBar.Minimum = 0
+        progressBar.Maximum = 100
+        progressBar.Style = ProgressBarStyle.Marquee
+        progressBar.MarqueeAnimationSpeed = 30
+
+        Controls.Add(statusLabel)
+        Controls.Add(progressBar)
+    End Sub
+
+    Public Sub UpdateProgress(downloadedBytes As Long, totalBytes As Long?)
+        If InvokeRequired Then
+            BeginInvoke(New Action(Of Long, Long?)(AddressOf UpdateProgress), downloadedBytes, totalBytes)
+            Return
+        End If
+
+        If totalBytes.HasValue AndAlso totalBytes.Value > 0 Then
+            Dim percent As Integer = CInt(Math.Min(100, Math.Truncate(downloadedBytes * 100.0R / totalBytes.Value)))
+            progressBar.Style = ProgressBarStyle.Blocks
+            progressBar.MarqueeAnimationSpeed = 0
+            progressBar.Value = percent
+            statusLabel.Text = $"Downloading update... {percent}% ({FormatMegabytes(downloadedBytes)} / {FormatMegabytes(totalBytes.Value)})"
+        Else
+            statusLabel.Text = $"Downloading update... {FormatMegabytes(downloadedBytes)}"
+        End If
+    End Sub
+
+    Private Shared Function FormatMegabytes(bytes As Long) As String
+        Return $"{bytes / 1024.0R / 1024.0R:0.0} MB"
+    End Function
 End Class

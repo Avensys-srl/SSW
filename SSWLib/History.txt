@@ -1,6 +1,13 @@
 SSW Changelog
 =============
 
+1.3.0.40 - 2026-06-17
+---------------------
+- Added visible progress feedback while downloading update installers.
+- Fixed the update installer download flow so the application no longer appears frozen during long downloads.
+- Fixed the build warning caused by uninitialized QUARK breakout sound values.
+- Updated installer architecture settings to avoid deprecated Inno Setup identifiers.
+
 1.3.0.39 - 2026-06-16
 ---------------------
 - Added Inno Setup installer generation with automatic signing.

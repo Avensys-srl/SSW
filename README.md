@@ -58,7 +58,7 @@ Each profile maps to an `SSWInfo` class (`SSW/CLSSWInfo_*.cs`) that provides cus
 
 ## Current Version
 
-- Application version: `1.3.0.36`
+- Application version: `1.3.0.40`
 
 ## Prerequisites
 
@@ -70,6 +70,12 @@ Optional for runtime distribution:
 
 - Microsoft SQL Server Compact 4.0 runtime (native binaries are copied post-build)
 
+Required for installer builds:
+
+- Inno Setup 6
+- Windows SDK SignTool, available from the Windows SDK
+- A valid code-signing certificate installed in the Windows certificate store. The installer build script reads the signing certificate thumbprint from `SSW/SSW.csproj`.
+
 ## Build
 
 1. Open `SSW.sln` in Visual Studio.
@@ -78,6 +84,32 @@ Optional for runtime distribution:
 4. Build the solution.
 
 The `SSW` project includes a post-build step that copies SQL Server Compact native binaries into `x86` and `amd64` folders in the output directory.
+
+## Installer Build
+
+The installer is generated with Inno Setup from `installer/SSW.iss`.
+
+Use the helper script from the repository root:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File installer\build-installer.ps1
+```
+
+The script:
+
+- builds `SSW.sln` in `Release|x86`
+- reads the application version from `SSWLib/My Project/AssemblyInfo.vb`
+- signs `SSW.exe`, `SSWLib.dll`, and the final installer with SignTool
+- creates `installer/output/SSW_Setup_<version>.exe`
+- copies the installer to `F:\DOCUMENTS\tools\Selection Software`
+
+To build without recompiling the solution, pass `-SkipBuild`:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File installer\build-installer.ps1 -SkipBuild
+```
+
+The generated installer is what the update API exposes for automatic updates.
 
 ## Run
 

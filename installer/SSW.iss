@@ -29,7 +29,7 @@ SolidCompression=yes
 PrivilegesRequired=lowest
 UninstallDisplayIcon={app}\{#AppExeName}
 WizardStyle=modern
-ArchitecturesAllowed=x86 x64
+ArchitecturesAllowed=x86 x64compatible
 
 #ifdef IconFile
 #ifexist IconFile
