@@ -226,10 +226,15 @@ End Structure
 
 Public Class CLCOIL
 
-	<DllImport("COILcalc.dll", CharSet:=CharSet.Auto, CallingConvention:=CallingConvention.Cdecl)> _
+	<DllImport("COILcalc.dll", EntryPoint:="COILcalc", CharSet:=CharSet.Auto, CallingConvention:=CallingConvention.Cdecl)> _
 	Public Shared Function COILcalc(ByRef data As CLCOILStructure) As Long
 
 	End Function
+
+    <DllImport("COILcalc.dll", EntryPoint:="CoilCalc", CharSet:=CharSet.Ansi, CallingConvention:=CallingConvention.StdCall)> _
+    Public Shared Function CoilCalcString(<MarshalAs(UnmanagedType.AnsiBStr)> reqStr As String, ByRef retStr As String) As Integer
+
+    End Function
 
 	Public Shared Sub Calculate(ByRef data As CLCOILStructure)
 
@@ -238,6 +243,12 @@ Public Class CLCOIL
         data.PASSWORD = "KFLFMN45698DHN"
         retValue = COILcalc(data)
 	End Sub
+
+    Public Shared Function Calculate(reqStr As String) As String
+        Dim retStr As String = New String(New Char(), 5000)
+        CoilCalcString(reqStr, retStr)
+        Return retStr.Replace(ChrW(0), "").Trim()
+    End Function
 
 End Class
 

@@ -1,6 +1,7 @@
 ﻿Imports System.IO
 Imports iTextSharp.text
 Imports iTextSharp.text.pdf
+Imports System.Drawing
 Imports System.Drawing.Imaging
 Imports System.Globalization
 Imports System.Net
@@ -19,6 +20,30 @@ Public Class CLMainForm
     Private m_SAPEnable As Boolean
     Private m_DataChanging As Boolean = False
     Private m_TabPages As New List(Of TabPage)
+    Private m_CoilPerformanceChanging As Boolean = False
+    Private m_CoilPerformanceCoils As New List(Of CLCoilDefinition)
+    Private m_CoilPerformanceLastPressureDrop As Double = 0
+
+    Private tbpData_CoilPerformance As TabPage
+    Private chbCoilPerformance_Enable As CheckBox
+    Private cmbCoilPerformance_EditMode As ComboBox
+    Private cmbCoilPerformance_Mode As ComboBox
+    Private cmbCoilPerformance_Coil As ComboBox
+    Private cmbCoilPerformance_FluidType As ComboBox
+    Private nudCoilPerformance_FluidTec As NumericUpDown
+    Private nudCoilPerformance_Length As NumericUpDown
+    Private nudCoilPerformance_Height As NumericUpDown
+    Private nudCoilPerformance_Tubes As NumericUpDown
+    Private cmbCoilPerformance_HeightMode As ComboBox
+    Private nudCoilPerformance_Rows As NumericUpDown
+    Private nudCoilPerformance_FinSpacing As NumericUpDown
+    Private nudCoilPerformance_Circuits As NumericUpDown
+    Private nudCoilPerformance_CoolingIn As NumericUpDown
+    Private nudCoilPerformance_CoolingOut As NumericUpDown
+    Private nudCoilPerformance_HeatingIn As NumericUpDown
+    Private nudCoilPerformance_HeatingOut As NumericUpDown
+    Private dgvCoilPerformance_Results As DataGridView
+    Private lblCoilPerformance_Status As Label
 
     Private ReadOnly Property Environment As CLEnvironment
         Get
@@ -188,6 +213,8 @@ Public Class CLMainForm
         m_TabPages.Add(tbpAccessory)
         tbcMain.TabPages.Remove(tbpAccessory)
 #End If
+
+        CoilPerformance_InitializeTab()
 
         ' Fill Series
         Series_FillCombo()
@@ -409,6 +436,7 @@ Public Class CLMainForm
             chbSoundPerformances_16032.Visible = False
         End If
 
+        CoilPerformance_FillStandardCoils()
         Calculate()
         sap_table_fill()
     End Sub
@@ -1800,6 +1828,8 @@ Public Class CLMainForm
         crtCO2Level_Chart1.ChartAreas(0).AxisX.Title = Environment.Localization.GetString(CLMessageResources.CO2Level_PeriodOfTime.ToString()) & " [h]"
         crtCO2Level_Chart1.ChartAreas(0).AxisY.Title = Environment.Localization.GetString(CLMessageResources.CO2Level.ToString()) & " [ppm]"
 
+        CoilPerformance_UpdateLocalizedTexts()
+
         UpdateLocalization_MeasureUnit()
     End Sub
 
@@ -2288,6 +2318,554 @@ Public Class CLMainForm
 
 #End Region
 
+#Region "====[ Coil Performance ]===="
+
+    Private Sub CoilPerformance_InitializeTab()
+        If tbpData_CoilPerformance IsNot Nothing Then
+            Return
+        End If
+
+        tbpData_CoilPerformance = New TabPage(CoilPerformance_Text("MainForm_CoilPerformance_Tab", "Water coils"))
+        tbpData_CoilPerformance.AutoScroll = True
+        tbpData_CoilPerformance.UseVisualStyleBackColor = True
+
+        Dim grbEnable As New GroupBox()
+        grbEnable.Tag = New String() {"MainForm_CoilPerformance_EnableGroup", "Water coil calculation"}
+        grbEnable.Text = CoilPerformance_Text("MainForm_CoilPerformance_EnableGroup", "Water coil calculation")
+        grbEnable.Location = New Point(8, 8)
+        grbEnable.Size = New Size(252, 56)
+
+        chbCoilPerformance_Enable = New CheckBox()
+        chbCoilPerformance_Enable.Tag = New String() {"MainForm_CoilPerformance_Enable", "Enable coil calculation"}
+        chbCoilPerformance_Enable.Text = CoilPerformance_Text("MainForm_CoilPerformance_Enable", "Enable coil calculation")
+        chbCoilPerformance_Enable.AutoSize = True
+        chbCoilPerformance_Enable.Checked = False
+        chbCoilPerformance_Enable.Location = New Point(12, 24)
+        AddHandler chbCoilPerformance_Enable.CheckedChanged, AddressOf CoilPerformance_EnableChanged
+        grbEnable.Controls.Add(chbCoilPerformance_Enable)
+
+        Dim grbSelection As New GroupBox()
+        grbSelection.Tag = New String() {"MainForm_CoilPerformance_Selection", "Coil selection"}
+        grbSelection.Text = CoilPerformance_Text("MainForm_CoilPerformance_Selection", "Coil selection")
+        grbSelection.Location = New Point(8, 72)
+        grbSelection.Size = New Size(360, 148)
+
+        cmbCoilPerformance_EditMode = New ComboBox()
+        cmbCoilPerformance_EditMode.DropDownStyle = ComboBoxStyle.DropDownList
+        cmbCoilPerformance_EditMode.Items.Add(New CLComboBoxItemWrapper(Of CLCoilPerformanceEditMode)(CoilPerformance_Text("MainForm_CoilPerformance_Standard", "Standard"), CLCoilPerformanceEditMode.Standard))
+        cmbCoilPerformance_EditMode.Items.Add(New CLComboBoxItemWrapper(Of CLCoilPerformanceEditMode)(CoilPerformance_Text("MainForm_CoilPerformance_StandardCustomized", "Standard customized"), CLCoilPerformanceEditMode.StandardCustomized))
+        cmbCoilPerformance_EditMode.Items.Add(New CLComboBoxItemWrapper(Of CLCoilPerformanceEditMode)(CoilPerformance_Text("MainForm_CoilPerformance_External", "External"), CLCoilPerformanceEditMode.External))
+        cmbCoilPerformance_EditMode.SelectedIndex = 0
+        cmbCoilPerformance_EditMode.Location = New Point(132, 22)
+        cmbCoilPerformance_EditMode.Size = New Size(210, 21)
+        AddHandler cmbCoilPerformance_EditMode.SelectedIndexChanged, AddressOf CoilPerformance_EditModeChanged
+
+        cmbCoilPerformance_Mode = New ComboBox()
+        cmbCoilPerformance_Mode.DropDownStyle = ComboBoxStyle.DropDownList
+        cmbCoilPerformance_Mode.Items.Add(CLCoilPerformanceMode.CWD)
+        cmbCoilPerformance_Mode.Items.Add(CLCoilPerformanceMode.HWD)
+        cmbCoilPerformance_Mode.Items.Add(CLCoilPerformanceMode.HCD)
+        cmbCoilPerformance_Mode.SelectedItem = CLCoilPerformanceMode.HCD
+        cmbCoilPerformance_Mode.Location = New Point(132, 50)
+        cmbCoilPerformance_Mode.Size = New Size(210, 21)
+        AddHandler cmbCoilPerformance_Mode.SelectedIndexChanged, AddressOf CoilPerformance_ModeChanged
+
+        cmbCoilPerformance_Coil = New ComboBox()
+        cmbCoilPerformance_Coil.DropDownStyle = ComboBoxStyle.DropDownList
+        cmbCoilPerformance_Coil.Location = New Point(132, 78)
+        cmbCoilPerformance_Coil.Size = New Size(210, 21)
+        AddHandler cmbCoilPerformance_Coil.SelectedIndexChanged, AddressOf CoilPerformance_CoilChanged
+
+        grbSelection.Controls.Add(CreateCoilLabel("MainForm_CoilPerformance_Case", "Case", 12, 25))
+        grbSelection.Controls.Add(cmbCoilPerformance_EditMode)
+        grbSelection.Controls.Add(CreateCoilLabel("MainForm_CoilPerformance_Type", "Type", 12, 53))
+        grbSelection.Controls.Add(cmbCoilPerformance_Mode)
+        grbSelection.Controls.Add(CreateCoilLabel("MainForm_CoilPerformance_Coil", "Coil", 12, 81))
+        grbSelection.Controls.Add(cmbCoilPerformance_Coil)
+
+        Dim grbFluid As New GroupBox()
+        grbFluid.Tag = New String() {"MainForm_CoilPerformance_Fluid", "Fluid and water temperatures"}
+        grbFluid.Text = CoilPerformance_Text("MainForm_CoilPerformance_Fluid", "Fluid and water temperatures")
+        grbFluid.Location = New Point(376, 8)
+        grbFluid.Size = New Size(344, 212)
+
+        cmbCoilPerformance_FluidType = New ComboBox()
+        cmbCoilPerformance_FluidType.DropDownStyle = ComboBoxStyle.DropDownList
+        cmbCoilPerformance_FluidType.Location = New Point(144, 24)
+        cmbCoilPerformance_FluidType.Size = New Size(178, 21)
+        AddHandler cmbCoilPerformance_FluidType.SelectedIndexChanged, AddressOf CoilPerformance_FluidTypeChanged
+        CoilPerformance_FillFluidTypes()
+
+        nudCoilPerformance_FluidTec = CreateCoilNumeric(144, 52, 0, 70, 10, 1)
+        nudCoilPerformance_CoolingIn = CreateCoilNumeric(144, 88, -50, 100, 7, 1)
+        nudCoilPerformance_CoolingOut = CreateCoilNumeric(144, 116, -50, 100, 12, 1)
+        nudCoilPerformance_HeatingIn = CreateCoilNumeric(144, 152, -50, 150, 80, 1)
+        nudCoilPerformance_HeatingOut = CreateCoilNumeric(144, 180, -50, 150, 70, 1)
+
+        grbFluid.Controls.Add(CreateCoilLabel("MainForm_CoilPerformance_FluidType", "Fluid", 12, 27))
+        grbFluid.Controls.Add(cmbCoilPerformance_FluidType)
+        grbFluid.Controls.Add(CreateCoilLabel("MainForm_CoilPerformance_Glycol", "Glycol [%]", 12, 55))
+        grbFluid.Controls.Add(nudCoilPerformance_FluidTec)
+        grbFluid.Controls.Add(CreateCoilLabel("MainForm_CoilPerformance_CoolingIn", "Cooling in [C]", 12, 91))
+        grbFluid.Controls.Add(nudCoilPerformance_CoolingIn)
+        grbFluid.Controls.Add(CreateCoilLabel("MainForm_CoilPerformance_CoolingOut", "Cooling out [C]", 12, 119))
+        grbFluid.Controls.Add(nudCoilPerformance_CoolingOut)
+        grbFluid.Controls.Add(CreateCoilLabel("MainForm_CoilPerformance_HeatingIn", "Heating in [C]", 12, 155))
+        grbFluid.Controls.Add(nudCoilPerformance_HeatingIn)
+        grbFluid.Controls.Add(CreateCoilLabel("MainForm_CoilPerformance_HeatingOut", "Heating out [C]", 12, 183))
+        grbFluid.Controls.Add(nudCoilPerformance_HeatingOut)
+
+        Dim grbCustomization As New GroupBox()
+        grbCustomization.Tag = New String() {"MainForm_CoilPerformance_Geometry", "Geometry"}
+        grbCustomization.Text = CoilPerformance_Text("MainForm_CoilPerformance_Geometry", "Geometry")
+        grbCustomization.Location = New Point(728, 8)
+        grbCustomization.Size = New Size(356, 212)
+
+        nudCoilPerformance_Length = CreateCoilNumeric(150, 24, 1, 5000, 250, 0)
+        nudCoilPerformance_Height = CreateCoilNumeric(150, 52, 1, 5000, 150, 0)
+        nudCoilPerformance_Tubes = CreateCoilNumeric(244, 52, 1, 200, 6, 0)
+        cmbCoilPerformance_HeightMode = New ComboBox()
+        cmbCoilPerformance_HeightMode.DropDownStyle = ComboBoxStyle.DropDownList
+        cmbCoilPerformance_HeightMode.Items.Add(New CLComboBoxItemWrapper(Of String)(CoilPerformance_Text("MainForm_CoilPerformance_HeightMm", "mm"), "mm"))
+        cmbCoilPerformance_HeightMode.Items.Add(New CLComboBoxItemWrapper(Of String)(CoilPerformance_Text("MainForm_CoilPerformance_HeightTubes", "tubes"), "tubes"))
+        cmbCoilPerformance_HeightMode.SelectedIndex = 0
+        cmbCoilPerformance_HeightMode.Location = New Point(244, 24)
+        cmbCoilPerformance_HeightMode.Size = New Size(76, 21)
+        AddHandler cmbCoilPerformance_HeightMode.SelectedIndexChanged, AddressOf CoilPerformance_InputChanged
+
+        nudCoilPerformance_Rows = CreateCoilNumeric(150, 88, 1, 20, 3, 0)
+        nudCoilPerformance_FinSpacing = CreateCoilNumeric(150, 116, 1.6D, 22D, 2.5D, 1)
+        nudCoilPerformance_Circuits = CreateCoilNumeric(150, 144, 1, 100, 2, 0)
+
+        grbCustomization.Controls.Add(CreateCoilLabel("MainForm_CoilPerformance_Length", "Length [mm]", 12, 27))
+        grbCustomization.Controls.Add(nudCoilPerformance_Length)
+        grbCustomization.Controls.Add(cmbCoilPerformance_HeightMode)
+        grbCustomization.Controls.Add(CreateCoilLabel("MainForm_CoilPerformance_Height", "Height [mm/tubes]", 12, 55))
+        grbCustomization.Controls.Add(nudCoilPerformance_Height)
+        grbCustomization.Controls.Add(nudCoilPerformance_Tubes)
+        grbCustomization.Controls.Add(CreateCoilLabel("MainForm_CoilPerformance_Rows", "Rows", 12, 91))
+        grbCustomization.Controls.Add(nudCoilPerformance_Rows)
+        grbCustomization.Controls.Add(CreateCoilLabel("MainForm_CoilPerformance_FinSpacing", "Fin spacing [mm]", 12, 119))
+        grbCustomization.Controls.Add(nudCoilPerformance_FinSpacing)
+        grbCustomization.Controls.Add(CreateCoilLabel("MainForm_CoilPerformance_Circuits", "Circuits", 12, 147))
+        grbCustomization.Controls.Add(nudCoilPerformance_Circuits)
+
+        dgvCoilPerformance_Results = New DataGridView()
+        dgvCoilPerformance_Results.AllowUserToAddRows = False
+        dgvCoilPerformance_Results.AllowUserToDeleteRows = False
+        dgvCoilPerformance_Results.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        dgvCoilPerformance_Results.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        dgvCoilPerformance_Results.Location = New Point(8, 232)
+        dgvCoilPerformance_Results.ReadOnly = True
+        dgvCoilPerformance_Results.RowHeadersVisible = False
+        dgvCoilPerformance_Results.Size = New Size(1068, 92)
+        AddCoilGridColumn("Mode", "MainForm_CoilPerformance_ResultMode", "Mode")
+        AddCoilGridColumn("Status", "MainForm_CoilPerformance_ResultStatus", "Status")
+        AddCoilGridColumn("Capacity", "MainForm_CoilPerformance_ResultCapacity", "Capacity [W]")
+        AddCoilGridColumn("Sensible", "MainForm_CoilPerformance_ResultSensible", "Sensible [W]")
+        AddCoilGridColumn("TempOut", "MainForm_CoilPerformance_ResultAirOut", "Air out [C]")
+        AddCoilGridColumn("RHOut", "MainForm_CoilPerformance_ResultRHOut", "R.H. out [%]")
+        AddCoilGridColumn("Cond", "MainForm_CoilPerformance_ResultCond", "Cond. [l/h]")
+        AddCoilGridColumn("DP", "MainForm_CoilPerformance_ResultDP", "DP [Pa]")
+        AddCoilGridColumn("Face", "MainForm_CoilPerformance_ResultFace", "Face vel. [m/s]")
+        dgvCoilPerformance_Results.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
+
+        lblCoilPerformance_Status = New Label()
+        lblCoilPerformance_Status.AutoSize = True
+        lblCoilPerformance_Status.Location = New Point(8, 332)
+        lblCoilPerformance_Status.ForeColor = Color.Firebrick
+
+        tbpData_CoilPerformance.Controls.Add(grbEnable)
+        tbpData_CoilPerformance.Controls.Add(grbSelection)
+        tbpData_CoilPerformance.Controls.Add(grbFluid)
+        tbpData_CoilPerformance.Controls.Add(grbCustomization)
+        tbpData_CoilPerformance.Controls.Add(dgvCoilPerformance_Results)
+        tbpData_CoilPerformance.Controls.Add(lblCoilPerformance_Status)
+
+        tbcData.TabPages.Insert(Math.Min(1, tbcData.TabPages.Count), tbpData_CoilPerformance)
+        CoilPerformance_UpdateControlState()
+    End Sub
+
+    Private Sub AddCoilGridColumn(name As String, resourceName As String, fallbackText As String)
+        Dim columnIndex As Integer = dgvCoilPerformance_Results.Columns.Add(name, CoilPerformance_Text(resourceName, fallbackText))
+        dgvCoilPerformance_Results.Columns(columnIndex).Tag = New String() {resourceName, fallbackText}
+    End Sub
+
+    Private Function CreateCoilLabel(resourceName As String, fallbackText As String, x As Integer, y As Integer) As Label
+        Dim label As New Label()
+        label.AutoSize = True
+        label.Location = New Point(x, y)
+        label.Tag = New String() {resourceName, fallbackText}
+        label.Text = CoilPerformance_Text(resourceName, fallbackText)
+        Return label
+    End Function
+
+    Private Function CreateCoilNumeric(x As Integer,
+        y As Integer,
+        minimum As Decimal,
+        maximum As Decimal,
+        value As Decimal,
+        decimalPlaces As Integer) As NumericUpDown
+
+        Dim control As New NumericUpDown()
+        control.DecimalPlaces = decimalPlaces
+        control.Increment = If(decimalPlaces = 0, 1D, 0.1D)
+        control.Minimum = minimum
+        control.Maximum = maximum
+        control.Value = Math.Min(Math.Max(value, minimum), maximum)
+        control.Location = New Point(x, y)
+        control.Size = New Size(76, 20)
+        AddHandler control.ValueChanged, AddressOf CoilPerformance_InputChanged
+        Return control
+    End Function
+
+    Private Function CoilPerformance_Text(resourceName As String, fallbackText As String) As String
+        Try
+            Dim value As String = Environment.Localization.GetString(resourceName)
+            If Not String.IsNullOrEmpty(value) AndAlso Not value.StartsWith("@@", StringComparison.Ordinal) Then
+                Return value
+            End If
+        Catch
+        End Try
+
+        Return fallbackText
+    End Function
+
+    Private Sub CoilPerformance_UpdateLocalizedTexts()
+        If tbpData_CoilPerformance Is Nothing Then
+            Return
+        End If
+
+        tbpData_CoilPerformance.Text = CoilPerformance_Text("MainForm_CoilPerformance_Tab", "Water coils")
+        CoilPerformance_UpdateLocalizedControlTexts(tbpData_CoilPerformance)
+
+        If dgvCoilPerformance_Results IsNot Nothing Then
+            For Each column As DataGridViewColumn In dgvCoilPerformance_Results.Columns
+                Dim tagValues As String() = TryCast(column.Tag, String())
+                If tagValues IsNot Nothing AndAlso tagValues.Length = 2 Then
+                    column.HeaderText = CoilPerformance_Text(tagValues(0), tagValues(1))
+                End If
+            Next
+        End If
+    End Sub
+
+    Private Sub CoilPerformance_UpdateLocalizedControlTexts(parent As Control)
+        For Each control As Control In parent.Controls
+            Dim tagValues As String() = TryCast(control.Tag, String())
+            If tagValues IsNot Nothing AndAlso tagValues.Length = 2 Then
+                control.Text = CoilPerformance_Text(tagValues(0), tagValues(1))
+            End If
+            CoilPerformance_UpdateLocalizedControlTexts(control)
+        Next
+    End Sub
+
+    Private Sub CoilPerformance_FillFluidTypes()
+        If cmbCoilPerformance_FluidType Is Nothing Then
+            Return
+        End If
+
+        cmbCoilPerformance_FluidType.Items.Clear()
+        Dim fluidTypes As CLCOFluidType() = {
+            CLCOFluidType.Water,
+            CLCOFluidType.Glic_Etil,
+            CLCOFluidType.Glic_Prop
+        }
+
+        For Each fluidType As CLCOFluidType In fluidTypes
+            cmbCoilPerformance_FluidType.Items.Add(New CLComboBoxItemWrapper(Of CLCOFluidType)(
+                CoilPerformance_FluidTypeName(fluidType),
+                fluidType))
+        Next
+        cmbCoilPerformance_FluidType.SelectedIndex = 0
+    End Sub
+
+    Private Function CoilPerformance_FluidTypeName(fluidType As CLCOFluidType) As String
+        Select Case fluidType
+            Case CLCOFluidType.Water
+                Return CoilPerformance_ResourceText(CLMessageResources.Water.ToString(), "Acqua")
+            Case CLCOFluidType.Glic_Etil
+                Return CoilPerformance_ResourceText(CLMessageResources.Glic_Etil.ToString(), "Glicole etilico")
+            Case CLCOFluidType.Glic_Prop
+                Return CoilPerformance_ResourceText(CLMessageResources.Glic_Prop.ToString(), "Glicole propilenico")
+            Case Else
+                Return fluidType.ToString().Replace("_"c, " "c)
+        End Select
+    End Function
+
+    Private Function CoilPerformance_ResourceText(resourceName As String, fallbackText As String) As String
+        Try
+            Dim value As String = Environment.Localization.GetString(resourceName)
+            If Not String.IsNullOrWhiteSpace(value) AndAlso value <> "?" AndAlso Not value.StartsWith("@@", StringComparison.Ordinal) Then
+                Return value
+            End If
+        Catch
+        End Try
+
+        Return fallbackText
+    End Function
+
+    Private Function CoilPerformance_SelectedEditMode() As CLCoilPerformanceEditMode
+        If cmbCoilPerformance_EditMode IsNot Nothing AndAlso TypeOf cmbCoilPerformance_EditMode.SelectedItem Is CLComboBoxItemWrapper(Of CLCoilPerformanceEditMode) Then
+            Return DirectCast(cmbCoilPerformance_EditMode.SelectedItem, CLComboBoxItemWrapper(Of CLCoilPerformanceEditMode)).Value
+        End If
+
+        Return CLCoilPerformanceEditMode.Standard
+    End Function
+
+    Private Function CoilPerformance_SelectedFluidType() As CLCOFluidType
+        If cmbCoilPerformance_FluidType IsNot Nothing AndAlso TypeOf cmbCoilPerformance_FluidType.SelectedItem Is CLComboBoxItemWrapper(Of CLCOFluidType) Then
+            Return DirectCast(cmbCoilPerformance_FluidType.SelectedItem, CLComboBoxItemWrapper(Of CLCOFluidType)).Value
+        End If
+
+        Return CLCOFluidType.Water
+    End Function
+
+    Private Function CoilPerformance_HeightMode() As String
+        If cmbCoilPerformance_HeightMode IsNot Nothing AndAlso TypeOf cmbCoilPerformance_HeightMode.SelectedItem Is CLComboBoxItemWrapper(Of String) Then
+            Return DirectCast(cmbCoilPerformance_HeightMode.SelectedItem, CLComboBoxItemWrapper(Of String)).Value
+        End If
+
+        Return "mm"
+    End Function
+
+    Private Sub CoilPerformance_ModeChanged(sender As Object, e As EventArgs)
+        CoilPerformance_FillStandardCoils()
+    End Sub
+
+    Private Sub CoilPerformance_EnableChanged(sender As Object, e As EventArgs)
+        CoilPerformance_UpdateControlState()
+        Calculate()
+    End Sub
+
+    Private Sub CoilPerformance_EditModeChanged(sender As Object, e As EventArgs)
+        CoilPerformance_FillStandardCoils()
+        CoilPerformance_UpdateControlState()
+    End Sub
+
+    Private Sub CoilPerformance_FluidTypeChanged(sender As Object, e As EventArgs)
+        CoilPerformance_UpdateControlState()
+        CoilPerformance_Recalculate()
+    End Sub
+
+    Private Sub CoilPerformance_CoilChanged(sender As Object, e As EventArgs)
+        CoilPerformance_LoadSelectedCoil()
+        CoilPerformance_Recalculate()
+    End Sub
+
+    Private Sub CoilPerformance_InputChanged(sender As Object, e As EventArgs)
+        If m_CoilPerformanceChanging Then
+            Return
+        End If
+
+        If sender Is nudCoilPerformance_Tubes AndAlso CoilPerformance_HeightMode() = "tubes" Then
+            Try
+                m_CoilPerformanceChanging = True
+                nudCoilPerformance_Height.Value = Math.Min(nudCoilPerformance_Height.Maximum, nudCoilPerformance_Tubes.Value * 25D)
+            Finally
+                m_CoilPerformanceChanging = False
+            End Try
+        ElseIf sender Is cmbCoilPerformance_HeightMode Then
+            CoilPerformance_UpdateControlState()
+        End If
+
+        CoilPerformance_Recalculate()
+    End Sub
+
+    Private Sub CoilPerformance_Recalculate()
+        If chbCoilPerformance_Enable IsNot Nothing AndAlso chbCoilPerformance_Enable.Checked Then
+            Calculate()
+        Else
+            Calculate_CoilPerformance()
+        End If
+    End Sub
+
+    Private Sub CoilPerformance_FillStandardCoils()
+        If cmbCoilPerformance_Coil Is Nothing OrElse cmbCoilPerformance_Mode Is Nothing Then
+            Return
+        End If
+
+        Try
+            m_CoilPerformanceChanging = True
+            cmbCoilPerformance_Coil.Items.Clear()
+
+            m_CoilPerformanceCoils = CLCoilPerformanceCalculator.GetAvailableCoils(SelectedHeatRecoveryModel)
+
+            Dim mode As CLCoilPerformanceMode = DirectCast(cmbCoilPerformance_Mode.SelectedItem, CLCoilPerformanceMode)
+            Dim editMode As CLCoilPerformanceEditMode = CoilPerformance_SelectedEditMode()
+            For Each coil As CLCoilDefinition In m_CoilPerformanceCoils
+                If editMode = CLCoilPerformanceEditMode.External AndAlso coil.Source <> CLCoilPerformanceSource.External Then
+                    Continue For
+                End If
+                If editMode <> CLCoilPerformanceEditMode.External AndAlso (coil.Source = CLCoilPerformanceSource.External OrElse coil.Mode <> mode) Then
+                    Continue For
+                End If
+
+                If coil.Mode = mode OrElse coil.Source = CLCoilPerformanceSource.External Then
+                    Dim displayCoil As CLCoilDefinition = coil.Clone()
+                    If displayCoil.Source = CLCoilPerformanceSource.External Then
+                        displayCoil.Mode = mode
+                    End If
+                    cmbCoilPerformance_Coil.Items.Add(displayCoil)
+                End If
+            Next
+
+            If cmbCoilPerformance_Coil.Items.Count > 0 Then
+                cmbCoilPerformance_Coil.SelectedIndex = 0
+            End If
+        Finally
+            m_CoilPerformanceChanging = False
+        End Try
+
+        CoilPerformance_LoadSelectedCoil()
+        CoilPerformance_UpdateControlState()
+        CoilPerformance_Recalculate()
+    End Sub
+
+    Private Sub CoilPerformance_LoadSelectedCoil()
+        If cmbCoilPerformance_Coil Is Nothing OrElse cmbCoilPerformance_Coil.SelectedItem Is Nothing Then
+            Return
+        End If
+
+        Dim coil As CLCoilDefinition = DirectCast(cmbCoilPerformance_Coil.SelectedItem, CLCoilDefinition)
+
+        Try
+            m_CoilPerformanceChanging = True
+            nudCoilPerformance_Length.Value = Math.Min(Math.Max(coil.Length, CInt(nudCoilPerformance_Length.Minimum)), CInt(nudCoilPerformance_Length.Maximum))
+            nudCoilPerformance_Height.Value = Math.Min(Math.Max(coil.Height, CInt(nudCoilPerformance_Height.Minimum)), CInt(nudCoilPerformance_Height.Maximum))
+            nudCoilPerformance_Rows.Value = Math.Min(Math.Max(coil.NumberOfRows, CInt(nudCoilPerformance_Rows.Minimum)), CInt(nudCoilPerformance_Rows.Maximum))
+            nudCoilPerformance_Circuits.Value = Math.Min(Math.Max(coil.NumberOfCircuits, CInt(nudCoilPerformance_Circuits.Minimum)), CInt(nudCoilPerformance_Circuits.Maximum))
+            nudCoilPerformance_FinSpacing.Value = CDec(CLCoilPerformanceCalculator.FinSpacingToDouble(coil.FinSpacing))
+            nudCoilPerformance_Tubes.Value = Math.Min(nudCoilPerformance_Tubes.Maximum, Math.Max(nudCoilPerformance_Tubes.Minimum, Math.Round(nudCoilPerformance_Height.Value / 25D)))
+        Finally
+            m_CoilPerformanceChanging = False
+        End Try
+
+        CoilPerformance_UpdateControlState()
+    End Sub
+
+    Private Sub CoilPerformance_UpdateControlState()
+        If chbCoilPerformance_Enable Is Nothing Then
+            Return
+        End If
+        If cmbCoilPerformance_EditMode Is Nothing OrElse nudCoilPerformance_FluidTec Is Nothing OrElse dgvCoilPerformance_Results Is Nothing Then
+            Return
+        End If
+
+        Dim enabled As Boolean = chbCoilPerformance_Enable.Checked
+        Dim editMode As CLCoilPerformanceEditMode = CoilPerformance_SelectedEditMode()
+        Dim geometryEnabled As Boolean = enabled AndAlso editMode <> CLCoilPerformanceEditMode.Standard
+        Dim external As Boolean = enabled AndAlso editMode = CLCoilPerformanceEditMode.External
+        Dim fluidType As CLCOFluidType = CoilPerformance_SelectedFluidType()
+        Dim heightInTubes As Boolean = CoilPerformance_HeightMode() = "tubes"
+
+        cmbCoilPerformance_EditMode.Enabled = enabled
+        cmbCoilPerformance_Mode.Enabled = enabled
+        cmbCoilPerformance_Coil.Enabled = enabled AndAlso editMode <> CLCoilPerformanceEditMode.External
+        cmbCoilPerformance_FluidType.Enabled = enabled
+        nudCoilPerformance_FluidTec.Enabled = enabled AndAlso fluidType <> CLCOFluidType.Water
+        nudCoilPerformance_CoolingIn.Enabled = enabled
+        nudCoilPerformance_CoolingOut.Enabled = enabled
+        nudCoilPerformance_HeatingIn.Enabled = enabled
+        nudCoilPerformance_HeatingOut.Enabled = enabled
+        nudCoilPerformance_Rows.Enabled = geometryEnabled
+        nudCoilPerformance_FinSpacing.Enabled = geometryEnabled
+        nudCoilPerformance_Circuits.Enabled = geometryEnabled
+        nudCoilPerformance_Length.Enabled = external
+        cmbCoilPerformance_HeightMode.Enabled = external
+        nudCoilPerformance_Height.Enabled = external AndAlso Not heightInTubes
+        nudCoilPerformance_Tubes.Enabled = external AndAlso heightInTubes
+        dgvCoilPerformance_Results.Enabled = enabled
+
+        If Not enabled Then
+            dgvCoilPerformance_Results.Rows.Clear()
+            lblCoilPerformance_Status.Text = ""
+            m_CoilPerformanceLastPressureDrop = 0
+        End If
+    End Sub
+
+    Private Function CoilPerformance_GetEditedCoil() As CLCoilDefinition
+        If cmbCoilPerformance_Coil Is Nothing OrElse cmbCoilPerformance_Coil.SelectedItem Is Nothing Then
+            Return Nothing
+        End If
+
+        Dim coil As CLCoilDefinition = DirectCast(cmbCoilPerformance_Coil.SelectedItem, CLCoilDefinition).Clone()
+        coil.Length = CInt(nudCoilPerformance_Length.Value)
+        If CoilPerformance_SelectedEditMode() = CLCoilPerformanceEditMode.External AndAlso CoilPerformance_HeightMode() = "tubes" Then
+            coil.Height = CInt(nudCoilPerformance_Tubes.Value * 25D)
+        Else
+            coil.Height = CInt(nudCoilPerformance_Height.Value)
+        End If
+        coil.NumberOfRows = CInt(nudCoilPerformance_Rows.Value)
+        coil.NumberOfCircuits = CInt(nudCoilPerformance_Circuits.Value)
+        coil.FinSpacing = CLCoilPerformanceCalculator.DoubleToFinSpacing(CDbl(nudCoilPerformance_FinSpacing.Value))
+        Return coil
+    End Function
+
+    Private Function Calculate_CoilPerformance() As Double
+        If dgvCoilPerformance_Results Is Nothing OrElse m_CoilPerformanceChanging Then
+            Return m_CoilPerformanceLastPressureDrop
+        End If
+
+        dgvCoilPerformance_Results.Rows.Clear()
+        lblCoilPerformance_Status.Text = ""
+        m_CoilPerformanceLastPressureDrop = 0
+
+        If chbCoilPerformance_Enable Is Nothing OrElse Not chbCoilPerformance_Enable.Checked Then
+            Return 0
+        End If
+
+        Dim coil As CLCoilDefinition = CoilPerformance_GetEditedCoil()
+        If coil Is Nothing Then
+            Return 0
+        End If
+
+        Dim input As New CLCoilCalculationInput With {
+            .Coil = coil,
+            .AirFlow = AirFlow,
+            .AirInletTemperature = SupplyOutletTemp,
+            .AirInletRH = SupplyOutletRH,
+            .FluidType = CoilPerformance_SelectedFluidType(),
+            .FluidTypeTec = CDbl(nudCoilPerformance_FluidTec.Value),
+            .CoolingFluidInletTemperature = CDbl(nudCoilPerformance_CoolingIn.Value),
+            .CoolingFluidOutletTemperature = CDbl(nudCoilPerformance_CoolingOut.Value),
+            .HeatingFluidInletTemperature = CDbl(nudCoilPerformance_HeatingIn.Value),
+            .HeatingFluidOutletTemperature = CDbl(nudCoilPerformance_HeatingOut.Value)
+        }
+
+        Dim results As List(Of CLCoilCalculationResult) = CLCoilPerformanceCalculator.Calculate(input)
+
+        For Each result As CLCoilCalculationResult In results
+            Dim status As String = If(result.IsOk, CoilPerformance_Text("MainForm_CoilPerformance_OK", "OK"), If(String.IsNullOrEmpty(result.ErrorMessage), result.Auxiliary.ToString(), result.ErrorMessage))
+            dgvCoilPerformance_Results.Rows.Add(
+                result.Mode.ToString(),
+                status,
+                FormatNumber(result.HeatTransferred, 0),
+                FormatNumber(result.SensibleHeat, 0),
+                FormatNumber(result.OutletTemperature, 1),
+                FormatNumber(result.OutletRH, 0),
+                FormatNumber(result.CondensedWater, 2),
+                FormatNumber(result.AirPressureDrop, 0),
+                FormatNumber(result.FaceVelocity, 2))
+
+            If Not result.IsOk Then
+                lblCoilPerformance_Status.Text = status
+            End If
+
+            m_CoilPerformanceLastPressureDrop = Math.Max(m_CoilPerformanceLastPressureDrop, result.AirPressureDrop)
+        Next
+
+        If m_CoilPerformanceLastPressureDrop > 0 Then
+            lblCoilPerformance_Status.Text = String.Format(
+                "{0}: {1} Pa",
+                CoilPerformance_Text("MainForm_CoilPerformance_AirPressureApplied", "Coil air pressure drop applied"),
+                FormatNumber(m_CoilPerformanceLastPressureDrop, 0))
+        End If
+
+        Return m_CoilPerformanceLastPressureDrop
+    End Function
+
+#End Region
+
 #Region "====[ Calculate ]===="
 
     Private Sub Calculate()
@@ -2296,6 +2874,17 @@ Public Class CLMainForm
         End If
 
         Calculate_Data()
+
+        If chbCoilPerformance_Enable IsNot Nothing AndAlso chbCoilPerformance_Enable.Checked Then
+            Dim coilPressureDrop As Double = Calculate_CoilPerformance()
+            If coilPressureDrop > 0 Then
+                Calculate_Data(coilPressureDrop)
+                Calculate_CoilPerformance()
+            End If
+        Else
+            Calculate_CoilPerformance()
+        End If
+
         Calculate_Sound()
         Calculate_CO2Level()
 
@@ -2659,7 +3248,7 @@ Public Class CLMainForm
         Return newValue
     End Function
 
-    Private Sub Calculate_Data()
+    Private Sub Calculate_Data(Optional additionalPressureDrop As Double = 0)
         Try
 
             Dim rec As String
@@ -2713,7 +3302,9 @@ Public Class CLMainForm
                chbPerformance_ERP2018_ShowArea.Checked,
                nudPerformance_SFP_Limit.Value,
                chbPerformance_PassiveHaus_ShowArea.Checked,
-               CDbl(txbPerformance_PassiveHaus_Limit.Text))
+               CDbl(txbPerformance_PassiveHaus_Limit.Text),
+               additionalPressureDrop,
+               afm)
 
             termo_work = termo_calc(ritm, rhritm, fitm, rhfitm, workpoint(1), rec, pl, 0)
 

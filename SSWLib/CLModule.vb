@@ -527,7 +527,9 @@ Public Module CLModule
     ByVal showERPArea As Boolean,
     ByVal sfpLimit As Double,
     ByVal showPassiveHausArea As Boolean,
-    ByVal passiveHausLimit As Double) As Double()
+    ByVal passiveHausLimit As Double,
+    Optional ByVal coilPressureDrop As Double = 0,
+    Optional ByVal coilPressureDropAirflow As Double = 0) As Double()
 
         Dim j As Integer = 0
         Dim x(5), y(5), z(5), workpoint(3) As Double
@@ -684,6 +686,20 @@ Public Module CLModule
                 z_new(i) = z_new(i) * (reg / 100) ^ 3
             Next i
 
+        End If
+
+        If coilPressureDrop > 0 Then
+            Dim coilReferenceAirflow As Double = If(coilPressureDropAirflow > 0, coilPressureDropAirflow, af_ref)
+
+            If coilReferenceAirflow > 0 Then
+                For i As Integer = 0 To (x_new.Length - 1)
+                    y_new(i) = Math.Max(0, y_new(i) - coilPressureDrop * Math.Pow(x_new(i) / coilReferenceAirflow, 2))
+                Next i
+
+                For i As Integer = 0 To (x_new_ori.Length - 1)
+                    y_new_ori(i) = Math.Max(0, y_new_ori(i) - coilPressureDrop * Math.Pow(x_new_ori(i) / coilReferenceAirflow, 2))
+                Next i
+            End If
         End If
 
         'Ricalcolo curva di efficienza

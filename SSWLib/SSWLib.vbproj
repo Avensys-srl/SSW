@@ -309,6 +309,7 @@
       <DependentUpon>CLMainReportDataSet.xsd</DependentUpon>
     </Compile>
     <Compile Include="CLCOIL.vb" />
+    <Compile Include="CLCoilPerformanceCalculator.vb" />
     <Compile Include="CLReportViewerForm.Designer.vb">
       <DependentUpon>CLReportViewerForm.vb</DependentUpon>
     </Compile>
@@ -432,6 +433,22 @@
     </EmbeddedResource>
     <Content Include="..\3rd\COILcalc.dll">
       <Link>COILcalc.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\3rd\ASEREP32.dll">
+      <Link>ASEREP32.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\3rd\libeay32.dll">
+      <Link>libeay32.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\3rd\ssleay32.dll">
+      <Link>ssleay32.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\3rd\*.ref">
+      <Link>%(Filename)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="CLMainReport.rdlc">
