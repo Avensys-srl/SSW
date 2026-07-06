@@ -1,6 +1,13 @@
 SSW Changelog
 =============
 
+1.3.0.43 - 2026-07-06
+---------------------
+- Added enthalpic exchanger calculation support for EN366 and ENRFC27.
+- Separated thermal efficiency from humidity efficiency for enthalpic exchangers.
+- Added dedicated humidity efficiency curves from Recutech selector data.
+- Forced produced water to zero for enthalpic exchangers.
+
 1.3.0.42 - 2026-06-17
 ---------------------
 - Updated the AV machine database.

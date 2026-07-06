@@ -36,6 +36,7 @@ Public Module CLModule
         Dim water_produced As Double
         Dim sensible_heat As Double
         Dim latent_heat As Double
+        Dim humidity_efficiency As Double
     End Structure
 
     Structure psychro
@@ -85,6 +86,9 @@ Public Module CLModule
       onlyeff As Boolean) As termo
 
         Dim calcolato As termo
+        Dim modelUpper As String = UCase(model)
+        Dim isEnthalpyExchanger As Boolean = modelUpper.Contains("MODEL EN366") OrElse modelUpper.Contains("MODEL ENRFC27")
+        Dim effW As Double = 0
 
         'costanti
         cpa = 1006.45
@@ -162,17 +166,17 @@ Public Module CLModule
         vf = af * ratiov * ratioaf * ratiopl * ratio_moist
 
         'Caratteristiche RS160
-        If UCase(model) = "MODEL 1" Then
+        If modelUpper = "MODEL 1" Then
             ef = 0.97 - (6.10139 * mf ^ 3 - 4.01818 * mf ^ 2 + 1.77231 * mf) ' 0.97 - ....corretivo per evitare 100%
 
         End If
         'Caratteristiche RS300
-        If UCase(model) = "MODEL 2" Then
+        If modelUpper = "MODEL 2" Then
             ef = 0.97 - (5.77875 * mf ^ 3 - 4.36345 * mf ^ 2 + 2.0758 * mf) ' 0.97 - ....corretivo per evitare 100%
 
         End If
         'Caratteristiche RS220
-        If UCase(model) = "MODEL 3" Then
+        If modelUpper = "MODEL 3" Then
             mf = mf * 82 / 392
             vf = vf * 82 / 392
             ef = (0.0017748 * vf * vf - 0.455242 * vf + 100) / 100 - 0.03 ' -0.03  ....corretivo per evitare 100%
@@ -180,52 +184,64 @@ Public Module CLModule
         End If
 
         'Caratteristiche NL180
-        If UCase(model) = "MODEL NL180" Then
+        If modelUpper = "MODEL NL180" Then
             ef = 1 - (-0.442211055 * mf ^ 2 + 0.954371859 * mf + 0.048143729)
 
         End If
 
 
         'Caratteristiche Rotativi
-        If UCase(model).Contains("MODEL R") Then
+        If modelUpper.Contains("MODEL R") Then
 
 
-            If UCase(model).Contains("500") Then
+            If modelUpper.Contains("500") Then
                 eff34 = (0.000007 * af ^ 2 - 0.0235 * af + 89.6) / 100
             End If
 
-            If UCase(model).Contains("600") Then
+            If modelUpper.Contains("600") Then
                 eff34 = (0.000004 * af ^ 2 - 0.017 * af + 90.15) / 100
             End If
 
-            If UCase(model).Contains("700") Then
+            If modelUpper.Contains("700") Then
                 eff34 = (0.0000025 * af ^ 2 - 0.0132 * af + 90.56) / 100
             End If
 
-            If UCase(model).Contains("1000") Then
+            If modelUpper.Contains("1000") Then
                 eff34 = (0.0000004 * af ^ 2 - 0.0053 * af + 89.351) / 100
             End If
 
-            If UCase(model).Contains("1200") Then
+            If modelUpper.Contains("1200") Then
                 eff34 = (0.0000002 * af ^ 2 - 0.0039 * af + 92.253) / 100
             End If
 
-            If UCase(model).Contains("1300") Then
+            If modelUpper.Contains("1300") Then
                 eff34 = (-0.00248514 * af + 91.892) / 100
             End If
 
-            If UCase(model).Contains("1316") Then
+            If modelUpper.Contains("1316") Then
                 eff34 = (-0.00140114 * af + 91.621) / 100
             End If
 
-            If UCase(model).Contains("1700") Then
+            If modelUpper.Contains("1700") Then
                 eff34 = (-0.00140114 * af + 91.621) / 100
             End If
 
 
-        ElseIf UCase(model) = "MODEL EN366" Then  'Caso entalpico
+        ElseIf modelUpper.Contains("MODEL EN366") Then  'Caso entalpico
             eff34 = (-0.046 * af + 84.15) / 100
+            effW = LinearInterpolateCurve(
+                af,
+                New Double() {50, 65, 100, 150, 200, 250, 300, 350, 400, 450, 500},
+                New Double() {61.69, 62.22, 62.94, 63.12, 62.69, 61.88, 60.82, 59.6, 58.26, 56.84, 55.35}
+            ) / 100
 
+        ElseIf modelUpper.Contains("MODEL ENRFC27") Then  'Caso entalpico
+            eff34 = (-0.045 * af + 88.84) / 100
+            effW = LinearInterpolateCurve(
+                af,
+                New Double() {50, 65, 100, 150, 200, 250, 300, 350, 400, 450, 500},
+                New Double() {67.34, 64.26, 57.74, 50.01, 44.15, 40.16, 38.04, 37.79, 39.41, 42.9, 48.26}
+            ) / 100
         Else
 
             'Identifico quali sono il ramo caldo e ramo freddo, per procedere con il calcolo
@@ -311,13 +327,14 @@ Public Module CLModule
 
 
         'Se sono MODEL R devo cambiare il calcolo (dopo che l'efficienza è stata calcolata perchè dipende tutto da qui)
-        If (UCase(model).Contains("MODEL R") Or UCase(model).Contains("MODEL EN366")) And onlyeff = False Then
+        If (modelUpper.Contains("MODEL R") OrElse isEnthalpyExchanger) And onlyeff = False Then
 
             Dim psychro_r As psychro
             Dim psychro_f As psychro
             Dim psychro_s As psychro
             Dim psychro_e As psychro
-            Dim eff_hr As Double = 1.035 * eff34
+            Dim eff_t As Double = eff34
+            Dim eff_hr As Double = If(isEnthalpyExchanger, effW, 1.035 * eff34)
             Dim tsup, texh As Double
             Dim wsup, wexh As Double
             Dim tf, tr, hrf, hrr As Double
@@ -344,7 +361,7 @@ Public Module CLModule
             psychro_f = PsychroCalc(tf, hrf)
 
             'temperatura uscita 1
-            tsup = tf + eff34 * (tr - tf)
+            tsup = tf + eff_t * (tr - tf)
             wsup = psychro_f.w + eff_hr * (psychro_r.w - psychro_f.w)
             psychro_s = PsychroCalcW(tsup, wsup)
 
@@ -356,7 +373,11 @@ Public Module CLModule
             Q = m * (psychro_s.h - psychro_f.h) * 1000
             Qsens = m * 1005 * (tsup - tf)
             Qlat = Q - Qsens
-            calcolato.water_produced = (wsup - psychro_f.w) * m * 3600
+            If isEnthalpyExchanger Then
+                calcolato.water_produced = 0
+            Else
+                calcolato.water_produced = (wsup - psychro_f.w) * m * 3600
+            End If
 
 
             If tin > tout Then
@@ -379,6 +400,9 @@ Public Module CLModule
         calcolato.Return_inlet_temp = tout
         calcolato.Return_inlet_rh = hrout
         calcolato.efficiency = eff34
+        If isEnthalpyExchanger Then
+            calcolato.humidity_efficiency = effW
+        End If
         calcolato.heat_recovery = Q
         calcolato.sensible_heat = Qsens
         calcolato.latent_heat = Qlat
@@ -398,6 +422,43 @@ Public Module CLModule
         Next
 
         Return maxValue
+    End Function
+
+    Function LinearInterpolateCurve(ByVal x As Double, ByVal xs As Double(), ByVal ys As Double()) As Double
+
+        If xs Is Nothing OrElse ys Is Nothing OrElse xs.Length = 0 OrElse xs.Length <> ys.Length Then
+            Return 0
+        End If
+
+        If xs.Length = 1 Then
+            Return ys(0)
+        End If
+
+        If x <= xs(0) Then
+            Return LinearInterpolateSegment(x, xs(0), xs(1), ys(0), ys(1))
+        End If
+
+        If x >= xs(xs.Length - 1) Then
+            Dim lastIndex As Integer = xs.Length - 1
+            Return LinearInterpolateSegment(x, xs(lastIndex - 1), xs(lastIndex), ys(lastIndex - 1), ys(lastIndex))
+        End If
+
+        For i As Integer = 0 To xs.Length - 2
+            If x >= xs(i) AndAlso x <= xs(i + 1) Then
+                Return LinearInterpolateSegment(x, xs(i), xs(i + 1), ys(i), ys(i + 1))
+            End If
+        Next
+
+        Return 0
+    End Function
+
+    Private Function LinearInterpolateSegment(ByVal x As Double, ByVal x1 As Double, ByVal x2 As Double, ByVal y1 As Double, ByVal y2 As Double) As Double
+
+        If x2 = x1 Then
+            Return y1
+        End If
+
+        Return y1 + ((x - x1) * (y2 - y1) / (x2 - x1))
     End Function
 
     Function ERP2018_calculation(ByVal af As Double, ByVal eff As Double, ByVal esp As Double, ByVal wunit As Double, ByVal dcHeatRecoveryModel As CLDCHeatRecoveryModel) As FanERP2018
@@ -1530,4 +1591,3 @@ Public Module CLModule
 #End Region
 
 End Module
-
