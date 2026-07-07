@@ -542,4 +542,40 @@
   <data name="Yes" xml:space="preserve">
     <value>Ja</value>
   </data>
-<data name="MainForm_Menu_Option_Language_Hungarian" xml:space="preserve"><value>Magyar</value></data><data name="MainForm_Menu_Option_Language_Danish" xml:space="preserve"><value>Dansk</value></data><data name="MainForm_Menu_Option_CommercialSheetAutoSync" xml:space="preserve"><value>Automatisk synkronisering af kommercielle datablade</value></data></root>
+<data name="MainForm_Menu_Option_Language_Hungarian" xml:space="preserve"><value>Magyar</value></data><data name="MainForm_Menu_Option_Language_Danish" xml:space="preserve"><value>Dansk</value></data>
+  <data name="MainForm_CoilPerformance_AirPressureApplied" xml:space="preserve"><value>Fladens lufttryktab anvendt</value></data>
+  <data name="MainForm_CoilPerformance_Case" xml:space="preserve"><value>Tilfælde</value></data>
+  <data name="MainForm_CoilPerformance_Circuits" xml:space="preserve"><value>Kredse</value></data>
+  <data name="MainForm_CoilPerformance_Coil" xml:space="preserve"><value>Flade</value></data>
+  <data name="MainForm_CoilPerformance_CoolingIn" xml:space="preserve"><value>Køling ind [C]</value></data>
+  <data name="MainForm_CoilPerformance_CoolingOut" xml:space="preserve"><value>Køling ud [C]</value></data>
+  <data name="MainForm_CoilPerformance_Enable" xml:space="preserve"><value>Aktiver fladeberegning</value></data>
+  <data name="MainForm_CoilPerformance_EnableGroup" xml:space="preserve"><value>Beregning af vandflade</value></data>
+  <data name="MainForm_CoilPerformance_External" xml:space="preserve"><value>Ekstern</value></data>
+  <data name="MainForm_CoilPerformance_FinSpacing" xml:space="preserve"><value>Finneafstand [mm]</value></data>
+  <data name="MainForm_CoilPerformance_Fluid" xml:space="preserve"><value>Væske og vandtemperaturer</value></data>
+  <data name="MainForm_CoilPerformance_FluidType" xml:space="preserve"><value>Væske</value></data>
+  <data name="MainForm_CoilPerformance_Geometry" xml:space="preserve"><value>Geometri</value></data>
+  <data name="MainForm_CoilPerformance_Glycol" xml:space="preserve"><value>Glykol [%]</value></data>
+  <data name="MainForm_CoilPerformance_HeatingIn" xml:space="preserve"><value>Varme ind [C]</value></data>
+  <data name="MainForm_CoilPerformance_HeatingOut" xml:space="preserve"><value>Varme ud [C]</value></data>
+  <data name="MainForm_CoilPerformance_Height" xml:space="preserve"><value>Højde [mm/rør]</value></data>
+  <data name="MainForm_CoilPerformance_HeightMm" xml:space="preserve"><value>mm</value></data>
+  <data name="MainForm_CoilPerformance_HeightTubes" xml:space="preserve"><value>rør</value></data>
+  <data name="MainForm_CoilPerformance_Length" xml:space="preserve"><value>Længde [mm]</value></data>
+  <data name="MainForm_CoilPerformance_OK" xml:space="preserve"><value>OK</value></data>
+  <data name="MainForm_CoilPerformance_ResultAirOut" xml:space="preserve"><value>Luft ud [C]</value></data>
+  <data name="MainForm_CoilPerformance_ResultCapacity" xml:space="preserve"><value>Kapacitet [W]</value></data>
+  <data name="MainForm_CoilPerformance_ResultCond" xml:space="preserve"><value>Kond. [l/h]</value></data>
+  <data name="MainForm_CoilPerformance_ResultDP" xml:space="preserve"><value>DP [Pa]</value></data>
+  <data name="MainForm_CoilPerformance_ResultFace" xml:space="preserve"><value>Front hast. [m/s]</value></data>
+  <data name="MainForm_CoilPerformance_ResultMode" xml:space="preserve"><value>Tilstand</value></data>
+  <data name="MainForm_CoilPerformance_ResultRHOut" xml:space="preserve"><value>R.F. ud [%]</value></data>
+  <data name="MainForm_CoilPerformance_ResultSensible" xml:space="preserve"><value>Sensible [W]</value></data>
+  <data name="MainForm_CoilPerformance_ResultStatus" xml:space="preserve"><value>Status</value></data>
+  <data name="MainForm_CoilPerformance_Rows" xml:space="preserve"><value>Rækker</value></data>
+  <data name="MainForm_CoilPerformance_Selection" xml:space="preserve"><value>Valg af flade</value></data>
+  <data name="MainForm_CoilPerformance_Standard" xml:space="preserve"><value>Standard</value></data>
+  <data name="MainForm_CoilPerformance_StandardCustomized" xml:space="preserve"><value>Tilpasset standard</value></data>
+  <data name="MainForm_CoilPerformance_Tab" xml:space="preserve"><value>Vandflader</value></data>
+  <data name="MainForm_CoilPerformance_Type" xml:space="preserve"><value>Type</value></data><data name="MainForm_Menu_Option_CommercialSheetAutoSync" xml:space="preserve"><value>Automatisk synkronisering af kommercielle datablade</value></data></root>
