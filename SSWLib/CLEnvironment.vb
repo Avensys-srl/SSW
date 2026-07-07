@@ -160,6 +160,7 @@ Public Class CLEnvironment
     End Class
 
     Private m_Initialized As Boolean = False
+    Private m_DCLiteDatabasePath As String
 
     Public Sub New(dataCentralLitePath As String, sswInfo As CLSSWInfo)
 
@@ -174,6 +175,7 @@ Public Class CLEnvironment
         End If
 
         m_SSWInfo = sswInfo
+        m_DCLiteDatabasePath = dataCentralLitePath
 
         ' Add Languages
         AddLanguage(New CLLanguage(LanguageCode_IT, "ITALIAN"))
@@ -197,6 +199,12 @@ Public Class CLEnvironment
         m_SSWInfo.PrepareEnvironment(Me)
 
     End Sub
+
+    Public ReadOnly Property DCLiteDatabasePath As String
+        Get
+            Return m_DCLiteDatabasePath
+        End Get
+    End Property
 
 #Region "====[ ModelDimensions ]===="
 

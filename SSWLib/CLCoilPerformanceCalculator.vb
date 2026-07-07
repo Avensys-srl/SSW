@@ -1,5 +1,6 @@
 Imports Climalombarda.DataCentral.LTModel
 Imports System.Globalization
+Imports System.Data.SqlServerCe
 
 Public Enum CLCoilPerformanceMode
     CWD
@@ -19,6 +20,7 @@ Public Enum CLCoilPerformanceEditMode
 End Enum
 
 Public Class CLCoilDefinition
+    Public Property Id As Integer
     Public Property Name As String
     Public Property Mode As CLCoilPerformanceMode
     Public Property Source As CLCoilPerformanceSource
@@ -27,6 +29,7 @@ Public Class CLCoilDefinition
     Public Property NumberOfRows As Integer
     Public Property NumberOfCircuits As Integer
     Public Property FinSpacing As CLCOFinSpacing
+    Public Property FinSpacingValue As Double = 2.5
     Public Property HeaderType As CLCOHeaderType
 
     Public Overrides Function ToString() As String
@@ -40,6 +43,7 @@ End Class
 
 Public Class CLCoilCalculationInput
     Public Property Coil As CLCoilDefinition
+    Public Property CalculationMode As CLCoilPerformanceMode = CLCoilPerformanceMode.HCD
     Public Property AirFlow As Double
     Public Property AirInletTemperature As Double
     Public Property AirInletRH As Double
@@ -56,6 +60,7 @@ Public Class CLCoilCalculationResult
     Public Property OutletTemperature As Double
     Public Property OutletRH As Double
     Public Property AirPressureDrop As Double
+    Public Property WaterPressureDrop As Double
     Public Property CondensedWater As Double
     Public Property HeatTransferred As Double
     Public Property SensibleHeat As Double
@@ -80,22 +85,86 @@ End Enum
 Public Class CLCoilPerformanceCalculator
 
     Public Shared Function GetAvailableCoils(dcHeatRecoveryModel As CLDCHeatRecoveryModel) As List(Of CLCoilDefinition)
+        Return GetAssociatedCoils(dcHeatRecoveryModel)
+    End Function
+
+    Public Shared Function HasAssociatedCoils(dcHeatRecoveryModel As CLDCHeatRecoveryModel) As Boolean
+        Return GetAssociatedCoils(dcHeatRecoveryModel).Count > 0
+    End Function
+
+    Private Shared Function GetAssociatedCoils(dcHeatRecoveryModel As CLDCHeatRecoveryModel) As List(Of CLCoilDefinition)
         Dim coils As New List(Of CLCoilDefinition)
 
-        If dcHeatRecoveryModel IsNot Nothing Then
-            AddModelCoil(coils, dcHeatRecoveryModel, CLCoilPerformanceMode.CWD)
-            AddModelCoil(coils, dcHeatRecoveryModel, CLCoilPerformanceMode.HWD)
-            AddModelCoil(coils, dcHeatRecoveryModel, CLCoilPerformanceMode.HCD)
+        If dcHeatRecoveryModel Is Nothing OrElse CLEnvironment.Current Is Nothing OrElse String.IsNullOrEmpty(CLEnvironment.Current.DCLiteDatabasePath) Then
+            Return coils
         End If
 
-        If coils.Count = 0 Then
-            coils.Add(CreateFallbackCoil("Standard CWD demo", CLCoilPerformanceMode.CWD, 250, 150, 3, 2, CLCOFinSpacing._2_5, CLCOHeaderType._3_4))
-            coils.Add(CreateFallbackCoil("Standard HWD demo", CLCoilPerformanceMode.HWD, 150, 150, 1, 1, CLCOFinSpacing._2_1, CLCOHeaderType._3_4))
-            coils.Add(CreateFallbackCoil("Standard HCD demo", CLCoilPerformanceMode.HCD, 250, 150, 3, 2, CLCOFinSpacing._2_5, CLCOHeaderType._3_4))
-        End If
+        Try
+            Using connection As New SqlCeConnection(String.Format("Data Source=""{0}""; Password=""{1}""", CLEnvironment.Current.DCLiteDatabasePath, "@D3C1L4T2%"))
+                connection.Open()
 
-        coils.Add(CreateFallbackCoil("External coil", CLCoilPerformanceMode.HCD, 250, 150, 3, 2, CLCOFinSpacing._2_5, CLCOHeaderType._3_4, CLCoilPerformanceSource.External))
+                If Not TableExists(connection, "CLCoils") OrElse Not TableExists(connection, "CLHeatRecoveryModelCoils") Then
+                    Return coils
+                End If
+
+                Using command As SqlCeCommand = connection.CreateCommand()
+                    command.CommandText =
+                        "SELECT c.Id, c.Name, r.CoilMode, c.Length, c.Height, c.NumberOfRows, " &
+                        "c.NumberOfCircuits, c.FinSpacing_mm " &
+                        "FROM CLHeatRecoveryModelCoils r " &
+                        "INNER JOIN CLCoils c ON c.Id = r.IdCoil " &
+                        "WHERE r.IdHeatRecoveryModel = @IdHeatRecoveryModel " &
+                        "AND r.Active = 1 AND c.Active = 1 " &
+                        "ORDER BY r.IsDefault DESC, r.SortOrder, c.Name"
+                    command.Parameters.Add(New SqlCeParameter("@IdHeatRecoveryModel", dcHeatRecoveryModel.Id))
+
+                    Using reader As SqlCeDataReader = command.ExecuteReader()
+                        Dim addedCoilIds As New HashSet(Of Integer)
+
+                        While reader.Read()
+                            Dim coilId As Integer = Convert.ToInt32(reader("Id"), CultureInfo.InvariantCulture)
+                            If addedCoilIds.Contains(coilId) Then
+                                Continue While
+                            End If
+
+                            Dim mode As CLCoilPerformanceMode
+                            If Not [Enum].TryParse(Convert.ToString(reader("CoilMode")), True, mode) Then
+                                mode = CLCoilPerformanceMode.HCD
+                            End If
+
+                            Dim finSpacingValue As Double = Convert.ToDouble(reader("FinSpacing_mm"), CultureInfo.InvariantCulture)
+                            coils.Add(New CLCoilDefinition With {
+                                .Id = coilId,
+                                .Name = Convert.ToString(reader("Name")),
+                                .Mode = mode,
+                                .Source = CLCoilPerformanceSource.Standard,
+                                .Length = Convert.ToInt32(reader("Length"), CultureInfo.InvariantCulture),
+                                .Height = Convert.ToInt32(reader("Height"), CultureInfo.InvariantCulture),
+                                .NumberOfRows = Convert.ToInt32(reader("NumberOfRows"), CultureInfo.InvariantCulture),
+                                .NumberOfCircuits = Convert.ToInt32(reader("NumberOfCircuits"), CultureInfo.InvariantCulture),
+                                .FinSpacing = DoubleToFinSpacing(finSpacingValue),
+                                .FinSpacingValue = finSpacingValue,
+                                .HeaderType = CLCOHeaderType._3_4
+                            })
+
+                            addedCoilIds.Add(coilId)
+                        End While
+                    End Using
+                End Using
+            End Using
+        Catch
+            Return New List(Of CLCoilDefinition)
+        End Try
+
         Return coils
+    End Function
+
+    Private Shared Function TableExists(connection As SqlCeConnection, tableName As String) As Boolean
+        Using command As SqlCeCommand = connection.CreateCommand()
+            command.CommandText = "SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = @TableName"
+            command.Parameters.Add(New SqlCeParameter("@TableName", tableName))
+            Return Convert.ToInt32(command.ExecuteScalar(), CultureInfo.InvariantCulture) > 0
+        End Using
     End Function
 
     Private Shared Sub AddModelCoil(coils As List(Of CLCoilDefinition), dcHeatRecoveryModel As CLDCHeatRecoveryModel, mode As CLCoilPerformanceMode)
@@ -154,6 +223,7 @@ Public Class CLCoilPerformanceCalculator
             .NumberOfRows = rows,
             .NumberOfCircuits = circuits,
             .FinSpacing = finSpacing,
+            .FinSpacingValue = FinSpacingToDouble(finSpacing),
             .HeaderType = headerType
         })
     End Sub
@@ -164,7 +234,7 @@ Public Class CLCoilPerformanceCalculator
         height As Integer,
         rows As Integer,
         circuits As Integer,
-        finSpacing As CLCOFinSpacing,
+        finSpacing As Double,
         headerType As CLCOHeaderType,
         Optional source As CLCoilPerformanceSource = CLCoilPerformanceSource.Standard) As CLCoilDefinition
 
@@ -176,7 +246,8 @@ Public Class CLCoilPerformanceCalculator
             .Height = height,
             .NumberOfRows = rows,
             .NumberOfCircuits = circuits,
-            .FinSpacing = finSpacing,
+            .FinSpacing = DoubleToFinSpacing(finSpacing),
+            .FinSpacingValue = finSpacing,
             .HeaderType = headerType
         }
     End Function
@@ -189,7 +260,7 @@ Public Class CLCoilPerformanceCalculator
             Return results
         End If
 
-        Select Case input.Coil.Mode
+        Select Case input.CalculationMode
             Case CLCoilPerformanceMode.CWD
                 results.Add(CalculateSingle(input, CLCOCoilType.Cooling, CLCoilPerformanceMode.CWD))
 
@@ -220,6 +291,7 @@ Public Class CLCoilPerformanceCalculator
             result.OutletTemperature = Math.Round(GetValue(values, "AirTOff", 0), 2)
             result.OutletRH = Math.Round(GetValue(values, "AirFOff", 0), 2)
             result.AirPressureDrop = Math.Round(GetValue(values, "PDropWet", GetValue(values, "PDropDry", 0)), 2)
+            result.WaterPressureDrop = Math.Round(GetFirstValue(values, 0, "kPaMed", "PDropMed", "MedPDrop", "MedDP", "FluidPDrop", "FluidPressureDrop", "PDropFluid"), 2)
             result.CondensedWater = Math.Round(GetValue(values, "QCondens", 0), 2)
             result.HeatTransferred = Math.Round(powerW, 2)
             result.SensibleHeat = Math.Round(If(coilType = CLCOCoilType.Heating, powerW, powerW * shr), 2)
@@ -256,7 +328,7 @@ Public Class CLCoilPerformanceCalculator
             input.Coil.Length,
             input.Coil.NumberOfRows,
             input.Coil.NumberOfCircuits,
-            FormatInputNumber(FinSpacingToDouble(input.Coil.FinSpacing)),
+            FormatInputNumber(If(input.Coil.FinSpacingValue > 0, input.Coil.FinSpacingValue, FinSpacingToDouble(input.Coil.FinSpacing))),
             FormatInputNumber(input.AirFlow),
             FormatInputNumber(input.AirInletTemperature),
             FormatInputNumber(input.AirInletRH),
@@ -347,6 +419,19 @@ Public Class CLCoilPerformanceCalculator
         If values.TryGetValue(key, rawValue) AndAlso Double.TryParse(rawValue.Replace(","c, "."c), NumberStyles.Any, CultureInfo.InvariantCulture, value) Then
             Return value
         End If
+
+        Return defaultValue
+    End Function
+
+    Private Shared Function GetFirstValue(values As Dictionary(Of String, String), defaultValue As Double, ParamArray keys As String()) As Double
+        For Each key As String In keys
+            Dim rawValue As String = Nothing
+            Dim value As Double
+
+            If values.TryGetValue(key, rawValue) AndAlso Double.TryParse(rawValue.Replace(","c, "."c), NumberStyles.Any, CultureInfo.InvariantCulture, value) Then
+                Return value
+            End If
+        Next
 
         Return defaultValue
     End Function

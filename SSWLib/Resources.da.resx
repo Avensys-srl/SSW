@@ -578,4 +578,6 @@
   <data name="MainForm_CoilPerformance_Standard" xml:space="preserve"><value>Standard</value></data>
   <data name="MainForm_CoilPerformance_StandardCustomized" xml:space="preserve"><value>Tilpasset standard</value></data>
   <data name="MainForm_CoilPerformance_Tab" xml:space="preserve"><value>Vandflader</value></data>
-  <data name="MainForm_CoilPerformance_Type" xml:space="preserve"><value>Type</value></data><data name="MainForm_Menu_Option_CommercialSheetAutoSync" xml:space="preserve"><value>Automatisk synkronisering af kommercielle datablade</value></data></root>
+  <data name="MainForm_CoilPerformance_Type" xml:space="preserve"><value>Type</value></data><data name="MainForm_Menu_Option_CommercialSheetAutoSync" xml:space="preserve"><value>Automatisk synkronisering af kommercielle datablade</value></data>
+  <data name="MainForm_CoilPerformance_ResultWaterDP" xml:space="preserve"><value>Vand DP [kPa]</value></data>
+</root>

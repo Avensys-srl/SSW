@@ -510,6 +510,114 @@ Public Module CLModule
 
     End Function
 
+    Private Sub ApplyQuadraticPressureDrop(ByVal xValues As Double(),
+        ByRef pressureValues As Double(),
+        ByVal pressureDrop As Double,
+        ByVal referenceAirflow As Double)
+
+        If pressureDrop <= 0 OrElse referenceAirflow <= 0 Then
+            Return
+        End If
+
+        For i As Integer = 0 To (pressureValues.Length - 1)
+            pressureValues(i) = pressureValues(i) - pressureDrop * Math.Pow(xValues(i) / referenceAirflow, 2)
+        Next i
+
+    End Sub
+
+    Private Sub TrimPressureCurveAtZero(ByRef xValues As Double(),
+        ByRef pressureValues As Double(),
+        ByRef powerValues As Double())
+
+        If xValues Is Nothing OrElse pressureValues Is Nothing OrElse xValues.Length = 0 OrElse pressureValues.Length = 0 Then
+            Return
+        End If
+
+        For i As Integer = 0 To (pressureValues.Length - 1)
+            If pressureValues(i) <= 0 Then
+                If i = 0 Then
+                    pressureValues(0) = 0
+                    ReDim Preserve xValues(0)
+                    ReDim Preserve pressureValues(0)
+                    If powerValues IsNot Nothing Then
+                        ReDim Preserve powerValues(0)
+                    End If
+                    Return
+                End If
+
+                Dim x0 As Double = xValues(i - 1)
+                Dim x1 As Double = xValues(i)
+                Dim y0 As Double = pressureValues(i - 1)
+                Dim y1 As Double = pressureValues(i)
+                Dim zeroAirflow As Double = x0
+                Dim zeroPower As Double = If(powerValues IsNot Nothing, powerValues(i - 1), 0)
+
+                If y1 <> y0 Then
+                    Dim factor As Double = -y0 / (y1 - y0)
+                    zeroAirflow = x0 + factor * (x1 - x0)
+                    If powerValues IsNot Nothing Then
+                        zeroPower = powerValues(i - 1) + factor * (powerValues(i) - powerValues(i - 1))
+                    End If
+                End If
+
+                ReDim Preserve xValues(i)
+                ReDim Preserve pressureValues(i)
+                If powerValues IsNot Nothing Then
+                    ReDim Preserve powerValues(i)
+                    powerValues(i) = zeroPower
+                End If
+
+                xValues(i) = zeroAirflow
+                pressureValues(i) = 0
+                Return
+            End If
+        Next i
+
+    End Sub
+
+    Private Function GetUpperIndex(ByVal xValues As Double(), ByVal xValue As Double) As Integer
+        If xValues Is Nothing OrElse xValues.Length = 0 Then
+            Return 0
+        End If
+
+        For i As Integer = 0 To (xValues.Length - 1)
+            If xValues(i) >= xValue Then
+                Return i
+            End If
+        Next i
+
+        Return xValues.Length - 1
+    End Function
+
+    Private Function InterpolateCurveValue(ByVal xValues As Double(),
+        ByVal yValues As Double(),
+        ByVal xValue As Double,
+        ByVal upperIndex As Integer) As Double
+
+        If xValues Is Nothing OrElse yValues Is Nothing OrElse xValues.Length = 0 OrElse yValues.Length = 0 Then
+            Return 0
+        End If
+
+        If upperIndex <= 0 Then
+            Return yValues(0)
+        End If
+
+        If upperIndex >= xValues.Length Then
+            Return yValues(yValues.Length - 1)
+        End If
+
+        Dim x0 As Double = xValues(upperIndex - 1)
+        Dim x1 As Double = xValues(upperIndex)
+        Dim y0 As Double = yValues(upperIndex - 1)
+        Dim y1 As Double = yValues(upperIndex)
+
+        If x1 = x0 Then
+            Return y1
+        End If
+
+        Return y0 + (xValue - x0) * (y1 - y0) / (x1 - x0)
+    End Function
+
 
     Function curva(ByVal measureUnit As CLMeasureUnit,
     ByVal af As Double,
@@ -692,13 +800,10 @@ Public Module CLModule
             Dim coilReferenceAirflow As Double = If(coilPressureDropAirflow > 0, coilPressureDropAirflow, af_ref)
 
             If coilReferenceAirflow > 0 Then
-                For i As Integer = 0 To (x_new.Length - 1)
-                    y_new(i) = Math.Max(0, y_new(i) - coilPressureDrop * Math.Pow(x_new(i) / coilReferenceAirflow, 2))
-                Next i
-
-                For i As Integer = 0 To (x_new_ori.Length - 1)
-                    y_new_ori(i) = Math.Max(0, y_new_ori(i) - coilPressureDrop * Math.Pow(x_new_ori(i) / coilReferenceAirflow, 2))
-                Next i
+                ApplyQuadraticPressureDrop(x_new, y_new, coilPressureDrop, coilReferenceAirflow)
+                ApplyQuadraticPressureDrop(x_new_ori, y_new_ori, coilPressureDrop, coilReferenceAirflow)
+                TrimPressureCurveAtZero(x_new, y_new, z_new)
+                TrimPressureCurveAtZero(x_new_ori, y_new_ori, z_new_ori)
             End If
         End If
 
@@ -712,36 +817,15 @@ Public Module CLModule
 
         'Calcolo il punto di lavoro richiesto, se non fattibile mi metto a AF_max
 
-        Dim idmax, idmin As Integer
+        Dim idmax As Integer
         Dim xcalc As Double
 
-        idmax = 0
-        idmin = 0
-        xcalc = af_ref
-
-        For i As Integer = 0 To (x_new.Length - 1)
-            If (x_new(i) >= af_ref And idmax = 0) Then
-                idmax = i
-            ElseIf (idmax = 0 And i = x_new.Length - 1) Then
-                idmax = i
-                xcalc = x_new(idmax)
-            End If
-        Next i
+        xcalc = Math.Min(af_ref, x_new(x_new.Length - 1))
+        idmax = GetUpperIndex(x_new, xcalc)
 
         workpoint(1) = xcalc
-
-        If y_new(idmax) < 0 Then
-            workpoint(2) = 0
-        ElseIf idmax < (x_new.Length - 1) Then
-            Dim k As Double
-            k = (y_new(idmax + 1) - y_new(idmax)) / (x_new(idmax + 1) - x_new(idmax))
-            workpoint(2) = k * (workpoint(1) - x_new(idmax)) + y_new(idmax)
-        Else
-            workpoint(2) = y_new(idmax)
-        End If
-
-
-        workpoint(3) = z_new(idmax)
+        workpoint(2) = Math.Max(0, InterpolateCurveValue(x_new, y_new, xcalc, idmax))
+        workpoint(3) = InterpolateCurveValue(x_new, z_new, xcalc, idmax)
 
 
 
@@ -900,7 +984,10 @@ Public Module CLModule
             ' Serie - Punto di lavoro
             currentSeries = chart3.Series.Add(ChartSeries_WorkingPoint_Name)
             currentSeries.ChartType = DataVisualization.Charting.SeriesChartType.Point
-            currentSeries.Points.DataBindXY(New Double() {workpoint(1)}, New Double() {e(idmax)})
+            Dim efficiencyAirflow As Double = Math.Min(workpoint(1), x_new_ori(x_new_ori.Length - 1))
+            Dim efficiencyIndex As Integer = GetUpperIndex(x_new_ori, efficiencyAirflow)
+            Dim efficiencyPoint As Double = InterpolateCurveValue(x_new_ori, e, efficiencyAirflow, efficiencyIndex)
+            currentSeries.Points.DataBindXY(New Double() {workpoint(1)}, New Double() {efficiencyPoint})
             currentSeries.MarkerSize = 10
             currentSeries.Color = ChartSeries_WorkingPoint_Color
 
