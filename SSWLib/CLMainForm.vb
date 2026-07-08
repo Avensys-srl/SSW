@@ -29,6 +29,9 @@ Public Class CLMainForm
     Private m_LastSummerThermo As termo
     Private m_HasLastWinterThermo As Boolean = False
     Private m_HasLastSummerThermo As Boolean = False
+    Private m_WinterReportScenarioName As String = String.Empty
+    Private Const ChartSeries_SummerEfficiencyCurve_Name As String = "SummerEfficiencyCurve"
+    Private Const ChartSeries_SummerEfficiencyPoint_Name As String = "SummerEfficiencyPoint"
 
     Private tbpData_CoilPerformance As TabPage
     Private chbCoilPerformance_Enable As CheckBox
@@ -754,10 +757,71 @@ Public Class CLMainForm
             chartArea.AxisY.LabelStyle.Font = New System.Drawing.Font(chartArea.AxisY.LabelStyle.Font.FontFamily.Name, chartArea.AxisY.LabelStyle.Font.Size + (6 * scale))
         Next
 
-        chart.SaveImage(memoryStream, ImageFormat.Bmp)
+        chart.SaveImage(memoryStream, ImageFormat.Png)
         image = New Bitmap(memoryStream)
 
         Return image
+    End Function
+
+    Private Sub Chart_ApplySummerEfficiencyStyle(chart As DataVisualization.Charting.Chart)
+        If chart Is Nothing OrElse chart.Series Is Nothing Then
+            Return
+        End If
+
+        Dim curveSeries As Series = chart.Series.FindByName(ChartSeries_SummerEfficiencyCurve_Name)
+        If curveSeries IsNot Nothing Then
+            curveSeries.Color = Color.SeaGreen
+            curveSeries.BorderColor = Color.SeaGreen
+            curveSeries.BorderDashStyle = ChartDashStyle.Solid
+            curveSeries.BorderWidth = Math.Max(curveSeries.BorderWidth, 2)
+            curveSeries.LegendText = Chart_SummerEfficiencyLegendText()
+            curveSeries.IsVisibleInLegend = True
+        End If
+
+        Dim pointSeries As Series = chart.Series.FindByName(ChartSeries_SummerEfficiencyPoint_Name)
+        If pointSeries IsNot Nothing Then
+            pointSeries.Color = Color.SeaGreen
+            pointSeries.MarkerColor = Color.SeaGreen
+            pointSeries.MarkerBorderColor = Color.SeaGreen
+            pointSeries.MarkerStyle = MarkerStyle.Square
+            pointSeries.MarkerSize = Math.Max(pointSeries.MarkerSize, 10)
+            pointSeries.LegendText = Chart_SummerWorkingPointLegendText()
+            pointSeries.IsVisibleInLegend = True
+        End If
+    End Sub
+
+    Private Sub Chart_AddSummerEfficiencyLegendItems(chart As DataVisualization.Charting.Chart)
+        If chart Is Nothing OrElse chart.Series Is Nothing OrElse chart.ChartAreas.Count = 0 Then
+            Return
+        End If
+
+        Dim curveSeries As Series = chart.Series.FindByName(ChartSeries_SummerEfficiencyCurve_Name)
+        If curveSeries Is Nothing Then
+            curveSeries = chart.Series.Add(ChartSeries_SummerEfficiencyCurve_Name)
+            curveSeries.ChartType = SeriesChartType.Spline
+            curveSeries.Points.AddXY(0, 0)
+        End If
+
+        Dim pointSeries As Series = chart.Series.FindByName(ChartSeries_SummerEfficiencyPoint_Name)
+        If pointSeries Is Nothing Then
+            pointSeries = chart.Series.Add(ChartSeries_SummerEfficiencyPoint_Name)
+            pointSeries.ChartType = SeriesChartType.Point
+            pointSeries.Points.AddXY(0, 0)
+        End If
+
+        Chart_ApplySummerEfficiencyStyle(chart)
+    End Sub
+
+    Private Function Chart_SummerEfficiencyLegendText() As String
+        Return String.Format("{0} {1}",
+            Environment.Localization.GetString(CLMessageResources.MainForm_Summer.ToString()),
+            Environment.Localization.GetString(CLMessageResources.MainForm_Efficiency.ToString()))
+    End Function
+
+    Private Function Chart_SummerWorkingPointLegendText() As String
+        Return String.Format("{0} {1}",
+            Environment.Localization.GetString(CLMessageResources.MainForm_Summer.ToString()),
+            Environment.Localization.GetString(CLMessageResources.PDF_WorkingPoint.ToString()))
     End Function
 
 #End Region
@@ -1013,6 +1077,7 @@ Public Class CLMainForm
 
         ' Build image AirFlow
         cloneChart = Chart_Clone(crtPerformance_Chart3)
+        Chart_ApplySummerEfficiencyStyle(cloneChart)
         cloneChart.Size = chartOriginalSize
         airflowImage = Chart_GetImage(cloneChart, chartScale)
 
@@ -1073,6 +1138,10 @@ Public Class CLMainForm
             End If
         End If
 
+        If m_SummerCalculationEnabled AndAlso m_HasLastSummerThermo Then
+            Chart_AddSummerEfficiencyLegendItems(cloneChart)
+        End If
+
 
 
         legendImage = Chart_GetImage(cloneChart, chartScale)
@@ -1084,11 +1153,10 @@ Public Class CLMainForm
         Dim temperatureConditionsAndHumidityDataRow As CLMainReportDataSet.TemperatureConditionsAndHumidityDataTableRow
         Dim heatExchangerPerformancesDataRow As CLMainReportDataSet.HeatExchangerPerformancesDataTableRow
         Dim diagramDataRow As CLMainReportDataSet.DiagramDataTableRow
-        Dim sapDataRow As CLMainReportDataSet.SAPDataTableRow
-        Dim sapItemDataRow As CLMainReportDataSet.SAPItemsDataTableRow
         Dim CO2LevelDataRow As CLMainReportDataSet.CO2LevelRoomRow
         Dim CO2LevelUseDataRow As CLMainReportDataSet.CO2LevelUseRow
         Dim CO2LevelParametersDataRow As CLMainReportDataSet.CO2LevelParametersRow
+        Dim waterCoilReportDataTable As DataTable = Report_CreateWaterCoilReportTable()
 
         'CO2 LevelParameters
         '---------------------------------------------------
@@ -1234,7 +1302,9 @@ Public Class CLMainForm
         '---------------------------------------------------
         workingPointDataRow = reportDataSet.WorkingPointDataTable.NewWorkingPointDataTableRow()
 
-        workingPointDataRow.Title = Environment.Localization.GetString(CLMessageResources.PDF_WorkingPoint.ToString())
+        workingPointDataRow.Title = String.Format("{0} - {1}",
+            Report_WinterScenarioName(),
+            Environment.Localization.GetString(CLMessageResources.PDF_WorkingPoint.ToString()))
 
         workingPointDataRow.AirFlow_Caption = lblPerformance_AirFlow.Text
         workingPointDataRow.AirFlow_Value = txbPerformance_AirFlow.Text
@@ -1269,7 +1339,9 @@ Public Class CLMainForm
         '---------------------------------------------------
         temperatureConditionsAndHumidityDataRow = reportDataSet.TemperatureConditionsAndHumidityDataTable.NewTemperatureConditionsAndHumidityDataTableRow()
 
-        temperatureConditionsAndHumidityDataRow.Title = Environment.Localization.GetString(CLMessageResources.MainForm_TemperatureConditionsAndUmidity.ToString())
+        temperatureConditionsAndHumidityDataRow.Title = String.Format("{0} - {1}",
+            Report_WinterScenarioName(),
+            Environment.Localization.GetString(CLMessageResources.MainForm_TemperatureConditionsAndUmidity.ToString()))
 
         temperatureConditionsAndHumidityDataRow.FreshInletTemp_Caption = lblPerformance_FreshInletTemperature.Text
         temperatureConditionsAndHumidityDataRow.FreshInletTemp_Value = txbPerformance_FreshInletTemperature.Text
@@ -1293,11 +1365,43 @@ Public Class CLMainForm
 
         reportDataSet.TemperatureConditionsAndHumidityDataTable.Rows.Add(temperatureConditionsAndHumidityDataRow)
 
+        If m_SummerCalculationEnabled AndAlso m_HasLastSummerThermo Then
+            temperatureConditionsAndHumidityDataRow = reportDataSet.TemperatureConditionsAndHumidityDataTable.NewTemperatureConditionsAndHumidityDataTableRow()
+
+            temperatureConditionsAndHumidityDataRow.Title = String.Format("{0} - {1}",
+                Environment.Localization.GetString(CLMessageResources.MainForm_Summer.ToString()),
+                Environment.Localization.GetString(CLMessageResources.MainForm_TemperatureConditionsAndUmidity.ToString()))
+
+            temperatureConditionsAndHumidityDataRow.FreshInletTemp_Caption = lblPerformance_FreshInletTemperature.Text
+            temperatureConditionsAndHumidityDataRow.FreshInletTemp_Value = TextBox3.Text
+            temperatureConditionsAndHumidityDataRow.FreshInletTemp_RH_Caption = lblPerformance_RHFreshInlet.Text
+            temperatureConditionsAndHumidityDataRow.FreshInletTemp_RH_Value = TextBox4.Text
+
+            temperatureConditionsAndHumidityDataRow.ReturnInletTemp_Caption = lblPerformance_ReturnInletTemperature.Text
+            temperatureConditionsAndHumidityDataRow.ReturnInletTemp_Value = TextBox5.Text
+            temperatureConditionsAndHumidityDataRow.ReturnInletTemp_RH_Caption = lblPerformance_RHReturnInlet.Text
+            temperatureConditionsAndHumidityDataRow.ReturnInletTemp_RH_Value = TextBox6.Text
+
+            temperatureConditionsAndHumidityDataRow.SupplyOutletTemp_Caption = lblPerformance_SupplyOutletTemperature.Text
+            temperatureConditionsAndHumidityDataRow.SupplyOutletTemp_Value = TextBox12.Text
+            temperatureConditionsAndHumidityDataRow.SupplyOutletTemp_RH_Caption = lblPerformance_SupplyOutletRH.Text
+            temperatureConditionsAndHumidityDataRow.SupplyOutletTemp_RH_Value = TextBox14.Text
+
+            temperatureConditionsAndHumidityDataRow.ExhaustOutletTemp_Caption = lblPerformance_ExhaustOutletTemperature.Text
+            temperatureConditionsAndHumidityDataRow.ExhaustOutletTemp_Value = TextBox13.Text
+            temperatureConditionsAndHumidityDataRow.ExhaustOutletTemp_RH_Caption = lblPerformance_ExhaustOutletRH.Text
+            temperatureConditionsAndHumidityDataRow.ExhaustOutletTemp_RH_Value = TextBox15.Text
+
+            reportDataSet.TemperatureConditionsAndHumidityDataTable.Rows.Add(temperatureConditionsAndHumidityDataRow)
+        End If
+
         ' Temperature Conditions And Humidity
         '---------------------------------------------------
         heatExchangerPerformancesDataRow = reportDataSet.HeatExchangerPerformancesDataTable.NewHeatExchangerPerformancesDataTableRow()
 
-        heatExchangerPerformancesDataRow.Title = Environment.Localization.GetString(CLMessageResources.MainForm_HeatExchangerPerformances.ToString())
+        heatExchangerPerformancesDataRow.Title = String.Format("{0} - {1}",
+            Report_WinterScenarioName(),
+            Environment.Localization.GetString(CLMessageResources.MainForm_HeatExchangerPerformances.ToString()))
 
         heatExchangerPerformancesDataRow.HeatTransferred_Caption = lblPerformance_HeatTransferred.Text
         heatExchangerPerformancesDataRow.HeatTransferred_Value = txbPerformance_HeatTransferred.Text
@@ -1315,6 +1419,31 @@ Public Class CLMainForm
         heatExchangerPerformancesDataRow.LatentHeat_Value = txbPerformance_LatentHeat.Text
 
         reportDataSet.HeatExchangerPerformancesDataTable.Rows.Add(heatExchangerPerformancesDataRow)
+
+        If m_SummerCalculationEnabled AndAlso m_HasLastSummerThermo Then
+            heatExchangerPerformancesDataRow = reportDataSet.HeatExchangerPerformancesDataTable.NewHeatExchangerPerformancesDataTableRow()
+
+            heatExchangerPerformancesDataRow.Title = String.Format("{0} - {1}",
+                Environment.Localization.GetString(CLMessageResources.MainForm_Summer.ToString()),
+                Environment.Localization.GetString(CLMessageResources.MainForm_HeatExchangerPerformances.ToString()))
+
+            heatExchangerPerformancesDataRow.HeatTransferred_Caption = lblPerformance_HeatTransferred.Text
+            heatExchangerPerformancesDataRow.HeatTransferred_Value = TextBox10.Text
+
+            heatExchangerPerformancesDataRow.Efficiency_Caption = txbPerformance_Efficiency.Text
+            heatExchangerPerformancesDataRow.Efficiency_Value = TextBox11.Text
+
+            heatExchangerPerformancesDataRow.SensibleHeat_Caption = lblPerformance_SensibleHeat.Text
+            heatExchangerPerformancesDataRow.SensibleHeat_Value = TextBox9.Text
+
+            heatExchangerPerformancesDataRow.WaterProduced_Caption = lblPerformance_WaterProduced.Text
+            heatExchangerPerformancesDataRow.WaterProduced_Value = TextBox8.Text
+
+            heatExchangerPerformancesDataRow.LatentHeat_Caption = lblPerformance_LatentHeat.Text
+            heatExchangerPerformancesDataRow.LatentHeat_Value = TextBox7.Text
+
+            reportDataSet.HeatExchangerPerformancesDataTable.Rows.Add(heatExchangerPerformancesDataRow)
+        End If
 
         ' Sound Power
         '---------------------------------------------------
@@ -1382,40 +1511,19 @@ Public Class CLMainForm
         diagramDataRow.CO2Image = Bitmap_GetBytes(CO2Image)
         reportDataSet.DiagramDataTable.Rows.Add(diagramDataRow)
 
-        ' SAP
-        '---------------------------------------------------
-        sapDataRow = reportDataSet.SAPDataTable.NewSAPDataTableRow()
-
-        sapDataRow.Title = Environment.Localization.GetString(CLMessageResources.MainForm_GridSAP_EstimatedSAPTestTable.ToString())
-        sapDataRow.ExhaustTerminalConfiguration_Caption = dgvSAP.Columns(0).HeaderText
-        sapDataRow.TotalExhaustFlowRate_Caption = dgvSAP.Columns(1).HeaderText
-        sapDataRow.TotalSupplyFlowRate_Caption = dgvSAP.Columns(2).HeaderText
-        sapDataRow.RegulationLevel_Caption = dgvSAP.Columns(3).HeaderText
-        sapDataRow.SpecificFanPower_Caption = dgvSAP.Columns(4).HeaderText
-        sapDataRow.HeatExchangeEfficiency_Caption = dgvSAP.Columns(5).HeaderText
-        sapDataRow.EnergySavingTrustBestPracticePerformanceCompliant_Caption = dgvSAP.Columns(6).HeaderText
-
-        sapDataRow.Visible = m_SAPEnable
-
-        reportDataSet.SAPDataTable.Rows.Add(sapDataRow)
-
-        For rowsCounter As Integer = 0 To dgvSAP.Rows.Count - 1
-
-            sapItemDataRow = reportDataSet.SAPItemsDataTable.NewSAPItemsDataTableRow()
-
-            sapItemDataRow.ExhaustTerminalConfiguration_Value = dgvSAP(0, rowsCounter).Value
-            sapItemDataRow.TotalExhaustFlowRate_Value = dgvSAP(1, rowsCounter).Value
-            sapItemDataRow.TotalSupplyFlowRate_Value = dgvSAP(2, rowsCounter).Value
-            sapItemDataRow.RegulationLevel_Value = dgvSAP(3, rowsCounter).Value
-            sapItemDataRow.SpecificFanPower_Value = dgvSAP(4, rowsCounter).Value
-            sapItemDataRow.HeatExchangeEfficiency_Value = dgvSAP(5, rowsCounter).Value
-            sapItemDataRow.EnergySavingTrustBestPracticePerformanceCompliant_Value = dgvSAP(6, rowsCounter).Value
-
-            reportDataSet.SAPItemsDataTable.Rows.Add(sapItemDataRow)
-
-        Next
-
         reportDataSet.AcceptChanges()
+
+        Dim winterWorkingPointTable As DataTable = Report_CopyRows(reportDataSet.WorkingPointDataTable, Function(row) True)
+        Dim winterTemperatureTable As DataTable = Report_CopyRows(reportDataSet.TemperatureConditionsAndHumidityDataTable, Function(row) row.Table.Rows.IndexOf(row) = 0)
+        Dim winterHeatExchangerTable As DataTable = Report_CopyRows(reportDataSet.HeatExchangerPerformancesDataTable, Function(row) row.Table.Rows.IndexOf(row) = 0)
+
+        Dim summerWorkingPointTable As DataTable = Report_CopyRows(reportDataSet.WorkingPointDataTable, Function(row) False)
+        Dim summerTemperatureTable As DataTable = Report_CopyRows(reportDataSet.TemperatureConditionsAndHumidityDataTable, Function(row) row.Table.Rows.IndexOf(row) = 1)
+        Dim summerHeatExchangerTable As DataTable = Report_CopyRows(reportDataSet.HeatExchangerPerformancesDataTable, Function(row) row.Table.Rows.IndexOf(row) = 1)
+        Report_FillSummerWorkingPointTable(summerWorkingPointTable, workingPointDataRow)
+
+        Dim waterCoilWinterReportTable As DataTable = Report_CopyRows(waterCoilReportDataTable, Function(row) row("ScenarioKey").ToString() = "Winter")
+        Dim waterCoilSummerReportTable As DataTable = Report_CopyRows(waterCoilReportDataTable, Function(row) row("ScenarioKey").ToString() = "Summer")
 
         ' Show Report
         ' --------------------------------------------
@@ -1430,15 +1538,29 @@ Public Class CLMainForm
         reportDataSources.Add(New Microsoft.Reporting.WinForms.ReportDataSource("WorkingPoint", DirectCast(reportDataSet.WorkingPointDataTable, System.Data.DataTable)))
         reportDataSources.Add(New Microsoft.Reporting.WinForms.ReportDataSource("HeatExchangerPerformances", DirectCast(reportDataSet.HeatExchangerPerformancesDataTable, System.Data.DataTable)))
         reportDataSources.Add(New Microsoft.Reporting.WinForms.ReportDataSource("Diagram", DirectCast(reportDataSet.DiagramDataTable, System.Data.DataTable)))
-        reportDataSources.Add(New Microsoft.Reporting.WinForms.ReportDataSource("SAP", DirectCast(reportDataSet.SAPDataTable, System.Data.DataTable)))
-        reportDataSources.Add(New Microsoft.Reporting.WinForms.ReportDataSource("SAPItems", DirectCast(reportDataSet.SAPItemsDataTable, System.Data.DataTable)))
         reportDataSources.Add(New Microsoft.Reporting.WinForms.ReportDataSource("CO2LevelRoom", DirectCast(reportDataSet.CO2LevelRoom, System.Data.DataTable)))
         reportDataSources.Add(New Microsoft.Reporting.WinForms.ReportDataSource("CO2LevelUse", DirectCast(reportDataSet.CO2LevelUse, System.Data.DataTable)))
         reportDataSources.Add(New Microsoft.Reporting.WinForms.ReportDataSource("CO2LevelParameters", DirectCast(reportDataSet.CO2LevelParameters, System.Data.DataTable)))
+        reportDataSources.Add(New Microsoft.Reporting.WinForms.ReportDataSource("WaterCoilReport", waterCoilReportDataTable))
+        reportDataSources.Add(New Microsoft.Reporting.WinForms.ReportDataSource("WinterWorkingPoint", winterWorkingPointTable))
+        reportDataSources.Add(New Microsoft.Reporting.WinForms.ReportDataSource("WinterTemperatureConditionsAndHumidity", winterTemperatureTable))
+        reportDataSources.Add(New Microsoft.Reporting.WinForms.ReportDataSource("WinterHeatExchangerPerformances", winterHeatExchangerTable))
+        reportDataSources.Add(New Microsoft.Reporting.WinForms.ReportDataSource("SummerWorkingPoint", summerWorkingPointTable))
+        reportDataSources.Add(New Microsoft.Reporting.WinForms.ReportDataSource("SummerTemperatureConditionsAndHumidity", summerTemperatureTable))
+        reportDataSources.Add(New Microsoft.Reporting.WinForms.ReportDataSource("SummerHeatExchangerPerformances", summerHeatExchangerTable))
+        reportDataSources.Add(New Microsoft.Reporting.WinForms.ReportDataSource("WaterCoilWinterReport", waterCoilWinterReportTable))
+        reportDataSources.Add(New Microsoft.Reporting.WinForms.ReportDataSource("WaterCoilSummerReport", waterCoilSummerReportTable))
 
         waitForm.Hide()
 
-        Dim reportFileName As String = If(chbCO2Level_addtoreport.Checked, "CLMainReportWithCO2.rdlc", "CLMainReport.rdlc")
+        Dim hasWaterCoilReport As Boolean = waterCoilReportDataTable.Rows.Count > 0
+        Dim reportFileName As String
+        If chbCO2Level_addtoreport.Checked Then
+            reportFileName = If(hasWaterCoilReport, "CLMainReportWithCO2_Coil.rdlc", "CLMainReportWithCO2.rdlc")
+        Else
+            reportFileName = If(hasWaterCoilReport, "CLMainReport_Coil.rdlc", "CLMainReport.rdlc")
+        End If
+
         reportViewForm.SetReport(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), reportFileName),
         reportDataSources.ToArray(), Microsoft.Reporting.WinForms.DisplayMode.PrintLayout)
 
@@ -1459,6 +1581,290 @@ Public Class CLMainForm
 
         reportViewForm.ShowDialog()
     End Sub
+
+    Private Function Report_CopyRows(source As DataTable, includeRow As Func(Of DataRow, Boolean)) As DataTable
+        Dim result As DataTable = source.Clone()
+        For Each row As DataRow In source.Rows
+            If includeRow(row) Then
+                result.ImportRow(row)
+            End If
+        Next
+
+        result.AcceptChanges()
+        Return result
+    End Function
+
+    Private Function Report_WinterScenarioName() As String
+        If Not String.IsNullOrWhiteSpace(m_WinterReportScenarioName) Then
+            Return m_WinterReportScenarioName
+        End If
+
+        Return Environment.Localization.GetString(CLMessageResources.MainForm_Winter.ToString())
+    End Function
+
+    Private Sub Report_FillSummerWorkingPointTable(table As DataTable, winterRow As CLMainReportDataSet.WorkingPointDataTableRow)
+        If Not m_SummerCalculationEnabled OrElse Not m_HasLastSummerThermo Then
+            Return
+        End If
+
+        Dim row As DataRow = table.NewRow()
+        row("Title") = String.Format("{0} - {1}",
+            Environment.Localization.GetString(CLMessageResources.MainForm_Summer.ToString()),
+            Environment.Localization.GetString(CLMessageResources.PDF_WorkingPoint.ToString()))
+        row("AirFlow_Caption") = winterRow.AirFlow_Caption
+        row("AirFlow_Value") = TextBox1.Text
+        row("MaxPressure_Caption") = winterRow.MaxPressure_Caption
+        row("MaxPressure_Value") = TextBox2.Text
+        row("PowerInput_Caption") = winterRow.PowerInput_Caption
+        row("PowerInput_Value") = winterRow.PowerInput_Value
+        row("SFP_Caption") = winterRow.SFP_Caption
+        row("SFP_Value") = winterRow.SFP_Value
+        row("SEL_Caption") = winterRow.SEL_Caption
+        row("SEL_Value") = winterRow.SEL_Value
+        row("RegLev_Caption") = winterRow.RegLev_Caption
+        row("RegLev_Value") = winterRow.RegLev_Value
+        row("RegLev_Note") = winterRow.RegLev_Note
+        table.Rows.Add(row)
+        table.AcceptChanges()
+    End Sub
+
+    Private Function Report_CreateWaterCoilReportTable() As DataTable
+        Dim table As New DataTable("WaterCoilReport")
+        Dim columns As String() = {
+            "Visible",
+            "ScenarioKey",
+            "Title",
+            "ScenarioCaption",
+            "Scenario",
+            "CoilCaption",
+            "Coil",
+            "CaseCaption",
+            "Case",
+            "FluidCaption",
+            "Fluid",
+            "FluidInCaption",
+            "FluidIn",
+            "FluidOutCaption",
+            "FluidOut",
+            "FluidTemperatureCaption",
+            "FluidTemperature",
+            "GeometryCaption",
+            "Geometry",
+            "ModeCaption",
+            "Mode",
+            "StatusCaption",
+            "Status",
+            "CapacityCaption",
+            "Capacity",
+            "SensibleCaption",
+            "Sensible",
+            "AirOutCaption",
+            "AirOut",
+            "RHOutCaption",
+            "RHOut",
+            "CondCaption",
+            "Cond",
+            "AirDPCaption",
+            "AirDP",
+            "WaterDPCaption",
+            "WaterDP",
+            "FluidFlowCaption",
+            "FluidFlow",
+            "FluidSpeedCaption",
+            "FluidSpeed",
+            "FaceVelocityCaption",
+            "FaceVelocity",
+            "Summary"
+        }
+
+        For Each column As String In columns
+            table.Columns.Add(column, GetType(String))
+        Next
+
+        If chbCoilPerformance_Enable Is Nothing OrElse Not chbCoilPerformance_Enable.Checked Then
+            Return table
+        End If
+
+        If dgvCoilPerformance_Results Is Nothing OrElse dgvCoilPerformance_Results.Rows.Count = 0 Then
+            Return table
+        End If
+
+        Dim selectedMode As CLCoilPerformanceEditMode = CoilPerformance_SelectedEditMode()
+        Dim fluidType As CLCOFluidType = CoilPerformance_SelectedFluidType()
+        Dim fluidText As String = CoilPerformance_FluidTypeName(fluidType)
+
+        If fluidType <> CLCOFluidType.Water Then
+            fluidText = String.Format("{0} - {1}: {2}%",
+                fluidText,
+                CoilPerformance_Text("MainForm_CoilPerformance_Glycol", "Glycol [%]").Replace(" [%]", ""),
+                FormatNumber(nudCoilPerformance_FluidTec.Value, 1))
+        End If
+
+        Dim geometryText As String = String.Empty
+        If selectedMode <> CLCoilPerformanceEditMode.Standard Then
+            Dim heightText As String
+            If CoilPerformance_HeightMode() = "tubes" Then
+                heightText = String.Format("{0} / {1} {2}",
+                    FormatNumber(nudCoilPerformance_Height.Value, 0),
+                    FormatNumber(nudCoilPerformance_Tubes.Value, 0),
+                    CoilPerformance_Text("MainForm_CoilPerformance_HeightTubes", "tubes"))
+            Else
+                heightText = FormatNumber(nudCoilPerformance_Height.Value, 0)
+            End If
+
+            geometryText = String.Format("{0}: {1}; {2}: {3}; {4}: {5}; {6}: {7}; {8}: {9}",
+                CoilPerformance_Text("MainForm_CoilPerformance_Length", "Length [mm]"),
+                FormatNumber(nudCoilPerformance_Length.Value, 0),
+                CoilPerformance_Text("MainForm_CoilPerformance_Height", "Height [mm/tubes]"),
+                heightText,
+                CoilPerformance_Text("MainForm_CoilPerformance_Rows", "Rows"),
+                FormatNumber(nudCoilPerformance_Rows.Value, 0),
+                CoilPerformance_Text("MainForm_CoilPerformance_FinSpacing", "Fin spacing [mm]"),
+                FormatNumber(CoilPerformance_SelectedFinSpacing(), 1),
+                CoilPerformance_Text("MainForm_CoilPerformance_Circuits", "Circuits"),
+                FormatNumber(nudCoilPerformance_Circuits.Value, 0))
+        End If
+
+        For Each row As DataGridViewRow In dgvCoilPerformance_Results.Rows
+            If row.IsNewRow Then
+                Continue For
+            End If
+
+            Dim mode As String = Report_DataGridValue(row, "Mode")
+            Dim scenarioKey As String = "Winter"
+            Dim scenario As String = Report_WinterScenarioName()
+            Dim fluidInCaption As String = CoilPerformance_Text("MainForm_CoilPerformance_HeatingIn", "Heating in [C]")
+            Dim fluidOutCaption As String = CoilPerformance_Text("MainForm_CoilPerformance_HeatingOut", "Heating out [C]")
+            Dim fluidInValue As String = FormatNumber(nudCoilPerformance_HeatingIn.Value, 1)
+            Dim fluidOutValue As String = FormatNumber(nudCoilPerformance_HeatingOut.Value, 1)
+            Dim fluidTemperature As String = String.Format("{0}: {1}; {2}: {3}",
+                fluidInCaption,
+                fluidInValue,
+                fluidOutCaption,
+                fluidOutValue)
+
+            If mode = CLCoilPerformanceMode.CWD.ToString() AndAlso m_SummerCalculationEnabled Then
+                scenarioKey = "Summer"
+                scenario = Environment.Localization.GetString(CLMessageResources.MainForm_Summer.ToString())
+                fluidInCaption = CoilPerformance_Text("MainForm_CoilPerformance_CoolingIn", "Cooling in [C]")
+                fluidOutCaption = CoilPerformance_Text("MainForm_CoilPerformance_CoolingOut", "Cooling out [C]")
+                fluidInValue = FormatNumber(nudCoilPerformance_CoolingIn.Value, 1)
+                fluidOutValue = FormatNumber(nudCoilPerformance_CoolingOut.Value, 1)
+                fluidTemperature = String.Format("{0}: {1}; {2}: {3}",
+                    fluidInCaption,
+                    fluidInValue,
+                    fluidOutCaption,
+                    fluidOutValue)
+            ElseIf mode = CLCoilPerformanceMode.CWD.ToString() Then
+                fluidInCaption = CoilPerformance_Text("MainForm_CoilPerformance_CoolingIn", "Cooling in [C]")
+                fluidOutCaption = CoilPerformance_Text("MainForm_CoilPerformance_CoolingOut", "Cooling out [C]")
+                fluidInValue = FormatNumber(nudCoilPerformance_CoolingIn.Value, 1)
+                fluidOutValue = FormatNumber(nudCoilPerformance_CoolingOut.Value, 1)
+                fluidTemperature = String.Format("{0}: {1}; {2}: {3}",
+                    fluidInCaption,
+                    fluidInValue,
+                    fluidOutCaption,
+                    fluidOutValue)
+            End If
+
+            Dim reportRow As DataRow = table.NewRow()
+            reportRow("Visible") = "True"
+            reportRow("ScenarioKey") = scenarioKey
+            reportRow("Title") = CoilPerformance_Text("MainForm_CoilPerformance_Tab", "Water coils")
+            reportRow("ScenarioCaption") = String.Empty
+            reportRow("Scenario") = scenario
+            reportRow("CoilCaption") = CoilPerformance_Text("MainForm_CoilPerformance_Coil", "Coil")
+            reportRow("Coil") = cmbCoilPerformance_Coil.Text
+            reportRow("CaseCaption") = CoilPerformance_Text("MainForm_CoilPerformance_Case", "Case")
+            reportRow("Case") = cmbCoilPerformance_EditMode.Text
+            reportRow("FluidCaption") = CoilPerformance_Text("MainForm_CoilPerformance_FluidType", "Fluid")
+            reportRow("Fluid") = fluidText
+            reportRow("FluidInCaption") = fluidInCaption
+            reportRow("FluidIn") = fluidInValue
+            reportRow("FluidOutCaption") = fluidOutCaption
+            reportRow("FluidOut") = fluidOutValue
+            reportRow("FluidTemperatureCaption") = CoilPerformance_Text("MainForm_CoilPerformance_Fluid", "Fluid and water temperatures")
+            reportRow("FluidTemperature") = fluidTemperature
+            reportRow("GeometryCaption") = CoilPerformance_Text("MainForm_CoilPerformance_Geometry", "Geometry")
+            reportRow("Geometry") = geometryText
+            reportRow("ModeCaption") = dgvCoilPerformance_Results.Columns("Mode").HeaderText
+            reportRow("Mode") = mode
+            reportRow("StatusCaption") = dgvCoilPerformance_Results.Columns("Status").HeaderText
+            reportRow("Status") = Report_DataGridValue(row, "Status")
+            reportRow("CapacityCaption") = dgvCoilPerformance_Results.Columns("Capacity").HeaderText
+            reportRow("Capacity") = Report_DataGridValue(row, "Capacity")
+            reportRow("SensibleCaption") = dgvCoilPerformance_Results.Columns("Sensible").HeaderText
+            reportRow("Sensible") = Report_DataGridValue(row, "Sensible")
+            reportRow("AirOutCaption") = dgvCoilPerformance_Results.Columns("TempOut").HeaderText
+            reportRow("AirOut") = Report_DataGridValue(row, "TempOut")
+            reportRow("RHOutCaption") = dgvCoilPerformance_Results.Columns("RHOut").HeaderText
+            reportRow("RHOut") = Report_DataGridValue(row, "RHOut")
+            reportRow("CondCaption") = dgvCoilPerformance_Results.Columns("Cond").HeaderText
+            reportRow("Cond") = Report_DataGridValue(row, "Cond")
+            reportRow("AirDPCaption") = dgvCoilPerformance_Results.Columns("DP").HeaderText
+            reportRow("AirDP") = Report_DataGridValue(row, "DP")
+            reportRow("WaterDPCaption") = dgvCoilPerformance_Results.Columns("WaterDP").HeaderText
+            reportRow("WaterDP") = Report_DataGridValue(row, "WaterDP")
+            reportRow("FluidFlowCaption") = dgvCoilPerformance_Results.Columns("FluidFlow").HeaderText
+            reportRow("FluidFlow") = Report_DataGridValue(row, "FluidFlow")
+            reportRow("FluidSpeedCaption") = dgvCoilPerformance_Results.Columns("FluidSpeed").HeaderText
+            reportRow("FluidSpeed") = Report_DataGridValue(row, "FluidSpeed")
+            reportRow("FaceVelocityCaption") = dgvCoilPerformance_Results.Columns("Face").HeaderText
+            reportRow("FaceVelocity") = Report_DataGridValue(row, "Face")
+            reportRow("Summary") = String.Format("{0} | {1}: {2} | {3}: {4} | {5}: {6} | {7}: {8}{9}{10}{11}: {12} | {13}: {14} | {15}: {16} | {17}: {18} | {19}: {20} | {21}: {22} | {23}: {24} | {25}: {26} | {27}: {28} | {29}: {30} | {31}: {32} | {33}: {34}",
+                reportRow("Scenario"),
+                reportRow("CoilCaption"),
+                reportRow("Coil"),
+                reportRow("CaseCaption"),
+                reportRow("Case"),
+                reportRow("FluidCaption"),
+                reportRow("Fluid"),
+                reportRow("FluidTemperatureCaption"),
+                reportRow("FluidTemperature"),
+                If(String.IsNullOrWhiteSpace(geometryText), String.Empty, " | "),
+                If(String.IsNullOrWhiteSpace(geometryText), String.Empty, String.Format("{0}: {1} | ", reportRow("GeometryCaption"), reportRow("Geometry"))),
+                reportRow("ModeCaption"),
+                reportRow("Mode"),
+                reportRow("StatusCaption"),
+                reportRow("Status"),
+                reportRow("CapacityCaption"),
+                reportRow("Capacity"),
+                reportRow("SensibleCaption"),
+                reportRow("Sensible"),
+                reportRow("AirOutCaption"),
+                reportRow("AirOut"),
+                reportRow("RHOutCaption"),
+                reportRow("RHOut"),
+                reportRow("CondCaption"),
+                reportRow("Cond"),
+                reportRow("AirDPCaption"),
+                reportRow("AirDP"),
+                reportRow("WaterDPCaption"),
+                reportRow("WaterDP"),
+                reportRow("FluidFlowCaption"),
+                reportRow("FluidFlow"),
+                reportRow("FluidSpeedCaption"),
+                reportRow("FluidSpeed"),
+                reportRow("FaceVelocityCaption"),
+                reportRow("FaceVelocity"))
+            table.Rows.Add(reportRow)
+        Next
+
+        Return table
+    End Function
+
+    Private Function Report_DataGridValue(row As DataGridViewRow, columnName As String) As String
+        If row Is Nothing OrElse Not dgvCoilPerformance_Results.Columns.Contains(columnName) Then
+            Return String.Empty
+        End If
+
+        Dim value As Object = row.Cells(columnName).Value
+        If value Is Nothing Then
+            Return String.Empty
+        End If
+
+        Return value.ToString()
+    End Function
 
 #End Region
 
@@ -1731,12 +2137,15 @@ Public Class CLMainForm
         Label24.Text = lblPerformance_ExhaustOutletTemperature.Text
         Label14.Text = lblPerformance_ExhaustOutletRH.Text
 
+        GroupBox6.Text = Environment.Localization.GetString(CLMessageResources.MainForm_Winter.ToString())
+        GroupBox7.Text = Environment.Localization.GetString(CLMessageResources.MainForm_Summer.ToString())
+
         lblPerformance_RegulationLevel.Text = Environment.Localization.GetString(CLMessageResources.MainForm_RegulationLevel.ToString())
 
         tbpData_ElectricalPerformances.Text = Environment.Localization.GetString(CLMessageResources.MainForm_ElectricalPerformances.ToString())
 
-        btn_summer.Text = Environment.Localization.GetString(CLMessageResources.MainForm_Summer.ToString())
-        btn_winter.Text = Environment.Localization.GetString(CLMessageResources.MainForm_Winter.ToString())
+        btn_summer.Text = Environment.Localization.GetString(CLMessageResources.MainForm_SummerEnable.ToString())
+        btn_winter.Text = Environment.Localization.GetString(CLMessageResources.MainForm_WinterSummer.ToString())
         SeasonalCalculation_UpdateModeButton()
 
 
@@ -2612,6 +3021,8 @@ Public Class CLMainForm
                 End If
             Next
         End If
+
+        CoilPerformance_FillFluidTypes(CoilPerformance_SelectedFluidType())
     End Sub
 
     Private Sub CoilPerformance_UpdateLocalizedControlTexts(parent As Control)
@@ -2624,10 +3035,12 @@ Public Class CLMainForm
         Next
     End Sub
 
-    Private Sub CoilPerformance_FillFluidTypes()
+    Private Sub CoilPerformance_FillFluidTypes(Optional selectedFluidType As CLCOFluidType = CLCOFluidType.Water)
         If cmbCoilPerformance_FluidType Is Nothing Then
             Return
         End If
+
+        RemoveHandler cmbCoilPerformance_FluidType.SelectedIndexChanged, AddressOf CoilPerformance_FluidTypeChanged
 
         cmbCoilPerformance_FluidType.Items.Clear()
         Dim fluidTypes As CLCOFluidType() = {
@@ -2641,7 +3054,17 @@ Public Class CLMainForm
                 CoilPerformance_FluidTypeName(fluidType),
                 fluidType))
         Next
+
         cmbCoilPerformance_FluidType.SelectedIndex = 0
+        For index As Integer = 0 To cmbCoilPerformance_FluidType.Items.Count - 1
+            Dim item As CLComboBoxItemWrapper(Of CLCOFluidType) = TryCast(cmbCoilPerformance_FluidType.Items(index), CLComboBoxItemWrapper(Of CLCOFluidType))
+            If item IsNot Nothing AndAlso item.Value = selectedFluidType Then
+                cmbCoilPerformance_FluidType.SelectedIndex = index
+                Exit For
+            End If
+        Next
+
+        AddHandler cmbCoilPerformance_FluidType.SelectedIndexChanged, AddressOf CoilPerformance_FluidTypeChanged
     End Sub
 
     Private Sub CoilPerformance_FillFinSpacings()
@@ -3519,8 +3942,8 @@ Public Class CLMainForm
             Return
         End If
 
-        Dim curveName As String = "SummerEfficiencyCurve"
-        Dim pointName As String = "SummerEfficiencyPoint"
+        Dim curveName As String = ChartSeries_SummerEfficiencyCurve_Name
+        Dim pointName As String = ChartSeries_SummerEfficiencyPoint_Name
 
         If crtPerformance_Chart3.Series.FindByName(curveName) IsNot Nothing Then
             crtPerformance_Chart3.Series.Remove(crtPerformance_Chart3.Series(curveName))
@@ -3552,7 +3975,6 @@ Public Class CLMainForm
         curveSeries.ChartType = SeriesChartType.Spline
         curveSeries.Points.DataBindXY(xValues.ToArray(), yValues.ToArray())
         curveSeries.BorderWidth = 2
-        curveSeries.BorderDashStyle = ChartDashStyle.Dash
         curveSeries.Color = Color.SeaGreen
 
         Dim pointSeries As Series = crtPerformance_Chart3.Series.Add(pointName)
@@ -3561,6 +3983,8 @@ Public Class CLMainForm
         pointSeries.MarkerSize = 10
         pointSeries.MarkerStyle = MarkerStyle.Square
         pointSeries.Color = Color.SeaGreen
+
+        Chart_ApplySummerEfficiencyStyle(crtPerformance_Chart3)
     End Sub
 
     Private Sub Clear_SummerThermalOutputs()
@@ -4851,7 +5275,7 @@ Public Class CLMainForm
 
     Private Sub SeasonalCalculation_UpdateModeButton()
         If btn_winter IsNot Nothing Then
-            btn_winter.Visible = False
+            btn_winter.Visible = True
         End If
 
         If btn_summer IsNot Nothing Then
@@ -4859,7 +5283,7 @@ Public Class CLMainForm
             btn_summer.UseVisualStyleBackColor = Not m_SummerCalculationEnabled
         End If
 
-        For Each control As Control In New Control() {TextBox1, TextBox2, TextBox3, TextBox4, TextBox5, TextBox6, GroupBox4, GroupBox5}
+        For Each control As Control In New Control() {TextBox1, TextBox2, TextBox3, TextBox4, TextBox5, TextBox6, GroupBox7}
             If control IsNot Nothing Then
                 control.Enabled = m_SummerCalculationEnabled
             End If
@@ -4871,22 +5295,24 @@ Public Class CLMainForm
     End Sub
 
     Private Sub EN308_Click(sender As Object, e As EventArgs) Handles btnEN308.Click
+        m_WinterReportScenarioName = btnEN308.Text
         txbPerformance_FreshInletTemperature.Text = 5
         txbPerformance_RHFreshInlet.Text = 72
         txbPerformance_ReturnInletTemperature.Text = 25
         txbPerformance_RHReturnInlet.Text = 28
-        TextBox3.Text = txbPerformance_FreshInletTemperature.Text
-        TextBox4.Text = txbPerformance_RHFreshInlet.Text
-        TextBox5.Text = txbPerformance_ReturnInletTemperature.Text
-        TextBox6.Text = txbPerformance_RHReturnInlet.Text
         Calculate()
     End Sub
 
-    Private Sub btn_Default_Click(sender As Object, e As EventArgs)
+    Private Sub btn_Default_Click(sender As Object, e As EventArgs) Handles btn_winter.Click
+        m_WinterReportScenarioName = String.Empty
         txbPerformance_FreshInletTemperature.Text = -10
         txbPerformance_RHFreshInlet.Text = 80
         txbPerformance_ReturnInletTemperature.Text = 20
         txbPerformance_RHReturnInlet.Text = 60
+        TextBox3.Text = 32
+        TextBox4.Text = 80
+        TextBox5.Text = 26
+        TextBox6.Text = 50
         Calculate()
     End Sub
 
@@ -4897,15 +5323,13 @@ Public Class CLMainForm
     End Sub
 
     Private Sub btnEN13141_Click(sender As Object, e As EventArgs) Handles btnEN13141.Click
+        m_WinterReportScenarioName = btnEN13141.Text
         txbPerformance_FreshInletTemperature.Text = 7
         txbPerformance_RHFreshInlet.Text = 70
         txbPerformance_ReturnInletTemperature.Text = 20
         txbPerformance_RHReturnInlet.Text = 37
-        TextBox3.Text = txbPerformance_FreshInletTemperature.Text
-        TextBox4.Text = txbPerformance_RHFreshInlet.Text
-        TextBox5.Text = txbPerformance_ReturnInletTemperature.Text
-        TextBox6.Text = txbPerformance_RHReturnInlet.Text
         Calculate()
     End Sub
 
 End Class
+

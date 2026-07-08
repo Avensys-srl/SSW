@@ -516,5 +516,10 @@
   <data name="MainForm_CoilPerformance_ResultWaterDP" xml:space="preserve"><value>Viz DP [kPa]</value></data>
   <data name="MainForm_CoilPerformance_ResultFluidFlow" xml:space="preserve"><value>Folyadek aram [l/h]</value></data>
   <data name="MainForm_CoilPerformance_ResultFluidSpeed" xml:space="preserve"><value>Folyadek seb. [m/s]</value></data>
+  <data name="Water" xml:space="preserve"><value>Víz</value></data>
+  <data name="Glic_Etil" xml:space="preserve"><value>Etilén-glikol</value></data>
+  <data name="Glic_Prop" xml:space="preserve"><value>Propilén-glikol</value></data>
+  <data name="MainForm_WinterSummer" xml:space="preserve"><value>Nyár / Tél</value></data>
+  <data name="MainForm_SummerEnable" xml:space="preserve"><value>Nyár engedélyezése</value></data>
 </root>
 

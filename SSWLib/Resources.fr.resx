@@ -402,5 +402,10 @@
   <data name="MainForm_CoilPerformance_ResultWaterDP" xml:space="preserve"><value>DP eau [kPa]</value></data>
   <data name="MainForm_CoilPerformance_ResultFluidFlow" xml:space="preserve"><value>Debit fluide [l/h]</value></data>
   <data name="MainForm_CoilPerformance_ResultFluidSpeed" xml:space="preserve"><value>Vitesse fluide [m/s]</value></data>
+  <data name="Water" xml:space="preserve"><value>Eau</value></data>
+  <data name="Glic_Etil" xml:space="preserve"><value>Glycol éthylène</value></data>
+  <data name="Glic_Prop" xml:space="preserve"><value>Glycol propylène</value></data>
+  <data name="MainForm_WinterSummer" xml:space="preserve"><value>Été / Hiver</value></data>
+  <data name="MainForm_SummerEnable" xml:space="preserve"><value>Activer été</value></data>
 </root>
 

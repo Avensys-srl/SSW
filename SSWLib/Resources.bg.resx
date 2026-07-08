@@ -423,5 +423,10 @@
   <data name="MainForm_CoilPerformance_ResultWaterDP" xml:space="preserve"><value>DP voda [kPa]</value></data>
   <data name="MainForm_CoilPerformance_ResultFluidFlow" xml:space="preserve"><value>Debit fluid [l/h]</value></data>
   <data name="MainForm_CoilPerformance_ResultFluidSpeed" xml:space="preserve"><value>Fluid speed [m/s]</value></data>
+  <data name="Water" xml:space="preserve"><value>Вода</value></data>
+  <data name="Glic_Etil" xml:space="preserve"><value>Етиленгликол</value></data>
+  <data name="Glic_Prop" xml:space="preserve"><value>Пропиленгликол</value></data>
+  <data name="MainForm_WinterSummer" xml:space="preserve"><value>Лято / Зима</value></data>
+  <data name="MainForm_SummerEnable" xml:space="preserve"><value>Активирай лято</value></data>
 </root>
 

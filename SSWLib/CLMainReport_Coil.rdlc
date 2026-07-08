@@ -2,1752 +2,6 @@
 <Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2008/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
   <Body>
     <ReportItems>
-      <Rectangle Name="Rectangle2">
-        <ReportItems>
-          <Tablix Name="Tablix4">
-            <TablixBody>
-              <TablixColumns>
-                <TablixColumn>
-                  <Width>4.90235cm</Width>
-                </TablixColumn>
-                <TablixColumn>
-                  <Width>1.77163cm</Width>
-                </TablixColumn>
-              </TablixColumns>
-              <TablixRows>
-                <TablixRow>
-                  <Height>0.6cm</Height>
-                  <TablixCells>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="Textbox17">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!Title.Value</Value>
-                                  <Style>
-                                    <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>9pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
-                                    <TextDecoration>None</TextDecoration>
-                                    <Color>#000000</Color>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style>
-                                <TextAlign>Center</TextAlign>
-                              </Style>
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>Textbox7</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Style>Solid</Style>
-                              <Width>0.5pt</Width>
-                            </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                        <ColSpan>2</ColSpan>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell />
-                  </TablixCells>
-                </TablixRow>
-                <TablixRow>
-                  <Height>0.5cm</Height>
-                  <TablixCells>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="AirFlow_Caption2">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!RoomLength_Caption.Value</Value>
-                                  <Style>
-                                    <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>9pt</FontSize>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style />
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>AirFlow_Caption</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                              <Width>0.5pt</Width>
-                            </Border>
-                            <TopBorder>
-                              <Color>Black</Color>
-                            </TopBorder>
-                            <VerticalAlign>Middle</VerticalAlign>
-                            <PaddingLeft>5pt</PaddingLeft>
-                            <PaddingRight>5pt</PaddingRight>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="AirFlow_Value2">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!RoomLength.Value</Value>
-                                  <Style>
-                                    <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>9pt</FontSize>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style>
-                                <TextAlign>Center</TextAlign>
-                              </Style>
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>AirFlow_Value</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                              <Width>0.5pt</Width>
-                            </Border>
-                            <TopBorder>
-                              <Color>Black</Color>
-                            </TopBorder>
-                            <VerticalAlign>Middle</VerticalAlign>
-                            <PaddingLeft>5pt</PaddingLeft>
-                            <PaddingRight>5pt</PaddingRight>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                  </TablixCells>
-                </TablixRow>
-                <TablixRow>
-                  <Height>0.5cm</Height>
-                  <TablixCells>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="MaxPressure_Caption2">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!RoomWidth_Caption.Value</Value>
-                                  <Style>
-                                    <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>9pt</FontSize>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style />
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>MaxPressure_Caption</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                              <Width>0.5pt</Width>
-                            </Border>
-                            <VerticalAlign>Middle</VerticalAlign>
-                            <PaddingLeft>5pt</PaddingLeft>
-                            <PaddingRight>5pt</PaddingRight>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="MaxPressure_Value2">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!RoomWidth.Value</Value>
-                                  <Style>
-                                    <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>9pt</FontSize>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style>
-                                <TextAlign>Center</TextAlign>
-                              </Style>
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>MaxPressure_Value</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                              <Width>0.5pt</Width>
-                            </Border>
-                            <VerticalAlign>Middle</VerticalAlign>
-                            <PaddingLeft>5pt</PaddingLeft>
-                            <PaddingRight>5pt</PaddingRight>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                  </TablixCells>
-                </TablixRow>
-                <TablixRow>
-                  <Height>0.5cm</Height>
-                  <TablixCells>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="PowerInput_Caption2">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!RoomHeight_Caption.Value</Value>
-                                  <Style>
-                                    <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>9pt</FontSize>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style />
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>PowerInput_Caption</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                              <Width>0.5pt</Width>
-                            </Border>
-                            <VerticalAlign>Middle</VerticalAlign>
-                            <PaddingLeft>5pt</PaddingLeft>
-                            <PaddingRight>5pt</PaddingRight>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="PowerInput_Value2">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!RoomHeight.Value</Value>
-                                  <Style>
-                                    <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>9pt</FontSize>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style>
-                                <TextAlign>Center</TextAlign>
-                              </Style>
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>PowerInput_Value</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                              <Width>0.5pt</Width>
-                            </Border>
-                            <VerticalAlign>Middle</VerticalAlign>
-                            <PaddingLeft>5pt</PaddingLeft>
-                            <PaddingRight>5pt</PaddingRight>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                  </TablixCells>
-                </TablixRow>
-              </TablixRows>
-            </TablixBody>
-            <TablixColumnHierarchy>
-              <TablixMembers>
-                <TablixMember />
-                <TablixMember />
-              </TablixMembers>
-            </TablixColumnHierarchy>
-            <TablixRowHierarchy>
-              <TablixMembers>
-                <TablixMember>
-                  <KeepWithGroup>After</KeepWithGroup>
-                </TablixMember>
-                <TablixMember>
-                  <Group Name="Dettagli3_Tablix4" />
-                  <TablixMembers>
-                    <TablixMember />
-                    <TablixMember />
-                    <TablixMember />
-                  </TablixMembers>
-                </TablixMember>
-              </TablixMembers>
-            </TablixRowHierarchy>
-            <DataSetName>CO2LevelRoom</DataSetName>
-            <Top>0.18521cm</Top>
-            <Left>0.70916cm</Left>
-            <Height>2.1cm</Height>
-            <Width>6.67398cm</Width>
-            <Style>
-              <Border>
-                <Style>Solid</Style>
-                <Width>0.5pt</Width>
-              </Border>
-              <FontFamily>Helvetica</FontFamily>
-              <VerticalAlign>Middle</VerticalAlign>
-            </Style>
-          </Tablix>
-          <Tablix Name="Tablix7">
-            <TablixBody>
-              <TablixColumns>
-                <TablixColumn>
-                  <Width>5.47809cm</Width>
-                </TablixColumn>
-                <TablixColumn>
-                  <Width>3.09707cm</Width>
-                </TablixColumn>
-                <TablixColumn>
-                  <Width>3.08558cm</Width>
-                </TablixColumn>
-              </TablixColumns>
-              <TablixRows>
-                <TablixRow>
-                  <Height>0.6cm</Height>
-                  <TablixCells>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="Textbox18">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!Title.Value</Value>
-                                  <Style>
-                                    <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>9pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
-                                    <TextDecoration>None</TextDecoration>
-                                    <Color>#000000</Color>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style>
-                                <TextAlign>Center</TextAlign>
-                              </Style>
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>Textbox7</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Style>Solid</Style>
-                              <Width>0.5pt</Width>
-                            </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="Textbox104">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!Presence_Caption.Value</Value>
-                                  <Style>
-                                    <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>9pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
-                                    <TextDecoration>None</TextDecoration>
-                                    <Color>#000000</Color>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style>
-                                <TextAlign>Center</TextAlign>
-                              </Style>
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>Textbox104</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Style>Solid</Style>
-                              <Width>0.5pt</Width>
-                            </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="Textbox105">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!Break_Caption.Value</Value>
-                                  <Style>
-                                    <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>9pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
-                                    <TextDecoration>None</TextDecoration>
-                                    <Color>#000000</Color>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style>
-                                <TextAlign>Center</TextAlign>
-                              </Style>
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>Textbox105</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Style>Solid</Style>
-                              <Width>0.5pt</Width>
-                            </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                  </TablixCells>
-                </TablixRow>
-                <TablixRow>
-                  <Height>0.5cm</Height>
-                  <TablixCells>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="AirFlow_Caption3">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!Period_Caption.Value</Value>
-                                  <Style>
-                                    <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>9pt</FontSize>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style />
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>AirFlow_Caption</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                              <Width>0.5pt</Width>
-                            </Border>
-                            <TopBorder>
-                              <Color>Black</Color>
-                            </TopBorder>
-                            <VerticalAlign>Middle</VerticalAlign>
-                            <PaddingLeft>5pt</PaddingLeft>
-                            <PaddingRight>5pt</PaddingRight>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="AirFlow_Value3">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!PeriodPresence.Value</Value>
-                                  <Style>
-                                    <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>9pt</FontSize>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style>
-                                <TextAlign>Center</TextAlign>
-                              </Style>
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>AirFlow_Value</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                              <Width>0.5pt</Width>
-                            </Border>
-                            <TopBorder>
-                              <Color>Black</Color>
-                            </TopBorder>
-                            <VerticalAlign>Middle</VerticalAlign>
-                            <PaddingLeft>5pt</PaddingLeft>
-                            <PaddingRight>5pt</PaddingRight>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="PeriodBreak">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!PeriodBreak.Value</Value>
-                                  <Style>
-                                    <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>9pt</FontSize>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style>
-                                <TextAlign>Center</TextAlign>
-                              </Style>
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>PeriodBreak</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                              <Width>0.5pt</Width>
-                            </Border>
-                            <TopBorder>
-                              <Color>Black</Color>
-                            </TopBorder>
-                            <VerticalAlign>Middle</VerticalAlign>
-                            <PaddingLeft>5pt</PaddingLeft>
-                            <PaddingRight>5pt</PaddingRight>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                  </TablixCells>
-                </TablixRow>
-                <TablixRow>
-                  <Height>0.5cm</Height>
-                  <TablixCells>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="People_Caption">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!People_Caption.Value</Value>
-                                  <Style>
-                                    <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>9pt</FontSize>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style />
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>People_Caption</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                              <Width>0.5pt</Width>
-                            </Border>
-                            <VerticalAlign>Middle</VerticalAlign>
-                            <PaddingLeft>5pt</PaddingLeft>
-                            <PaddingRight>5pt</PaddingRight>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="PeoplePresence">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!PeoplePresence.Value</Value>
-                                  <Style>
-                                    <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>9pt</FontSize>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style>
-                                <TextAlign>Center</TextAlign>
-                              </Style>
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>PeoplePresence</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                              <Width>0.5pt</Width>
-                            </Border>
-                            <VerticalAlign>Middle</VerticalAlign>
-                            <PaddingLeft>5pt</PaddingLeft>
-                            <PaddingRight>5pt</PaddingRight>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="PeopleBreak">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!PeopleBreak.Value</Value>
-                                  <Style>
-                                    <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>9pt</FontSize>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style>
-                                <TextAlign>Center</TextAlign>
-                              </Style>
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>PeopleBreak</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                              <Width>0.5pt</Width>
-                            </Border>
-                            <VerticalAlign>Middle</VerticalAlign>
-                            <PaddingLeft>5pt</PaddingLeft>
-                            <PaddingRight>5pt</PaddingRight>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                  </TablixCells>
-                </TablixRow>
-                <TablixRow>
-                  <Height>0.5cm</Height>
-                  <TablixCells>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="PowerInput_Caption3">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!LevelAct_Caption.Value</Value>
-                                  <Style>
-                                    <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>9pt</FontSize>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style />
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>PowerInput_Caption</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                              <Width>0.5pt</Width>
-                            </Border>
-                            <VerticalAlign>Middle</VerticalAlign>
-                            <PaddingLeft>5pt</PaddingLeft>
-                            <PaddingRight>5pt</PaddingRight>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="PowerInput_Value3">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!LevelAct.Value</Value>
-                                  <Style>
-                                    <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>9pt</FontSize>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style>
-                                <TextAlign>Center</TextAlign>
-                              </Style>
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>PowerInput_Value</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                              <Width>0.5pt</Width>
-                            </Border>
-                            <VerticalAlign>Middle</VerticalAlign>
-                            <PaddingLeft>5pt</PaddingLeft>
-                            <PaddingRight>5pt</PaddingRight>
-                          </Style>
-                        </Textbox>
-                        <ColSpan>2</ColSpan>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell />
-                  </TablixCells>
-                </TablixRow>
-                <TablixRow>
-                  <Height>0.6cm</Height>
-                  <TablixCells>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="CO2prod_Caption">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!CO2prod_Caption.Value</Value>
-                                  <Style>
-                                    <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>9pt</FontSize>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style />
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>CO2prod_Caption</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                              <Width>0.5pt</Width>
-                            </Border>
-                            <VerticalAlign>Middle</VerticalAlign>
-                            <PaddingLeft>5pt</PaddingLeft>
-                            <PaddingRight>5pt</PaddingRight>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="CO2prod">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!CO2prod.Value</Value>
-                                  <Style>
-                                    <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>9pt</FontSize>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style>
-                                <TextAlign>Center</TextAlign>
-                              </Style>
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>CO2prod</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                              <Width>0.5pt</Width>
-                            </Border>
-                            <VerticalAlign>Middle</VerticalAlign>
-                            <PaddingLeft>5pt</PaddingLeft>
-                            <PaddingRight>5pt</PaddingRight>
-                          </Style>
-                        </Textbox>
-                        <ColSpan>2</ColSpan>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell />
-                  </TablixCells>
-                </TablixRow>
-              </TablixRows>
-            </TablixBody>
-            <TablixColumnHierarchy>
-              <TablixMembers>
-                <TablixMember />
-                <TablixMember />
-                <TablixMember />
-              </TablixMembers>
-            </TablixColumnHierarchy>
-            <TablixRowHierarchy>
-              <TablixMembers>
-                <TablixMember>
-                  <KeepWithGroup>After</KeepWithGroup>
-                </TablixMember>
-                <TablixMember>
-                  <Group Name="Dettagli4_Tablix7" />
-                  <TablixMembers>
-                    <TablixMember />
-                    <TablixMember />
-                    <TablixMember />
-                    <TablixMember />
-                  </TablixMembers>
-                </TablixMember>
-              </TablixMembers>
-            </TablixRowHierarchy>
-            <DataSetName>CO2LevelUse</DataSetName>
-            <Top>0.18521cm</Top>
-            <Left>7.68989cm</Left>
-            <Height>2.7cm</Height>
-            <Width>11.66074cm</Width>
-            <ZIndex>1</ZIndex>
-            <Style>
-              <Border>
-                <Style>Solid</Style>
-                <Width>0.5pt</Width>
-              </Border>
-              <FontFamily>Helvetica</FontFamily>
-              <VerticalAlign>Middle</VerticalAlign>
-            </Style>
-          </Tablix>
-          <Image Name="Image6">
-            <Source>Database</Source>
-            <Value>=First(Fields!CO2Image.Value, "Diagram")</Value>
-            <MIMEType>image/bmp</MIMEType>
-            <Sizing>FitProportional</Sizing>
-            <Top>7.87284cm</Top>
-            <Left>2.93166cm</Left>
-            <Height>8.39724cm</Height>
-            <Width>13.91483cm</Width>
-            <ZIndex>2</ZIndex>
-            <Style>
-              <Border>
-                <Style>None</Style>
-              </Border>
-            </Style>
-          </Image>
-          <Tablix Name="Tablix9">
-            <TablixBody>
-              <TablixColumns>
-                <TablixColumn>
-                  <Width>6.98072cm</Width>
-                </TablixColumn>
-                <TablixColumn>
-                  <Width>3.72846cm</Width>
-                </TablixColumn>
-                <TablixColumn>
-                  <Width>3.99722cm</Width>
-                </TablixColumn>
-                <TablixColumn>
-                  <Width>3.93504cm</Width>
-                </TablixColumn>
-              </TablixColumns>
-              <TablixRows>
-                <TablixRow>
-                  <Height>0.6cm</Height>
-                  <TablixCells>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="Textbox19">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!Title.Value</Value>
-                                  <Style>
-                                    <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>9pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
-                                    <TextDecoration>None</TextDecoration>
-                                    <Color>#000000</Color>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style>
-                                <TextAlign>Center</TextAlign>
-                              </Style>
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>Textbox7</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Style>Solid</Style>
-                              <Width>0.5pt</Width>
-                            </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                        <ColSpan>4</ColSpan>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell />
-                    <TablixCell />
-                    <TablixCell />
-                  </TablixCells>
-                </TablixRow>
-                <TablixRow>
-                  <Height>0.5cm</Height>
-                  <TablixCells>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="StdPreset_Caption">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!StdPreset_Caption.Value</Value>
-                                  <Style>
-                                    <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>9pt</FontSize>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style />
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>StdPreset_Caption</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                              <Width>0.5pt</Width>
-                            </Border>
-                            <TopBorder>
-                              <Color>Black</Color>
-                            </TopBorder>
-                            <VerticalAlign>Middle</VerticalAlign>
-                            <PaddingLeft>5pt</PaddingLeft>
-                            <PaddingRight>5pt</PaddingRight>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="StdPreset">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!StdPreset.Value</Value>
-                                  <Style>
-                                    <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>9pt</FontSize>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style>
-                                <TextAlign>Center</TextAlign>
-                              </Style>
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>StdPreset</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                              <Width>0.5pt</Width>
-                            </Border>
-                            <TopBorder>
-                              <Color>Black</Color>
-                            </TopBorder>
-                            <VerticalAlign>Middle</VerticalAlign>
-                            <PaddingLeft>5pt</PaddingLeft>
-                            <PaddingRight>5pt</PaddingRight>
-                          </Style>
-                        </Textbox>
-                        <ColSpan>3</ColSpan>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell />
-                    <TablixCell />
-                  </TablixCells>
-                </TablixRow>
-                <TablixRow>
-                  <Height>0.5cm</Height>
-                  <TablixCells>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="People_Caption2">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!CalcMeth_Caption.Value</Value>
-                                  <Style>
-                                    <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>9pt</FontSize>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style />
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>People_Caption</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                              <Width>0.5pt</Width>
-                            </Border>
-                            <VerticalAlign>Middle</VerticalAlign>
-                            <PaddingLeft>5pt</PaddingLeft>
-                            <PaddingRight>5pt</PaddingRight>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="CalcMeth">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!CalcMeth.Value</Value>
-                                  <Style>
-                                    <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>9pt</FontSize>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style>
-                                <TextAlign>Center</TextAlign>
-                              </Style>
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>CalcMeth</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                              <Width>0.5pt</Width>
-                            </Border>
-                            <VerticalAlign>Middle</VerticalAlign>
-                            <PaddingLeft>5pt</PaddingLeft>
-                            <PaddingRight>5pt</PaddingRight>
-                          </Style>
-                        </Textbox>
-                        <ColSpan>3</ColSpan>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell />
-                    <TablixCell />
-                  </TablixCells>
-                </TablixRow>
-                <TablixRow>
-                  <Height>0.5cm</Height>
-                  <TablixCells>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="PowerInput_Caption4">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!OutCO2_caption.Value</Value>
-                                  <Style>
-                                    <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>9pt</FontSize>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style />
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>PowerInput_Caption</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                              <Width>0.5pt</Width>
-                            </Border>
-                            <VerticalAlign>Middle</VerticalAlign>
-                            <PaddingLeft>5pt</PaddingLeft>
-                            <PaddingRight>5pt</PaddingRight>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="OutCO2">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!OutCO2.Value</Value>
-                                  <Style>
-                                    <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>9pt</FontSize>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style>
-                                <TextAlign>Center</TextAlign>
-                              </Style>
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>OutCO2</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                              <Width>0.5pt</Width>
-                            </Border>
-                            <VerticalAlign>Middle</VerticalAlign>
-                            <PaddingLeft>5pt</PaddingLeft>
-                            <PaddingRight>5pt</PaddingRight>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="MaxCO2_caption">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!MaxCO2_caption.Value</Value>
-                                  <Style>
-                                    <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>9pt</FontSize>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style>
-                                <TextAlign>Center</TextAlign>
-                              </Style>
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>MaxCO2_caption</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                              <Width>0.5pt</Width>
-                            </Border>
-                            <VerticalAlign>Middle</VerticalAlign>
-                            <PaddingLeft>5pt</PaddingLeft>
-                            <PaddingRight>5pt</PaddingRight>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="MaxCO21">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!MaxCO2.Value</Value>
-                                  <Style>
-                                    <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>9pt</FontSize>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style>
-                                <TextAlign>Center</TextAlign>
-                              </Style>
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>MaxCO21</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                              <Width>0.5pt</Width>
-                            </Border>
-                            <VerticalAlign>Middle</VerticalAlign>
-                            <PaddingLeft>5pt</PaddingLeft>
-                            <PaddingRight>5pt</PaddingRight>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                  </TablixCells>
-                </TablixRow>
-                <TablixRow>
-                  <Height>0.6cm</Height>
-                  <TablixCells>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="CO2prod_Caption2">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!AF_demand_caption.Value</Value>
-                                  <Style>
-                                    <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>9pt</FontSize>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style />
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>CO2prod_Caption</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                              <Width>0.5pt</Width>
-                            </Border>
-                            <VerticalAlign>Middle</VerticalAlign>
-                            <PaddingLeft>5pt</PaddingLeft>
-                            <PaddingRight>5pt</PaddingRight>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="AF_demand">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!AF_demand.Value</Value>
-                                  <Style>
-                                    <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>9pt</FontSize>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style>
-                                <TextAlign>Center</TextAlign>
-                              </Style>
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>AF_demand</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                              <Width>0.5pt</Width>
-                            </Border>
-                            <VerticalAlign>Middle</VerticalAlign>
-                            <PaddingLeft>5pt</PaddingLeft>
-                            <PaddingRight>5pt</PaddingRight>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="AF_demand_m3h_caption">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!AF_demand_m3h_caption.Value</Value>
-                                  <Style>
-                                    <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>9pt</FontSize>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style>
-                                <TextAlign>Center</TextAlign>
-                              </Style>
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>AF_demand_m3h_caption</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                              <Width>0.5pt</Width>
-                            </Border>
-                            <VerticalAlign>Middle</VerticalAlign>
-                            <PaddingLeft>5pt</PaddingLeft>
-                            <PaddingRight>5pt</PaddingRight>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="AF_demand_m3h">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!AF_demand_m3h.Value</Value>
-                                  <Style>
-                                    <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>9pt</FontSize>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style>
-                                <TextAlign>Center</TextAlign>
-                              </Style>
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>AF_demand_m3h</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                              <Width>0.5pt</Width>
-                            </Border>
-                            <VerticalAlign>Middle</VerticalAlign>
-                            <PaddingLeft>5pt</PaddingLeft>
-                            <PaddingRight>5pt</PaddingRight>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                  </TablixCells>
-                </TablixRow>
-                <TablixRow>
-                  <Height>0.6cm</Height>
-                  <TablixCells>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="AF_person_caption">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!AF_person_caption.Value</Value>
-                                  <Style>
-                                    <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>9pt</FontSize>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style />
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>AF_person_caption</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                              <Width>0.5pt</Width>
-                            </Border>
-                            <VerticalAlign>Middle</VerticalAlign>
-                            <PaddingLeft>5pt</PaddingLeft>
-                            <PaddingRight>5pt</PaddingRight>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="AF_person">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!AF_person.Value</Value>
-                                  <Style>
-                                    <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>9pt</FontSize>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style>
-                                <TextAlign>Center</TextAlign>
-                              </Style>
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>AF_person</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                              <Width>0.5pt</Width>
-                            </Border>
-                            <VerticalAlign>Middle</VerticalAlign>
-                            <PaddingLeft>5pt</PaddingLeft>
-                            <PaddingRight>5pt</PaddingRight>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="AF_person_m3h_caption">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!AF_person_m3h_caption.Value</Value>
-                                  <Style>
-                                    <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>9pt</FontSize>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style>
-                                <TextAlign>Center</TextAlign>
-                              </Style>
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>AF_person_m3h_caption</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                              <Width>0.5pt</Width>
-                            </Border>
-                            <VerticalAlign>Middle</VerticalAlign>
-                            <PaddingLeft>5pt</PaddingLeft>
-                            <PaddingRight>5pt</PaddingRight>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="AF_person_m3h">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!AF_person_m3h.Value</Value>
-                                  <Style>
-                                    <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>9pt</FontSize>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style>
-                                <TextAlign>Center</TextAlign>
-                              </Style>
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>AF_person_m3h</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                              <Width>0.5pt</Width>
-                            </Border>
-                            <VerticalAlign>Middle</VerticalAlign>
-                            <PaddingLeft>5pt</PaddingLeft>
-                            <PaddingRight>5pt</PaddingRight>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                  </TablixCells>
-                </TablixRow>
-                <TablixRow>
-                  <Height>0.6cm</Height>
-                  <TablixCells>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="AF_area_caption">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!AF_area_caption.Value</Value>
-                                  <Style>
-                                    <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>9pt</FontSize>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style />
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>AF_area_caption</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                              <Width>0.5pt</Width>
-                            </Border>
-                            <VerticalAlign>Middle</VerticalAlign>
-                            <PaddingLeft>5pt</PaddingLeft>
-                            <PaddingRight>5pt</PaddingRight>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="AF_area">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!AF_area.Value</Value>
-                                  <Style>
-                                    <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>9pt</FontSize>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style>
-                                <TextAlign>Center</TextAlign>
-                              </Style>
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>AF_area</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                              <Width>0.5pt</Width>
-                            </Border>
-                            <VerticalAlign>Middle</VerticalAlign>
-                            <PaddingLeft>5pt</PaddingLeft>
-                            <PaddingRight>5pt</PaddingRight>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="AF_area_m3h_caption">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!AF_area_m3h_caption.Value</Value>
-                                  <Style>
-                                    <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>9pt</FontSize>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style>
-                                <TextAlign>Center</TextAlign>
-                              </Style>
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>AF_area_m3h_caption</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                              <Width>0.5pt</Width>
-                            </Border>
-                            <VerticalAlign>Middle</VerticalAlign>
-                            <PaddingLeft>5pt</PaddingLeft>
-                            <PaddingRight>5pt</PaddingRight>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="AF_area_m3h">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!AF_area_m3h.Value</Value>
-                                  <Style>
-                                    <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>9pt</FontSize>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style>
-                                <TextAlign>Center</TextAlign>
-                              </Style>
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>AF_area_m3h</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                              <Width>0.5pt</Width>
-                            </Border>
-                            <VerticalAlign>Middle</VerticalAlign>
-                            <PaddingLeft>5pt</PaddingLeft>
-                            <PaddingRight>5pt</PaddingRight>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                  </TablixCells>
-                </TablixRow>
-              </TablixRows>
-            </TablixBody>
-            <TablixColumnHierarchy>
-              <TablixMembers>
-                <TablixMember />
-                <TablixMember />
-                <TablixMember />
-                <TablixMember />
-              </TablixMembers>
-            </TablixColumnHierarchy>
-            <TablixRowHierarchy>
-              <TablixMembers>
-                <TablixMember>
-                  <KeepWithGroup>After</KeepWithGroup>
-                </TablixMember>
-                <TablixMember>
-                  <Group Name="Dettagli5_Tablix9" />
-                  <TablixMembers>
-                    <TablixMember />
-                    <TablixMember />
-                    <TablixMember />
-                    <TablixMember />
-                    <TablixMember />
-                    <TablixMember />
-                  </TablixMembers>
-                </TablixMember>
-              </TablixMembers>
-            </TablixRowHierarchy>
-            <DataSetName>CO2LevelParameters</DataSetName>
-            <Top>3.33958cm</Top>
-            <Left>0.70916cm</Left>
-            <Height>3.9cm</Height>
-            <Width>18.64144cm</Width>
-            <ZIndex>3</ZIndex>
-            <Style>
-              <Border>
-                <Style>Solid</Style>
-                <Width>0.5pt</Width>
-              </Border>
-              <FontFamily>Helvetica</FontFamily>
-              <VerticalAlign>Middle</VerticalAlign>
-            </Style>
-          </Tablix>
-        </ReportItems>
-        <KeepTogether>true</KeepTogether>
-        <Top>34.28cm</Top>
-        <Left>0.00884cm</Left>
-        <Height>28.5cm</Height>
-        <Width>19.95354cm</Width>
-        <Visibility>
-          <Hidden>=First(Fields!addtorep_bool.Value, "CO2LevelParameters")</Hidden>
-        </Visibility>
-        <Style>
-          <Border>
-            <Style>None</Style>
-          </Border>
-        </Style>
-      </Rectangle>
       <Rectangle Name="SeasonWinterBlock">
         <ReportItems>
           <Tablix Name="Tablix1">
@@ -2995,7 +1249,7 @@
             <Left>8.7739cm</Left>
             <Height>2.6cm</Height>
             <Width>10.87656cm</Width>
-            <ZIndex>1</ZIndex>
+            <ZIndex>2</ZIndex>
             <Style>
               <Border>
                 <Style>Solid</Style>
@@ -3543,7 +1797,7 @@
             <Left>0.36016cm</Left>
             <Height>2.08248cm</Height>
             <Width>19.29032cm</Width>
-            <ZIndex>7</ZIndex>
+            <ZIndex>9</ZIndex>
             <Style>
               <Border>
                 <Style>Solid</Style>
@@ -3554,7 +1808,7 @@
               <VerticalAlign>Middle</VerticalAlign>
             </Style>
           </Tablix>
-          <Tablix Name="TablixWaterCoilWinterReport" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2008/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+          <Tablix Name="TablixWaterCoilWinterReport">
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
@@ -3572,7 +1826,7 @@
               </TablixColumns>
               <TablixRows>
                 <TablixRow>
-                  <Height>0.50cm</Height>
+                  <Height>0.54998cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -3599,9 +1853,7 @@
                           <rd:DefaultName>TablixWaterCoilWinterReport_Title</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>Black</Color>
                               <Style>Solid</Style>
-                              <Width>1pt</Width>
                             </Border>
                             <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
@@ -3620,7 +1872,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.45cm</Height>
+                  <Height>0.49998cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -3634,8 +1886,7 @@
                                   <Value>=Fields!CoilCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -3651,7 +1902,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -3673,7 +1923,7 @@
                                   <Value>=Fields!Coil.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -3710,8 +1960,7 @@
                                   <Value>=Fields!CaseCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -3727,7 +1976,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -3749,7 +1997,7 @@
                                   <Value>=Fields!Case.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -3777,7 +2025,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.45cm</Height>
+                  <Height>0.49998cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -3791,8 +2039,7 @@
                                   <Value>=Fields!FluidCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -3808,7 +2055,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -3830,7 +2076,7 @@
                                   <Value>=Fields!Fluid.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -3867,8 +2113,7 @@
                                   <Value>=Fields!ModeCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -3884,7 +2129,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -3906,7 +2150,7 @@
                                   <Value>=Fields!Mode.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -3934,7 +2178,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.45cm</Height>
+                  <Height>0.49998cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -3948,8 +2192,7 @@
                                   <Value>=Fields!FluidInCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -3965,7 +2208,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -3987,7 +2229,7 @@
                                   <Value>=Fields!FluidIn.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4024,8 +2266,7 @@
                                   <Value>=Fields!FluidOutCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4041,7 +2282,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -4063,7 +2303,7 @@
                                   <Value>=Fields!FluidOut.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4091,7 +2331,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.45cm</Height>
+                  <Height>0.49998cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -4105,8 +2345,7 @@
                                   <Value>=Fields!CapacityCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4122,7 +2361,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -4144,7 +2382,7 @@
                                   <Value>=Fields!Capacity.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4181,8 +2419,7 @@
                                   <Value>=Fields!SensibleCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4198,7 +2435,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -4220,7 +2456,7 @@
                                   <Value>=Fields!Sensible.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4248,7 +2484,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.45cm</Height>
+                  <Height>0.49998cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -4262,8 +2498,7 @@
                                   <Value>=Fields!AirOutCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4279,7 +2514,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -4301,7 +2535,7 @@
                                   <Value>=Fields!AirOut.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4338,8 +2572,7 @@
                                   <Value>=Fields!RHOutCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4355,7 +2588,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -4377,7 +2609,7 @@
                                   <Value>=Fields!RHOut.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4405,7 +2637,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.45cm</Height>
+                  <Height>0.49998cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -4419,8 +2651,7 @@
                                   <Value>=Fields!CondCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4436,7 +2667,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -4458,7 +2688,7 @@
                                   <Value>=Fields!Cond.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4495,8 +2725,7 @@
                                   <Value>=Fields!AirDPCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4512,7 +2741,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -4534,7 +2762,7 @@
                                   <Value>=Fields!AirDP.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4562,7 +2790,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.45cm</Height>
+                  <Height>0.49998cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -4576,8 +2804,7 @@
                                   <Value>=Fields!WaterDPCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4593,7 +2820,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -4615,7 +2841,7 @@
                                   <Value>=Fields!WaterDP.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4652,8 +2878,7 @@
                                   <Value>=Fields!FluidFlowCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4669,7 +2894,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -4691,7 +2915,7 @@
                                   <Value>=Fields!FluidFlow.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4719,7 +2943,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.45cm</Height>
+                  <Height>0.49998cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -4733,8 +2957,7 @@
                                   <Value>=Fields!FluidSpeedCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4750,7 +2973,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -4772,7 +2994,7 @@
                                   <Value>=Fields!FluidSpeed.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4809,8 +3031,7 @@
                                   <Value>=Fields!FaceVelocityCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4826,7 +3047,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -4848,7 +3068,7 @@
                                   <Value>=Fields!FaceVelocity.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4907,19 +3127,17 @@
             </TablixRowHierarchy>
             <KeepTogether>true</KeepTogether>
             <DataSetName>WaterCoilWinterReport</DataSetName>
+            <Top>6.1cm</Top>
+            <Left>0.36016cm</Left>
+            <Height>4.54979cm</Height>
+            <Width>19.29032cm</Width>
+            <ZIndex>11</ZIndex>
             <Visibility>
               <Hidden>=CountRows("WaterCoilWinterReport") = 0</Hidden>
             </Visibility>
-            <Top>6.1cm</Top>
-            <Left>0.36016cm</Left>
-            <Height>4.10cm</Height>
-            <Width>19.29032cm</Width>
-            <ZIndex>30</ZIndex>
             <Style>
               <Border>
-                <Color>Black</Color>
                 <Style>Solid</Style>
-                <Width>1pt</Width>
               </Border>
             </Style>
           </Tablix>
@@ -4927,7 +3145,7 @@
         <KeepTogether>true</KeepTogether>
         <Top>0cm</Top>
         <Left>0cm</Left>
-        <Height>10.45cm</Height>
+        <Height>10.9cm</Height>
         <Width>19.96238cm</Width>
         <Style>
           <Border>
@@ -5470,6 +3688,10 @@
             <Left>0.36016cm</Left>
             <Height>3.6cm</Height>
             <Width>7.88315cm</Width>
+            <ZIndex>1</ZIndex>
+            <Visibility>
+              <Hidden>=CountRows("SummerWorkingPoint") = 0</Hidden>
+            </Visibility>
             <Style>
               <Border>
                 <Style>Solid</Style>
@@ -5478,9 +3700,6 @@
               <FontFamily>Helvetica</FontFamily>
               <VerticalAlign>Middle</VerticalAlign>
             </Style>
-            <Visibility>
-              <Hidden>=CountRows("SummerWorkingPoint") = 0</Hidden>
-            </Visibility>
           </Tablix>
           <Tablix Name="TablixSummerTemperature">
             <TablixBody>
@@ -6185,7 +4404,10 @@
             <Left>8.7739cm</Left>
             <Height>2.6cm</Height>
             <Width>10.87656cm</Width>
-            <ZIndex>1</ZIndex>
+            <ZIndex>3</ZIndex>
+            <Visibility>
+              <Hidden>=CountRows("SummerTemperatureConditionsAndHumidity") = 0</Hidden>
+            </Visibility>
             <Style>
               <Border>
                 <Style>Solid</Style>
@@ -6199,9 +4421,6 @@
               <PaddingTop>2pt</PaddingTop>
               <PaddingBottom>2pt</PaddingBottom>
             </Style>
-            <Visibility>
-              <Hidden>=CountRows("SummerTemperatureConditionsAndHumidity") = 0</Hidden>
-            </Visibility>
           </Tablix>
           <Tablix Name="TablixSummerHeatExchanger">
             <TablixBody>
@@ -6736,7 +4955,10 @@
             <Left>0.36016cm</Left>
             <Height>2.08248cm</Height>
             <Width>19.29032cm</Width>
-            <ZIndex>7</ZIndex>
+            <ZIndex>10</ZIndex>
+            <Visibility>
+              <Hidden>=CountRows("SummerHeatExchangerPerformances") = 0</Hidden>
+            </Visibility>
             <Style>
               <Border>
                 <Style>Solid</Style>
@@ -6746,11 +4968,8 @@
               <FontSize>9pt</FontSize>
               <VerticalAlign>Middle</VerticalAlign>
             </Style>
-            <Visibility>
-              <Hidden>=CountRows("SummerHeatExchangerPerformances") = 0</Hidden>
-            </Visibility>
           </Tablix>
-          <Tablix Name="TablixWaterCoilSummerReport" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2008/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+          <Tablix Name="TablixWaterCoilSummerReport">
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
@@ -6768,7 +4987,7 @@
               </TablixColumns>
               <TablixRows>
                 <TablixRow>
-                  <Height>0.50cm</Height>
+                  <Height>0.54998cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -6795,9 +5014,7 @@
                           <rd:DefaultName>TablixWaterCoilSummerReport_Title</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>Black</Color>
                               <Style>Solid</Style>
-                              <Width>1pt</Width>
                             </Border>
                             <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
@@ -6816,7 +5033,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.45cm</Height>
+                  <Height>0.49998cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -6830,8 +5047,7 @@
                                   <Value>=Fields!CoilCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -6847,7 +5063,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -6869,7 +5084,7 @@
                                   <Value>=Fields!Coil.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -6906,8 +5121,7 @@
                                   <Value>=Fields!CaseCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -6923,7 +5137,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -6945,7 +5158,7 @@
                                   <Value>=Fields!Case.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -6973,7 +5186,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.45cm</Height>
+                  <Height>0.49998cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -6987,8 +5200,7 @@
                                   <Value>=Fields!FluidCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -7004,7 +5216,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -7026,7 +5237,7 @@
                                   <Value>=Fields!Fluid.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -7063,8 +5274,7 @@
                                   <Value>=Fields!ModeCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -7080,7 +5290,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -7102,7 +5311,7 @@
                                   <Value>=Fields!Mode.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -7130,7 +5339,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.45cm</Height>
+                  <Height>0.49998cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -7144,8 +5353,7 @@
                                   <Value>=Fields!FluidInCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -7161,7 +5369,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -7183,7 +5390,7 @@
                                   <Value>=Fields!FluidIn.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -7220,8 +5427,7 @@
                                   <Value>=Fields!FluidOutCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -7237,7 +5443,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -7259,7 +5464,7 @@
                                   <Value>=Fields!FluidOut.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -7287,7 +5492,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.45cm</Height>
+                  <Height>0.49998cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -7301,8 +5506,7 @@
                                   <Value>=Fields!CapacityCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -7318,7 +5522,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -7340,7 +5543,7 @@
                                   <Value>=Fields!Capacity.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -7377,8 +5580,7 @@
                                   <Value>=Fields!SensibleCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -7394,7 +5596,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -7416,7 +5617,7 @@
                                   <Value>=Fields!Sensible.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -7444,7 +5645,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.45cm</Height>
+                  <Height>0.49998cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -7458,8 +5659,7 @@
                                   <Value>=Fields!AirOutCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -7475,7 +5675,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -7497,7 +5696,7 @@
                                   <Value>=Fields!AirOut.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -7534,8 +5733,7 @@
                                   <Value>=Fields!RHOutCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -7551,7 +5749,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -7573,7 +5770,7 @@
                                   <Value>=Fields!RHOut.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -7601,7 +5798,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.45cm</Height>
+                  <Height>0.49998cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -7615,8 +5812,7 @@
                                   <Value>=Fields!CondCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -7632,7 +5828,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -7654,7 +5849,7 @@
                                   <Value>=Fields!Cond.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -7691,8 +5886,7 @@
                                   <Value>=Fields!AirDPCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -7708,7 +5902,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -7730,7 +5923,7 @@
                                   <Value>=Fields!AirDP.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -7758,7 +5951,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.45cm</Height>
+                  <Height>0.49998cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -7772,8 +5965,7 @@
                                   <Value>=Fields!WaterDPCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -7789,7 +5981,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -7811,7 +6002,7 @@
                                   <Value>=Fields!WaterDP.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -7848,8 +6039,7 @@
                                   <Value>=Fields!FluidFlowCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -7865,7 +6055,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -7887,7 +6076,7 @@
                                   <Value>=Fields!FluidFlow.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -7915,7 +6104,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.45cm</Height>
+                  <Height>0.49998cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -7929,8 +6118,7 @@
                                   <Value>=Fields!FluidSpeedCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -7946,7 +6134,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -7968,7 +6155,7 @@
                                   <Value>=Fields!FluidSpeed.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -8005,8 +6192,7 @@
                                   <Value>=Fields!FaceVelocityCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -8022,7 +6208,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -8044,7 +6229,7 @@
                                   <Value>=Fields!FaceVelocity.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -8103,27 +6288,25 @@
             </TablixRowHierarchy>
             <KeepTogether>true</KeepTogether>
             <DataSetName>WaterCoilSummerReport</DataSetName>
+            <Top>6.27783cm</Top>
+            <Left>0.36016cm</Left>
+            <Height>4.54979cm</Height>
+            <Width>19.29032cm</Width>
+            <ZIndex>12</ZIndex>
             <Visibility>
               <Hidden>=CountRows("WaterCoilSummerReport") = 0</Hidden>
             </Visibility>
-            <Top>5.96033cm</Top>
-            <Left>0.36016cm</Left>
-            <Height>4.10cm</Height>
-            <Width>19.29032cm</Width>
-            <ZIndex>30</ZIndex>
             <Style>
               <Border>
-                <Color>Black</Color>
                 <Style>Solid</Style>
-                <Width>1pt</Width>
               </Border>
             </Style>
           </Tablix>
         </ReportItems>
         <KeepTogether>true</KeepTogether>
-        <Top>10.8cm</Top>
+        <Top>11.25cm</Top>
         <Left>0cm</Left>
-        <Height>10.32cm</Height>
+        <Height>11.08cm</Height>
         <Width>19.96238cm</Width>
         <Visibility>
           <Hidden>=CountRows("SummerWorkingPoint") = 0</Hidden>
@@ -8145,7 +6328,7 @@
             <Left>0.38661cm</Left>
             <Height>5.16932cm</Height>
             <Width>9.5746cm</Width>
-            <ZIndex>3</ZIndex>
+            <ZIndex>5</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -8161,7 +6344,7 @@
             <Left>9.97004cm</Left>
             <Height>5.16932cm</Height>
             <Width>9.64516cm</Width>
-            <ZIndex>4</ZIndex>
+            <ZIndex>6</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -8177,7 +6360,7 @@
             <Left>0.36016cm</Left>
             <Height>4.85182cm</Height>
             <Width>9.5746cm</Width>
-            <ZIndex>5</ZIndex>
+            <ZIndex>7</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -8193,7 +6376,7 @@
             <Left>9.97004cm</Left>
             <Height>4.85182cm</Height>
             <Width>9.64516cm</Width>
-            <ZIndex>6</ZIndex>
+            <ZIndex>8</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -9242,7 +7425,7 @@
             <Left>0.36016cm</Left>
             <Height>1.69416cm</Height>
             <Width>19.2903cm</Width>
-            <ZIndex>2</ZIndex>
+            <ZIndex>4</ZIndex>
             <Visibility>
               <Hidden>=(CountRows() = 0) Or (First(Fields!sndaddtorep_bool.Value, "SoundPowerHeader"))</Hidden>
             </Visibility>
@@ -9254,10 +7437,13 @@
             </Style>
           </Tablix>
         </ReportItems>
-        <Top>21.47cm</Top>
+        <Top>22.68cm</Top>
         <Left>0cm</Left>
         <Height>12.36cm</Height>
         <Width>19.96238cm</Width>
+        <PageBreak>
+          <BreakLocation>Start</BreakLocation>
+        </PageBreak>
         <Style>
           <Border>
             <Style>None</Style>
@@ -9265,7 +7451,7 @@
         </Style>
       </Rectangle>
     </ReportItems>
-    <Height>63.28cm</Height>
+    <Height>35.54cm</Height>
     <Style>
       <Border />
     </Style>

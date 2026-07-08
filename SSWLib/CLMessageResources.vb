@@ -33,6 +33,8 @@ Public Enum CLMessageResources
     MainForm_UpdateSAPTable
     MainForm_Winter
     MainForm_Summer
+    MainForm_WinterSummer
+    MainForm_SummerEnable
     Yes
     No
     MainForm_FileSaved

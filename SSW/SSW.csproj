@@ -956,6 +956,18 @@
       <Link>CLMainReport.rdlc</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="..\SSWLib\CLMainReport_Coil.rdlc">
+      <Link>CLMainReport_Coil.rdlc</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\SSWLib\CLMainReportWithCO2.rdlc">
+      <Link>CLMainReportWithCO2.rdlc</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\SSWLib\CLMainReportWithCO2_Coil.rdlc">
+      <Link>CLMainReportWithCO2_Coil.rdlc</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="..\SSWLib\History.txt">
       <Link>History.txt</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

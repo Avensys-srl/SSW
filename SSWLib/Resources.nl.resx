@@ -420,5 +420,10 @@
   <data name="MainForm_CoilPerformance_ResultWaterDP" xml:space="preserve"><value>Water DP [kPa]</value></data>
   <data name="MainForm_CoilPerformance_ResultFluidFlow" xml:space="preserve"><value>Mediumdebiet [l/h]</value></data>
   <data name="MainForm_CoilPerformance_ResultFluidSpeed" xml:space="preserve"><value>Mediumsnelheid [m/s]</value></data>
+  <data name="Water" xml:space="preserve"><value>Water</value></data>
+  <data name="Glic_Etil" xml:space="preserve"><value>Ethyleenglycol</value></data>
+  <data name="Glic_Prop" xml:space="preserve"><value>Propyleenglycol</value></data>
+  <data name="MainForm_WinterSummer" xml:space="preserve"><value>Zomer / Winter</value></data>
+  <data name="MainForm_SummerEnable" xml:space="preserve"><value>Zomer inschakelen</value></data>
 </root>
 
