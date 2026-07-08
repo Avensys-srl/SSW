@@ -352,4 +352,7 @@
   <data name="MainForm_CoilPerformance_Tab" xml:space="preserve"><value>Wasserregister</value></data>
   <data name="MainForm_CoilPerformance_Type" xml:space="preserve"><value>Typ</value></data><data name="MainForm_Menu_Option_CommercialSheetAutoSync" xml:space="preserve"><value>Automatische Synchronisierung kommerzieller Datenblaetter</value></data>
   <data name="MainForm_CoilPerformance_ResultWaterDP" xml:space="preserve"><value>Wasser-DP [kPa]</value></data>
+  <data name="MainForm_CoilPerformance_ResultFluidFlow" xml:space="preserve"><value>Volumenstrom Medium [l/h]</value></data>
+  <data name="MainForm_CoilPerformance_ResultFluidSpeed" xml:space="preserve"><value>Mediumgeschw. [m/s]</value></data>
 </root>
+

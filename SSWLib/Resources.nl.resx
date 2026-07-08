@@ -418,4 +418,7 @@
   <data name="MainForm_CoilPerformance_Tab" xml:space="preserve"><value>Waterbatterijen</value></data>
   <data name="MainForm_CoilPerformance_Type" xml:space="preserve"><value>Type</value></data><data name="MainForm_Menu_Option_CommercialSheetAutoSync" xml:space="preserve"><value>Automatische synchronisatie van commerciele fiches</value></data>
   <data name="MainForm_CoilPerformance_ResultWaterDP" xml:space="preserve"><value>Water DP [kPa]</value></data>
+  <data name="MainForm_CoilPerformance_ResultFluidFlow" xml:space="preserve"><value>Mediumdebiet [l/h]</value></data>
+  <data name="MainForm_CoilPerformance_ResultFluidSpeed" xml:space="preserve"><value>Mediumsnelheid [m/s]</value></data>
 </root>
+

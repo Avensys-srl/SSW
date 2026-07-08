@@ -6,10 +6,10 @@ Imports System.Drawing.Imaging
 Imports System.Globalization
 Imports System.Net
 Imports System.Windows.Forms.DataVisualization.Charting
-Imports ClimaLombarda.Common
-Imports ClimaLombarda.Common.UI
+Imports Climalombarda.Common
+Imports Climalombarda.Common.UI
 Imports System.Data
-Imports ClimaLombarda.DataCentral.LTModel
+Imports Climalombarda.DataCentral.LTModel
 Imports Climalombarda.DataCentral
 
 
@@ -24,6 +24,11 @@ Public Class CLMainForm
     Private m_CoilPerformanceCoils As New List(Of CLCoilDefinition)
     Private m_CoilPerformanceAvailable As Boolean = False
     Private m_CoilPerformanceLastPressureDrop As Double = 0
+    Private m_SummerCalculationEnabled As Boolean = True
+    Private m_LastWinterThermo As termo
+    Private m_LastSummerThermo As termo
+    Private m_HasLastWinterThermo As Boolean = False
+    Private m_HasLastSummerThermo As Boolean = False
 
     Private tbpData_CoilPerformance As TabPage
     Private chbCoilPerformance_Enable As CheckBox
@@ -45,6 +50,12 @@ Public Class CLMainForm
     Private nudCoilPerformance_HeatingOut As NumericUpDown
     Private dgvCoilPerformance_Results As DataGridView
     Private lblCoilPerformance_Status As Label
+
+    Private Class CLThermalCalculationResult
+        Public Property Thermo As termo
+        Public Property WorkPoint As Double()
+        Public Property AirFlow As Double
+    End Class
 
     Private ReadOnly Property Environment As CLEnvironment
         Get
@@ -202,6 +213,7 @@ Public Class CLMainForm
         End If
 
         Environment.SetLanguage(language)
+        SeasonalCalculation_UpdateModeButton()
 
         If state = "GB" Then
             m_SAPEnable = True
@@ -217,6 +229,13 @@ Public Class CLMainForm
 
         CoilPerformance_InitializeTab()
 
+        txbPerformance_AirFlow.Text = "100"
+        TextBox1.Text = txbPerformance_AirFlow.Text
+        TextBox3.Text = "32"
+        TextBox4.Text = "80"
+        TextBox5.Text = "26"
+        TextBox6.Text = "50"
+
         ' Fill Series
         Series_FillCombo()
 
@@ -224,7 +243,6 @@ Public Class CLMainForm
         Accessory_HWD_FluidTypeFill()
         Accessory_CWD_FluidTypeFill()
 
-        txbPerformance_AirFlow.Text = "100"
         sap_table_start()
         txbPerformance_AirFlow.Select()
 
@@ -471,7 +489,7 @@ Public Class CLMainForm
 
     Private txbPerformance_AirFlow_SaveValue As String = ""
 
-    Private Sub txbPerformance_AirFlow_Enter(ByVal sender As Object, ByVal e As System.EventArgs) Handles txbPerformance_AirFlow.Enter
+    Private Sub txbPerformance_AirFlow_Enter(ByVal sender As Object, ByVal e As System.EventArgs) Handles txbPerformance_AirFlow.Enter, TextBox1.Enter
         'txbPerformance_AirFlow.Text = maxflow(MeasureUnit, CurrentUnit.Name, txbPerformance_AirFlow.Text)
         'Calculate()
 
@@ -482,21 +500,35 @@ Public Class CLMainForm
         '    m_DataChanging = False
         'End Try
         txbPerformance_AirFlow_SaveValue = txbPerformance_AirFlow.Text
+        DirectCast(sender, TextBox).Tag = DirectCast(sender, TextBox).Text
     End Sub
 
-    Private Sub txbPerformance_AirFlow_Validating(sender As System.Object, e As System.ComponentModel.CancelEventArgs) Handles txbPerformance_AirFlow.Validating
+    Private Sub txbPerformance_AirFlow_Validating(sender As System.Object, e As System.ComponentModel.CancelEventArgs) Handles txbPerformance_AirFlow.Validating, TextBox1.Validating
 
         Dim value As Double
+        Dim textBox As TextBox = DirectCast(sender, TextBox)
 
-        If Not Double.TryParse(txbPerformance_AirFlow.Text, value) Then
-            txbPerformance_AirFlow.Text = txbPerformance_AirFlow_SaveValue
+        If Not Double.TryParse(textBox.Text, value) Then
+            textBox.Text = If(textBox.Tag Is Nothing, txbPerformance_AirFlow_SaveValue, textBox.Tag.ToString())
         Else
-            txbPerformance_AirFlow.Text = maxflow(MeasureUnit, SelectedHeatRecoveryModel, txbPerformance_AirFlow.Text)
+            textBox.Text = maxflow(MeasureUnit, SelectedHeatRecoveryModel, textBox.Text)
         End If
 
     End Sub
 
-    Private Sub txbPerformance_AirFlow_Validated(ByVal sender As Object, ByVal e As System.EventArgs) Handles txbPerformance_AirFlow.Validated
+    Private Sub txbPerformance_AirFlow_Validated(ByVal sender As Object, ByVal e As System.EventArgs) Handles txbPerformance_AirFlow.Validated, TextBox1.Validated
+        Dim textBox As TextBox = DirectCast(sender, TextBox)
+
+        If textBox Is txbPerformance_AirFlow Then
+            If TextBox1.Text <> txbPerformance_AirFlow.Text Then
+                TextBox1.Text = txbPerformance_AirFlow.Text
+            End If
+        ElseIf textBox Is TextBox1 Then
+            If txbPerformance_AirFlow.Text <> TextBox1.Text Then
+                txbPerformance_AirFlow.Text = TextBox1.Text
+            End If
+        End If
+
         Calculate()
 
         Try
@@ -517,26 +549,29 @@ Public Class CLMainForm
 
     Private txbPerformance_FreshInletTemperature_SaveValue As String = ""
 
-    Private Sub txbPerformance_FreshInletTemperature_Enter(sender As System.Object, e As System.EventArgs) Handles txbPerformance_FreshInletTemperature.Enter
+    Private Sub txbPerformance_FreshInletTemperature_Enter(sender As System.Object, e As System.EventArgs) Handles txbPerformance_FreshInletTemperature.Enter, TextBox3.Enter
         txbPerformance_FreshInletTemperature_SaveValue = txbPerformance_FreshInletTemperature.Text
+        DirectCast(sender, TextBox).Tag = DirectCast(sender, TextBox).Text
     End Sub
 
-    Private Sub txbPerformance_FreshInletTemperature_Validating(sender As System.Object, e As System.ComponentModel.CancelEventArgs) Handles txbPerformance_FreshInletTemperature.Validating
+    Private Sub txbPerformance_FreshInletTemperature_Validating(sender As System.Object, e As System.ComponentModel.CancelEventArgs) Handles txbPerformance_FreshInletTemperature.Validating, TextBox3.Validating
 
         Dim value As Double
+        Dim textBox As TextBox = DirectCast(sender, TextBox)
 
-        If Not Double.TryParse(txbPerformance_FreshInletTemperature.Text, value) Then
-            txbPerformance_FreshInletTemperature.Text = txbPerformance_FreshInletTemperature_SaveValue
+        If Not Double.TryParse(textBox.Text, value) Then
+            textBox.Text = If(textBox.Tag Is Nothing, txbPerformance_FreshInletTemperature_SaveValue, textBox.Tag.ToString())
         Else
-            txbPerformance_FreshInletTemperature.Text = FormatNumber(Math.Round(CDbl(txbPerformance_FreshInletTemperature.Text), 1), 1)
+            textBox.Text = FormatNumber(Math.Round(CDbl(textBox.Text), 1), 1)
         End If
 
     End Sub
 
-    Private Sub txbPerformance_FreshInletTemperature_Validated(ByVal sender As Object, ByVal e As System.EventArgs) Handles txbPerformance_FreshInletTemperature.Validated
+    Private Sub txbPerformance_FreshInletTemperature_Validated(ByVal sender As Object, ByVal e As System.EventArgs) Handles txbPerformance_FreshInletTemperature.Validated, TextBox3.Validated
         Dim fit_lim As Double
+        Dim textBox As TextBox = DirectCast(sender, TextBox)
 
-        fit_lim = FormatNumber(Math.Round(CDbl(txbPerformance_FreshInletTemperature.Text), 1), 1)
+        fit_lim = FormatNumber(Math.Round(CDbl(textBox.Text), 1), 1)
 
         If fit_lim < -20 Then
             fit_lim = -20
@@ -544,7 +579,7 @@ Public Class CLMainForm
             fit_lim = 40
         End If
 
-        txbPerformance_FreshInletTemperature.Text = fit_lim
+        textBox.Text = fit_lim
         Calculate()
     End Sub
 
@@ -554,26 +589,29 @@ Public Class CLMainForm
 
     Private txbPerformance_RHFreshInlet_SaveValue As String = ""
 
-    Private Sub txbPerformance_RHFreshInlet_Enter(sender As System.Object, e As System.EventArgs) Handles txbPerformance_RHFreshInlet.Enter
+    Private Sub txbPerformance_RHFreshInlet_Enter(sender As System.Object, e As System.EventArgs) Handles txbPerformance_RHFreshInlet.Enter, TextBox4.Enter
         txbPerformance_RHFreshInlet_SaveValue = txbPerformance_RHFreshInlet.Text
+        DirectCast(sender, TextBox).Tag = DirectCast(sender, TextBox).Text
     End Sub
 
-    Private Sub txbPerformance_RHFreshInlet_Validating(sender As System.Object, e As System.ComponentModel.CancelEventArgs) Handles txbPerformance_RHFreshInlet.Validating
+    Private Sub txbPerformance_RHFreshInlet_Validating(sender As System.Object, e As System.ComponentModel.CancelEventArgs) Handles txbPerformance_RHFreshInlet.Validating, TextBox4.Validating
 
         Dim value As Double
+        Dim textBox As TextBox = DirectCast(sender, TextBox)
 
-        If Not Double.TryParse(txbPerformance_RHFreshInlet.Text, value) Then
-            txbPerformance_RHFreshInlet.Text = txbPerformance_RHFreshInlet_SaveValue
+        If Not Double.TryParse(textBox.Text, value) Then
+            textBox.Text = If(textBox.Tag Is Nothing, txbPerformance_RHFreshInlet_SaveValue, textBox.Tag.ToString())
         Else
-            txbPerformance_RHFreshInlet.Text = FormatNumber(Math.Round(CDbl(txbPerformance_RHFreshInlet.Text), 0), 0)
+            textBox.Text = FormatNumber(Math.Round(CDbl(textBox.Text), 0), 0)
         End If
 
     End Sub
 
-    Private Sub txbPerformance_RHFreshInlet_Validated(ByVal sender As Object, ByVal e As System.EventArgs) Handles txbPerformance_RHFreshInlet.Validated
+    Private Sub txbPerformance_RHFreshInlet_Validated(ByVal sender As Object, ByVal e As System.EventArgs) Handles txbPerformance_RHFreshInlet.Validated, TextBox4.Validated
         Dim rhfit_lim As Double
+        Dim textBox As TextBox = DirectCast(sender, TextBox)
 
-        rhfit_lim = FormatNumber(Math.Round(CDbl(txbPerformance_RHFreshInlet.Text), 0), 0)
+        rhfit_lim = FormatNumber(Math.Round(CDbl(textBox.Text), 0), 0)
 
         If rhfit_lim < 10 Then
             rhfit_lim = 10
@@ -581,7 +619,7 @@ Public Class CLMainForm
             rhfit_lim = 98
         End If
 
-        txbPerformance_RHFreshInlet.Text = rhfit_lim
+        textBox.Text = rhfit_lim
         Calculate()
     End Sub
 
@@ -591,26 +629,29 @@ Public Class CLMainForm
 
     Private txbPerformance_ReturnInletTemperature_SaveValue As String = ""
 
-    Private Sub txbPerformance_ReturnInletTemperature_Enter(sender As System.Object, e As System.EventArgs) Handles txbPerformance_ReturnInletTemperature.Enter
+    Private Sub txbPerformance_ReturnInletTemperature_Enter(sender As System.Object, e As System.EventArgs) Handles txbPerformance_ReturnInletTemperature.Enter, TextBox5.Enter
         txbPerformance_ReturnInletTemperature_SaveValue = txbPerformance_ReturnInletTemperature.Text
+        DirectCast(sender, TextBox).Tag = DirectCast(sender, TextBox).Text
     End Sub
 
-    Private Sub txbPerformance_ReturnInletTemperature_Validating(sender As System.Object, e As System.ComponentModel.CancelEventArgs) Handles txbPerformance_ReturnInletTemperature.Validating
+    Private Sub txbPerformance_ReturnInletTemperature_Validating(sender As System.Object, e As System.ComponentModel.CancelEventArgs) Handles txbPerformance_ReturnInletTemperature.Validating, TextBox5.Validating
 
         Dim value As Double
+        Dim textBox As TextBox = DirectCast(sender, TextBox)
 
-        If Not Double.TryParse(txbPerformance_ReturnInletTemperature.Text, value) Then
-            txbPerformance_ReturnInletTemperature.Text = txbPerformance_ReturnInletTemperature_SaveValue
+        If Not Double.TryParse(textBox.Text, value) Then
+            textBox.Text = If(textBox.Tag Is Nothing, txbPerformance_ReturnInletTemperature_SaveValue, textBox.Tag.ToString())
         Else
-            txbPerformance_ReturnInletTemperature.Text = FormatNumber(Math.Round(CDbl(txbPerformance_ReturnInletTemperature.Text), 1), 1)
+            textBox.Text = FormatNumber(Math.Round(CDbl(textBox.Text), 1), 1)
         End If
 
     End Sub
 
-    Private Sub txbPerformance_ReturnInletTemperature_Validated(ByVal sender As Object, ByVal e As System.EventArgs) Handles txbPerformance_ReturnInletTemperature.Validated
+    Private Sub txbPerformance_ReturnInletTemperature_Validated(ByVal sender As Object, ByVal e As System.EventArgs) Handles txbPerformance_ReturnInletTemperature.Validated, TextBox5.Validated
         Dim rit_lim As Double
+        Dim textBox As TextBox = DirectCast(sender, TextBox)
 
-        rit_lim = FormatNumber(Math.Round(CDbl(txbPerformance_ReturnInletTemperature.Text), 1), 1)
+        rit_lim = FormatNumber(Math.Round(CDbl(textBox.Text), 1), 1)
 
         If rit_lim < 8 Then
             rit_lim = 8
@@ -618,7 +659,7 @@ Public Class CLMainForm
             rit_lim = 40
         End If
 
-        txbPerformance_ReturnInletTemperature.Text = rit_lim
+        textBox.Text = rit_lim
         Calculate()
     End Sub
 
@@ -628,27 +669,30 @@ Public Class CLMainForm
 
     Private txbPerformance_RHReturnInlet_SaveValue As String = ""
 
-    Private Sub txbPerformance_RHReturnInlet_Enter(sender As System.Object, e As System.EventArgs) Handles txbPerformance_RHReturnInlet.Enter
+    Private Sub txbPerformance_RHReturnInlet_Enter(sender As System.Object, e As System.EventArgs) Handles txbPerformance_RHReturnInlet.Enter, TextBox6.Enter
         txbPerformance_RHReturnInlet_SaveValue = txbPerformance_RHReturnInlet.Text
+        DirectCast(sender, TextBox).Tag = DirectCast(sender, TextBox).Text
     End Sub
 
-    Private Sub txbPerformance_RHReturnInlet_Validating(sender As System.Object, e As System.ComponentModel.CancelEventArgs) Handles txbPerformance_RHReturnInlet.Validating
+    Private Sub txbPerformance_RHReturnInlet_Validating(sender As System.Object, e As System.ComponentModel.CancelEventArgs) Handles txbPerformance_RHReturnInlet.Validating, TextBox6.Validating
 
         Dim value As Double
+        Dim textBox As TextBox = DirectCast(sender, TextBox)
 
-        If Not Double.TryParse(txbPerformance_RHReturnInlet.Text, value) Then
-            txbPerformance_RHReturnInlet.Text = txbPerformance_RHReturnInlet_SaveValue
+        If Not Double.TryParse(textBox.Text, value) Then
+            textBox.Text = If(textBox.Tag Is Nothing, txbPerformance_RHReturnInlet_SaveValue, textBox.Tag.ToString())
         Else
-            txbPerformance_RHReturnInlet.Text = FormatNumber(Math.Round(CDbl(txbPerformance_RHReturnInlet.Text), 0), 0)
+            textBox.Text = FormatNumber(Math.Round(CDbl(textBox.Text), 0), 0)
         End If
 
     End Sub
 
-    Private Sub txbPerformance_RHReturnInlet_Validated(ByVal sender As Object, ByVal e As System.EventArgs) Handles txbPerformance_RHReturnInlet.Validated
+    Private Sub txbPerformance_RHReturnInlet_Validated(ByVal sender As Object, ByVal e As System.EventArgs) Handles txbPerformance_RHReturnInlet.Validated, TextBox6.Validated
 
         Dim rhrit_lim As Double
+        Dim textBox As TextBox = DirectCast(sender, TextBox)
 
-        rhrit_lim = FormatNumber(Math.Round(CDbl(txbPerformance_RHReturnInlet.Text), 0), 0)
+        rhrit_lim = FormatNumber(Math.Round(CDbl(textBox.Text), 0), 0)
 
         If rhrit_lim < 10 Then
             rhrit_lim = 10
@@ -656,7 +700,7 @@ Public Class CLMainForm
             rhrit_lim = 98
         End If
 
-        txbPerformance_RHReturnInlet.Text = rhrit_lim
+        textBox.Text = rhrit_lim
         Calculate()
     End Sub
 
@@ -870,7 +914,7 @@ Public Class CLMainForm
                 'txbPerformance_RHReturnInlet.Text = m_RHReturnInlet
 
             End If
-            
+
         Finally
             m_ChangingShowArea = False
         End Try
@@ -1395,7 +1439,7 @@ Public Class CLMainForm
         waitForm.Hide()
 
         Dim reportFileName As String = If(chbCO2Level_addtoreport.Checked, "CLMainReportWithCO2.rdlc", "CLMainReport.rdlc")
-        reportViewForm.SetReport(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), reportFileName), _
+        reportViewForm.SetReport(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), reportFileName),
         reportDataSources.ToArray(), Microsoft.Reporting.WinForms.DisplayMode.PrintLayout)
 
         Dim nomeFileSuffisso As String
@@ -1601,26 +1645,26 @@ Public Class CLMainForm
 
         lblPerformance_Unit.Text = Environment.Localization.GetString(CLMessageResources.MainForm_Unit.ToString())
 
-        lblPerformance_MaxPressure.Text = String.Format("{0} [{1}]", _
-         Environment.Localization.GetString(CLMessageResources.MainForm_MaxPressure.ToString()), _
+        lblPerformance_MaxPressure.Text = String.Format("{0} [{1}]",
+         Environment.Localization.GetString(CLMessageResources.MainForm_MaxPressure.ToString()),
          "Pa")
 
         grbPerformance_TemperatureConditions.Text = Environment.Localization.GetString(CLMessageResources.MainForm_TemperatureConditionsAndUmidity.ToString())
 
-        lblPerformance_FreshInletTemperature.Text = String.Format("{0} [{1}]", _
-         Environment.Localization.GetString(CLMessageResources.MainForm_FreshInletTemperature.ToString()), _
+        lblPerformance_FreshInletTemperature.Text = String.Format("{0} [{1}]",
+         Environment.Localization.GetString(CLMessageResources.MainForm_FreshInletTemperature.ToString()),
          "°C")
 
-        lblPerformance_RHFreshInlet.Text = String.Format("{0} [{1}]", _
-         Environment.Localization.GetString(CLMessageResources.MainForm_RHFreshInletTemperature.ToString()), _
+        lblPerformance_RHFreshInlet.Text = String.Format("{0} [{1}]",
+         Environment.Localization.GetString(CLMessageResources.MainForm_RHFreshInletTemperature.ToString()),
          "%")
 
-        lblPerformance_ReturnInletTemperature.Text = String.Format("{0} [{1}]", _
-         Environment.Localization.GetString(CLMessageResources.MainForm_ReturnInletTemperature.ToString()), _
+        lblPerformance_ReturnInletTemperature.Text = String.Format("{0} [{1}]",
+         Environment.Localization.GetString(CLMessageResources.MainForm_ReturnInletTemperature.ToString()),
          "°C")
 
-        lblPerformance_RHReturnInlet.Text = String.Format("{0} [{1}]", _
-         Environment.Localization.GetString(CLMessageResources.MainForm_RHReturnInletTemperature.ToString()), _
+        lblPerformance_RHReturnInlet.Text = String.Format("{0} [{1}]",
+         Environment.Localization.GetString(CLMessageResources.MainForm_RHReturnInletTemperature.ToString()),
          "%")
 
         tbpData_Thermal.Text = String.Format("{0} / {1}",
@@ -1629,20 +1673,20 @@ Public Class CLMainForm
 
         grbPerformance_HeatExchangerPerformances.Text = Environment.Localization.GetString(CLMessageResources.MainForm_HeatExchangerPerformances.ToString())
 
-        lblPerformance_HeatTransferred.Text = String.Format("{0} [{1}]", _
-         Environment.Localization.GetString(CLMessageResources.MainForm_HeatTransferred.ToString()), _
+        lblPerformance_HeatTransferred.Text = String.Format("{0} [{1}]",
+         Environment.Localization.GetString(CLMessageResources.MainForm_HeatTransferred.ToString()),
          "W")
 
-        lblPerformance_SensibleHeat.Text = String.Format("{0} [{1}]", _
-         Environment.Localization.GetString(CLMessageResources.MainForm_SensibleHeat.ToString()), _
+        lblPerformance_SensibleHeat.Text = String.Format("{0} [{1}]",
+         Environment.Localization.GetString(CLMessageResources.MainForm_SensibleHeat.ToString()),
          "W")
 
-        lblPerformance_LatentHeat.Text = String.Format("{0} [{1}]", _
-         Environment.Localization.GetString(CLMessageResources.MainForm_LatentHeat.ToString()), _
+        lblPerformance_LatentHeat.Text = String.Format("{0} [{1}]",
+         Environment.Localization.GetString(CLMessageResources.MainForm_LatentHeat.ToString()),
          "W")
 
-        txbPerformance_Efficiency.Text = String.Format("{0} [{1}]", _
-         Environment.Localization.GetString(CLMessageResources.MainForm_Efficiency.ToString()), _
+        txbPerformance_Efficiency.Text = String.Format("{0} [{1}]",
+         Environment.Localization.GetString(CLMessageResources.MainForm_Efficiency.ToString()),
          "%")
 
 
@@ -1657,42 +1701,54 @@ Public Class CLMainForm
          "l/h")
         End If
 
+        GroupBox4.Text = grbPerformance_HeatExchangerPerformances.Text
+        Label12.Text = lblPerformance_HeatTransferred.Text
+        Label11.Text = lblPerformance_SensibleHeat.Text
+        Label9.Text = lblPerformance_LatentHeat.Text
+        Label13.Text = txbPerformance_Efficiency.Text
+        Label10.Text = lblPerformance_WaterProduced.Text
 
 
         grbPerformance_TemperatureConditions2.Text = Environment.Localization.GetString(CLMessageResources.MainForm_TemperatureConditionsAndUmidity.ToString())
 
-        lblPerformance_SupplyOutletTemperature.Text = String.Format("{0} [{1}]", _
-         Environment.Localization.GetString(CLMessageResources.MainForm_SupplyOutletTemperature.ToString()), _
+        lblPerformance_SupplyOutletTemperature.Text = String.Format("{0} [{1}]",
+         Environment.Localization.GetString(CLMessageResources.MainForm_SupplyOutletTemperature.ToString()),
          "°C")
-        lblPerformance_SupplyOutletRH.Text = String.Format("{0} [{1}]", _
-         Environment.Localization.GetString(CLMessageResources.MainForm_RHSupplyOutletTemperature.ToString()), _
+        lblPerformance_SupplyOutletRH.Text = String.Format("{0} [{1}]",
+         Environment.Localization.GetString(CLMessageResources.MainForm_RHSupplyOutletTemperature.ToString()),
          "%")
 
-        lblPerformance_ExhaustOutletTemperature.Text = String.Format("{0} [{1}]", _
-         Environment.Localization.GetString(CLMessageResources.MainForm_ExhaustOutletTemperature.ToString()), _
+        lblPerformance_ExhaustOutletTemperature.Text = String.Format("{0} [{1}]",
+         Environment.Localization.GetString(CLMessageResources.MainForm_ExhaustOutletTemperature.ToString()),
          "°C")
-        lblPerformance_ExhaustOutletRH.Text = String.Format("{0} [{1}]", _
-         Environment.Localization.GetString(CLMessageResources.MainForm_RHExhaustOutletTemperature.ToString()), _
+        lblPerformance_ExhaustOutletRH.Text = String.Format("{0} [{1}]",
+         Environment.Localization.GetString(CLMessageResources.MainForm_RHExhaustOutletTemperature.ToString()),
          "%")
+
+        GroupBox5.Text = grbPerformance_TemperatureConditions2.Text
+        Label15.Text = lblPerformance_SupplyOutletTemperature.Text
+        Label23.Text = lblPerformance_SupplyOutletRH.Text
+        Label24.Text = lblPerformance_ExhaustOutletTemperature.Text
+        Label14.Text = lblPerformance_ExhaustOutletRH.Text
 
         lblPerformance_RegulationLevel.Text = Environment.Localization.GetString(CLMessageResources.MainForm_RegulationLevel.ToString())
 
         tbpData_ElectricalPerformances.Text = Environment.Localization.GetString(CLMessageResources.MainForm_ElectricalPerformances.ToString())
 
         btn_summer.Text = Environment.Localization.GetString(CLMessageResources.MainForm_Summer.ToString())
-
         btn_winter.Text = Environment.Localization.GetString(CLMessageResources.MainForm_Winter.ToString())
+        SeasonalCalculation_UpdateModeButton()
 
 
 
-        lblPerformance_ElectricalPerformances_PowerInput.Text = String.Format("{0} [{1}] ({2})", _
-           Environment.Localization.GetString(CLMessageResources.MainForm_PowerInput.ToString()), _
-           "W", _
+        lblPerformance_ElectricalPerformances_PowerInput.Text = String.Format("{0} [{1}] ({2})",
+           Environment.Localization.GetString(CLMessageResources.MainForm_PowerInput.ToString()),
+           "W",
            Environment.Localization.GetString(CLMessageResources.MainForm_SingleBranch.ToString()))
 
         grbPerformance_PassiveHaus.Text = Environment.Localization.GetString(CLMessageResources.MainForm_PassiveHouse.ToString())
-        lblPerformance_PassiveHaus_ElectricalEfficiency.Text = String.Format("{0} [{1}]", _
-         Environment.Localization.GetString(CLMessageResources.MainForm_PassiveHouseElectricalEfficienty.ToString()), _
+        lblPerformance_PassiveHaus_ElectricalEfficiency.Text = String.Format("{0} [{1}]",
+         Environment.Localization.GetString(CLMessageResources.MainForm_PassiveHouseElectricalEfficienty.ToString()),
          "W/(m3/h)")
 
         chbPerformance_SFP_ShowArea.Text = Environment.Localization.GetString(CLMessageResources.MainForm_ShowSFPArea.ToString())
@@ -1733,13 +1789,13 @@ Public Class CLMainForm
 
         tsmiAbout.Text = Environment.Localization.GetString(CLMessageResources.MainForm_Menu_About.ToString())
 
-        dgvSAP_EnergySavingTrustBestPracticePerformanceCompliant.HeaderText = _
+        dgvSAP_EnergySavingTrustBestPracticePerformanceCompliant.HeaderText =
          Environment.Localization.GetString(CLMessageResources.MainForm_GridSAP_EnergySavingTrustBestPracticePerformanceCompliant.ToString())
 
-        dgvSAP_ExhaustTerminalConfiguration.HeaderText = _
+        dgvSAP_ExhaustTerminalConfiguration.HeaderText =
          Environment.Localization.GetString(CLMessageResources.MainForm_GridSAP_ExhaustTerminalConfiguration.ToString())
 
-        dgvSAP_HeatExchangeEfficiency.HeaderText = _
+        dgvSAP_HeatExchangeEfficiency.HeaderText =
          Environment.Localization.GetString(CLMessageResources.MainForm_GridSAP_HeatExchangeEffiency.ToString()) & " [%]"
 
         dgvSAP_RegulationLevel.HeaderText = Environment.Localization.GetString(CLMessageResources.MainForm_GridSAP_RegulationLevel.ToString()) & " [%]"
@@ -1841,22 +1897,22 @@ Public Class CLMainForm
                   Environment.Localization.GetString(CLMessageResources.MainForm_AirFlow.ToString()),
                   "m3/h")
 
-                lblPerformance_SFP_SFP.Text = String.Format("{0} [{1}]", _
-                 Environment.Localization.GetString(CLMessageResources.MainForm_SFP.ToString()), _
+                lblPerformance_SFP_SFP.Text = String.Format("{0} [{1}]",
+                 Environment.Localization.GetString(CLMessageResources.MainForm_SFP.ToString()),
                  "kW/(m3/s)")
 
-                lblPerformance_SEL_SEL.Text = String.Format("{0} [{1}]", _
-                 Environment.Localization.GetString(CLMessageResources.MainForm_SEL.ToString()), _
+                lblPerformance_SEL_SEL.Text = String.Format("{0} [{1}]",
+                 Environment.Localization.GetString(CLMessageResources.MainForm_SEL.ToString()),
                  "J/m3")
 
 
             Case CLModule.CLMeasureUnit.IP
-                lblPerformance_AirFlow.Text = String.Format("{0} [{1}]", _
-                  Environment.Localization.GetString(CLMessageResources.MainForm_AirFlow.ToString()), _
+                lblPerformance_AirFlow.Text = String.Format("{0} [{1}]",
+                  Environment.Localization.GetString(CLMessageResources.MainForm_AirFlow.ToString()),
                   "l/s")
 
-                lblPerformance_SFP_SFP.Text = String.Format("{0} [{1}]", _
-                 Environment.Localization.GetString(CLMessageResources.MainForm_SFP.ToString()), _
+                lblPerformance_SFP_SFP.Text = String.Format("{0} [{1}]",
+                 Environment.Localization.GetString(CLMessageResources.MainForm_SFP.ToString()),
                  "W/(l/s)")
         End Select
     End Sub
@@ -1991,8 +2047,8 @@ Public Class CLMainForm
 
     Private Sub tsmiFile_SaveIOM_Click(sender As Object, e As EventArgs) Handles tsmiFile_SaveIOM.Click
 
-        sfdSavePdf.FileName = String.Format("{0}-{1}", _
-            SelectedHeatRecoveryModelCustomerName, _
+        sfdSavePdf.FileName = String.Format("{0}-{1}",
+            SelectedHeatRecoveryModelCustomerName,
             Environment.Localization.GetString(CLMessageResources.IOM.ToString()))
 
         If sfdSavePdf.ShowDialog() = DialogResult.OK Then
@@ -2019,8 +2075,8 @@ Public Class CLMainForm
 #Region "====[ Commercial Sheet ]===="
 
     Private Sub tsmiFile_SaveCommercialSheet_Click(sender As System.Object, e As System.EventArgs) Handles tsmiFile_SaveCommercialSheet.Click
-        sfdSavePdf.FileName = String.Format("{0}-{1}", _
-            SelectedHeatRecoveryModelCustomerName, _
+        sfdSavePdf.FileName = String.Format("{0}-{1}",
+            SelectedHeatRecoveryModelCustomerName,
             Environment.Localization.GetString(CLMessageResources.CommercialSheet.ToString()))
         If sfdSavePdf.ShowDialog() = DialogResult.OK Then
 
@@ -2474,6 +2530,8 @@ Public Class CLMainForm
         AddCoilGridColumn("Cond", "MainForm_CoilPerformance_ResultCond", "Cond. [l/h]")
         AddCoilGridColumn("DP", "MainForm_CoilPerformance_ResultDP", "DP [Pa]")
         AddCoilGridColumn("WaterDP", "MainForm_CoilPerformance_ResultWaterDP", "Water DP [kPa]")
+        AddCoilGridColumn("FluidFlow", "MainForm_CoilPerformance_ResultFluidFlow", "Fluid flow [l/h]")
+        AddCoilGridColumn("FluidSpeed", "MainForm_CoilPerformance_ResultFluidSpeed", "Fluid speed [m/s]")
         AddCoilGridColumn("Face", "MainForm_CoilPerformance_ResultFace", "Face vel. [m/s]")
         dgvCoilPerformance_Results.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
 
@@ -2908,8 +2966,13 @@ Public Class CLMainForm
             .Coil = coil,
             .CalculationMode = DirectCast(cmbCoilPerformance_Mode.SelectedItem, CLCoilPerformanceMode),
             .AirFlow = AirFlow,
-            .AirInletTemperature = SupplyOutletTemp,
-            .AirInletRH = SupplyOutletRH,
+            .AirInletTemperature = If(m_HasLastWinterThermo, m_LastWinterThermo.Supply_outlet_temp, SupplyOutletTemp),
+            .AirInletRH = If(m_HasLastWinterThermo, 100 * m_LastWinterThermo.Supply_outlet_rh, SupplyOutletRH),
+            .UseModeAirInletConditions = True,
+            .CoolingAirInletTemperature = If(m_SummerCalculationEnabled AndAlso m_HasLastSummerThermo, m_LastSummerThermo.Supply_outlet_temp, If(m_HasLastWinterThermo, m_LastWinterThermo.Supply_outlet_temp, SupplyOutletTemp)),
+            .CoolingAirInletRH = If(m_SummerCalculationEnabled AndAlso m_HasLastSummerThermo, 100 * m_LastSummerThermo.Supply_outlet_rh, If(m_HasLastWinterThermo, 100 * m_LastWinterThermo.Supply_outlet_rh, SupplyOutletRH)),
+            .HeatingAirInletTemperature = If(m_HasLastWinterThermo, m_LastWinterThermo.Supply_outlet_temp, SupplyOutletTemp),
+            .HeatingAirInletRH = If(m_HasLastWinterThermo, 100 * m_LastWinterThermo.Supply_outlet_rh, SupplyOutletRH),
             .FluidType = CoilPerformance_SelectedFluidType(),
             .FluidTypeTec = CDbl(nudCoilPerformance_FluidTec.Value),
             .CoolingFluidInletTemperature = CDbl(nudCoilPerformance_CoolingIn.Value),
@@ -2932,6 +2995,8 @@ Public Class CLMainForm
                 FormatNumber(result.CondensedWater, 2),
                 FormatNumber(result.AirPressureDrop, 0),
                 FormatNumber(result.WaterPressureDrop, 1),
+                FormatNumber(result.FluidFlow, 0),
+                FormatNumber(result.FluidSpeed, 2),
                 FormatNumber(result.FaceVelocity, 2))
 
             If Not result.IsOk Then
@@ -2960,12 +3025,13 @@ Public Class CLMainForm
             Return
         End If
 
-        Calculate_Data()
+        Dim maxPressure As Double = ParseUIDouble(txbPerformance_MaxPressure.Text)
+        Calculate_Data(0, maxPressure)
 
         If m_CoilPerformanceAvailable AndAlso chbCoilPerformance_Enable IsNot Nothing AndAlso chbCoilPerformance_Enable.Checked Then
             Dim coilPressureDrop As Double = Calculate_CoilPerformance()
             If coilPressureDrop > 0 Then
-                Calculate_Data(coilPressureDrop)
+                Calculate_Data(coilPressureDrop, maxPressure)
                 Calculate_CoilPerformance()
             End If
         Else
@@ -3321,9 +3387,9 @@ Public Class CLMainForm
         forceAbs As Boolean) As Double
 
         Dim newValue As Double
-        newValue = Math.Round(sound_power_correction(hsbPerformance_RegulationLevel.Value, _
-                dcHeatRecoveryModel.AirflowsItems.Max(), dcHeatRecoveryModel.PressuresItems.Max(), _
-                IIf(Double.Parse(txbPerformance_AirFlow.Text) = 0, 1, Double.Parse(txbPerformance_AirFlow.Text)), _
+        newValue = Math.Round(sound_power_correction(hsbPerformance_RegulationLevel.Value,
+                dcHeatRecoveryModel.AirflowsItems.Max(), dcHeatRecoveryModel.PressuresItems.Max(),
+                IIf(Double.Parse(txbPerformance_AirFlow.Text) = 0, 1, Double.Parse(txbPerformance_AirFlow.Text)),
                 IIf(Double.Parse(txbPerformance_MaxPressure.Text) = 0, 1, Double.Parse(txbPerformance_MaxPressure.Text)),
                 value), nDecimal)
 
@@ -3335,98 +3401,272 @@ Public Class CLMainForm
         Return newValue
     End Function
 
-    Private Sub Calculate_Data(Optional additionalPressureDrop As Double = 0)
+    Private Function ParseUIDouble(value As Object, Optional fallbackValue As Double = 0) As Double
+        Dim text As String = If(value Is Nothing, "", value.ToString())
+        Dim result As Double
+
+        If Double.TryParse(text, NumberStyles.Float, CultureInfo.CurrentCulture, result) Then
+            Return result
+        End If
+        If Double.TryParse(text, NumberStyles.Float, CultureInfo.InvariantCulture, result) Then
+            Return result
+        End If
+        If Double.TryParse(text.Replace("."c, ","c), NumberStyles.Float, CultureInfo.GetCultureInfo("it-IT"), result) Then
+            Return result
+        End If
+        If Double.TryParse(text.Replace(","c, "."c), NumberStyles.Float, CultureInfo.InvariantCulture, result) Then
+            Return result
+        End If
+
+        Return fallbackValue
+    End Function
+
+    Private Function Calculate_ThermalScenario(freshTemperatureTextBox As TextBox,
+        freshRHTextBox As TextBox,
+        returnTemperatureTextBox As TextBox,
+        returnRHTextBox As TextBox,
+        airflowTextBox As TextBox,
+        maxPressureTextBox As TextBox,
+        maxPressureFallback As Double,
+        additionalPressureDrop As Double,
+        drawCharts As Boolean) As CLThermalCalculationResult
+
+        Dim dcHeatRecoveryModel As CLDCHeatRecoveryModel = SelectedHeatRecoveryModel
+        Dim rec As String = dcHeatRecoveryModel.ModRec
+        Dim pl As Double = CDbl(dcHeatRecoveryModel.LenRec)
+        Dim ritm As Double = ParseUIDouble(returnTemperatureTextBox.Text)
+        Dim rhritm As Double = ParseUIDouble(returnRHTextBox.Text) / 100
+        Dim fitm As Double = ParseUIDouble(freshTemperatureTextBox.Text)
+        Dim rhfitm As Double = ParseUIDouble(freshRHTextBox.Text) / 100
+        Dim afm As Double = ParseUIDouble(airflowTextBox.Text)
+        Dim maxPressure As Double = ParseUIDouble(maxPressureTextBox.Text, maxPressureFallback)
+        Dim chart1 As Chart = If(drawCharts, crtPerformance_Chart1, New Chart())
+        Dim chart2 As Chart = If(drawCharts, crtPerformance_Chart2, New Chart())
+        Dim chart3 As Chart = If(drawCharts, crtPerformance_Chart3, New Chart())
+
+        If afm = 0 Then
+            afm = 1
+        ElseIf m_MeasureUnit = CLMeasureUnit.IP Then
+            afm *= 3.6
+        End If
+
+        If Not drawCharts Then
+            chart1.ChartAreas.Add(New ChartArea())
+            chart2.ChartAreas.Add(New ChartArea())
+            chart3.ChartAreas.Add(New ChartArea())
+        End If
+
+        Dim workpoint As Double() = curva(MeasureUnit,
+           afm,
+           dcHeatRecoveryModel,
+           ritm,
+           rhritm,
+           fitm,
+           rhfitm,
+           prbPerformance_RegulationLevel.Value,
+           chart1,
+           chart2,
+           chart3,
+           maxPressure,
+           drawCharts AndAlso (chbPerformance_SFP_ShowArea.Checked OrElse chbPerformance_SEL_ShowArea.Checked),
+           drawCharts AndAlso chbPerformance_ERP2018_ShowArea.Checked,
+           nudPerformance_SFP_Limit.Value,
+           drawCharts AndAlso chbPerformance_PassiveHaus_ShowArea.Checked,
+           ParseUIDouble(txbPerformance_PassiveHaus_Limit.Text),
+           additionalPressureDrop,
+           afm)
+
+        Dim thermoWork As termo = termo_calc(ritm, rhritm, fitm, rhfitm, workpoint(1), rec, pl, 0)
+
+        Return New CLThermalCalculationResult With {
+            .Thermo = thermoWork,
+            .WorkPoint = workpoint,
+            .AirFlow = afm
+        }
+    End Function
+
+    Private Sub Write_ThermalOutputs(result As CLThermalCalculationResult,
+        heatTransferredTextBox As TextBox,
+        sensibleHeatTextBox As TextBox,
+        latentHeatTextBox As TextBox,
+        waterProducedTextBox As TextBox,
+        efficiencyTextBox As TextBox,
+        supplyTemperatureTextBox As TextBox,
+        supplyRHTextBox As TextBox,
+        exhaustTemperatureTextBox As TextBox,
+        exhaustRHTextBox As TextBox)
+
+        Dim thermoWork As termo = result.Thermo
+
+        supplyTemperatureTextBox.Text = FormatNumber(Math.Round(thermoWork.Supply_outlet_temp, 1), 1)
+        supplyRHTextBox.Text = FormatNumber(Math.Round(100 * thermoWork.Supply_outlet_rh, 0), 0)
+        exhaustTemperatureTextBox.Text = FormatNumber(Math.Round(thermoWork.Exhaust_outlet_temp, 1), 1)
+        exhaustRHTextBox.Text = FormatNumber(Math.Round(100 * thermoWork.Exhaust_outlet_rh, 0), 0)
+        heatTransferredTextBox.Text = FormatNumber(thermoWork.heat_recovery, 0)
+        sensibleHeatTextBox.Text = FormatNumber(thermoWork.sensible_heat, 0)
+        latentHeatTextBox.Text = FormatNumber(thermoWork.latent_heat, 0)
+        waterProducedTextBox.Text = FormatNumber(thermoWork.water_produced)
+        efficiencyTextBox.Text = FormatNumber(100 * thermoWork.efficiency, 0)
+    End Sub
+
+    Private Sub Add_SummerEfficiencyCurve(summerResult As CLThermalCalculationResult)
+        If crtPerformance_Chart3 Is Nothing OrElse crtPerformance_Chart3.Series Is Nothing Then
+            Return
+        End If
+
+        Dim originalSeries As Series = crtPerformance_Chart3.Series.FindByName(ChartSeries_OriginalCurve_Name)
+        If originalSeries Is Nothing OrElse originalSeries.Points.Count = 0 Then
+            Return
+        End If
+
+        Dim curveName As String = "SummerEfficiencyCurve"
+        Dim pointName As String = "SummerEfficiencyPoint"
+
+        If crtPerformance_Chart3.Series.FindByName(curveName) IsNot Nothing Then
+            crtPerformance_Chart3.Series.Remove(crtPerformance_Chart3.Series(curveName))
+        End If
+        If crtPerformance_Chart3.Series.FindByName(pointName) IsNot Nothing Then
+            crtPerformance_Chart3.Series.Remove(crtPerformance_Chart3.Series(pointName))
+        End If
+
+        Dim dcHeatRecoveryModel As CLDCHeatRecoveryModel = SelectedHeatRecoveryModel
+        Dim ritm As Double = ParseUIDouble(TextBox5.Text)
+        Dim rhritm As Double = ParseUIDouble(TextBox6.Text) / 100
+        Dim fitm As Double = ParseUIDouble(TextBox3.Text)
+        Dim rhfitm As Double = ParseUIDouble(TextBox4.Text) / 100
+        Dim rec As String = dcHeatRecoveryModel.ModRec
+        Dim pl As Double = CDbl(dcHeatRecoveryModel.LenRec)
+        Dim xValues As New List(Of Double)
+        Dim yValues As New List(Of Double)
+
+        For Each point As DataPoint In originalSeries.Points
+            Dim displayAirflow As Double = point.XValue
+            Dim calculationAirflow As Double = If(m_MeasureUnit = CLMeasureUnit.IP, displayAirflow * 3.6, displayAirflow)
+            Dim summerThermo As termo = termo_calc(ritm, rhritm, fitm, rhfitm, calculationAirflow, rec, pl, 0)
+
+            xValues.Add(displayAirflow)
+            yValues.Add(100 * summerThermo.efficiency)
+        Next
+
+        Dim curveSeries As Series = crtPerformance_Chart3.Series.Add(curveName)
+        curveSeries.ChartType = SeriesChartType.Spline
+        curveSeries.Points.DataBindXY(xValues.ToArray(), yValues.ToArray())
+        curveSeries.BorderWidth = 2
+        curveSeries.BorderDashStyle = ChartDashStyle.Dash
+        curveSeries.Color = Color.SeaGreen
+
+        Dim pointSeries As Series = crtPerformance_Chart3.Series.Add(pointName)
+        pointSeries.ChartType = SeriesChartType.Point
+        pointSeries.Points.DataBindXY(New Double() {summerResult.WorkPoint(1)}, New Double() {100 * summerResult.Thermo.efficiency})
+        pointSeries.MarkerSize = 10
+        pointSeries.MarkerStyle = MarkerStyle.Square
+        pointSeries.Color = Color.SeaGreen
+    End Sub
+
+    Private Sub Clear_SummerThermalOutputs()
+        TextBox7.Text = ""
+        TextBox8.Text = ""
+        TextBox9.Text = ""
+        TextBox10.Text = ""
+        TextBox11.Text = ""
+        TextBox12.Text = ""
+        TextBox13.Text = ""
+        TextBox14.Text = ""
+        TextBox15.Text = ""
+        TextBox2.Text = ""
+        m_HasLastSummerThermo = False
+    End Sub
+
+    Private Sub Calculate_Data(Optional additionalPressureDrop As Double = 0, Optional maxPressureOverride As Double? = Nothing)
         Try
+            Dim winterMaxPressure As Double = If(maxPressureOverride.HasValue, maxPressureOverride.Value, ParseUIDouble(txbPerformance_MaxPressure.Text))
+            Dim winterResult As CLThermalCalculationResult = Calculate_ThermalScenario(
+                txbPerformance_FreshInletTemperature,
+                txbPerformance_RHFreshInlet,
+                txbPerformance_ReturnInletTemperature,
+                txbPerformance_RHReturnInlet,
+                txbPerformance_AirFlow,
+                txbPerformance_MaxPressure,
+                winterMaxPressure,
+                additionalPressureDrop,
+                True)
 
-            Dim rec As String
-            Dim pl, afm, rhfitm, fitm, rhritm, ritm As Double
-            Dim termo_work As termo
-            Dim dcHeatRecoveryModel As CLDCHeatRecoveryModel = SelectedHeatRecoveryModel
+            Write_ThermalOutputs(
+                winterResult,
+                txbPerformance_HeatTransferred,
+                txbPerformance_SensibleHeat,
+                txbPerformance_LatentHeat,
+                txbPerformance_WaterProduced,
+                lblPerformance_Efficiency,
+                txbPerformance_SupplyOutletTemperature,
+                txbPerformance_SupplyOutletRH,
+                txbPerformance_ExhaustOutletTemperature,
+                txbPerformance_ExhaustOutletRH)
 
-            rec = dcHeatRecoveryModel.ModRec
-            pl = CDbl(dcHeatRecoveryModel.LenRec)
-            ritm = CDbl(txbPerformance_ReturnInletTemperature.Text)
-            rhritm = CDbl(txbPerformance_RHReturnInlet.Text) / 100
-            fitm = CDbl(txbPerformance_FreshInletTemperature.Text)
-            rhfitm = CDbl(txbPerformance_RHFreshInlet.Text) / 100
-            afm = CDbl(txbPerformance_AirFlow.Text)
-            If afm = 0 Then
-                afm = 1
-            Else
-                If m_MeasureUnit = CLMeasureUnit.IP Then
-                    afm = CDbl(txbPerformance_AirFlow.Text) * 3.6
-                Else
-                    afm = CDbl(txbPerformance_AirFlow.Text)
-                End If
-            End If
-            Dim workpoint(3) As Double
+            m_LastWinterThermo = winterResult.Thermo
+            m_HasLastWinterThermo = True
 
-            termo_work = termo_calc(ritm, rhritm, fitm, rhfitm, afm, rec, pl, 0)
+            txbPerformance_MaxPressure.Text = FormatNumber(Math.Floor(winterResult.WorkPoint(2)), 0)
 
-            txbPerformance_SupplyOutletTemperature.Text = FormatNumber(Math.Round(termo_work.Supply_outlet_temp, 1), 1)
-            txbPerformance_SupplyOutletRH.Text = FormatNumber(Math.Round(100 * termo_work.Supply_outlet_rh, 0), 0)
-            txbPerformance_ExhaustOutletTemperature.Text = FormatNumber(Math.Round(termo_work.Exhaust_outlet_temp, 1), 1)
-            txbPerformance_ExhaustOutletRH.Text = FormatNumber(Math.Round(100 * termo_work.Exhaust_outlet_rh, 0), 0)
-            txbPerformance_HeatTransferred.Text = FormatNumber(termo_work.heat_recovery, 0)
-            txbPerformance_SensibleHeat.Text = FormatNumber(termo_work.sensible_heat, 0)
-            txbPerformance_LatentHeat.Text = FormatNumber(termo_work.latent_heat, 0)
-            txbPerformance_WaterProduced.Text = FormatNumber(termo_work.water_produced)
-            lblPerformance_Efficiency.Text = FormatNumber(100 * termo_work.efficiency, 0)
-
-            workpoint = curva(MeasureUnit,
-               afm,
-               dcHeatRecoveryModel,
-               ritm,
-               rhritm,
-               fitm,
-               rhfitm,
-               prbPerformance_RegulationLevel.Value,
-               crtPerformance_Chart1,
-               crtPerformance_Chart2,
-               crtPerformance_Chart3,
-               CDbl(IIf(txbPerformance_MaxPressure.Text = "", "0", txbPerformance_MaxPressure.Text)),
-               chbPerformance_SFP_ShowArea.Checked OrElse chbPerformance_SEL_ShowArea.Checked,
-               chbPerformance_ERP2018_ShowArea.Checked,
-               nudPerformance_SFP_Limit.Value,
-               chbPerformance_PassiveHaus_ShowArea.Checked,
-               CDbl(txbPerformance_PassiveHaus_Limit.Text),
-               additionalPressureDrop,
-               afm)
-
-            termo_work = termo_calc(ritm, rhritm, fitm, rhfitm, workpoint(1), rec, pl, 0)
-
-            txbPerformance_SupplyOutletTemperature.Text = FormatNumber(Math.Round(termo_work.Supply_outlet_temp, 1), 1)
-            txbPerformance_SupplyOutletRH.Text = FormatNumber(Math.Round(100 * termo_work.Supply_outlet_rh, 0), 0)
-            txbPerformance_ExhaustOutletTemperature.Text = FormatNumber(Math.Round(termo_work.Exhaust_outlet_temp, 1), 1)
-            txbPerformance_ExhaustOutletRH.Text = FormatNumber(Math.Round(100 * termo_work.Exhaust_outlet_rh, 0), 0)
-            txbPerformance_HeatTransferred.Text = FormatNumber(termo_work.heat_recovery, 0)
-            txbPerformance_SensibleHeat.Text = FormatNumber(termo_work.sensible_heat, 0)
-            txbPerformance_LatentHeat.Text = FormatNumber(termo_work.latent_heat, 0)
-            txbPerformance_WaterProduced.Text = FormatNumber(termo_work.water_produced)
-            lblPerformance_Efficiency.Text = FormatNumber(100 * termo_work.efficiency, 0)
-
-            txbPerformance_MaxPressure.Text = FormatNumber(Math.Floor(workpoint(2)), 0)
-
-
-
-            If workpoint(3) <= 5 Then
-                workpoint(3) = 5
+            If winterResult.WorkPoint(3) <= 5 Then
+                winterResult.WorkPoint(3) = 5
             End If
 
-            txbPerformance_ElectricalPerformances_PowerInput.Text = FormatNumber(Math.Round(workpoint(3)), 0)
+            txbPerformance_ElectricalPerformances_PowerInput.Text = FormatNumber(Math.Round(winterResult.WorkPoint(3)), 0)
 
             Select Case m_MeasureUnit
                 Case CLMeasureUnit.IP
-                    txbPerformance_AirFlow.Text = FormatNumber(workpoint(1), 1)
-                    txbPerformance_SFP.Text = FormatNumber((workpoint(3) * 2) / workpoint(1))
-                    txbPerformance_SEL.Text = FormatNumber(((workpoint(3) * 2) / workpoint(1)) * 1000, 0)
-                    txbPerformance_PassiveHaus.Text = FormatNumber(workpoint(3) / (workpoint(1) * 3.6))
+                    txbPerformance_AirFlow.Text = FormatNumber(winterResult.WorkPoint(1), 1)
+                    txbPerformance_SFP.Text = FormatNumber((winterResult.WorkPoint(3) * 2) / winterResult.WorkPoint(1))
+                    txbPerformance_SEL.Text = FormatNumber(((winterResult.WorkPoint(3) * 2) / winterResult.WorkPoint(1)) * 1000, 0)
+                    txbPerformance_PassiveHaus.Text = FormatNumber(winterResult.WorkPoint(3) / (winterResult.WorkPoint(1) * 3.6))
                 Case CLMeasureUnit.SI
-                    txbPerformance_AirFlow.Text = FormatNumber(workpoint(1), 0)
-                    txbPerformance_SFP.Text = FormatNumber((workpoint(3) * 2) * 3.6 / workpoint(1))
-                    txbPerformance_SEL.Text = FormatNumber(((workpoint(3) * 2) * 3.6 / workpoint(1)) * 1000, 0)
-                    txbPerformance_PassiveHaus.Text = FormatNumber((workpoint(3) * 2) / workpoint(1))
+                    txbPerformance_AirFlow.Text = FormatNumber(winterResult.WorkPoint(1), 0)
+                    txbPerformance_SFP.Text = FormatNumber((winterResult.WorkPoint(3) * 2) * 3.6 / winterResult.WorkPoint(1))
+                    txbPerformance_SEL.Text = FormatNumber(((winterResult.WorkPoint(3) * 2) * 3.6 / winterResult.WorkPoint(1)) * 1000, 0)
+                    txbPerformance_PassiveHaus.Text = FormatNumber((winterResult.WorkPoint(3) * 2) / winterResult.WorkPoint(1))
             End Select
+
+            If Not m_SummerCalculationEnabled Then
+                Clear_SummerThermalOutputs()
+                Return
+            End If
+
+            If String.IsNullOrWhiteSpace(TextBox1.Text) Then
+                TextBox1.Text = txbPerformance_AirFlow.Text
+            End If
+            If String.IsNullOrWhiteSpace(TextBox2.Text) Then
+                TextBox2.Text = FormatNumber(winterMaxPressure, 0)
+            End If
+
+            Dim summerResult As CLThermalCalculationResult = Calculate_ThermalScenario(
+                TextBox3,
+                TextBox4,
+                TextBox5,
+                TextBox6,
+                TextBox1,
+                TextBox2,
+                winterMaxPressure,
+                additionalPressureDrop,
+                False)
+
+            Write_ThermalOutputs(
+                summerResult,
+                TextBox10,
+                TextBox9,
+                TextBox7,
+                TextBox8,
+                TextBox11,
+                TextBox12,
+                TextBox14,
+                TextBox13,
+                TextBox15)
+
+            m_LastSummerThermo = summerResult.Thermo
+            m_HasLastSummerThermo = True
+            TextBox2.Text = FormatNumber(Math.Floor(summerResult.WorkPoint(2)), 0)
+            TextBox1.Text = If(m_MeasureUnit = CLMeasureUnit.IP, FormatNumber(summerResult.WorkPoint(1), 1), FormatNumber(summerResult.WorkPoint(1), 0))
+            Add_SummerEfficiencyCurve(summerResult)
         Catch exception As Exception
             MessageBox.Show(Me, exception.Message, "", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
@@ -4609,15 +4849,40 @@ Public Class CLMainForm
         Calculate()
     End Sub
 
+    Private Sub SeasonalCalculation_UpdateModeButton()
+        If btn_winter IsNot Nothing Then
+            btn_winter.Visible = False
+        End If
+
+        If btn_summer IsNot Nothing Then
+            btn_summer.BackColor = If(m_SummerCalculationEnabled, Color.LightGreen, SystemColors.Control)
+            btn_summer.UseVisualStyleBackColor = Not m_SummerCalculationEnabled
+        End If
+
+        For Each control As Control In New Control() {TextBox1, TextBox2, TextBox3, TextBox4, TextBox5, TextBox6, GroupBox4, GroupBox5}
+            If control IsNot Nothing Then
+                control.Enabled = m_SummerCalculationEnabled
+            End If
+        Next
+
+        If Not m_SummerCalculationEnabled Then
+            Clear_SummerThermalOutputs()
+        End If
+    End Sub
+
     Private Sub EN308_Click(sender As Object, e As EventArgs) Handles btnEN308.Click
         txbPerformance_FreshInletTemperature.Text = 5
         txbPerformance_RHFreshInlet.Text = 72
         txbPerformance_ReturnInletTemperature.Text = 25
         txbPerformance_RHReturnInlet.Text = 28
+        TextBox3.Text = txbPerformance_FreshInletTemperature.Text
+        TextBox4.Text = txbPerformance_RHFreshInlet.Text
+        TextBox5.Text = txbPerformance_ReturnInletTemperature.Text
+        TextBox6.Text = txbPerformance_RHReturnInlet.Text
         Calculate()
     End Sub
 
-    Private Sub btn_Default_Click(sender As Object, e As EventArgs) Handles btn_winter.Click
+    Private Sub btn_Default_Click(sender As Object, e As EventArgs)
         txbPerformance_FreshInletTemperature.Text = -10
         txbPerformance_RHFreshInlet.Text = 80
         txbPerformance_ReturnInletTemperature.Text = 20
@@ -4626,10 +4891,8 @@ Public Class CLMainForm
     End Sub
 
     Private Sub btn_summer_Click(sender As Object, e As EventArgs) Handles btn_summer.Click
-        txbPerformance_FreshInletTemperature.Text = 32
-        txbPerformance_RHFreshInlet.Text = 80
-        txbPerformance_ReturnInletTemperature.Text = 26
-        txbPerformance_RHReturnInlet.Text = 50
+        m_SummerCalculationEnabled = Not m_SummerCalculationEnabled
+        SeasonalCalculation_UpdateModeButton()
         Calculate()
     End Sub
 
@@ -4638,7 +4901,11 @@ Public Class CLMainForm
         txbPerformance_RHFreshInlet.Text = 70
         txbPerformance_ReturnInletTemperature.Text = 20
         txbPerformance_RHReturnInlet.Text = 37
+        TextBox3.Text = txbPerformance_FreshInletTemperature.Text
+        TextBox4.Text = txbPerformance_RHFreshInlet.Text
+        TextBox5.Text = txbPerformance_ReturnInletTemperature.Text
+        TextBox6.Text = txbPerformance_RHReturnInlet.Text
         Calculate()
     End Sub
-End Class
 
+End Class

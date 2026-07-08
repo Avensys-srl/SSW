@@ -23,29 +23,29 @@ Partial Class CLMainForm
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim DataGridViewCellStyle14 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle15 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle16 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(CLMainForm))
-        Dim ChartArea5 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
-        Dim Series5 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
-        Dim ChartArea6 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
-        Dim Series6 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
-        Dim ChartArea7 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
-        Dim Series7 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
-        Dim DataGridViewCellStyle17 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle25 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle26 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle18 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle19 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle20 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle21 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle22 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle23 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle24 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim ChartArea8 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
-        Dim Legend2 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
-        Dim Series8 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
+        Dim ChartArea1 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
+        Dim Series1 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
+        Dim ChartArea2 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
+        Dim Series2 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
+        Dim ChartArea3 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
+        Dim Series3 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle12 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle13 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle10 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle11 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim ChartArea4 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
+        Dim Legend1 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
+        Dim Series4 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
         Me.mnsMain = New System.Windows.Forms.MenuStrip()
         Me.tsmiFile = New System.Windows.Forms.ToolStripMenuItem()
         Me.tsmiFile_GenerateReport = New System.Windows.Forms.ToolStripMenuItem()
@@ -83,9 +83,13 @@ Partial Class CLMainForm
         Me.btn_winter = New System.Windows.Forms.Button()
         Me.btnEN13141 = New System.Windows.Forms.Button()
         Me.btnEN308 = New System.Windows.Forms.Button()
+        Me.TextBox6 = New System.Windows.Forms.TextBox()
         Me.txbPerformance_RHReturnInlet = New System.Windows.Forms.TextBox()
+        Me.TextBox5 = New System.Windows.Forms.TextBox()
         Me.txbPerformance_ReturnInletTemperature = New System.Windows.Forms.TextBox()
+        Me.TextBox4 = New System.Windows.Forms.TextBox()
         Me.txbPerformance_RHFreshInlet = New System.Windows.Forms.TextBox()
+        Me.TextBox3 = New System.Windows.Forms.TextBox()
         Me.txbPerformance_FreshInletTemperature = New System.Windows.Forms.TextBox()
         Me.lblPerformance_FreshInletTemperature = New System.Windows.Forms.Label()
         Me.lblPerformance_RHFreshInlet = New System.Windows.Forms.Label()
@@ -94,7 +98,9 @@ Partial Class CLMainForm
         Me.grbPerformance_UnitSelection = New System.Windows.Forms.GroupBox()
         Me.cmbPerformance_Series = New System.Windows.Forms.ComboBox()
         Me.cmbPerformance_HeatRecoveryModels = New System.Windows.Forms.ComboBox()
+        Me.TextBox2 = New System.Windows.Forms.TextBox()
         Me.txbPerformance_MaxPressure = New System.Windows.Forms.TextBox()
+        Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.txbPerformance_AirFlow = New System.Windows.Forms.TextBox()
         Me.lblPerformance_Series = New System.Windows.Forms.Label()
         Me.lblPerformance_Unit = New System.Windows.Forms.Label()
@@ -234,7 +240,6 @@ Partial Class CLMainForm
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.txbAccessory_OutputData_CWDSensibleHeat = New System.Windows.Forms.TextBox()
-        Me.bsrUnitCalculator = New System.Windows.Forms.BindingSource(Me.components)
         Me.Label3 = New System.Windows.Forms.Label()
         Me.txbAccessory_OutputData_CWDHeatTransferred = New System.Windows.Forms.TextBox()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
@@ -333,6 +338,27 @@ Partial Class CLMainForm
         Me.pnlMain = New System.Windows.Forms.Panel()
         Me.sfdSavePdf = New System.Windows.Forms.SaveFileDialog()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
+        Me.GroupBox4 = New System.Windows.Forms.GroupBox()
+        Me.TextBox7 = New System.Windows.Forms.TextBox()
+        Me.TextBox8 = New System.Windows.Forms.TextBox()
+        Me.TextBox9 = New System.Windows.Forms.TextBox()
+        Me.TextBox10 = New System.Windows.Forms.TextBox()
+        Me.TextBox11 = New System.Windows.Forms.TextBox()
+        Me.Label9 = New System.Windows.Forms.Label()
+        Me.Label10 = New System.Windows.Forms.Label()
+        Me.Label11 = New System.Windows.Forms.Label()
+        Me.Label12 = New System.Windows.Forms.Label()
+        Me.Label13 = New System.Windows.Forms.Label()
+        Me.GroupBox5 = New System.Windows.Forms.GroupBox()
+        Me.TextBox12 = New System.Windows.Forms.TextBox()
+        Me.TextBox13 = New System.Windows.Forms.TextBox()
+        Me.TextBox14 = New System.Windows.Forms.TextBox()
+        Me.TextBox15 = New System.Windows.Forms.TextBox()
+        Me.Label14 = New System.Windows.Forms.Label()
+        Me.Label15 = New System.Windows.Forms.Label()
+        Me.Label23 = New System.Windows.Forms.Label()
+        Me.Label24 = New System.Windows.Forms.Label()
+        Me.bsrUnitCalculator = New System.Windows.Forms.BindingSource(Me.components)
         Me.mnsMain.SuspendLayout()
         Me.tbpPerformance.SuspendLayout()
         CType(Me.spcPerformance, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -391,7 +417,6 @@ Partial Class CLMainForm
         Me.tbpAccessory.SuspendLayout()
         Me.grbAccessory_OutputData.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
-        CType(Me.bsrUnitCalculator, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox2.SuspendLayout()
         Me.grbAccessory_EHD.SuspendLayout()
         Me.grbAccessory_HWD.SuspendLayout()
@@ -406,6 +431,9 @@ Partial Class CLMainForm
         Me.grbCO2Level_Room.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlMain.SuspendLayout()
+        Me.GroupBox4.SuspendLayout()
+        Me.GroupBox5.SuspendLayout()
+        CType(Me.bsrUnitCalculator, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'mnsMain
@@ -413,7 +441,7 @@ Partial Class CLMainForm
         Me.mnsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsmiFile, Me.tsmiOption, Me.tsmiBranchs, Me.tsmiAbout})
         Me.mnsMain.Location = New System.Drawing.Point(0, 0)
         Me.mnsMain.Name = "mnsMain"
-        Me.mnsMain.Size = New System.Drawing.Size(1130, 24)
+        Me.mnsMain.Size = New System.Drawing.Size(1494, 24)
         Me.mnsMain.TabIndex = 0
         '
         'tsmiFile
@@ -468,7 +496,7 @@ Partial Class CLMainForm
         '
         Me.tsmiOption_Language.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsmiOption_Language_EN, Me.tsmiOption_Language_DE, Me.tsmiOption_Language_FR, Me.tsmiOption_Language_NL, Me.tsmiOption_Language_PL, Me.tsmiOption_Language_SL, Me.tsmiOption_Language_RO, Me.tsmiOption_Language_BG, Me.tsmiOption_Language_HU, Me.tsmiOption_Language_IT, Me.tsmiOption_Language_DA})
         Me.tsmiOption_Language.Name = "tsmiOption_Language"
-        Me.tsmiOption_Language.Size = New System.Drawing.Size(126, 22)
+        Me.tsmiOption_Language.Size = New System.Drawing.Size(233, 22)
         Me.tsmiOption_Language.Text = "Language"
         '
         'tsmiOption_Language_EN
@@ -541,7 +569,7 @@ Partial Class CLMainForm
         '
         Me.tsmiOption_Unit.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsmiOption_Unit_SI, Me.tsmiOption_Unit_IP})
         Me.tsmiOption_Unit.Name = "tsmiOption_Unit"
-        Me.tsmiOption_Unit.Size = New System.Drawing.Size(126, 22)
+        Me.tsmiOption_Unit.Size = New System.Drawing.Size(233, 22)
         Me.tsmiOption_Unit.Text = "Unit"
         Me.tsmiOption_Unit.Visible = False
         '
@@ -568,7 +596,7 @@ Partial Class CLMainForm
         Me.tsmiOption_CommercialSheetAutoSync.CheckOnClick = True
         Me.tsmiOption_CommercialSheetAutoSync.CheckState = System.Windows.Forms.CheckState.Checked
         Me.tsmiOption_CommercialSheetAutoSync.Name = "tsmiOption_CommercialSheetAutoSync"
-        Me.tsmiOption_CommercialSheetAutoSync.Size = New System.Drawing.Size(242, 22)
+        Me.tsmiOption_CommercialSheetAutoSync.Size = New System.Drawing.Size(233, 22)
         Me.tsmiOption_CommercialSheetAutoSync.Text = "Commercial Sheets Auto Sync"
         '
         'tsmiBranchs
@@ -589,7 +617,7 @@ Partial Class CLMainForm
         Me.tbpPerformance.Location = New System.Drawing.Point(4, 22)
         Me.tbpPerformance.Name = "tbpPerformance"
         Me.tbpPerformance.Padding = New System.Windows.Forms.Padding(3)
-        Me.tbpPerformance.Size = New System.Drawing.Size(1112, 607)
+        Me.tbpPerformance.Size = New System.Drawing.Size(1476, 607)
         Me.tbpPerformance.TabIndex = 0
         Me.tbpPerformance.Text = "Performance"
         Me.tbpPerformance.UseVisualStyleBackColor = True
@@ -609,7 +637,7 @@ Partial Class CLMainForm
         'spcPerformance.Panel2
         '
         Me.spcPerformance.Panel2.Controls.Add(Me.tlpPerformance_Graphs)
-        Me.spcPerformance.Size = New System.Drawing.Size(1106, 601)
+        Me.spcPerformance.Size = New System.Drawing.Size(1470, 601)
         Me.spcPerformance.SplitterDistance = 376
         Me.spcPerformance.TabIndex = 2
         '
@@ -628,7 +656,7 @@ Partial Class CLMainForm
         '
         Me.SplitContainer2.Panel2.Controls.Add(Me.m_Note_Text)
         Me.SplitContainer2.Panel2.Controls.Add(Me.Label8)
-        Me.SplitContainer2.Size = New System.Drawing.Size(1104, 374)
+        Me.SplitContainer2.Size = New System.Drawing.Size(1468, 374)
         Me.SplitContainer2.SplitterDistance = 311
         Me.SplitContainer2.TabIndex = 2
         '
@@ -646,8 +674,8 @@ Partial Class CLMainForm
         'SplitContainer1.Panel2
         '
         Me.SplitContainer1.Panel2.Controls.Add(Me.Panel4)
-        Me.SplitContainer1.Size = New System.Drawing.Size(1104, 311)
-        Me.SplitContainer1.SplitterDistance = 380
+        Me.SplitContainer1.Size = New System.Drawing.Size(1468, 311)
+        Me.SplitContainer1.SplitterDistance = 450
         Me.SplitContainer1.TabIndex = 6
         '
         'pnlPerformance_Data
@@ -660,7 +688,7 @@ Partial Class CLMainForm
         Me.pnlPerformance_Data.Controls.Add(Me.grbPerformance_UnitSelection)
         Me.pnlPerformance_Data.Location = New System.Drawing.Point(0, 3)
         Me.pnlPerformance_Data.Name = "pnlPerformance_Data"
-        Me.pnlPerformance_Data.Size = New System.Drawing.Size(377, 303)
+        Me.pnlPerformance_Data.Size = New System.Drawing.Size(447, 303)
         Me.pnlPerformance_Data.TabIndex = 12
         '
         'grbPerformance_TemperatureConditions
@@ -672,9 +700,13 @@ Partial Class CLMainForm
         Me.grbPerformance_TemperatureConditions.Controls.Add(Me.btn_winter)
         Me.grbPerformance_TemperatureConditions.Controls.Add(Me.btnEN13141)
         Me.grbPerformance_TemperatureConditions.Controls.Add(Me.btnEN308)
+        Me.grbPerformance_TemperatureConditions.Controls.Add(Me.TextBox6)
         Me.grbPerformance_TemperatureConditions.Controls.Add(Me.txbPerformance_RHReturnInlet)
+        Me.grbPerformance_TemperatureConditions.Controls.Add(Me.TextBox5)
         Me.grbPerformance_TemperatureConditions.Controls.Add(Me.txbPerformance_ReturnInletTemperature)
+        Me.grbPerformance_TemperatureConditions.Controls.Add(Me.TextBox4)
         Me.grbPerformance_TemperatureConditions.Controls.Add(Me.txbPerformance_RHFreshInlet)
+        Me.grbPerformance_TemperatureConditions.Controls.Add(Me.TextBox3)
         Me.grbPerformance_TemperatureConditions.Controls.Add(Me.txbPerformance_FreshInletTemperature)
         Me.grbPerformance_TemperatureConditions.Controls.Add(Me.lblPerformance_FreshInletTemperature)
         Me.grbPerformance_TemperatureConditions.Controls.Add(Me.lblPerformance_RHFreshInlet)
@@ -682,7 +714,7 @@ Partial Class CLMainForm
         Me.grbPerformance_TemperatureConditions.Controls.Add(Me.lblPerformance_RHReturnInlet)
         Me.grbPerformance_TemperatureConditions.Location = New System.Drawing.Point(7, 150)
         Me.grbPerformance_TemperatureConditions.Name = "grbPerformance_TemperatureConditions"
-        Me.grbPerformance_TemperatureConditions.Size = New System.Drawing.Size(359, 152)
+        Me.grbPerformance_TemperatureConditions.Size = New System.Drawing.Size(429, 152)
         Me.grbPerformance_TemperatureConditions.TabIndex = 1
         Me.grbPerformance_TemperatureConditions.TabStop = False
         Me.grbPerformance_TemperatureConditions.Text = "Temperature Conditions"
@@ -690,9 +722,9 @@ Partial Class CLMainForm
         'btn_summer
         '
         Me.btn_summer.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btn_summer.Location = New System.Drawing.Point(227, 116)
+        Me.btn_summer.Location = New System.Drawing.Point(344, 116)
         Me.btn_summer.Name = "btn_summer"
-        Me.btn_summer.Size = New System.Drawing.Size(126, 32)
+        Me.btn_summer.Size = New System.Drawing.Size(79, 32)
         Me.btn_summer.TabIndex = 8
         Me.btn_summer.Text = "Summer"
         Me.btn_summer.UseVisualStyleBackColor = True
@@ -700,9 +732,9 @@ Partial Class CLMainForm
         'btn_winter
         '
         Me.btn_winter.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btn_winter.Location = New System.Drawing.Point(227, 81)
+        Me.btn_winter.Location = New System.Drawing.Point(344, 81)
         Me.btn_winter.Name = "btn_winter"
-        Me.btn_winter.Size = New System.Drawing.Size(126, 32)
+        Me.btn_winter.Size = New System.Drawing.Size(79, 32)
         Me.btn_winter.TabIndex = 8
         Me.btn_winter.Text = "Winter"
         Me.btn_winter.UseVisualStyleBackColor = True
@@ -710,9 +742,9 @@ Partial Class CLMainForm
         'btnEN13141
         '
         Me.btnEN13141.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnEN13141.Location = New System.Drawing.Point(227, 46)
+        Me.btnEN13141.Location = New System.Drawing.Point(344, 46)
         Me.btnEN13141.Name = "btnEN13141"
-        Me.btnEN13141.Size = New System.Drawing.Size(126, 32)
+        Me.btnEN13141.Size = New System.Drawing.Size(79, 32)
         Me.btnEN13141.TabIndex = 8
         Me.btnEN13141.Text = "EN13141-7"
         Me.btnEN13141.UseVisualStyleBackColor = True
@@ -720,54 +752,86 @@ Partial Class CLMainForm
         'btnEN308
         '
         Me.btnEN308.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnEN308.Location = New System.Drawing.Point(227, 11)
+        Me.btnEN308.Location = New System.Drawing.Point(344, 11)
         Me.btnEN308.Name = "btnEN308"
-        Me.btnEN308.Size = New System.Drawing.Size(126, 32)
+        Me.btnEN308.Size = New System.Drawing.Size(79, 32)
         Me.btnEN308.TabIndex = 8
         Me.btnEN308.Text = "EN308"
         Me.btnEN308.UseVisualStyleBackColor = True
         '
+        'TextBox6
+        '
+        Me.TextBox6.AcceptsReturn = True
+        Me.TextBox6.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.TextBox6.Location = New System.Drawing.Point(249, 110)
+        Me.TextBox6.Name = "TextBox6"
+        Me.TextBox6.Size = New System.Drawing.Size(65, 20)
+        Me.TextBox6.TabIndex = 7
+        Me.TextBox6.Text = "60"
+        '
         'txbPerformance_RHReturnInlet
         '
         Me.txbPerformance_RHReturnInlet.AcceptsReturn = True
-        Me.txbPerformance_RHReturnInlet.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txbPerformance_RHReturnInlet.Location = New System.Drawing.Point(161, 110)
         Me.txbPerformance_RHReturnInlet.Name = "txbPerformance_RHReturnInlet"
-        Me.txbPerformance_RHReturnInlet.Size = New System.Drawing.Size(60, 20)
+        Me.txbPerformance_RHReturnInlet.Size = New System.Drawing.Size(65, 20)
         Me.txbPerformance_RHReturnInlet.TabIndex = 7
         Me.txbPerformance_RHReturnInlet.Text = "60"
+        '
+        'TextBox5
+        '
+        Me.TextBox5.AcceptsReturn = True
+        Me.TextBox5.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.TextBox5.Location = New System.Drawing.Point(249, 79)
+        Me.TextBox5.Name = "TextBox5"
+        Me.TextBox5.Size = New System.Drawing.Size(65, 20)
+        Me.TextBox5.TabIndex = 5
+        Me.TextBox5.Text = "20"
         '
         'txbPerformance_ReturnInletTemperature
         '
         Me.txbPerformance_ReturnInletTemperature.AcceptsReturn = True
-        Me.txbPerformance_ReturnInletTemperature.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txbPerformance_ReturnInletTemperature.Location = New System.Drawing.Point(161, 79)
         Me.txbPerformance_ReturnInletTemperature.Name = "txbPerformance_ReturnInletTemperature"
-        Me.txbPerformance_ReturnInletTemperature.Size = New System.Drawing.Size(60, 20)
+        Me.txbPerformance_ReturnInletTemperature.Size = New System.Drawing.Size(65, 20)
         Me.txbPerformance_ReturnInletTemperature.TabIndex = 5
         Me.txbPerformance_ReturnInletTemperature.Text = "20"
+        '
+        'TextBox4
+        '
+        Me.TextBox4.AcceptsReturn = True
+        Me.TextBox4.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.TextBox4.Location = New System.Drawing.Point(249, 50)
+        Me.TextBox4.Name = "TextBox4"
+        Me.TextBox4.Size = New System.Drawing.Size(65, 20)
+        Me.TextBox4.TabIndex = 3
+        Me.TextBox4.Text = "80"
         '
         'txbPerformance_RHFreshInlet
         '
         Me.txbPerformance_RHFreshInlet.AcceptsReturn = True
-        Me.txbPerformance_RHFreshInlet.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txbPerformance_RHFreshInlet.Location = New System.Drawing.Point(161, 50)
         Me.txbPerformance_RHFreshInlet.Name = "txbPerformance_RHFreshInlet"
-        Me.txbPerformance_RHFreshInlet.Size = New System.Drawing.Size(60, 20)
+        Me.txbPerformance_RHFreshInlet.Size = New System.Drawing.Size(65, 20)
         Me.txbPerformance_RHFreshInlet.TabIndex = 3
         Me.txbPerformance_RHFreshInlet.Text = "80"
+        '
+        'TextBox3
+        '
+        Me.TextBox3.AcceptsReturn = True
+        Me.TextBox3.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.TextBox3.Location = New System.Drawing.Point(249, 21)
+        Me.TextBox3.Name = "TextBox3"
+        Me.TextBox3.Size = New System.Drawing.Size(65, 20)
+        Me.TextBox3.TabIndex = 1
+        Me.TextBox3.Text = "-10"
         '
         'txbPerformance_FreshInletTemperature
         '
         Me.txbPerformance_FreshInletTemperature.AcceptsReturn = True
-        Me.txbPerformance_FreshInletTemperature.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txbPerformance_FreshInletTemperature.Location = New System.Drawing.Point(161, 21)
         Me.txbPerformance_FreshInletTemperature.Name = "txbPerformance_FreshInletTemperature"
-        Me.txbPerformance_FreshInletTemperature.Size = New System.Drawing.Size(60, 20)
+        Me.txbPerformance_FreshInletTemperature.Size = New System.Drawing.Size(65, 20)
         Me.txbPerformance_FreshInletTemperature.TabIndex = 1
         Me.txbPerformance_FreshInletTemperature.Text = "-10"
         '
@@ -813,7 +877,9 @@ Partial Class CLMainForm
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.grbPerformance_UnitSelection.Controls.Add(Me.cmbPerformance_Series)
         Me.grbPerformance_UnitSelection.Controls.Add(Me.cmbPerformance_HeatRecoveryModels)
+        Me.grbPerformance_UnitSelection.Controls.Add(Me.TextBox2)
         Me.grbPerformance_UnitSelection.Controls.Add(Me.txbPerformance_MaxPressure)
+        Me.grbPerformance_UnitSelection.Controls.Add(Me.TextBox1)
         Me.grbPerformance_UnitSelection.Controls.Add(Me.txbPerformance_AirFlow)
         Me.grbPerformance_UnitSelection.Controls.Add(Me.lblPerformance_Series)
         Me.grbPerformance_UnitSelection.Controls.Add(Me.lblPerformance_Unit)
@@ -821,7 +887,7 @@ Partial Class CLMainForm
         Me.grbPerformance_UnitSelection.Controls.Add(Me.lblPerformance_MaxPressure)
         Me.grbPerformance_UnitSelection.Location = New System.Drawing.Point(7, 3)
         Me.grbPerformance_UnitSelection.Name = "grbPerformance_UnitSelection"
-        Me.grbPerformance_UnitSelection.Size = New System.Drawing.Size(359, 138)
+        Me.grbPerformance_UnitSelection.Size = New System.Drawing.Size(429, 138)
         Me.grbPerformance_UnitSelection.TabIndex = 0
         Me.grbPerformance_UnitSelection.TabStop = False
         Me.grbPerformance_UnitSelection.Text = "Unit Selection"
@@ -835,7 +901,7 @@ Partial Class CLMainForm
         Me.cmbPerformance_Series.Items.AddRange(New Object() {"CLRC 123", "CLRC 163", "CLRC 223", "CLRC 23", "CLRC 323", "CLRC 423", "CLRC 53", "CLRC 93"})
         Me.cmbPerformance_Series.Location = New System.Drawing.Point(161, 14)
         Me.cmbPerformance_Series.Name = "cmbPerformance_Series"
-        Me.cmbPerformance_Series.Size = New System.Drawing.Size(192, 21)
+        Me.cmbPerformance_Series.Size = New System.Drawing.Size(262, 21)
         Me.cmbPerformance_Series.Sorted = True
         Me.cmbPerformance_Series.TabIndex = 1
         '
@@ -848,28 +914,43 @@ Partial Class CLMainForm
         Me.cmbPerformance_HeatRecoveryModels.Items.AddRange(New Object() {"CLRC 123", "CLRC 163", "CLRC 223", "CLRC 23", "CLRC 323", "CLRC 423", "CLRC 53", "CLRC 93"})
         Me.cmbPerformance_HeatRecoveryModels.Location = New System.Drawing.Point(161, 45)
         Me.cmbPerformance_HeatRecoveryModels.Name = "cmbPerformance_HeatRecoveryModels"
-        Me.cmbPerformance_HeatRecoveryModels.Size = New System.Drawing.Size(192, 21)
+        Me.cmbPerformance_HeatRecoveryModels.Size = New System.Drawing.Size(262, 21)
         Me.cmbPerformance_HeatRecoveryModels.Sorted = True
         Me.cmbPerformance_HeatRecoveryModels.TabIndex = 1
         '
+        'TextBox2
+        '
+        Me.TextBox2.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.TextBox2.Location = New System.Drawing.Point(249, 107)
+        Me.TextBox2.Name = "TextBox2"
+        Me.TextBox2.ReadOnly = True
+        Me.TextBox2.Size = New System.Drawing.Size(65, 20)
+        Me.TextBox2.TabIndex = 5
+        '
         'txbPerformance_MaxPressure
         '
-        Me.txbPerformance_MaxPressure.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txbPerformance_MaxPressure.Location = New System.Drawing.Point(161, 107)
         Me.txbPerformance_MaxPressure.Name = "txbPerformance_MaxPressure"
         Me.txbPerformance_MaxPressure.ReadOnly = True
-        Me.txbPerformance_MaxPressure.Size = New System.Drawing.Size(192, 20)
+        Me.txbPerformance_MaxPressure.Size = New System.Drawing.Size(65, 20)
         Me.txbPerformance_MaxPressure.TabIndex = 5
+        '
+        'TextBox1
+        '
+        Me.TextBox1.AcceptsReturn = True
+        Me.TextBox1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.TextBox1.Location = New System.Drawing.Point(249, 77)
+        Me.TextBox1.Name = "TextBox1"
+        Me.TextBox1.Size = New System.Drawing.Size(65, 20)
+        Me.TextBox1.TabIndex = 3
+        Me.TextBox1.Text = "100"
         '
         'txbPerformance_AirFlow
         '
         Me.txbPerformance_AirFlow.AcceptsReturn = True
-        Me.txbPerformance_AirFlow.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txbPerformance_AirFlow.Location = New System.Drawing.Point(161, 77)
         Me.txbPerformance_AirFlow.Name = "txbPerformance_AirFlow"
-        Me.txbPerformance_AirFlow.Size = New System.Drawing.Size(192, 20)
+        Me.txbPerformance_AirFlow.Size = New System.Drawing.Size(65, 20)
         Me.txbPerformance_AirFlow.TabIndex = 3
         Me.txbPerformance_AirFlow.Text = "100"
         '
@@ -916,7 +997,7 @@ Partial Class CLMainForm
         Me.Panel4.Dock = System.Windows.Forms.DockStyle.Fill
         Me.Panel4.Location = New System.Drawing.Point(0, 0)
         Me.Panel4.Name = "Panel4"
-        Me.Panel4.Size = New System.Drawing.Size(720, 311)
+        Me.Panel4.Size = New System.Drawing.Size(1014, 311)
         Me.Panel4.TabIndex = 12
         '
         'tbcData
@@ -933,18 +1014,20 @@ Partial Class CLMainForm
         Me.tbcData.Multiline = True
         Me.tbcData.Name = "tbcData"
         Me.tbcData.SelectedIndex = 0
-        Me.tbcData.Size = New System.Drawing.Size(712, 241)
+        Me.tbcData.Size = New System.Drawing.Size(1006, 241)
         Me.tbcData.TabIndex = 12
         '
         'tbpData_Thermal
         '
         Me.tbpData_Thermal.AutoScroll = True
+        Me.tbpData_Thermal.Controls.Add(Me.GroupBox4)
+        Me.tbpData_Thermal.Controls.Add(Me.GroupBox5)
         Me.tbpData_Thermal.Controls.Add(Me.grbPerformance_HeatExchangerPerformances)
         Me.tbpData_Thermal.Controls.Add(Me.grbPerformance_TemperatureConditions2)
         Me.tbpData_Thermal.Location = New System.Drawing.Point(4, 22)
         Me.tbpData_Thermal.Name = "tbpData_Thermal"
         Me.tbpData_Thermal.Padding = New System.Windows.Forms.Padding(3)
-        Me.tbpData_Thermal.Size = New System.Drawing.Size(704, 215)
+        Me.tbpData_Thermal.Size = New System.Drawing.Size(998, 215)
         Me.tbpData_Thermal.TabIndex = 0
         Me.tbpData_Thermal.Text = "Heat Exchanger Performances"
         Me.tbpData_Thermal.UseVisualStyleBackColor = True
@@ -963,14 +1046,14 @@ Partial Class CLMainForm
         Me.grbPerformance_HeatExchangerPerformances.Controls.Add(Me.txbPerformance_Efficiency)
         Me.grbPerformance_HeatExchangerPerformances.Location = New System.Drawing.Point(6, 10)
         Me.grbPerformance_HeatExchangerPerformances.Name = "grbPerformance_HeatExchangerPerformances"
-        Me.grbPerformance_HeatExchangerPerformances.Size = New System.Drawing.Size(507, 108)
+        Me.grbPerformance_HeatExchangerPerformances.Size = New System.Drawing.Size(432, 108)
         Me.grbPerformance_HeatExchangerPerformances.TabIndex = 1
         Me.grbPerformance_HeatExchangerPerformances.TabStop = False
         Me.grbPerformance_HeatExchangerPerformances.Text = "Heat Exchanger Performances"
         '
         'txbPerformance_LatentHeat
         '
-        Me.txbPerformance_LatentHeat.Location = New System.Drawing.Point(190, 81)
+        Me.txbPerformance_LatentHeat.Location = New System.Drawing.Point(144, 81)
         Me.txbPerformance_LatentHeat.Name = "txbPerformance_LatentHeat"
         Me.txbPerformance_LatentHeat.ReadOnly = True
         Me.txbPerformance_LatentHeat.Size = New System.Drawing.Size(63, 20)
@@ -978,7 +1061,7 @@ Partial Class CLMainForm
         '
         'txbPerformance_WaterProduced
         '
-        Me.txbPerformance_WaterProduced.Location = New System.Drawing.Point(437, 53)
+        Me.txbPerformance_WaterProduced.Location = New System.Drawing.Point(355, 53)
         Me.txbPerformance_WaterProduced.Name = "txbPerformance_WaterProduced"
         Me.txbPerformance_WaterProduced.ReadOnly = True
         Me.txbPerformance_WaterProduced.Size = New System.Drawing.Size(64, 20)
@@ -986,7 +1069,7 @@ Partial Class CLMainForm
         '
         'txbPerformance_SensibleHeat
         '
-        Me.txbPerformance_SensibleHeat.Location = New System.Drawing.Point(190, 53)
+        Me.txbPerformance_SensibleHeat.Location = New System.Drawing.Point(144, 53)
         Me.txbPerformance_SensibleHeat.Name = "txbPerformance_SensibleHeat"
         Me.txbPerformance_SensibleHeat.ReadOnly = True
         Me.txbPerformance_SensibleHeat.Size = New System.Drawing.Size(63, 20)
@@ -994,7 +1077,7 @@ Partial Class CLMainForm
         '
         'txbPerformance_HeatTransferred
         '
-        Me.txbPerformance_HeatTransferred.Location = New System.Drawing.Point(190, 24)
+        Me.txbPerformance_HeatTransferred.Location = New System.Drawing.Point(144, 24)
         Me.txbPerformance_HeatTransferred.Name = "txbPerformance_HeatTransferred"
         Me.txbPerformance_HeatTransferred.ReadOnly = True
         Me.txbPerformance_HeatTransferred.Size = New System.Drawing.Size(63, 20)
@@ -1002,7 +1085,7 @@ Partial Class CLMainForm
         '
         'lblPerformance_Efficiency
         '
-        Me.lblPerformance_Efficiency.Location = New System.Drawing.Point(436, 24)
+        Me.lblPerformance_Efficiency.Location = New System.Drawing.Point(355, 24)
         Me.lblPerformance_Efficiency.Name = "lblPerformance_Efficiency"
         Me.lblPerformance_Efficiency.ReadOnly = True
         Me.lblPerformance_Efficiency.Size = New System.Drawing.Size(64, 20)
@@ -1012,16 +1095,16 @@ Partial Class CLMainForm
         '
         Me.lblPerformance_LatentHeat.Location = New System.Drawing.Point(6, 77)
         Me.lblPerformance_LatentHeat.Name = "lblPerformance_LatentHeat"
-        Me.lblPerformance_LatentHeat.Size = New System.Drawing.Size(178, 26)
+        Me.lblPerformance_LatentHeat.Size = New System.Drawing.Size(134, 26)
         Me.lblPerformance_LatentHeat.TabIndex = 8
         Me.lblPerformance_LatentHeat.Text = "Latent Heat [W]"
         Me.lblPerformance_LatentHeat.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'lblPerformance_WaterProduced
         '
-        Me.lblPerformance_WaterProduced.Location = New System.Drawing.Point(260, 51)
+        Me.lblPerformance_WaterProduced.Location = New System.Drawing.Point(214, 49)
         Me.lblPerformance_WaterProduced.Name = "lblPerformance_WaterProduced"
-        Me.lblPerformance_WaterProduced.Size = New System.Drawing.Size(171, 26)
+        Me.lblPerformance_WaterProduced.Size = New System.Drawing.Size(135, 26)
         Me.lblPerformance_WaterProduced.TabIndex = 6
         Me.lblPerformance_WaterProduced.Text = "Water produced [l/h]"
         Me.lblPerformance_WaterProduced.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -1030,7 +1113,7 @@ Partial Class CLMainForm
         '
         Me.lblPerformance_SensibleHeat.Location = New System.Drawing.Point(6, 49)
         Me.lblPerformance_SensibleHeat.Name = "lblPerformance_SensibleHeat"
-        Me.lblPerformance_SensibleHeat.Size = New System.Drawing.Size(178, 26)
+        Me.lblPerformance_SensibleHeat.Size = New System.Drawing.Size(134, 26)
         Me.lblPerformance_SensibleHeat.TabIndex = 4
         Me.lblPerformance_SensibleHeat.Text = "Sensible Heat [W]"
         Me.lblPerformance_SensibleHeat.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -1039,16 +1122,16 @@ Partial Class CLMainForm
         '
         Me.lblPerformance_HeatTransferred.Location = New System.Drawing.Point(6, 20)
         Me.lblPerformance_HeatTransferred.Name = "lblPerformance_HeatTransferred"
-        Me.lblPerformance_HeatTransferred.Size = New System.Drawing.Size(178, 26)
+        Me.lblPerformance_HeatTransferred.Size = New System.Drawing.Size(134, 26)
         Me.lblPerformance_HeatTransferred.TabIndex = 0
         Me.lblPerformance_HeatTransferred.Text = "Heat Transferred [W]"
         Me.lblPerformance_HeatTransferred.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'txbPerformance_Efficiency
         '
-        Me.txbPerformance_Efficiency.Location = New System.Drawing.Point(259, 20)
+        Me.txbPerformance_Efficiency.Location = New System.Drawing.Point(213, 20)
         Me.txbPerformance_Efficiency.Name = "txbPerformance_Efficiency"
-        Me.txbPerformance_Efficiency.Size = New System.Drawing.Size(171, 26)
+        Me.txbPerformance_Efficiency.Size = New System.Drawing.Size(135, 26)
         Me.txbPerformance_Efficiency.TabIndex = 2
         Me.txbPerformance_Efficiency.Text = "Eff. [%]"
         Me.txbPerformance_Efficiency.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -1065,14 +1148,14 @@ Partial Class CLMainForm
         Me.grbPerformance_TemperatureConditions2.Controls.Add(Me.lblPerformance_ExhaustOutletTemperature)
         Me.grbPerformance_TemperatureConditions2.Location = New System.Drawing.Point(6, 124)
         Me.grbPerformance_TemperatureConditions2.Name = "grbPerformance_TemperatureConditions2"
-        Me.grbPerformance_TemperatureConditions2.Size = New System.Drawing.Size(507, 81)
+        Me.grbPerformance_TemperatureConditions2.Size = New System.Drawing.Size(432, 81)
         Me.grbPerformance_TemperatureConditions2.TabIndex = 2
         Me.grbPerformance_TemperatureConditions2.TabStop = False
         Me.grbPerformance_TemperatureConditions2.Text = "Temperature Conditions"
         '
         'txbPerformance_SupplyOutletTemperature
         '
-        Me.txbPerformance_SupplyOutletTemperature.Location = New System.Drawing.Point(190, 23)
+        Me.txbPerformance_SupplyOutletTemperature.Location = New System.Drawing.Point(144, 23)
         Me.txbPerformance_SupplyOutletTemperature.Name = "txbPerformance_SupplyOutletTemperature"
         Me.txbPerformance_SupplyOutletTemperature.ReadOnly = True
         Me.txbPerformance_SupplyOutletTemperature.Size = New System.Drawing.Size(63, 20)
@@ -1080,7 +1163,7 @@ Partial Class CLMainForm
         '
         'txbPerformance_ExhaustOutletTemperature
         '
-        Me.txbPerformance_ExhaustOutletTemperature.Location = New System.Drawing.Point(436, 21)
+        Me.txbPerformance_ExhaustOutletTemperature.Location = New System.Drawing.Point(354, 21)
         Me.txbPerformance_ExhaustOutletTemperature.Name = "txbPerformance_ExhaustOutletTemperature"
         Me.txbPerformance_ExhaustOutletTemperature.ReadOnly = True
         Me.txbPerformance_ExhaustOutletTemperature.Size = New System.Drawing.Size(63, 20)
@@ -1088,7 +1171,7 @@ Partial Class CLMainForm
         '
         'txbPerformance_SupplyOutletRH
         '
-        Me.txbPerformance_SupplyOutletRH.Location = New System.Drawing.Point(190, 52)
+        Me.txbPerformance_SupplyOutletRH.Location = New System.Drawing.Point(144, 52)
         Me.txbPerformance_SupplyOutletRH.Name = "txbPerformance_SupplyOutletRH"
         Me.txbPerformance_SupplyOutletRH.ReadOnly = True
         Me.txbPerformance_SupplyOutletRH.Size = New System.Drawing.Size(63, 20)
@@ -1096,7 +1179,7 @@ Partial Class CLMainForm
         '
         'txbPerformance_ExhaustOutletRH
         '
-        Me.txbPerformance_ExhaustOutletRH.Location = New System.Drawing.Point(436, 50)
+        Me.txbPerformance_ExhaustOutletRH.Location = New System.Drawing.Point(354, 50)
         Me.txbPerformance_ExhaustOutletRH.Name = "txbPerformance_ExhaustOutletRH"
         Me.txbPerformance_ExhaustOutletRH.ReadOnly = True
         Me.txbPerformance_ExhaustOutletRH.Size = New System.Drawing.Size(63, 20)
@@ -1104,9 +1187,9 @@ Partial Class CLMainForm
         '
         'lblPerformance_ExhaustOutletRH
         '
-        Me.lblPerformance_ExhaustOutletRH.Location = New System.Drawing.Point(259, 46)
+        Me.lblPerformance_ExhaustOutletRH.Location = New System.Drawing.Point(213, 46)
         Me.lblPerformance_ExhaustOutletRH.Name = "lblPerformance_ExhaustOutletRH"
-        Me.lblPerformance_ExhaustOutletRH.Size = New System.Drawing.Size(171, 26)
+        Me.lblPerformance_ExhaustOutletRH.Size = New System.Drawing.Size(135, 26)
         Me.lblPerformance_ExhaustOutletRH.TabIndex = 6
         Me.lblPerformance_ExhaustOutletRH.Text = "R.H. [%]"
         Me.lblPerformance_ExhaustOutletRH.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -1115,7 +1198,7 @@ Partial Class CLMainForm
         '
         Me.lblPerformance_SupplyOutletTemperature.Location = New System.Drawing.Point(6, 17)
         Me.lblPerformance_SupplyOutletTemperature.Name = "lblPerformance_SupplyOutletTemperature"
-        Me.lblPerformance_SupplyOutletTemperature.Size = New System.Drawing.Size(178, 26)
+        Me.lblPerformance_SupplyOutletTemperature.Size = New System.Drawing.Size(134, 26)
         Me.lblPerformance_SupplyOutletTemperature.TabIndex = 0
         Me.lblPerformance_SupplyOutletTemperature.Text = "Supply Outlet Temp. [°C]"
         Me.lblPerformance_SupplyOutletTemperature.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -1124,16 +1207,16 @@ Partial Class CLMainForm
         '
         Me.lblPerformance_SupplyOutletRH.Location = New System.Drawing.Point(6, 46)
         Me.lblPerformance_SupplyOutletRH.Name = "lblPerformance_SupplyOutletRH"
-        Me.lblPerformance_SupplyOutletRH.Size = New System.Drawing.Size(178, 26)
+        Me.lblPerformance_SupplyOutletRH.Size = New System.Drawing.Size(134, 26)
         Me.lblPerformance_SupplyOutletRH.TabIndex = 2
         Me.lblPerformance_SupplyOutletRH.Text = "R.H. [%]"
         Me.lblPerformance_SupplyOutletRH.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'lblPerformance_ExhaustOutletTemperature
         '
-        Me.lblPerformance_ExhaustOutletTemperature.Location = New System.Drawing.Point(259, 17)
+        Me.lblPerformance_ExhaustOutletTemperature.Location = New System.Drawing.Point(213, 17)
         Me.lblPerformance_ExhaustOutletTemperature.Name = "lblPerformance_ExhaustOutletTemperature"
-        Me.lblPerformance_ExhaustOutletTemperature.Size = New System.Drawing.Size(171, 26)
+        Me.lblPerformance_ExhaustOutletTemperature.Size = New System.Drawing.Size(135, 26)
         Me.lblPerformance_ExhaustOutletTemperature.TabIndex = 4
         Me.lblPerformance_ExhaustOutletTemperature.Text = "Exhaust Outlet Temp. [°C]"
         Me.lblPerformance_ExhaustOutletTemperature.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -1150,7 +1233,7 @@ Partial Class CLMainForm
         Me.tbpData_ElectricalPerformances.Location = New System.Drawing.Point(4, 22)
         Me.tbpData_ElectricalPerformances.Name = "tbpData_ElectricalPerformances"
         Me.tbpData_ElectricalPerformances.Padding = New System.Windows.Forms.Padding(3)
-        Me.tbpData_ElectricalPerformances.Size = New System.Drawing.Size(704, 215)
+        Me.tbpData_ElectricalPerformances.Size = New System.Drawing.Size(998, 215)
         Me.tbpData_ElectricalPerformances.TabIndex = 1
         Me.tbpData_ElectricalPerformances.Text = "Electrical Performances"
         Me.tbpData_ElectricalPerformances.UseVisualStyleBackColor = True
@@ -1383,7 +1466,7 @@ Partial Class CLMainForm
         Me.tbpData_SoundPower.Location = New System.Drawing.Point(4, 22)
         Me.tbpData_SoundPower.Name = "tbpData_SoundPower"
         Me.tbpData_SoundPower.Padding = New System.Windows.Forms.Padding(3)
-        Me.tbpData_SoundPower.Size = New System.Drawing.Size(704, 215)
+        Me.tbpData_SoundPower.Size = New System.Drawing.Size(998, 215)
         Me.tbpData_SoundPower.TabIndex = 2
         Me.tbpData_SoundPower.Text = "Sound Power"
         Me.tbpData_SoundPower.UseVisualStyleBackColor = True
@@ -1398,24 +1481,24 @@ Partial Class CLMainForm
         Me.dgvPerformance_SoundPower.BackgroundColor = System.Drawing.SystemColors.Window
         Me.dgvPerformance_SoundPower.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.dgvPerformance_SoundPower.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
-        DataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle14.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle14.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle14.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle14.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle14.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgvPerformance_SoundPower.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle14
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvPerformance_SoundPower.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
         Me.dgvPerformance_SoundPower.ColumnHeadersHeight = 40
         Me.dgvPerformance_SoundPower.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing
-        DataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle15.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle15.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle15.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle15.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle15.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle15.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgvPerformance_SoundPower.DefaultCellStyle = DataGridViewCellStyle15
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgvPerformance_SoundPower.DefaultCellStyle = DataGridViewCellStyle2
         Me.dgvPerformance_SoundPower.Dock = System.Windows.Forms.DockStyle.Top
         Me.dgvPerformance_SoundPower.GridColor = System.Drawing.Color.Silver
         Me.dgvPerformance_SoundPower.Location = New System.Drawing.Point(3, 37)
@@ -1423,18 +1506,18 @@ Partial Class CLMainForm
         Me.dgvPerformance_SoundPower.Name = "dgvPerformance_SoundPower"
         Me.dgvPerformance_SoundPower.ReadOnly = True
         Me.dgvPerformance_SoundPower.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None
-        DataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle16.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle16.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle16.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle16.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle16.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle16.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgvPerformance_SoundPower.RowHeadersDefaultCellStyle = DataGridViewCellStyle16
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvPerformance_SoundPower.RowHeadersDefaultCellStyle = DataGridViewCellStyle3
         Me.dgvPerformance_SoundPower.RowHeadersVisible = False
         Me.dgvPerformance_SoundPower.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
         Me.dgvPerformance_SoundPower.ScrollBars = System.Windows.Forms.ScrollBars.None
-        Me.dgvPerformance_SoundPower.Size = New System.Drawing.Size(698, 172)
+        Me.dgvPerformance_SoundPower.Size = New System.Drawing.Size(992, 172)
         Me.dgvPerformance_SoundPower.TabIndex = 2
         '
         'Panel1
@@ -1453,7 +1536,7 @@ Partial Class CLMainForm
         Me.Panel1.Dock = System.Windows.Forms.DockStyle.Top
         Me.Panel1.Location = New System.Drawing.Point(3, 3)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(698, 34)
+        Me.Panel1.Size = New System.Drawing.Size(992, 34)
         Me.Panel1.TabIndex = 3
         '
         'PictureBox4
@@ -1534,7 +1617,7 @@ Partial Class CLMainForm
         Me.chbSoundPerformances_addtoreport.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.chbSoundPerformances_addtoreport.AutoSize = True
-        Me.chbSoundPerformances_addtoreport.Location = New System.Drawing.Point(608, 8)
+        Me.chbSoundPerformances_addtoreport.Location = New System.Drawing.Point(902, 8)
         Me.chbSoundPerformances_addtoreport.Name = "chbSoundPerformances_addtoreport"
         Me.chbSoundPerformances_addtoreport.Size = New System.Drawing.Size(87, 17)
         Me.chbSoundPerformances_addtoreport.TabIndex = 14
@@ -1585,7 +1668,7 @@ Partial Class CLMainForm
         Me.tbpData_ItemGenerator.Location = New System.Drawing.Point(4, 22)
         Me.tbpData_ItemGenerator.Name = "tbpData_ItemGenerator"
         Me.tbpData_ItemGenerator.Padding = New System.Windows.Forms.Padding(3)
-        Me.tbpData_ItemGenerator.Size = New System.Drawing.Size(704, 215)
+        Me.tbpData_ItemGenerator.Size = New System.Drawing.Size(998, 215)
         Me.tbpData_ItemGenerator.TabIndex = 3
         Me.tbpData_ItemGenerator.Text = "Item Coding"
         Me.tbpData_ItemGenerator.UseVisualStyleBackColor = True
@@ -1791,7 +1874,7 @@ Partial Class CLMainForm
         Me.tbpData_ItemGenerator_QTM.Controls.Add(Me.grbPerformance_IGCommQTM)
         Me.tbpData_ItemGenerator_QTM.Location = New System.Drawing.Point(4, 22)
         Me.tbpData_ItemGenerator_QTM.Name = "tbpData_ItemGenerator_QTM"
-        Me.tbpData_ItemGenerator_QTM.Size = New System.Drawing.Size(704, 215)
+        Me.tbpData_ItemGenerator_QTM.Size = New System.Drawing.Size(998, 215)
         Me.tbpData_ItemGenerator_QTM.TabIndex = 4
         Me.tbpData_ItemGenerator_QTM.Text = "Item Coding"
         Me.tbpData_ItemGenerator_QTM.UseVisualStyleBackColor = True
@@ -2059,7 +2142,7 @@ Partial Class CLMainForm
         Me.pnlRegulationLevel.Controls.Add(Me.prbPerformance_RegulationLevel)
         Me.pnlRegulationLevel.Location = New System.Drawing.Point(3, 0)
         Me.pnlRegulationLevel.Name = "pnlRegulationLevel"
-        Me.pnlRegulationLevel.Size = New System.Drawing.Size(712, 65)
+        Me.pnlRegulationLevel.Size = New System.Drawing.Size(1006, 65)
         Me.pnlRegulationLevel.TabIndex = 13
         '
         'lblPerformance_RegulationLevel
@@ -2079,7 +2162,7 @@ Partial Class CLMainForm
         Me.hsbPerformance_RegulationLevel.Maximum = 109
         Me.hsbPerformance_RegulationLevel.Minimum = 20
         Me.hsbPerformance_RegulationLevel.Name = "hsbPerformance_RegulationLevel"
-        Me.hsbPerformance_RegulationLevel.Size = New System.Drawing.Size(698, 16)
+        Me.hsbPerformance_RegulationLevel.Size = New System.Drawing.Size(992, 16)
         Me.hsbPerformance_RegulationLevel.TabIndex = 5
         Me.hsbPerformance_RegulationLevel.Value = 100
         '
@@ -2087,7 +2170,7 @@ Partial Class CLMainForm
         '
         Me.lblPerformance_RegulationLevelValue.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lblPerformance_RegulationLevelValue.AutoSize = True
-        Me.lblPerformance_RegulationLevelValue.Location = New System.Drawing.Point(670, 10)
+        Me.lblPerformance_RegulationLevelValue.Location = New System.Drawing.Point(964, 10)
         Me.lblPerformance_RegulationLevelValue.Name = "lblPerformance_RegulationLevelValue"
         Me.lblPerformance_RegulationLevelValue.Size = New System.Drawing.Size(36, 13)
         Me.lblPerformance_RegulationLevelValue.TabIndex = 10
@@ -2100,7 +2183,7 @@ Partial Class CLMainForm
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.prbPerformance_RegulationLevel.Location = New System.Drawing.Point(8, 41)
         Me.prbPerformance_RegulationLevel.Name = "prbPerformance_RegulationLevel"
-        Me.prbPerformance_RegulationLevel.Size = New System.Drawing.Size(698, 15)
+        Me.prbPerformance_RegulationLevel.Size = New System.Drawing.Size(992, 15)
         Me.prbPerformance_RegulationLevel.Step = 1
         Me.prbPerformance_RegulationLevel.TabIndex = 6
         Me.prbPerformance_RegulationLevel.Value = 100
@@ -2115,7 +2198,7 @@ Partial Class CLMainForm
         Me.m_Note_Text.Multiline = True
         Me.m_Note_Text.Name = "m_Note_Text"
         Me.m_Note_Text.ScrollBars = System.Windows.Forms.ScrollBars.Both
-        Me.m_Note_Text.Size = New System.Drawing.Size(1043, 41)
+        Me.m_Note_Text.Size = New System.Drawing.Size(1407, 41)
         Me.m_Note_Text.TabIndex = 3
         '
         'Label8
@@ -2141,55 +2224,55 @@ Partial Class CLMainForm
         Me.tlpPerformance_Graphs.Name = "tlpPerformance_Graphs"
         Me.tlpPerformance_Graphs.RowCount = 1
         Me.tlpPerformance_Graphs.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.tlpPerformance_Graphs.Size = New System.Drawing.Size(1104, 219)
+        Me.tlpPerformance_Graphs.Size = New System.Drawing.Size(1468, 219)
         Me.tlpPerformance_Graphs.TabIndex = 11
         '
         'crtPerformance_Chart1
         '
-        ChartArea5.AxisX.IntervalOffsetType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number
-        ChartArea5.Name = "ChartArea1"
-        Me.crtPerformance_Chart1.ChartAreas.Add(ChartArea5)
+        ChartArea1.AxisX.IntervalOffsetType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number
+        ChartArea1.Name = "ChartArea1"
+        Me.crtPerformance_Chart1.ChartAreas.Add(ChartArea1)
         Me.crtPerformance_Chart1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.crtPerformance_Chart1.Location = New System.Drawing.Point(3, 3)
         Me.crtPerformance_Chart1.Name = "crtPerformance_Chart1"
-        Series5.ChartArea = "ChartArea1"
-        Series5.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline
-        Series5.Legend = "Legend1"
-        Series5.Name = "Series1"
-        Me.crtPerformance_Chart1.Series.Add(Series5)
-        Me.crtPerformance_Chart1.Size = New System.Drawing.Size(362, 213)
+        Series1.ChartArea = "ChartArea1"
+        Series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline
+        Series1.Legend = "Legend1"
+        Series1.Name = "Series1"
+        Me.crtPerformance_Chart1.Series.Add(Series1)
+        Me.crtPerformance_Chart1.Size = New System.Drawing.Size(483, 213)
         Me.crtPerformance_Chart1.TabIndex = 7
         Me.crtPerformance_Chart1.Text = "Chart1"
         '
         'crtPerformance_Chart2
         '
-        ChartArea6.AxisX.IntervalOffsetType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number
-        ChartArea6.Name = "ChartArea1"
-        Me.crtPerformance_Chart2.ChartAreas.Add(ChartArea6)
+        ChartArea2.AxisX.IntervalOffsetType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number
+        ChartArea2.Name = "ChartArea1"
+        Me.crtPerformance_Chart2.ChartAreas.Add(ChartArea2)
         Me.crtPerformance_Chart2.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.crtPerformance_Chart2.Location = New System.Drawing.Point(371, 3)
+        Me.crtPerformance_Chart2.Location = New System.Drawing.Point(492, 3)
         Me.crtPerformance_Chart2.Name = "crtPerformance_Chart2"
-        Series6.ChartArea = "ChartArea1"
-        Series6.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline
-        Series6.Name = "Series1"
-        Me.crtPerformance_Chart2.Series.Add(Series6)
-        Me.crtPerformance_Chart2.Size = New System.Drawing.Size(362, 213)
+        Series2.ChartArea = "ChartArea1"
+        Series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline
+        Series2.Name = "Series1"
+        Me.crtPerformance_Chart2.Series.Add(Series2)
+        Me.crtPerformance_Chart2.Size = New System.Drawing.Size(483, 213)
         Me.crtPerformance_Chart2.TabIndex = 8
         Me.crtPerformance_Chart2.Text = "Chart2"
         '
         'crtPerformance_Chart3
         '
-        ChartArea7.AxisX.IntervalOffsetType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number
-        ChartArea7.Name = "ChartArea1"
-        Me.crtPerformance_Chart3.ChartAreas.Add(ChartArea7)
+        ChartArea3.AxisX.IntervalOffsetType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number
+        ChartArea3.Name = "ChartArea1"
+        Me.crtPerformance_Chart3.ChartAreas.Add(ChartArea3)
         Me.crtPerformance_Chart3.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.crtPerformance_Chart3.Location = New System.Drawing.Point(739, 3)
+        Me.crtPerformance_Chart3.Location = New System.Drawing.Point(981, 3)
         Me.crtPerformance_Chart3.Name = "crtPerformance_Chart3"
-        Series7.ChartArea = "ChartArea1"
-        Series7.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline
-        Series7.Name = "Series1"
-        Me.crtPerformance_Chart3.Series.Add(Series7)
-        Me.crtPerformance_Chart3.Size = New System.Drawing.Size(362, 213)
+        Series3.ChartArea = "ChartArea1"
+        Series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline
+        Series3.Name = "Series1"
+        Me.crtPerformance_Chart3.Series.Add(Series3)
+        Me.crtPerformance_Chart3.Size = New System.Drawing.Size(484, 213)
         Me.crtPerformance_Chart3.TabIndex = 9
         Me.crtPerformance_Chart3.Text = "Generate Report"
         '
@@ -2203,7 +2286,7 @@ Partial Class CLMainForm
         Me.tbcMain.Location = New System.Drawing.Point(5, 5)
         Me.tbcMain.Name = "tbcMain"
         Me.tbcMain.SelectedIndex = 0
-        Me.tbcMain.Size = New System.Drawing.Size(1120, 633)
+        Me.tbcMain.Size = New System.Drawing.Size(1484, 633)
         Me.tbcMain.TabIndex = 0
         '
         'tbpCertification
@@ -2216,7 +2299,7 @@ Partial Class CLMainForm
         Me.tbpCertification.Location = New System.Drawing.Point(4, 22)
         Me.tbpCertification.Name = "tbpCertification"
         Me.tbpCertification.Padding = New System.Windows.Forms.Padding(3)
-        Me.tbpCertification.Size = New System.Drawing.Size(1112, 607)
+        Me.tbpCertification.Size = New System.Drawing.Size(1476, 607)
         Me.tbpCertification.TabIndex = 1
         Me.tbpCertification.Text = "Certification"
         Me.tbpCertification.UseVisualStyleBackColor = True
@@ -2269,35 +2352,35 @@ Partial Class CLMainForm
         Me.dgvSAP.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.dgvSAP.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
-        DataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle17.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle17.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle17.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle17.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle17.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle17.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgvSAP.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle17
+        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvSAP.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle4
         Me.dgvSAP.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvSAP.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.dgvSAP_ExhaustTerminalConfiguration, Me.dgvSAP_TotalExhaustFlowRate, Me.dgvSAP_TotalSupplyFlowRate, Me.dgvSAP_RegulationLevel, Me.dgvSAP_SpecificFanPower, Me.dgvSAP_HeatExchangeEfficiency, Me.dgvSAP_EnergySavingTrustBestPracticePerformanceCompliant})
-        DataGridViewCellStyle25.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle25.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle25.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle25.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle25.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle25.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle25.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgvSAP.DefaultCellStyle = DataGridViewCellStyle25
+        DataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle12.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle12.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle12.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle12.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgvSAP.DefaultCellStyle = DataGridViewCellStyle12
         Me.dgvSAP.Location = New System.Drawing.Point(8, 31)
         Me.dgvSAP.Name = "dgvSAP"
         Me.dgvSAP.ReadOnly = True
-        DataGridViewCellStyle26.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle26.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle26.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle26.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle26.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle26.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle26.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgvSAP.RowHeadersDefaultCellStyle = DataGridViewCellStyle26
+        DataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle13.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle13.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle13.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle13.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle13.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvSAP.RowHeadersDefaultCellStyle = DataGridViewCellStyle13
         Me.dgvSAP.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
         Me.dgvSAP.ScrollBars = System.Windows.Forms.ScrollBars.None
         Me.dgvSAP.Size = New System.Drawing.Size(1101, 200)
@@ -2305,8 +2388,8 @@ Partial Class CLMainForm
         '
         'dgvSAP_ExhaustTerminalConfiguration
         '
-        DataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.dgvSAP_ExhaustTerminalConfiguration.DefaultCellStyle = DataGridViewCellStyle18
+        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.dgvSAP_ExhaustTerminalConfiguration.DefaultCellStyle = DataGridViewCellStyle5
         Me.dgvSAP_ExhaustTerminalConfiguration.HeaderText = "Exhaust terminal configuration"
         Me.dgvSAP_ExhaustTerminalConfiguration.Name = "dgvSAP_ExhaustTerminalConfiguration"
         Me.dgvSAP_ExhaustTerminalConfiguration.ReadOnly = True
@@ -2314,8 +2397,8 @@ Partial Class CLMainForm
         '
         'dgvSAP_TotalExhaustFlowRate
         '
-        DataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.dgvSAP_TotalExhaustFlowRate.DefaultCellStyle = DataGridViewCellStyle19
+        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.dgvSAP_TotalExhaustFlowRate.DefaultCellStyle = DataGridViewCellStyle6
         Me.dgvSAP_TotalExhaustFlowRate.HeaderText = "Total exhaust flow rate [l/s]"
         Me.dgvSAP_TotalExhaustFlowRate.Name = "dgvSAP_TotalExhaustFlowRate"
         Me.dgvSAP_TotalExhaustFlowRate.ReadOnly = True
@@ -2323,8 +2406,8 @@ Partial Class CLMainForm
         '
         'dgvSAP_TotalSupplyFlowRate
         '
-        DataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.dgvSAP_TotalSupplyFlowRate.DefaultCellStyle = DataGridViewCellStyle20
+        DataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.dgvSAP_TotalSupplyFlowRate.DefaultCellStyle = DataGridViewCellStyle7
         Me.dgvSAP_TotalSupplyFlowRate.HeaderText = "Total supply flow rate [l/s]"
         Me.dgvSAP_TotalSupplyFlowRate.Name = "dgvSAP_TotalSupplyFlowRate"
         Me.dgvSAP_TotalSupplyFlowRate.ReadOnly = True
@@ -2332,18 +2415,18 @@ Partial Class CLMainForm
         '
         'dgvSAP_RegulationLevel
         '
-        DataGridViewCellStyle21.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.dgvSAP_RegulationLevel.DefaultCellStyle = DataGridViewCellStyle21
+        DataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.dgvSAP_RegulationLevel.DefaultCellStyle = DataGridViewCellStyle8
         Me.dgvSAP_RegulationLevel.HeaderText = "Regulation Level [%]"
         Me.dgvSAP_RegulationLevel.Name = "dgvSAP_RegulationLevel"
         Me.dgvSAP_RegulationLevel.ReadOnly = True
         '
         'dgvSAP_SpecificFanPower
         '
-        DataGridViewCellStyle22.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle22.Format = "N2"
-        DataGridViewCellStyle22.NullValue = Nothing
-        Me.dgvSAP_SpecificFanPower.DefaultCellStyle = DataGridViewCellStyle22
+        DataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle9.Format = "N2"
+        DataGridViewCellStyle9.NullValue = Nothing
+        Me.dgvSAP_SpecificFanPower.DefaultCellStyle = DataGridViewCellStyle9
         Me.dgvSAP_SpecificFanPower.HeaderText = "Specific fan power [W/l/s]"
         Me.dgvSAP_SpecificFanPower.Name = "dgvSAP_SpecificFanPower"
         Me.dgvSAP_SpecificFanPower.ReadOnly = True
@@ -2351,10 +2434,10 @@ Partial Class CLMainForm
         '
         'dgvSAP_HeatExchangeEfficiency
         '
-        DataGridViewCellStyle23.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle23.Format = "N2"
-        DataGridViewCellStyle23.NullValue = Nothing
-        Me.dgvSAP_HeatExchangeEfficiency.DefaultCellStyle = DataGridViewCellStyle23
+        DataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle10.Format = "N2"
+        DataGridViewCellStyle10.NullValue = Nothing
+        Me.dgvSAP_HeatExchangeEfficiency.DefaultCellStyle = DataGridViewCellStyle10
         Me.dgvSAP_HeatExchangeEfficiency.HeaderText = "Heat exchange effiency [%]"
         Me.dgvSAP_HeatExchangeEfficiency.Name = "dgvSAP_HeatExchangeEfficiency"
         Me.dgvSAP_HeatExchangeEfficiency.ReadOnly = True
@@ -2362,10 +2445,10 @@ Partial Class CLMainForm
         '
         'dgvSAP_EnergySavingTrustBestPracticePerformanceCompliant
         '
-        DataGridViewCellStyle24.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle24.BackColor = System.Drawing.Color.Red
-        DataGridViewCellStyle24.ForeColor = System.Drawing.Color.White
-        Me.dgvSAP_EnergySavingTrustBestPracticePerformanceCompliant.DefaultCellStyle = DataGridViewCellStyle24
+        DataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle11.BackColor = System.Drawing.Color.Red
+        DataGridViewCellStyle11.ForeColor = System.Drawing.Color.White
+        Me.dgvSAP_EnergySavingTrustBestPracticePerformanceCompliant.DefaultCellStyle = DataGridViewCellStyle11
         Me.dgvSAP_EnergySavingTrustBestPracticePerformanceCompliant.HeaderText = "Energy Saving Trust Best Practice Performance Compliant"
         Me.dgvSAP_EnergySavingTrustBestPracticePerformanceCompliant.Name = "dgvSAP_EnergySavingTrustBestPracticePerformanceCompliant"
         Me.dgvSAP_EnergySavingTrustBestPracticePerformanceCompliant.ReadOnly = True
@@ -2380,7 +2463,7 @@ Partial Class CLMainForm
         Me.tbpAccessory.Location = New System.Drawing.Point(4, 22)
         Me.tbpAccessory.Name = "tbpAccessory"
         Me.tbpAccessory.Padding = New System.Windows.Forms.Padding(3)
-        Me.tbpAccessory.Size = New System.Drawing.Size(1112, 607)
+        Me.tbpAccessory.Size = New System.Drawing.Size(1476, 607)
         Me.tbpAccessory.TabIndex = 2
         Me.tbpAccessory.Text = "Accessory"
         Me.tbpAccessory.UseVisualStyleBackColor = True
@@ -2436,10 +2519,6 @@ Partial Class CLMainForm
         Me.txbAccessory_OutputData_CWDSensibleHeat.ReadOnly = True
         Me.txbAccessory_OutputData_CWDSensibleHeat.Size = New System.Drawing.Size(87, 20)
         Me.txbAccessory_OutputData_CWDSensibleHeat.TabIndex = 9
-        '
-        'bsrUnitCalculator
-        '
-        Me.bsrUnitCalculator.DataSource = GetType(SSW.CLUnitCalculator)
         '
         'Label3
         '
@@ -2881,7 +2960,7 @@ Partial Class CLMainForm
         Me.tbpCO2Level.Location = New System.Drawing.Point(4, 22)
         Me.tbpCO2Level.Name = "tbpCO2Level"
         Me.tbpCO2Level.Padding = New System.Windows.Forms.Padding(3)
-        Me.tbpCO2Level.Size = New System.Drawing.Size(1112, 607)
+        Me.tbpCO2Level.Size = New System.Drawing.Size(1476, 607)
         Me.tbpCO2Level.TabIndex = 3
         Me.tbpCO2Level.Text = "CO2 Level Calculator"
         Me.tbpCO2Level.UseVisualStyleBackColor = True
@@ -2900,19 +2979,19 @@ Partial Class CLMainForm
         '
         Me.crtCO2Level_Chart1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        ChartArea8.Name = "ChartArea1"
-        Me.crtCO2Level_Chart1.ChartAreas.Add(ChartArea8)
-        Legend2.Enabled = False
-        Legend2.Name = "Legend1"
-        Me.crtCO2Level_Chart1.Legends.Add(Legend2)
+        ChartArea4.Name = "ChartArea1"
+        Me.crtCO2Level_Chart1.ChartAreas.Add(ChartArea4)
+        Legend1.Enabled = False
+        Legend1.Name = "Legend1"
+        Me.crtCO2Level_Chart1.Legends.Add(Legend1)
         Me.crtCO2Level_Chart1.Location = New System.Drawing.Point(348, 6)
         Me.crtCO2Level_Chart1.Name = "crtCO2Level_Chart1"
-        Series8.ChartArea = "ChartArea1"
-        Series8.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline
-        Series8.IsVisibleInLegend = False
-        Series8.Legend = "Legend1"
-        Series8.Name = "Series1"
-        Me.crtCO2Level_Chart1.Series.Add(Series8)
+        Series4.ChartArea = "ChartArea1"
+        Series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline
+        Series4.IsVisibleInLegend = False
+        Series4.Legend = "Legend1"
+        Series4.Name = "Series1"
+        Me.crtCO2Level_Chart1.Series.Add(Series4)
         Me.crtCO2Level_Chart1.Size = New System.Drawing.Size(758, 572)
         Me.crtCO2Level_Chart1.TabIndex = 2
         Me.crtCO2Level_Chart1.Text = "Chart1"
@@ -3367,7 +3446,7 @@ Partial Class CLMainForm
         Me.pnlMain.Location = New System.Drawing.Point(0, 24)
         Me.pnlMain.Name = "pnlMain"
         Me.pnlMain.Padding = New System.Windows.Forms.Padding(5)
-        Me.pnlMain.Size = New System.Drawing.Size(1130, 643)
+        Me.pnlMain.Size = New System.Drawing.Size(1494, 643)
         Me.pnlMain.TabIndex = 1
         '
         'sfdSavePdf
@@ -3379,11 +3458,204 @@ Partial Class CLMainForm
         '
         Me.ToolTip1.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info
         '
+        'GroupBox4
+        '
+        Me.GroupBox4.Controls.Add(Me.TextBox7)
+        Me.GroupBox4.Controls.Add(Me.TextBox8)
+        Me.GroupBox4.Controls.Add(Me.TextBox9)
+        Me.GroupBox4.Controls.Add(Me.TextBox10)
+        Me.GroupBox4.Controls.Add(Me.TextBox11)
+        Me.GroupBox4.Controls.Add(Me.Label9)
+        Me.GroupBox4.Controls.Add(Me.Label10)
+        Me.GroupBox4.Controls.Add(Me.Label11)
+        Me.GroupBox4.Controls.Add(Me.Label12)
+        Me.GroupBox4.Controls.Add(Me.Label13)
+        Me.GroupBox4.Location = New System.Drawing.Point(508, 10)
+        Me.GroupBox4.Name = "GroupBox4"
+        Me.GroupBox4.Size = New System.Drawing.Size(432, 108)
+        Me.GroupBox4.TabIndex = 8
+        Me.GroupBox4.TabStop = False
+        Me.GroupBox4.Text = "Heat Exchanger Performances"
+        '
+        'TextBox7
+        '
+        Me.TextBox7.Location = New System.Drawing.Point(144, 81)
+        Me.TextBox7.Name = "TextBox7"
+        Me.TextBox7.ReadOnly = True
+        Me.TextBox7.Size = New System.Drawing.Size(63, 20)
+        Me.TextBox7.TabIndex = 9
+        '
+        'TextBox8
+        '
+        Me.TextBox8.Location = New System.Drawing.Point(355, 53)
+        Me.TextBox8.Name = "TextBox8"
+        Me.TextBox8.ReadOnly = True
+        Me.TextBox8.Size = New System.Drawing.Size(64, 20)
+        Me.TextBox8.TabIndex = 7
+        '
+        'TextBox9
+        '
+        Me.TextBox9.Location = New System.Drawing.Point(144, 53)
+        Me.TextBox9.Name = "TextBox9"
+        Me.TextBox9.ReadOnly = True
+        Me.TextBox9.Size = New System.Drawing.Size(63, 20)
+        Me.TextBox9.TabIndex = 5
+        '
+        'TextBox10
+        '
+        Me.TextBox10.Location = New System.Drawing.Point(144, 24)
+        Me.TextBox10.Name = "TextBox10"
+        Me.TextBox10.ReadOnly = True
+        Me.TextBox10.Size = New System.Drawing.Size(63, 20)
+        Me.TextBox10.TabIndex = 1
+        '
+        'TextBox11
+        '
+        Me.TextBox11.Location = New System.Drawing.Point(355, 24)
+        Me.TextBox11.Name = "TextBox11"
+        Me.TextBox11.ReadOnly = True
+        Me.TextBox11.Size = New System.Drawing.Size(64, 20)
+        Me.TextBox11.TabIndex = 3
+        '
+        'Label9
+        '
+        Me.Label9.Location = New System.Drawing.Point(6, 77)
+        Me.Label9.Name = "Label9"
+        Me.Label9.Size = New System.Drawing.Size(134, 26)
+        Me.Label9.TabIndex = 8
+        Me.Label9.Text = "Latent Heat [W]"
+        Me.Label9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'Label10
+        '
+        Me.Label10.Location = New System.Drawing.Point(214, 49)
+        Me.Label10.Name = "Label10"
+        Me.Label10.Size = New System.Drawing.Size(135, 26)
+        Me.Label10.TabIndex = 6
+        Me.Label10.Text = "Water produced [l/h]"
+        Me.Label10.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'Label11
+        '
+        Me.Label11.Location = New System.Drawing.Point(6, 49)
+        Me.Label11.Name = "Label11"
+        Me.Label11.Size = New System.Drawing.Size(134, 26)
+        Me.Label11.TabIndex = 4
+        Me.Label11.Text = "Sensible Heat [W]"
+        Me.Label11.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'Label12
+        '
+        Me.Label12.Location = New System.Drawing.Point(6, 20)
+        Me.Label12.Name = "Label12"
+        Me.Label12.Size = New System.Drawing.Size(134, 26)
+        Me.Label12.TabIndex = 0
+        Me.Label12.Text = "Heat Transferred [W]"
+        Me.Label12.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'Label13
+        '
+        Me.Label13.Location = New System.Drawing.Point(213, 20)
+        Me.Label13.Name = "Label13"
+        Me.Label13.Size = New System.Drawing.Size(135, 26)
+        Me.Label13.TabIndex = 2
+        Me.Label13.Text = "Eff. [%]"
+        Me.Label13.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'GroupBox5
+        '
+        Me.GroupBox5.Controls.Add(Me.TextBox12)
+        Me.GroupBox5.Controls.Add(Me.TextBox13)
+        Me.GroupBox5.Controls.Add(Me.TextBox14)
+        Me.GroupBox5.Controls.Add(Me.TextBox15)
+        Me.GroupBox5.Controls.Add(Me.Label14)
+        Me.GroupBox5.Controls.Add(Me.Label15)
+        Me.GroupBox5.Controls.Add(Me.Label23)
+        Me.GroupBox5.Controls.Add(Me.Label24)
+        Me.GroupBox5.Location = New System.Drawing.Point(508, 124)
+        Me.GroupBox5.Name = "GroupBox5"
+        Me.GroupBox5.Size = New System.Drawing.Size(432, 81)
+        Me.GroupBox5.TabIndex = 9
+        Me.GroupBox5.TabStop = False
+        Me.GroupBox5.Text = "Temperature Conditions"
+        '
+        'TextBox12
+        '
+        Me.TextBox12.Location = New System.Drawing.Point(144, 23)
+        Me.TextBox12.Name = "TextBox12"
+        Me.TextBox12.ReadOnly = True
+        Me.TextBox12.Size = New System.Drawing.Size(63, 20)
+        Me.TextBox12.TabIndex = 1
+        '
+        'TextBox13
+        '
+        Me.TextBox13.Location = New System.Drawing.Point(354, 21)
+        Me.TextBox13.Name = "TextBox13"
+        Me.TextBox13.ReadOnly = True
+        Me.TextBox13.Size = New System.Drawing.Size(63, 20)
+        Me.TextBox13.TabIndex = 5
+        '
+        'TextBox14
+        '
+        Me.TextBox14.Location = New System.Drawing.Point(144, 52)
+        Me.TextBox14.Name = "TextBox14"
+        Me.TextBox14.ReadOnly = True
+        Me.TextBox14.Size = New System.Drawing.Size(63, 20)
+        Me.TextBox14.TabIndex = 3
+        '
+        'TextBox15
+        '
+        Me.TextBox15.Location = New System.Drawing.Point(354, 50)
+        Me.TextBox15.Name = "TextBox15"
+        Me.TextBox15.ReadOnly = True
+        Me.TextBox15.Size = New System.Drawing.Size(63, 20)
+        Me.TextBox15.TabIndex = 7
+        '
+        'Label14
+        '
+        Me.Label14.Location = New System.Drawing.Point(213, 46)
+        Me.Label14.Name = "Label14"
+        Me.Label14.Size = New System.Drawing.Size(135, 26)
+        Me.Label14.TabIndex = 6
+        Me.Label14.Text = "R.H. [%]"
+        Me.Label14.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'Label15
+        '
+        Me.Label15.Location = New System.Drawing.Point(6, 17)
+        Me.Label15.Name = "Label15"
+        Me.Label15.Size = New System.Drawing.Size(134, 26)
+        Me.Label15.TabIndex = 0
+        Me.Label15.Text = "Supply Outlet Temp. [°C]"
+        Me.Label15.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'Label23
+        '
+        Me.Label23.Location = New System.Drawing.Point(6, 46)
+        Me.Label23.Name = "Label23"
+        Me.Label23.Size = New System.Drawing.Size(134, 26)
+        Me.Label23.TabIndex = 2
+        Me.Label23.Text = "R.H. [%]"
+        Me.Label23.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'Label24
+        '
+        Me.Label24.Location = New System.Drawing.Point(213, 17)
+        Me.Label24.Name = "Label24"
+        Me.Label24.Size = New System.Drawing.Size(135, 26)
+        Me.Label24.TabIndex = 4
+        Me.Label24.Text = "Exhaust Outlet Temp. [°C]"
+        Me.Label24.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'bsrUnitCalculator
+        '
+        Me.bsrUnitCalculator.DataSource = GetType(SSW.CLUnitCalculator)
+        '
         'CLMainForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1130, 667)
+        Me.ClientSize = New System.Drawing.Size(1494, 667)
         Me.Controls.Add(Me.pnlMain)
         Me.Controls.Add(Me.mnsMain)
         Me.MainMenuStrip = Me.mnsMain
@@ -3473,7 +3745,6 @@ Partial Class CLMainForm
         Me.grbAccessory_OutputData.PerformLayout()
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
-        CType(Me.bsrUnitCalculator, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox2.ResumeLayout(False)
         Me.GroupBox2.PerformLayout()
         Me.grbAccessory_EHD.ResumeLayout(False)
@@ -3497,6 +3768,11 @@ Partial Class CLMainForm
         Me.grbCO2Level_Room.PerformLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlMain.ResumeLayout(False)
+        Me.GroupBox4.ResumeLayout(False)
+        Me.GroupBox4.PerformLayout()
+        Me.GroupBox5.ResumeLayout(False)
+        Me.GroupBox5.PerformLayout()
+        CType(Me.bsrUnitCalculator, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -3793,4 +4069,30 @@ Partial Class CLMainForm
     Friend WithEvents btn_summer As Button
     Friend WithEvents btnEN13141 As Button
     Friend WithEvents tsmiOption_CommercialSheetAutoSync As ToolStripMenuItem
+    Friend WithEvents TextBox6 As TextBox
+    Friend WithEvents TextBox5 As TextBox
+    Friend WithEvents TextBox4 As TextBox
+    Friend WithEvents TextBox3 As TextBox
+    Friend WithEvents TextBox2 As TextBox
+    Friend WithEvents TextBox1 As TextBox
+    Friend WithEvents GroupBox4 As GroupBox
+    Friend WithEvents TextBox7 As TextBox
+    Friend WithEvents TextBox8 As TextBox
+    Friend WithEvents TextBox9 As TextBox
+    Friend WithEvents TextBox10 As TextBox
+    Friend WithEvents TextBox11 As TextBox
+    Friend WithEvents Label9 As Label
+    Friend WithEvents Label10 As Label
+    Friend WithEvents Label11 As Label
+    Friend WithEvents Label12 As Label
+    Friend WithEvents Label13 As Label
+    Friend WithEvents GroupBox5 As GroupBox
+    Friend WithEvents TextBox12 As TextBox
+    Friend WithEvents TextBox13 As TextBox
+    Friend WithEvents TextBox14 As TextBox
+    Friend WithEvents TextBox15 As TextBox
+    Friend WithEvents Label14 As Label
+    Friend WithEvents Label15 As Label
+    Friend WithEvents Label23 As Label
+    Friend WithEvents Label24 As Label
 End Class

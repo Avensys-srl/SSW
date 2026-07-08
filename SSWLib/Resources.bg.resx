@@ -421,4 +421,7 @@
   <data name="MainForm_CoilPerformance_Tab" xml:space="preserve"><value>Водни батерии</value></data>
   <data name="MainForm_CoilPerformance_Type" xml:space="preserve"><value>Тип</value></data><data name="MainForm_Menu_Option_CommercialSheetAutoSync" xml:space="preserve"><value>Avtomatichna sinhronizatsia na targovskite listove</value></data>
   <data name="MainForm_CoilPerformance_ResultWaterDP" xml:space="preserve"><value>DP voda [kPa]</value></data>
+  <data name="MainForm_CoilPerformance_ResultFluidFlow" xml:space="preserve"><value>Debit fluid [l/h]</value></data>
+  <data name="MainForm_CoilPerformance_ResultFluidSpeed" xml:space="preserve"><value>Fluid speed [m/s]</value></data>
 </root>
+

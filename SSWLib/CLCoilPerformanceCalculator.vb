@@ -47,6 +47,11 @@ Public Class CLCoilCalculationInput
     Public Property AirFlow As Double
     Public Property AirInletTemperature As Double
     Public Property AirInletRH As Double
+    Public Property UseModeAirInletConditions As Boolean = False
+    Public Property CoolingAirInletTemperature As Double
+    Public Property CoolingAirInletRH As Double
+    Public Property HeatingAirInletTemperature As Double
+    Public Property HeatingAirInletRH As Double
     Public Property FluidType As CLCOFluidType = CLCOFluidType.Water
     Public Property FluidTypeTec As Double = 10.0
     Public Property CoolingFluidInletTemperature As Double = 7.0
@@ -61,6 +66,8 @@ Public Class CLCoilCalculationResult
     Public Property OutletRH As Double
     Public Property AirPressureDrop As Double
     Public Property WaterPressureDrop As Double
+    Public Property FluidFlow As Double
+    Public Property FluidSpeed As Double
     Public Property CondensedWater As Double
     Public Property HeatTransferred As Double
     Public Property SensibleHeat As Double
@@ -292,6 +299,8 @@ Public Class CLCoilPerformanceCalculator
             result.OutletRH = Math.Round(GetValue(values, "AirFOff", 0), 2)
             result.AirPressureDrop = Math.Round(GetValue(values, "PDropWet", GetValue(values, "PDropDry", 0)), 2)
             result.WaterPressureDrop = Math.Round(GetFirstValue(values, 0, "kPaMed", "PDropMed", "MedPDrop", "MedDP", "FluidPDrop", "FluidPressureDrop", "PDropFluid"), 2)
+            result.FluidFlow = Math.Round(GetValue(values, "QtyMed", 0), 2)
+            result.FluidSpeed = Math.Round(GetValue(values, "MedSpeed", 0), 2)
             result.CondensedWater = Math.Round(GetValue(values, "QCondens", 0), 2)
             result.HeatTransferred = Math.Round(powerW, 2)
             result.SensibleHeat = Math.Round(If(coilType = CLCOCoilType.Heating, powerW, powerW * shr), 2)
@@ -311,13 +320,23 @@ Public Class CLCoilPerformanceCalculator
     Private Shared Function BuildRequest(input As CLCoilCalculationInput, coilType As CLCOCoilType) As String
         Dim medOn As Double
         Dim medOff As Double
+        Dim airInletTemperature As Double = input.AirInletTemperature
+        Dim airInletRH As Double = input.AirInletRH
 
         If coilType = CLCOCoilType.Cooling Then
             medOn = input.CoolingFluidInletTemperature
             medOff = input.CoolingFluidOutletTemperature
+            If input.UseModeAirInletConditions Then
+                airInletTemperature = input.CoolingAirInletTemperature
+                airInletRH = input.CoolingAirInletRH
+            End If
         Else
             medOn = input.HeatingFluidInletTemperature
             medOff = input.HeatingFluidOutletTemperature
+            If input.UseModeAirInletConditions Then
+                airInletTemperature = input.HeatingAirInletTemperature
+                airInletRH = input.HeatingAirInletRH
+            End If
         End If
 
         Return String.Format(CultureInfo.InvariantCulture,
@@ -330,8 +349,8 @@ Public Class CLCoilPerformanceCalculator
             input.Coil.NumberOfCircuits,
             FormatInputNumber(If(input.Coil.FinSpacingValue > 0, input.Coil.FinSpacingValue, FinSpacingToDouble(input.Coil.FinSpacing))),
             FormatInputNumber(input.AirFlow),
-            FormatInputNumber(input.AirInletTemperature),
-            FormatInputNumber(input.AirInletRH),
+            FormatInputNumber(airInletTemperature),
+            FormatInputNumber(airInletRH),
             FormatInputNumber(medOn),
             FormatInputNumber(medOff),
             CInt(input.Coil.HeaderType))
