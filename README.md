@@ -58,7 +58,7 @@ Each profile maps to an `SSWInfo` class (`SSW/CLSSWInfo_*.cs`) that provides cus
 
 ## Current Version
 
-- Application version: `1.3.0.43`
+- Application version: `1.3.0.44`
 
 ## Prerequisites
 
@@ -133,7 +133,7 @@ For normal runs, ensure the `data` folder is present in the output directory wit
 
 Localized resources live in `SSWLib/Resources.*.resx`. Available resource languages in this repo include:
 
-- `bg`, `da`, `de`, `en`, `fr`, `hu`, `it`, `nl`, `pl`, `ro`, `sl`
+- `bg`, `da`, `de`, `en`, `fr`, `hu`, `it`, `nl`, `pl`, `ro`, `sl`, `sv`
 
 ## Reporting
 
