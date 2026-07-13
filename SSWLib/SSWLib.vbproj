@@ -470,6 +470,7 @@
       <DependentUpon>CLReportViewerForm.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources.da.resx" />
+    <EmbeddedResource Include="Resources.sv.resx" />
     <EmbeddedResource Include="Resources.hu.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.hu.Designer.vb</LastGenOutput>

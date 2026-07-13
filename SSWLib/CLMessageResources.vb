@@ -97,6 +97,7 @@ Public Enum CLMessageResources
     MainForm_Menu_Option_Language_Romanian
     MainForm_Menu_Option_Language_Danish
     MainForm_Menu_Option_Language_Hungarian
+    MainForm_Menu_Option_Language_Swedish
     MainForm_Menu_Option_Unit
     MainForm_Menu_Option_Unit_SI
     MainForm_Menu_Option_Unit_IP

@@ -8,22 +8,21 @@ Public Enum CLCoilPerformanceMode
     HCD
 End Enum
 
-Public Enum CLCoilPerformanceSource
-    Standard
+Public Enum CLCoilInstallationType
+    Internal
     External
 End Enum
 
 Public Enum CLCoilPerformanceEditMode
     Standard
     StandardCustomized
-    External
 End Enum
 
 Public Class CLCoilDefinition
     Public Property Id As Integer
     Public Property Name As String
     Public Property Mode As CLCoilPerformanceMode
-    Public Property Source As CLCoilPerformanceSource
+    Public Property Installation As CLCoilInstallationType = CLCoilInstallationType.Internal
     Public Property Length As Integer
     Public Property Height As Integer
     Public Property NumberOfRows As Integer
@@ -114,23 +113,33 @@ Public Class CLCoilPerformanceCalculator
                     Return coils
                 End If
 
+                Dim hasInstallationType As Boolean = TableColumnExists(connection, "CLHeatRecoveryModelCoils", "InstallationType")
+                Dim installationField As String = If(hasInstallationType, "r.InstallationType", "'Internal'")
+
                 Using command As SqlCeCommand = connection.CreateCommand()
                     command.CommandText =
-                        "SELECT c.Id, c.Name, r.CoilMode, c.Length, c.Height, c.NumberOfRows, " &
+                        "SELECT c.Id, c.Name, " & installationField & " AS InstallationType, r.CoilMode, c.Length, c.Height, c.NumberOfRows, " &
                         "c.NumberOfCircuits, c.FinSpacing_mm " &
                         "FROM CLHeatRecoveryModelCoils r " &
                         "INNER JOIN CLCoils c ON c.Id = r.IdCoil " &
                         "WHERE r.IdHeatRecoveryModel = @IdHeatRecoveryModel " &
                         "AND r.Active = 1 AND c.Active = 1 " &
-                        "ORDER BY r.IsDefault DESC, r.SortOrder, c.Name"
+                        "ORDER BY CASE WHEN " & installationField & " = 'Internal' THEN 0 ELSE 1 END, " &
+                        "r.IsDefault DESC, r.SortOrder, c.Name"
                     command.Parameters.Add(New SqlCeParameter("@IdHeatRecoveryModel", dcHeatRecoveryModel.Id))
 
                     Using reader As SqlCeDataReader = command.ExecuteReader()
-                        Dim addedCoilIds As New HashSet(Of Integer)
+                        Dim addedRelations As New HashSet(Of String)(StringComparer.OrdinalIgnoreCase)
 
                         While reader.Read()
                             Dim coilId As Integer = Convert.ToInt32(reader("Id"), CultureInfo.InvariantCulture)
-                            If addedCoilIds.Contains(coilId) Then
+                            Dim installation As CLCoilInstallationType
+                            If Not [Enum].TryParse(Convert.ToString(reader("InstallationType")), True, installation) Then
+                                installation = CLCoilInstallationType.Internal
+                            End If
+
+                            Dim relationKey As String = coilId.ToString(CultureInfo.InvariantCulture) & ":" & installation.ToString()
+                            If addedRelations.Contains(relationKey) Then
                                 Continue While
                             End If
 
@@ -144,7 +153,7 @@ Public Class CLCoilPerformanceCalculator
                                 .Id = coilId,
                                 .Name = Convert.ToString(reader("Name")),
                                 .Mode = mode,
-                                .Source = CLCoilPerformanceSource.Standard,
+                                .Installation = installation,
                                 .Length = Convert.ToInt32(reader("Length"), CultureInfo.InvariantCulture),
                                 .Height = Convert.ToInt32(reader("Height"), CultureInfo.InvariantCulture),
                                 .NumberOfRows = Convert.ToInt32(reader("NumberOfRows"), CultureInfo.InvariantCulture),
@@ -154,7 +163,7 @@ Public Class CLCoilPerformanceCalculator
                                 .HeaderType = CLCOHeaderType._3_4
                             })
 
-                            addedCoilIds.Add(coilId)
+                            addedRelations.Add(relationKey)
                         End While
                     End Using
                 End Using
@@ -170,6 +179,15 @@ Public Class CLCoilPerformanceCalculator
         Using command As SqlCeCommand = connection.CreateCommand()
             command.CommandText = "SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = @TableName"
             command.Parameters.Add(New SqlCeParameter("@TableName", tableName))
+            Return Convert.ToInt32(command.ExecuteScalar(), CultureInfo.InvariantCulture) > 0
+        End Using
+    End Function
+
+    Private Shared Function TableColumnExists(connection As SqlCeConnection, tableName As String, columnName As String) As Boolean
+        Using command As SqlCeCommand = connection.CreateCommand()
+            command.CommandText = "SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = @TableName AND COLUMN_NAME = @ColumnName"
+            command.Parameters.Add(New SqlCeParameter("@TableName", tableName))
+            command.Parameters.Add(New SqlCeParameter("@ColumnName", columnName))
             Return Convert.ToInt32(command.ExecuteScalar(), CultureInfo.InvariantCulture) > 0
         End Using
     End Function
@@ -224,7 +242,7 @@ Public Class CLCoilPerformanceCalculator
         coils.Add(New CLCoilDefinition With {
             .Name = String.Format("Standard {0} {1}x{2}", mode, length, height),
             .Mode = mode,
-            .Source = CLCoilPerformanceSource.Standard,
+            .Installation = CLCoilInstallationType.Internal,
             .Length = length,
             .Height = height,
             .NumberOfRows = rows,
@@ -243,12 +261,12 @@ Public Class CLCoilPerformanceCalculator
         circuits As Integer,
         finSpacing As Double,
         headerType As CLCOHeaderType,
-        Optional source As CLCoilPerformanceSource = CLCoilPerformanceSource.Standard) As CLCoilDefinition
+        Optional installation As CLCoilInstallationType = CLCoilInstallationType.Internal) As CLCoilDefinition
 
         Return New CLCoilDefinition With {
             .Name = name,
             .Mode = mode,
-            .Source = source,
+            .Installation = installation,
             .Length = length,
             .Height = height,
             .NumberOfRows = rows,

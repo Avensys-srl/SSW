@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root xmlns:ns1="urn:schemas-microsoft-com:xml-msdata" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   
   <xs:schema id="root">
@@ -428,5 +428,8 @@
   <data name="Glic_Prop" xml:space="preserve"><value>Пропиленгликол</value></data>
   <data name="MainForm_WinterSummer" xml:space="preserve"><value>Лято / Зима</value></data>
   <data name="MainForm_SummerEnable" xml:space="preserve"><value>Активирай лято</value></data>
+  <data name="MainForm_Menu_Option_Language_Swedish" xml:space="preserve"><value>Svenska</value></data>
+  <data name="MainForm_CoilPerformance_Installation" xml:space="preserve"><value>Монтаж</value></data>
+  <data name="MainForm_CoilPerformance_Internal" xml:space="preserve"><value>Вътрешна</value></data>
+  <data name="MainForm_CoilPerformance_ExternalInstallation" xml:space="preserve"><value>Външна</value></data>
 </root>
-

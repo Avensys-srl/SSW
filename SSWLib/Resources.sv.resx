@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root xmlns:ns1="urn:schemas-microsoft-com:xml-msdata" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  
   <xs:schema id="root">
     <xs:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xs:element name="root" ns1:IsDataSet="true">
@@ -81,514 +80,612 @@
     <value>@@PerformancesAccordanceWith</value>
   </data>
   <data name="AirflowPressure" xml:space="preserve">
-    <value>Luftstrøm/tryk</value>
+    <value>Luftflode / Tryck</value>
   </data>
   <data name="CO2Level" xml:space="preserve">
-    <value>CO2 niveau</value>
+    <value>CO2-niva</value>
   </data>
   <data name="CO2Level_AddToReport" xml:space="preserve">
-    <value>Tilføj til rapport</value>
+    <value>Lagg till i rapport</value>
   </data>
   <data name="CO2Level_Parameters" xml:space="preserve">
-    <value>Parametre</value>
+    <value>Parametrar</value>
   </data>
   <data name="CO2Level_Parameters_Af_area" xml:space="preserve">
-    <value>Luftstrøm pr. område</value>
+    <value>Luftflode per area</value>
   </data>
   <data name="CO2Level_Parameters_Af_demand" xml:space="preserve">
-    <value>Efterspurgt luftstrøm</value>
+    <value>Begart luftflode</value>
   </data>
   <data name="CO2Level_Parameters_Af_person" xml:space="preserve">
-    <value>Luftstrøm per person</value>
+    <value>Luftflode per person</value>
   </data>
   <data name="CO2Level_Parameters_Af_set" xml:space="preserve">
-    <value>Indstil luftstrøm</value>
+    <value>Inst?llt luftflode</value>
   </data>
   <data name="CO2Level_Parameters_CalcMet" xml:space="preserve">
-    <value>Beregningsmetode</value>
+    <value>Berakningsmetod</value>
   </data>
   <data name="CO2Level_Parameters_CalcMet_Fixed_Af" xml:space="preserve">
-    <value>Fast flowhastighed</value>
+    <value>Fast luftflode</value>
   </data>
   <data name="CO2Level_Parameters_CalcMet_MaxCO2" xml:space="preserve">
-    <value>Maks. CO2 niveau</value>
+    <value>Max. CO2-niva</value>
   </data>
   <data name="CO2Level_Parameters_CalcMet_PersonRelated" xml:space="preserve">
-    <value>Person relateret</value>
+    <value>Personrelaterad</value>
   </data>
   <data name="CO2Level_Parameters_checkwp" xml:space="preserve">
-    <value>Tjek arbejdspunktet</value>
+    <value>Kontrollera arbetspunkt</value>
   </data>
   <data name="CO2Level_Parameters_ExtCO2" xml:space="preserve">
-    <value>Udendørs CO2-niveau</value>
+    <value>Utomhus CO2-niva</value>
   </data>
   <data name="CO2Level_Parameters_MaxCO2" xml:space="preserve">
-    <value>Maks. CO2 niveau</value>
+    <value>Max. CO2-niva</value>
   </data>
   <data name="CO2Level_Parameters_StandardPreset" xml:space="preserve">
-    <value>Standard forudindstilling</value>
+    <value>Standardforinstallning</value>
   </data>
   <data name="CO2Level_Parameters_StandardPreset_01" xml:space="preserve">
     <value>Ingen</value>
   </data>
   <data name="CO2Level_Parameters_StandardPreset_02" xml:space="preserve">
-    <value>Bygningsbulletin 101 : Max 1000 ppm CO2</value>
+    <value>Building bulletin 101 : Max 1000 ppm CO2</value>
   </data>
   <data name="CO2Level_Parameters_StandardPreset_03" xml:space="preserve">
-    <value>EN15251 kat I,B1: 10 l/s pers &amp; 0,5 l/s m2</value>
+    <value>EN15251 cat I,B1: 10 l/s pers &amp; 0,5 l/s m2</value>
   </data>
   <data name="CO2Level_Parameters_StandardPreset_04" xml:space="preserve">
-    <value>EN15251 kat I,B2: 10 l/s pers &amp; 1,0 l/s m2</value>
+    <value>EN15251 cat I,B2: 10 l/s pers &amp; 1,0 l/s m2</value>
   </data>
   <data name="CO2Level_Parameters_StandardPreset_05" xml:space="preserve">
-    <value>EN15251 kat I,B3: 10 l/s pers &amp; 2,0 l/s m2</value>
+    <value>EN15251 cat I,B3: 10 l/s pers &amp; 2,0 l/s m2</value>
   </data>
   <data name="CO2Level_Parameters_StandardPreset_06" xml:space="preserve">
-    <value>EN15251 kat II,B1: 7 l/s pers &amp; 0,35 l/s m2</value>
+    <value>EN15251 cat II,B1: 7 l/s pers &amp; 0,35 l/s m2</value>
   </data>
   <data name="CO2Level_Parameters_StandardPreset_07" xml:space="preserve">
-    <value>EN15251 kat II,B2: 7 l/s pers &amp; 0,7 l/s m2</value>
+    <value>EN15251 cat II,B2: 7 l/s pers &amp; 0,7 l/s m2</value>
   </data>
   <data name="CO2Level_Parameters_StandardPreset_08" xml:space="preserve">
-    <value>EN15251 kat II,B3: 7 l/s pers &amp; 1,4 l/s m2</value>
+    <value>EN15251 cat II,B3: 7 l/s pers &amp; 1,4 l/s m2</value>
   </data>
   <data name="CO2Level_Parameters_StandardPreset_09" xml:space="preserve">
-    <value>EN15251 kat III,B1: 4 l/s pers &amp; 0,2 l/s m2</value>
+    <value>EN15251 cat III,B1: 4 l/s pers &amp; 0,2 l/s m2</value>
   </data>
   <data name="CO2Level_Parameters_StandardPreset_10" xml:space="preserve">
-    <value>EN15251 kat III,B2: 4 l/s pers &amp; 0,4 l/s m2</value>
+    <value>EN15251 cat III,B2: 4 l/s pers &amp; 0,4 l/s m2</value>
   </data>
   <data name="CO2Level_Parameters_StandardPreset_11" xml:space="preserve">
-    <value>EN15251 kat III,B3: 4 l/s pers &amp; 0,8 l/s m2</value>
+    <value>EN15251 cat III,B3: 4 l/s pers &amp; 0,8 l/s m2</value>
   </data>
   <data name="CO2Level_Parameters_StandardPreset_12" xml:space="preserve">
-    <value>EN15251 kat I: C02 max 700 ppm</value>
+    <value>EN15251 cat I: C02 max 700 ppm</value>
   </data>
   <data name="CO2Level_Parameters_StandardPreset_13" xml:space="preserve">
-    <value>EN15251 kat II: C02 max 850 ppm</value>
+    <value>EN15251 cat II: C02 max 850 ppm</value>
   </data>
   <data name="CO2Level_Parameters_StandardPreset_14" xml:space="preserve">
-    <value>EN15251 kat III: C02 max 1150 ppm</value>
+    <value>EN15251 cat III: C02 max 1150 ppm</value>
   </data>
   <data name="CO2Level_PeriodOfTime" xml:space="preserve">
-    <value>Tidsrum</value>
+    <value>Tidsperiod</value>
   </data>
   <data name="CO2Level_Room" xml:space="preserve">
-    <value>Værelse</value>
+    <value>Rum</value>
   </data>
   <data name="CO2Level_Room_Height" xml:space="preserve">
-    <value>Højde</value>
+    <value>Hojd</value>
   </data>
   <data name="CO2Level_Room_Length" xml:space="preserve">
-    <value>Længde</value>
+    <value>Langd</value>
   </data>
   <data name="CO2Level_Room_Witdh" xml:space="preserve">
-    <value>Witdh</value>
+    <value>Bredd</value>
   </data>
   <data name="CO2Level_Usage" xml:space="preserve">
-    <value>Brug</value>
+    <value>Anvandning</value>
   </data>
   <data name="CO2Level_Usage_Break" xml:space="preserve">
-    <value>Pause</value>
+    <value>Paus</value>
   </data>
   <data name="CO2Level_Usage_CO2prod" xml:space="preserve">
-    <value>CO2 produktion</value>
+    <value>CO2-produktion</value>
   </data>
   <data name="CO2Level_Usage_LevelAct" xml:space="preserve">
-    <value>Aktivitetsniveau</value>
+    <value>Aktivitetsniva</value>
   </data>
   <data name="CO2Level_Usage_People" xml:space="preserve">
-    <value>Mennesker</value>
+    <value>Personer</value>
   </data>
   <data name="CO2Level_Usage_Period" xml:space="preserve">
-    <value>Periode</value>
+    <value>Period</value>
   </data>
   <data name="CO2Level_Usage_Presence" xml:space="preserve">
-    <value>Tilstedeværelse</value>
+    <value>Narvaro</value>
   </data>
   <data name="CommercialSheet" xml:space="preserve">
-    <value>Handelsblad</value>
+    <value>Kommersiellt datablad</value>
   </data>
   <data name="ElectricPowerInput" xml:space="preserve">
-    <value>Elektrisk strømindgang</value>
+    <value>Elektrisk effekt</value>
   </data>
   <data name="ExternalLeakage" xml:space="preserve">
-    <value>Ekstern lækage</value>
+    <value>Externt lackage</value>
   </data>
   <data name="InternalLeakage" xml:space="preserve">
-    <value>Intern lækage</value>
+    <value>Internt lackage</value>
   </data>
   <data name="IOM" xml:space="preserve">
     <value>IOM</value>
   </data>
-  <data name="Item_Code" xml:space="preserve">
-    <value>Varekodning</value>
-  </data>
-  <data name="Legal_Notice" xml:space="preserve">
-    <value>Juridisk meddelelse: Dataene er testet ved specifikke driftsbetingelser i overensstemmelse med de ovennævnte standarder. Den reelle situation kan afvige fra den normative. De resterende data er ekstrapoleret. Hvis installationen er særligt følsom over for støjdata, bedes du kontakte os (softwaren er ikke certificeret). Breakout-beregningen udføres i henhold til standarden ASHRAE Handbook - HVAC Applications, Kapitel 47.</value>
-  </data>
   <data name="MainForm" xml:space="preserve">
-    <value>Forestillinger</value>
+    <value>Prestanda</value>
   </data>
   <data name="MainForm_AirFlow" xml:space="preserve">
-    <value>Luftstrøm</value>
+    <value>Luftflode</value>
   </data>
   <data name="MainForm_CantSaveFile" xml:space="preserve">
-    <value>Filen kan ikke gemmes</value>
+    <value>Kan inte spara filen</value>
   </data>
   <data name="MainForm_Certification" xml:space="preserve">
-    <value>Certificering</value>
+    <value>Certifiering</value>
   </data>
   <data name="MainForm_Close" xml:space="preserve">
-    <value>Tæt</value>
+    <value>Stang</value>
   </data>
   <data name="MainForm_Date" xml:space="preserve">
-    <value>Dato</value>
+    <value>Datum</value>
   </data>
   <data name="MainForm_Efficiency" xml:space="preserve">
-    <value>Effektivitet</value>
+    <value>Verkningsgrad</value>
   </data>
   <data name="MainForm_ElectricalPerformances" xml:space="preserve">
-    <value>Elektriske præstationer</value>
+    <value>Elektriska prestanda</value>
   </data>
   <data name="MainForm_ExhaustOutletTemperature" xml:space="preserve">
-    <value>Udstødningsudtag Temp.</value>
+    <value>Avluft ut temp.</value>
   </data>
   <data name="MainForm_FileSaved" xml:space="preserve">
-    <value>Filen er gemt</value>
+    <value>Fil sparad</value>
   </data>
   <data name="MainForm_FreshInletTemperature" xml:space="preserve">
-    <value>Frisk indløbstemp.</value>
+    <value>Uteluft in temp.</value>
   </data>
   <data name="MainForm_GridSAP_Date" xml:space="preserve">
-    <value>Dato</value>
+    <value>Date</value>
   </data>
   <data name="MainForm_GridSAP_EnergySavingTrustBestPracticePerformanceCompliant" xml:space="preserve">
-    <value>Energibesparende tillid er i overensstemmelse med bedste praksis</value>
+    <value>Uppfyller Energy Saving Trust Best Practice Performance</value>
   </data>
   <data name="MainForm_GridSAP_EstimatedSAPTestTable" xml:space="preserve">
-    <value>Estimeret SAP-testtabel</value>
+    <value>Uppskattad SAP-testtabell</value>
   </data>
   <data name="MainForm_GridSAP_ExhaustTerminalConfiguration" xml:space="preserve">
-    <value>Konfiguration af udstødningsterminal</value>
+    <value>Konfiguration av avluftsutlopp</value>
   </data>
   <data name="MainForm_GridSAP_HeatExchangeEffiency" xml:space="preserve">
-    <value>Varmevekslingseffektivitet</value>
+    <value>Varmevaxlarens verkningsgrad</value>
   </data>
   <data name="MainForm_GridSAP_RegulationLevel" xml:space="preserve">
-    <value>Reguleringsniveau</value>
+    <value>Reglerniva</value>
   </data>
   <data name="MainForm_GridSAP_SpecificFanPower" xml:space="preserve">
-    <value>Specifik blæsereffekt</value>
+    <value>Specifik flakteffekt</value>
   </data>
   <data name="MainForm_GridSAP_TotalExhaustFlowRate" xml:space="preserve">
-    <value>Samlet udstødningsflowhastighed</value>
+    <value>Totalt franluftsflode</value>
   </data>
   <data name="MainForm_GridSAP_TotalSupplyFlowRate" xml:space="preserve">
-    <value>Samlet forsyningsflowhastighed</value>
+    <value>Totalt tilluftsflode</value>
   </data>
   <data name="MainForm_GridSAP_UnitSelected" xml:space="preserve">
-    <value>Enhed valgt</value>
+    <value>Vald enhet</value>
   </data>
   <data name="MainForm_HeatExchangerPerformances" xml:space="preserve">
-    <value>Varmevekslerydelser</value>
+    <value>Varmevaxlarprestanda</value>
   </data>
   <data name="MainForm_HeatTransferred" xml:space="preserve">
-    <value>Varme overført</value>
+    <value>Overford varme</value>
   </data>
   <data name="MainForm_InputData" xml:space="preserve">
-    <value>Input data</value>
+    <value>Indata</value>
   </data>
   <data name="MainForm_LatentHeat" xml:space="preserve">
     <value>Latent varme</value>
   </data>
   <data name="MainForm_MaxPressure" xml:space="preserve">
-    <value>Max tryk</value>
+    <value>Maxtryck</value>
   </data>
   <data name="MainForm_Menu_About" xml:space="preserve">
     <value>Om</value>
   </data>
   <data name="MainForm_Menu_File" xml:space="preserve">
-    <value>Fil</value>
+    <value>Arkiv</value>
   </data>
   <data name="MainForm_Menu_File_Exit" xml:space="preserve">
-    <value>Afslut</value>
+    <value>Avsluta</value>
   </data>
   <data name="MainForm_Menu_File_GenerateReport" xml:space="preserve">
-    <value>Generer rapport</value>
+    <value>Skapa rapport</value>
   </data>
   <data name="MainForm_Menu_File_Open" xml:space="preserve">
-    <value>Åben</value>
+    <value>Oppna</value>
   </data>
   <data name="MainForm_Menu_Option" xml:space="preserve">
-    <value>Mulighed</value>
+    <value>Alternativ</value>
   </data>
   <data name="MainForm_Menu_Option_Language" xml:space="preserve">
-    <value>Sprog</value>
+    <value>Språk</value>
   </data>
   <data name="MainForm_Menu_Option_Language_Bulgarian" xml:space="preserve">
-    <value>Български</value>
+    <value>Bulgariska</value>
   </data>
   <data name="MainForm_Menu_Option_Language_Deutsch" xml:space="preserve">
-    <value>Deutsch</value>
+    <value>Tyska</value>
   </data>
   <data name="MainForm_Menu_Option_Language_Dutch" xml:space="preserve">
-    <value>Nederlands</value>
+    <value>Nederlandska</value>
   </data>
   <data name="MainForm_Menu_Option_Language_English" xml:space="preserve">
-    <value>English</value>
+    <value>Engelska</value>
   </data>
   <data name="MainForm_Menu_Option_Language_Français" xml:space="preserve">
-    <value>Français</value>
+    <value>Franska</value>
   </data>
   <data name="MainForm_Menu_Option_Language_Italian" xml:space="preserve">
-    <value>Italiano</value>
+    <value>Italienska</value>
   </data>
   <data name="MainForm_Menu_Option_Language_Polish" xml:space="preserve">
-    <value>Polski</value>
+    <value>Polska</value>
   </data>
   <data name="MainForm_Menu_Option_Language_Romanian" xml:space="preserve">
-    <value>Română</value>
+    <value>Rumänska</value>
   </data>
   <data name="MainForm_Menu_Option_Language_Slovenian" xml:space="preserve">
-    <value>Slovenščina</value>
+    <value>Slovenska</value>
   </data>
   <data name="MainForm_Menu_Option_SelectMode" xml:space="preserve">
-    <value>Vælg tilstand</value>
+    <value>Valj lage</value>
   </data>
   <data name="MainForm_Menu_Option_SelectMode_Checking" xml:space="preserve">
-    <value>Tjekker</value>
+    <value>Kontroll</value>
   </data>
   <data name="MainForm_Menu_Option_SelectMode_Design" xml:space="preserve">
-    <value>Design</value>
+    <value>Dimensionering</value>
   </data>
   <data name="MainForm_Menu_Option_Unit" xml:space="preserve">
-    <value>Enhed</value>
+    <value>Enhet</value>
   </data>
   <data name="MainForm_Menu_Option_Unit_IP" xml:space="preserve">
-    <value>IP</value>
+    <value>I.P.</value>
   </data>
   <data name="MainForm_Menu_Option_Unit_SI" xml:space="preserve">
-    <value>SI</value>
-  </data>
-  <data name="MainForm_MoistureRecovery" xml:space="preserve">
-    <value>Fugtgenvinding</value>
+    <value>S.I.</value>
   </data>
   <data name="MainForm_PassiveHouse" xml:space="preserve">
     <value>Passivhus</value>
   </data>
   <data name="MainForm_PassiveHouseElectricalEfficienty" xml:space="preserve">
-    <value>Passivhus El. Eff.</value>
+    <value>Passivhus el-effektivitet</value>
   </data>
   <data name="MainForm_Performance" xml:space="preserve">
-    <value>Ydeevne</value>
+    <value>Prestanda</value>
   </data>
   <data name="MainForm_Performances" xml:space="preserve">
-    <value>Forestillinger</value>
+    <value>Prestanda</value>
   </data>
   <data name="MainForm_PowerInput" xml:space="preserve">
-    <value>Strømindgang</value>
+    <value>Inmatad effekt</value>
   </data>
   <data name="MainForm_PowerSupply" xml:space="preserve">
-    <value>Strømforsyning</value>
+    <value>Effektforbrukning</value>
   </data>
   <data name="MainForm_Pressure" xml:space="preserve">
-    <value>Tryk</value>
+    <value>Tryck</value>
   </data>
   <data name="MainForm_RegulationLevel" xml:space="preserve">
-    <value>Regulerende niveau</value>
+    <value>Reglerniva</value>
   </data>
   <data name="MainForm_ReturnInletTemperature" xml:space="preserve">
-    <value>Returindløbstemp.</value>
+    <value>Franluft in temp.</value>
   </data>
   <data name="MainForm_RHExhaustOutletTemperature" xml:space="preserve">
-    <value>RH</value>
+    <value>R.F.</value>
   </data>
   <data name="MainForm_RHFreshInletTemperature" xml:space="preserve">
-    <value>RH</value>
+    <value>R.F.</value>
   </data>
   <data name="MainForm_RHReturnInletTemperature" xml:space="preserve">
-    <value>RH</value>
+    <value>R.F.</value>
   </data>
   <data name="MainForm_RHSupplyOutletTemperature" xml:space="preserve">
-    <value>RH</value>
+    <value>R.F.</value>
   </data>
   <data name="MainForm_SEL" xml:space="preserve">
     <value>SPI</value>
   </data>
   <data name="MainForm_SelectPdfFile" xml:space="preserve">
-    <value>Vælg en pdf-fil</value>
+    <value>Valj en PDF-fil</value>
   </data>
   <data name="MainForm_SensibleHeat" xml:space="preserve">
-    <value>Fornuftig varme</value>
+    <value>Sensibel varme</value>
   </data>
   <data name="MainForm_SFP" xml:space="preserve">
     <value>SFP</value>
   </data>
-  <data name="MainForm_ShowERPArea" xml:space="preserve">
-    <value>Vis ERP 2018-området</value>
-  </data>
   <data name="MainForm_ShowPassiveHouseArea" xml:space="preserve">
-    <value>Vis passivhusområdet</value>
+    <value>Visa passivhusomrade</value>
   </data>
   <data name="MainForm_ShowSELArea" xml:space="preserve">
-    <value>Vis SEL-området</value>
+    <value>Visa SEL-omrade</value>
   </data>
   <data name="MainForm_ShowSFPArea" xml:space="preserve">
-    <value>Vis SFP-område</value>
+    <value>Visa SFP-omrade</value>
   </data>
   <data name="MainForm_SingleBranch" xml:space="preserve">
-    <value>enkelt gren</value>
-  </data>
-  <data name="MainForm_Summer" xml:space="preserve">
-    <value>Sommer</value>
+    <value>en gren</value>
   </data>
   <data name="MainForm_SupplyOutletTemperature" xml:space="preserve">
-    <value>Forsyningsudløbstemp.</value>
+    <value>Tilluft ut temp.</value>
   </data>
   <data name="MainForm_TemperatureConditionsAndUmidity" xml:space="preserve">
-    <value>Temperaturforhold og luftfugtighed</value>
+    <value>Temperatur- och fuktforhallanden</value>
   </data>
   <data name="MainForm_Unit" xml:space="preserve">
-    <value>Enhed</value>
+    <value>Enhet</value>
   </data>
   <data name="MainForm_UnitSelected" xml:space="preserve">
-    <value>Enhed valgt</value>
+    <value>Vald enhet</value>
   </data>
   <data name="MainForm_UnitSelection" xml:space="preserve">
-    <value>Valg af enhed</value>
+    <value>Val av enhet</value>
   </data>
   <data name="MainForm_UpdateSAPTable" xml:space="preserve">
-    <value>Opdater SAP-tabel</value>
+    <value>Uppdatera SAP-tabell</value>
   </data>
   <data name="MainForm_WaterProduced" xml:space="preserve">
-    <value>Vand produceret</value>
-  </data>
-  <data name="MainForm_Winter" xml:space="preserve">
-    <value>Vinter</value>
+    <value>Producerat vatten</value>
   </data>
   <data name="No" xml:space="preserve">
-    <value>Ingen</value>
+    <value>Nej</value>
   </data>
   <data name="NoiseLevel" xml:space="preserve">
-    <value>Støjniveau</value>
+    <value>Ljudniva</value>
   </data>
   <data name="Page" xml:space="preserve">
-    <value>Side</value>
+    <value>Sida</value>
   </data>
   <data name="PDF_HeatExchangerPerformances" xml:space="preserve">
-    <value>Varmevekslerydelser</value>
+    <value>Varmevaxlarprestanda</value>
   </data>
   <data name="PDF_RegLev" xml:space="preserve">
-    <value>Reg. Lev.</value>
+    <value>Reg. niva</value>
   </data>
   <data name="PDF_TemperatureConditions" xml:space="preserve">
-    <value>Temperaturforhold</value>
+    <value>Temperaturforhallanden</value>
   </data>
   <data name="PDF_WorkingArea" xml:space="preserve">
-    <value>Arbejdsområde</value>
+    <value>Arbetsomrade</value>
   </data>
   <data name="PDF_WorkingPoint" xml:space="preserve">
-    <value>Arbejdspunkt</value>
+    <value>Arbetspunkt</value>
   </data>
   <data name="PerformancesAccordanceWith" xml:space="preserve">
-    <value>Alle forestillinger er udført i overensstemmelse med:</value>
+    <value>Alla prestanda har beraknats enligt:</value>
   </data>
   <data name="PleaseWaitForm_Message" xml:space="preserve">
-    <value>Vent venligst et par sekunder...</value>
-  </data>
-  <data name="RegLev_Note" xml:space="preserve">
-    <value>I nogle tilfælde er der muligvis ikke et lineært forhold mellem reguleringsniveauet og det på enheden</value>
+    <value>Vanta nagra sekunder...</value>
   </data>
   <data name="Release" xml:space="preserve">
-    <value>Softwareudgivelse</value>
+    <value>Programvaruversion</value>
   </data>
   <data name="SaveCommercialSheet" xml:space="preserve">
-    <value>Gem reklameark</value>
+    <value>Spara kommersiellt datablad</value>
   </data>
   <data name="SaveIOM" xml:space="preserve">
-    <value>Gem IOM</value>
+    <value>Spara IOM</value>
   </data>
   <data name="Series" xml:space="preserve">
     <value>Serie</value>
   </data>
   <data name="SoundInlet" xml:space="preserve">
-    <value>Fjord</value>
+    <value>Inlopp</value>
   </data>
   <data name="SoundOutlet" xml:space="preserve">
-    <value>Udtag</value>
+    <value>Utlopp</value>
   </data>
   <data name="SoundPower" xml:space="preserve">
-    <value>Lydstyrke</value>
+    <value>Ljudeffekt</value>
   </data>
   <data name="Sound_Breakout" xml:space="preserve">
-    <value>Udbrud</value>
+    <value>Genomstralat ljud</value>
   </data>
   <data name="Sound_Exhaust" xml:space="preserve">
-    <value>Udstødning</value>
+    <value>Avluft</value>
   </data>
   <data name="Sound_Fresh" xml:space="preserve">
-    <value>Frisk</value>
+    <value>Uteluft</value>
   </data>
   <data name="Sound_Return" xml:space="preserve">
-    <value>Vend tilbage</value>
+    <value>Franluft</value>
   </data>
   <data name="Sound_Supply" xml:space="preserve">
-    <value>Levere</value>
+    <value>Tilluft</value>
   </data>
   <data name="Sound_Total" xml:space="preserve">
-    <value>i alt</value>
+    <value>Totalt</value>
   </data>
   <data name="Yes" xml:space="preserve">
     <value>Ja</value>
   </data>
-<data name="MainForm_Menu_Option_Language_Hungarian" xml:space="preserve"><value>Magyar</value></data><data name="MainForm_Menu_Option_Language_Danish" xml:space="preserve"><value>Dansk</value></data>
-  <data name="MainForm_CoilPerformance_AirPressureApplied" xml:space="preserve"><value>Fladens lufttryktab anvendt</value></data>
-  <data name="MainForm_CoilPerformance_Case" xml:space="preserve"><value>Tilfælde</value></data>
-  <data name="MainForm_CoilPerformance_Circuits" xml:space="preserve"><value>Kredse</value></data>
-  <data name="MainForm_CoilPerformance_Coil" xml:space="preserve"><value>Flade</value></data>
-  <data name="MainForm_CoilPerformance_CoolingIn" xml:space="preserve"><value>Køling ind [C]</value></data>
-  <data name="MainForm_CoilPerformance_CoolingOut" xml:space="preserve"><value>Køling ud [C]</value></data>
-  <data name="MainForm_CoilPerformance_Enable" xml:space="preserve"><value>Aktiver fladeberegning</value></data>
-  <data name="MainForm_CoilPerformance_EnableGroup" xml:space="preserve"><value>Beregning af vandflade</value></data>
-  <data name="MainForm_CoilPerformance_External" xml:space="preserve"><value>Ekstern</value></data>
-  <data name="MainForm_CoilPerformance_FinSpacing" xml:space="preserve"><value>Finneafstand [mm]</value></data>
-  <data name="MainForm_CoilPerformance_Fluid" xml:space="preserve"><value>Væske og vandtemperaturer</value></data>
-  <data name="MainForm_CoilPerformance_FluidType" xml:space="preserve"><value>Væske</value></data>
-  <data name="MainForm_CoilPerformance_Geometry" xml:space="preserve"><value>Geometri</value></data>
-  <data name="MainForm_CoilPerformance_Glycol" xml:space="preserve"><value>Glykol [%]</value></data>
-  <data name="MainForm_CoilPerformance_HeatingIn" xml:space="preserve"><value>Varme ind [C]</value></data>
-  <data name="MainForm_CoilPerformance_HeatingOut" xml:space="preserve"><value>Varme ud [C]</value></data>
-  <data name="MainForm_CoilPerformance_Height" xml:space="preserve"><value>Højde [mm/rør]</value></data>
-  <data name="MainForm_CoilPerformance_HeightMm" xml:space="preserve"><value>mm</value></data>
-  <data name="MainForm_CoilPerformance_HeightTubes" xml:space="preserve"><value>rør</value></data>
-  <data name="MainForm_CoilPerformance_Length" xml:space="preserve"><value>Længde [mm]</value></data>
-  <data name="MainForm_CoilPerformance_OK" xml:space="preserve"><value>OK</value></data>
-  <data name="MainForm_CoilPerformance_ResultAirOut" xml:space="preserve"><value>Luft ud [C]</value></data>
-  <data name="MainForm_CoilPerformance_ResultCapacity" xml:space="preserve"><value>Kapacitet [W]</value></data>
-  <data name="MainForm_CoilPerformance_ResultCond" xml:space="preserve"><value>Kond. [l/h]</value></data>
-  <data name="MainForm_CoilPerformance_ResultDP" xml:space="preserve"><value>DP [Pa]</value></data>
-  <data name="MainForm_CoilPerformance_ResultFace" xml:space="preserve"><value>Front hast. [m/s]</value></data>
-  <data name="MainForm_CoilPerformance_ResultMode" xml:space="preserve"><value>Tilstand</value></data>
-  <data name="MainForm_CoilPerformance_ResultRHOut" xml:space="preserve"><value>R.F. ud [%]</value></data>
-  <data name="MainForm_CoilPerformance_ResultSensible" xml:space="preserve"><value>Sensible [W]</value></data>
-  <data name="MainForm_CoilPerformance_ResultStatus" xml:space="preserve"><value>Status</value></data>
-  <data name="MainForm_CoilPerformance_Rows" xml:space="preserve"><value>Rækker</value></data>
-  <data name="MainForm_CoilPerformance_Selection" xml:space="preserve"><value>Valg af flade</value></data>
-  <data name="MainForm_CoilPerformance_Standard" xml:space="preserve"><value>Standard</value></data>
-  <data name="MainForm_CoilPerformance_StandardCustomized" xml:space="preserve"><value>Tilpasset standard</value></data>
-  <data name="MainForm_CoilPerformance_Tab" xml:space="preserve"><value>Vandflader</value></data>
-  <data name="MainForm_CoilPerformance_Type" xml:space="preserve"><value>Type</value></data><data name="MainForm_Menu_Option_CommercialSheetAutoSync" xml:space="preserve"><value>Automatisk synkronisering af kommercielle datablade</value></data>
-  <data name="MainForm_CoilPerformance_ResultWaterDP" xml:space="preserve"><value>Vand DP [kPa]</value></data>
-  <data name="MainForm_CoilPerformance_ResultFluidFlow" xml:space="preserve"><value>Fluid flow [l/h]</value></data>
-  <data name="MainForm_CoilPerformance_ResultFluidSpeed" xml:space="preserve"><value>Fluid speed [m/s]</value></data>
-  <data name="Water" xml:space="preserve"><value>Vand</value></data>
-  <data name="Glic_Etil" xml:space="preserve"><value>Ethylenglykol</value></data>
-  <data name="Glic_Prop" xml:space="preserve"><value>Propylenglykol</value></data>
-  <data name="MainForm_WinterSummer" xml:space="preserve"><value>Sommer / Vinter</value></data>
-  <data name="MainForm_SummerEnable" xml:space="preserve"><value>Aktiver sommer</value></data>
-  <data name="MainForm_Menu_Option_Language_Swedish" xml:space="preserve"><value>Svenska</value></data>
+  <data name="Legal_Notice" xml:space="preserve">
+    <value>Juridiskt meddelande: Data har provats vid specifika driftpunkter enligt ovan namnda standarder. Det verkliga fallet kan skilja sig fran normfallet. Ovriga data har extrapolerats. Om installationen ar sarskilt kanslig for ljuddata, kontakta oss (programvaran ar inte certifierad). Berakningen av genomstralat ljud utforts enligt ASHRAE Handbook - HVAC Applications, kapitel 47.</value>
+  </data>
+  <data name="Item_Code" xml:space="preserve">
+    <value>Artikelkodning</value>
+  </data>
+  <data name="RegLev_Note" xml:space="preserve">
+    <value>I vissa fall finns det inte ett linjart samband mellan reglernivan och nivan pa enheten</value>
+  </data>
+  <data name="MainForm_ShowERPArea" xml:space="preserve">
+    <value>Visa ERP 2018-omrade</value>
+  </data>
+  <data name="MainForm_MoistureRecovery" xml:space="preserve">
+    <value>Fuktåtervinning</value>
+  </data>
+  <data name="MainForm_Summer" xml:space="preserve">
+    <value>Sommar</value>
+  </data>
+  <data name="MainForm_Winter" xml:space="preserve">
+    <value>Vinter</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Hungarian" xml:space="preserve">
+    <value>Ungerska</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Danish" xml:space="preserve">
+    <value>Danska</value>
+  </data>
+  <data name="MainForm_Menu_Option_CommercialSheetAutoSync" xml:space="preserve">
+    <value>Automatisk synkronisering av datablad</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Tab" xml:space="preserve">
+    <value>Vattenbatterier</value>
+  </data>
+  <data name="MainForm_CoilPerformance_EnableGroup" xml:space="preserve">
+    <value>Beräkning av vattenbatteri</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Enable" xml:space="preserve">
+    <value>Aktivera batteriberäkning</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Selection" xml:space="preserve">
+    <value>Batterival</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Case" xml:space="preserve">
+    <value>Fall</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Standard" xml:space="preserve">
+    <value>Standard</value>
+  </data>
+  <data name="MainForm_CoilPerformance_StandardCustomized" xml:space="preserve">
+    <value>Anpassad standard</value>
+  </data>
+  <data name="MainForm_CoilPerformance_External" xml:space="preserve">
+    <value>Extern</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Type" xml:space="preserve">
+    <value>Typ</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Coil" xml:space="preserve">
+    <value>Batteri</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Fluid" xml:space="preserve">
+    <value>Fluid och vattentemperaturer</value>
+  </data>
+  <data name="MainForm_CoilPerformance_FluidType" xml:space="preserve">
+    <value>Fluid</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Glycol" xml:space="preserve">
+    <value>Glykol [%]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_CoolingIn" xml:space="preserve">
+    <value>Kallvatten in [C]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_CoolingOut" xml:space="preserve">
+    <value>Kallvatten ut [C]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_HeatingIn" xml:space="preserve">
+    <value>Varmvatten in [C]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_HeatingOut" xml:space="preserve">
+    <value>Varmvatten ut [C]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Geometry" xml:space="preserve">
+    <value>Geometri</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Length" xml:space="preserve">
+    <value>Längd [mm]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Height" xml:space="preserve">
+    <value>Höjd [mm/rör]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_HeightMm" xml:space="preserve">
+    <value>mm</value>
+  </data>
+  <data name="MainForm_CoilPerformance_HeightTubes" xml:space="preserve">
+    <value>rör</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Rows" xml:space="preserve">
+    <value>Rader</value>
+  </data>
+  <data name="MainForm_CoilPerformance_FinSpacing" xml:space="preserve">
+    <value>Lamellavstånd [mm]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Circuits" xml:space="preserve">
+    <value>Kretsar</value>
+  </data>
+  <data name="MainForm_CoilPerformance_ResultMode" xml:space="preserve">
+    <value>Läge</value>
+  </data>
+  <data name="MainForm_CoilPerformance_ResultStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="MainForm_CoilPerformance_ResultCapacity" xml:space="preserve">
+    <value>Effekt [W]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_ResultSensible" xml:space="preserve">
+    <value>Sensibel [W]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_ResultAirOut" xml:space="preserve">
+    <value>Luft ut [C]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_ResultRHOut" xml:space="preserve">
+    <value>R.F. ut [%]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_ResultCond" xml:space="preserve">
+    <value>Kond. [l/h]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_ResultDP" xml:space="preserve">
+    <value>DP [Pa]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_ResultFace" xml:space="preserve">
+    <value>Lufthast. [m/s]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="MainForm_CoilPerformance_AirPressureApplied" xml:space="preserve">
+    <value>Batteriets lufttryckfall tillämpat</value>
+  </data>
+  <data name="MainForm_CoilPerformance_ResultWaterDP" xml:space="preserve">
+    <value>Vatten-DP [kPa]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_ResultFluidFlow" xml:space="preserve">
+    <value>Fluidflöde [l/h]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_ResultFluidSpeed" xml:space="preserve">
+    <value>Fluidhast. [m/s]</value>
+  </data>
+  <data name="Water" xml:space="preserve">
+    <value>Vatten</value>
+  </data>
+  <data name="Glic_Etil" xml:space="preserve">
+    <value>Etylenglykol</value>
+  </data>
+  <data name="Glic_Prop" xml:space="preserve">
+    <value>Propylenglykol</value>
+  </data>
+  <data name="MainForm_WinterSummer" xml:space="preserve">
+    <value>Sommar / Vinter</value>
+  </data>
+  <data name="MainForm_SummerEnable" xml:space="preserve">
+    <value>Aktivera sommar</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Swedish" xml:space="preserve">
+    <value>Svenska</value>
+  </data>
   <data name="MainForm_CoilPerformance_Installation" xml:space="preserve"><value>Installation</value></data>
   <data name="MainForm_CoilPerformance_Internal" xml:space="preserve"><value>Intern</value></data>
-  <data name="MainForm_CoilPerformance_ExternalInstallation" xml:space="preserve"><value>Ekstern</value></data>
+  <data name="MainForm_CoilPerformance_ExternalInstallation" xml:space="preserve"><value>Extern</value></data>
 </root>
