@@ -391,4 +391,10 @@
   <data name="MainForm_Project_Unsaved" xml:space="preserve"><value>Trenutna izbira vsebuje neshranjene spremembe. Jih želite shraniti zdaj?</value></data>
   <data name="MainForm_Project_OpenError" xml:space="preserve"><value>Projekta izbire ni mogoče odpreti: {0}</value></data>
   <data name="MainForm_Project_SaveError" xml:space="preserve"><value>Projekta izbire ni mogoče shraniti: {0}</value></data>
+  <data name="MainForm_SelectionRegistration_Title" xml:space="preserve"><value>Tehnična izbira</value></data>
+  <data name="MainForm_SelectionRegistration_Wait" xml:space="preserve"><value>Registriranje tehnične izbire. Počakajte...</value></data>
+  <data name="MainForm_SelectionRegistration_Failed" xml:space="preserve"><value>Tehnične izbire ni bilo mogoče registrirati: {0}</value></data>
+  <data name="MainForm_SelectionRegistration_Retry" xml:space="preserve"><value>Poskusi znova</value></data>
+  <data name="MainForm_SelectionRegistration_Draft" xml:space="preserve"><value>Ustvari osnutek</value></data>
+  <data name="MainForm_SelectionRegistration_Cancel" xml:space="preserve"><value>Prekliči</value></data>
 </root>

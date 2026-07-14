@@ -28,6 +28,8 @@ Public Class CLMainForm
     Private m_CoilPerformanceLastResults As New List(Of CLCoilCalculationResult)()
     Private m_CoilPerformanceBusy As Boolean = False
     Private m_AutomaticUpdateCheckTask As Task
+    Private m_ReportRegistrationBusy As Boolean = False
+    Private ReadOnly m_SelectionApiClient As New CLSelectionApiClient()
     Private m_SummerCalculationEnabled As Boolean = True
     Private m_LastWinterThermo As termo
     Private m_LastSummerThermo As termo
@@ -1044,9 +1046,16 @@ Public Class CLMainForm
 
 #Region "====[ Generazione Report ]===="
 
-    Private Sub SaveToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsmiFile_GenerateReport.Click
-
-        Report_Generate()
+    Private Async Sub SaveToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsmiFile_GenerateReport.Click
+        If m_ReportRegistrationBusy Then Return
+        m_ReportRegistrationBusy = True
+        tsmiFile_GenerateReport.Enabled = False
+        Try
+            If Await Project_RegisterBeforeReportAsync() Then Report_Generate()
+        Finally
+            m_ReportRegistrationBusy = False
+            tsmiFile_GenerateReport.Enabled = True
+        End Try
         'sfdSaveFile.Filter = "PDF file|*.pdf"
         'sfdSaveFile.FilterIndex = 1
         'sfdSaveFile.RestoreDirectory = True

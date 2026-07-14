@@ -475,4 +475,10 @@
   <data name="MainForm_Project_Unsaved" xml:space="preserve"><value>Текущата селекция съдържа незапазени промени. Да бъдат ли запазени сега?</value></data>
   <data name="MainForm_Project_OpenError" xml:space="preserve"><value>Проектът за селекция не може да бъде отворен: {0}</value></data>
   <data name="MainForm_Project_SaveError" xml:space="preserve"><value>Проектът за селекция не може да бъде запазен: {0}</value></data>
+  <data name="MainForm_SelectionRegistration_Title" xml:space="preserve"><value>Техническа селекция</value></data>
+  <data name="MainForm_SelectionRegistration_Wait" xml:space="preserve"><value>Регистриране на техническата селекция. Моля, изчакайте...</value></data>
+  <data name="MainForm_SelectionRegistration_Failed" xml:space="preserve"><value>Техническата селекция не може да бъде регистрирана: {0}</value></data>
+  <data name="MainForm_SelectionRegistration_Retry" xml:space="preserve"><value>Повтори</value></data>
+  <data name="MainForm_SelectionRegistration_Draft" xml:space="preserve"><value>Генерирай чернова</value></data>
+  <data name="MainForm_SelectionRegistration_Cancel" xml:space="preserve"><value>Отказ</value></data>
 </root>

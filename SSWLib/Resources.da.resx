@@ -634,4 +634,10 @@
   <data name="MainForm_Project_Unsaved" xml:space="preserve"><value>Den aktuelle udvælgelse indeholder ændringer, der ikke er gemt. Gem dem nu?</value></data>
   <data name="MainForm_Project_OpenError" xml:space="preserve"><value>Udvælgelsesprojektet kunne ikke åbnes: {0}</value></data>
   <data name="MainForm_Project_SaveError" xml:space="preserve"><value>Udvælgelsesprojektet kunne ikke gemmes: {0}</value></data>
+  <data name="MainForm_SelectionRegistration_Title" xml:space="preserve"><value>Teknisk udvælgelse</value></data>
+  <data name="MainForm_SelectionRegistration_Wait" xml:space="preserve"><value>Registrerer det tekniske udvalg. Vent venligst...</value></data>
+  <data name="MainForm_SelectionRegistration_Failed" xml:space="preserve"><value>Det tekniske udvalg kunne ikke registreres: {0}</value></data>
+  <data name="MainForm_SelectionRegistration_Retry" xml:space="preserve"><value>Prøv igen</value></data>
+  <data name="MainForm_SelectionRegistration_Draft" xml:space="preserve"><value>Generer kladde</value></data>
+  <data name="MainForm_SelectionRegistration_Cancel" xml:space="preserve"><value>Annuller</value></data>
 </root>

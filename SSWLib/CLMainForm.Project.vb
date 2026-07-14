@@ -260,6 +260,95 @@ Partial Public Class CLMainForm
         End Try
     End Sub
 
+    Private Async Function Project_RegisterBeforeReportAsync() As Task(Of Boolean)
+        Do
+            Try
+                If m_ProjectDocument Is Nothing Then
+                    m_ProjectDocument = CLSelectionProjectSerializer.CreateNew(Environment.DatabaseCompatibility)
+                    m_ProjectDocument.Selection.CustomerCode = Environment.CustomerCode
+                    m_ProjectDocument.Identity.LocalDraftReference = CLSelectionInstallationStateStore.NextDraftReference()
+                End If
+                Project_CaptureForm(m_ProjectDocument)
+                Dim context As CLSelectionRegistrationContext = CLSelectionRegistrationContext.FromEnvironment(Environment)
+                Dim result As CLSelectionRegistrationResult = Await Project_RegisterSelectionAttemptAsync(context)
+                If Not String.Equals(result.SnapshotHash,
+                    m_ProjectDocument.RevisionTracking.Current.SnapshotHash,
+                    StringComparison.Ordinal) Then
+                    Throw New InvalidDataException("The registration response does not match the current technical snapshot.")
+                End If
+                If String.IsNullOrWhiteSpace(result.ResumeToken) Then
+                    Throw New InvalidDataException("The registration response does not contain the selection resume token.")
+                End If
+                CLSelectionSnapshotService.MarkRegistered(m_ProjectDocument,
+                    result.PublicReference,
+                    result.Revision,
+                    result.ResumeToken,
+                    DateTime.UtcNow)
+                Project_PersistRegisteredSelection()
+                Return True
+            Catch ex As Exception
+                If m_ProjectDocument IsNot Nothing AndAlso m_ProjectDocument.Identity IsNot Nothing AndAlso
+                    Not String.IsNullOrWhiteSpace(m_ProjectDocument.Identity.ResumeToken) Then Project_SetDirty(True)
+                Using dialog As New CLSelectionRegistrationFailureForm(
+                    Project_Text("MainForm_SelectionRegistration_Title", "Technical selection"),
+                    String.Format(Project_Text("MainForm_SelectionRegistration_Failed",
+                        "The technical selection could not be registered: {0}"), ex.Message),
+                    Project_Text("MainForm_SelectionRegistration_Retry", "Retry"),
+                    Project_Text("MainForm_SelectionRegistration_Draft", "Generate draft"),
+                    Project_Text("MainForm_SelectionRegistration_Cancel", "Cancel"))
+
+                    Select Case dialog.ShowChoice(Me)
+                        Case CLSelectionRegistrationFailureChoice.Retry
+                            Continue Do
+                        Case CLSelectionRegistrationFailureChoice.GenerateDraft
+                            Project_SetDirty(True)
+                            Return True
+                        Case Else
+                            Return False
+                    End Select
+                End Using
+            End Try
+        Loop
+    End Function
+
+    Private Async Function Project_RegisterSelectionAttemptAsync(context As CLSelectionRegistrationContext) As Task(Of CLSelectionRegistrationResult)
+        Using waitForm As New CLPleaseWaitForm()
+            waitForm.lblMessage.Text = Project_Text("MainForm_SelectionRegistration_Wait",
+                "Registering the technical selection. Please wait...")
+            waitForm.Location = New Point(Left + (Width - waitForm.Width) \ 2, Top + (Height - waitForm.Height) \ 2)
+            waitForm.ControlBox = False
+            waitForm.Show(Me)
+            waitForm.Refresh()
+            Enabled = False
+            Try
+                Return Await m_SelectionApiClient.RegisterSelectionAsync(m_ProjectDocument, context)
+            Finally
+                Enabled = True
+                waitForm.Close()
+                Activate()
+            End Try
+        End Using
+    End Function
+
+    Private Sub Project_PersistRegisteredSelection()
+        If String.IsNullOrWhiteSpace(m_ProjectFilePath) Then
+            Project_SetDirty(True)
+            Return
+        End If
+        Try
+            CLSelectionProjectSerializer.Save(m_ProjectFilePath, m_ProjectDocument)
+            Project_AddRecentFile(m_ProjectFilePath)
+            Project_SetDirty(False)
+        Catch ex As Exception
+            Project_SetDirty(True)
+            MessageBox.Show(Me,
+                String.Format(Project_Text("MainForm_Project_SaveError", "Unable to save the selection project: {0}"), ex.Message),
+                Project_Text("MainForm_Project_Title", "Technical selection"),
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Warning)
+        End Try
+    End Sub
+
     Private Sub Project_DuplicateClick(sender As Object, e As EventArgs)
         If m_ProjectDocument Is Nothing Then Return
         Project_CaptureForm(m_ProjectDocument)

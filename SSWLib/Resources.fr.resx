@@ -454,4 +454,10 @@
   <data name="MainForm_Project_Unsaved" xml:space="preserve"><value>La sélection actuelle contient des modifications non enregistrées. Les enregistrer maintenant ?</value></data>
   <data name="MainForm_Project_OpenError" xml:space="preserve"><value>Impossible d'ouvrir le projet de sélection : {0}</value></data>
   <data name="MainForm_Project_SaveError" xml:space="preserve"><value>Impossible d'enregistrer le projet de sélection : {0}</value></data>
+  <data name="MainForm_SelectionRegistration_Title" xml:space="preserve"><value>Sélection technique</value></data>
+  <data name="MainForm_SelectionRegistration_Wait" xml:space="preserve"><value>Enregistrement de la sélection technique. Veuillez patienter...</value></data>
+  <data name="MainForm_SelectionRegistration_Failed" xml:space="preserve"><value>Impossible d'enregistrer la sélection technique : {0}</value></data>
+  <data name="MainForm_SelectionRegistration_Retry" xml:space="preserve"><value>Réessayer</value></data>
+  <data name="MainForm_SelectionRegistration_Draft" xml:space="preserve"><value>Générer un brouillon</value></data>
+  <data name="MainForm_SelectionRegistration_Cancel" xml:space="preserve"><value>Annuler</value></data>
 </root>

@@ -472,4 +472,10 @@
   <data name="MainForm_Project_Unsaved" xml:space="preserve"><value>De huidige selectie bevat niet-opgeslagen wijzigingen. Nu opslaan?</value></data>
   <data name="MainForm_Project_OpenError" xml:space="preserve"><value>Het selectieproject kan niet worden geopend: {0}</value></data>
   <data name="MainForm_Project_SaveError" xml:space="preserve"><value>Het selectieproject kan niet worden opgeslagen: {0}</value></data>
+  <data name="MainForm_SelectionRegistration_Title" xml:space="preserve"><value>Technische selectie</value></data>
+  <data name="MainForm_SelectionRegistration_Wait" xml:space="preserve"><value>De technische selectie wordt geregistreerd. Even geduld...</value></data>
+  <data name="MainForm_SelectionRegistration_Failed" xml:space="preserve"><value>De technische selectie kon niet worden geregistreerd: {0}</value></data>
+  <data name="MainForm_SelectionRegistration_Retry" xml:space="preserve"><value>Opnieuw proberen</value></data>
+  <data name="MainForm_SelectionRegistration_Draft" xml:space="preserve"><value>Concept genereren</value></data>
+  <data name="MainForm_SelectionRegistration_Cancel" xml:space="preserve"><value>Annuleren</value></data>
 </root>

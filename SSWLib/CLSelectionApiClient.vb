@@ -4,6 +4,7 @@ Imports System.IO
 Imports System.Net
 Imports System.Net.Http
 Imports System.Net.Http.Headers
+Imports System.Security.Cryptography
 Imports System.Text
 Imports System.Text.Json
 Imports System.Threading
@@ -49,6 +50,15 @@ Friend NotInheritable Class CLSelectionTokenResponse
     Public Property ExpiresAt As DateTime
 End Class
 
+Public NotInheritable Class CLSelectionRegistrationResult
+    Public Property PublicReference As String
+    Public Property ReferenceDigits As String
+    Public Property Revision As Integer
+    Public Property ResumeToken As String
+    Public Property SnapshotHash As String
+    Public Property ChangeKind As String
+End Class
+
 Public NotInheritable Class CLSelectionApiClient
 
     Private Const DefaultBaseUrl As String = "https://www.avensys-srl.com/api/v1/"
@@ -81,6 +91,63 @@ Public NotInheritable Class CLSelectionApiClient
         Dim registered As CLSelectionTokenResponse = Await RegisterAsync(context, credentials.InstallationId, cancellationToken).ConfigureAwait(False)
         CLSelectionCredentialStore.SaveAccessToken(registered.AccessToken, registered.ExpiresAt)
         Return registered.AccessToken
+    End Function
+
+    Public Async Function RegisterSelectionAsync(document As CLSelectionProjectDocument,
+        context As CLSelectionRegistrationContext,
+        Optional cancellationToken As CancellationToken = Nothing) As Task(Of CLSelectionRegistrationResult)
+
+        ValidateSelectionDocument(document)
+        ValidateContext(context)
+        Dim accessToken As String = Await EnsureAccessTokenAsync(context, cancellationToken).ConfigureAwait(False)
+        Try
+            Return Await SendSelectionAsync(document, accessToken, cancellationToken).ConfigureAwait(False)
+        Catch ex As CLSelectionApiException When ex.StatusCode = HttpStatusCode.Unauthorized
+            CLSelectionCredentialStore.ClearAccessToken()
+        End Try
+        accessToken = Await EnsureAccessTokenAsync(context, cancellationToken).ConfigureAwait(False)
+        Return Await SendSelectionAsync(document, accessToken, cancellationToken).ConfigureAwait(False)
+    End Function
+
+    Private Async Function SendSelectionAsync(document As CLSelectionProjectDocument,
+        accessToken As String,
+        cancellationToken As CancellationToken) As Task(Of CLSelectionRegistrationResult)
+
+        Dim isRevision As Boolean = Not String.IsNullOrWhiteSpace(document.Identity.PublicReference)
+        Dim relativePath As String = "selections"
+        Dim operation As String = "create"
+        If Not isRevision AndAlso String.IsNullOrWhiteSpace(document.Identity.ResumeToken) Then
+            document.Identity.ResumeToken = GenerateOpaqueToken()
+        End If
+        Dim payload As New Dictionary(Of String, Object) From {
+            {"selection", document.Selection},
+            {"versions", CreateVersionsPayload(document.Versions)},
+            {"fingerprints", CreateFingerprintsPayload(document.RevisionTracking.Current)},
+            {"resume_token", document.Identity.ResumeToken}
+        }
+        If isRevision Then
+            If String.IsNullOrWhiteSpace(document.Identity.ResumeToken) Then
+                Throw New InvalidDataException("The selection project does not contain its resume token.")
+            End If
+            Dim referenceDigits As String = GetReferenceDigits(document.Identity.PublicReference)
+            relativePath = "selections/" & referenceDigits & "/revisions"
+            operation = "revise-" & referenceDigits
+        Else
+            payload.Add("project_id", document.ProjectId.ToString("D"))
+        End If
+
+        Dim idempotencyKey As String = CreateIdempotencyKey(operation, document.ProjectId,
+            document.RevisionTracking.Current.SnapshotHash)
+        Using request As New HttpRequestMessage(HttpMethod.Post, BuildUri(relativePath))
+            request.Headers.Authorization = New AuthenticationHeaderValue("Bearer", accessToken)
+            request.Headers.Add("Idempotency-Key", idempotencyKey)
+            request.Content = JsonContent(payload)
+            Using response As HttpResponseMessage = Await m_HttpClient.SendAsync(request, cancellationToken).ConfigureAwait(False)
+                Dim body As String = Await response.Content.ReadAsStringAsync().ConfigureAwait(False)
+                If Not response.IsSuccessStatusCode Then Throw CreateApiException(response.StatusCode, body)
+                Return ParseSelectionResponse(body, document.Identity.ResumeToken)
+            End Using
+        End Using
     End Function
 
     Private Async Function RegisterAsync(context As CLSelectionRegistrationContext,
@@ -155,6 +222,76 @@ Public NotInheritable Class CLSelectionApiClient
         Return New StringContent(JsonSerializer.Serialize(payload, JsonOptions), Encoding.UTF8, "application/json")
     End Function
 
+    Private Shared Function CreateVersionsPayload(value As CLSelectionVersionSet) As Dictionary(Of String, Object)
+        Return New Dictionary(Of String, Object) From {
+            {"software_version", value.SoftwareVersion},
+            {"calculation_engine_version", value.CalculationEngineVersion},
+            {"database_schema_version", value.DatabaseSchemaVersion},
+            {"database_data_version", value.DatabaseDataVersion},
+            {"database_content_hash", value.DatabaseContentHash},
+            {"selection_format_version", value.SelectionFormatVersion},
+            {"report_template_version", value.ReportTemplateVersion},
+            {"api_contract_version", value.ApiContractVersion}
+        }
+    End Function
+
+    Private Shared Function CreateFingerprintsPayload(value As CLSelectionFingerprintSet) As Dictionary(Of String, Object)
+        Return New Dictionary(Of String, Object) From {
+            {"technical_input_hash", value.TechnicalInputHash},
+            {"calculation_output_hash", value.CalculationOutputHash},
+            {"calculation_basis_hash", value.CalculationBasisHash},
+            {"snapshot_hash", value.SnapshotHash}
+        }
+    End Function
+
+    Private Shared Function ParseSelectionResponse(body As String, existingResumeToken As String) As CLSelectionRegistrationResult
+        Using document As JsonDocument = JsonDocument.Parse(body)
+            Dim root As JsonElement = document.RootElement
+            Dim fullReference As String = root.GetProperty("reference").GetString()
+            Dim resumeToken As String = existingResumeToken
+            Dim propertyValue As JsonElement
+            If root.TryGetProperty("resume_token", propertyValue) Then resumeToken = propertyValue.GetString()
+            Return New CLSelectionRegistrationResult With {
+                .PublicReference = RemoveRevisionSuffix(fullReference),
+                .ReferenceDigits = root.GetProperty("reference_digits").GetString(),
+                .Revision = root.GetProperty("revision").GetInt32(),
+                .ResumeToken = resumeToken,
+                .SnapshotHash = root.GetProperty("snapshot_hash").GetString(),
+                .ChangeKind = root.GetProperty("change_kind").GetString()
+            }
+        End Using
+    End Function
+
+    Private Shared Function RemoveRevisionSuffix(value As String) As String
+        If String.IsNullOrWhiteSpace(value) Then Throw New InvalidDataException("The technical selection API returned an invalid reference.")
+        Dim suffixIndex As Integer = value.LastIndexOf("-R", StringComparison.OrdinalIgnoreCase)
+        Return If(suffixIndex > 0, value.Substring(0, suffixIndex), value)
+    End Function
+
+    Private Shared Function GetReferenceDigits(value As String) As String
+        Dim baseReference As String = RemoveRevisionSuffix(value)
+        Dim digits As String = New String(baseReference.Where(Function(character) Char.IsDigit(character)).ToArray())
+        If digits.Length <> 16 Then Throw New InvalidDataException("The selection project contains an invalid public reference.")
+        Return digits
+    End Function
+
+    Private Shared Function CreateIdempotencyKey(operation As String, projectId As Guid, snapshotHash As String) As String
+        Dim material As String = operation & "|" & projectId.ToString("D") & "|" & snapshotHash
+        Using algorithm As SHA256 = SHA256.Create()
+            Dim hash As String = String.Concat(algorithm.ComputeHash(Encoding.UTF8.GetBytes(material)).
+                Select(Function(item) item.ToString("x2")))
+            Return "ssw-" & hash.Substring(0, 48)
+        End Using
+    End Function
+
+    Private Shared Function GenerateOpaqueToken() As String
+        Dim bytes(31) As Byte
+        Using generator As RandomNumberGenerator = RandomNumberGenerator.Create()
+            generator.GetBytes(bytes)
+        End Using
+        Return Convert.ToBase64String(bytes).TrimEnd("="c).Replace("+"c, "-"c).Replace("/"c, "_"c)
+    End Function
+
     Private Shared Function BuildUri(relativePath As String) As Uri
         Dim configured As String = System.Environment.GetEnvironmentVariable("SSW_SELECTION_API_BASE_URL")
         If String.IsNullOrWhiteSpace(configured) Then
@@ -180,6 +317,20 @@ Public NotInheritable Class CLSelectionApiClient
         If context.DatabaseSchemaVersion < 1 Then Throw New ArgumentException("Database schema version is invalid.")
         If String.IsNullOrWhiteSpace(context.DatabaseContentHash) Then Throw New ArgumentException("Database content hash is required.")
         If context.ApiContractVersion < 1 Then Throw New ArgumentException("API contract version is invalid.")
+    End Sub
+
+    Private Shared Sub ValidateSelectionDocument(document As CLSelectionProjectDocument)
+        If document Is Nothing OrElse document.Selection Is Nothing OrElse document.Versions Is Nothing OrElse
+            document.RevisionTracking Is Nothing OrElse document.RevisionTracking.Current Is Nothing Then
+            Throw New InvalidDataException("A calculated technical selection snapshot is required.")
+        End If
+        Dim fingerprints As CLSelectionFingerprintSet = document.RevisionTracking.Current
+        If Not CLSelectionSnapshotService.IsValidHash(fingerprints.TechnicalInputHash) OrElse
+            Not CLSelectionSnapshotService.IsValidHash(fingerprints.CalculationOutputHash) OrElse
+            Not CLSelectionSnapshotService.IsValidHash(fingerprints.CalculationBasisHash) OrElse
+            Not CLSelectionSnapshotService.IsValidHash(fingerprints.SnapshotHash) Then
+            Throw New InvalidDataException("The technical selection fingerprints are invalid.")
+        End If
     End Sub
 
 End Class

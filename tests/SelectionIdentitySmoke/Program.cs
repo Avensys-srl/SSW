@@ -1,16 +1,28 @@
 using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using SSW;
 
 internal sealed class TokenHandler : HttpMessageHandler
 {
     public int RegistrationCount { get; private set; }
     public int RenewalCount { get; private set; }
+    public int SelectionCreateCount { get; private set; }
+    public int SelectionRevisionCount { get; private set; }
+    public List<string> IdempotencyKeys { get; } = new List<string>();
+    private string latestSnapshotHash;
+    private string latestResumeToken;
+    private int latestRevision;
 
     protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
@@ -26,6 +38,44 @@ internal sealed class TokenHandler : HttpMessageHandler
             RenewalCount++;
             token = "renewed-token-never-plaintext";
         }
+        else if (request.RequestUri.AbsolutePath.EndsWith("/selections", StringComparison.Ordinal))
+        {
+            SelectionCreateCount++;
+            VerifySelectionHeaders(request);
+            string body = request.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            if (!body.Contains("\"project_id\"") || !body.Contains("\"selection\"") ||
+                !body.Contains("\"versions\"") || !body.Contains("\"fingerprints\""))
+                throw new InvalidOperationException("Create-selection payload is incomplete.");
+            latestSnapshotHash = JsonString(body, "snapshot_hash");
+            latestResumeToken = JsonString(body, "resume_token");
+            if (latestResumeToken.Length < 40) throw new InvalidOperationException("Client resume token is too weak.");
+            latestRevision = 1;
+            return JsonResponse(HttpStatusCode.Created,
+                "{\"reference\":\"4827-1936-5048-2715-R01\",\"reference_digits\":\"4827193650482715\","
+                + "\"revision\":1,\"resume_token\":\"" + latestResumeToken + "\","
+                + "\"snapshot_hash\":\"" + latestSnapshotHash + "\",\"change_kind\":\"NewSelection\"}");
+        }
+        else if (request.RequestUri.AbsolutePath.EndsWith("/revisions", StringComparison.Ordinal))
+        {
+            SelectionRevisionCount++;
+            VerifySelectionHeaders(request);
+            string body = request.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            if (JsonString(body, "resume_token") != latestResumeToken)
+                throw new InvalidOperationException("Resume token missing from revision payload.");
+            string snapshotHash = JsonString(body, "snapshot_hash");
+            bool reprint = snapshotHash == latestSnapshotHash;
+            if (!reprint)
+            {
+                latestSnapshotHash = snapshotHash;
+                latestRevision++;
+            }
+            string displayedRevision = latestRevision.ToString("00");
+            return JsonResponse(reprint ? HttpStatusCode.OK : HttpStatusCode.Created,
+                "{\"reference\":\"4827-1936-5048-2715-R" + displayedRevision
+                + "\",\"reference_digits\":\"4827193650482715\",\"revision\":" + latestRevision
+                + ",\"snapshot_hash\":\"" + snapshotHash + "\",\"change_kind\":\""
+                + (reprint ? "Reprint" : "TechnicalChange") + "\"}");
+        }
         else
         {
             return Task.FromResult(new HttpResponseMessage(HttpStatusCode.NotFound));
@@ -37,10 +87,35 @@ internal sealed class TokenHandler : HttpMessageHandler
             Content = new StringContent(json, Encoding.UTF8, "application/json")
         });
     }
+
+    private void VerifySelectionHeaders(HttpRequestMessage request)
+    {
+        if (request.Headers.Authorization == null || request.Headers.Authorization.Scheme != "Bearer")
+            throw new InvalidOperationException("Selection bearer token missing.");
+        if (!request.Headers.Contains("Idempotency-Key"))
+            throw new InvalidOperationException("Selection idempotency key missing.");
+        IdempotencyKeys.Add(String.Join("", request.Headers.GetValues("Idempotency-Key")));
+    }
+
+    private static Task<HttpResponseMessage> JsonResponse(HttpStatusCode status, string json)
+    {
+        return Task.FromResult(new HttpResponseMessage(status)
+        {
+            Content = new StringContent(json, Encoding.UTF8, "application/json")
+        });
+    }
+
+    private static string JsonString(string json, string propertyName)
+    {
+        Match match = Regex.Match(json, "\\\"" + Regex.Escape(propertyName) + "\\\"\\s*:\\s*\\\"([^\\\"]*)\\\"");
+        if (!match.Success) throw new InvalidOperationException("JSON property missing: " + propertyName);
+        return match.Groups[1].Value;
+    }
 }
 
 internal static class Program
 {
+    [STAThread]
     private static int Main()
     {
         string root = Path.Combine(Path.GetTempPath(), "ssw-selection-identity-" + Guid.NewGuid().ToString("N"));
@@ -73,9 +148,11 @@ internal static class Program
             if (renewed != "renewed-token-never-plaintext" || handler.RenewalCount != 1) throw new InvalidOperationException("Token renewal failed.");
             if (File.ReadAllText(CLSelectionCredentialStore.StateFilePath).Contains(renewed)) throw new InvalidOperationException("Renewed token was stored in plaintext.");
 
+            TestSelectionRegistrationClient(client, handler, context);
             TestSnapshotFingerprints(root);
+            TestRegistrationFailureDialog();
 
-            Console.WriteLine("Selection identity/snapshot smoke test passed: register=1 cache=1 renew=1 fingerprints=stable classifications=5");
+            Console.WriteLine("Selection identity/snapshot smoke test passed: token=ok create=R01 reprint=R01 revise=R02 fingerprints=stable dialog=rendered");
             return 0;
         }
         finally
@@ -86,6 +163,64 @@ internal static class Program
             Environment.SetEnvironmentVariable("SSW_SELECTION_API_BASE_URL", null);
             try { Directory.Delete(root, true); } catch { }
         }
+    }
+
+    private static void TestRegistrationFailureDialog()
+    {
+        string imagePath = Path.Combine(Path.GetTempPath(), "ssw-selection-registration-dialog-smoke.png");
+        using (var dialog = new CLSelectionRegistrationFailureForm(
+            "Technische Auswahl",
+            "Die technische Auswahl konnte nicht registriert werden: Die Verbindung zum technischen Auswahldienst ist derzeit nicht verfügbar.",
+            "Erneut versuchen",
+            "Entwurf erstellen",
+            "Abbrechen"))
+        {
+            dialog.StartPosition = FormStartPosition.Manual;
+            dialog.Location = new Point(-32000, -32000);
+            dialog.Show();
+            Application.DoEvents();
+            Button[] buttons = dialog.Controls.OfType<Button>().OrderBy(button => button.Left).ToArray();
+            if (buttons.Length != 3) throw new InvalidOperationException("Registration fallback dialog buttons are incomplete.");
+            for (int index = 0; index < buttons.Length; index++)
+            {
+                if (!dialog.ClientRectangle.Contains(buttons[index].Bounds))
+                    throw new InvalidOperationException("Registration fallback button is outside the dialog.");
+                if (index > 0 && buttons[index - 1].Bounds.IntersectsWith(buttons[index].Bounds))
+                    throw new InvalidOperationException("Registration fallback buttons overlap.");
+            }
+            using (var bitmap = new Bitmap(dialog.Width, dialog.Height))
+            {
+                dialog.DrawToBitmap(bitmap, new Rectangle(Point.Empty, dialog.Size));
+                bitmap.Save(imagePath, ImageFormat.Png);
+            }
+            dialog.Hide();
+        }
+        if (!File.Exists(imagePath) || new FileInfo(imagePath).Length < 1000)
+            throw new InvalidOperationException("Registration fallback dialog did not render correctly.");
+    }
+
+    private static void TestSelectionRegistrationClient(CLSelectionApiClient client, TokenHandler handler,
+        CLSelectionRegistrationContext context)
+    {
+        CLSelectionProjectDocument document = CreateCalculatedDocument();
+        CLSelectionSnapshotService.Refresh(document);
+        CLSelectionRegistrationResult created = client.RegisterSelectionAsync(document, context).GetAwaiter().GetResult();
+        CLSelectionRegistrationResult retried = client.RegisterSelectionAsync(document, context).GetAwaiter().GetResult();
+        if (created.Revision != 1 || retried.Revision != 1 || created.ResumeToken != retried.ResumeToken ||
+            handler.SelectionCreateCount != 2 || handler.IdempotencyKeys[0] != handler.IdempotencyKeys[1])
+            throw new InvalidOperationException("Create-selection retry was not deterministic.");
+
+        CLSelectionSnapshotService.MarkRegistered(document, created.PublicReference, created.Revision,
+            created.ResumeToken, DateTime.UtcNow);
+        CLSelectionRegistrationResult reprint = client.RegisterSelectionAsync(document, context).GetAwaiter().GetResult();
+        if (reprint.Revision != 1 || reprint.ChangeKind != "Reprint")
+            throw new InvalidOperationException("Unchanged selection did not remain at R01.");
+
+        document.Selection.Winter.SupplyAirflowM3h = 120;
+        CLSelectionSnapshotService.Refresh(document);
+        CLSelectionRegistrationResult revised = client.RegisterSelectionAsync(document, context).GetAwaiter().GetResult();
+        if (revised.Revision != 2 || revised.ChangeKind != "TechnicalChange" || handler.SelectionRevisionCount != 2)
+            throw new InvalidOperationException("Changed selection did not create R02.");
     }
 
     private static void TestSnapshotFingerprints(string root)

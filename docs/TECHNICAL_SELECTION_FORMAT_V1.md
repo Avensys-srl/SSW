@@ -28,8 +28,9 @@ Campi opzionali:
 
 Il token di accesso API dell'installazione non viene mai salvato nel progetto:
 resta protetto da Windows in ProgramData. Il token di ripresa non autentica
-l'installazione e viene conservato nel `.sswsel` per consentirne il
-trasferimento controllato su un altro PC.
+l'installazione: viene generato localmente prima della prima registrazione e
+conservato nel `.sswsel` per consentirne il trasferimento controllato su un
+altro PC. Il server ne conserva soltanto l'hash SHA-256.
 
 ## Versioni
 

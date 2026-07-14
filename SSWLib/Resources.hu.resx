@@ -568,4 +568,10 @@
   <data name="MainForm_Project_Unsaved" xml:space="preserve"><value>A jelenlegi kiválasztás nem mentett módosításokat tartalmaz. Menti most?</value></data>
   <data name="MainForm_Project_OpenError" xml:space="preserve"><value>A kiválasztási projekt nem nyitható meg: {0}</value></data>
   <data name="MainForm_Project_SaveError" xml:space="preserve"><value>A kiválasztási projekt nem menthető: {0}</value></data>
+  <data name="MainForm_SelectionRegistration_Title" xml:space="preserve"><value>Műszaki kiválasztás</value></data>
+  <data name="MainForm_SelectionRegistration_Wait" xml:space="preserve"><value>A műszaki kiválasztás regisztrálása folyamatban. Kérjük, várjon...</value></data>
+  <data name="MainForm_SelectionRegistration_Failed" xml:space="preserve"><value>A műszaki kiválasztás nem regisztrálható: {0}</value></data>
+  <data name="MainForm_SelectionRegistration_Retry" xml:space="preserve"><value>Újrapróbálás</value></data>
+  <data name="MainForm_SelectionRegistration_Draft" xml:space="preserve"><value>Piszkozat létrehozása</value></data>
+  <data name="MainForm_SelectionRegistration_Cancel" xml:space="preserve"><value>Mégse</value></data>
 </root>

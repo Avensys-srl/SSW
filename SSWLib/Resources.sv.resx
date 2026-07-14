@@ -731,4 +731,10 @@
   <data name="MainForm_Project_Unsaved" xml:space="preserve"><value>Det aktuella urvalet innehåller osparade ändringar. Vill du spara dem nu?</value></data>
   <data name="MainForm_Project_OpenError" xml:space="preserve"><value>Urvalsprojektet kunde inte öppnas: {0}</value></data>
   <data name="MainForm_Project_SaveError" xml:space="preserve"><value>Urvalsprojektet kunde inte sparas: {0}</value></data>
+  <data name="MainForm_SelectionRegistration_Title" xml:space="preserve"><value>Tekniskt urval</value></data>
+  <data name="MainForm_SelectionRegistration_Wait" xml:space="preserve"><value>Registrerar det tekniska urvalet. Vänta...</value></data>
+  <data name="MainForm_SelectionRegistration_Failed" xml:space="preserve"><value>Det tekniska urvalet kunde inte registreras: {0}</value></data>
+  <data name="MainForm_SelectionRegistration_Retry" xml:space="preserve"><value>Försök igen</value></data>
+  <data name="MainForm_SelectionRegistration_Draft" xml:space="preserve"><value>Skapa utkast</value></data>
+  <data name="MainForm_SelectionRegistration_Cancel" xml:space="preserve"><value>Avbryt</value></data>
 </root>

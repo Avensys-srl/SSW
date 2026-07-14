@@ -466,4 +466,10 @@
   <data name="MainForm_Project_Unsaved" xml:space="preserve"><value>Selecția curentă conține modificări nesalvate. Doriți să le salvați acum?</value></data>
   <data name="MainForm_Project_OpenError" xml:space="preserve"><value>Proiectul de selecție nu poate fi deschis: {0}</value></data>
   <data name="MainForm_Project_SaveError" xml:space="preserve"><value>Proiectul de selecție nu poate fi salvat: {0}</value></data>
+  <data name="MainForm_SelectionRegistration_Title" xml:space="preserve"><value>Selecție tehnică</value></data>
+  <data name="MainForm_SelectionRegistration_Wait" xml:space="preserve"><value>Se înregistrează selecția tehnică. Așteptați...</value></data>
+  <data name="MainForm_SelectionRegistration_Failed" xml:space="preserve"><value>Selecția tehnică nu a putut fi înregistrată: {0}</value></data>
+  <data name="MainForm_SelectionRegistration_Retry" xml:space="preserve"><value>Reîncercați</value></data>
+  <data name="MainForm_SelectionRegistration_Draft" xml:space="preserve"><value>Generați ciorna</value></data>
+  <data name="MainForm_SelectionRegistration_Cancel" xml:space="preserve"><value>Anulare</value></data>
 </root>

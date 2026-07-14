@@ -406,4 +406,10 @@
   <data name="MainForm_Project_Unsaved" xml:space="preserve"><value>Die aktuelle Auswahl enthält nicht gespeicherte Änderungen. Jetzt speichern?</value></data>
   <data name="MainForm_Project_OpenError" xml:space="preserve"><value>Das Auswahlprojekt konnte nicht geöffnet werden: {0}</value></data>
   <data name="MainForm_Project_SaveError" xml:space="preserve"><value>Das Auswahlprojekt konnte nicht gespeichert werden: {0}</value></data>
+  <data name="MainForm_SelectionRegistration_Title" xml:space="preserve"><value>Technische Auswahl</value></data>
+  <data name="MainForm_SelectionRegistration_Wait" xml:space="preserve"><value>Die technische Auswahl wird registriert. Bitte warten...</value></data>
+  <data name="MainForm_SelectionRegistration_Failed" xml:space="preserve"><value>Die technische Auswahl konnte nicht registriert werden: {0}</value></data>
+  <data name="MainForm_SelectionRegistration_Retry" xml:space="preserve"><value>Erneut versuchen</value></data>
+  <data name="MainForm_SelectionRegistration_Draft" xml:space="preserve"><value>Entwurf erstellen</value></data>
+  <data name="MainForm_SelectionRegistration_Cancel" xml:space="preserve"><value>Abbrechen</value></data>
 </root>

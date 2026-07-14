@@ -598,4 +598,10 @@
   <data name="MainForm_Project_Unsaved" xml:space="preserve"><value>The current selection has unsaved changes. Save them now?</value></data>
   <data name="MainForm_Project_OpenError" xml:space="preserve"><value>Unable to open the selection project: {0}</value></data>
   <data name="MainForm_Project_SaveError" xml:space="preserve"><value>Unable to save the selection project: {0}</value></data>
+  <data name="MainForm_SelectionRegistration_Title" xml:space="preserve"><value>Technical selection</value></data>
+  <data name="MainForm_SelectionRegistration_Wait" xml:space="preserve"><value>Registering the technical selection. Please wait...</value></data>
+  <data name="MainForm_SelectionRegistration_Failed" xml:space="preserve"><value>The technical selection could not be registered: {0}</value></data>
+  <data name="MainForm_SelectionRegistration_Retry" xml:space="preserve"><value>Retry</value></data>
+  <data name="MainForm_SelectionRegistration_Draft" xml:space="preserve"><value>Generate draft</value></data>
+  <data name="MainForm_SelectionRegistration_Cancel" xml:space="preserve"><value>Cancel</value></data>
 </root>
