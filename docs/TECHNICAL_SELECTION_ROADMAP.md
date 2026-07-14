@@ -328,6 +328,8 @@ da `/usage` nel Codex CLI.
 #### B2 - Identita' e registrazione centralizzata
 
 - Stato: **implementato e collaudato localmente** il 14/07/2026.
+- Checkpoint SSW: `3e02abc Implement Wave B2 central selection identity`.
+- Checkpoint SSWweb: `31457dc Add central technical selection API v1`.
 - SSW: identita' macchina persistente, token DPAPI in ProgramData, client lazy
   per registrazione e rinnovo, configurazione bootstrap esterna al sorgente.
 - API: schema MySQL dedicato, token hash, audit versioni, riferimento Luhn,
@@ -335,8 +337,9 @@ da `/usage` nel Codex CLI.
 - Evidenza: test PHP su SQLite con 5.000 riferimenti, retry selezione/revisione,
   rotazione token e conflitti; GET pubblico rifiutato con HTTP 405; build
   completa `AV|x86` e smoke test client x86 register/cache/renew/DPAPI.
-- Da attivare: database web, variabili `SSW_SELECTION_*`, bootstrap del cliente,
-  backup/purge schedulati e repository Git per `A:\webavensys\api`.
+- Da attivare: database web, variabili `SSW_SELECTION_*`, bootstrap del cliente
+  e backup/purge schedulati. La sorgente e' in `SSWweb/api`; la copia di
+  pubblicazione `A:\webavensys\api` e' stata verificata byte per byte.
 1. Punto 08: creare lo schema server separato con clienti, installazioni,
    selezioni padre, revisioni, token hash e audit versioni.
 2. Punto 11: implementare il riferimento pubblico casuale con checksum,
