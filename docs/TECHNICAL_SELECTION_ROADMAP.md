@@ -61,6 +61,11 @@ registrazione centralizzata delle selezioni SSW.
   `CLDatabaseFeatures` e l'hash SHA-256 canonico; build `Release|x86` e smoke
   test del manifest su SDF riusciti, incluso il controllo di stabilita' hash.
 - Commit exporter: `d7e1ea0 Add versioned SDF database manifest`.
+- Verifica export del 14/07/2026: il primo SDF reale era ancora `Legacy-0`
+  perche' CLDCExplorer caricava la precedente DLL dal proprio package locale.
+  Il package e la build `Release|x86` di CLDCExplorer sono stati riallineati
+  alla DLL `d7e1ea0` con commit Explorer `cf44e20`; resta da ripetere l'export
+  e validare il nuovo file.
 - Repository: `T:\TECHNO_SOFT\mercurial\CLDataCentralLib`.
 - Esportare `CLDatabaseMetadata` e `CLDatabaseFeatures` in ogni SDF.
 - Inserire versione schema, revisione dati, exporter, timestamp, cliente,
