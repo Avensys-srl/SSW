@@ -310,12 +310,15 @@
     </Compile>
     <Compile Include="CLCOIL.vb" />
     <Compile Include="CLCoilPerformanceCalculator.vb" />
+    <Compile Include="CLDatabaseCompatibility.vb" />
     <Compile Include="CLReportViewerForm.Designer.vb">
       <DependentUpon>CLReportViewerForm.vb</DependentUpon>
     </Compile>
     <Compile Include="CLReportViewerForm.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="CLSelectionProjectModel.vb" />
+    <Compile Include="CLSelectionProjectSerializer.vb" />
     <Compile Include="CLSSWInfo.vb" />
     <Compile Include="CLMessageResources.vb" />
     <Compile Include="CLMainForm.Designer.vb">
@@ -332,6 +335,7 @@
     </Compile>
     <Compile Include="CLModule.vb" />
     <Compile Include="CLEnvironment.vb" />
+    <Compile Include="CLTechnicalVersions.vb" />
     <Compile Include="CLUnitCalculator.vb" />
     <Compile Include="Resources.hu.Designer.vb">
       <DependentUpon>Resources.hu.resx</DependentUpon>

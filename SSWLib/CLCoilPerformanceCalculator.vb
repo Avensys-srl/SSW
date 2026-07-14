@@ -106,6 +106,11 @@ Public Class CLCoilPerformanceCalculator
             Return coils
         End If
 
+        If CLEnvironment.Current.DatabaseCompatibility IsNot Nothing AndAlso
+            Not CLEnvironment.Current.DatabaseCompatibility.HasFeature("WaterCoils") Then
+            Return coils
+        End If
+
         Try
             Using connection As New SqlCeConnection(String.Format("Data Source=""{0}""; Password=""{1}""", CLEnvironment.Current.DCLiteDatabasePath, "@D3C1L4T2%"))
                 connection.Open()

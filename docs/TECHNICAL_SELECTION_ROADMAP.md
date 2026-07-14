@@ -8,7 +8,13 @@ registrazione centralizzata delle selezioni SSW.
 
 - [x] 01. Creare un checkpoint stabile dello stato corrente di SSW.
   Commit: `13a48c1 Improve coil reporting and update workflow`.
-- [ ] 02-22. Attivita' residue descritte nelle sezioni seguenti.
+- [x] Onda A completata il 14/07/2026: punti 02-05.
+- [x] 02. Contratto di versionamento definito in
+  `docs/TECHNICAL_SELECTION_VERSIONING.md`.
+- [x] 03. Manifest e feature SDF implementati in `CLDataCentralLib`.
+- [x] 04. Controllo compatibilita' SDF implementato e verificato in SSW.
+- [x] 05. Formato `.sswsel` V1 definito, implementato e verificato.
+- [ ] 06-22. Attivita' residue descritte nelle sezioni seguenti.
 
 ## Regole architetturali approvate
 
@@ -37,6 +43,8 @@ registrazione centralizzata delle selezioni SSW.
 
 ### 02. Contratto di versionamento
 
+- Stato: **completato** il 14/07/2026.
+- Evidenza: `docs/TECHNICAL_SELECTION_VERSIONING.md`.
 - Repository: `D:\mdev\SSW` e documentazione condivisa.
 - Definire `SoftwareVersion`, `CalculationEngineVersion`,
   `DatabaseSchemaVersion`, `DatabaseDataVersion`, `SelectionFormatVersion`,
@@ -48,6 +56,11 @@ registrazione centralizzata delle selezioni SSW.
 
 ### 03. Metadati e feature nell'esportazione SDF
 
+- Stato: **completato** il 14/07/2026.
+- Evidenza: `CLSSWExporter` crea `CLDatabaseMetadata`,
+  `CLDatabaseFeatures` e l'hash SHA-256 canonico; build `Release|x86` e smoke
+  test del manifest su SDF riusciti, incluso il controllo di stabilita' hash.
+- Commit exporter: `d7e1ea0 Add versioned SDF database manifest`.
 - Repository: `T:\TECHNO_SOFT\mercurial\CLDataCentralLib`.
 - Esportare `CLDatabaseMetadata` e `CLDatabaseFeatures` in ogni SDF.
 - Inserire versione schema, revisione dati, exporter, timestamp, cliente,
@@ -57,6 +70,9 @@ registrazione centralizzata delle selezioni SSW.
 
 ### 04. Controllo compatibilita' SDF in SSW
 
+- Stato: **completato** il 14/07/2026.
+- Evidenza: lettura prima di EF, inferenza `Legacy-0`, gating `WaterCoils`,
+  diagnostica Info e test di accettazione schema 1/rifiuto schema futuro.
 - Repository: `D:\mdev\SSW`.
 - Leggere i metadati prima dell'inizializzazione Entity Framework.
 - Disabilitare le feature non presenti senza bloccare le funzioni compatibili.
@@ -66,6 +82,10 @@ registrazione centralizzata delle selezioni SSW.
 
 ### 05. Formato `.sswsel` V1
 
+- Stato: **completato** il 14/07/2026.
+- Evidenza: DTO indipendenti dalla UI, serializer atomico, specifica
+  `docs/TECHNICAL_SELECTION_FORMAT_V1.md`, fixture V1 e round-trip x86 riuscito;
+  il formato futuro viene rifiutato senza modifiche.
 - Repository: `D:\mdev\SSW`.
 - Definire envelope JSON, DTO tecnici, feature, versioni, input, output e
   snapshot calcolato.
@@ -237,6 +257,7 @@ da `/usage` nel Codex CLI.
 
 ### Onda A - Fondazioni locali
 
+- Stato: **completata** il 14/07/2026.
 - Punti 02-05: contratto versioni, metadati SDF, controllo compatibilita' e
   formato `.sswsel` V1.
 - Il punto 06 viene anticipato solo se la quota residua e i test lo consentono.

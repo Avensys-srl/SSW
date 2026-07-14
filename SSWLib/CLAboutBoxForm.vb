@@ -45,6 +45,8 @@ Public NotInheritable Class CLAboutBoxForm
          Environment.SSWInfo.ReleaseVersion.ToString(),
          Environment.SSWInfo.ReleaseDate.ToString("dd/MMMM/yyyy"))
 
+        lblDatabaseRelease.Text = Environment.DatabaseCompatibility.ToDisplayString()
+
         lblTitle.Text = Environment.Localization.GetString(CLMessageResources.AboutBoxForm_Title.ToString())
 
         lblExternalLeakageTitle.Text = Environment.Localization.GetString(CLMessageResources.AboutBoxForm_ExternalLeakage.ToString())

@@ -1,0 +1,94 @@
+{
+  "format": "SSWSelection",
+  "selectionFormatVersion": 1,
+  "projectId": "7c1e12b2-3a56-4a7e-9f9c-2983585a3d50",
+  "createdAtUtc": "2026-07-14T10:00:00Z",
+  "modifiedAtUtc": "2026-07-14T10:00:00Z",
+  "versions": {
+    "softwareVersion": "1.3.0.44",
+    "calculationEngineVersion": "1.3.0.44",
+    "databaseSchemaVersion": 0,
+    "databaseDataVersion": "Legacy-0",
+    "selectionFormatVersion": 1,
+    "reportTemplateVersion": 1,
+    "apiContractVersion": 1
+  },
+  "features": [
+    "SummerCalculation",
+    "WaterCoils"
+  ],
+  "identity": {
+    "localDraftReference": "D-DEMO-000001"
+  },
+  "selection": {
+    "customerCode": "035889",
+    "customerReference": "Example V1",
+    "unit": {
+      "id": 123,
+      "code": "CLRC 06A OSC",
+      "managementCode": "CLRC-06A-OSC",
+      "name": "CLRC 06A OSC"
+    },
+    "winter": {
+      "enabled": true,
+      "scenarioCode": "Winter",
+      "standardCode": "Winter",
+      "supplyAirflowM3h": 100,
+      "extractAirflowM3h": 100,
+      "maximumPressurePa": 473,
+      "outdoorTemperatureC": -10,
+      "outdoorRelativeHumidityPercent": 80,
+      "returnTemperatureC": 20,
+      "returnRelativeHumidityPercent": 60,
+      "regulationPercent": 100
+    },
+    "summer": {
+      "enabled": true,
+      "scenarioCode": "Summer",
+      "standardCode": "Summer",
+      "supplyAirflowM3h": 100,
+      "extractAirflowM3h": 100,
+      "maximumPressurePa": 473,
+      "outdoorTemperatureC": 32,
+      "outdoorRelativeHumidityPercent": 80,
+      "returnTemperatureC": 26,
+      "returnRelativeHumidityPercent": 50,
+      "regulationPercent": 100
+    },
+    "waterCoil": {
+      "enabled": true,
+      "selectionCase": "Standard",
+      "installationType": "Internal",
+      "calculationMode": "HCD",
+      "coil": {
+        "id": 42,
+        "code": "iHCD-06A",
+        "managementCode": "iHCD-06A",
+        "name": "iHCD Serie A 06A HCD"
+      },
+      "fluid": {
+        "code": "Water",
+        "glycolPercent": 0
+      },
+      "geometry": {
+        "geometryCode": "2510",
+        "lengthMm": 250,
+        "heightMm": 200,
+        "tubes": 8,
+        "numberOfRows": 3,
+        "finSpacingMm": 2.1,
+        "numberOfCircuits": 2
+      },
+      "coolingWaterInletTemperatureC": 7,
+      "coolingWaterOutletTemperatureC": 12,
+      "heatingWaterInletTemperatureC": 80,
+      "heatingWaterOutletTemperatureC": 70
+    },
+    "report": {
+      "languageCode": "it",
+      "includePerformanceCharts": true,
+      "includeSoundPower": true,
+      "includeCo2": false
+    }
+  }
+}

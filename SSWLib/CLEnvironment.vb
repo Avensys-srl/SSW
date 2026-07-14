@@ -178,6 +178,11 @@ Public Class CLEnvironment
         m_SSWInfo = sswInfo
         m_DCLiteDatabasePath = dataCentralLitePath
 
+        m_DatabaseCompatibility = CLDatabaseCompatibilityReader.Inspect(
+            dataCentralLitePath,
+            m_SSWInfo.ReleaseVersion,
+            m_SSWInfo.Code)
+
         ' Add Languages
         AddLanguage(New CLLanguage(LanguageCode_IT, "ITALIAN"))
         AddLanguage(New CLLanguage(LanguageCode_DE, "DEUTSCH"))
@@ -205,6 +210,13 @@ Public Class CLEnvironment
     Public ReadOnly Property DCLiteDatabasePath As String
         Get
             Return m_DCLiteDatabasePath
+        End Get
+    End Property
+
+    Private m_DatabaseCompatibility As CLDatabaseCompatibilityInfo
+    Public ReadOnly Property DatabaseCompatibility As CLDatabaseCompatibilityInfo
+        Get
+            Return m_DatabaseCompatibility
         End Get
     End Property
 

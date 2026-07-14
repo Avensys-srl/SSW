@@ -26,6 +26,7 @@
 	Private Sub InitializeComponent()
         Me.lblApplicationRelease = New System.Windows.Forms.Label()
         Me.lblApplicationName = New System.Windows.Forms.Label()
+        Me.lblDatabaseRelease = New System.Windows.Forms.Label()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.btnChangelog = New System.Windows.Forms.Button()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
@@ -68,6 +69,16 @@
         Me.lblApplicationName.TabIndex = 4
         Me.lblApplicationName.Text = "CLRC Selection Software"
         Me.lblApplicationName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'lblDatabaseRelease
+        '
+        Me.lblDatabaseRelease.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.lblDatabaseRelease.Location = New System.Drawing.Point(12, 211)
+        Me.lblDatabaseRelease.Name = "lblDatabaseRelease"
+        Me.lblDatabaseRelease.Size = New System.Drawing.Size(536, 16)
+        Me.lblDatabaseRelease.TabIndex = 10
+        Me.lblDatabaseRelease.Text = "SDF: Legacy-0"
+        Me.lblDatabaseRelease.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'Button1
         '
@@ -231,7 +242,7 @@
         '
         Me.lblTitle.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.lblTitle.AutoSize = True
-        Me.lblTitle.Location = New System.Drawing.Point(9, 219)
+        Me.lblTitle.Location = New System.Drawing.Point(9, 231)
         Me.lblTitle.Name = "lblTitle"
         Me.lblTitle.Size = New System.Drawing.Size(281, 13)
         Me.lblTitle.TabIndex = 3
@@ -285,6 +296,7 @@
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.btnChangelog)
         Me.Controls.Add(Me.lblApplicationName)
+        Me.Controls.Add(Me.lblDatabaseRelease)
         Me.Controls.Add(Me.lblTitle)
         Me.Controls.Add(Me.lblApplicationRelease)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
@@ -305,6 +317,7 @@
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
     Friend WithEvents lblApplicationRelease As System.Windows.Forms.Label
     Friend WithEvents lblApplicationName As System.Windows.Forms.Label
+    Friend WithEvents lblDatabaseRelease As System.Windows.Forms.Label
     Friend WithEvents Button1 As System.Windows.Forms.Button
     Friend WithEvents btnChangelog As System.Windows.Forms.Button
     Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
