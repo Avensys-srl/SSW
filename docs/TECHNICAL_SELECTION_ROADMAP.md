@@ -206,8 +206,8 @@ registrazione centralizzata delle selezioni SSW.
 ### 14. Registrazione nel comando Genera report
 
 - Stato: **implementato e collaudato localmente** il 14/07/2026; il collaudo
-  HTTPS reale richiede il deployment operativo delle migrazioni API 001-003 e
-  delle variabili `SSW_SELECTION_*`.
+  HTTPS reale richiede il reload Apache e il test end-to-end. Il database
+  dedicato e le variabili `SSW_SELECTION_*` sono stati predisposti sul server.
 - Evidenza: create/reprint/revision vengono eseguite prima del dataset RDLC con
   chiave idempotente deterministica, blocco dei doppi click, attesa asincrona e
   dialogo localizzato Riprova/Genera bozza/Annulla. Smoke test x86 riuscito per
@@ -327,7 +327,10 @@ da `/usage` nel Codex CLI.
 ### Onda B - Persistenza e identita'
 
 - Stato: **implementazione locale completata** il 14/07/2026; B1 e B2
-  collaudate, deployment operativo B2 separato e ancora da eseguire.
+  collaudate. Il 14/07/2026 e' stato creato su `SERVER01` il database dedicato
+  `ssw_selections`, con migrazioni 001-003, nove tabelle e cliente `AV` attivo.
+  Utente runtime e configurazione Apache sono predisposti; resta il reload
+  Apache e il collaudo HTTPS prima di chiudere il deployment operativo.
 - Punti 06-12: migrazioni, menu progetto, database server, installazione
   zero-touch, API, riferimento pubblico e bozze offline.
 - Obiettivo: creare e riaprire una selezione senza ancora cambiare gli RDLC.
@@ -400,7 +403,9 @@ da `/usage` nel Codex CLI.
 ### Onda C - Registrazione e report
 
 - Stato: **C1 e C2 implementate e collaudate localmente** il 14/07/2026;
-  deployment operativo API ancora necessario per il collaudo HTTPS end-to-end.
+  database e configurazione server predisposti. Il deploy ha richiesto la
+  compatibilita' con MariaDB 10.1 (`LONGTEXT` per i documenti JSON) e PHP 7.2;
+  resta il reload Apache e il collaudo HTTPS end-to-end.
 - Checkpoint C1: snapshot canonici e revisioni immutabili lato client/server;
   `.sswsel` generato automaticamente accanto al PDF senza registrazione API.
 - Checkpoint SSW: `08055bd Complete Wave C1 immutable selection snapshots`.
@@ -409,8 +414,9 @@ da `/usage` nel Codex CLI.
   trasferibile; gli RDLC restano invariati fino a C3.
 - Checkpoint SSW C2: `eac6f93 Complete Wave C2 report registration flow`.
 - Checkpoint API C2: `8f9b5c6 Protect report registration with resume tokens`;
-  sorgenti sincronizzati byte per byte in `A:\webavensys\api`. La migrazione
-  `003_selection_resume_tokens_mysql.sql` resta da applicare al database web.
+  sorgenti sincronizzati byte per byte in `A:\webavensys\api`.
+- Checkpoint compatibilita' server: `22c3702 Support production PHP and MariaDB
+  runtimes`; migrazioni 001-003 applicate su `ssw_selections` il 14/07/2026.
 - Punti 13-17: snapshot, revisioni, Genera report, salvataggio automatico,
   intestazione RDLC e geolocalizzazione.
 - Obiettivo: completare il flusso cliente end-to-end.
