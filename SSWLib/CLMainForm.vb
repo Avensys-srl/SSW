@@ -29,6 +29,7 @@ Public Class CLMainForm
     Private m_CoilPerformanceBusy As Boolean = False
     Private m_AutomaticUpdateCheckTask As Task
     Private m_ReportRegistrationBusy As Boolean = False
+    Private m_ReportGeneratedAsDraft As Boolean = False
     Private ReadOnly m_SelectionApiClient As New CLSelectionApiClient()
     Private m_SummerCalculationEnabled As Boolean = True
     Private m_LastWinterThermo As termo
@@ -1176,6 +1177,19 @@ Public Class CLMainForm
         legendImage = Chart_GetImage(cloneChart, chartScale)
 
         Dim reportDataSet As New CLMainReportDataSet
+        Dim technicalSelectionHeaderColumns As String() = {
+            "TechnicalSelectionReference_Caption",
+            "TechnicalSelectionReference_Value",
+            "TechnicalSelectionRevision_Caption",
+            "TechnicalSelectionRevision_Value",
+            "TechnicalSelectionStatus_Caption",
+            "TechnicalSelectionStatus_Value"
+        }
+        For Each columnName As String In technicalSelectionHeaderColumns
+            If Not reportDataSet.HeaderDataTable.Columns.Contains(columnName) Then
+                reportDataSet.HeaderDataTable.Columns.Add(columnName, GetType(String))
+            End If
+        Next
         Dim headerDataRow As CLMainReportDataSet.HeaderDataTableRow
         Dim performanceAccordanceDataRow As CLMainReportDataSet.PerformanceAccordanceDataTableRow
         Dim workingPointDataRow As CLMainReportDataSet.WorkingPointDataTableRow
@@ -1288,6 +1302,34 @@ Public Class CLMainForm
         headerDataRow.LogoBmp = Bitmap_GetBytes(Environment.CustomerLogo)
 
         headerDataRow.CustomerInfo = Environment.SSWInfo.CustomerInfo
+
+        Dim hasRegisteredReference As Boolean = Not m_ReportGeneratedAsDraft AndAlso
+            m_ProjectDocument IsNot Nothing AndAlso
+            m_ProjectDocument.Identity IsNot Nothing AndAlso
+            Not String.IsNullOrWhiteSpace(m_ProjectDocument.Identity.PublicReference) AndAlso
+            m_ProjectDocument.Identity.Revision.HasValue
+        Dim technicalSelectionReference As String = String.Empty
+        Dim technicalSelectionRevision As String = String.Empty
+        If m_ProjectDocument IsNot Nothing AndAlso m_ProjectDocument.Identity IsNot Nothing Then
+            technicalSelectionReference = If(hasRegisteredReference,
+                m_ProjectDocument.Identity.PublicReference,
+                m_ProjectDocument.Identity.LocalDraftReference)
+            If hasRegisteredReference Then
+                technicalSelectionRevision = String.Format("R{0:00}", m_ProjectDocument.Identity.Revision.Value)
+            End If
+        End If
+
+        headerDataRow("TechnicalSelectionReference_Caption") = Project_Text(
+            "MainForm_Project_Title", "Technical selection")
+        headerDataRow("TechnicalSelectionReference_Value") = If(technicalSelectionReference, String.Empty)
+        headerDataRow("TechnicalSelectionRevision_Caption") = Project_Text(
+            "MainForm_TechnicalSelectionRevision", "Revision")
+        headerDataRow("TechnicalSelectionRevision_Value") = technicalSelectionRevision
+        headerDataRow("TechnicalSelectionStatus_Caption") = Project_Text(
+            "MainForm_TechnicalSelectionStatus", "Status")
+        headerDataRow("TechnicalSelectionStatus_Value") = If(hasRegisteredReference,
+            Project_Text("MainForm_TechnicalSelectionStatus_Registered", "Registered"),
+            Project_Text("MainForm_TechnicalSelectionStatus_Draft", "Draft"))
 
         headerDataRow.Note = m_Note_Text.Text
 

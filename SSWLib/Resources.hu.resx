@@ -574,4 +574,8 @@
   <data name="MainForm_SelectionRegistration_Retry" xml:space="preserve"><value>Újrapróbálás</value></data>
   <data name="MainForm_SelectionRegistration_Draft" xml:space="preserve"><value>Piszkozat létrehozása</value></data>
   <data name="MainForm_SelectionRegistration_Cancel" xml:space="preserve"><value>Mégse</value></data>
+  <data name="MainForm_TechnicalSelectionRevision" xml:space="preserve"><value>Revízió</value></data>
+  <data name="MainForm_TechnicalSelectionStatus" xml:space="preserve"><value>Állapot</value></data>
+  <data name="MainForm_TechnicalSelectionStatus_Registered" xml:space="preserve"><value>Regisztrálva</value></data>
+  <data name="MainForm_TechnicalSelectionStatus_Draft" xml:space="preserve"><value>Piszkozat</value></data>
 </root>

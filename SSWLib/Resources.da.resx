@@ -640,4 +640,8 @@
   <data name="MainForm_SelectionRegistration_Retry" xml:space="preserve"><value>Prøv igen</value></data>
   <data name="MainForm_SelectionRegistration_Draft" xml:space="preserve"><value>Generer kladde</value></data>
   <data name="MainForm_SelectionRegistration_Cancel" xml:space="preserve"><value>Annuller</value></data>
+  <data name="MainForm_TechnicalSelectionRevision" xml:space="preserve"><value>Revision</value></data>
+  <data name="MainForm_TechnicalSelectionStatus" xml:space="preserve"><value>Status</value></data>
+  <data name="MainForm_TechnicalSelectionStatus_Registered" xml:space="preserve"><value>Registreret</value></data>
+  <data name="MainForm_TechnicalSelectionStatus_Draft" xml:space="preserve"><value>Kladde</value></data>
 </root>

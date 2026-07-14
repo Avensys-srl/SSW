@@ -261,6 +261,7 @@ Partial Public Class CLMainForm
     End Sub
 
     Private Async Function Project_RegisterBeforeReportAsync() As Task(Of Boolean)
+        m_ReportGeneratedAsDraft = False
         Do
             Try
                 If m_ProjectDocument Is Nothing Then
@@ -285,6 +286,7 @@ Partial Public Class CLMainForm
                     result.ResumeToken,
                     DateTime.UtcNow)
                 Project_PersistRegisteredSelection()
+                m_ReportGeneratedAsDraft = False
                 Return True
             Catch ex As Exception
                 If m_ProjectDocument IsNot Nothing AndAlso m_ProjectDocument.Identity IsNot Nothing AndAlso
@@ -302,6 +304,7 @@ Partial Public Class CLMainForm
                             Continue Do
                         Case CLSelectionRegistrationFailureChoice.GenerateDraft
                             Project_SetDirty(True)
+                            m_ReportGeneratedAsDraft = True
                             Return True
                         Case Else
                             Return False

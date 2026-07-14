@@ -116,8 +116,11 @@ internal sealed class TokenHandler : HttpMessageHandler
 internal static class Program
 {
     [STAThread]
-    private static int Main()
+    private static int Main(string[] args)
     {
+        if (args.Any(argument => String.Equals(argument, "--live-bootstrap", StringComparison.OrdinalIgnoreCase)))
+            return RunLiveBootstrap();
+
         string root = Path.Combine(Path.GetTempPath(), "ssw-selection-identity-" + Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(root);
         Environment.SetEnvironmentVariable("SSW_SELECTION_CREDENTIAL_PATH", Path.Combine(root, "credentials.json"));
@@ -163,6 +166,37 @@ internal static class Program
             Environment.SetEnvironmentVariable("SSW_SELECTION_API_BASE_URL", null);
             try { Directory.Delete(root, true); } catch { }
         }
+    }
+
+    private static int RunLiveBootstrap()
+    {
+        const string bootstrapName = "SSW_SELECTION_BOOTSTRAP_KEY_AV";
+        string bootstrapKey = Environment.GetEnvironmentVariable(bootstrapName, EnvironmentVariableTarget.User);
+        if (String.IsNullOrWhiteSpace(bootstrapKey))
+            throw new InvalidOperationException("The AV user bootstrap credential is not provisioned.");
+
+        var context = new CLSelectionRegistrationContext
+        {
+            CustomerCode = "AV",
+            SoftwareVersion = typeof(CLMainForm).Assembly.GetName().Version.ToString(),
+            DatabaseSchemaVersion = 1,
+            DatabaseContentHash = "release-installer-smoke",
+            ApiContractVersion = 1
+        };
+        var client = new CLSelectionApiClient();
+        string first = client.EnsureAccessTokenAsync(context).GetAwaiter().GetResult();
+        string cached = client.EnsureAccessTokenAsync(context).GetAwaiter().GetResult();
+        if (String.IsNullOrWhiteSpace(first) || !String.Equals(first, cached, StringComparison.Ordinal))
+            throw new InvalidOperationException("The live installation token was not cached.");
+
+        string stored = File.ReadAllText(CLSelectionCredentialStore.StateFilePath);
+        if (stored.Contains(first))
+            throw new InvalidOperationException("The live installation token was stored in plaintext.");
+        if (!String.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable(bootstrapName, EnvironmentVariableTarget.User)))
+            throw new InvalidOperationException("The consumed bootstrap credential was not removed.");
+
+        Console.WriteLine("Live installation bootstrap passed: https=ok dpapi=ok cache=ok bootstrap_consumed=true");
+        return 0;
     }
 
     private static void TestRegistrationFailureDialog()

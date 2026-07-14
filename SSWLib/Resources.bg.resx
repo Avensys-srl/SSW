@@ -481,4 +481,8 @@
   <data name="MainForm_SelectionRegistration_Retry" xml:space="preserve"><value>Повтори</value></data>
   <data name="MainForm_SelectionRegistration_Draft" xml:space="preserve"><value>Генерирай чернова</value></data>
   <data name="MainForm_SelectionRegistration_Cancel" xml:space="preserve"><value>Отказ</value></data>
+  <data name="MainForm_TechnicalSelectionRevision" xml:space="preserve"><value>Ревизия</value></data>
+  <data name="MainForm_TechnicalSelectionStatus" xml:space="preserve"><value>Статус</value></data>
+  <data name="MainForm_TechnicalSelectionStatus_Registered" xml:space="preserve"><value>Регистрирана</value></data>
+  <data name="MainForm_TechnicalSelectionStatus_Draft" xml:space="preserve"><value>Чернова</value></data>
 </root>

@@ -27,6 +27,12 @@
               <xs:element name="Note" msprop:Generator_ColumnVarNameInTable="columnNote" msprop:Generator_ColumnPropNameInRow="Note" msprop:Generator_ColumnPropNameInTable="NoteColumn" msprop:Generator_UserColumnName="Note" type="xs:string" minOccurs="0" />
               <xs:element name="Item_Code" msprop:Generator_ColumnVarNameInTable="columnItem_Code" msprop:Generator_ColumnPropNameInRow="Item_Code" msprop:Generator_ColumnPropNameInTable="Item_CodeColumn" msprop:Generator_UserColumnName="Item_Code" type="xs:string" minOccurs="0" />
               <xs:element name="Item_Description" msprop:Generator_ColumnVarNameInTable="columnItem_Description" msprop:Generator_ColumnPropNameInRow="Item_Description" msprop:Generator_ColumnPropNameInTable="Item_DescriptionColumn" msprop:Generator_UserColumnName="Item_Description" type="xs:string" minOccurs="0" />
+              <xs:element name="TechnicalSelectionReference_Caption" type="xs:string" minOccurs="0" />
+              <xs:element name="TechnicalSelectionReference_Value" type="xs:string" minOccurs="0" />
+              <xs:element name="TechnicalSelectionRevision_Caption" type="xs:string" minOccurs="0" />
+              <xs:element name="TechnicalSelectionRevision_Value" type="xs:string" minOccurs="0" />
+              <xs:element name="TechnicalSelectionStatus_Caption" type="xs:string" minOccurs="0" />
+              <xs:element name="TechnicalSelectionStatus_Value" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

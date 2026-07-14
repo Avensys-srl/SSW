@@ -1,6 +1,17 @@
 SSW Changelog
 =============
 
+1.3.0.45 - 2026-07-14
+---------------------
+- Added versioned SDF compatibility checks and database metadata diagnostics.
+- Added reusable .sswsel project files with new, open, save, duplicate and recent-selection workflows.
+- Added immutable technical selection snapshots, centralized opaque references and revision tracking.
+- Added local progressive draft references and offline report fallback.
+- Added translated technical selection reference, revision and status fields to all report layouts.
+- Added zero-touch installation enrollment with DPAPI-protected access tokens and revocable bootstrap credentials.
+- Fixed bootstrap credential lookup for already-running Windows sessions.
+- Kept automatic update checks silent when the update service is unavailable.
+
 1.3.0.44 - 2026-07-13
 ---------------------
 - Added seasonal winter and summer thermodynamic calculations and efficiency curves.

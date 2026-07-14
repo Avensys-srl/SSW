@@ -14,6 +14,14 @@
 #define OutputDir "output"
 #endif
 
+#ifndef BootstrapKey
+#error BootstrapKey is required for a distributable build
+#endif
+
+#ifndef BootstrapEnvironmentName
+#error BootstrapEnvironmentName is required for a distributable build
+#endif
+
 [Setup]
 AppId={{7C326B6C-D147-4F11-A4A1-4B0135F3F0C9}
 AppName={#AppName}
@@ -51,6 +59,9 @@ Source: "{#SourceDir}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs 
 Name: "{group}\{#AppName}"; Filename: "{app}\{#AppExeName}"
 Name: "{group}\Uninstall {#AppName}"; Filename: "{uninstallexe}"
 Name: "{autodesktop}\{#AppName}"; Filename: "{app}\{#AppExeName}"; Tasks: desktopicon
+
+[Registry]
+Root: HKCU; Subkey: "Environment"; ValueType: string; ValueName: "{#BootstrapEnvironmentName}"; ValueData: "{#BootstrapKey}"; Flags: preservestringtype uninsdeletevalue
 
 [Run]
 Filename: "{app}\{#AppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(AppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent

@@ -8212,7 +8212,7 @@
                   <Value>=First(Fields!UnitSelected_Caption.Value, "Header")</Value>
                   <Style>
                     <FontFamily>Helvetica</FontFamily>
-                    <FontSize>11pt</FontSize>
+                    <FontSize>9pt</FontSize>
                   </Style>
                 </TextRun>
               </TextRuns>
@@ -8220,8 +8220,8 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>UnitSelected_Caption</rd:DefaultName>
-          <Top>1.79296cm</Top>
-          <Left>0.34253cm</Left>
+          <Top>1.77973cm</Top>
+          <Left>0.35576cm</Left>
           <Height>0.5cm</Height>
           <Width>4.03458cm</Width>
           <Style>
@@ -8260,7 +8260,7 @@
                   <Value>=First(Fields!UnitSelected_Value.Value, "Header")</Value>
                   <Style>
                     <FontFamily>Helvetica</FontFamily>
-                    <FontSize>11pt</FontSize>
+                    <FontSize>9pt</FontSize>
                   </Style>
                 </TextRun>
               </TextRuns>
@@ -8268,8 +8268,8 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>UnitSelected_Value</rd:DefaultName>
-          <Top>1.78698cm</Top>
-          <Left>4.66653cm</Left>
+          <Top>1.77375cm</Top>
+          <Left>4.67976cm</Left>
           <Height>0.5cm</Height>
           <Width>10.11411cm</Width>
           <ZIndex>2</ZIndex>
@@ -8289,7 +8289,7 @@
                   <Value>=First(Fields!Date_Caption.Value, "Header")</Value>
                   <Style>
                     <FontFamily>Helvetica</FontFamily>
-                    <FontSize>11pt</FontSize>
+                    <FontSize>9pt</FontSize>
                   </Style>
                 </TextRun>
               </TextRuns>
@@ -8298,7 +8298,7 @@
           </Paragraphs>
           <rd:DefaultName>Date_Caption</rd:DefaultName>
           <Top>0.22225cm</Top>
-          <Left>0.34253cm</Left>
+          <Left>0.35576cm</Left>
           <Height>0.5cm</Height>
           <Width>4.03458cm</Width>
           <ZIndex>3</ZIndex>
@@ -8318,7 +8318,7 @@
                   <Value>=Format(First(Fields!Date_Value.Value, "Header"), "dd/MM/yyyy" )</Value>
                   <Style>
                     <FontFamily>Helvetica</FontFamily>
-                    <FontSize>11pt</FontSize>
+                    <FontSize>9pt</FontSize>
                     <Format>dd/MMM/yyyy</Format>
                   </Style>
                 </TextRun>
@@ -8348,7 +8348,7 @@
                   <Value>=First(Fields!SoftwareRelease_Caption.Value, "Header")</Value>
                   <Style>
                     <FontFamily>Helvetica</FontFamily>
-                    <FontSize>11pt</FontSize>
+                    <FontSize>9pt</FontSize>
                   </Style>
                 </TextRun>
               </TextRuns>
@@ -8357,7 +8357,7 @@
           </Paragraphs>
           <rd:DefaultName>SoftwareRelease_Caption</rd:DefaultName>
           <Top>0.75292cm</Top>
-          <Left>0.34253cm</Left>
+          <Left>0.35576cm</Left>
           <Height>0.5cm</Height>
           <Width>4.03458cm</Width>
           <ZIndex>5</ZIndex>
@@ -8377,7 +8377,7 @@
                   <Value>=First(Fields!SoftwareRelease_Value.Value, "Header")</Value>
                   <Style>
                     <FontFamily>Helvetica</FontFamily>
-                    <FontSize>11pt</FontSize>
+                    <FontSize>9pt</FontSize>
                   </Style>
                 </TextRun>
               </TextRuns>
@@ -8386,7 +8386,7 @@
           </Paragraphs>
           <rd:DefaultName>SoftwareRelease_Value</rd:DefaultName>
           <Top>0.75292cm</Top>
-          <Left>4.66653cm</Left>
+          <Left>4.67976cm</Left>
           <Height>0.5cm</Height>
           <Width>4.48438cm</Width>
           <ZIndex>6</ZIndex>
@@ -8406,7 +8406,7 @@
                   <Value>=First(Fields!Page_Caption.Value, "Header")</Value>
                   <Style>
                     <FontFamily>Helvetica</FontFamily>
-                    <FontSize>11pt</FontSize>
+                    <FontSize>9pt</FontSize>
                   </Style>
                 </TextRun>
               </TextRuns>
@@ -8414,8 +8414,8 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Page_Caption</rd:DefaultName>
-          <Top>1.29296cm</Top>
-          <Left>0.34253cm</Left>
+          <Top>1.27973cm</Top>
+          <Left>0.35576cm</Left>
           <Height>0.5cm</Height>
           <Width>4.03458cm</Width>
           <ZIndex>7</ZIndex>
@@ -8444,7 +8444,7 @@
           </Paragraphs>
           <rd:DefaultName>Title</rd:DefaultName>
           <Top>2.85585cm</Top>
-          <Left>0.36016cm</Left>
+          <Left>0.35576cm</Left>
           <Height>0.4cm</Height>
           <Width>10.82775cm</Width>
           <ZIndex>8</ZIndex>
@@ -8474,7 +8474,7 @@
           </Paragraphs>
           <rd:DefaultName>ExternalLeakage_Caption</rd:DefaultName>
           <Top>3.30416cm</Top>
-          <Left>0.36016cm</Left>
+          <Left>0.35576cm</Left>
           <Height>0.4cm</Height>
           <Width>4.90299cm</Width>
           <ZIndex>9</ZIndex>
@@ -8532,7 +8532,7 @@
           </Paragraphs>
           <rd:DefaultName>InternalLeakage_Caption</rd:DefaultName>
           <Top>3.74894cm</Top>
-          <Left>0.36016cm</Left>
+          <Left>0.35576cm</Left>
           <Height>0.4cm</Height>
           <Width>4.90299cm</Width>
           <ZIndex>11</ZIndex>
@@ -8590,7 +8590,7 @@
           </Paragraphs>
           <rd:DefaultName>AirflowPressure_Caption</rd:DefaultName>
           <Top>4.16197cm</Top>
-          <Left>0.36016cm</Left>
+          <Left>0.35576cm</Left>
           <Height>0.4cm</Height>
           <Width>4.90299cm</Width>
           <ZIndex>13</ZIndex>
@@ -8648,7 +8648,7 @@
           </Paragraphs>
           <rd:DefaultName>ElectricPowerInput_Caption</rd:DefaultName>
           <Top>4.57149cm</Top>
-          <Left>0.36016cm</Left>
+          <Left>0.35576cm</Left>
           <Height>0.4cm</Height>
           <Width>4.90299cm</Width>
           <ZIndex>15</ZIndex>
@@ -8706,7 +8706,7 @@
           </Paragraphs>
           <rd:DefaultName>NoiseLevel_Caption</rd:DefaultName>
           <Top>5.01274cm</Top>
-          <Left>0.3337cm</Left>
+          <Left>0.35576cm</Left>
           <Height>0.4cm</Height>
           <Width>4.90299cm</Width>
           <ZIndex>17</ZIndex>
@@ -8755,7 +8755,7 @@
                   <Value>=Cstr(Globals!PageNumber) + " / " + CStr(Globals!TotalPages)</Value>
                   <Style>
                     <FontFamily>Helvetica</FontFamily>
-                    <FontSize>11pt</FontSize>
+                    <FontSize>9pt</FontSize>
                   </Style>
                 </TextRun>
               </TextRuns>
@@ -8763,8 +8763,8 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>SoftwareRelease_Value</rd:DefaultName>
-          <Top>1.28698cm</Top>
-          <Left>4.66653cm</Left>
+          <Top>1.27375cm</Top>
+          <Left>4.67976cm</Left>
           <Height>0.5cm</Height>
           <Width>4.48438cm</Width>
           <ZIndex>19</ZIndex>
@@ -8784,7 +8784,7 @@
                   <Value>=First(Fields!CustomerInfo.Value, "Header")</Value>
                   <MarkupType>HTML</MarkupType>
                   <Style>
-                    <FontSize>11pt</FontSize>
+                    <FontSize>9pt</FontSize>
                   </Style>
                 </TextRun>
               </TextRuns>
@@ -8793,7 +8793,7 @@
           </Paragraphs>
           <Top>0.20496cm</Top>
           <Left>15.19756cm</Left>
-          <Height>4.00623cm</Height>
+          <Height>2.57477cm</Height>
           <Width>4.45294cm</Width>
           <ZIndex>20</ZIndex>
           <Style>
@@ -8816,6 +8816,7 @@
                   <Value>=IIf(First(Fields!Note.Value, "Header") &lt;&gt; "" ,First(Fields!Note.Value, "Header"),"")</Value>
                   <Style>
                     <FontFamily>Helvetica</FontFamily>
+                    <FontSize>9pt</FontSize>
                     <FontWeight>Bold</FontWeight>
                   </Style>
                 </TextRun>
@@ -8824,8 +8825,8 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>UnitSelected_Value</rd:DefaultName>
-          <Top>2.28729cm</Top>
-          <Left>4.66653cm</Left>
+          <Top>2.27406cm</Top>
+          <Left>4.67976cm</Left>
           <Height>0.5cm</Height>
           <Width>6.58313cm</Width>
           <ZIndex>21</ZIndex>
@@ -8845,6 +8846,7 @@
                   <Value>=IIf(First(Fields!Note.Value, "Header") &lt;&gt; "", "Ref:", "")</Value>
                   <Style>
                     <FontFamily>Helvetica</FontFamily>
+                    <FontSize>9pt</FontSize>
                     <FontWeight>Bold</FontWeight>
                   </Style>
                 </TextRun>
@@ -8853,11 +8855,185 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>UnitSelected_Value</rd:DefaultName>
-          <Top>2.29296cm</Top>
-          <Left>0.34253cm</Left>
+          <Top>2.27973cm</Top>
+          <Left>0.35576cm</Left>
           <Height>0.5cm</Height>
           <Width>4.03458cm</Width>
           <ZIndex>22</ZIndex>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+          </Style>
+        </Textbox>
+        <Textbox Name="TechnicalSelectionReference_Caption1">
+          <CanGrow>true</CanGrow>
+          <KeepTogether>true</KeepTogether>
+          <Paragraphs>
+            <Paragraph>
+              <TextRuns>
+                <TextRun>
+                  <Value>=First(Fields!TechnicalSelectionReference_Caption.Value, "Header")</Value>
+                  <Style>
+                    <FontFamily>Helvetica</FontFamily>
+                    <FontSize>9pt</FontSize>
+                  </Style>
+                </TextRun>
+              </TextRuns>
+              <Style>
+                <TextAlign>Left</TextAlign>
+              </Style>
+            </Paragraph>
+          </Paragraphs>
+          <Top>2.96842cm</Top>
+          <Left>13.21024cm</Left>
+          <Height>0.4cm</Height>
+          <Width>2.89957cm</Width>
+          <ZIndex>23</ZIndex>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+          </Style>
+        </Textbox>
+        <Textbox Name="TechnicalSelectionRevision_Caption1">
+          <CanGrow>true</CanGrow>
+          <KeepTogether>true</KeepTogether>
+          <Paragraphs>
+            <Paragraph>
+              <TextRuns>
+                <TextRun>
+                  <Value>=First(Fields!TechnicalSelectionRevision_Caption.Value, "Header")</Value>
+                  <Style>
+                    <FontFamily>Helvetica</FontFamily>
+                    <FontSize>9pt</FontSize>
+                  </Style>
+                </TextRun>
+              </TextRuns>
+              <Style>
+                <TextAlign>Left</TextAlign>
+              </Style>
+            </Paragraph>
+          </Paragraphs>
+          <Top>3.43897cm</Top>
+          <Left>13.21024cm</Left>
+          <Height>0.4cm</Height>
+          <Width>2.89957cm</Width>
+          <ZIndex>24</ZIndex>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+          </Style>
+        </Textbox>
+        <Textbox Name="TechnicalSelectionStatus_Caption1">
+          <CanGrow>true</CanGrow>
+          <KeepTogether>true</KeepTogether>
+          <Paragraphs>
+            <Paragraph>
+              <TextRuns>
+                <TextRun>
+                  <Value>=First(Fields!TechnicalSelectionStatus_Caption.Value, "Header")</Value>
+                  <Style>
+                    <FontFamily>Helvetica</FontFamily>
+                    <FontSize>9pt</FontSize>
+                  </Style>
+                </TextRun>
+              </TextRuns>
+              <Style>
+                <TextAlign>Left</TextAlign>
+              </Style>
+            </Paragraph>
+          </Paragraphs>
+          <Top>3.90953cm</Top>
+          <Left>13.21024cm</Left>
+          <Height>0.4cm</Height>
+          <Width>2.89957cm</Width>
+          <ZIndex>25</ZIndex>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+          </Style>
+        </Textbox>
+        <Textbox Name="TechnicalSelectionReference">
+          <CanGrow>true</CanGrow>
+          <KeepTogether>true</KeepTogether>
+          <Paragraphs>
+            <Paragraph>
+              <TextRuns>
+                <TextRun>
+                  <Value>=First(Fields!TechnicalSelectionReference_Value.Value, "Header")</Value>
+                  <Style>
+                    <FontFamily>Helvetica</FontFamily>
+                    <FontSize>9pt</FontSize>
+                  </Style>
+                </TextRun>
+              </TextRuns>
+              <Style />
+            </Paragraph>
+          </Paragraphs>
+          <Top>2.96842cm</Top>
+          <Left>16.2862cm</Left>
+          <Height>0.4cm</Height>
+          <Width>3.36428cm</Width>
+          <ZIndex>26</ZIndex>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+          </Style>
+        </Textbox>
+        <Textbox Name="TechnicalselectionRevision">
+          <CanGrow>true</CanGrow>
+          <KeepTogether>true</KeepTogether>
+          <Paragraphs>
+            <Paragraph>
+              <TextRuns>
+                <TextRun>
+                  <Value>=First(Fields!TechnicalSelectionRevision_Value.Value, "Header")</Value>
+                  <Style>
+                    <FontFamily>Helvetica</FontFamily>
+                    <FontSize>9pt</FontSize>
+                  </Style>
+                </TextRun>
+              </TextRuns>
+              <Style />
+            </Paragraph>
+          </Paragraphs>
+          <Top>3.43897cm</Top>
+          <Left>16.2862cm</Left>
+          <Height>0.4cm</Height>
+          <Width>3.36428cm</Width>
+          <ZIndex>27</ZIndex>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+          </Style>
+        </Textbox>
+        <Textbox Name="TechnicalSelectionStatus">
+          <CanGrow>true</CanGrow>
+          <KeepTogether>true</KeepTogether>
+          <Paragraphs>
+            <Paragraph>
+              <TextRuns>
+                <TextRun>
+                  <Value>=First(Fields!TechnicalSelectionStatus_Value.Value, "Header")</Value>
+                  <Style>
+                    <FontFamily>Helvetica</FontFamily>
+                    <FontSize>9pt</FontSize>
+                  </Style>
+                </TextRun>
+              </TextRuns>
+              <Style />
+            </Paragraph>
+          </Paragraphs>
+          <Top>3.90953cm</Top>
+          <Left>16.2862cm</Left>
+          <Height>0.4cm</Height>
+          <Width>3.36428cm</Width>
+          <ZIndex>28</ZIndex>
           <Style>
             <Border>
               <Style>None</Style>
@@ -9085,6 +9261,30 @@
         </Field>
         <Field Name="Item_Description">
           <DataField>Item_Description</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="TechnicalSelectionReference_Caption">
+          <DataField>TechnicalSelectionReference_Caption</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="TechnicalSelectionReference_Value">
+          <DataField>TechnicalSelectionReference_Value</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="TechnicalSelectionRevision_Caption">
+          <DataField>TechnicalSelectionRevision_Caption</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="TechnicalSelectionRevision_Value">
+          <DataField>TechnicalSelectionRevision_Value</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="TechnicalSelectionStatus_Caption">
+          <DataField>TechnicalSelectionStatus_Caption</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="TechnicalSelectionStatus_Value">
+          <DataField>TechnicalSelectionStatus_Value</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>

@@ -78,10 +78,14 @@ Public NotInheritable Class CLSelectionApiClient
         ValidateContext(context)
         Dim credentials As CLSelectionCredentialSnapshot = CLSelectionCredentialStore.LoadOrCreate()
         If Not String.IsNullOrWhiteSpace(credentials.AccessToken) AndAlso credentials.TokenExpiresAtUtc.HasValue Then
-            If credentials.TokenExpiresAtUtc.Value > DateTime.UtcNow.AddDays(14) Then Return credentials.AccessToken
+            If credentials.TokenExpiresAtUtc.Value > DateTime.UtcNow.AddDays(14) Then
+                ClearUserBootstrapKey(context.CustomerCode)
+                Return credentials.AccessToken
+            End If
             Try
                 Dim renewed As CLSelectionTokenResponse = Await RenewAsync(credentials.AccessToken, cancellationToken).ConfigureAwait(False)
                 CLSelectionCredentialStore.SaveAccessToken(renewed.AccessToken, renewed.ExpiresAt)
+                ClearUserBootstrapKey(context.CustomerCode)
                 Return renewed.AccessToken
             Catch ex As CLSelectionApiException When ex.StatusCode = HttpStatusCode.Unauthorized
                 CLSelectionCredentialStore.ClearAccessToken()
@@ -90,6 +94,7 @@ Public NotInheritable Class CLSelectionApiClient
 
         Dim registered As CLSelectionTokenResponse = Await RegisterAsync(context, credentials.InstallationId, cancellationToken).ConfigureAwait(False)
         CLSelectionCredentialStore.SaveAccessToken(registered.AccessToken, registered.ExpiresAt)
+        ClearUserBootstrapKey(context.CustomerCode)
         Return registered.AccessToken
     End Function
 
@@ -304,11 +309,57 @@ Public NotInheritable Class CLSelectionApiClient
     Private Shared Function ResolveBootstrapKey(customerCode As String) As String
         Dim safeCustomerCode As String = New String(customerCode.ToUpperInvariant().Where(
             Function(character) Char.IsLetterOrDigit(character)).ToArray())
-        Dim value As String = System.Environment.GetEnvironmentVariable("SSW_SELECTION_BOOTSTRAP_KEY_" & safeCustomerCode)
-        If String.IsNullOrWhiteSpace(value) Then value = System.Environment.GetEnvironmentVariable("SSW_SELECTION_BOOTSTRAP_KEY")
+        Dim value As String = ResolveEnvironmentValue("SSW_SELECTION_BOOTSTRAP_KEY_" & safeCustomerCode)
+        If String.IsNullOrWhiteSpace(value) Then value = ResolveEnvironmentValue("SSW_SELECTION_BOOTSTRAP_KEY")
         If String.IsNullOrWhiteSpace(value) Then value = ConfigurationManager.AppSettings("TechnicalSelectionBootstrapKey")
         Return value
     End Function
+
+    Private Shared Function ResolveEnvironmentValue(name As String) As String
+        Dim value As String = System.Environment.GetEnvironmentVariable(name, EnvironmentVariableTarget.Process)
+        If String.IsNullOrWhiteSpace(value) Then
+            value = System.Environment.GetEnvironmentVariable(name, EnvironmentVariableTarget.User)
+        End If
+        If String.IsNullOrWhiteSpace(value) Then
+            value = System.Environment.GetEnvironmentVariable(name, EnvironmentVariableTarget.Machine)
+        End If
+        Return value
+    End Function
+
+    Private Shared Sub ClearUserBootstrapKey(customerCode As String)
+        Dim safeCustomerCode As String = New String(customerCode.ToUpperInvariant().Where(
+            Function(character) Char.IsLetterOrDigit(character)).ToArray())
+        If String.IsNullOrWhiteSpace(safeCustomerCode) Then Return
+        Try
+            Dim environmentName As String = "SSW_SELECTION_BOOTSTRAP_KEY_" & safeCustomerCode
+            Dim userValue As String = System.Environment.GetEnvironmentVariable(
+                environmentName,
+                EnvironmentVariableTarget.User)
+            If String.IsNullOrWhiteSpace(userValue) Then Return
+
+            Dim processValue As String = System.Environment.GetEnvironmentVariable(
+                environmentName,
+                EnvironmentVariableTarget.Process)
+            If Not String.IsNullOrWhiteSpace(processValue) AndAlso
+                Not String.Equals(processValue, userValue, StringComparison.Ordinal) Then
+                Return
+            End If
+
+            System.Environment.SetEnvironmentVariable(
+                environmentName,
+                Nothing,
+                EnvironmentVariableTarget.User)
+            If String.Equals(processValue, userValue, StringComparison.Ordinal) Then
+                System.Environment.SetEnvironmentVariable(
+                    environmentName,
+                    Nothing,
+                    EnvironmentVariableTarget.Process)
+            End If
+        Catch ex As Exception When TypeOf ex Is System.Security.SecurityException OrElse
+            TypeOf ex Is UnauthorizedAccessException
+            ' A protected user profile must not invalidate an otherwise valid access token.
+        End Try
+    End Sub
 
     Private Shared Sub ValidateContext(context As CLSelectionRegistrationContext)
         If context Is Nothing Then Throw New ArgumentNullException(NameOf(context))

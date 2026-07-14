@@ -1,5 +1,5 @@
 param(
-    [string]$Configuration = "Release",
+    [string]$Configuration = "AV",
     [string]$Platform = "x86",
     [string]$BuildOutputDir = "",
     [string]$InnoSetupCompiler = "",
@@ -9,8 +9,11 @@ param(
     [string]$CertificatePassword = $env:SSW_SIGN_CERT_PASSWORD,
     [string]$TimestampUrl = "http://timestamp.digicert.com",
     [string]$PublishCopyDir = "F:\DOCUMENTS\tools\Selection Software",
+    [string]$BootstrapKey = $env:SSW_SELECTION_BOOTSTRAP_KEY_AV,
+    [string]$BootstrapEnvironmentName = "SSW_SELECTION_BOOTSTRAP_KEY_AV",
     [switch]$SkipBuild,
-    [switch]$SkipSigning
+    [switch]$SkipSigning,
+    [switch]$SkipBootstrap
 )
 
 $ErrorActionPreference = "Stop"
@@ -169,6 +172,29 @@ $appVersion = Get-AppVersion
 $msbuildPath = Find-MSBuild
 $isccPath = Find-InnoSetupCompiler
 
+if ([string]::IsNullOrWhiteSpace($BootstrapKey)) {
+    $BootstrapKey = [Environment]::GetEnvironmentVariable(
+        $BootstrapEnvironmentName,
+        [EnvironmentVariableTarget]::User)
+}
+if ([string]::IsNullOrWhiteSpace($BootstrapKey)) {
+    $BootstrapKey = [Environment]::GetEnvironmentVariable(
+        $BootstrapEnvironmentName,
+        [EnvironmentVariableTarget]::Machine)
+}
+
+if (-not $SkipBootstrap) {
+    if ([string]::IsNullOrWhiteSpace($BootstrapKey)) {
+        throw "The technical-selection bootstrap key is missing. Set SSW_SELECTION_BOOTSTRAP_KEY_AV or pass -BootstrapKey."
+    }
+    if ($BootstrapKey -notmatch '^[A-Za-z0-9_-]{32,}$') {
+        throw "The technical-selection bootstrap key has an invalid format."
+    }
+    if ($BootstrapEnvironmentName -notmatch '^SSW_SELECTION_BOOTSTRAP_KEY_[A-Z0-9]+$') {
+        throw "The bootstrap environment variable name has an invalid format."
+    }
+}
+
 if (-not $msbuildPath) {
     throw "MSBuild not found. Install Visual Studio Build Tools or pass -MSBuild path by adding it to PATH."
 }
@@ -229,6 +255,10 @@ $isccArgs = @(
 )
 if (Test-Path $iconFile) {
     $isccArgs += "/DIconFile=$iconFile"
+}
+if (-not $SkipBootstrap) {
+    $isccArgs += "/DBootstrapEnvironmentName=$BootstrapEnvironmentName"
+    $isccArgs += "/DBootstrapKey=$BootstrapKey"
 }
 $isccArgs += $innoScriptPath
 

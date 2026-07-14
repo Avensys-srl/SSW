@@ -21,7 +21,11 @@ registrazione centralizzata delle selezioni SSW.
 - [x] Deployment operativo B2 completato il 14/07/2026 su database/API web dedicati.
 - [x] Onda C1 completata il 14/07/2026: punti 13 e 15.
 - [x] Onda C2 implementata e collaudata localmente il 14/07/2026: punto 14.
-- [ ] 16-22. Attivita' residue descritte nelle sezioni seguenti.
+- [x] Onda C3 completata il 14/07/2026: punto 16, inclusa impaginazione RDLC.
+- [x] Release pilota `1.3.0.45` compilata, installata e pubblicata il 14/07/2026;
+  bootstrap reale, token DPAPI, avvio applicazione e API aggiornamenti verificati.
+- [ ] Dopo il reset quota: punto 17, geolocalizzazione approssimativa.
+- [ ] 17-22. Attivita' residue descritte nelle sezioni seguenti.
 
 ## Regole architetturali approvate
 
@@ -139,8 +143,8 @@ registrazione centralizzata delle selezioni SSW.
 
 ### 08. Database server delle selezioni
 
-- Stato: **implementato localmente** il 14/07/2026; migrazione MySQL V1 pronta,
-  applicazione sul database web dedicato ancora da eseguire.
+- Stato: **completato e attivato** il 14/07/2026 sul database dedicato
+  `ssw_selections` in SERVER01, con migrazioni 001-003 e nove tabelle.
 - Ambiente: database web dedicato, separato dai dati prodotto.
 - Creare clienti, installazioni tecniche, selezioni padre, revisioni, token e
   audit delle versioni.
@@ -159,8 +163,8 @@ registrazione centralizzata delle selezioni SSW.
 
 ### 10. API versionata e idempotente
 
-- Stato: **implementato e collaudato localmente** il 14/07/2026; deployment
-  HTTPS e configurazione ambiente ancora da eseguire.
+- Stato: **completato e collaudato end-to-end** il 14/07/2026 tramite HTTPS;
+  verificati R01, retry idempotente, ristampa e revisione R02.
 - Repository: `A:\webavensys\api`.
 - Registrare nuove selezioni e revisioni tramite HTTPS.
 - Gestire retry senza consumare riferimenti duplicati.
@@ -237,14 +241,22 @@ registrazione centralizzata delle selezioni SSW.
 
 ### 16. Riferimento e stato nei report
 
+- Stato: **completato** il 14/07/2026. I quattro RDLC sono stati verificati
+  anche nell'impaginazione finale.
 - Repository: `D:\mdev\SSW`.
 - Aggiornare i quattro RDLC con riferimento, revisione e stato bozza sotto il
   logo, senza alterare il layout approvato delle tabelle.
+- Evidenza C3: il dataset `Header` dei quattro RDLC espone
+  didascalie e valori tradotti per riferimento tecnico, revisione e stato
+  registrata/bozza; i campi sono posizionati sotto il logo con impaginazione
+  approvata.
 - Rendere condizionali le future sezioni tecniche.
 - Stima: 70-130 mila token.
 
 ### 17. Geolocalizzazione approssimativa
 
+- Pianificazione: rinviata al primo checkpoint successivo al reset della quota;
+  non blocca la release pilota `1.3.0.45`.
 - Ambiente: API server.
 - Usare un database GeoIP locale aggiornabile.
 - Salvare codice nazione, citta', sorgente e livello di accuratezza.
@@ -363,9 +375,11 @@ da `/usage` nel Codex CLI.
 - Evidenza: test PHP su SQLite con 5.000 riferimenti, retry selezione/revisione,
   rotazione token e conflitti; GET pubblico rifiutato con HTTP 405; build
   completa `AV|x86` e smoke test client x86 register/cache/renew/DPAPI.
-- Da attivare: database web, variabili `SSW_SELECTION_*`, bootstrap del cliente
-  e backup/purge schedulati. La sorgente e' in `SSWweb/api`; la copia di
-  pubblicazione `A:\webavensys\api` e' stata verificata byte per byte.
+- Attivazione completata: database web, variabili server
+  `SSW_SELECTION_*`, bootstrap AV e pubblicazione HTTPS. Restano da includere
+  nel rilascio la distribuzione zero-touch della credenziale cliente e le
+  procedure schedulate di backup/purge. La sorgente e' in `SSWweb/api`; la
+  copia di pubblicazione `A:\webavensys\api` e' stata verificata byte per byte.
 1. Punto 08: creare lo schema server separato con clienti, installazioni,
    selezioni padre, revisioni, token hash e audit versioni.
 2. Punto 11: implementare il riferimento pubblico casuale con checksum,
@@ -402,7 +416,7 @@ da `/usage` nel Codex CLI.
 
 ### Onda C - Registrazione e report
 
-- Stato: **C1 e C2 implementate e collaudate end-to-end** il 14/07/2026. Il
+- Stato: **C1, C2 e C3 completate** il 14/07/2026. Il
   deploy ha richiesto la
   compatibilita' con MariaDB 10.1 (`LONGTEXT` per i documenti JSON) e PHP 7.2;
   il bearer token viene preservato dal rewrite Apache.
@@ -419,6 +433,11 @@ da `/usage` nel Codex CLI.
   runtimes`; migrazioni 001-003 applicate su `ssw_selections` il 14/07/2026.
 - Checkpoint HTTPS: `e1df8da Preserve bearer authorization through Apache`;
   R01/retry/ristampa/R02 verificati sul database reale e dati test rimossi.
+- C3 report: riferimento, revisione e stato sono disponibili nei quattro RDLC,
+  tradotti e impaginati sotto il logo; layout PDF approvato.
+- Release pilota `1.3.0.45`: installer AV x86 verificato con aggiornamento pulito,
+  registrazione zero-touch e consumo della chiave bootstrap; la geolocalizzazione
+  resta intenzionalmente rinviata al primo checkpoint dopo il reset quota.
 - Punti 13-17: snapshot, revisioni, Genera report, salvataggio automatico,
   intestazione RDLC e geolocalizzazione.
 - Obiettivo: completare il flusso cliente end-to-end.

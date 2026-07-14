@@ -58,7 +58,7 @@ Each profile maps to an `SSWInfo` class (`SSW/CLSSWInfo_*.cs`) that provides cus
 
 ## Current Version
 
-- Application version: `1.3.0.44`
+- Application version: `1.3.0.45`
 
 ## Prerequisites
 
@@ -97,11 +97,17 @@ powershell -NoProfile -ExecutionPolicy Bypass -File installer\build-installer.ps
 
 The script:
 
-- builds `SSW.sln` in `Release|x86`
+- builds `SSW.sln` in `AV|x86`
 - reads the application version from `SSWLib/My Project/AssemblyInfo.vb`
 - signs `SSW.exe`, `SSWLib.dll`, and the final installer with SignTool
+- reads the AV enrollment key from `SSW_SELECTION_BOOTSTRAP_KEY_AV` without
+  storing it in the repository and provisions it for the current Windows user
 - creates `installer/output/SSW_Setup_<version>.exe`
 - copies the installer to `F:\DOCUMENTS\tools\Selection Software`
+
+The enrollment key is consumed after the first successful API registration;
+the resulting installation token is stored with Windows DPAPI. Use
+`-SkipBootstrap` only for a non-distributable diagnostic installer.
 
 To build without recompiling the solution, pass `-SkipBuild`:
 
