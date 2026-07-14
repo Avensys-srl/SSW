@@ -18,7 +18,7 @@ registrazione centralizzata delle selezioni SSW.
 - [x] 06. Motore di migrazione e compatibilita' progetti.
 - [x] 07. Ciclo di vita locale del progetto e file recenti.
 - [x] Onda B2 implementata e collaudata localmente il 14/07/2026: punti 08-11.
-- [ ] Deployment operativo B2 su database/API web dedicati.
+- [x] Deployment operativo B2 completato il 14/07/2026 su database/API web dedicati.
 - [x] Onda C1 completata il 14/07/2026: punti 13 e 15.
 - [x] Onda C2 implementata e collaudata localmente il 14/07/2026: punto 14.
 - [ ] 16-22. Attivita' residue descritte nelle sezioni seguenti.
@@ -205,9 +205,9 @@ registrazione centralizzata delle selezioni SSW.
 
 ### 14. Registrazione nel comando Genera report
 
-- Stato: **implementato e collaudato localmente** il 14/07/2026; il collaudo
-  HTTPS reale richiede il reload Apache e il test end-to-end. Il database
-  dedicato e le variabili `SSW_SELECTION_*` sono stati predisposti sul server.
+- Stato: **implementato e collaudato end-to-end** il 14/07/2026. Il flusso
+  HTTPS reale ha verificato registrazione installazione, creazione R01, retry
+  idempotente R01, ristampa R01 senza nuova riga e modifica tecnica R02.
 - Evidenza: create/reprint/revision vengono eseguite prima del dataset RDLC con
   chiave idempotente deterministica, blocco dei doppi click, attesa asincrona e
   dialogo localizzato Riprova/Genera bozza/Annulla. Smoke test x86 riuscito per
@@ -329,8 +329,8 @@ da `/usage` nel Codex CLI.
 - Stato: **implementazione locale completata** il 14/07/2026; B1 e B2
   collaudate. Il 14/07/2026 e' stato creato su `SERVER01` il database dedicato
   `ssw_selections`, con migrazioni 001-003, nove tabelle e cliente `AV` attivo.
-  Utente runtime e configurazione Apache sono predisposti; resta il reload
-  Apache e il collaudo HTTPS prima di chiudere il deployment operativo.
+  Utente runtime, configurazione Apache e collaudo HTTPS sono completati. I
+  dati tecnici di test sono stati rimossi al termine del collaudo.
 - Punti 06-12: migrazioni, menu progetto, database server, installazione
   zero-touch, API, riferimento pubblico e bozze offline.
 - Obiettivo: creare e riaprire una selezione senza ancora cambiare gli RDLC.
@@ -402,10 +402,10 @@ da `/usage` nel Codex CLI.
 
 ### Onda C - Registrazione e report
 
-- Stato: **C1 e C2 implementate e collaudate localmente** il 14/07/2026;
-  database e configurazione server predisposti. Il deploy ha richiesto la
+- Stato: **C1 e C2 implementate e collaudate end-to-end** il 14/07/2026. Il
+  deploy ha richiesto la
   compatibilita' con MariaDB 10.1 (`LONGTEXT` per i documenti JSON) e PHP 7.2;
-  resta il reload Apache e il collaudo HTTPS end-to-end.
+  il bearer token viene preservato dal rewrite Apache.
 - Checkpoint C1: snapshot canonici e revisioni immutabili lato client/server;
   `.sswsel` generato automaticamente accanto al PDF senza registrazione API.
 - Checkpoint SSW: `08055bd Complete Wave C1 immutable selection snapshots`.
@@ -417,6 +417,8 @@ da `/usage` nel Codex CLI.
   sorgenti sincronizzati byte per byte in `A:\webavensys\api`.
 - Checkpoint compatibilita' server: `22c3702 Support production PHP and MariaDB
   runtimes`; migrazioni 001-003 applicate su `ssw_selections` il 14/07/2026.
+- Checkpoint HTTPS: `e1df8da Preserve bearer authorization through Apache`;
+  R01/retry/ristampa/R02 verificati sul database reale e dati test rimossi.
 - Punti 13-17: snapshot, revisioni, Genera report, salvataggio automatico,
   intestazione RDLC e geolocalizzazione.
 - Obiettivo: completare il flusso cliente end-to-end.
