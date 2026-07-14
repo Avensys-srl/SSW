@@ -373,6 +373,8 @@ da `/usage` nel Codex CLI.
 - Quota comunicata dopo B2: 56% settimanale residuo e 38% di contesto residuo.
   Consumo osservato B2: circa 3 punti percentuali, molto inferiore alla stima
   prudenziale. Capacita' disponibile sopra la riserva minima del 20%: 36 punti.
+- Quota comunicata all'avvio di C1: 53% settimanale residuo e 36% di contesto
+  residuo, dopo il rinnovo del contesto della sessione.
 - Suddividere Onda C in checkpoint: C1 punti 13 e 15, C2 punto 14, C3 punto 16,
   C4 punto 17. Rivalutare la quota dopo ogni checkpoint e attivare il database
   web B2 prima del collaudo end-to-end del punto 14.
@@ -388,6 +390,7 @@ da `/usage` nel Codex CLI.
   necessario prima del collaudo end-to-end di C2.
 - Checkpoint C1: snapshot canonici e revisioni immutabili lato client/server;
   `.sswsel` generato automaticamente accanto al PDF senza registrazione API.
+- Checkpoint SSW: `08055bd Complete Wave C1 immutable selection snapshots`.
 - Checkpoint API SSWweb: `4512460 Add immutable selection revision fingerprints`.
 - Punti 13-17: snapshot, revisioni, Genera report, salvataggio automatico,
   intestazione RDLC e geolocalizzazione.
