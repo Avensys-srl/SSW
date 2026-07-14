@@ -380,4 +380,15 @@
   <data name="MainForm_CoilPerformance_Calculating" xml:space="preserve">
     <value>Izračun poteka, počakajte...</value>
   </data>
+  <data name="MainForm_Project_New" xml:space="preserve"><value>Nova izbira</value></data>
+  <data name="MainForm_Project_Open" xml:space="preserve"><value>Odpri izbiro...</value></data>
+  <data name="MainForm_Project_Save" xml:space="preserve"><value>Shrani izbiro</value></data>
+  <data name="MainForm_Project_SaveAs" xml:space="preserve"><value>Shrani izbiro kot...</value></data>
+  <data name="MainForm_Project_Duplicate" xml:space="preserve"><value>Podvoji kot novo izbiro...</value></data>
+  <data name="MainForm_Project_Recent" xml:space="preserve"><value>Nedavne izbire</value></data>
+  <data name="MainForm_Project_Title" xml:space="preserve"><value>Tehnična izbira</value></data>
+  <data name="MainForm_Project_Filter" xml:space="preserve"><value>Tehnična izbira SSW</value></data>
+  <data name="MainForm_Project_Unsaved" xml:space="preserve"><value>Trenutna izbira vsebuje neshranjene spremembe. Jih želite shraniti zdaj?</value></data>
+  <data name="MainForm_Project_OpenError" xml:space="preserve"><value>Projekta izbire ni mogoče odpreti: {0}</value></data>
+  <data name="MainForm_Project_SaveError" xml:space="preserve"><value>Projekta izbire ni mogoče shraniti: {0}</value></data>
 </root>

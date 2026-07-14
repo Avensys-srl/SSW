@@ -14,8 +14,9 @@ registrazione centralizzata delle selezioni SSW.
 - [x] 03. Manifest e feature SDF implementati in `CLDataCentralLib`.
 - [x] 04. Controllo compatibilita' SDF implementato e verificato in SSW.
 - [x] 05. Formato `.sswsel` V1 definito, implementato e verificato.
-- [ ] Onda B pianificata il 14/07/2026; avvio subordinato al checkpoint B1.
-- [ ] 06-22. Attivita' residue descritte nelle sezioni seguenti.
+- [x] Onda B1 completata il 14/07/2026: punti 06, 07 e 12.
+- [x] 06. Motore di migrazione e compatibilita' progetti.
+- [ ] 07-22. Attivita' residue descritte nelle sezioni seguenti.
 
 ## Regole architetturali approvate
 
@@ -104,6 +105,12 @@ registrazione centralizzata delle selezioni SSW.
 
 ### 06. Motore di migrazione dei progetti
 
+- Stato: **completato** il 14/07/2026.
+- Evidenza: runner sequenziale predisposto, normalizzazione conservativa dei
+  V1 incompleti, blocco futuro `ElectricHeater` disabilitato, backup
+  `pre-migration` e rifiuto dei formati futuri. Build AV/x86 e smoke test della
+  fixture `docs/examples/selection-v1-sparse.sswsel` riusciti, incluso il
+  round-trip con backup e seconda apertura senza nuova migrazione.
 - Repository: `D:\mdev\SSW`.
 - Implementare trasformazioni sequenziali `V1 -> V2 -> ...`.
 - Applicare default compatibili per sbilanciamento, resistenze, batteria ed
@@ -114,6 +121,12 @@ registrazione centralizzata delle selezioni SSW.
 
 ### 07. Menu e ciclo di vita del progetto
 
+- Stato: **completato** il 14/07/2026.
+- Evidenza: menu localizzato Nuova/Apri/Salva/Salva con nome/Duplica/Recenti,
+  mapping tra form e DTO V1, dirty state, titolo e conferma modifiche non
+  salvate. Smoke test AV/x86 riuscito: sei comandi presenti, modifica rilevata,
+  round-trip del form da portata 100 a 321 e ritorno a 100, recenti aggiornati
+  e stato pulito dopo la riapertura.
 - Repository: `D:\mdev\SSW`.
 - Aggiungere Nuova, Apri, Salva, Salva con nome e Duplica come nuova selezione.
 - Gestire modifiche non salvate, titolo del form, file recenti e messaggi.
@@ -155,6 +168,11 @@ registrazione centralizzata delle selezioni SSW.
 
 ### 12. Bozze offline e progressivo locale
 
+- Stato: **completato** il 14/07/2026.
+- Evidenza: stato non segreto in ProgramData, InstallationCode opaco di quattro
+  caratteri, progressivo atomico protetto da mutex e riferimenti nel formato
+  `D-XXXX-000001`. Smoke test concorrente con 12 processi riuscito: stesso
+  InstallationCode, riferimenti univoci e intervallo contiguo 000001-000012.
 - Repository: `D:\mdev\SSW`.
 - Generare InstallationCode e contatore locale atomico in ProgramData.
 - Proteggere la numerazione tra piu' istanze con un mutex Windows.
@@ -276,13 +294,17 @@ da `/usage` nel Codex CLI.
 
 ### Onda B - Persistenza e identita'
 
-- Stato: **pianificata** il 14/07/2026.
+- Stato: **in corso** dal 14/07/2026; B1 completata, B2 da rivalutare dopo il
+  controllo quota concordato.
 - Punti 06-12: migrazioni, menu progetto, database server, installazione
   zero-touch, API, riferimento pubblico e bozze offline.
 - Obiettivo: creare e riaprire una selezione senza ancora cambiare gli RDLC.
 
 #### B1 - Progetto locale e funzionamento offline
 
+- Stato: **completato** il 14/07/2026.
+- Evidenza: build AV/x86, fixture V1 minimale con backup, round-trip completo
+  del form, file recenti, dirty state e prova concorrente del contatore locale.
 1. Punto 06: introdurre il runner di migrazione sequenziale, la validazione
    dell'envelope e le fixture storiche. Non creare artificialmente un formato
    V2 finche' non esiste una modifica reale da migrare.

@@ -75,6 +75,7 @@ Public Class CLMainForm
 
         ' Chiamata richiesta dalla finestra di progettazione.
         InitializeComponent()
+        Project_InitializeMenus()
 
         Try
             tsmiOption_CommercialSheetAutoSync.Checked = My.Settings.CommercialSheetAutoSyncEnabled
@@ -258,6 +259,8 @@ Public Class CLMainForm
 
         'Fill CO2 data
         CO2LevelFill()
+
+        Project_CompleteFormLoad()
 
         'CLModule.Environment.ExportModelsToCsv("d:\temp\environment.txt")
 
@@ -2218,6 +2221,7 @@ Public Class CLMainForm
         tsmiFile.Text = Environment.Localization.GetString(CLMessageResources.MainForm_Menu_File.ToString())
         tsmiFile_GenerateReport.Text = Environment.Localization.GetString(CLMessageResources.MainForm_Menu_File_GenerateReport.ToString())
         tsmiFile_Exit.Text = Environment.Localization.GetString(CLMessageResources.MainForm_Menu_File_Exit.ToString())
+        Project_UpdateLocalizedTexts()
 
         tsmiOption.Text = Environment.Localization.GetString(CLMessageResources.MainForm_Menu_Option.ToString())
         'tsmiOption_SelectMode.Text = Environment.Localization.GetString(CLMessageResources.CLMainForm_Menu_Option_SelectMode.ToString())

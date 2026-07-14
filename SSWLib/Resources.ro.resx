@@ -455,4 +455,15 @@
   <data name="MainForm_CoilPerformance_Calculating" xml:space="preserve">
     <value>Calcul în curs, așteptați...</value>
   </data>
+  <data name="MainForm_Project_New" xml:space="preserve"><value>Selecție nouă</value></data>
+  <data name="MainForm_Project_Open" xml:space="preserve"><value>Deschide selecția...</value></data>
+  <data name="MainForm_Project_Save" xml:space="preserve"><value>Salvează selecția</value></data>
+  <data name="MainForm_Project_SaveAs" xml:space="preserve"><value>Salvează selecția ca...</value></data>
+  <data name="MainForm_Project_Duplicate" xml:space="preserve"><value>Duplică drept selecție nouă...</value></data>
+  <data name="MainForm_Project_Recent" xml:space="preserve"><value>Selecții recente</value></data>
+  <data name="MainForm_Project_Title" xml:space="preserve"><value>Selecție tehnică</value></data>
+  <data name="MainForm_Project_Filter" xml:space="preserve"><value>Selecție tehnică SSW</value></data>
+  <data name="MainForm_Project_Unsaved" xml:space="preserve"><value>Selecția curentă conține modificări nesalvate. Doriți să le salvați acum?</value></data>
+  <data name="MainForm_Project_OpenError" xml:space="preserve"><value>Proiectul de selecție nu poate fi deschis: {0}</value></data>
+  <data name="MainForm_Project_SaveError" xml:space="preserve"><value>Proiectul de selecție nu poate fi salvat: {0}</value></data>
 </root>

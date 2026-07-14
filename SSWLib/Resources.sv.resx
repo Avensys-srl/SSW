@@ -720,4 +720,15 @@
   <data name="MainForm_CoilPerformance_Calculating" xml:space="preserve">
     <value>Beräkning pågår, vänta...</value>
   </data>
+  <data name="MainForm_Project_New" xml:space="preserve"><value>Nytt urval</value></data>
+  <data name="MainForm_Project_Open" xml:space="preserve"><value>Öppna urval...</value></data>
+  <data name="MainForm_Project_Save" xml:space="preserve"><value>Spara urval</value></data>
+  <data name="MainForm_Project_SaveAs" xml:space="preserve"><value>Spara urval som...</value></data>
+  <data name="MainForm_Project_Duplicate" xml:space="preserve"><value>Duplicera som nytt urval...</value></data>
+  <data name="MainForm_Project_Recent" xml:space="preserve"><value>Senaste urval</value></data>
+  <data name="MainForm_Project_Title" xml:space="preserve"><value>Tekniskt urval</value></data>
+  <data name="MainForm_Project_Filter" xml:space="preserve"><value>Tekniskt SSW-urval</value></data>
+  <data name="MainForm_Project_Unsaved" xml:space="preserve"><value>Det aktuella urvalet innehåller osparade ändringar. Vill du spara dem nu?</value></data>
+  <data name="MainForm_Project_OpenError" xml:space="preserve"><value>Urvalsprojektet kunde inte öppnas: {0}</value></data>
+  <data name="MainForm_Project_SaveError" xml:space="preserve"><value>Urvalsprojektet kunde inte sparas: {0}</value></data>
 </root>

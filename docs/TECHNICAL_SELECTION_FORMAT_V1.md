@@ -63,6 +63,8 @@ essere ristampato ma il ricalcolo deve attendere una risoluzione esplicita.
   umidita' in ingresso;
 - batteria ad acqua con caso, installazione, modo, fluido, temperature acqua e
   geometria 2510;
+- blocco `electricHeater` riservato alle evoluzioni successive e disabilitato
+  per default nei progetti storici;
 - opzioni di report.
 
 La portata di estrazione e' distinta dalla mandata gia' nel V1, anche se la UI
@@ -89,7 +91,13 @@ calcolo senza prima risolvere i riferimenti contro l'SDF corrente.
 - Il loader legge prima l'envelope e rifiuta formati futuri.
 - JSON non valido, blocchi obbligatori mancanti o versioni incoerenti generano
   un errore controllato e non modificano il file.
-- Il motore di migrazione dei formati precedenti verra' introdotto al punto 06
-  della roadmap.
+- Il loader usa un runner sequenziale di migrazione. Ogni futuro passaggio
+  `Vn -> Vn+1` deve essere registrato esplicitamente; una catena incompleta
+  viene rifiutata senza modificare il file originale.
+- I V1 storici incompleti vengono normalizzati con default conservativi:
+  portata di estrazione uguale alla mandata, estate e batteria disabilitate.
+- Al primo salvataggio di un file migrato o normalizzato viene conservata una
+  copia `*.pre-migration-vN.bak` prima della sostituzione atomica.
 
 Fixture di riferimento: `docs/examples/selection-v1.sswsel`.
+Fixture storica minimale: `docs/examples/selection-v1-sparse.sswsel`.

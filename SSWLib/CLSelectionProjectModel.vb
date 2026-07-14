@@ -1,3 +1,5 @@
+Imports System.Text.Json.Serialization
+
 Public NotInheritable Class CLSelectionProjectDocument
 
     Public Property Format As String = "SSWSelection"
@@ -10,6 +12,15 @@ Public NotInheritable Class CLSelectionProjectDocument
     Public Property Identity As New CLSelectionIdentity()
     Public Property Selection As New CLTechnicalSelection()
     Public Property Snapshot As CLCalculatedSelectionSnapshot
+
+    <JsonIgnore>
+    Public Property SourceFormatVersion As Integer = CLTechnicalVersions.CurrentSelectionFormatVersion
+
+    <JsonIgnore>
+    Public Property RequiresMigrationBackup As Boolean
+
+    <JsonIgnore>
+    Public Property SourceFilePath As String
 
 End Class
 
@@ -43,7 +54,16 @@ Public NotInheritable Class CLTechnicalSelection
     Public Property Winter As New CLOperatingScenarioInput With {.Enabled = True, .ScenarioCode = "Winter"}
     Public Property Summer As New CLOperatingScenarioInput With {.Enabled = False, .ScenarioCode = "Summer"}
     Public Property WaterCoil As New CLWaterCoilSelection()
+    Public Property ElectricHeater As New CLElectricHeaterSelection()
     Public Property Report As New CLReportSelectionOptions()
+
+End Class
+
+Public NotInheritable Class CLElectricHeaterSelection
+
+    Public Property Enabled As Boolean
+    Public Property Stages As Integer?
+    Public Property NominalPowerW As Double?
 
 End Class
 

@@ -464,4 +464,15 @@
   <data name="MainForm_CoilPerformance_Calculating" xml:space="preserve">
     <value>Изчисляване, моля изчакайте...</value>
   </data>
+  <data name="MainForm_Project_New" xml:space="preserve"><value>Нова селекция</value></data>
+  <data name="MainForm_Project_Open" xml:space="preserve"><value>Отвори селекция...</value></data>
+  <data name="MainForm_Project_Save" xml:space="preserve"><value>Запази селекцията</value></data>
+  <data name="MainForm_Project_SaveAs" xml:space="preserve"><value>Запази селекцията като...</value></data>
+  <data name="MainForm_Project_Duplicate" xml:space="preserve"><value>Дублирай като нова селекция...</value></data>
+  <data name="MainForm_Project_Recent" xml:space="preserve"><value>Последни селекции</value></data>
+  <data name="MainForm_Project_Title" xml:space="preserve"><value>Техническа селекция</value></data>
+  <data name="MainForm_Project_Filter" xml:space="preserve"><value>Техническа селекция SSW</value></data>
+  <data name="MainForm_Project_Unsaved" xml:space="preserve"><value>Текущата селекция съдържа незапазени промени. Да бъдат ли запазени сега?</value></data>
+  <data name="MainForm_Project_OpenError" xml:space="preserve"><value>Проектът за селекция не може да бъде отворен: {0}</value></data>
+  <data name="MainForm_Project_SaveError" xml:space="preserve"><value>Проектът за селекция не може да бъде запазен: {0}</value></data>
 </root>

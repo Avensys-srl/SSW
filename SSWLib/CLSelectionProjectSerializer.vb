@@ -60,6 +60,7 @@ Public NotInheritable Class CLSelectionProjectSerializer
         Dim backupPath As String = temporaryPath & ".bak"
 
         Try
+            CreateMigrationBackupIfRequired(fullPath, document)
             File.WriteAllText(temporaryPath, json, New UTF8Encoding(False))
 
             If File.Exists(fullPath) Then
@@ -78,6 +79,10 @@ Public NotInheritable Class CLSelectionProjectSerializer
                 File.Delete(backupPath)
             End If
         End Try
+
+        document.SourceFormatVersion = document.SelectionFormatVersion
+        document.RequiresMigrationBackup = False
+        document.SourceFilePath = fullPath
     End Sub
 
     Public Shared Function Load(filePath As String) As CLSelectionProjectDocument
@@ -85,16 +90,23 @@ Public NotInheritable Class CLSelectionProjectSerializer
             Throw New FileNotFoundException("Selection project not found.", filePath)
         End If
 
-        Dim json As String = File.ReadAllText(filePath, Encoding.UTF8)
-        InspectEnvelope(json)
+        Dim fullPath As String = Path.GetFullPath(filePath)
+        Dim json As String = File.ReadAllText(fullPath, Encoding.UTF8)
+        Dim sourceFormatVersion As Integer = InspectEnvelope(json)
+        Dim migrationResult As CLSelectionMigrationResult =
+            CLSelectionMigrationRunner.Run(json, sourceFormatVersion)
 
         Dim document As CLSelectionProjectDocument =
-            JsonSerializer.Deserialize(Of CLSelectionProjectDocument)(json, SerializerOptions)
+            JsonSerializer.Deserialize(Of CLSelectionProjectDocument)(migrationResult.Json, SerializerOptions)
+        Dim normalized As Boolean = Normalize(document)
         Validate(document)
+        document.SourceFormatVersion = sourceFormatVersion
+        document.RequiresMigrationBackup = migrationResult.WasMigrated OrElse normalized
+        document.SourceFilePath = fullPath
         Return document
     End Function
 
-    Private Shared Sub InspectEnvelope(json As String)
+    Private Shared Function InspectEnvelope(json As String) As Integer
         Try
             Using jsonDocument As JsonDocument = JsonDocument.Parse(json)
                 Dim root As JsonElement = jsonDocument.RootElement
@@ -124,11 +136,114 @@ Public NotInheritable Class CLSelectionProjectSerializer
                 If formatVersion < 1 Then
                     Throw New InvalidDataException("Selection format version is invalid.")
                 End If
+
+                Dim requiredElement As JsonElement
+                For Each requiredProperty As String In New String() {
+                    "projectId", "createdAtUtc", "modifiedAtUtc", "versions", "selection"}
+                    If Not root.TryGetProperty(requiredProperty, requiredElement) OrElse
+                        requiredElement.ValueKind = JsonValueKind.Null OrElse
+                        requiredElement.ValueKind = JsonValueKind.Undefined Then
+                        Throw New InvalidDataException(String.Format(
+                            "The selection project required field '{0}' is missing.",
+                            requiredProperty))
+                    End If
+                Next
+
+                If root.GetProperty("versions").ValueKind <> JsonValueKind.Object OrElse
+                    root.GetProperty("selection").ValueKind <> JsonValueKind.Object Then
+                    Throw New InvalidDataException("The selection project required technical blocks are invalid.")
+                End If
+                Return formatVersion
             End Using
         Catch ex As JsonException
             Throw New InvalidDataException("The selection project contains invalid JSON.", ex)
         End Try
+    End Function
+
+    Private Shared Sub CreateMigrationBackupIfRequired(fullPath As String, document As CLSelectionProjectDocument)
+        If Not document.RequiresMigrationBackup OrElse Not File.Exists(fullPath) Then
+            Return
+        End If
+        If Not String.IsNullOrWhiteSpace(document.SourceFilePath) AndAlso
+            Not String.Equals(Path.GetFullPath(document.SourceFilePath), fullPath, StringComparison.OrdinalIgnoreCase) Then
+            Return
+        End If
+
+        Dim backupPath As String = fullPath & String.Format(
+            ".pre-migration-v{0}.bak",
+            document.SourceFormatVersion)
+        If Not File.Exists(backupPath) Then
+            File.Copy(fullPath, backupPath, False)
+        End If
     End Sub
+
+    Private Shared Function Normalize(document As CLSelectionProjectDocument) As Boolean
+        If document Is Nothing Then
+            Return False
+        End If
+
+        Dim changed As Boolean
+        If document.Features Is Nothing Then
+            document.Features = New List(Of String)()
+            changed = True
+        End If
+        If document.Identity Is Nothing Then
+            document.Identity = New CLSelectionIdentity()
+            changed = True
+        End If
+        If document.Selection Is Nothing OrElse document.Versions Is Nothing Then
+            Return changed
+        End If
+        If document.Versions.SelectionFormatVersion = 0 Then
+            document.Versions.SelectionFormatVersion = document.SelectionFormatVersion
+            changed = True
+        End If
+        If document.Selection.Unit Is Nothing Then
+            document.Selection.Unit = New CLSelectionEntityReference()
+            changed = True
+        End If
+        If document.Selection.Winter Is Nothing Then
+            document.Selection.Winter = New CLOperatingScenarioInput With {.Enabled = True, .ScenarioCode = "Winter"}
+            changed = True
+        End If
+        If document.Selection.Summer Is Nothing Then
+            document.Selection.Summer = New CLOperatingScenarioInput With {.Enabled = False, .ScenarioCode = "Summer"}
+            changed = True
+        End If
+        changed = NormalizeScenario(document.Selection.Winter, "Winter", True) OrElse changed
+        changed = NormalizeScenario(document.Selection.Summer, "Summer", False) OrElse changed
+        If document.Selection.WaterCoil Is Nothing Then
+            document.Selection.WaterCoil = New CLWaterCoilSelection()
+            changed = True
+        End If
+        If document.Selection.ElectricHeater Is Nothing Then
+            document.Selection.ElectricHeater = New CLElectricHeaterSelection()
+            changed = True
+        End If
+        If document.Selection.Report Is Nothing Then
+            document.Selection.Report = New CLReportSelectionOptions()
+            changed = True
+        End If
+        Return changed
+    End Function
+
+    Private Shared Function NormalizeScenario(
+        scenario As CLOperatingScenarioInput,
+        scenarioCode As String,
+        enabledByDefault As Boolean) As Boolean
+
+        Dim changed As Boolean
+        If String.IsNullOrWhiteSpace(scenario.ScenarioCode) Then
+            scenario.ScenarioCode = scenarioCode
+            scenario.Enabled = enabledByDefault
+            changed = True
+        End If
+        If Not scenario.ExtractAirflowM3h.HasValue AndAlso scenario.SupplyAirflowM3h.HasValue Then
+            scenario.ExtractAirflowM3h = scenario.SupplyAirflowM3h
+            changed = True
+        End If
+        Return changed
+    End Function
 
     Private Shared Sub Validate(document As CLSelectionProjectDocument)
         If document Is Nothing Then
@@ -150,27 +265,40 @@ Public NotInheritable Class CLSelectionProjectSerializer
             Throw New InvalidDataException("The envelope and calculation version blocks are inconsistent.")
         End If
 
-        If document.Features Is Nothing Then
-            document.Features = New List(Of String)()
-        End If
-        If document.Identity Is Nothing Then
-            document.Identity = New CLSelectionIdentity()
-        End If
-        If document.Selection.Unit Is Nothing Then
-            document.Selection.Unit = New CLSelectionEntityReference()
-        End If
-        If document.Selection.Winter Is Nothing Then
-            document.Selection.Winter = New CLOperatingScenarioInput With {.Enabled = True, .ScenarioCode = "Winter"}
-        End If
-        If document.Selection.Summer Is Nothing Then
-            document.Selection.Summer = New CLOperatingScenarioInput With {.Enabled = False, .ScenarioCode = "Summer"}
-        End If
-        If document.Selection.WaterCoil Is Nothing Then
-            document.Selection.WaterCoil = New CLWaterCoilSelection()
-        End If
-        If document.Selection.Report Is Nothing Then
-            document.Selection.Report = New CLReportSelectionOptions()
-        End If
     End Sub
+
+End Class
+
+Friend NotInheritable Class CLSelectionMigrationResult
+
+    Public Property Json As String
+    Public Property WasMigrated As Boolean
+
+End Class
+
+Friend NotInheritable Class CLSelectionMigrationRunner
+
+    Private Sub New()
+    End Sub
+
+    Public Shared Function Run(json As String, sourceVersion As Integer) As CLSelectionMigrationResult
+        Dim currentJson As String = json
+        Dim currentVersion As Integer = sourceVersion
+
+        While currentVersion < CLTechnicalVersions.CurrentSelectionFormatVersion
+            Select Case currentVersion
+                Case Else
+                    Throw New NotSupportedException(String.Format(
+                        "No migration is registered from selection format {0} to {1}.",
+                        currentVersion,
+                        currentVersion + 1))
+            End Select
+        End While
+
+        Return New CLSelectionMigrationResult With {
+            .Json = currentJson,
+            .WasMigrated = currentVersion <> sourceVersion
+        }
+    End Function
 
 End Class

@@ -443,4 +443,15 @@
   <data name="MainForm_CoilPerformance_Calculating" xml:space="preserve">
     <value>Calcul en cours, veuillez patienter...</value>
   </data>
+  <data name="MainForm_Project_New" xml:space="preserve"><value>Nouvelle sélection</value></data>
+  <data name="MainForm_Project_Open" xml:space="preserve"><value>Ouvrir la sélection...</value></data>
+  <data name="MainForm_Project_Save" xml:space="preserve"><value>Enregistrer la sélection</value></data>
+  <data name="MainForm_Project_SaveAs" xml:space="preserve"><value>Enregistrer la sélection sous...</value></data>
+  <data name="MainForm_Project_Duplicate" xml:space="preserve"><value>Dupliquer comme nouvelle sélection...</value></data>
+  <data name="MainForm_Project_Recent" xml:space="preserve"><value>Sélections récentes</value></data>
+  <data name="MainForm_Project_Title" xml:space="preserve"><value>Sélection technique</value></data>
+  <data name="MainForm_Project_Filter" xml:space="preserve"><value>Sélection technique SSW</value></data>
+  <data name="MainForm_Project_Unsaved" xml:space="preserve"><value>La sélection actuelle contient des modifications non enregistrées. Les enregistrer maintenant ?</value></data>
+  <data name="MainForm_Project_OpenError" xml:space="preserve"><value>Impossible d'ouvrir le projet de sélection : {0}</value></data>
+  <data name="MainForm_Project_SaveError" xml:space="preserve"><value>Impossible d'enregistrer le projet de sélection : {0}</value></data>
 </root>

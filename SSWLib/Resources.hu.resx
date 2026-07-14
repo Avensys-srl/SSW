@@ -557,4 +557,15 @@
   <data name="MainForm_CoilPerformance_Calculating" xml:space="preserve">
     <value>Számítás folyamatban...</value>
   </data>
+  <data name="MainForm_Project_New" xml:space="preserve"><value>Új kiválasztás</value></data>
+  <data name="MainForm_Project_Open" xml:space="preserve"><value>Kiválasztás megnyitása...</value></data>
+  <data name="MainForm_Project_Save" xml:space="preserve"><value>Kiválasztás mentése</value></data>
+  <data name="MainForm_Project_SaveAs" xml:space="preserve"><value>Kiválasztás mentése másként...</value></data>
+  <data name="MainForm_Project_Duplicate" xml:space="preserve"><value>Másolás új kiválasztásként...</value></data>
+  <data name="MainForm_Project_Recent" xml:space="preserve"><value>Legutóbbi kiválasztások</value></data>
+  <data name="MainForm_Project_Title" xml:space="preserve"><value>Műszaki kiválasztás</value></data>
+  <data name="MainForm_Project_Filter" xml:space="preserve"><value>SSW műszaki kiválasztás</value></data>
+  <data name="MainForm_Project_Unsaved" xml:space="preserve"><value>A jelenlegi kiválasztás nem mentett módosításokat tartalmaz. Menti most?</value></data>
+  <data name="MainForm_Project_OpenError" xml:space="preserve"><value>A kiválasztási projekt nem nyitható meg: {0}</value></data>
+  <data name="MainForm_Project_SaveError" xml:space="preserve"><value>A kiválasztási projekt nem menthető: {0}</value></data>
 </root>

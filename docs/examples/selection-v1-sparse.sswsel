@@ -1,0 +1,29 @@
+{
+  "format": "SSWSelection",
+  "selectionFormatVersion": 1,
+  "projectId": "20d14f5a-60a3-43c9-aa1e-2a8198bb55ce",
+  "createdAtUtc": "2025-01-10T08:00:00Z",
+  "modifiedAtUtc": "2025-01-10T08:00:00Z",
+  "versions": {
+    "softwareVersion": "1.2.0.42",
+    "calculationEngineVersion": "1.2.0.42",
+    "selectionFormatVersion": 1,
+    "reportTemplateVersion": 1,
+    "apiContractVersion": 1
+  },
+  "selection": {
+    "unit": {
+      "code": "CLRC 038 OSC",
+      "name": "CLRC 038 OSC"
+    },
+    "winter": {
+      "enabled": true,
+      "supplyAirflowM3h": 300,
+      "maximumPressurePa": 220,
+      "outdoorTemperatureC": -10,
+      "outdoorRelativeHumidityPercent": 80,
+      "returnTemperatureC": 20,
+      "returnRelativeHumidityPercent": 60
+    }
+  }
+}

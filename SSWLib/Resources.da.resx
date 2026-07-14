@@ -623,4 +623,15 @@
   <data name="MainForm_CoilPerformance_Calculating" xml:space="preserve">
     <value>Beregner, vent venligst...</value>
   </data>
+  <data name="MainForm_Project_New" xml:space="preserve"><value>Ny udvælgelse</value></data>
+  <data name="MainForm_Project_Open" xml:space="preserve"><value>Åbn udvælgelse...</value></data>
+  <data name="MainForm_Project_Save" xml:space="preserve"><value>Gem udvælgelse</value></data>
+  <data name="MainForm_Project_SaveAs" xml:space="preserve"><value>Gem udvælgelse som...</value></data>
+  <data name="MainForm_Project_Duplicate" xml:space="preserve"><value>Dupliker som ny udvælgelse...</value></data>
+  <data name="MainForm_Project_Recent" xml:space="preserve"><value>Seneste udvælgelser</value></data>
+  <data name="MainForm_Project_Title" xml:space="preserve"><value>Teknisk udvælgelse</value></data>
+  <data name="MainForm_Project_Filter" xml:space="preserve"><value>SSW teknisk udvælgelse</value></data>
+  <data name="MainForm_Project_Unsaved" xml:space="preserve"><value>Den aktuelle udvælgelse indeholder ændringer, der ikke er gemt. Gem dem nu?</value></data>
+  <data name="MainForm_Project_OpenError" xml:space="preserve"><value>Udvælgelsesprojektet kunne ikke åbnes: {0}</value></data>
+  <data name="MainForm_Project_SaveError" xml:space="preserve"><value>Udvælgelsesprojektet kunne ikke gemmes: {0}</value></data>
 </root>
