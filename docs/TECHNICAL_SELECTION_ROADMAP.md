@@ -14,6 +14,7 @@ registrazione centralizzata delle selezioni SSW.
 - [x] 03. Manifest e feature SDF implementati in `CLDataCentralLib`.
 - [x] 04. Controllo compatibilita' SDF implementato e verificato in SSW.
 - [x] 05. Formato `.sswsel` V1 definito, implementato e verificato.
+- [ ] Onda B pianificata il 14/07/2026; avvio subordinato al checkpoint B1.
 - [ ] 06-22. Attivita' residue descritte nelle sezioni seguenti.
 
 ## Regole architetturali approvate
@@ -275,9 +276,46 @@ da `/usage` nel Codex CLI.
 
 ### Onda B - Persistenza e identita'
 
+- Stato: **pianificata** il 14/07/2026.
 - Punti 06-12: migrazioni, menu progetto, database server, installazione
   zero-touch, API, riferimento pubblico e bozze offline.
 - Obiettivo: creare e riaprire una selezione senza ancora cambiare gli RDLC.
+
+#### B1 - Progetto locale e funzionamento offline
+
+1. Punto 06: introdurre il runner di migrazione sequenziale, la validazione
+   dell'envelope e le fixture storiche. Non creare artificialmente un formato
+   V2 finche' non esiste una modifica reale da migrare.
+2. Punto 07: collegare i DTO V1 ai dati del form e aggiungere Nuova, Apri,
+   Salva, Salva con nome e Duplica; gestire dirty state, titolo e file recenti.
+3. Punto 12: generare InstallationCode e riferimento bozza locale con contatore
+   atomico e mutex, senza dipendere dalla rete.
+4. Checkpoint B1: una selezione completa deve potersi salvare, chiudere,
+   riaprire e ristampare offline conservando scenari e batteria.
+
+#### B2 - Identita' e registrazione centralizzata
+
+1. Punto 08: creare lo schema server separato con clienti, installazioni,
+   selezioni padre, revisioni, token hash e audit versioni.
+2. Punto 11: implementare il riferimento pubblico casuale con checksum,
+   vincolo univoco e suffisso revisione, senza esporre il progressivo interno.
+3. Punto 10: pubblicare API `/v1` idempotenti per registrazione installazione,
+   nuova selezione e nuova revisione, con validazione, limiti e rate limiting.
+4. Punto 09: integrare nel client l'identita' zero-touch protetta in
+   ProgramData e completare registrazione, rinnovo e revoca tecnica.
+5. Checkpoint B2: retry e concorrenza non devono creare riferimenti o revisioni
+   duplicate; nessuna lettura pubblica deve essere possibile dal riferimento.
+
+#### Budget e soglie
+
+- Consumo osservato Onda A: circa 9 punti percentuali del limite settimanale,
+  inclusi riallineamento Explorer e collaudo dell'SDF reale.
+- Quota all'avvio della pianificazione B: 71% residuo; reset 20/07/2026.
+- Stima B1: 7-11 punti; B2: 11-18 punti; integrazione e regressioni: 4-7 punti.
+- Residuo atteso a Onda B conclusa: 35-49%; scenario prudenziale minimo circa
+  31% in presenza di problemi di deployment o credenziali server.
+- Rivalutare quota e rischi dopo B1 e prima del deployment API. Conservare
+  almeno il 20% come riserva e non anticipare modifiche RDLC dell'Onda C.
 
 ### Onda C - Registrazione e report
 
