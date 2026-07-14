@@ -407,6 +407,7 @@ da `/usage` nel Codex CLI.
 - Checkpoint API SSWweb: `4512460 Add immutable selection revision fingerprints`.
 - C2: registrazione nel comando report, fallback bozza e token di ripresa
   trasferibile; gli RDLC restano invariati fino a C3.
+- Checkpoint SSW C2: `eac6f93 Complete Wave C2 report registration flow`.
 - Checkpoint API C2: `8f9b5c6 Protect report registration with resume tokens`;
   sorgenti sincronizzati byte per byte in `A:\webavensys\api`. La migrazione
   `003_selection_resume_tokens_mysql.sql` resta da applicare al database web.
