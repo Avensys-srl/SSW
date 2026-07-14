@@ -358,6 +358,12 @@ da `/usage` nel Codex CLI.
 - Quota all'avvio della pianificazione B: 71% residuo; reset 20/07/2026.
 - Quota comunicata all'avvio effettivo di B2: 59% residuo; rivalutazione
   richiesta dopo il checkpoint B2 prima di iniziare B3/Onda C.
+- Quota comunicata dopo B2: 56% settimanale residuo e 38% di contesto residuo.
+  Consumo osservato B2: circa 3 punti percentuali, molto inferiore alla stima
+  prudenziale. Capacita' disponibile sopra la riserva minima del 20%: 36 punti.
+- Suddividere Onda C in checkpoint: C1 punti 13 e 15, C2 punto 14, C3 punto 16,
+  C4 punto 17. Rivalutare la quota dopo ogni checkpoint e attivare il database
+  web B2 prima del collaudo end-to-end del punto 14.
 - Stima B1: 7-11 punti; B2: 11-18 punti; integrazione e regressioni: 4-7 punti.
 - Residuo atteso a Onda B conclusa: 35-49%; scenario prudenziale minimo circa
   31% in presenza di problemi di deployment o credenziali server.
