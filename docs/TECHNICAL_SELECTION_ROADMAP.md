@@ -64,8 +64,11 @@ registrazione centralizzata delle selezioni SSW.
 - Verifica export del 14/07/2026: il primo SDF reale era ancora `Legacy-0`
   perche' CLDCExplorer caricava la precedente DLL dal proprio package locale.
   Il package e la build `Release|x86` di CLDCExplorer sono stati riallineati
-  alla DLL `d7e1ea0` con commit Explorer `cf44e20`; resta da ripetere l'export
-  e validare il nuovo file.
+  alla DLL `d7e1ea0` con commit Explorer `cf44e20`.
+- Collaudo export AVENSYS completato il 14/07/2026: schema 1, revisione
+  `2026.07.14.121352-7A280D8C`, exporter 1.0.0, cliente `035889`, tre feature
+  attive, 31 batterie e 98 relazioni. Hash memorizzato e hash ricalcolato
+  coincidono; il reader SSW accetta database e feature.
 - Repository: `T:\TECHNO_SOFT\mercurial\CLDataCentralLib`.
 - Esportare `CLDatabaseMetadata` e `CLDatabaseFeatures` in ogni SDF.
 - Inserire versione schema, revisione dati, exporter, timestamp, cliente,
