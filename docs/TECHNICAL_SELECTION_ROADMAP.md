@@ -303,6 +303,7 @@ da `/usage` nel Codex CLI.
 #### B1 - Progetto locale e funzionamento offline
 
 - Stato: **completato** il 14/07/2026.
+- Checkpoint SSW: `89ef893 Complete Wave B1 local selection lifecycle`.
 - Evidenza: build AV/x86, fixture V1 minimale con backup, round-trip completo
   del form, file recenti, dirty state e prova concorrente del contatore locale.
 1. Punto 06: introdurre il runner di migrazione sequenziale, la validazione
