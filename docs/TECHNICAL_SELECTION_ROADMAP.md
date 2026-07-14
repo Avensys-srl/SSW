@@ -258,6 +258,8 @@ da `/usage` nel Codex CLI.
 ### Onda A - Fondazioni locali
 
 - Stato: **completata** il 14/07/2026.
+- Checkpoint SSW: `f85451e Establish technical selection foundations`.
+- Checkpoint exporter: `d7e1ea0 Add versioned SDF database manifest`.
 - Punti 02-05: contratto versioni, metadati SDF, controllo compatibilita' e
   formato `.sswsel` V1.
 - Il punto 06 viene anticipato solo se la quota residua e i test lo consentono.

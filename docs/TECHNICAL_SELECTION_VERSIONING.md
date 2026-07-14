@@ -1,6 +1,6 @@
 # Contratto di versionamento delle selezioni tecniche
 
-Versione del contratto: 1.0  
+Versione del contratto: 1.0
 Data: 14/07/2026
 
 Questo documento definisce le versioni che rendono riproducibili nel tempo i

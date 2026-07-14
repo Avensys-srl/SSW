@@ -1,6 +1,6 @@
 # Formato progetto SSW `.sswsel` V1
 
-Data: 14/07/2026  
+Data: 14/07/2026
 MIME type proposto: `application/vnd.avensys.ssw-selection+json`
 
 Il file e' JSON UTF-8 senza BOM. Il modello persistente e' indipendente da
