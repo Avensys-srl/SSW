@@ -569,7 +569,7 @@
     <value>Standard</value>
   </data>
   <data name="MainForm_CoilPerformance_StandardCustomized" xml:space="preserve">
-    <value>Anpassad standard</value>
+    <value>Anpassad</value>
   </data>
   <data name="MainForm_CoilPerformance_External" xml:space="preserve">
     <value>Extern</value>
@@ -688,4 +688,36 @@
   <data name="MainForm_CoilPerformance_Installation" xml:space="preserve"><value>Installation</value></data>
   <data name="MainForm_CoilPerformance_Internal" xml:space="preserve"><value>Intern</value></data>
   <data name="MainForm_CoilPerformance_ExternalInstallation" xml:space="preserve"><value>Extern</value></data>
+  <data name="MainForm_CoilPerformance_RequestInternal" xml:space="preserve"><value>Begär intern version</value></data>
+  <data name="MainForm_CoilPerformance_CustomWarning" xml:space="preserve"><value>Vänligen fråga om leveranstid och offert</value></data>
+  <data name="MainForm_Menu_Option_CheckUpdates" xml:space="preserve">
+    <value>Sök efter uppdateringar</value>
+  </data>
+  <data name="Update_Title" xml:space="preserve">
+    <value>Programuppdatering</value>
+  </data>
+  <data name="Update_ErrorTitle" xml:space="preserve">
+    <value>Uppdateringsfel</value>
+  </data>
+  <data name="Update_UpToDate" xml:space="preserve">
+    <value>Programvaran är uppdaterad.</value>
+  </data>
+  <data name="Update_NewAvailable" xml:space="preserve">
+    <value>En ny programuppdatering finns tillgänglig!</value>
+  </data>
+  <data name="Update_CurrentVersion" xml:space="preserve">
+    <value>Aktuell version</value>
+  </data>
+  <data name="Update_NewVersion" xml:space="preserve">
+    <value>Ny version</value>
+  </data>
+  <data name="Update_DownloadQuestion" xml:space="preserve">
+    <value>Ladda ned och starta installationsprogrammet nu?</value>
+  </data>
+  <data name="Update_CheckFailed" xml:space="preserve">
+    <value>Det gick inte att söka efter uppdateringar: {0}</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Calculating" xml:space="preserve">
+    <value>Beräkning pågår, vänta...</value>
+  </data>
 </root>

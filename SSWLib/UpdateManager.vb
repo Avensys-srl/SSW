@@ -14,133 +14,111 @@ End Class
 Public Class UpdateManager
 
     Private Const CheckUpdateUrl As String = "https://www.avensys-srl.com/api/ssw_check_update.php"
+    Private Shared ReadOnly CheckSemaphore As New System.Threading.SemaphoreSlim(1, 1)
 
-    ' Async Function that returns a Task, making it awaitable
-    Public Shared Async Function CheckForSoftwareUpdate() As Task
+    Public Shared Async Function CheckForSoftwareUpdate(Optional interactive As Boolean = False) As Task
+        Await CheckSemaphore.WaitAsync()
+        Try
+            Dim currentAppVersion As Version
+            Try
+                currentAppVersion = CLEnvironment.Current.SSWInfo.ReleaseVersion
+            Catch ex As Exception
+                ShowCheckError(interactive, ex.Message)
+                Return
+            End Try
 
-        Dim currentAppVersion As Version = Nothing
-        Dim latestServerVersion As Version = Nothing
+            If currentAppVersion Is Nothing Then
+                ShowCheckError(interactive, "Could not determine the current application version.")
+                Return
+            End If
 
-        ' --- 1. Get Current Application Version ---
-        Try ' Start Try 1
-            currentAppVersion = CLEnvironment.Current.SSWInfo.ReleaseVersion
+            Dim versionInfo As SoftwareVersionInfo
+            Try
+                Using client As New HttpClient()
+                    client.Timeout = TimeSpan.FromSeconds(15)
+                    Using response As HttpResponseMessage = Await client.GetAsync(CheckUpdateUrl)
+                        If Not response.IsSuccessStatusCode Then
+                            ShowCheckError(interactive, $"{response.StatusCode} - {response.ReasonPhrase}")
+                            Return
+                        End If
 
-            If currentAppVersion Is Nothing Then ' Start If 1
-                MessageBox.Show("Could not determine the current application version.",
-                                "Update Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-                Return ' Exit Function
-            End If ' End If 1
+                        Dim jsonString As String = Await response.Content.ReadAsStringAsync()
+                        versionInfo = JsonSerializer.Deserialize(Of SoftwareVersionInfo)(jsonString,
+                            New JsonSerializerOptions With {.PropertyNameCaseInsensitive = True})
+                    End Using
+                End Using
+            Catch ex As TaskCanceledException
+                ShowCheckError(interactive, "Timeout.")
+                Return
+            Catch ex As Exception
+                ShowCheckError(interactive, ex.Message)
+                Return
+            End Try
 
-        Catch ex As Exception
-            MessageBox.Show($"Error retrieving current version: {ex.Message}",
-                            "Update Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            Return ' Exit Function
-        End Try ' End Try 1
+            If versionInfo Is Nothing Then
+                ShowCheckError(interactive, "The server response is empty.")
+                Return
+            End If
 
-        ' --- 2. Contact PHP script to get the latest version ---
-        Dim versionInfo As SoftwareVersionInfo = Nothing
-        Using client As New HttpClient() ' Start Using
-            Try ' Start Try 2
-                client.Timeout = TimeSpan.FromSeconds(15) ' Example timeout
-                Dim response As HttpResponseMessage = Await client.GetAsync(CheckUpdateUrl)
+            If Not String.IsNullOrWhiteSpace(versionInfo.[error]) Then
+                ShowCheckError(interactive, versionInfo.[error])
+                Return
+            End If
 
-                If response.IsSuccessStatusCode Then ' Start If 2 (HTTP Success)
-                    Dim jsonString As String = Await response.Content.ReadAsStringAsync()
-                    Try ' Start Try 3 (JSON Parse)
-                        versionInfo = JsonSerializer.Deserialize(Of SoftwareVersionInfo)(jsonString, New JsonSerializerOptions With {.PropertyNameCaseInsensitive = True})
+            Dim latestServerVersion As Version = Nothing
+            If String.IsNullOrWhiteSpace(versionInfo.latest_version) OrElse
+                Not Version.TryParse(versionInfo.latest_version, latestServerVersion) Then
+                ShowCheckError(interactive, "The server response does not contain a valid version number.")
+                Return
+            End If
 
-                        ' Check if the API returned a specific error in JSON
-                        If versionInfo IsNot Nothing AndAlso Not String.IsNullOrWhiteSpace(versionInfo.[error]) Then ' Start If 3 (API Error)
-                            MessageBox.Show($"The API returned an error: {versionInfo.[error]}",
-                                            "Update Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-                            Return ' Exit Function
-                        End If ' End If 3 (API Error)
+            If latestServerVersion > currentAppVersion Then
+                Dim message As String = LocalizedText(CLMessageResources.Update_NewAvailable,
+                                                       "A new software update is available!") & vbCrLf & vbCrLf &
+                    LocalizedText(CLMessageResources.Update_CurrentVersion, "Current version") & ": " & currentAppVersion.ToString() & vbCrLf &
+                    LocalizedText(CLMessageResources.Update_NewVersion, "New version") & ": " & latestServerVersion.ToString() & vbCrLf & vbCrLf &
+                    LocalizedText(CLMessageResources.Update_DownloadQuestion, "Download and start the installer now?")
 
-                        ' Check if we actually got the version string
-                        If versionInfo Is Nothing OrElse String.IsNullOrWhiteSpace(versionInfo.latest_version) Then ' Start If 4 (Invalid/Missing Version)
-                            MessageBox.Show("The server response did not contain a valid version number.",
-                                            "Update Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-                            Return ' Exit Function
-                        End If ' End If 4 (Invalid/Missing Version)
+                Dim userChoice As DialogResult = MessageBox.Show(message,
+                    LocalizedText(CLMessageResources.Update_Title, "Software Update"),
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Information)
 
-                    Catch jsonEx As Exception ' Catch for Try 3 (JSON Parse)
-                        MessageBox.Show($"Error parsing JSON response: {jsonEx.Message}",
-                                        "Update Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                        Return ' Exit Function
-                    End Try ' End Try 3 (JSON Parse)
-                Else ' Else for If 2 (HTTP Success)
-                    ' HTTP error (e.g., 404 Not Found, 503 Service Unavailable)
-                    MessageBox.Show($"Error communicating with the server: {response.StatusCode} - {response.ReasonPhrase}",
-                                    "Update Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-                    Return ' Exit Function
-                End If ' End If 2 (HTTP Success)
+                If userChoice = DialogResult.Yes Then
+                    Await DownloadAndStartInstaller(versionInfo)
+                End If
+            ElseIf interactive Then
+                MessageBox.Show(LocalizedText(CLMessageResources.Update_UpToDate, "The software is up to date."),
+                                LocalizedText(CLMessageResources.Update_Title, "Software Update"),
+                                MessageBoxButtons.OK, MessageBoxIcon.Information)
+            End If
+        Finally
+            CheckSemaphore.Release()
+        End Try
+    End Function
 
-            Catch netEx As HttpRequestException ' Catch for Try 2
-                MessageBox.Show($"Network error during update check: {netEx.Message}",
-                                "Update Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                Return ' Exit Function
-            Catch taskEx As TaskCanceledException ' Catch for Try 2
-                MessageBox.Show("Timeout during update check.",
-                                "Update Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-                Return ' Exit Function
-            Catch ex As Exception ' Catch for Try 2
-                MessageBox.Show($"Unexpected error during check: {ex.Message}",
-                                "Update Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                Return ' Exit Function
-            End Try ' End Try 2 (HTTP Request)
-        End Using ' End Using (HttpClient)
+    Private Shared Sub ShowCheckError(interactive As Boolean, details As String)
+        If Not interactive Then
+            Return
+        End If
 
-        ' --- 3. Parse the received version string ---
-        If versionInfo IsNot Nothing AndAlso Not String.IsNullOrWhiteSpace(versionInfo.latest_version) Then ' Start If 5 (Check versionInfo before parsing)
-            Try ' Start Try 4 (Version Parse)
-                latestServerVersion = Version.Parse(versionInfo.latest_version)
-            Catch ex As FormatException ' Catch for Try 4
-                MessageBox.Show($"The version format received from the server ('{versionInfo.latest_version}') is invalid.",
-                                "Update Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                Return ' Exit Function
-            Catch ex As Exception ' Catch for Try 4
-                MessageBox.Show($"Error parsing received version: {ex.Message}",
-                                "Update Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                Return ' Exit Function
-            End Try ' End Try 4 (Version Parse)
-        Else ' Else for If 5
-            MessageBox.Show("Could not get version from the server.",
-                            "Update Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-            Return ' Exit Function
-        End If ' End If 5 (Check versionInfo before parsing)
+        MessageBox.Show(String.Format(
+                            LocalizedText(CLMessageResources.Update_CheckFailed, "Unable to check for updates: {0}"),
+                            details),
+                        LocalizedText(CLMessageResources.Update_ErrorTitle, "Update Error"),
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning)
+    End Sub
 
-        ' --- 4. Compare versions ---
-        If currentAppVersion IsNot Nothing AndAlso latestServerVersion IsNot Nothing Then ' Start If 6 (Check both versions exist)
-            Try ' Start Try 5 (Comparison)
-                If latestServerVersion > currentAppVersion Then ' Start If 7 (Compare versions)
-                    Dim message As String = $"New update available!{vbCrLf}{vbCrLf}" &
-                                            $"Current version: {currentAppVersion}{vbCrLf}" &
-                                            $"New version: {latestServerVersion}{vbCrLf}{vbCrLf}" &
-                                            "Download and start the installer now?"
-                    Dim title As String = "Software Update Available"
-                    Dim buttons As MessageBoxButtons = MessageBoxButtons.YesNo
-                    Dim icon As MessageBoxIcon = MessageBoxIcon.Information
+    Private Shared Function LocalizedText(resource As CLMessageResources, fallback As String) As String
+        Try
+            Dim value As String = CLEnvironment.Current.Localization.GetString(resource.ToString())
+            If Not String.IsNullOrWhiteSpace(value) AndAlso Not value.StartsWith("@@", StringComparison.Ordinal) Then
+                Return value
+            End If
+        Catch
+        End Try
 
-                    Dim userChoice As DialogResult = MessageBox.Show(message, title, buttons, icon)
-
-                    If userChoice = DialogResult.Yes Then
-                        Await DownloadAndStartInstaller(versionInfo)
-                    End If
-
-                Else ' Else for If 7 (Versions are same or current is newer)
-                    ' Optional: Show message that app is up to date (perhaps only in debug mode)
-                    ' MessageBox.Show("Application is up to date.", "Software Update", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                End If ' End If 7 (Compare versions)
-
-            Catch ex As Exception ' Catch for Try 5
-                MessageBox.Show($"Error comparing versions: {ex.Message}",
-                                "Update Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            End Try ' End Try 5 (Comparison)
-        End If ' End If 6 (Check both versions exist)
-
-        ' If the function reaches here without prior errors, the Task completes normally.
-
-    End Function ' End Function CheckForSoftwareUpdate
+        Return fallback
+    End Function
 
     Private Shared Async Function DownloadAndStartInstaller(versionInfo As SoftwareVersionInfo) As Task
         Dim downloadUrl As String = versionInfo.download_url

@@ -102,6 +102,15 @@ Public Enum CLMessageResources
     MainForm_Menu_Option_Unit_SI
     MainForm_Menu_Option_Unit_IP
     MainForm_Menu_Option_CommercialSheetAutoSync
+    MainForm_Menu_Option_CheckUpdates
+    Update_Title
+    Update_ErrorTitle
+    Update_UpToDate
+    Update_NewAvailable
+    Update_CurrentVersion
+    Update_NewVersion
+    Update_DownloadQuestion
+    Update_CheckFailed
 
 	' GRIP SAP
     MainForm_GridSAP_ExhaustTerminalConfiguration

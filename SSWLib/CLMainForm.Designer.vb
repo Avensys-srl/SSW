@@ -72,6 +72,7 @@ Partial Class CLMainForm
         Me.tsmiOption_Unit_SI = New System.Windows.Forms.ToolStripMenuItem()
         Me.tsmiOption_Unit_IP = New System.Windows.Forms.ToolStripMenuItem()
         Me.tsmiOption_CommercialSheetAutoSync = New System.Windows.Forms.ToolStripMenuItem()
+        Me.tsmiOption_CheckUpdates = New System.Windows.Forms.ToolStripMenuItem()
         Me.tsmiBranchs = New System.Windows.Forms.ToolStripMenuItem()
         Me.tsmiAbout = New System.Windows.Forms.ToolStripMenuItem()
         Me.tbpPerformance = New System.Windows.Forms.TabPage()
@@ -491,7 +492,7 @@ Partial Class CLMainForm
         '
         'tsmiOption
         '
-        Me.tsmiOption.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsmiOption_Language, Me.tsmiOption_Unit, Me.tsmiOption_CommercialSheetAutoSync})
+        Me.tsmiOption.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsmiOption_Language, Me.tsmiOption_Unit, Me.tsmiOption_CommercialSheetAutoSync, Me.tsmiOption_CheckUpdates})
         Me.tsmiOption.Name = "tsmiOption"
         Me.tsmiOption.Size = New System.Drawing.Size(56, 20)
         Me.tsmiOption.Text = "Option"
@@ -608,6 +609,12 @@ Partial Class CLMainForm
         Me.tsmiOption_CommercialSheetAutoSync.Name = "tsmiOption_CommercialSheetAutoSync"
         Me.tsmiOption_CommercialSheetAutoSync.Size = New System.Drawing.Size(233, 22)
         Me.tsmiOption_CommercialSheetAutoSync.Text = "Commercial Sheets Auto Sync"
+        '
+        'tsmiOption_CheckUpdates
+        '
+        Me.tsmiOption_CheckUpdates.Name = "tsmiOption_CheckUpdates"
+        Me.tsmiOption_CheckUpdates.Size = New System.Drawing.Size(233, 22)
+        Me.tsmiOption_CheckUpdates.Text = "Check for updates"
         '
         'tsmiBranchs
         '
@@ -4101,6 +4108,7 @@ Partial Class CLMainForm
     Friend WithEvents btn_summer As Button
     Friend WithEvents btnEN13141 As Button
     Friend WithEvents tsmiOption_CommercialSheetAutoSync As ToolStripMenuItem
+    Friend WithEvents tsmiOption_CheckUpdates As ToolStripMenuItem
     Friend WithEvents TextBox6 As TextBox
     Friend WithEvents TextBox5 As TextBox
     Friend WithEvents TextBox4 As TextBox

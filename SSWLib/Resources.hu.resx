@@ -510,7 +510,7 @@
   <data name="MainForm_CoilPerformance_Rows" xml:space="preserve"><value>Sorok</value></data>
   <data name="MainForm_CoilPerformance_Selection" xml:space="preserve"><value>Hőcserélő kiválasztása</value></data>
   <data name="MainForm_CoilPerformance_Standard" xml:space="preserve"><value>Standard</value></data>
-  <data name="MainForm_CoilPerformance_StandardCustomized" xml:space="preserve"><value>Testreszabott standard</value></data>
+  <data name="MainForm_CoilPerformance_StandardCustomized" xml:space="preserve"><value>Testreszabott</value></data>
   <data name="MainForm_CoilPerformance_Tab" xml:space="preserve"><value>Vizes hőcserélők</value></data>
   <data name="MainForm_CoilPerformance_Type" xml:space="preserve"><value>Típus</value></data><data name="MainForm_Menu_Option_CommercialSheetAutoSync" xml:space="preserve"><value>Kereskedelmi adatlapok automatikus szinkronizalasa</value></data>
   <data name="MainForm_CoilPerformance_ResultWaterDP" xml:space="preserve"><value>Viz DP [kPa]</value></data>
@@ -525,4 +525,36 @@
   <data name="MainForm_CoilPerformance_Installation" xml:space="preserve"><value>Beépítés</value></data>
   <data name="MainForm_CoilPerformance_Internal" xml:space="preserve"><value>Belső</value></data>
   <data name="MainForm_CoilPerformance_ExternalInstallation" xml:space="preserve"><value>Külső</value></data>
+  <data name="MainForm_CoilPerformance_RequestInternal" xml:space="preserve"><value>Belső kivitel kérése</value></data>
+  <data name="MainForm_CoilPerformance_CustomWarning" xml:space="preserve"><value>Kérjen szállítási határidőt és árajánlatot</value></data>
+  <data name="MainForm_Menu_Option_CheckUpdates" xml:space="preserve">
+    <value>Frissítések keresése</value>
+  </data>
+  <data name="Update_Title" xml:space="preserve">
+    <value>Szoftverfrissítés</value>
+  </data>
+  <data name="Update_ErrorTitle" xml:space="preserve">
+    <value>Frissítési hiba</value>
+  </data>
+  <data name="Update_UpToDate" xml:space="preserve">
+    <value>A szoftver naprakész.</value>
+  </data>
+  <data name="Update_NewAvailable" xml:space="preserve">
+    <value>Új szoftverfrissítés érhető el!</value>
+  </data>
+  <data name="Update_CurrentVersion" xml:space="preserve">
+    <value>Jelenlegi verzió</value>
+  </data>
+  <data name="Update_NewVersion" xml:space="preserve">
+    <value>Új verzió</value>
+  </data>
+  <data name="Update_DownloadQuestion" xml:space="preserve">
+    <value>Letölti és elindítja most a telepítőt?</value>
+  </data>
+  <data name="Update_CheckFailed" xml:space="preserve">
+    <value>Nem sikerült ellenőrizni a frissítéseket: {0}</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Calculating" xml:space="preserve">
+    <value>Számítás folyamatban...</value>
+  </data>
 </root>

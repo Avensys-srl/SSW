@@ -11,6 +11,7 @@ End Enum
 Public Enum CLCoilInstallationType
     Internal
     External
+    RequestedInternal
 End Enum
 
 Public Enum CLCoilPerformanceEditMode

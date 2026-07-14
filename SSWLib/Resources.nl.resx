@@ -414,7 +414,7 @@
   <data name="MainForm_CoilPerformance_Rows" xml:space="preserve"><value>Rijen</value></data>
   <data name="MainForm_CoilPerformance_Selection" xml:space="preserve"><value>Batterijselectie</value></data>
   <data name="MainForm_CoilPerformance_Standard" xml:space="preserve"><value>Standaard</value></data>
-  <data name="MainForm_CoilPerformance_StandardCustomized" xml:space="preserve"><value>Aangepaste standaard</value></data>
+  <data name="MainForm_CoilPerformance_StandardCustomized" xml:space="preserve"><value>Aangepast</value></data>
   <data name="MainForm_CoilPerformance_Tab" xml:space="preserve"><value>Waterbatterijen</value></data>
   <data name="MainForm_CoilPerformance_Type" xml:space="preserve"><value>Type</value></data><data name="MainForm_Menu_Option_CommercialSheetAutoSync" xml:space="preserve"><value>Automatische synchronisatie van commerciele fiches</value></data>
   <data name="MainForm_CoilPerformance_ResultWaterDP" xml:space="preserve"><value>Water DP [kPa]</value></data>
@@ -429,4 +429,36 @@
   <data name="MainForm_CoilPerformance_Installation" xml:space="preserve"><value>Installatie</value></data>
   <data name="MainForm_CoilPerformance_Internal" xml:space="preserve"><value>Intern</value></data>
   <data name="MainForm_CoilPerformance_ExternalInstallation" xml:space="preserve"><value>Extern</value></data>
+  <data name="MainForm_CoilPerformance_RequestInternal" xml:space="preserve"><value>Interne uitvoering aanvragen</value></data>
+  <data name="MainForm_CoilPerformance_CustomWarning" xml:space="preserve"><value>Vraag naar levertijd en offerte</value></data>
+  <data name="MainForm_Menu_Option_CheckUpdates" xml:space="preserve">
+    <value>Controleren op updates</value>
+  </data>
+  <data name="Update_Title" xml:space="preserve">
+    <value>Software-update</value>
+  </data>
+  <data name="Update_ErrorTitle" xml:space="preserve">
+    <value>Updatefout</value>
+  </data>
+  <data name="Update_UpToDate" xml:space="preserve">
+    <value>De software is up-to-date.</value>
+  </data>
+  <data name="Update_NewAvailable" xml:space="preserve">
+    <value>Er is een nieuwe software-update beschikbaar!</value>
+  </data>
+  <data name="Update_CurrentVersion" xml:space="preserve">
+    <value>Huidige versie</value>
+  </data>
+  <data name="Update_NewVersion" xml:space="preserve">
+    <value>Nieuwe versie</value>
+  </data>
+  <data name="Update_DownloadQuestion" xml:space="preserve">
+    <value>De update nu downloaden en het installatieprogramma starten?</value>
+  </data>
+  <data name="Update_CheckFailed" xml:space="preserve">
+    <value>Kan niet controleren op updates: {0}</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Calculating" xml:space="preserve">
+    <value>Berekening wordt uitgevoerd...</value>
+  </data>
 </root>

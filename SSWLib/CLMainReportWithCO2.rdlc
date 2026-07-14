@@ -1734,6 +1734,9 @@
             </Style>
           </Tablix>
         </ReportItems>
+        <PageBreak>
+          <BreakLocation>Start</BreakLocation>
+        </PageBreak>
         <KeepTogether>true</KeepTogether>
         <Top>34.28cm</Top>
         <Left>0.00884cm</Left>
@@ -1795,6 +1798,26 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
+                            <TopBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>0.5pt</Width>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>0.5pt</Width>
+                            </BottomBorder>
+                            <LeftBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>0.5pt</Width>
+                            </LeftBorder>
+                            <RightBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>0.5pt</Width>
+                            </RightBorder>
                             <BackgroundColor>LightGrey</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -2340,6 +2363,26 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
+                            <TopBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>0.5pt</Width>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>0.5pt</Width>
+                            </BottomBorder>
+                            <LeftBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>0.5pt</Width>
+                            </LeftBorder>
+                            <RightBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>0.5pt</Width>
+                            </RightBorder>
                             <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
@@ -3028,7 +3071,7 @@
               </TablixColumns>
               <TablixRows>
                 <TablixRow>
-                  <Height>0.49416cm</Height>
+                  <Height>0.5cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -3181,7 +3224,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.49416cm</Height>
+                  <Height>0.5cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -3322,7 +3365,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.49416cm</Height>
+                  <Height>0.5cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -3541,9 +3584,9 @@
             <DataSetName>WinterHeatExchangerPerformances</DataSetName>
             <Top>3.81325cm</Top>
             <Left>0.36016cm</Left>
-            <Height>2.08248cm</Height>
+            <Height>2.1cm</Height>
             <Width>19.29032cm</Width>
-            <ZIndex>7</ZIndex>
+            <ZIndex>2</ZIndex>
             <Style>
               <Border>
                 <Style>Solid</Style>
@@ -3554,7 +3597,7 @@
               <VerticalAlign>Middle</VerticalAlign>
             </Style>
           </Tablix>
-          <Tablix Name="TablixWaterCoilWinterReport" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2008/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+          <Tablix Name="TablixWaterCoilWinterReport">
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
@@ -3572,7 +3615,7 @@
               </TablixColumns>
               <TablixRows>
                 <TablixRow>
-                  <Height>0.50cm</Height>
+                  <Height>0.6cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -3599,9 +3642,7 @@
                           <rd:DefaultName>TablixWaterCoilWinterReport_Title</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
+                              <Style>None</Style>
                             </Border>
                             <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
@@ -3620,7 +3661,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.45cm</Height>
+                  <Height>0.5cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -3634,8 +3675,7 @@
                                   <Value>=Fields!CoilCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -3651,7 +3691,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -3673,7 +3712,7 @@
                                   <Value>=Fields!Coil.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -3710,8 +3749,7 @@
                                   <Value>=Fields!CaseCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -3727,7 +3765,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -3749,7 +3786,7 @@
                                   <Value>=Fields!Case.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -3777,7 +3814,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.45cm</Height>
+                  <Height>0.5cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -3791,8 +3828,7 @@
                                   <Value>=Fields!FluidCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -3808,7 +3844,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -3830,7 +3865,7 @@
                                   <Value>=Fields!Fluid.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -3867,8 +3902,7 @@
                                   <Value>=Fields!ModeCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -3884,7 +3918,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -3906,7 +3939,7 @@
                                   <Value>=Fields!Mode.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -3934,7 +3967,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.45cm</Height>
+                  <Height>0.5cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -3948,8 +3981,7 @@
                                   <Value>=Fields!FluidInCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -3965,7 +3997,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -3987,7 +4018,7 @@
                                   <Value>=Fields!FluidIn.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4024,8 +4055,7 @@
                                   <Value>=Fields!FluidOutCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4041,7 +4071,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -4063,7 +4092,7 @@
                                   <Value>=Fields!FluidOut.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4091,7 +4120,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.45cm</Height>
+                  <Height>0.5cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -4105,8 +4134,7 @@
                                   <Value>=Fields!CapacityCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4122,7 +4150,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -4144,7 +4171,7 @@
                                   <Value>=Fields!Capacity.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4181,8 +4208,7 @@
                                   <Value>=Fields!SensibleCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4198,7 +4224,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -4220,7 +4245,7 @@
                                   <Value>=Fields!Sensible.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4248,7 +4273,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.45cm</Height>
+                  <Height>0.5cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -4262,8 +4287,7 @@
                                   <Value>=Fields!AirOutCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4279,7 +4303,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -4301,7 +4324,7 @@
                                   <Value>=Fields!AirOut.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4338,8 +4361,7 @@
                                   <Value>=Fields!RHOutCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4355,7 +4377,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -4377,7 +4398,7 @@
                                   <Value>=Fields!RHOut.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4405,7 +4426,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.45cm</Height>
+                  <Height>0.5cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -4419,8 +4440,7 @@
                                   <Value>=Fields!CondCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4436,7 +4456,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -4458,7 +4477,7 @@
                                   <Value>=Fields!Cond.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4495,8 +4514,7 @@
                                   <Value>=Fields!AirDPCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4512,7 +4530,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -4534,7 +4551,7 @@
                                   <Value>=Fields!AirDP.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4562,7 +4579,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.45cm</Height>
+                  <Height>0.5cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -4576,8 +4593,7 @@
                                   <Value>=Fields!WaterDPCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4593,7 +4609,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -4615,7 +4630,7 @@
                                   <Value>=Fields!WaterDP.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4652,8 +4667,7 @@
                                   <Value>=Fields!FluidFlowCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4669,7 +4683,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -4691,7 +4704,7 @@
                                   <Value>=Fields!FluidFlow.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4719,7 +4732,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.45cm</Height>
+                  <Height>0.5cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -4733,8 +4746,7 @@
                                   <Value>=Fields!FluidSpeedCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4750,7 +4762,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -4772,7 +4783,7 @@
                                   <Value>=Fields!FluidSpeed.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4809,8 +4820,7 @@
                                   <Value>=Fields!FaceVelocityCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4826,7 +4836,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -4848,7 +4857,7 @@
                                   <Value>=Fields!FaceVelocity.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4907,28 +4916,46 @@
             </TablixRowHierarchy>
             <KeepTogether>true</KeepTogether>
             <DataSetName>WaterCoilWinterReport</DataSetName>
+            <Top>6.1cm</Top>
+            <Left>0.36016cm</Left>
+            <Height>4.6cm</Height>
+            <Width>19.29032cm</Width>
+            <ZIndex>3</ZIndex>
             <Visibility>
               <Hidden>=CountRows("WaterCoilWinterReport") = 0</Hidden>
             </Visibility>
-            <Top>6.1cm</Top>
-            <Left>0.36016cm</Left>
-            <Height>4.10cm</Height>
-            <Width>19.29032cm</Width>
-            <ZIndex>30</ZIndex>
             <Style>
               <Border>
+                <Style>Solid</Style>
+                <Width>0.5pt</Width>
+              </Border>
+              <TopBorder>
                 <Color>Black</Color>
                 <Style>Solid</Style>
-                <Width>1pt</Width>
-              </Border>
+                <Width>0.5pt</Width>
+              </TopBorder>
+              <BottomBorder>
+                <Color>Black</Color>
+                <Style>Solid</Style>
+                <Width>0.5pt</Width>
+              </BottomBorder>
+              <LeftBorder>
+                <Color>Black</Color>
+                <Style>Solid</Style>
+                <Width>0.5pt</Width>
+              </LeftBorder>
+              <RightBorder>
+                <Color>Black</Color>
+                <Style>Solid</Style>
+                <Width>0.5pt</Width>
+              </RightBorder>
             </Style>
           </Tablix>
         </ReportItems>
         <KeepTogether>true</KeepTogether>
-        <Top>0cm</Top>
-        <Left>0cm</Left>
-        <Height>10.45cm</Height>
+        <Height>10.7cm</Height>
         <Width>19.96238cm</Width>
+        <ZIndex>1</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
@@ -5470,6 +5497,9 @@
             <Left>0.36016cm</Left>
             <Height>3.6cm</Height>
             <Width>7.88315cm</Width>
+            <Visibility>
+              <Hidden>=CountRows("SummerWorkingPoint") = 0</Hidden>
+            </Visibility>
             <Style>
               <Border>
                 <Style>Solid</Style>
@@ -5478,9 +5508,6 @@
               <FontFamily>Helvetica</FontFamily>
               <VerticalAlign>Middle</VerticalAlign>
             </Style>
-            <Visibility>
-              <Hidden>=CountRows("SummerWorkingPoint") = 0</Hidden>
-            </Visibility>
           </Tablix>
           <Tablix Name="TablixSummerTemperature">
             <TablixBody>
@@ -6186,6 +6213,9 @@
             <Height>2.6cm</Height>
             <Width>10.87656cm</Width>
             <ZIndex>1</ZIndex>
+            <Visibility>
+              <Hidden>=CountRows("SummerTemperatureConditionsAndHumidity") = 0</Hidden>
+            </Visibility>
             <Style>
               <Border>
                 <Style>Solid</Style>
@@ -6199,9 +6229,6 @@
               <PaddingTop>2pt</PaddingTop>
               <PaddingBottom>2pt</PaddingBottom>
             </Style>
-            <Visibility>
-              <Hidden>=CountRows("SummerTemperatureConditionsAndHumidity") = 0</Hidden>
-            </Visibility>
           </Tablix>
           <Tablix Name="TablixSummerHeatExchanger">
             <TablixBody>
@@ -6736,7 +6763,10 @@
             <Left>0.36016cm</Left>
             <Height>2.08248cm</Height>
             <Width>19.29032cm</Width>
-            <ZIndex>7</ZIndex>
+            <ZIndex>2</ZIndex>
+            <Visibility>
+              <Hidden>=CountRows("SummerHeatExchangerPerformances") = 0</Hidden>
+            </Visibility>
             <Style>
               <Border>
                 <Style>Solid</Style>
@@ -6746,11 +6776,8 @@
               <FontSize>9pt</FontSize>
               <VerticalAlign>Middle</VerticalAlign>
             </Style>
-            <Visibility>
-              <Hidden>=CountRows("SummerHeatExchangerPerformances") = 0</Hidden>
-            </Visibility>
           </Tablix>
-          <Tablix Name="TablixWaterCoilSummerReport" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2008/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+          <Tablix Name="TablixWaterCoilSummerReport">
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
@@ -6768,7 +6795,7 @@
               </TablixColumns>
               <TablixRows>
                 <TablixRow>
-                  <Height>0.50cm</Height>
+                  <Height>0.6cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -6795,9 +6822,7 @@
                           <rd:DefaultName>TablixWaterCoilSummerReport_Title</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
+                              <Style>None</Style>
                             </Border>
                             <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
@@ -6816,7 +6841,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.45cm</Height>
+                  <Height>0.5cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -6830,8 +6855,7 @@
                                   <Value>=Fields!CoilCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -6847,7 +6871,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -6869,7 +6892,7 @@
                                   <Value>=Fields!Coil.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -6906,8 +6929,7 @@
                                   <Value>=Fields!CaseCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -6923,7 +6945,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -6945,7 +6966,7 @@
                                   <Value>=Fields!Case.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -6973,7 +6994,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.45cm</Height>
+                  <Height>0.5cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -6987,8 +7008,7 @@
                                   <Value>=Fields!FluidCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -7004,7 +7024,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -7026,7 +7045,7 @@
                                   <Value>=Fields!Fluid.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -7063,8 +7082,7 @@
                                   <Value>=Fields!ModeCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -7080,7 +7098,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -7102,7 +7119,7 @@
                                   <Value>=Fields!Mode.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -7130,7 +7147,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.45cm</Height>
+                  <Height>0.5cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -7144,8 +7161,7 @@
                                   <Value>=Fields!FluidInCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -7161,7 +7177,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -7183,7 +7198,7 @@
                                   <Value>=Fields!FluidIn.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -7220,8 +7235,7 @@
                                   <Value>=Fields!FluidOutCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -7237,7 +7251,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -7259,7 +7272,7 @@
                                   <Value>=Fields!FluidOut.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -7287,7 +7300,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.45cm</Height>
+                  <Height>0.5cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -7301,8 +7314,7 @@
                                   <Value>=Fields!CapacityCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -7318,7 +7330,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -7340,7 +7351,7 @@
                                   <Value>=Fields!Capacity.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -7377,8 +7388,7 @@
                                   <Value>=Fields!SensibleCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -7394,7 +7404,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -7416,7 +7425,7 @@
                                   <Value>=Fields!Sensible.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -7444,7 +7453,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.45cm</Height>
+                  <Height>0.5cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -7458,8 +7467,7 @@
                                   <Value>=Fields!AirOutCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -7475,7 +7483,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -7497,7 +7504,7 @@
                                   <Value>=Fields!AirOut.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -7534,8 +7541,7 @@
                                   <Value>=Fields!RHOutCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -7551,7 +7557,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -7573,7 +7578,7 @@
                                   <Value>=Fields!RHOut.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -7601,7 +7606,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.45cm</Height>
+                  <Height>0.5cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -7615,8 +7620,7 @@
                                   <Value>=Fields!CondCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -7632,7 +7636,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -7654,7 +7657,7 @@
                                   <Value>=Fields!Cond.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -7691,8 +7694,7 @@
                                   <Value>=Fields!AirDPCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -7708,7 +7710,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -7730,7 +7731,7 @@
                                   <Value>=Fields!AirDP.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -7758,7 +7759,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.45cm</Height>
+                  <Height>0.5cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -7772,8 +7773,7 @@
                                   <Value>=Fields!WaterDPCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -7789,7 +7789,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -7811,7 +7810,7 @@
                                   <Value>=Fields!WaterDP.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -7848,8 +7847,7 @@
                                   <Value>=Fields!FluidFlowCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -7865,7 +7863,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -7887,7 +7884,7 @@
                                   <Value>=Fields!FluidFlow.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -7915,7 +7912,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.45cm</Height>
+                  <Height>0.5cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -7929,8 +7926,7 @@
                                   <Value>=Fields!FluidSpeedCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -7946,7 +7942,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -7968,7 +7963,7 @@
                                   <Value>=Fields!FluidSpeed.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -8005,8 +8000,7 @@
                                   <Value>=Fields!FaceVelocityCaption.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -8022,7 +8016,6 @@
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </Border>
-                            <BackgroundColor>LightGrey</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
@@ -8044,7 +8037,7 @@
                                   <Value>=Fields!FaceVelocity.Value</Value>
                                   <Style>
                                     <FontFamily>Helvetica</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -8103,28 +8096,47 @@
             </TablixRowHierarchy>
             <KeepTogether>true</KeepTogether>
             <DataSetName>WaterCoilSummerReport</DataSetName>
+            <Top>5.96033cm</Top>
+            <Left>0.36016cm</Left>
+            <Height>4.6cm</Height>
+            <Width>19.29032cm</Width>
+            <ZIndex>3</ZIndex>
             <Visibility>
               <Hidden>=CountRows("WaterCoilSummerReport") = 0</Hidden>
             </Visibility>
-            <Top>5.96033cm</Top>
-            <Left>0.36016cm</Left>
-            <Height>4.10cm</Height>
-            <Width>19.29032cm</Width>
-            <ZIndex>30</ZIndex>
             <Style>
               <Border>
+                <Style>Solid</Style>
+                <Width>0.5pt</Width>
+              </Border>
+              <TopBorder>
                 <Color>Black</Color>
                 <Style>Solid</Style>
-                <Width>1pt</Width>
-              </Border>
+                <Width>0.5pt</Width>
+              </TopBorder>
+              <BottomBorder>
+                <Color>Black</Color>
+                <Style>Solid</Style>
+                <Width>0.5pt</Width>
+              </BottomBorder>
+              <LeftBorder>
+                <Color>Black</Color>
+                <Style>Solid</Style>
+                <Width>0.5pt</Width>
+              </LeftBorder>
+              <RightBorder>
+                <Color>Black</Color>
+                <Style>Solid</Style>
+                <Width>0.5pt</Width>
+              </RightBorder>
             </Style>
           </Tablix>
         </ReportItems>
         <KeepTogether>true</KeepTogether>
         <Top>10.8cm</Top>
-        <Left>0cm</Left>
-        <Height>10.32cm</Height>
+        <Height>10.63472cm</Height>
         <Width>19.96238cm</Width>
+        <ZIndex>2</ZIndex>
         <Visibility>
           <Hidden>=CountRows("SummerWorkingPoint") = 0</Hidden>
         </Visibility>
@@ -8136,70 +8148,6 @@
       </Rectangle>
       <Rectangle Name="PerformanceChartsBlock">
         <ReportItems>
-          <Image Name="Image2">
-            <Source>Database</Source>
-            <Value>=First(Fields!PressureImage.Value, "Diagram")</Value>
-            <MIMEType>image/bmp</MIMEType>
-            <Sizing>FitProportional</Sizing>
-            <Top>0.06033cm</Top>
-            <Left>0.38661cm</Left>
-            <Height>5.16932cm</Height>
-            <Width>9.5746cm</Width>
-            <ZIndex>3</ZIndex>
-            <Style>
-              <Border>
-                <Style>None</Style>
-              </Border>
-            </Style>
-          </Image>
-          <Image Name="Image3">
-            <Source>Database</Source>
-            <Value>=First(Fields!PowerImage.Value, "Diagram")</Value>
-            <MIMEType>image/bmp</MIMEType>
-            <Sizing>FitProportional</Sizing>
-            <Top>0.06033cm</Top>
-            <Left>9.97004cm</Left>
-            <Height>5.16932cm</Height>
-            <Width>9.64516cm</Width>
-            <ZIndex>4</ZIndex>
-            <Style>
-              <Border>
-                <Style>None</Style>
-              </Border>
-            </Style>
-          </Image>
-          <Image Name="Image4">
-            <Source>Database</Source>
-            <Value>=First(Fields!AirFlowImage.Value, "Diagram")</Value>
-            <MIMEType>image/bmp</MIMEType>
-            <Sizing>FitProportional</Sizing>
-            <Top>5.26033cm</Top>
-            <Left>0.36016cm</Left>
-            <Height>4.85182cm</Height>
-            <Width>9.5746cm</Width>
-            <ZIndex>5</ZIndex>
-            <Style>
-              <Border>
-                <Style>None</Style>
-              </Border>
-            </Style>
-          </Image>
-          <Image Name="Image5">
-            <Source>Database</Source>
-            <Value>=First(Fields!LegendImage.Value, "Diagram")</Value>
-            <MIMEType>image/bmp</MIMEType>
-            <Sizing>FitProportional</Sizing>
-            <Top>5.26033cm</Top>
-            <Left>9.97004cm</Left>
-            <Height>4.85182cm</Height>
-            <Width>9.64516cm</Width>
-            <ZIndex>6</ZIndex>
-            <Style>
-              <Border>
-                <Style>None</Style>
-              </Border>
-            </Style>
-          </Image>
           <Tablix Name="Tablix3">
             <TablixBody>
               <TablixColumns>
@@ -9242,7 +9190,6 @@
             <Left>0.36016cm</Left>
             <Height>1.69416cm</Height>
             <Width>19.2903cm</Width>
-            <ZIndex>2</ZIndex>
             <Visibility>
               <Hidden>=(CountRows() = 0) Or (First(Fields!sndaddtorep_bool.Value, "SoundPowerHeader"))</Hidden>
             </Visibility>
@@ -9253,11 +9200,75 @@
               </Border>
             </Style>
           </Tablix>
+          <Image Name="Image2">
+            <Source>Database</Source>
+            <Value>=First(Fields!PressureImage.Value, "Diagram")</Value>
+            <MIMEType>image/bmp</MIMEType>
+            <Sizing>FitProportional</Sizing>
+            <Top>0.06033cm</Top>
+            <Left>0.38661cm</Left>
+            <Height>5.16932cm</Height>
+            <Width>9.5746cm</Width>
+            <ZIndex>1</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+            </Style>
+          </Image>
+          <Image Name="Image3">
+            <Source>Database</Source>
+            <Value>=First(Fields!PowerImage.Value, "Diagram")</Value>
+            <MIMEType>image/bmp</MIMEType>
+            <Sizing>FitProportional</Sizing>
+            <Top>0.06033cm</Top>
+            <Left>9.97004cm</Left>
+            <Height>5.16932cm</Height>
+            <Width>9.64516cm</Width>
+            <ZIndex>2</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+            </Style>
+          </Image>
+          <Image Name="Image4">
+            <Source>Database</Source>
+            <Value>=First(Fields!AirFlowImage.Value, "Diagram")</Value>
+            <MIMEType>image/bmp</MIMEType>
+            <Sizing>FitProportional</Sizing>
+            <Top>5.26033cm</Top>
+            <Left>0.36016cm</Left>
+            <Height>4.85182cm</Height>
+            <Width>9.5746cm</Width>
+            <ZIndex>3</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+            </Style>
+          </Image>
+          <Image Name="Image5">
+            <Source>Database</Source>
+            <Value>=First(Fields!LegendImage.Value, "Diagram")</Value>
+            <MIMEType>image/bmp</MIMEType>
+            <Sizing>FitProportional</Sizing>
+            <Top>5.26033cm</Top>
+            <Left>9.97004cm</Left>
+            <Height>4.85182cm</Height>
+            <Width>9.64516cm</Width>
+            <ZIndex>4</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+            </Style>
+          </Image>
         </ReportItems>
-        <Top>21.47cm</Top>
-        <Left>0cm</Left>
+        <Top>21.7875cm</Top>
         <Height>12.36cm</Height>
         <Width>19.96238cm</Width>
+        <ZIndex>3</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
@@ -9972,9 +9983,6 @@
           <Left>0.71803cm</Left>
           <Height>0.58521cm</Height>
           <Width>18.64144cm</Width>
-          <Visibility>
-            <Hidden>false</Hidden>
-          </Visibility>
           <Style>
             <Border>
               <Style>None</Style>

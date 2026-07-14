@@ -576,7 +576,7 @@
   <data name="MainForm_CoilPerformance_Rows" xml:space="preserve"><value>Rækker</value></data>
   <data name="MainForm_CoilPerformance_Selection" xml:space="preserve"><value>Valg af flade</value></data>
   <data name="MainForm_CoilPerformance_Standard" xml:space="preserve"><value>Standard</value></data>
-  <data name="MainForm_CoilPerformance_StandardCustomized" xml:space="preserve"><value>Tilpasset standard</value></data>
+  <data name="MainForm_CoilPerformance_StandardCustomized" xml:space="preserve"><value>Tilpasset</value></data>
   <data name="MainForm_CoilPerformance_Tab" xml:space="preserve"><value>Vandflader</value></data>
   <data name="MainForm_CoilPerformance_Type" xml:space="preserve"><value>Type</value></data><data name="MainForm_Menu_Option_CommercialSheetAutoSync" xml:space="preserve"><value>Automatisk synkronisering af kommercielle datablade</value></data>
   <data name="MainForm_CoilPerformance_ResultWaterDP" xml:space="preserve"><value>Vand DP [kPa]</value></data>
@@ -591,4 +591,36 @@
   <data name="MainForm_CoilPerformance_Installation" xml:space="preserve"><value>Installation</value></data>
   <data name="MainForm_CoilPerformance_Internal" xml:space="preserve"><value>Intern</value></data>
   <data name="MainForm_CoilPerformance_ExternalInstallation" xml:space="preserve"><value>Ekstern</value></data>
+  <data name="MainForm_CoilPerformance_RequestInternal" xml:space="preserve"><value>Forespørg intern udførelse</value></data>
+  <data name="MainForm_CoilPerformance_CustomWarning" xml:space="preserve"><value>Spørg venligst om leveringstid og tilbud</value></data>
+  <data name="MainForm_Menu_Option_CheckUpdates" xml:space="preserve">
+    <value>Søg efter opdateringer</value>
+  </data>
+  <data name="Update_Title" xml:space="preserve">
+    <value>Softwareopdatering</value>
+  </data>
+  <data name="Update_ErrorTitle" xml:space="preserve">
+    <value>Opdateringsfejl</value>
+  </data>
+  <data name="Update_UpToDate" xml:space="preserve">
+    <value>Softwaren er opdateret.</value>
+  </data>
+  <data name="Update_NewAvailable" xml:space="preserve">
+    <value>En ny softwareopdatering er tilgængelig!</value>
+  </data>
+  <data name="Update_CurrentVersion" xml:space="preserve">
+    <value>Nuværende version</value>
+  </data>
+  <data name="Update_NewVersion" xml:space="preserve">
+    <value>Ny version</value>
+  </data>
+  <data name="Update_DownloadQuestion" xml:space="preserve">
+    <value>Download og start installationsprogrammet nu?</value>
+  </data>
+  <data name="Update_CheckFailed" xml:space="preserve">
+    <value>Kunne ikke søge efter opdateringer: {0}</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Calculating" xml:space="preserve">
+    <value>Beregner, vent venligst...</value>
+  </data>
 </root>

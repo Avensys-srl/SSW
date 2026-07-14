@@ -25,6 +25,8 @@ Public Class CLMainForm
     Private m_CoilPerformanceAvailable As Boolean = False
     Private m_CoilPerformanceModelId As Integer = -1
     Private m_CoilPerformanceLastPressureDrop As Double = 0
+    Private m_CoilPerformanceBusy As Boolean = False
+    Private m_AutomaticUpdateCheckTask As Task
     Private m_SummerCalculationEnabled As Boolean = True
     Private m_LastWinterThermo As termo
     Private m_LastSummerThermo As termo
@@ -55,6 +57,7 @@ Public Class CLMainForm
     Private nudCoilPerformance_HeatingOut As NumericUpDown
     Private dgvCoilPerformance_Results As DataGridView
     Private lblCoilPerformance_Status As Label
+    Private lblCoilPerformance_CustomWarning As Label
 
     Private Class CLThermalCalculationResult
         Public Property Thermo As termo
@@ -136,7 +139,7 @@ Public Class CLMainForm
         End If
     End Sub
 
-    Private Async Sub CLMainForm_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub CLMainForm_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
         Dim state As String
         Dim language As CLLanguage
@@ -258,7 +261,7 @@ Public Class CLMainForm
 
         'CLModule.Environment.ExportModelsToCsv("d:\temp\environment.txt")
 
-        Await UpdateManager.CheckForSoftwareUpdate()
+        m_AutomaticUpdateCheckTask = UpdateManager.CheckForSoftwareUpdate(False)
     End Sub
 
     Private Sub tsmiFile_Exit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsmiFile_Exit.Click
@@ -792,6 +795,15 @@ Public Class CLMainForm
             pointSeries.LegendText = Chart_SummerWorkingPointLegendText()
             pointSeries.IsVisibleInLegend = True
         End If
+    End Sub
+
+    Private Async Sub tsmiOption_CheckUpdates_Click(ByVal sender As Object, ByVal e As EventArgs) Handles tsmiOption_CheckUpdates.Click
+        tsmiOption_CheckUpdates.Enabled = False
+        Try
+            Await UpdateManager.CheckForSoftwareUpdate(True)
+        Finally
+            tsmiOption_CheckUpdates.Enabled = True
+        End Try
     End Sub
 
     Private Sub Chart_AddSummerEfficiencyLegendItems(chart As DataVisualization.Charting.Chart)
@@ -1654,6 +1666,18 @@ Public Class CLMainForm
             "FluidTemperature",
             "GeometryCaption",
             "Geometry",
+            "GeometryTypeCaption",
+            "GeometryType",
+            "LengthCaption",
+            "LengthValue",
+            "HeightCaption",
+            "HeightValue",
+            "RowsCaption",
+            "RowsValue",
+            "FinSpacingCaption",
+            "FinSpacingValue",
+            "CircuitsCaption",
+            "CircuitsValue",
             "ModeCaption",
             "Mode",
             "StatusCaption",
@@ -1705,8 +1729,8 @@ Public Class CLMainForm
         End If
 
         Dim geometryText As String = String.Empty
+        Dim heightText As String = String.Empty
         If selectedMode <> CLCoilPerformanceEditMode.Standard Then
-            Dim heightText As String
             If CoilPerformance_HeightMode() = "tubes" Then
                 heightText = String.Format("{0} / {1} {2}",
                     FormatNumber(nudCoilPerformance_Height.Value, 0),
@@ -1779,8 +1803,8 @@ Public Class CLMainForm
             reportRow("Scenario") = scenario
             reportRow("CoilCaption") = CoilPerformance_Text("MainForm_CoilPerformance_Coil", "Coil")
             reportRow("Coil") = cmbCoilPerformance_Coil.Text
-            reportRow("CaseCaption") = CoilPerformance_Text("MainForm_CoilPerformance_Case", "Case")
-            reportRow("Case") = cmbCoilPerformance_Installation.Text & " - " & cmbCoilPerformance_EditMode.Text
+            reportRow("CaseCaption") = CoilPerformance_Text("MainForm_CoilPerformance_Installation", "Installation")
+            reportRow("Case") = cmbCoilPerformance_Installation.Text
             reportRow("FluidCaption") = CoilPerformance_Text("MainForm_CoilPerformance_FluidType", "Fluid")
             reportRow("Fluid") = fluidText
             reportRow("FluidInCaption") = fluidInCaption
@@ -1791,6 +1815,24 @@ Public Class CLMainForm
             reportRow("FluidTemperature") = fluidTemperature
             reportRow("GeometryCaption") = CoilPerformance_Text("MainForm_CoilPerformance_Geometry", "Geometry")
             reportRow("Geometry") = geometryText
+            reportRow("GeometryTypeCaption") = CoilPerformance_Text("MainForm_CoilPerformance_Geometry", "Geometry")
+            reportRow("GeometryType") = If(selectedMode = CLCoilPerformanceEditMode.StandardCustomized,
+                cmbCoilPerformance_EditMode.Text, String.Empty)
+            reportRow("LengthCaption") = CoilPerformance_Text("MainForm_CoilPerformance_Length", "Length [mm]")
+            reportRow("LengthValue") = If(selectedMode = CLCoilPerformanceEditMode.StandardCustomized,
+                FormatNumber(nudCoilPerformance_Length.Value, 0), String.Empty)
+            reportRow("HeightCaption") = CoilPerformance_Text("MainForm_CoilPerformance_Height", "Height [mm/tubes]")
+            reportRow("HeightValue") = If(selectedMode = CLCoilPerformanceEditMode.StandardCustomized,
+                heightText, String.Empty)
+            reportRow("RowsCaption") = CoilPerformance_Text("MainForm_CoilPerformance_Rows", "Rows")
+            reportRow("RowsValue") = If(selectedMode = CLCoilPerformanceEditMode.StandardCustomized,
+                FormatNumber(nudCoilPerformance_Rows.Value, 0), String.Empty)
+            reportRow("FinSpacingCaption") = CoilPerformance_Text("MainForm_CoilPerformance_FinSpacing", "Fin spacing [mm]")
+            reportRow("FinSpacingValue") = If(selectedMode = CLCoilPerformanceEditMode.StandardCustomized,
+                FormatNumber(CoilPerformance_SelectedFinSpacing(), 1), String.Empty)
+            reportRow("CircuitsCaption") = CoilPerformance_Text("MainForm_CoilPerformance_Circuits", "Circuits")
+            reportRow("CircuitsValue") = If(selectedMode = CLCoilPerformanceEditMode.StandardCustomized,
+                FormatNumber(nudCoilPerformance_Circuits.Value, 0), String.Empty)
             reportRow("ModeCaption") = dgvCoilPerformance_Results.Columns("Mode").HeaderText
             reportRow("Mode") = mode
             reportRow("StatusCaption") = dgvCoilPerformance_Results.Columns("Status").HeaderText
@@ -2183,23 +2225,25 @@ Public Class CLMainForm
         'tsmiOption_SelectMode_Design.Text = Environment.Localization.GetString(CLMessageResources.CLMainForm_Menu_Option_SelectMode_Design.ToString())
 
         tsmiOption_Language.Text = Environment.Localization.GetString(CLMessageResources.MainForm_Menu_Option_Language.ToString())
-        tsmiOption_Language_DE.Text = Environment.Localization.GetString(CLMessageResources.MainForm_Menu_Option_Language_Deutsch.ToString())
-        tsmiOption_Language_NL.Text = Environment.Localization.GetString(CLMessageResources.MainForm_Menu_Option_Language_Dutch.ToString())
-        tsmiOption_Language_EN.Text = Environment.Localization.GetString(CLMessageResources.MainForm_Menu_Option_Language_English.ToString())
-        tsmiOption_Language_FR.Text = Environment.Localization.GetString(CLMessageResources.MainForm_Menu_Option_Language_Français.ToString())
-        tsmiOption_Language_IT.Text = Environment.Localization.GetString(CLMessageResources.MainForm_Menu_Option_Language_Italian.ToString())
-        tsmiOption_Language_PL.Text = Environment.Localization.GetString(CLMessageResources.MainForm_Menu_Option_Language_Polish.ToString())
-        tsmiOption_Language_SL.Text = Environment.Localization.GetString(CLMessageResources.MainForm_Menu_Option_Language_Slovenian.ToString())
-        tsmiOption_Language_BG.Text = Environment.Localization.GetString(CLMessageResources.MainForm_Menu_Option_Language_Bulgarian.ToString())
-        tsmiOption_Language_RO.Text = Environment.Localization.GetString(CLMessageResources.MainForm_Menu_Option_Language_Romanian.ToString())
-        tsmiOption_Language_HU.Text = Environment.Localization.GetString(CLMessageResources.MainForm_Menu_Option_Language_Hungarian.ToString())
-        tsmiOption_Language_DA.Text = Environment.Localization.GetString(CLMessageResources.MainForm_Menu_Option_Language_Danish.ToString())
-        tsmiOption_Language_SV.Text = Environment.Localization.GetString(CLMessageResources.MainForm_Menu_Option_Language_Swedish.ToString())
+        ' Language names are autonyms so users can always identify their language.
+        tsmiOption_Language_DE.Text = "Deutsch"
+        tsmiOption_Language_NL.Text = "Nederlands"
+        tsmiOption_Language_EN.Text = "English"
+        tsmiOption_Language_FR.Text = "Français"
+        tsmiOption_Language_IT.Text = "Italiano"
+        tsmiOption_Language_PL.Text = "Polski"
+        tsmiOption_Language_SL.Text = "Slovenščina"
+        tsmiOption_Language_BG.Text = "Български"
+        tsmiOption_Language_RO.Text = "Română"
+        tsmiOption_Language_HU.Text = "Magyar"
+        tsmiOption_Language_DA.Text = "Dansk"
+        tsmiOption_Language_SV.Text = "Svenska"
 
         tsmiOption_Unit.Text = Environment.Localization.GetString(CLMessageResources.MainForm_Menu_Option_Unit.ToString())
         tsmiOption_Unit_IP.Text = Environment.Localization.GetString(CLMessageResources.MainForm_Menu_Option_Unit_IP.ToString())
         tsmiOption_Unit_SI.Text = Environment.Localization.GetString(CLMessageResources.MainForm_Menu_Option_Unit_SI.ToString())
         tsmiOption_CommercialSheetAutoSync.Text = Environment.Localization.GetString(CLMessageResources.MainForm_Menu_Option_CommercialSheetAutoSync.ToString())
+        tsmiOption_CheckUpdates.Text = Environment.Localization.GetString(CLMessageResources.MainForm_Menu_Option_CheckUpdates.ToString())
 
         tsmiAbout.Text = Environment.Localization.GetString(CLMessageResources.MainForm_Menu_About.ToString())
 
@@ -2934,6 +2978,16 @@ Public Class CLMainForm
         grbCustomization.Controls.Add(CreateCoilLabel("MainForm_CoilPerformance_Circuits", "Circuits", 12, 147))
         grbCustomization.Controls.Add(nudCoilPerformance_Circuits)
 
+        lblCoilPerformance_CustomWarning = New Label()
+        lblCoilPerformance_CustomWarning.Tag = New String() {"MainForm_CoilPerformance_CustomWarning", "Please ask for delivery time and quotation"}
+        lblCoilPerformance_CustomWarning.Text = CoilPerformance_Text("MainForm_CoilPerformance_CustomWarning", "Please ask for delivery time and quotation")
+        lblCoilPerformance_CustomWarning.Location = New Point(12, 174)
+        lblCoilPerformance_CustomWarning.Size = New Size(330, 30)
+        lblCoilPerformance_CustomWarning.Font = New System.Drawing.Font(lblCoilPerformance_CustomWarning.Font, FontStyle.Bold)
+        lblCoilPerformance_CustomWarning.ForeColor = Color.Firebrick
+        lblCoilPerformance_CustomWarning.Visible = False
+        grbCustomization.Controls.Add(lblCoilPerformance_CustomWarning)
+
         dgvCoilPerformance_Results = New DataGridView()
         dgvCoilPerformance_Results.AllowUserToAddRows = False
         dgvCoilPerformance_Results.AllowUserToDeleteRows = False
@@ -3092,7 +3146,7 @@ Public Class CLMainForm
         cmbCoilPerformance_EditMode.Items.Add(New CLComboBoxItemWrapper(Of CLCoilPerformanceEditMode)(
             CoilPerformance_Text("MainForm_CoilPerformance_Standard", "Standard"), CLCoilPerformanceEditMode.Standard))
         cmbCoilPerformance_EditMode.Items.Add(New CLComboBoxItemWrapper(Of CLCoilPerformanceEditMode)(
-            CoilPerformance_Text("MainForm_CoilPerformance_StandardCustomized", "Standard customized"), CLCoilPerformanceEditMode.StandardCustomized))
+            CoilPerformance_Text("MainForm_CoilPerformance_StandardCustomized", "Customized"), CLCoilPerformanceEditMode.StandardCustomized))
 
         cmbCoilPerformance_EditMode.SelectedIndex = 0
         For index As Integer = 0 To cmbCoilPerformance_EditMode.Items.Count - 1
@@ -3197,6 +3251,26 @@ Public Class CLMainForm
         Return CLCoilInstallationType.Internal
     End Function
 
+    Private Function CoilPerformance_SourceInstallation() As CLCoilInstallationType
+        Dim selectedInstallation As CLCoilInstallationType = CoilPerformance_SelectedInstallation()
+
+        If selectedInstallation = CLCoilInstallationType.RequestedInternal Then
+            Return CLCoilInstallationType.External
+        End If
+
+        If selectedInstallation = CLCoilInstallationType.External AndAlso
+            Not m_CoilPerformanceCoils.Any(Function(coil) coil.Installation = CLCoilInstallationType.External) AndAlso
+            m_CoilPerformanceCoils.Any(Function(coil) coil.Installation = CLCoilInstallationType.Internal) Then
+            Return CLCoilInstallationType.Internal
+        End If
+
+        Return selectedInstallation
+    End Function
+
+    Private Function CoilPerformance_UsesExternalGeometry() As Boolean
+        Return CoilPerformance_SelectedInstallation() <> CLCoilInstallationType.Internal
+    End Function
+
     Private Function CoilPerformance_SelectedFluidType() As CLCOFluidType
         If cmbCoilPerformance_FluidType IsNot Nothing AndAlso TypeOf cmbCoilPerformance_FluidType.SelectedItem Is CLComboBoxItemWrapper(Of CLCOFluidType) Then
             Return DirectCast(cmbCoilPerformance_FluidType.SelectedItem, CLComboBoxItemWrapper(Of CLCOFluidType)).Value
@@ -3218,8 +3292,42 @@ Public Class CLMainForm
     End Sub
 
     Private Sub CoilPerformance_EnableChanged(sender As Object, e As EventArgs)
+        If m_CoilPerformanceBusy Then
+            Return
+        End If
+
         CoilPerformance_UpdateControlState()
-        Calculate()
+
+        If chbCoilPerformance_Enable.Checked Then
+            CoilPerformance_SetBusy(True)
+            Try
+                Calculate()
+            Finally
+                CoilPerformance_SetBusy(False)
+            End Try
+        Else
+            Calculate()
+        End If
+    End Sub
+
+    Private Sub CoilPerformance_SetBusy(busy As Boolean)
+        m_CoilPerformanceBusy = busy
+        Me.UseWaitCursor = busy
+        tbpData_CoilPerformance.UseWaitCursor = busy
+
+        If busy Then
+            chbCoilPerformance_Enable.Enabled = False
+            chbCoilPerformance_Enable.Text = CoilPerformance_Text(
+                "MainForm_CoilPerformance_Calculating",
+                "Calculating, please wait...")
+            chbCoilPerformance_Enable.Refresh()
+            tbpData_CoilPerformance.Refresh()
+        Else
+            chbCoilPerformance_Enable.Text = CoilPerformance_Text(
+                "MainForm_CoilPerformance_Enable",
+                "Enable coil calculation")
+            CoilPerformance_UpdateControlState()
+        End If
     End Sub
 
     Private Sub CoilPerformance_EditModeChanged(sender As Object, e As EventArgs)
@@ -3300,13 +3408,19 @@ Public Class CLMainForm
             RemoveHandler cmbCoilPerformance_Installation.SelectedIndexChanged, AddressOf CoilPerformance_InstallationChanged
             cmbCoilPerformance_Installation.Items.Clear()
 
-            If m_CoilPerformanceCoils.Any(Function(coil) coil.Installation = CLCoilInstallationType.Internal) Then
+            Dim hasInternal As Boolean = m_CoilPerformanceCoils.Any(Function(coil) coil.Installation = CLCoilInstallationType.Internal)
+            Dim hasExternal As Boolean = m_CoilPerformanceCoils.Any(Function(coil) coil.Installation = CLCoilInstallationType.External)
+
+            If hasInternal Then
                 cmbCoilPerformance_Installation.Items.Add(New CLComboBoxItemWrapper(Of CLCoilInstallationType)(
                     CoilPerformance_Text("MainForm_CoilPerformance_Internal", "Internal"), CLCoilInstallationType.Internal))
-            End If
-            If m_CoilPerformanceCoils.Any(Function(coil) coil.Installation = CLCoilInstallationType.External) Then
                 cmbCoilPerformance_Installation.Items.Add(New CLComboBoxItemWrapper(Of CLCoilInstallationType)(
                     CoilPerformance_Text("MainForm_CoilPerformance_ExternalInstallation", "External"), CLCoilInstallationType.External))
+            ElseIf hasExternal Then
+                cmbCoilPerformance_Installation.Items.Add(New CLComboBoxItemWrapper(Of CLCoilInstallationType)(
+                    CoilPerformance_Text("MainForm_CoilPerformance_ExternalInstallation", "External"), CLCoilInstallationType.External))
+                cmbCoilPerformance_Installation.Items.Add(New CLComboBoxItemWrapper(Of CLCoilInstallationType)(
+                    CoilPerformance_Text("MainForm_CoilPerformance_RequestInternal", "Request internal"), CLCoilInstallationType.RequestedInternal))
             End If
 
             Dim installationIndex As Integer = -1
@@ -3323,8 +3437,8 @@ Public Class CLMainForm
             cmbCoilPerformance_Installation.SelectedIndex = installationIndex
             AddHandler cmbCoilPerformance_Installation.SelectedIndexChanged, AddressOf CoilPerformance_InstallationChanged
 
-            Dim selectedInstallation As CLCoilInstallationType = CoilPerformance_SelectedInstallation()
-            For Each coil As CLCoilDefinition In m_CoilPerformanceCoils.Where(Function(item) item.Installation = selectedInstallation)
+            Dim sourceInstallation As CLCoilInstallationType = CoilPerformance_SourceInstallation()
+            For Each coil As CLCoilDefinition In m_CoilPerformanceCoils.Where(Function(item) item.Installation = sourceInstallation)
                 cmbCoilPerformance_Coil.Items.Add(coil.Clone())
             Next
 
@@ -3333,7 +3447,7 @@ Public Class CLMainForm
                 If selectedCoil IsNot Nothing Then
                     For index As Integer = 0 To cmbCoilPerformance_Coil.Items.Count - 1
                         Dim candidate As CLCoilDefinition = TryCast(cmbCoilPerformance_Coil.Items(index), CLCoilDefinition)
-                        If candidate IsNot Nothing AndAlso candidate.Id = selectedCoil.Id AndAlso candidate.Installation = selectedInstallation Then
+                        If candidate IsNot Nothing AndAlso candidate.Id = selectedCoil.Id AndAlso candidate.Installation = sourceInstallation Then
                             selectedIndex = index
                             Exit For
                         End If
@@ -3383,7 +3497,7 @@ Public Class CLMainForm
         Dim enabled As Boolean = m_CoilPerformanceAvailable AndAlso chbCoilPerformance_Enable.Checked
         Dim editMode As CLCoilPerformanceEditMode = CoilPerformance_SelectedEditMode()
         Dim geometryEnabled As Boolean = enabled AndAlso editMode <> CLCoilPerformanceEditMode.Standard
-        Dim externalCustomized As Boolean = geometryEnabled AndAlso CoilPerformance_SelectedInstallation() = CLCoilInstallationType.External
+        Dim externalCustomized As Boolean = geometryEnabled AndAlso CoilPerformance_UsesExternalGeometry()
         Dim fluidType As CLCOFluidType = CoilPerformance_SelectedFluidType()
         Dim heightInTubes As Boolean = CoilPerformance_HeightMode() = "tubes"
 
@@ -3407,6 +3521,7 @@ Public Class CLMainForm
         nudCoilPerformance_Height.Enabled = externalCustomized AndAlso Not heightInTubes
         nudCoilPerformance_Tubes.Enabled = externalCustomized AndAlso heightInTubes
         dgvCoilPerformance_Results.Enabled = enabled
+        lblCoilPerformance_CustomWarning.Visible = geometryEnabled
 
         If Not enabled Then
             dgvCoilPerformance_Results.Rows.Clear()
@@ -3423,7 +3538,7 @@ Public Class CLMainForm
         Dim coil As CLCoilDefinition = DirectCast(cmbCoilPerformance_Coil.SelectedItem, CLCoilDefinition).Clone()
         coil.Length = CInt(nudCoilPerformance_Length.Value)
         If CoilPerformance_SelectedEditMode() = CLCoilPerformanceEditMode.StandardCustomized AndAlso
-            CoilPerformance_SelectedInstallation() = CLCoilInstallationType.External AndAlso
+            CoilPerformance_UsesExternalGeometry() AndAlso
             CoilPerformance_HeightMode() = "tubes" Then
             coil.Height = CInt(nudCoilPerformance_Tubes.Value * 25D)
         Else

@@ -417,7 +417,7 @@
   <data name="MainForm_CoilPerformance_Rows" xml:space="preserve"><value>Редове</value></data>
   <data name="MainForm_CoilPerformance_Selection" xml:space="preserve"><value>Избор на батерия</value></data>
   <data name="MainForm_CoilPerformance_Standard" xml:space="preserve"><value>Стандартна</value></data>
-  <data name="MainForm_CoilPerformance_StandardCustomized" xml:space="preserve"><value>Персонализирана стандартна</value></data>
+  <data name="MainForm_CoilPerformance_StandardCustomized" xml:space="preserve"><value>Персонализирана</value></data>
   <data name="MainForm_CoilPerformance_Tab" xml:space="preserve"><value>Водни батерии</value></data>
   <data name="MainForm_CoilPerformance_Type" xml:space="preserve"><value>Тип</value></data><data name="MainForm_Menu_Option_CommercialSheetAutoSync" xml:space="preserve"><value>Avtomatichna sinhronizatsia na targovskite listove</value></data>
   <data name="MainForm_CoilPerformance_ResultWaterDP" xml:space="preserve"><value>DP voda [kPa]</value></data>
@@ -432,4 +432,36 @@
   <data name="MainForm_CoilPerformance_Installation" xml:space="preserve"><value>Монтаж</value></data>
   <data name="MainForm_CoilPerformance_Internal" xml:space="preserve"><value>Вътрешна</value></data>
   <data name="MainForm_CoilPerformance_ExternalInstallation" xml:space="preserve"><value>Външна</value></data>
+  <data name="MainForm_CoilPerformance_RequestInternal" xml:space="preserve"><value>Запитване за вътрешна версия</value></data>
+  <data name="MainForm_CoilPerformance_CustomWarning" xml:space="preserve"><value>Моля, поискайте срок за доставка и оферта</value></data>
+  <data name="MainForm_Menu_Option_CheckUpdates" xml:space="preserve">
+    <value>Проверка за актуализации</value>
+  </data>
+  <data name="Update_Title" xml:space="preserve">
+    <value>Актуализация на софтуера</value>
+  </data>
+  <data name="Update_ErrorTitle" xml:space="preserve">
+    <value>Грешка при актуализация</value>
+  </data>
+  <data name="Update_UpToDate" xml:space="preserve">
+    <value>Софтуерът е актуален.</value>
+  </data>
+  <data name="Update_NewAvailable" xml:space="preserve">
+    <value>Налична е нова актуализация на софтуера!</value>
+  </data>
+  <data name="Update_CurrentVersion" xml:space="preserve">
+    <value>Текуща версия</value>
+  </data>
+  <data name="Update_NewVersion" xml:space="preserve">
+    <value>Нова версия</value>
+  </data>
+  <data name="Update_DownloadQuestion" xml:space="preserve">
+    <value>Да се изтегли и стартира инсталаторът сега?</value>
+  </data>
+  <data name="Update_CheckFailed" xml:space="preserve">
+    <value>Актуализациите не могат да бъдат проверени: {0}</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Calculating" xml:space="preserve">
+    <value>Изчисляване, моля изчакайте...</value>
+  </data>
 </root>
