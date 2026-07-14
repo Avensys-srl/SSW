@@ -16,7 +16,10 @@ registrazione centralizzata delle selezioni SSW.
 - [x] 05. Formato `.sswsel` V1 definito, implementato e verificato.
 - [x] Onda B1 completata il 14/07/2026: punti 06, 07 e 12.
 - [x] 06. Motore di migrazione e compatibilita' progetti.
-- [ ] 07-22. Attivita' residue descritte nelle sezioni seguenti.
+- [x] 07. Ciclo di vita locale del progetto e file recenti.
+- [x] Onda B2 implementata e collaudata localmente il 14/07/2026: punti 08-11.
+- [ ] Deployment operativo B2 su database/API web dedicati.
+- [ ] 13-22. Attivita' residue descritte nelle sezioni seguenti.
 
 ## Regole architetturali approvate
 
@@ -134,6 +137,8 @@ registrazione centralizzata delle selezioni SSW.
 
 ### 08. Database server delle selezioni
 
+- Stato: **implementato localmente** il 14/07/2026; migrazione MySQL V1 pronta,
+  applicazione sul database web dedicato ancora da eseguire.
 - Ambiente: database web dedicato, separato dai dati prodotto.
 - Creare clienti, installazioni tecniche, selezioni padre, revisioni, token e
   audit delle versioni.
@@ -142,6 +147,7 @@ registrazione centralizzata delle selezioni SSW.
 
 ### 09. Identita' installazione zero-touch
 
+- Stato: **implementato e collaudato localmente** il 14/07/2026.
 - Repository: `D:\mdev\SSW` e `A:\webavensys\api`.
 - Generare automaticamente InstallationId e token tecnico.
 - Conservare il token client in ProgramData protetto da Windows e sul server
@@ -151,6 +157,8 @@ registrazione centralizzata delle selezioni SSW.
 
 ### 10. API versionata e idempotente
 
+- Stato: **implementato e collaudato localmente** il 14/07/2026; deployment
+  HTTPS e configurazione ambiente ancora da eseguire.
 - Repository: `A:\webavensys\api`.
 - Registrare nuove selezioni e revisioni tramite HTTPS.
 - Gestire retry senza consumare riferimenti duplicati.
@@ -160,6 +168,7 @@ registrazione centralizzata delle selezioni SSW.
 
 ### 11. Generazione del riferimento pubblico
 
+- Stato: **implementato e collaudato localmente** il 14/07/2026.
 - Ambiente: API e database server.
 - Generare 15 cifre casuali crittografiche piu' checksum.
 - Applicare vincolo univoco e rigenerazione in caso di collisione.
@@ -294,8 +303,8 @@ da `/usage` nel Codex CLI.
 
 ### Onda B - Persistenza e identita'
 
-- Stato: **in corso** dal 14/07/2026; B1 completata, B2 da rivalutare dopo il
-  controllo quota concordato.
+- Stato: **implementazione locale completata** il 14/07/2026; B1 e B2
+  collaudate, deployment operativo B2 separato e ancora da eseguire.
 - Punti 06-12: migrazioni, menu progetto, database server, installazione
   zero-touch, API, riferimento pubblico e bozze offline.
 - Obiettivo: creare e riaprire una selezione senza ancora cambiare gli RDLC.
@@ -318,6 +327,16 @@ da `/usage` nel Codex CLI.
 
 #### B2 - Identita' e registrazione centralizzata
 
+- Stato: **implementato e collaudato localmente** il 14/07/2026.
+- SSW: identita' macchina persistente, token DPAPI in ProgramData, client lazy
+  per registrazione e rinnovo, configurazione bootstrap esterna al sorgente.
+- API: schema MySQL dedicato, token hash, audit versioni, riferimento Luhn,
+  revisioni immutabili, idempotenza, rate limit, limite payload e CLI di revoca.
+- Evidenza: test PHP su SQLite con 5.000 riferimenti, retry selezione/revisione,
+  rotazione token e conflitti; GET pubblico rifiutato con HTTP 405; build
+  completa `AV|x86` e smoke test client x86 register/cache/renew/DPAPI.
+- Da attivare: database web, variabili `SSW_SELECTION_*`, bootstrap del cliente,
+  backup/purge schedulati e repository Git per `A:\webavensys\api`.
 1. Punto 08: creare lo schema server separato con clienti, installazioni,
    selezioni padre, revisioni, token hash e audit versioni.
 2. Punto 11: implementare il riferimento pubblico casuale con checksum,
@@ -334,6 +353,8 @@ da `/usage` nel Codex CLI.
 - Consumo osservato Onda A: circa 9 punti percentuali del limite settimanale,
   inclusi riallineamento Explorer e collaudo dell'SDF reale.
 - Quota all'avvio della pianificazione B: 71% residuo; reset 20/07/2026.
+- Quota comunicata all'avvio effettivo di B2: 59% residuo; rivalutazione
+  richiesta dopo il checkpoint B2 prima di iniziare B3/Onda C.
 - Stima B1: 7-11 punti; B2: 11-18 punti; integrazione e regressioni: 4-7 punti.
 - Residuo atteso a Onda B conclusa: 35-49%; scenario prudenziale minimo circa
   31% in presenza di problemi di deployment o credenziali server.
