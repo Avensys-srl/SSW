@@ -25,6 +25,7 @@ Public Class CLMainForm
     Private m_CoilPerformanceAvailable As Boolean = False
     Private m_CoilPerformanceModelId As Integer = -1
     Private m_CoilPerformanceLastPressureDrop As Double = 0
+    Private m_CoilPerformanceLastResults As New List(Of CLCoilCalculationResult)()
     Private m_CoilPerformanceBusy As Boolean = False
     Private m_AutomaticUpdateCheckTask As Task
     Private m_SummerCalculationEnabled As Boolean = True
@@ -1547,6 +1548,7 @@ Public Class CLMainForm
         ' Show Report
         ' --------------------------------------------
         Dim reportViewForm As New CLReportViewerForm
+        AddHandler reportViewForm.PdfExported, AddressOf Project_ReportPdfExported
         Dim reportDataSources As New List(Of Microsoft.Reporting.WinForms.ReportDataSource)
 
         reportDataSources.Add(New Microsoft.Reporting.WinForms.ReportDataSource("Header", DirectCast(reportDataSet.HeaderDataTable, System.Data.DataTable)))
@@ -3529,6 +3531,7 @@ Public Class CLMainForm
 
         If Not enabled Then
             dgvCoilPerformance_Results.Rows.Clear()
+            m_CoilPerformanceLastResults.Clear()
             lblCoilPerformance_Status.Text = ""
             m_CoilPerformanceLastPressureDrop = 0
         End If
@@ -3561,6 +3564,7 @@ Public Class CLMainForm
         End If
 
         dgvCoilPerformance_Results.Rows.Clear()
+        m_CoilPerformanceLastResults.Clear()
         lblCoilPerformance_Status.Text = ""
         m_CoilPerformanceLastPressureDrop = 0
 
@@ -3593,6 +3597,7 @@ Public Class CLMainForm
         }
 
         Dim results As List(Of CLCoilCalculationResult) = CLCoilPerformanceCalculator.Calculate(input)
+        m_CoilPerformanceLastResults.AddRange(results)
 
         For Each result As CLCoilCalculationResult In results
             Dim status As String = If(result.IsOk, CoilPerformance_Text("MainForm_CoilPerformance_OK", "OK"), If(String.IsNullOrEmpty(result.ErrorMessage), result.Auxiliary.ToString(), result.ErrorMessage))

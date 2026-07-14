@@ -12,6 +12,7 @@ Public NotInheritable Class CLSelectionProjectDocument
     Public Property Identity As New CLSelectionIdentity()
     Public Property Selection As New CLTechnicalSelection()
     Public Property Snapshot As CLCalculatedSelectionSnapshot
+    Public Property RevisionTracking As New CLSelectionRevisionTracking()
 
     <JsonIgnore>
     Public Property SourceFormatVersion As Integer = CLTechnicalVersions.CurrentSelectionFormatVersion
@@ -43,6 +44,36 @@ Public NotInheritable Class CLSelectionIdentity
     Public Property PublicReference As String
     Public Property Revision As Integer?
     Public Property ParentPublicReference As String
+    Public Property ResumeToken As String
+
+End Class
+
+Public NotInheritable Class CLSelectionRevisionTracking
+
+    Public Property Current As CLSelectionFingerprintSet
+    Public Property LastRegistered As CLRegisteredSelectionRevision
+    Public Property PendingChangeKind As String
+
+End Class
+
+Public NotInheritable Class CLSelectionFingerprintSet
+
+    Public Property SchemaVersion As Integer = 1
+    Public Property TechnicalInputHash As String
+    Public Property CalculationOutputHash As String
+    Public Property CalculationBasisHash As String
+    Public Property SnapshotHash As String
+
+End Class
+
+Public NotInheritable Class CLRegisteredSelectionRevision
+
+    Public Property PublicReference As String
+    Public Property Revision As Integer
+    Public Property ResumeToken As String
+    Public Property RegisteredAtUtc As DateTime
+    Public Property Fingerprints As New CLSelectionFingerprintSet()
+    Public Property Versions As New CLSelectionVersionSet()
 
 End Class
 

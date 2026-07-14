@@ -41,6 +41,13 @@ Public NotInheritable Class CLSelectionProjectSerializer
         Return versions
     End Function
 
+    Public Shared Function GetReportCompanionPath(pdfFilePath As String) As String
+        If String.IsNullOrWhiteSpace(pdfFilePath) Then
+            Throw New ArgumentException("The PDF report path is empty.", NameOf(pdfFilePath))
+        End If
+        Return Path.ChangeExtension(Path.GetFullPath(pdfFilePath), FileExtension)
+    End Function
+
     Public Shared Sub Save(filePath As String, document As CLSelectionProjectDocument)
         Validate(document)
 
@@ -191,6 +198,10 @@ Public NotInheritable Class CLSelectionProjectSerializer
             document.Identity = New CLSelectionIdentity()
             changed = True
         End If
+        If document.RevisionTracking Is Nothing Then
+            document.RevisionTracking = New CLSelectionRevisionTracking()
+            changed = True
+        End If
         If document.Selection Is Nothing OrElse document.Versions Is Nothing Then
             Return changed
         End If
@@ -264,7 +275,32 @@ Public NotInheritable Class CLSelectionProjectSerializer
         If document.Versions.SelectionFormatVersion <> document.SelectionFormatVersion Then
             Throw New InvalidDataException("The envelope and calculation version blocks are inconsistent.")
         End If
+        ValidateRevisionTracking(document.RevisionTracking)
 
+    End Sub
+
+    Private Shared Sub ValidateRevisionTracking(tracking As CLSelectionRevisionTracking)
+        If tracking Is Nothing Then Return
+        ValidateFingerprints(tracking.Current)
+        If tracking.LastRegistered IsNot Nothing Then
+            If tracking.LastRegistered.Revision < 1 OrElse
+                String.IsNullOrWhiteSpace(tracking.LastRegistered.PublicReference) OrElse
+                tracking.LastRegistered.Versions Is Nothing Then
+                Throw New InvalidDataException("The registered selection revision metadata is invalid.")
+            End If
+            ValidateFingerprints(tracking.LastRegistered.Fingerprints)
+        End If
+    End Sub
+
+    Private Shared Sub ValidateFingerprints(fingerprints As CLSelectionFingerprintSet)
+        If fingerprints Is Nothing Then Return
+        If fingerprints.SchemaVersion <> 1 OrElse
+            Not CLSelectionSnapshotService.IsValidHash(fingerprints.TechnicalInputHash) OrElse
+            Not CLSelectionSnapshotService.IsValidHash(fingerprints.CalculationOutputHash) OrElse
+            Not CLSelectionSnapshotService.IsValidHash(fingerprints.CalculationBasisHash) OrElse
+            Not CLSelectionSnapshotService.IsValidHash(fingerprints.SnapshotHash) Then
+            Throw New InvalidDataException("The technical selection fingerprint metadata is invalid.")
+        End If
     End Sub
 
 End Class

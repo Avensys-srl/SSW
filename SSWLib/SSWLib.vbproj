@@ -324,6 +324,7 @@
     <Compile Include="CLSelectionInstallationState.vb" />
     <Compile Include="CLSelectionCredentialStore.vb" />
     <Compile Include="CLSelectionApiClient.vb" />
+    <Compile Include="CLSelectionSnapshotService.vb" />
     <Compile Include="CLSSWInfo.vb" />
     <Compile Include="CLMessageResources.vb" />
     <Compile Include="CLMainForm.Designer.vb">

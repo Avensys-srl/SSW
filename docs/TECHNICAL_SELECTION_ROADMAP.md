@@ -19,7 +19,8 @@ registrazione centralizzata delle selezioni SSW.
 - [x] 07. Ciclo di vita locale del progetto e file recenti.
 - [x] Onda B2 implementata e collaudata localmente il 14/07/2026: punti 08-11.
 - [ ] Deployment operativo B2 su database/API web dedicati.
-- [ ] 13-22. Attivita' residue descritte nelle sezioni seguenti.
+- [x] Onda C1 completata il 14/07/2026: punti 13 e 15.
+- [ ] 14, 16-22. Attivita' residue descritte nelle sezioni seguenti.
 
 ## Regole architetturali approvate
 
@@ -190,6 +191,11 @@ registrazione centralizzata delle selezioni SSW.
 
 ### 13. Snapshot, hash e revisioni immutabili
 
+- Stato: **completato** il 14/07/2026.
+- Evidenza: JSON canonico con SHA-256 separati per input, output, base di
+  calcolo e snapshot; classificazione di ristampa, modifica tecnica, database,
+  algoritmo e solo risultato verificata nel client e nell'API. La ristampa
+  invariata conserva la revisione e genera un evento audit dedicato.
 - Repository: SSW, API e database server.
 - Normalizzare il JSON e calcolare SHA-256 includendo versioni DLL e SDF.
 - Distinguere ristampa, modifica tecnica, cambio database e cambio algoritmo.
@@ -206,6 +212,12 @@ registrazione centralizzata delle selezioni SSW.
 
 ### 15. Persistenza automatica accanto al PDF
 
+- Stato: **completato** il 14/07/2026.
+- Evidenza: export PDF controllato dal viewer, scrittura atomica e successivo
+  salvataggio automatico del `.sswsel` omonimo; percorso companion e
+  round-trip delle impronte verificati dallo smoke test x86. Il collaudo
+  visuale automatizzato del vecchio viewer WinForms resta manuale per un limite
+  del helper desktop (`Interfaccia non supportata`).
 - Repository: `D:\mdev\SSW`.
 - Salvare il `.sswsel` accanto al PDF dopo la generazione.
 - Conservare il token di ripresa della selezione e l'ultima revisione.
@@ -372,6 +384,11 @@ da `/usage` nel Codex CLI.
 
 ### Onda C - Registrazione e report
 
+- Stato: **C1 completata** il 14/07/2026; deployment operativo B2 ancora
+  necessario prima del collaudo end-to-end di C2.
+- Checkpoint C1: snapshot canonici e revisioni immutabili lato client/server;
+  `.sswsel` generato automaticamente accanto al PDF senza registrazione API.
+- Checkpoint API SSWweb: `4512460 Add immutable selection revision fingerprints`.
 - Punti 13-17: snapshot, revisioni, Genera report, salvataggio automatico,
   intestazione RDLC e geolocalizzazione.
 - Obiettivo: completare il flusso cliente end-to-end.

@@ -238,12 +238,35 @@ Partial Public Class CLMainForm
         End Try
     End Function
 
+    Private Sub Project_ReportPdfExported(sender As Object, eventArgs As CLPdfExportedEventArgs)
+        Try
+            If m_ProjectDocument Is Nothing Then
+                m_ProjectDocument = CLSelectionProjectSerializer.CreateNew(Environment.DatabaseCompatibility)
+                m_ProjectDocument.Selection.CustomerCode = Environment.CustomerCode
+                m_ProjectDocument.Identity.LocalDraftReference = CLSelectionInstallationStateStore.NextDraftReference()
+            End If
+            Project_CaptureForm(m_ProjectDocument)
+            Dim companionPath As String = CLSelectionProjectSerializer.GetReportCompanionPath(eventArgs.FilePath)
+            CLSelectionProjectSerializer.Save(companionPath, m_ProjectDocument)
+            m_ProjectFilePath = companionPath
+            Project_AddRecentFile(companionPath)
+            Project_SetDirty(False)
+        Catch ex As Exception
+            MessageBox.Show(Me,
+                String.Format(Project_Text("MainForm_Project_SaveError", "Unable to save the selection project: {0}"), ex.Message),
+                Project_Text("MainForm_Project_Title", "Technical selection"),
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Warning)
+        End Try
+    End Sub
+
     Private Sub Project_DuplicateClick(sender As Object, e As EventArgs)
         If m_ProjectDocument Is Nothing Then Return
         Project_CaptureForm(m_ProjectDocument)
         Dim originalProjectId As Guid = m_ProjectDocument.ProjectId
         Dim originalCreatedAtUtc As DateTime = m_ProjectDocument.CreatedAtUtc
         Dim originalIdentity As CLSelectionIdentity = m_ProjectDocument.Identity
+        Dim originalRevisionTracking As CLSelectionRevisionTracking = m_ProjectDocument.RevisionTracking
         Dim originalPath As String = m_ProjectFilePath
         Dim originalDirty As Boolean = m_ProjectDirty
         m_ProjectDocument.ProjectId = Guid.NewGuid()
@@ -251,12 +274,14 @@ Partial Public Class CLMainForm
         m_ProjectDocument.Identity = New CLSelectionIdentity With {
             .LocalDraftReference = CLSelectionInstallationStateStore.NextDraftReference()
         }
+        m_ProjectDocument.RevisionTracking = New CLSelectionRevisionTracking()
         m_ProjectFilePath = Nothing
         Project_SetDirty(True)
         If Not Project_Save(True) Then
             m_ProjectDocument.ProjectId = originalProjectId
             m_ProjectDocument.CreatedAtUtc = originalCreatedAtUtc
             m_ProjectDocument.Identity = originalIdentity
+            m_ProjectDocument.RevisionTracking = originalRevisionTracking
             m_ProjectFilePath = originalPath
             Project_SetDirty(originalDirty)
         End If
@@ -308,6 +333,7 @@ Partial Public Class CLMainForm
         document.Features.Clear()
         If m_SummerCalculationEnabled Then document.Features.Add("SummerCalculation")
         If document.Selection.WaterCoil.Enabled Then document.Features.Add("WaterCoils")
+        CLSelectionSnapshotService.Refresh(document)
     End Sub
 
     Private Function Project_CaptureScenario(enabled As Boolean, scenarioCode As String, standardCode As String,
@@ -374,7 +400,33 @@ Partial Public Class CLMainForm
             snapshot.Summer = Project_CaptureScenarioSnapshot("Summer", TextBox1, TextBox2,
                 TextBox10, TextBox9, TextBox7, TextBox11, TextBox8, TextBox12, TextBox14, TextBox13, TextBox15)
         End If
+        snapshot.WaterCoils = Project_CaptureWaterCoilSnapshots()
         Return snapshot
+    End Function
+
+    Private Function Project_CaptureWaterCoilSnapshots() As List(Of CLWaterCoilCalculationSnapshot)
+        Dim snapshots As New List(Of CLWaterCoilCalculationSnapshot)()
+        If chbCoilPerformance_Enable Is Nothing OrElse Not chbCoilPerformance_Enable.Checked Then Return snapshots
+        For Each result As CLCoilCalculationResult In m_CoilPerformanceLastResults
+            Dim scenarioCode As String = If(result.Mode = CLCoilPerformanceMode.CWD AndAlso m_SummerCalculationEnabled,
+                "Summer", "Winter")
+            snapshots.Add(New CLWaterCoilCalculationSnapshot With {
+                .ScenarioCode = scenarioCode,
+                .Mode = result.Mode.ToString(),
+                .Status = If(result.IsOk, "OK", If(String.IsNullOrWhiteSpace(result.ErrorMessage), result.Auxiliary.ToString(), result.ErrorMessage)),
+                .CapacityW = result.HeatTransferred,
+                .SensibleCapacityW = result.SensibleHeat,
+                .AirOutletTemperatureC = result.OutletTemperature,
+                .AirOutletRelativeHumidityPercent = result.OutletRH,
+                .CondensateLitersPerHour = result.CondensedWater,
+                .AirPressureDropPa = result.AirPressureDrop,
+                .FluidPressureDropKPa = result.WaterPressureDrop,
+                .FluidFlowLitersPerHour = result.FluidFlow,
+                .FluidVelocityMetersPerSecond = result.FluidSpeed,
+                .FaceVelocityMetersPerSecond = result.FaceVelocity
+            })
+        Next
+        Return snapshots
     End Function
 
     Private Function Project_CaptureScenarioSnapshot(code As String, airflow As TextBox, pressure As TextBox,

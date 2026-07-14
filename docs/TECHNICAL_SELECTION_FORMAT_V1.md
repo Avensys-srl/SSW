@@ -20,10 +20,16 @@ Campi obbligatori alla radice:
 Campi opzionali:
 
 - `features`: codici dei blocchi effettivamente usati;
-- `identity`: riferimento bozza, riferimento pubblico e revisione;
+- `identity`: riferimento bozza, riferimento pubblico, revisione e token opaco
+  di ripresa della selezione centrale;
 - `snapshot`: output calcolati e relativa base di versione.
+- `revisionTracking`: impronte correnti e metadati dell'ultima revisione
+  registrata.
 
-I token API non vengono salvati in chiaro nel progetto.
+Il token di accesso API dell'installazione non viene mai salvato nel progetto:
+resta protetto da Windows in ProgramData. Il token di ripresa non autentica
+l'installazione e viene conservato nel `.sswsel` per consentirne il
+trasferimento controllato su un altro PC.
 
 ## Versioni
 
@@ -83,6 +89,19 @@ verra' attivato lo sbilanciamento.
 
 Lo snapshot non sostituisce gli input e non deve essere usato per un nuovo
 calcolo senza prima risolvere i riferimenti contro l'SDF corrente.
+
+## Impronte e revisioni
+
+`revisionTracking` conserva quattro SHA-256 canonici separati: input tecnico,
+output, base di calcolo e snapshot completo. Timestamp, codice cliente e
+riferimento libero non alterano le impronte; le opzioni e la versione del
+report ne fanno parte. `lastRegistered` congela impronte, versioni, riferimento
+e revisione dell'ultimo invio centrale, permettendo di distinguere ristampa,
+modifica tecnica, cambio database, cambio algoritmo e cambio del solo risultato.
+
+I blocchi `identity.resumeToken` e `revisionTracking` sono estensioni opzionali
+compatibili del V1. La loro assenza in un progetto storico viene normalizzata
+senza richiedere una migrazione di formato.
 
 ## Lettura e scrittura
 
