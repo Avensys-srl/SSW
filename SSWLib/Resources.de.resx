@@ -427,4 +427,79 @@
   <data name="MainForm_CoilPerformance_CustomDisclaimerTitle" xml:space="preserve"><value>Auslegung des kundenspezifischen Registers</value></data>
   <data name="MainForm_CoilPerformance_CustomDisclaimer" xml:space="preserve"><value>Prüfen Sie den ordnungsgemäßen Betrieb des kundenspezifischen Registers an allen vorgesehenen Betriebspunkten. Bestätigen Sie diese Anforderung mit OK.</value></data>
   <data name="MainForm_CoilPerformance_CustomDisclaimerAccepted" xml:space="preserve"><value>Hinweis zur Auslegung des kundenspezifischen Registers akzeptiert</value></data>
+  <data name="MainForm_ElectricHeater_Tab" xml:space="preserve">
+    <value>Elektroheizregister</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Enable" xml:space="preserve">
+    <value>Berechnung aktivieren</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Heater" xml:space="preserve">
+    <value>Elektroheizregister</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Power" xml:space="preserve">
+    <value>Leistung [W]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Voltage" xml:space="preserve">
+    <value>Spannung [V]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Phases" xml:space="preserve">
+    <value>Phasen</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Current" xml:space="preserve">
+    <value>Strom [A]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_AirIn" xml:space="preserve">
+    <value>Lufteintritt [C]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_AirOut" xml:space="preserve">
+    <value>Max. Luftaustritt [C]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_PressureDrop" xml:space="preserve">
+    <value>Luft-DP [Pa]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_ExhaustOut" xml:space="preserve">
+    <value>Fortluftaustritt [C]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_WaterConflict" xml:space="preserve">
+    <value>Deaktivieren Sie das Warmwasserregister, um das elektrische Nachheizregister zu aktivieren.</value>
+  </data>
+  <data name="MainForm_ElectricHeater_CustomPending" xml:space="preserve">
+    <value>Die Parameter des kundenspezifischen Elektroheizregisters werden in einem späteren Schritt definiert.</value>
+  </data>
+  <data name="MainForm_ElectricHeater_CustomDisclaimer" xml:space="preserve">
+    <value>Die Auswahl des kundenspezifischen Elektroheizregisters muss für alle vorgesehenen Betriebspunkte geprüft werden. Fortfahren?</value>
+  </data>
+  <data name="MainForm_ElectricHeater_FrostWarning" xml:space="preserve">
+    <value>Die Fortlufttemperatur liegt nicht über dem Frostschutz-Zielwert von 3 C.</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Code" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="MainForm_ElectricHeater_ManagementCode" xml:space="preserve">
+    <value>Verwaltungscode</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Frequency" xml:space="preserve">
+    <value>Frequenz [Hz]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Stages" xml:space="preserve">
+    <value>Stufen</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Quantity" xml:space="preserve">
+    <value>Anzahl</value>
+  </data>
+  <data name="MainForm_ElectricHeater_NominalPressureDrop" xml:space="preserve">
+    <value>Nenn-Luft-DP [Pa]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_FrostStatus" xml:space="preserve">
+    <value>Frostschutz-Zielwert</value>
+  </data>
+  <data name="MainForm_ElectricHeater_FrostTargetReached" xml:space="preserve">
+    <value>Zielwert erreicht</value>
+  </data>
+  <data name="MainForm_ElectricHeater_FrostTargetNotReached" xml:space="preserve">
+    <value>Zielwert nicht erreicht</value>
+  </data>
+  <data name="MainForm_ElectricHeater_CustomDisclaimerAccepted" xml:space="preserve">
+    <value>Haftungsausschluss für kundenspezifisches Elektroheizregister akzeptiert</value>
+  </data>
 </root>

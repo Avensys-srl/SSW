@@ -95,6 +95,19 @@ Public NotInheritable Class CLElectricHeaterSelection
     Public Property Enabled As Boolean
     Public Property Stages As Integer?
     Public Property NominalPowerW As Double?
+    Public Property EHD As New CLElectricHeaterModeSelection With {.Mode = "EHD"}
+    Public Property PEHD As New CLElectricHeaterModeSelection With {.Mode = "PEHD"}
+
+End Class
+
+Public NotInheritable Class CLElectricHeaterModeSelection
+
+    Public Property Enabled As Boolean
+    Public Property Mode As String
+    Public Property SelectionCase As String = "Standard"
+    Public Property InstallationType As String = "Internal"
+    Public Property CustomDesignDisclaimerAccepted As Boolean
+    Public Property Heater As New CLSelectionEntityReference()
 
 End Class
 
@@ -177,6 +190,21 @@ Public NotInheritable Class CLCalculatedSelectionSnapshot
     Public Property Winter As CLScenarioCalculationSnapshot
     Public Property Summer As CLScenarioCalculationSnapshot
     Public Property WaterCoils As New List(Of CLWaterCoilCalculationSnapshot)()
+    Public Property ElectricHeaters As New List(Of CLElectricHeaterCalculationSnapshot)()
+
+End Class
+
+Public NotInheritable Class CLElectricHeaterCalculationSnapshot
+
+    Public Property ScenarioCode As String = "Winter"
+    Public Property Mode As String
+    Public Property HeaterCode As String
+    Public Property PowerW As Double?
+    Public Property CurrentA As Double?
+    Public Property AirInletTemperatureC As Double?
+    Public Property AirOutletTemperatureC As Double?
+    Public Property AirPressureDropPa As Double?
+    Public Property ExhaustOutletTemperatureC As Double?
 
 End Class
 

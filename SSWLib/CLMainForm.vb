@@ -235,6 +235,7 @@ Public Class CLMainForm
         End If
 
         CoilPerformance_InitializeTab()
+        ElectricHeater_InitializeTab()
 
         txbPerformance_AirFlow.Text = "100"
         TextBox1.Text = txbPerformance_AirFlow.Text
@@ -461,6 +462,7 @@ Public Class CLMainForm
         End If
 
         CoilPerformance_FillStandardCoils()
+        ElectricHeater_FillAvailable()
         Calculate()
         sap_table_fill()
     End Sub
@@ -1181,6 +1183,7 @@ Public Class CLMainForm
         Dim CO2LevelUseDataRow As CLMainReportDataSet.CO2LevelUseRow
         Dim CO2LevelParametersDataRow As CLMainReportDataSet.CO2LevelParametersRow
         Dim waterCoilReportDataTable As DataTable = Report_CreateWaterCoilReportTable()
+        Dim electricHeaterReportDataTable As DataTable = Report_CreateElectricHeaterReportTable()
 
         'CO2 LevelParameters
         '---------------------------------------------------
@@ -1576,6 +1579,8 @@ Public Class CLMainForm
 
         Dim waterCoilWinterReportTable As DataTable = Report_CopyRows(waterCoilReportDataTable, Function(row) row("ScenarioKey").ToString() = "Winter")
         Dim waterCoilSummerReportTable As DataTable = Report_CopyRows(waterCoilReportDataTable, Function(row) row("ScenarioKey").ToString() = "Summer")
+        Dim electricHeaterEHDReportTable As DataTable = Report_CopyRows(electricHeaterReportDataTable, Function(row) row("Mode").ToString() = CLElectricHeaterMode.EHD.ToString())
+        Dim electricHeaterPEHDReportTable As DataTable = Report_CopyRows(electricHeaterReportDataTable, Function(row) row("Mode").ToString() = CLElectricHeaterMode.PEHD.ToString())
 
         ' Show Report
         ' --------------------------------------------
@@ -1603,6 +1608,9 @@ Public Class CLMainForm
         reportDataSources.Add(New Microsoft.Reporting.WinForms.ReportDataSource("SummerHeatExchangerPerformances", summerHeatExchangerTable))
         reportDataSources.Add(New Microsoft.Reporting.WinForms.ReportDataSource("WaterCoilWinterReport", waterCoilWinterReportTable))
         reportDataSources.Add(New Microsoft.Reporting.WinForms.ReportDataSource("WaterCoilSummerReport", waterCoilSummerReportTable))
+        reportDataSources.Add(New Microsoft.Reporting.WinForms.ReportDataSource("ElectricHeaterReport", electricHeaterReportDataTable))
+        reportDataSources.Add(New Microsoft.Reporting.WinForms.ReportDataSource("ElectricHeaterEHDReport", electricHeaterEHDReportTable))
+        reportDataSources.Add(New Microsoft.Reporting.WinForms.ReportDataSource("ElectricHeaterPEHDReport", electricHeaterPEHDReportTable))
 
         waitForm.Hide()
 
@@ -2387,6 +2395,7 @@ Public Class CLMainForm
         crtCO2Level_Chart1.ChartAreas(0).AxisY.Title = Environment.Localization.GetString(CLMessageResources.CO2Level.ToString()) & " [ppm]"
 
         CoilPerformance_UpdateLocalizedTexts()
+        ElectricHeater_UpdateLocalizedTexts()
 
         UpdateLocalization_MeasureUnit()
     End Sub
@@ -3370,6 +3379,7 @@ Public Class CLMainForm
     End Function
 
     Private Sub CoilPerformance_ModeChanged(sender As Object, e As EventArgs)
+        ElectricHeater_UpdateControlState()
         CoilPerformance_Recalculate()
     End Sub
 
@@ -3379,6 +3389,7 @@ Public Class CLMainForm
         End If
 
         CoilPerformance_UpdateControlState()
+        ElectricHeater_UpdateControlState()
 
         If chbCoilPerformance_Enable.Checked Then
             CoilPerformance_SetBusy(True)
@@ -3814,16 +3825,16 @@ Public Class CLMainForm
         End If
 
         Dim maxPressure As Double = ParseUIDouble(txbPerformance_MaxPressure.Text)
-        Calculate_Data(0, maxPressure)
+        Dim preheatPowerW As Double = ElectricHeater_GetEnabledPower(CLElectricHeaterMode.PEHD)
+        Calculate_Data(0, maxPressure, preheatPowerW)
 
-        If m_CoilPerformanceAvailable AndAlso chbCoilPerformance_Enable IsNot Nothing AndAlso chbCoilPerformance_Enable.Checked Then
-            Dim coilPressureDrop As Double = Calculate_CoilPerformance()
-            If coilPressureDrop > 0 Then
-                Calculate_Data(coilPressureDrop, maxPressure)
-                Calculate_CoilPerformance()
-            End If
-        Else
+        Dim coilPressureDrop As Double = Calculate_CoilPerformance()
+        Dim electricPressureDrop As Double = Calculate_ElectricHeaters()
+        Dim totalAccessoryPressureDrop As Double = coilPressureDrop + electricPressureDrop
+        If totalAccessoryPressureDrop > 0 Then
+            Calculate_Data(totalAccessoryPressureDrop, maxPressure, preheatPowerW)
             Calculate_CoilPerformance()
+            Calculate_ElectricHeaters()
         End If
 
         Calculate_Sound()
@@ -4218,7 +4229,8 @@ Public Class CLMainForm
         maxPressureTextBox As TextBox,
         maxPressureFallback As Double,
         additionalPressureDrop As Double,
-        drawCharts As Boolean) As CLThermalCalculationResult
+        drawCharts As Boolean,
+        Optional preheatPowerW As Double = 0) As CLThermalCalculationResult
 
         Dim dcHeatRecoveryModel As CLDCHeatRecoveryModel = SelectedHeatRecoveryModel
         Dim rec As String = dcHeatRecoveryModel.ModRec
@@ -4237,6 +4249,13 @@ Public Class CLMainForm
             afm = 1
         ElseIf m_MeasureUnit = CLMeasureUnit.IP Then
             afm *= 3.6
+        End If
+
+        Dim originalFreshTemperature As Double = fitm
+        Dim originalFreshHumidity As psychro = PsychroCalc(fitm, rhfitm)
+        If preheatPowerW > 0 Then
+            fitm = originalFreshTemperature + CLElectricHeaterCalculator.TemperatureRise(preheatPowerW, afm)
+            rhfitm = PsychroCalcW(fitm, originalFreshHumidity.w).rh
         End If
 
         If Not drawCharts Then
@@ -4264,6 +4283,11 @@ Public Class CLMainForm
            ParseUIDouble(txbPerformance_PassiveHaus_Limit.Text),
            additionalPressureDrop,
            afm)
+
+        If preheatPowerW > 0 Then
+            fitm = originalFreshTemperature + CLElectricHeaterCalculator.TemperatureRise(preheatPowerW, workpoint(1))
+            rhfitm = PsychroCalcW(fitm, originalFreshHumidity.w).rh
+        End If
 
         Dim thermoWork As termo = termo_calc(ritm, rhritm, fitm, rhfitm, workpoint(1), rec, pl, 0)
 
@@ -4367,7 +4391,9 @@ Public Class CLMainForm
         m_HasLastSummerThermo = False
     End Sub
 
-    Private Sub Calculate_Data(Optional additionalPressureDrop As Double = 0, Optional maxPressureOverride As Double? = Nothing)
+    Private Sub Calculate_Data(Optional additionalPressureDrop As Double = 0,
+        Optional maxPressureOverride As Double? = Nothing,
+        Optional winterPreheatPowerW As Double = 0)
         Try
             Dim winterMaxPressure As Double = If(maxPressureOverride.HasValue, maxPressureOverride.Value, ParseUIDouble(txbPerformance_MaxPressure.Text))
             Dim winterResult As CLThermalCalculationResult = Calculate_ThermalScenario(
@@ -4379,7 +4405,8 @@ Public Class CLMainForm
                 txbPerformance_MaxPressure,
                 winterMaxPressure,
                 additionalPressureDrop,
-                True)
+                True,
+                winterPreheatPowerW)
 
             Write_ThermalOutputs(
                 winterResult,

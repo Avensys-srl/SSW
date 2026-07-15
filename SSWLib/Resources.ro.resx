@@ -487,4 +487,79 @@
   <data name="MainForm_CoilPerformance_CustomDisclaimerTitle" xml:space="preserve"><value>Proiectarea bateriei personalizate</value></data>
   <data name="MainForm_CoilPerformance_CustomDisclaimer" xml:space="preserve"><value>Verificați funcționarea corectă a bateriei personalizate în toate punctele de lucru prevăzute. Apăsați OK pentru a accepta această cerință.</value></data>
   <data name="MainForm_CoilPerformance_CustomDisclaimerAccepted" xml:space="preserve"><value>Declinarea privind proiectarea bateriei personalizate a fost acceptată</value></data>
+  <data name="MainForm_ElectricHeater_Tab" xml:space="preserve">
+    <value>Baterii electrice</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Enable" xml:space="preserve">
+    <value>Activează calculul</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Heater" xml:space="preserve">
+    <value>Baterie electrică</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Power" xml:space="preserve">
+    <value>Putere [W]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Voltage" xml:space="preserve">
+    <value>Tensiune [V]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Phases" xml:space="preserve">
+    <value>Faze</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Current" xml:space="preserve">
+    <value>Curent [A]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_AirIn" xml:space="preserve">
+    <value>Aer intrare [C]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_AirOut" xml:space="preserve">
+    <value>Temp. max. aer ieșire [C]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_PressureDrop" xml:space="preserve">
+    <value>DP aer [Pa]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_ExhaustOut" xml:space="preserve">
+    <value>Aer evacuat [C]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_WaterConflict" xml:space="preserve">
+    <value>Deselectați bateria de apă caldă pentru a activa bateria electrică de postîncălzire.</value>
+  </data>
+  <data name="MainForm_ElectricHeater_CustomPending" xml:space="preserve">
+    <value>Parametrii bateriei electrice personalizate vor fi definiți ulterior.</value>
+  </data>
+  <data name="MainForm_ElectricHeater_CustomDisclaimer" xml:space="preserve">
+    <value>Selecția bateriei electrice personalizate trebuie verificată pentru toate punctele de funcționare prevăzute. Continuați?</value>
+  </data>
+  <data name="MainForm_ElectricHeater_FrostWarning" xml:space="preserve">
+    <value>Temperatura aerului evacuat nu depășește ținta antiîngheț de 3 C.</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Code" xml:space="preserve">
+    <value>Cod</value>
+  </data>
+  <data name="MainForm_ElectricHeater_ManagementCode" xml:space="preserve">
+    <value>Cod de gestiune</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Frequency" xml:space="preserve">
+    <value>Frecvență [Hz]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Stages" xml:space="preserve">
+    <value>Trepte</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Quantity" xml:space="preserve">
+    <value>Cantitate</value>
+  </data>
+  <data name="MainForm_ElectricHeater_NominalPressureDrop" xml:space="preserve">
+    <value>DP aer nominal [Pa]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_FrostStatus" xml:space="preserve">
+    <value>Țintă antiîngheț</value>
+  </data>
+  <data name="MainForm_ElectricHeater_FrostTargetReached" xml:space="preserve">
+    <value>Țintă atinsă</value>
+  </data>
+  <data name="MainForm_ElectricHeater_FrostTargetNotReached" xml:space="preserve">
+    <value>Țintă neatinsă</value>
+  </data>
+  <data name="MainForm_ElectricHeater_CustomDisclaimerAccepted" xml:space="preserve">
+    <value>Declinarea de responsabilitate pentru bateria electrică personalizată a fost acceptată</value>
+  </data>
 </root>

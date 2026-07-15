@@ -589,4 +589,79 @@
   <data name="MainForm_CoilPerformance_CustomDisclaimerTitle" xml:space="preserve"><value>Egyedi hőcserélő tervezése</value></data>
   <data name="MainForm_CoilPerformance_CustomDisclaimer" xml:space="preserve"><value>Ellenőrizze az egyedi hőcserélő megfelelő működését minden tervezett munkapontban. A követelmény elfogadásához nyomja meg az OK gombot.</value></data>
   <data name="MainForm_CoilPerformance_CustomDisclaimerAccepted" xml:space="preserve"><value>Az egyedi hőcserélő tervezési nyilatkozata elfogadva</value></data>
+  <data name="MainForm_ElectricHeater_Tab" xml:space="preserve">
+    <value>Elektromos fűtőelemek</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Enable" xml:space="preserve">
+    <value>Számítás engedélyezése</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Heater" xml:space="preserve">
+    <value>Elektromos fűtőelem</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Power" xml:space="preserve">
+    <value>Teljesítmény [W]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Voltage" xml:space="preserve">
+    <value>Feszültség [V]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Phases" xml:space="preserve">
+    <value>Fázisok</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Current" xml:space="preserve">
+    <value>Áram [A]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_AirIn" xml:space="preserve">
+    <value>Belépő levegő [C]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_AirOut" xml:space="preserve">
+    <value>Max. kilépő levegő [C]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_PressureDrop" xml:space="preserve">
+    <value>Levegő DP [Pa]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_ExhaustOut" xml:space="preserve">
+    <value>Kidobott levegő [C]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_WaterConflict" xml:space="preserve">
+    <value>Az elektromos utófűtő aktiválásához kapcsolja ki a melegvizes kalorifert.</value>
+  </data>
+  <data name="MainForm_ElectricHeater_CustomPending" xml:space="preserve">
+    <value>Az egyedi elektromos fűtőelem paramétereit később határozzuk meg.</value>
+  </data>
+  <data name="MainForm_ElectricHeater_CustomDisclaimer" xml:space="preserve">
+    <value>Az egyedi elektromos fűtőelem kiválasztását minden tervezett munkaponton ellenőrizni kell. Folytatja?</value>
+  </data>
+  <data name="MainForm_ElectricHeater_FrostWarning" xml:space="preserve">
+    <value>A kidobott levegő hőmérséklete nem haladja meg a 3 C-os fagyvédelmi célt.</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Code" xml:space="preserve">
+    <value>Kód</value>
+  </data>
+  <data name="MainForm_ElectricHeater_ManagementCode" xml:space="preserve">
+    <value>Kezelési kód</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Frequency" xml:space="preserve">
+    <value>Frekvencia [Hz]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Stages" xml:space="preserve">
+    <value>Fokozatok</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Quantity" xml:space="preserve">
+    <value>Mennyiség</value>
+  </data>
+  <data name="MainForm_ElectricHeater_NominalPressureDrop" xml:space="preserve">
+    <value>Névleges levegő-DP [Pa]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_FrostStatus" xml:space="preserve">
+    <value>Fagyvédelmi cél</value>
+  </data>
+  <data name="MainForm_ElectricHeater_FrostTargetReached" xml:space="preserve">
+    <value>Cél elérve</value>
+  </data>
+  <data name="MainForm_ElectricHeater_FrostTargetNotReached" xml:space="preserve">
+    <value>Cél nincs elérve</value>
+  </data>
+  <data name="MainForm_ElectricHeater_CustomDisclaimerAccepted" xml:space="preserve">
+    <value>Az egyedi elektromos fűtőelem felelősségkizárása elfogadva</value>
+  </data>
 </root>

@@ -655,4 +655,79 @@
   <data name="MainForm_CoilPerformance_CustomDisclaimerTitle" xml:space="preserve"><value>Tilpasset fladedesign</value></data>
   <data name="MainForm_CoilPerformance_CustomDisclaimer" xml:space="preserve"><value>Kontrollér, at den tilpassede flade fungerer korrekt ved alle planlagte driftspunkter. Tryk på OK for at acceptere dette krav.</value></data>
   <data name="MainForm_CoilPerformance_CustomDisclaimerAccepted" xml:space="preserve"><value>Ansvarsfraskrivelse for tilpasset fladedesign accepteret</value></data>
+  <data name="MainForm_ElectricHeater_Tab" xml:space="preserve">
+    <value>Elektriske varmeflader</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Enable" xml:space="preserve">
+    <value>Aktivér beregning</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Heater" xml:space="preserve">
+    <value>Elektrisk varmeflade</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Power" xml:space="preserve">
+    <value>Effekt [W]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Voltage" xml:space="preserve">
+    <value>Spænding [V]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Phases" xml:space="preserve">
+    <value>Faser</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Current" xml:space="preserve">
+    <value>Strøm [A]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_AirIn" xml:space="preserve">
+    <value>Luft ind [C]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_AirOut" xml:space="preserve">
+    <value>Maks. luft ud [C]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_PressureDrop" xml:space="preserve">
+    <value>Luft-DP [Pa]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_ExhaustOut" xml:space="preserve">
+    <value>Afkastluft ud [C]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_WaterConflict" xml:space="preserve">
+    <value>Fravælg varmtvandsfladen for at aktivere den elektriske eftervarmeflade.</value>
+  </data>
+  <data name="MainForm_ElectricHeater_CustomPending" xml:space="preserve">
+    <value>Parametre for den tilpassede elektriske varmeflade defineres senere.</value>
+  </data>
+  <data name="MainForm_ElectricHeater_CustomDisclaimer" xml:space="preserve">
+    <value>Valget af den tilpassede elektriske varmeflade skal kontrolleres ved alle planlagte driftspunkter. Fortsæt?</value>
+  </data>
+  <data name="MainForm_ElectricHeater_FrostWarning" xml:space="preserve">
+    <value>Afkastluftens temperatur er ikke over frostsikringsmålet på 3 C.</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Code" xml:space="preserve">
+    <value>Kode</value>
+  </data>
+  <data name="MainForm_ElectricHeater_ManagementCode" xml:space="preserve">
+    <value>Administrationskode</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Frequency" xml:space="preserve">
+    <value>Frekvens [Hz]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Stages" xml:space="preserve">
+    <value>Trin</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Quantity" xml:space="preserve">
+    <value>Antal</value>
+  </data>
+  <data name="MainForm_ElectricHeater_NominalPressureDrop" xml:space="preserve">
+    <value>Nominelt luft-DP [Pa]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_FrostStatus" xml:space="preserve">
+    <value>Frostsikringsmål</value>
+  </data>
+  <data name="MainForm_ElectricHeater_FrostTargetReached" xml:space="preserve">
+    <value>Mål nået</value>
+  </data>
+  <data name="MainForm_ElectricHeater_FrostTargetNotReached" xml:space="preserve">
+    <value>Mål ikke nået</value>
+  </data>
+  <data name="MainForm_ElectricHeater_CustomDisclaimerAccepted" xml:space="preserve">
+    <value>Ansvarsfraskrivelse for tilpasset elektrisk varmeflade accepteret</value>
+  </data>
 </root>

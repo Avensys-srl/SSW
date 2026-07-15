@@ -313,6 +313,10 @@
     </Compile>
     <Compile Include="CLCOIL.vb" />
     <Compile Include="CLCoilPerformanceCalculator.vb" />
+    <Compile Include="CLElectricHeaterCalculator.vb" />
+    <Compile Include="CLMainForm.ElectricHeaters.vb">
+      <DependentUpon>CLMainForm.vb</DependentUpon>
+    </Compile>
     <Compile Include="CLCoilHydraulicRules.vb" />
     <Compile Include="CLDatabaseCompatibility.vb" />
     <Compile Include="CLReportViewerForm.Designer.vb">

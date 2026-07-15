@@ -57,7 +57,22 @@ $requiredKeys = @('Update_Title','Update_CheckFailed','Update_PackageIntegrityFa
     'MainForm_CoilPerformance_DimensionsNote',
     'MainForm_CoilPerformance_CustomDisclaimerTitle',
     'MainForm_CoilPerformance_CustomDisclaimer',
-    'MainForm_CoilPerformance_CustomDisclaimerAccepted')
+    'MainForm_CoilPerformance_CustomDisclaimerAccepted',
+    'MainForm_ElectricHeater_Tab',
+    'MainForm_ElectricHeater_Enable',
+    'MainForm_ElectricHeater_WaterConflict',
+    'MainForm_ElectricHeater_CustomDisclaimer',
+    'MainForm_ElectricHeater_FrostWarning',
+    'MainForm_ElectricHeater_Code',
+    'MainForm_ElectricHeater_ManagementCode',
+    'MainForm_ElectricHeater_Frequency',
+    'MainForm_ElectricHeater_Stages',
+    'MainForm_ElectricHeater_Quantity',
+    'MainForm_ElectricHeater_NominalPressureDrop',
+    'MainForm_ElectricHeater_FrostStatus',
+    'MainForm_ElectricHeater_FrostTargetReached',
+    'MainForm_ElectricHeater_FrostTargetNotReached',
+    'MainForm_ElectricHeater_CustomDisclaimerAccepted')
 foreach ($file in $resourceFiles) {
     [xml]$document = Get-Content -LiteralPath $file.FullName -Raw
     $names = @($document.root.data | ForEach-Object { $_.name })
@@ -67,7 +82,13 @@ foreach ($file in $resourceFiles) {
 }
 
 foreach ($report in @('CLMainReport.rdlc','CLMainReportWithCO2.rdlc','CLMainReport_Coil.rdlc','CLMainReportWithCO2_Coil.rdlc')) {
-    [xml](Get-Content -LiteralPath (Join-Path $repo "SSWLib\$report") -Raw) | Out-Null
+    [xml]$reportDocument = Get-Content -LiteralPath (Join-Path $repo "SSWLib\$report") -Raw
+    $reportDataSetNames = @($reportDocument.Report.DataSets.DataSet | ForEach-Object { $_.Name })
+    foreach ($requiredDataSet in @('ElectricHeaterReport','ElectricHeaterEHDReport','ElectricHeaterPEHDReport')) {
+        if ($reportDataSetNames -notcontains $requiredDataSet) {
+            throw "$report is missing dataset $requiredDataSet."
+        }
+    }
 }
 
 if (-not $SkipApiTests) {

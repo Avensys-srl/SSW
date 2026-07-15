@@ -231,6 +231,14 @@ Public NotInheritable Class CLSelectionProjectSerializer
             document.Selection.ElectricHeater = New CLElectricHeaterSelection()
             changed = True
         End If
+        If document.Selection.ElectricHeater.EHD Is Nothing Then
+            document.Selection.ElectricHeater.EHD = New CLElectricHeaterModeSelection With {.Mode = "EHD"}
+            changed = True
+        End If
+        If document.Selection.ElectricHeater.PEHD Is Nothing Then
+            document.Selection.ElectricHeater.PEHD = New CLElectricHeaterModeSelection With {.Mode = "PEHD"}
+            changed = True
+        End If
         If document.Selection.Report Is Nothing Then
             document.Selection.Report = New CLReportSelectionOptions()
             changed = True

@@ -453,6 +453,7 @@ Partial Public Class CLMainForm
             m_SummerCalculationEnabled, "Summer", "Summer",
             TextBox1, TextBox2, TextBox3, TextBox4, TextBox5, TextBox6)
         document.Selection.WaterCoil = Project_CaptureWaterCoil()
+        document.Selection.ElectricHeater = ElectricHeater_CaptureSelection()
         document.Selection.Report = New CLReportSelectionOptions With {
             .LanguageCode = Environment.PrimaryLanguageCode,
             .IncludePerformanceCharts = True,
@@ -464,6 +465,7 @@ Partial Public Class CLMainForm
         document.Features.Clear()
         If m_SummerCalculationEnabled Then document.Features.Add("SummerCalculation")
         If document.Selection.WaterCoil.Enabled Then document.Features.Add("WaterCoils")
+        If document.Selection.ElectricHeater.Enabled Then document.Features.Add("ElectricHeaters")
         CLSelectionSnapshotService.Refresh(document)
     End Sub
 
@@ -533,6 +535,7 @@ Partial Public Class CLMainForm
                 TextBox10, TextBox9, TextBox7, TextBox11, TextBox8, TextBox12, TextBox14, TextBox13, TextBox15)
         End If
         snapshot.WaterCoils = Project_CaptureWaterCoilSnapshots()
+        snapshot.ElectricHeaters = ElectricHeater_CaptureSnapshots()
         Return snapshot
     End Function
 
@@ -602,6 +605,7 @@ Partial Public Class CLMainForm
             m_WinterReportScenarioName = document.Selection.Winter.StandardCode
             SeasonalCalculation_UpdateModeButton()
             Project_ApplyWaterCoil(document.Selection.WaterCoil)
+            ElectricHeater_ApplySelection(document.Selection.ElectricHeater)
             chbSoundPerformances_addtoreport.Checked = document.Selection.Report.IncludeSoundPower
             chbCO2Level_addtoreport.Checked = document.Selection.Report.IncludeCo2
             Calculate()
