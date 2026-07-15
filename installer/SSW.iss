@@ -22,6 +22,10 @@
 #error BootstrapEnvironmentName is required for a distributable build
 #endif
 
+#ifndef BootstrapRegistryValueName
+#error BootstrapRegistryValueName is required for a distributable build
+#endif
+
 [Setup]
 AppId={{7C326B6C-D147-4F11-A4A1-4B0135F3F0C9}
 AppName={#AppName}
@@ -62,6 +66,7 @@ Name: "{autodesktop}\{#AppName}"; Filename: "{app}\{#AppExeName}"; Tasks: deskto
 
 [Registry]
 Root: HKCU; Subkey: "Environment"; ValueType: string; ValueName: "{#BootstrapEnvironmentName}"; ValueData: "{#BootstrapKey}"; Flags: preservestringtype uninsdeletevalue
+Root: HKCU; Subkey: "Software\Avensys\SSW\TechnicalSelection"; ValueType: string; ValueName: "{#BootstrapRegistryValueName}"; ValueData: "{#BootstrapKey}"; Flags: uninsdeletevalue
 
 [Run]
 Filename: "{app}\{#AppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(AppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent

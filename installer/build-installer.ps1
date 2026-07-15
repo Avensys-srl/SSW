@@ -11,6 +11,7 @@ param(
     [string]$PublishCopyDir = "F:\DOCUMENTS\tools\Selection Software",
     [string]$BootstrapKey = $env:SSW_SELECTION_BOOTSTRAP_KEY_AV,
     [string]$BootstrapEnvironmentName = "SSW_SELECTION_BOOTSTRAP_KEY_AV",
+    [string]$BootstrapRegistryValueName = "BootstrapKey_AV",
     [string]$UpdateChannel = "stable",
     [switch]$SkipBuild,
     [switch]$SkipSigning,
@@ -209,6 +210,9 @@ if (-not $SkipBootstrap) {
     if ($BootstrapEnvironmentName -notmatch '^SSW_SELECTION_BOOTSTRAP_KEY_[A-Z0-9]+$') {
         throw "The bootstrap environment variable name has an invalid format."
     }
+    if ($BootstrapRegistryValueName -notmatch '^BootstrapKey_[A-Z0-9]+$') {
+        throw "The bootstrap registry value name has an invalid format."
+    }
 }
 
 if (-not $msbuildPath) {
@@ -272,6 +276,7 @@ if (Test-Path $iconFile) {
 }
 if (-not $SkipBootstrap) {
     $isccArgs += "/DBootstrapEnvironmentName=$BootstrapEnvironmentName"
+    $isccArgs += "/DBootstrapRegistryValueName=$BootstrapRegistryValueName"
     $isccArgs += "/DBootstrapKey=$BootstrapKey"
 }
 $isccArgs += $innoScriptPath

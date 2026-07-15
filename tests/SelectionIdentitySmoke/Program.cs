@@ -13,6 +13,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Microsoft.Win32;
 using SSW;
 
 internal sealed class TokenHandler : HttpMessageHandler
@@ -159,8 +160,9 @@ internal static class Program
             TestRegistrationFailureDialog();
             TestUpdateIntegrity(root);
             TestPracticalSelectionRules();
+            TestRegistryBootstrapProvisioning();
 
-            Console.WriteLine("Selection identity/snapshot smoke test passed: token=ok create=R01 reprint=R01 revise=R02 fingerprints=stable dialog=rendered update_integrity=ok practical_rules=ok");
+            Console.WriteLine("Selection identity/snapshot smoke test passed: token=ok create=R01 reprint=R01 revise=R02 fingerprints=stable dialog=rendered update_integrity=ok practical_rules=ok registry_bootstrap=ok");
             return 0;
         }
         finally
@@ -170,6 +172,46 @@ internal static class Program
             Environment.SetEnvironmentVariable("SSW_SELECTION_BOOTSTRAP_KEY_AV", null);
             Environment.SetEnvironmentVariable("SSW_SELECTION_API_BASE_URL", null);
             try { Directory.Delete(root, true); } catch { }
+        }
+    }
+
+    private static void TestRegistryBootstrapProvisioning()
+    {
+        const string keyPath = @"Software\Avensys\SSW\TechnicalSelection";
+        const string valueName = "BootstrapKey_AV";
+        const string testValue = "registry-bootstrap-test-value";
+        object existingValue = null;
+        using (RegistryKey key = Registry.CurrentUser.CreateSubKey(keyPath))
+        {
+            existingValue = key.GetValue(valueName, null, RegistryValueOptions.DoNotExpandEnvironmentNames);
+            key.SetValue(valueName, testValue, RegistryValueKind.String);
+        }
+
+        try
+        {
+            MethodInfo resolve = typeof(CLSelectionApiClient).GetMethod(
+                "ResolveBootstrapKey", BindingFlags.NonPublic | BindingFlags.Static);
+            MethodInfo clear = typeof(CLSelectionApiClient).GetMethod(
+                "ClearUserBootstrapKey", BindingFlags.NonPublic | BindingFlags.Static);
+            if (resolve == null || clear == null)
+                throw new InvalidOperationException("Bootstrap registry methods are unavailable.");
+            string resolved = (string)resolve.Invoke(null, new object[] { "AV" });
+            if (!String.Equals(resolved, testValue, StringComparison.Ordinal))
+                throw new InvalidOperationException("Bootstrap registry value was not resolved.");
+            clear.Invoke(null, new object[] { "AV" });
+            using (RegistryKey key = Registry.CurrentUser.OpenSubKey(keyPath, false))
+            {
+                if (key != null && key.GetValue(valueName) != null)
+                    throw new InvalidOperationException("Consumed bootstrap registry value was not removed.");
+            }
+        }
+        finally
+        {
+            using (RegistryKey key = Registry.CurrentUser.CreateSubKey(keyPath))
+            {
+                if (existingValue == null) key.DeleteValue(valueName, false);
+                else key.SetValue(valueName, existingValue, RegistryValueKind.String);
+            }
         }
     }
 

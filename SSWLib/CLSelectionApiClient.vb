@@ -8,6 +8,7 @@ Imports System.Security.Cryptography
 Imports System.Text
 Imports System.Text.Json
 Imports System.Threading
+Imports Microsoft.Win32
 
 Public NotInheritable Class CLSelectionApiException
     Inherits Exception
@@ -62,6 +63,8 @@ End Class
 Public NotInheritable Class CLSelectionApiClient
 
     Private Const DefaultBaseUrl As String = "https://www.avensys-srl.com/api/v1/"
+    Private Const BootstrapRegistryPath As String = "Software\Avensys\SSW\TechnicalSelection"
+    Private Const BootstrapRegistryValuePrefix As String = "BootstrapKey_"
     Private Shared ReadOnly JsonOptions As New JsonSerializerOptions With {
         .PropertyNameCaseInsensitive = True
     }
@@ -309,10 +312,29 @@ Public NotInheritable Class CLSelectionApiClient
     Private Shared Function ResolveBootstrapKey(customerCode As String) As String
         Dim safeCustomerCode As String = New String(customerCode.ToUpperInvariant().Where(
             Function(character) Char.IsLetterOrDigit(character)).ToArray())
-        Dim value As String = ResolveEnvironmentValue("SSW_SELECTION_BOOTSTRAP_KEY_" & safeCustomerCode)
+        Dim value As String = ResolveRegistryBootstrapKey(safeCustomerCode)
+        If String.IsNullOrWhiteSpace(value) Then
+            value = ResolveEnvironmentValue("SSW_SELECTION_BOOTSTRAP_KEY_" & safeCustomerCode)
+        End If
         If String.IsNullOrWhiteSpace(value) Then value = ResolveEnvironmentValue("SSW_SELECTION_BOOTSTRAP_KEY")
         If String.IsNullOrWhiteSpace(value) Then value = ConfigurationManager.AppSettings("TechnicalSelectionBootstrapKey")
         Return value
+    End Function
+
+    Private Shared Function ResolveRegistryBootstrapKey(safeCustomerCode As String) As String
+        If String.IsNullOrWhiteSpace(safeCustomerCode) Then Return Nothing
+        Try
+            Using key As RegistryKey = Registry.CurrentUser.OpenSubKey(BootstrapRegistryPath, False)
+                If key Is Nothing Then Return Nothing
+                Return TryCast(key.GetValue(
+                    BootstrapRegistryValuePrefix & safeCustomerCode,
+                    Nothing,
+                    RegistryValueOptions.DoNotExpandEnvironmentNames), String)
+            End Using
+        Catch ex As Exception When TypeOf ex Is System.Security.SecurityException OrElse
+            TypeOf ex Is UnauthorizedAccessException
+            Return Nothing
+        End Try
     End Function
 
     Private Shared Function ResolveEnvironmentValue(name As String) As String
@@ -331,29 +353,39 @@ Public NotInheritable Class CLSelectionApiClient
             Function(character) Char.IsLetterOrDigit(character)).ToArray())
         If String.IsNullOrWhiteSpace(safeCustomerCode) Then Return
         Try
+            Using key As RegistryKey = Registry.CurrentUser.OpenSubKey(BootstrapRegistryPath, True)
+                If key IsNot Nothing Then
+                    key.DeleteValue(BootstrapRegistryValuePrefix & safeCustomerCode, False)
+                End If
+            End Using
+        Catch ex As Exception When TypeOf ex Is System.Security.SecurityException OrElse
+            TypeOf ex Is UnauthorizedAccessException
+            ' A protected user profile must not invalidate an otherwise valid access token.
+        End Try
+        Try
             Dim environmentName As String = "SSW_SELECTION_BOOTSTRAP_KEY_" & safeCustomerCode
             Dim userValue As String = System.Environment.GetEnvironmentVariable(
                 environmentName,
                 EnvironmentVariableTarget.User)
-            If String.IsNullOrWhiteSpace(userValue) Then Return
+            If Not String.IsNullOrWhiteSpace(userValue) Then
+                Dim processValue As String = System.Environment.GetEnvironmentVariable(
+                    environmentName,
+                    EnvironmentVariableTarget.Process)
+                If Not String.IsNullOrWhiteSpace(processValue) AndAlso
+                    Not String.Equals(processValue, userValue, StringComparison.Ordinal) Then
+                    Return
+                End If
 
-            Dim processValue As String = System.Environment.GetEnvironmentVariable(
-                environmentName,
-                EnvironmentVariableTarget.Process)
-            If Not String.IsNullOrWhiteSpace(processValue) AndAlso
-                Not String.Equals(processValue, userValue, StringComparison.Ordinal) Then
-                Return
-            End If
-
-            System.Environment.SetEnvironmentVariable(
-                environmentName,
-                Nothing,
-                EnvironmentVariableTarget.User)
-            If String.Equals(processValue, userValue, StringComparison.Ordinal) Then
                 System.Environment.SetEnvironmentVariable(
                     environmentName,
                     Nothing,
-                    EnvironmentVariableTarget.Process)
+                    EnvironmentVariableTarget.User)
+                If String.Equals(processValue, userValue, StringComparison.Ordinal) Then
+                    System.Environment.SetEnvironmentVariable(
+                        environmentName,
+                        Nothing,
+                        EnvironmentVariableTarget.Process)
+                End If
             End If
         Catch ex As Exception When TypeOf ex Is System.Security.SecurityException OrElse
             TypeOf ex Is UnauthorizedAccessException
