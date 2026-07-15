@@ -620,6 +620,7 @@
   <data name="Update_CheckFailed" xml:space="preserve">
     <value>Kunne ikke søge efter opdateringer: {0}</value>
   </data>
+  <data name="Update_PackageIntegrityFailed" xml:space="preserve"><value>Opdateringspakken bestod ikke integritetskontrollen.</value></data>
   <data name="MainForm_CoilPerformance_Calculating" xml:space="preserve">
     <value>Beregner, vent venligst...</value>
   </data>

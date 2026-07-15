@@ -11,6 +11,7 @@ param(
     [string]$PublishCopyDir = "F:\DOCUMENTS\tools\Selection Software",
     [string]$BootstrapKey = $env:SSW_SELECTION_BOOTSTRAP_KEY_AV,
     [string]$BootstrapEnvironmentName = "SSW_SELECTION_BOOTSTRAP_KEY_AV",
+    [string]$UpdateChannel = "stable",
     [switch]$SkipBuild,
     [switch]$SkipSigning,
     [switch]$SkipBootstrap
@@ -22,7 +23,7 @@ $repoRoot = Resolve-Path (Join-Path $PSScriptRoot "..")
 $solutionPath = Join-Path $repoRoot "SSW.sln"
 $innoScriptPath = Join-Path $PSScriptRoot "SSW.iss"
 $installerOutputDir = Join-Path $PSScriptRoot "output"
-$assemblyInfoPath = Join-Path $repoRoot "SSWLib\My Project\AssemblyInfo.vb"
+$versionPropsPath = Join-Path $repoRoot "SSWVersion.props"
 $appProjectPath = Join-Path $repoRoot "SSW\SSW.csproj"
 
 function Find-FirstExistingPath {
@@ -101,13 +102,28 @@ function Find-SignTool {
 }
 
 function Get-AppVersion {
-    $content = Get-Content $assemblyInfoPath -Raw
-    $matches = [regex]::Matches($content, '<Assembly:\s*AssemblyVersion\("([^"]+)"\)>')
-    if ($matches.Count -eq 0) {
-        throw "Unable to read AssemblyVersion from $assemblyInfoPath"
+    $content = Get-Content $versionPropsPath -Raw
+    $match = [regex]::Match($content, '<SSWVersion>\s*([^<]+?)\s*</SSWVersion>')
+    if (-not $match.Success) {
+        throw "Unable to read SSWVersion from $versionPropsPath"
     }
 
-    return $matches[$matches.Count - 1].Groups[1].Value
+    return ([Version]$match.Groups[1].Value).ToString()
+}
+
+function Assert-ReleaseBinaryVersions {
+    param([string]$Directory, [string]$ExpectedVersion)
+
+    foreach ($name in @('SSW.exe', 'SSWLib.dll')) {
+        $path = Join-Path $Directory $name
+        if (-not (Test-Path -LiteralPath $path)) {
+            throw "Required release binary not found: $path"
+        }
+        $actual = [Diagnostics.FileVersionInfo]::GetVersionInfo($path).FileVersion
+        if (([Version]$actual) -ne ([Version]$ExpectedVersion)) {
+            throw "$name version $actual does not match SSWVersion $ExpectedVersion."
+        }
+    }
 }
 
 function Get-DefaultCertificateThumbprint {
@@ -216,9 +232,7 @@ if (-not $SkipBuild) {
 }
 
 $BuildOutputDir = (Resolve-Path $BuildOutputDir).Path
-if (-not (Test-Path (Join-Path $BuildOutputDir "SSW.exe"))) {
-    throw "Build output does not contain SSW.exe: $BuildOutputDir"
-}
+Assert-ReleaseBinaryVersions -Directory $BuildOutputDir -ExpectedVersion $appVersion
 
 if (-not $CertificatePath) {
     if ($env:SSW_SIGN_CERT_PATH) {
@@ -279,9 +293,19 @@ if ($canSign) {
     Invoke-SignFile -FilePath $installerPath -SignToolPath $signToolPath -CertPath $CertificatePath -CertThumbprint $CertificateThumbprint -CertPassword $CertificatePassword
 }
 
+$manifestPath = [IO.Path]::ChangeExtension($installerPath, '.manifest.json')
+& (Join-Path $PSScriptRoot 'New-UpdateManifest.ps1') `
+    -BuildOutputDir $BuildOutputDir `
+    -InstallerPath $installerPath `
+    -OutputPath $manifestPath `
+    -Channel $UpdateChannel `
+    -PublishedDirectory $PublishCopyDir
+if ($LASTEXITCODE -ne 0) { throw 'Update manifest generation failed.' }
+
 if ($PublishCopyDir) {
     New-Item -ItemType Directory -Force -Path $PublishCopyDir | Out-Null
     Copy-Item -LiteralPath $installerPath -Destination $PublishCopyDir -Force
+    Copy-Item -LiteralPath $manifestPath -Destination $PublishCopyDir -Force
     Write-Host "Installer copied to: $PublishCopyDir"
 }
 

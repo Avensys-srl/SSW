@@ -452,6 +452,7 @@
   <data name="Update_CheckFailed" xml:space="preserve">
     <value>Nu s-au putut verifica actualizările: {0}</value>
   </data>
+  <data name="Update_PackageIntegrityFailed" xml:space="preserve"><value>Pachetul de actualizare nu a trecut verificarea integrității.</value></data>
   <data name="MainForm_CoilPerformance_Calculating" xml:space="preserve">
     <value>Calcul în curs, așteptați...</value>
   </data>

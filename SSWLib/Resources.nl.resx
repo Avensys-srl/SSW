@@ -458,6 +458,7 @@
   <data name="Update_CheckFailed" xml:space="preserve">
     <value>Kan niet controleren op updates: {0}</value>
   </data>
+  <data name="Update_PackageIntegrityFailed" xml:space="preserve"><value>Het updatepakket heeft de integriteitscontrole niet doorstaan.</value></data>
   <data name="MainForm_CoilPerformance_Calculating" xml:space="preserve">
     <value>Berekening wordt uitgevoerd...</value>
   </data>

@@ -31,6 +31,4 @@ using System.Runtime.InteropServices;
 //
 // È possibile specificare tutti i valori oppure impostare valori predefiniti per i numeri relativi alla revisione e alla build 
 // utilizzando l'asterisco (*) come descritto di seguito:
-// [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.3.0.45")]
-[assembly: AssemblyFileVersion("1.3.0.45")]
+// AssemblyVersion and AssemblyFileVersion are generated from SSWVersion.props.

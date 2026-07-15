@@ -377,6 +377,7 @@
   <data name="Update_CheckFailed" xml:space="preserve">
     <value>Posodobitev ni bilo mogoče preveriti: {0}</value>
   </data>
+  <data name="Update_PackageIntegrityFailed" xml:space="preserve"><value>Posodobitveni paket ni prestal preverjanja celovitosti.</value></data>
   <data name="MainForm_CoilPerformance_Calculating" xml:space="preserve">
     <value>Izračun poteka, počakajte...</value>
   </data>

@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\SSWVersion.props" />
   <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -39,8 +40,8 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <ApplicationRevision>$([System.Version]::Parse('$(SSWVersion)').Revision)</ApplicationRevision>
+    <ApplicationVersion>$(SSWVersion)</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <SccProjectName>&lt;Project Location In Database&gt;</SccProjectName>
@@ -624,6 +625,18 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <Target Name="GenerateSSWVersionAssemblyInfo" BeforeTargets="CoreCompile">
+    <PropertyGroup>
+      <_SSWVersionAssemblyInfo>$(IntermediateOutputPath)SSWVersion.g.vb</_SSWVersionAssemblyInfo>
+    </PropertyGroup>
+    <ItemGroup>
+      <_SSWVersionLine Include="Imports System.Reflection" />
+      <_SSWVersionLine Include="&lt;Assembly: AssemblyVersion(&quot;$(SSWVersion)&quot;)&gt;" />
+      <_SSWVersionLine Include="&lt;Assembly: AssemblyFileVersion(&quot;$(SSWVersion)&quot;)&gt;" />
+      <Compile Include="$(_SSWVersionAssemblyInfo)" />
+    </ItemGroup>
+    <WriteLinesToFile File="$(_SSWVersionAssemblyInfo)" Lines="@(_SSWVersionLine)" Overwrite="true" Encoding="UTF-8" />
+  </Target>
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>

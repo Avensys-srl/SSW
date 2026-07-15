@@ -12,6 +12,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3rd", "3rd", "{FC8BC766-EC9
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SSW", "SSW\SSW.csproj", "{C1D4FD86-A1FA-4F7C-9BEC-E96F5F5D95D4}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Release", "Release", "{A4F50C37-388D-4CD6-BC85-84B93FBD661C}"
+	ProjectSection(SolutionItems) = preProject
+		SSWVersion.props = SSWVersion.props
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		AC|Any CPU = AC|Any CPU

@@ -58,7 +58,7 @@ Each profile maps to an `SSWInfo` class (`SSW/CLSSWInfo_*.cs`) that provides cus
 
 ## Current Version
 
-- Application version: `1.3.0.45`
+- Application version: `1.3.0.46` (single source: `SSWVersion.props`)
 
 ## Prerequisites
 
@@ -98,7 +98,9 @@ powershell -NoProfile -ExecutionPolicy Bypass -File installer\build-installer.ps
 The script:
 
 - builds `SSW.sln` in `AV|x86`
-- reads the application version from `SSWLib/My Project/AssemblyInfo.vb`
+- reads the application version from `SSWVersion.props`
+- generates matching assembly versions for `SSW.exe` and `SSWLib.dll`
+- stops the release if either binary does not match the declared version
 - signs `SSW.exe`, `SSWLib.dll`, and the final installer with SignTool
 - reads the AV enrollment key from `SSW_SELECTION_BOOTSTRAP_KEY_AV` without
   storing it in the repository and provisions it for the current Windows user

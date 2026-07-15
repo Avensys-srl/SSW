@@ -392,6 +392,7 @@
   <data name="Update_CheckFailed" xml:space="preserve">
     <value>Updates konnten nicht geprüft werden: {0}</value>
   </data>
+  <data name="Update_PackageIntegrityFailed" xml:space="preserve"><value>Das Updatepaket hat die Integritätsprüfung nicht bestanden.</value></data>
   <data name="MainForm_CoilPerformance_Calculating" xml:space="preserve">
     <value>Berechnung läuft, bitte warten...</value>
   </data>

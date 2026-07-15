@@ -6,6 +6,8 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Reflection;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -153,9 +155,11 @@ internal static class Program
 
             TestSelectionRegistrationClient(client, handler, context);
             TestSnapshotFingerprints(root);
+            TestSdfFixtures();
             TestRegistrationFailureDialog();
+            TestUpdateIntegrity(root);
 
-            Console.WriteLine("Selection identity/snapshot smoke test passed: token=ok create=R01 reprint=R01 revise=R02 fingerprints=stable dialog=rendered");
+            Console.WriteLine("Selection identity/snapshot smoke test passed: token=ok create=R01 reprint=R01 revise=R02 fingerprints=stable dialog=rendered update_integrity=ok");
             return 0;
         }
         finally
@@ -166,6 +170,60 @@ internal static class Program
             Environment.SetEnvironmentVariable("SSW_SELECTION_API_BASE_URL", null);
             try { Directory.Delete(root, true); } catch { }
         }
+    }
+
+    private static void TestUpdateIntegrity(string root)
+    {
+        string installerPath = Path.Combine(root, "SSW_Setup_test.exe");
+        File.WriteAllBytes(installerPath, Encoding.UTF8.GetBytes("verified installer payload"));
+        string hash;
+        using (SHA256 algorithm = SHA256.Create())
+            hash = String.Concat(algorithm.ComputeHash(File.ReadAllBytes(installerPath)).Select(value => value.ToString("X2")));
+
+        var versionInfo = new SoftwareVersionInfo
+        {
+            verified_manifest = true,
+            manifest_version = 1,
+            sha256 = hash,
+            size_bytes = new FileInfo(installerPath).Length
+        };
+        MethodInfo verify = typeof(UpdateManager).GetMethod("VerifyDownloadedInstaller",
+            BindingFlags.NonPublic | BindingFlags.Static);
+        if (verify == null) throw new InvalidOperationException("Update integrity verifier was not found.");
+        verify.Invoke(null, new object[] { installerPath, versionInfo });
+
+        File.AppendAllText(installerPath, "tampered");
+        try
+        {
+            verify.Invoke(null, new object[] { installerPath, versionInfo });
+            throw new InvalidOperationException("A tampered update package was accepted.");
+        }
+        catch (TargetInvocationException exception) when (exception.InnerException is InvalidDataException)
+        {
+        }
+    }
+
+    private static void TestSdfFixtures()
+    {
+        string repositoryRoot = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", ".."));
+        string fixtureRoot = Path.Combine(repositoryRoot, "tests", "fixtures", "sdf");
+        CLDatabaseCompatibilityInfo legacy = CLDatabaseCompatibilityReader.Inspect(
+            Path.Combine(fixtureRoot, "legacy-0.sdf"), new Version(1, 3, 0, 45), "035889");
+        if (legacy.State != CLDatabaseCompatibilityState.Legacy || legacy.SchemaVersion != 0)
+            throw new InvalidOperationException("Legacy-0 SDF fixture was not recognized.");
+
+        CLDatabaseCompatibilityInfo schema1 = CLDatabaseCompatibilityReader.Inspect(
+            Path.Combine(fixtureRoot, "schema-1-av.sdf"), new Version(1, 3, 0, 45), "035889");
+        if (schema1.State != CLDatabaseCompatibilityState.Managed || schema1.SchemaVersion != 1 ||
+            !schema1.HasFeature("CoreData") || !schema1.HasFeature("WaterCoils"))
+            throw new InvalidOperationException("Managed schema-1 SDF fixture failed compatibility checks.");
+
+        CLDatabaseCompatibilityInfo schema2 = CLDatabaseCompatibilityReader.Inspect(
+            Path.Combine(fixtureRoot, "schema-2-av.sdf"), new Version(1, 3, 0, 45), "035889");
+        if (schema2.State != CLDatabaseCompatibilityState.Managed || schema2.SchemaVersion != 2 ||
+            !schema2.HasFeature("CoreData") || !schema2.HasFeature("WaterCoils") ||
+            !schema2.HasFeature("CoilInstallationType") || !schema2.HasFeature("ElectricHeaters"))
+            throw new InvalidOperationException("Managed schema-2 SDF fixture failed compatibility checks.");
     }
 
     private static int RunLiveBootstrap()

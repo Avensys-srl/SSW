@@ -1,10 +1,18 @@
 SSW Changelog
 =============
 
-Unreleased
-----------
+1.3.0.46 - 2026-07-15
+---------------------
+- Centralized the release version so SSW.exe, SSWLib.dll, ClickOnce, installer and manifests cannot drift independently.
 - Removed the obsolete Accessory tab and the legacy structured COILcalc integration.
 - Retained the HEDes local water-coil calculation used by the Water Coils tab.
+- Added local approximate country/city geolocation without storing selection IP addresses.
+- Added the authenticated Avensys recovery panel with immutable revision export and audit.
+- Added verified update manifests with component versions, SHA-256, compatibility and rollback metadata.
+- Added installer download integrity enforcement and localized integrity errors in all 12 languages.
+- Updated the distributed AV database to schema 2 with electric-heater data and model relations.
+- Added historical SDF/project fixtures, an automated release matrix, health checks and release runbook.
+- Defined technical-selection privacy and retention controls for audit and download logs.
 
 1.3.0.45 - 2026-07-14
 ---------------------

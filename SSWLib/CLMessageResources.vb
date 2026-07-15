@@ -111,6 +111,7 @@ Public Enum CLMessageResources
     Update_NewVersion
     Update_DownloadQuestion
     Update_CheckFailed
+    Update_PackageIntegrityFailed
 
 	' GRIP SAP
     MainForm_GridSAP_ExhaustTerminalConfiguration

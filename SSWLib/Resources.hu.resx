@@ -554,6 +554,7 @@
   <data name="Update_CheckFailed" xml:space="preserve">
     <value>Nem sikerült ellenőrizni a frissítéseket: {0}</value>
   </data>
+  <data name="Update_PackageIntegrityFailed" xml:space="preserve"><value>A frissítési csomag nem felelt meg az integritás-ellenőrzésnek.</value></data>
   <data name="MainForm_CoilPerformance_Calculating" xml:space="preserve">
     <value>Számítás folyamatban...</value>
   </data>

@@ -505,6 +505,7 @@
   <data name="Update_CheckFailed" xml:space="preserve">
     <value>Impossibile verificare gli aggiornamenti: {0}</value>
   </data>
+  <data name="Update_PackageIntegrityFailed" xml:space="preserve"><value>Il pacchetto di aggiornamento non ha superato la verifica di integrità.</value></data>
   <data name="MainForm_CoilPerformance_Calculating" xml:space="preserve">
     <value>Calcolo in corso, attendere...</value>
   </data>

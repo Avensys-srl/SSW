@@ -717,6 +717,7 @@
   <data name="Update_CheckFailed" xml:space="preserve">
     <value>Det gick inte att söka efter uppdateringar: {0}</value>
   </data>
+  <data name="Update_PackageIntegrityFailed" xml:space="preserve"><value>Uppdateringspaketet klarade inte integritetskontrollen.</value></data>
   <data name="MainForm_CoilPerformance_Calculating" xml:space="preserve">
     <value>Beräkning pågår, vänta...</value>
   </data>

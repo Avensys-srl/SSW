@@ -584,6 +584,7 @@
   <data name="Update_CheckFailed" xml:space="preserve">
     <value>Unable to check for updates: {0}</value>
   </data>
+  <data name="Update_PackageIntegrityFailed" xml:space="preserve"><value>The update package failed integrity verification.</value></data>
   <data name="MainForm_CoilPerformance_Calculating" xml:space="preserve">
     <value>Calculating, please wait...</value>
   </data>

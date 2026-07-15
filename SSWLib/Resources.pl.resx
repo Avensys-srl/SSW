@@ -461,6 +461,7 @@
   <data name="Update_CheckFailed" xml:space="preserve">
     <value>Nie można sprawdzić aktualizacji: {0}</value>
   </data>
+  <data name="Update_PackageIntegrityFailed" xml:space="preserve"><value>Pakiet aktualizacji nie przeszedł kontroli integralności.</value></data>
   <data name="MainForm_CoilPerformance_Calculating" xml:space="preserve">
     <value>Obliczanie, proszę czekać...</value>
   </data>

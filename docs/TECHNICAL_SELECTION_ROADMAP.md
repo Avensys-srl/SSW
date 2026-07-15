@@ -33,8 +33,8 @@ registrazione centralizzata delle selezioni SSW.
   `CLDCExplorer`: build unica, copia della DLL, manifest con versione, commit e
   SHA-256, verifica bloccante durante la build Explorer e test negativo su
   manifest non coerente.
-- [ ] Prossimo punto: 17, geolocalizzazione approssimativa.
-- [ ] 17-22. Attivita' residue descritte nelle sezioni seguenti.
+- [x] Punti 17-22 completati il 15/07/2026 e release `1.3.0.46`
+  compilata, collaudata, installata sul pilota e pubblicata.
 
 ## Regole architetturali approvate
 
@@ -264,8 +264,8 @@ registrazione centralizzata delle selezioni SSW.
 
 ### 17. Geolocalizzazione approssimativa
 
-- Pianificazione: prossimo intervento; non ha bloccato la release pilota
-  `1.3.0.45`.
+- Stato: **completato e distribuito** il 15/07/2026 con database GeoIP locale,
+  senza conservazione dell'indirizzo IP.
 - Ambiente: API server.
 - Usare un database GeoIP locale aggiornabile.
 - Salvare codice nazione, citta', sorgente e livello di accuratezza.
@@ -274,6 +274,8 @@ registrazione centralizzata delle selezioni SSW.
 
 ### 18. Recupero interno Avensys
 
+- Stato: **completato e distribuito** il 15/07/2026 con pannello amministrativo
+  autenticato, ricerca, export revisioni e audit.
 - Ambiente: applicazione o pannello amministrativo autenticato.
 - Cercare per riferimento pubblico, vedere revisioni e scaricare snapshot.
 - Impedire qualsiasi accesso incrociato o pubblico ai dati tecnici.
@@ -282,9 +284,10 @@ registrazione centralizzata delle selezioni SSW.
 ### 19. Manifest e aggiornamenti dei componenti
 
 - Repository: `D:\mdev\SSW` e `A:\webavensys\api`.
-- Stato parziale: completata la tracciabilita' locale della DLL exporter tra
-  `CLDataCentralLib` e `CLDCExplorer`, con manifest SHA-256/versione/commit e
-  blocco della build in caso di disallineamento.
+- Stato: **completato e distribuito** il 15/07/2026. Manifest atomico con
+  versioni, SHA-256, compatibilita' e rollback; download verificato dal client.
+  `SSWVersion.props` e' la fonte unica per SSW.exe, SSWLib.dll, ClickOnce,
+  installatore e manifest, con controlli bloccanti contro disallineamenti.
 - Estendere l'API aggiornamenti con versioni, requisiti e SHA-256 di SSW, DLL,
   SDF e report.
 - La prima versione distribuisce sempre un installer completo e atomico.
@@ -293,6 +296,8 @@ registrazione centralizzata delle selezioni SSW.
 
 ### 20. Traduzioni, informativa e conservazione
 
+- Stato: **completato** il 15/07/2026 per le 12 lingue, con informativa e
+  procedure di conservazione documentate.
 - Repository: SSW, report e contenuti web.
 - Tradurre tutte le nuove etichette e i messaggi nelle 12 lingue.
 - Documentare registrazione tecnica, geolocalizzazione e tempi di conservazione.
@@ -300,6 +305,8 @@ registrazione centralizzata delle selezioni SSW.
 
 ### 21. Matrice di test e fixture storiche
 
+- Stato: **completato** il 15/07/2026 con fixture SDF storiche, smoke test,
+  verifica RDLC/RESX/API e controllo integrita' aggiornamenti.
 - Repository: tutti quelli coinvolti.
 - Conservare esempi di ogni SDF e `.sswsel` supportato.
 - Testare compatibilita', collisioni, concorrenza, retry, offline, revisioni,
@@ -308,6 +315,8 @@ registrazione centralizzata delle selezioni SSW.
 
 ### 22. Rilascio progressivo
 
+- Stato: **completato sul pilota AVENSYS** il 15/07/2026 con release
+  `1.3.0.46`, SDF schema 2, health check, rollback e runbook verificati.
 - Ambienti: sviluppo, Avensys pilota e produzione.
 - Validare migrazioni, installer, API, database, rollback e osservabilita'.
 - Rendere il riferimento obbligatorio nei report definitivi solo dopo il

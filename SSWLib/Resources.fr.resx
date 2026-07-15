@@ -440,6 +440,7 @@
   <data name="Update_CheckFailed" xml:space="preserve">
     <value>Impossible de rechercher les mises à jour : {0}</value>
   </data>
+  <data name="Update_PackageIntegrityFailed" xml:space="preserve"><value>Le package de mise à jour n'a pas réussi le contrôle d'intégrité.</value></data>
   <data name="MainForm_CoilPerformance_Calculating" xml:space="preserve">
     <value>Calcul en cours, veuillez patienter...</value>
   </data>

@@ -1,6 +1,7 @@
 ﻿Imports System.Net.Http
 Imports System.IO
 Imports System.Text.Json ' Or Newtonsoft.Json if you prefer/use that
+Imports System.Security.Cryptography
 
 
 ' Helper class to deserialize the JSON response from the PHP script
@@ -8,6 +9,10 @@ Public Class SoftwareVersionInfo
     Public Property latest_version As String
     Public Property download_url As String
     Public Property filename As String
+    Public Property manifest_version As Integer
+    Public Property verified_manifest As Boolean
+    Public Property sha256 As String
+    Public Property size_bytes As Long?
     Public Property [error] As String ' Correct property name with []
 End Class
 
@@ -73,6 +78,12 @@ Public Class UpdateManager
             End If
 
             If latestServerVersion > currentAppVersion Then
+                If Not versionInfo.verified_manifest OrElse versionInfo.manifest_version < 1 OrElse
+                    String.IsNullOrWhiteSpace(versionInfo.sha256) OrElse versionInfo.sha256.Length <> 64 OrElse
+                    Not versionInfo.size_bytes.HasValue OrElse versionInfo.size_bytes.Value <= 0 Then
+                    ShowCheckError(interactive, PackageIntegrityError())
+                    Return
+                End If
                 Dim message As String = LocalizedText(CLMessageResources.Update_NewAvailable,
                                                        "A new software update is available!") & vbCrLf & vbCrLf &
                     LocalizedText(CLMessageResources.Update_CurrentVersion, "Current version") & ": " & currentAppVersion.ToString() & vbCrLf &
@@ -133,11 +144,21 @@ Public Class UpdateManager
         If String.IsNullOrWhiteSpace(fileName) Then
             fileName = "SSW_Update.exe"
         End If
-
-        Dim localPath As String = System.IO.Path.Combine(System.IO.Path.GetTempPath(), fileName)
+        Dim localPath As String = String.Empty
         Dim progressForm As DownloadProgressForm = Nothing
 
         Try
+            fileName = Path.GetFileName(fileName)
+            If Not fileName.EndsWith(".exe", StringComparison.OrdinalIgnoreCase) Then
+                Throw New InvalidDataException(PackageIntegrityError())
+            End If
+            Dim downloadUri As New Uri(downloadUrl)
+            If downloadUri.Scheme <> Uri.UriSchemeHttps OrElse
+                Not String.Equals(downloadUri.Host, "www.avensys-srl.com", StringComparison.OrdinalIgnoreCase) Then
+                Throw New InvalidDataException(PackageIntegrityError())
+            End If
+            localPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), fileName)
+
             Using client As New HttpClient()
                 client.Timeout = TimeSpan.FromMinutes(10)
 
@@ -159,6 +180,8 @@ Public Class UpdateManager
                 End Using
             End Using
 
+            VerifyDownloadedInstaller(localPath, versionInfo)
+
             progressForm.Close()
             progressForm = Nothing
 
@@ -170,12 +193,37 @@ Public Class UpdateManager
             If progressForm IsNot Nothing Then
                 progressForm.Close()
             End If
+            Try
+                If Not String.IsNullOrWhiteSpace(localPath) AndAlso File.Exists(localPath) Then File.Delete(localPath)
+            Catch
+            End Try
 
             MessageBox.Show($"Could not download or start the update installer.{vbCrLf}" &
                             $"Error: {ex.Message}{vbCrLf}{vbCrLf}" &
                             $"You can download it manually from:{vbCrLf}{downloadUrl}",
                             "Download Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
+    End Function
+
+    Private Shared Sub VerifyDownloadedInstaller(filePath As String, versionInfo As SoftwareVersionInfo)
+        Dim fileInfo As New FileInfo(filePath)
+        If Not versionInfo.size_bytes.HasValue OrElse fileInfo.Length <> versionInfo.size_bytes.Value Then
+            Throw New InvalidDataException(PackageIntegrityError())
+        End If
+        Dim actualHash As String
+        Using algorithm As SHA256 = SHA256.Create()
+            Using stream As FileStream = System.IO.File.OpenRead(filePath)
+                actualHash = String.Concat(algorithm.ComputeHash(stream).Select(Function(value) value.ToString("X2")))
+            End Using
+        End Using
+        If Not String.Equals(actualHash, versionInfo.sha256, StringComparison.OrdinalIgnoreCase) Then
+            Throw New InvalidDataException(PackageIntegrityError())
+        End If
+    End Sub
+
+    Private Shared Function PackageIntegrityError() As String
+        Return LocalizedText(CLMessageResources.Update_PackageIntegrityFailed,
+                             "The update package failed integrity verification.")
     End Function
 
     Private Shared Async Function CopyToFileWithProgress(sourceStream As Stream,
