@@ -22,6 +22,7 @@ internal sealed class TokenHandler : HttpMessageHandler
     public int RenewalCount { get; private set; }
     public int SelectionCreateCount { get; private set; }
     public int SelectionRevisionCount { get; private set; }
+    public bool LastRegistrationHadBootstrap { get; private set; }
     public List<string> IdempotencyKeys { get; } = new List<string>();
     private string latestSnapshotHash;
     private string latestResumeToken;
@@ -33,7 +34,7 @@ internal sealed class TokenHandler : HttpMessageHandler
         if (request.RequestUri.AbsolutePath.EndsWith("/installations/register", StringComparison.Ordinal))
         {
             RegistrationCount++;
-            if (!request.Headers.Contains("X-SSW-Bootstrap-Key")) throw new InvalidOperationException("Bootstrap header missing.");
+            LastRegistrationHadBootstrap = request.Headers.Contains("X-SSW-Bootstrap-Key");
             token = "registered-token-never-plaintext";
         }
         else if (request.RequestUri.AbsolutePath.EndsWith("/installations/token/renew", StringComparison.Ordinal))
@@ -146,6 +147,7 @@ internal static class Program
             string first = client.EnsureAccessTokenAsync(context).GetAwaiter().GetResult();
             string cached = client.EnsureAccessTokenAsync(context).GetAwaiter().GetResult();
             if (first != cached || handler.RegistrationCount != 1) throw new InvalidOperationException("Registration cache failed.");
+            if (!handler.LastRegistrationHadBootstrap) throw new InvalidOperationException("Provisioned bootstrap header was not sent.");
             string stored = File.ReadAllText(CLSelectionCredentialStore.StateFilePath);
             if (stored.Contains(first)) throw new InvalidOperationException("Access token was stored in plaintext.");
 
@@ -161,8 +163,9 @@ internal static class Program
             TestUpdateIntegrity(root);
             TestPracticalSelectionRules();
             TestRegistryBootstrapProvisioning();
+            TestBootstraplessRegistration(root);
 
-            Console.WriteLine("Selection identity/snapshot smoke test passed: token=ok create=R01 reprint=R01 revise=R02 fingerprints=stable dialog=rendered update_integrity=ok practical_rules=ok registry_bootstrap=ok");
+            Console.WriteLine("Selection identity/snapshot smoke test passed: token=ok create=R01 reprint=R01 revise=R02 fingerprints=stable dialog=rendered update_integrity=ok practical_rules=ok registry_bootstrap=ok public_enrollment=ok");
             return 0;
         }
         finally
@@ -172,6 +175,34 @@ internal static class Program
             Environment.SetEnvironmentVariable("SSW_SELECTION_BOOTSTRAP_KEY_AV", null);
             Environment.SetEnvironmentVariable("SSW_SELECTION_API_BASE_URL", null);
             try { Directory.Delete(root, true); } catch { }
+        }
+    }
+
+    private static void TestBootstraplessRegistration(string root)
+    {
+        string originalCredentialPath = Environment.GetEnvironmentVariable("SSW_SELECTION_CREDENTIAL_PATH");
+        try
+        {
+            Environment.SetEnvironmentVariable("SSW_SELECTION_CREDENTIAL_PATH",
+                Path.Combine(root, "public-enrollment-credentials.json"));
+            var handler = new TokenHandler();
+            var client = new CLSelectionApiClient(new HttpClient(handler));
+            var context = new CLSelectionRegistrationContext
+            {
+                CustomerCode = "PUBLICENROLLMENTTEST",
+                SoftwareVersion = "1.3.0.50",
+                DatabaseSchemaVersion = 1,
+                DatabaseContentHash = "public-enrollment-test",
+                ApiContractVersion = 1
+            };
+            string token = client.EnsureAccessTokenAsync(context).GetAwaiter().GetResult();
+            if (String.IsNullOrWhiteSpace(token) || handler.RegistrationCount != 1 ||
+                handler.LastRegistrationHadBootstrap)
+                throw new InvalidOperationException("Bootstrapless installation registration failed.");
+        }
+        finally
+        {
+            Environment.SetEnvironmentVariable("SSW_SELECTION_CREDENTIAL_PATH", originalCredentialPath);
         }
     }
 

@@ -36,8 +36,10 @@ Public NotInheritable Class CLSelectionRegistrationContext
         If databaseInfo Is Nothing Then Throw New InvalidOperationException("Database compatibility information is unavailable.")
         Dim contentHash As String = databaseInfo.ContentHash
         If String.IsNullOrWhiteSpace(contentHash) Then contentHash = "legacy"
+        Dim apiCustomerCode As String = environment.CustomerProfile
+        If String.IsNullOrWhiteSpace(apiCustomerCode) Then apiCustomerCode = environment.CustomerCode
         Return New CLSelectionRegistrationContext With {
-            .CustomerCode = environment.CustomerCode,
+            .CustomerCode = apiCustomerCode,
             .SoftwareVersion = CLTechnicalVersions.SoftwareVersion.ToString(),
             .DatabaseSchemaVersion = Math.Max(1, databaseInfo.SchemaVersion),
             .DatabaseContentHash = contentHash,
@@ -163,9 +165,6 @@ Public NotInheritable Class CLSelectionApiClient
         cancellationToken As CancellationToken) As Task(Of CLSelectionTokenResponse)
 
         Dim bootstrapKey As String = ResolveBootstrapKey(context.CustomerCode)
-        If String.IsNullOrWhiteSpace(bootstrapKey) Then
-            Throw New InvalidOperationException("The technical selection bootstrap credential is not configured.")
-        End If
         Dim payload = New Dictionary(Of String, Object) From {
             {"customer_code", context.CustomerCode},
             {"installation_id", installationId},
@@ -176,7 +175,9 @@ Public NotInheritable Class CLSelectionApiClient
             {"api_contract_version", context.ApiContractVersion}
         }
         Using request As New HttpRequestMessage(HttpMethod.Post, BuildUri("installations/register"))
-            request.Headers.Add("X-SSW-Bootstrap-Key", bootstrapKey)
+            If Not String.IsNullOrWhiteSpace(bootstrapKey) Then
+                request.Headers.Add("X-SSW-Bootstrap-Key", bootstrapKey)
+            End If
             request.Content = JsonContent(payload)
             Return Await SendTokenRequestAsync(request, cancellationToken).ConfigureAwait(False)
         End Using

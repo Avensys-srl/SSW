@@ -474,3 +474,15 @@ da `/usage` nel Codex CLI.
 - Punti 18-22: recupero Avensys, manifest componenti, traduzioni/privacy,
   matrice di test e rilascio pilota.
 - Obiettivo: rendere il sistema operabile, aggiornabile e pubblicabile.
+
+### Hardening post-rilascio
+
+- `1.3.0.48`: bootstrap monouso disponibile anche nel registro utente per non
+  dipendere dal refresh delle variabili d'ambiente.
+- `1.3.0.49`: aggiornamento in-app con chiusura della versione precedente e
+  sostituzione dei file senza riavvio di Windows.
+- `1.3.0.50`: enrollment pubblico limitato al solo profilo AV. La chiave
+  bootstrap resta compatibile ma non e' piu' necessaria; rimangono rate limit
+  per IP, cliente attivo, token per installazione, audit e revoca.
+- I sorgenti API canonici in `A:\webavensys\ssw2\api` sono riallineati alla
+  copia pubblicata, inclusi geolocalizzazione locale, migrazione 004 e test.
