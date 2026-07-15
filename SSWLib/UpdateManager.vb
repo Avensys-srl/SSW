@@ -187,8 +187,10 @@ Public Class UpdateManager
 
             Dim psi As New ProcessStartInfo()
             psi.FileName = localPath
+            psi.Arguments = "/CLOSEAPPLICATIONS /RESTARTAPPLICATIONS"
             psi.UseShellExecute = True
             Process.Start(psi)
+            Application.Exit()
         Catch ex As Exception
             If progressForm IsNot Nothing Then
                 progressForm.Close()
