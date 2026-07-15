@@ -27,6 +27,7 @@ Public Class CLMainForm
     Private m_CoilPerformanceLastPressureDrop As Double = 0
     Private m_CoilPerformanceLastResults As New List(Of CLCoilCalculationResult)()
     Private m_CoilPerformanceBusy As Boolean = False
+    Private m_CoilCustomDisclaimerAccepted As Boolean = False
     Private m_AutomaticUpdateCheckTask As Task
     Private m_ReportRegistrationBusy As Boolean = False
     Private m_ReportGeneratedAsDraft As Boolean = False
@@ -62,6 +63,7 @@ Public Class CLMainForm
     Private dgvCoilPerformance_Results As DataGridView
     Private lblCoilPerformance_Status As Label
     Private lblCoilPerformance_CustomWarning As Label
+    Private lblCoilPerformance_DimensionsNote As Label
 
     Private Class CLThermalCalculationResult
         Public Property Thermo As termo
@@ -1737,6 +1739,7 @@ Public Class CLMainForm
             "FluidSpeed",
             "FaceVelocityCaption",
             "FaceVelocity",
+            "CustomDisclaimerAccepted",
             "Summary"
         }
 
@@ -1868,6 +1871,10 @@ Public Class CLMainForm
             reportRow("CircuitsCaption") = CoilPerformance_Text("MainForm_CoilPerformance_Circuits", "Circuits")
             reportRow("CircuitsValue") = If(selectedMode = CLCoilPerformanceEditMode.StandardCustomized,
                 FormatNumber(nudCoilPerformance_Circuits.Value, 0), String.Empty)
+            reportRow("CustomDisclaimerAccepted") = If(
+                selectedMode = CLCoilPerformanceEditMode.StandardCustomized AndAlso m_CoilCustomDisclaimerAccepted,
+                CoilPerformance_Text("MainForm_CoilPerformance_CustomDisclaimerAccepted", "Custom coil design disclaimer accepted"),
+                String.Empty)
             reportRow("ModeCaption") = dgvCoilPerformance_Results.Columns("Mode").HeaderText
             reportRow("Mode") = mode
             reportRow("StatusCaption") = dgvCoilPerformance_Results.Columns("Status").HeaderText
@@ -2979,7 +2986,7 @@ Public Class CLMainForm
         grbCustomization.Tag = New String() {"MainForm_CoilPerformance_Geometry", "Geometry"}
         grbCustomization.Text = CoilPerformance_Text("MainForm_CoilPerformance_Geometry", "Geometry")
         grbCustomization.Location = New Point(728, 8)
-        grbCustomization.Size = New Size(356, 212)
+        grbCustomization.Size = New Size(356, 230)
 
         nudCoilPerformance_Length = CreateCoilNumeric(150, 24, 1, 5000, 250, 0)
         nudCoilPerformance_Height = CreateCoilNumeric(150, 52, 1, 5000, 150, 0)
@@ -3015,10 +3022,20 @@ Public Class CLMainForm
         grbCustomization.Controls.Add(CreateCoilLabel("MainForm_CoilPerformance_Circuits", "Circuits", 12, 147))
         grbCustomization.Controls.Add(nudCoilPerformance_Circuits)
 
+        lblCoilPerformance_DimensionsNote = New Label()
+        lblCoilPerformance_DimensionsNote.Tag = New String() {"MainForm_CoilPerformance_DimensionsNote", "The dimensions above refer to the water coil only."}
+        lblCoilPerformance_DimensionsNote.Text = CoilPerformance_Text("MainForm_CoilPerformance_DimensionsNote", "The dimensions above refer to the water coil only.")
+        lblCoilPerformance_DimensionsNote.Location = New Point(12, 166)
+        lblCoilPerformance_DimensionsNote.Size = New Size(330, 28)
+        lblCoilPerformance_DimensionsNote.Font = New System.Drawing.Font(lblCoilPerformance_DimensionsNote.Font, FontStyle.Bold)
+        lblCoilPerformance_DimensionsNote.ForeColor = Color.Firebrick
+        lblCoilPerformance_DimensionsNote.Visible = False
+        grbCustomization.Controls.Add(lblCoilPerformance_DimensionsNote)
+
         lblCoilPerformance_CustomWarning = New Label()
-        lblCoilPerformance_CustomWarning.Tag = New String() {"MainForm_CoilPerformance_CustomWarning", "Please ask for delivery time and quotation"}
-        lblCoilPerformance_CustomWarning.Text = CoilPerformance_Text("MainForm_CoilPerformance_CustomWarning", "Please ask for delivery time and quotation")
-        lblCoilPerformance_CustomWarning.Location = New Point(12, 174)
+        lblCoilPerformance_CustomWarning.Tag = New String() {"MainForm_CoilPerformance_CustomWarning", "Please ask for overall dimensions, delivery time and quotation"}
+        lblCoilPerformance_CustomWarning.Text = CoilPerformance_Text("MainForm_CoilPerformance_CustomWarning", "Please ask for overall dimensions, delivery time and quotation")
+        lblCoilPerformance_CustomWarning.Location = New Point(12, 194)
         lblCoilPerformance_CustomWarning.Size = New Size(330, 30)
         lblCoilPerformance_CustomWarning.Font = New System.Drawing.Font(lblCoilPerformance_CustomWarning.Font, FontStyle.Bold)
         lblCoilPerformance_CustomWarning.ForeColor = Color.Firebrick
@@ -3030,7 +3047,7 @@ Public Class CLMainForm
         dgvCoilPerformance_Results.AllowUserToDeleteRows = False
         dgvCoilPerformance_Results.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
         dgvCoilPerformance_Results.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        dgvCoilPerformance_Results.Location = New Point(8, 232)
+        dgvCoilPerformance_Results.Location = New Point(8, 246)
         dgvCoilPerformance_Results.ReadOnly = True
         dgvCoilPerformance_Results.RowHeadersVisible = False
         dgvCoilPerformance_Results.Size = New Size(1068, 92)
@@ -3051,7 +3068,7 @@ Public Class CLMainForm
         lblCoilPerformance_Status = New Label()
         lblCoilPerformance_Status.AutoSize = False
         lblCoilPerformance_Status.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
-        lblCoilPerformance_Status.Location = New Point(8, 332)
+        lblCoilPerformance_Status.Location = New Point(8, 346)
         lblCoilPerformance_Status.Size = New Size(1068, 54)
         lblCoilPerformance_Status.ForeColor = Color.Firebrick
 
@@ -3396,6 +3413,19 @@ Public Class CLMainForm
     End Sub
 
     Private Sub CoilPerformance_EditModeChanged(sender As Object, e As EventArgs)
+        Dim customized As Boolean = CoilPerformance_SelectedEditMode() = CLCoilPerformanceEditMode.StandardCustomized
+        If customized AndAlso Not m_CoilCustomDisclaimerAccepted AndAlso Not m_ProjectApplying AndAlso Not m_CoilPerformanceChanging Then
+            MessageBox.Show(Me,
+                CoilPerformance_Text(
+                    "MainForm_CoilPerformance_CustomDisclaimer",
+                    "Verify that the customized coil operates correctly at every intended working point. Press OK to acknowledge this requirement."),
+                CoilPerformance_Text("MainForm_CoilPerformance_CustomDisclaimerTitle", "Custom coil design"),
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Warning)
+            m_CoilCustomDisclaimerAccepted = True
+        ElseIf Not customized Then
+            m_CoilCustomDisclaimerAccepted = False
+        End If
         CoilPerformance_FillStandardCoils()
         CoilPerformance_UpdateControlState()
     End Sub
@@ -3634,6 +3664,7 @@ Public Class CLMainForm
         nudCoilPerformance_Tubes.Enabled = externalCustomized AndAlso heightInTubes
         dgvCoilPerformance_Results.Enabled = enabled
         lblCoilPerformance_CustomWarning.Visible = geometryEnabled
+        lblCoilPerformance_DimensionsNote.Visible = geometryEnabled
 
         If Not enabled Then
             dgvCoilPerformance_Results.Rows.Clear()

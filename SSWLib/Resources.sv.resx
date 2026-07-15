@@ -689,7 +689,7 @@
   <data name="MainForm_CoilPerformance_Internal" xml:space="preserve"><value>Intern</value></data>
   <data name="MainForm_CoilPerformance_ExternalInstallation" xml:space="preserve"><value>Extern</value></data>
   <data name="MainForm_CoilPerformance_RequestInternal" xml:space="preserve"><value>Begär intern version</value></data>
-  <data name="MainForm_CoilPerformance_CustomWarning" xml:space="preserve"><value>Vänligen fråga om leveranstid och offert</value></data>
+  <data name="MainForm_CoilPerformance_CustomWarning" xml:space="preserve"><value>Fråga om yttermått, leveranstid och offert</value></data>
   <data name="MainForm_Menu_Option_CheckUpdates" xml:space="preserve">
     <value>Sök efter uppdateringar</value>
   </data>
@@ -747,4 +747,9 @@
   <data name="MainForm_CoilPerformance_LowWaterDeltaT" xml:space="preserve"><value>Låg temperaturdifferens för vatten (3 K ≤ ΔT &lt; 5 K). Vattenflödet är högre än normalt.</value></data>
   <data name="MainForm_CoilPerformance_CriticalWaterDeltaT" xml:space="preserve"><value>Mycket låg temperaturdifferens för vatten (under 3 K). För högt vattenflöde och tryckfall. Kontrollera den hydrauliska dimensioneringen.</value></data>
   <data name="MainForm_CoilPerformance_WaterPressureDropWarning" xml:space="preserve"><value>Tryckfallet på vattensidan överskrider den rekommenderade gränsen (40 kPa). Hydraulisk energianvändning och pumpkostnader kan bli för höga. Överväg ett större batteri eller lägre vattenhastighet.</value></data>
+  <data name="MainForm_Project_CreateAlternative" xml:space="preserve"><value>Skapa ett alternativ...</value></data>
+  <data name="MainForm_CoilPerformance_DimensionsNote" xml:space="preserve"><value>Måtten ovan avser endast vattenbatteriet.</value></data>
+  <data name="MainForm_CoilPerformance_CustomDisclaimerTitle" xml:space="preserve"><value>Anpassad batterikonstruktion</value></data>
+  <data name="MainForm_CoilPerformance_CustomDisclaimer" xml:space="preserve"><value>Kontrollera att det anpassade batteriet fungerar korrekt vid alla avsedda driftpunkter. Tryck på OK för att godkänna detta krav.</value></data>
+  <data name="MainForm_CoilPerformance_CustomDisclaimerAccepted" xml:space="preserve"><value>Ansvarsfriskrivning för anpassad batterikonstruktion godkänd</value></data>
 </root>

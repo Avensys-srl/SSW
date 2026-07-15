@@ -592,7 +592,7 @@
   <data name="MainForm_CoilPerformance_Internal" xml:space="preserve"><value>Intern</value></data>
   <data name="MainForm_CoilPerformance_ExternalInstallation" xml:space="preserve"><value>Ekstern</value></data>
   <data name="MainForm_CoilPerformance_RequestInternal" xml:space="preserve"><value>Forespørg intern udførelse</value></data>
-  <data name="MainForm_CoilPerformance_CustomWarning" xml:space="preserve"><value>Spørg venligst om leveringstid og tilbud</value></data>
+  <data name="MainForm_CoilPerformance_CustomWarning" xml:space="preserve"><value>Spørg venligst om udvendige mål, leveringstid og tilbud</value></data>
   <data name="MainForm_Menu_Option_CheckUpdates" xml:space="preserve">
     <value>Søg efter opdateringer</value>
   </data>
@@ -650,4 +650,9 @@
   <data name="MainForm_CoilPerformance_LowWaterDeltaT" xml:space="preserve"><value>Lav vandtemperaturforskel (3 K ≤ ΔT &lt; 5 K). Vandflowet er højere end normalt.</value></data>
   <data name="MainForm_CoilPerformance_CriticalWaterDeltaT" xml:space="preserve"><value>Meget lav vandtemperaturforskel (under 3 K). For højt vandflow og tryktab. Kontrollér det hydrauliske design.</value></data>
   <data name="MainForm_CoilPerformance_WaterPressureDropWarning" xml:space="preserve"><value>Tryktabet på vandsiden overstiger den anbefalede grænse (40 kPa). Hydraulisk energiforbrug og pumpeomkostninger kan blive for høje. Overvej en større flade eller lavere vandhastighed.</value></data>
+  <data name="MainForm_Project_CreateAlternative" xml:space="preserve"><value>Opret et alternativ...</value></data>
+  <data name="MainForm_CoilPerformance_DimensionsNote" xml:space="preserve"><value>Ovenstående mål gælder kun vandfladen.</value></data>
+  <data name="MainForm_CoilPerformance_CustomDisclaimerTitle" xml:space="preserve"><value>Tilpasset fladedesign</value></data>
+  <data name="MainForm_CoilPerformance_CustomDisclaimer" xml:space="preserve"><value>Kontrollér, at den tilpassede flade fungerer korrekt ved alle planlagte driftspunkter. Tryk på OK for at acceptere dette krav.</value></data>
+  <data name="MainForm_CoilPerformance_CustomDisclaimerAccepted" xml:space="preserve"><value>Ansvarsfraskrivelse for tilpasset fladedesign accepteret</value></data>
 </root>

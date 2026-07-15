@@ -430,7 +430,7 @@
   <data name="MainForm_CoilPerformance_Internal" xml:space="preserve"><value>Intern</value></data>
   <data name="MainForm_CoilPerformance_ExternalInstallation" xml:space="preserve"><value>Extern</value></data>
   <data name="MainForm_CoilPerformance_RequestInternal" xml:space="preserve"><value>Interne uitvoering aanvragen</value></data>
-  <data name="MainForm_CoilPerformance_CustomWarning" xml:space="preserve"><value>Vraag naar levertijd en offerte</value></data>
+  <data name="MainForm_CoilPerformance_CustomWarning" xml:space="preserve"><value>Vraag naar buitenafmetingen, levertijd en offerte</value></data>
   <data name="MainForm_Menu_Option_CheckUpdates" xml:space="preserve">
     <value>Controleren op updates</value>
   </data>
@@ -488,4 +488,9 @@
   <data name="MainForm_CoilPerformance_LowWaterDeltaT" xml:space="preserve"><value>Lage water-delta T (3 K ≤ ΔT &lt; 5 K). Het waterdebiet is hoger dan gebruikelijk.</value></data>
   <data name="MainForm_CoilPerformance_CriticalWaterDeltaT" xml:space="preserve"><value>Zeer lage water-delta T (minder dan 3 K). Overmatig waterdebiet en drukverlies. Controleer het hydraulische ontwerp.</value></data>
   <data name="MainForm_CoilPerformance_WaterPressureDropWarning" xml:space="preserve"><value>Het waterzijdige drukverlies overschrijdt de aanbevolen limiet (40 kPa). Hydraulisch energieverbruik en pompkosten kunnen te hoog worden. Overweeg een grotere batterij of een lagere watersnelheid.</value></data>
+  <data name="MainForm_Project_CreateAlternative" xml:space="preserve"><value>Alternatief maken...</value></data>
+  <data name="MainForm_CoilPerformance_DimensionsNote" xml:space="preserve"><value>De bovenstaande afmetingen hebben uitsluitend betrekking op de waterbatterij.</value></data>
+  <data name="MainForm_CoilPerformance_CustomDisclaimerTitle" xml:space="preserve"><value>Ontwerp van aangepaste batterij</value></data>
+  <data name="MainForm_CoilPerformance_CustomDisclaimer" xml:space="preserve"><value>Controleer of de aangepaste batterij correct werkt op alle beoogde werkpunten. Druk op OK om deze eis te accepteren.</value></data>
+  <data name="MainForm_CoilPerformance_CustomDisclaimerAccepted" xml:space="preserve"><value>Disclaimer voor het ontwerp van de aangepaste batterij geaccepteerd</value></data>
 </root>

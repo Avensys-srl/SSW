@@ -489,7 +489,8 @@ internal static class Program
         CLSelectionProjectDocument loaded = CLSelectionProjectSerializer.Load(projectPath);
         if (loaded.RevisionTracking == null || loaded.RevisionTracking.Current == null ||
             loaded.RevisionTracking.Current.SnapshotHash != document.RevisionTracking.Current.SnapshotHash ||
-            loaded.Identity.ResumeToken != "resume-token")
+            loaded.Identity.ResumeToken != "resume-token" ||
+            !loaded.Selection.WaterCoil.CustomDesignDisclaimerAccepted)
         {
             throw new InvalidOperationException("Snapshot/revision metadata round-trip failed.");
         }
@@ -557,6 +558,12 @@ internal static class Program
                     ReturnRelativeHumidityPercent = 60
                 },
                 Summer = new CLOperatingScenarioInput { Enabled = false, ScenarioCode = "Summer" },
+                WaterCoil = new CLWaterCoilSelection
+                {
+                    Enabled = true,
+                    SelectionCase = "StandardCustomized",
+                    CustomDesignDisclaimerAccepted = true
+                },
                 Report = new CLReportSelectionOptions { LanguageCode = "IT", IncludePerformanceCharts = true }
             },
             Snapshot = new CLCalculatedSelectionSnapshot

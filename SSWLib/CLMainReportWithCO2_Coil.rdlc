@@ -12866,7 +12866,7 @@
       </Style>
     </PageHeader>
     <PageFooter>
-      <Height>1.8cm</Height>
+      <Height>2.3cm</Height>
       <PrintOnFirstPage>true</PrintOnFirstPage>
       <PrintOnLastPage>true</PrintOnLastPage>
       <ReportItems>
@@ -12887,9 +12887,9 @@
               <Style />
             </Paragraph>
           </Paragraphs>
-          <Top>0.10021cm</Top>
-          <Left>0.71803cm</Left>
-          <Height>0.58521cm</Height>
+          <Top>0.14517cm</Top>
+          <Left>0.66928cm</Left>
+          <Height>0.5cm</Height>
           <Width>18.64144cm</Width>
           <Style>
             <Border>
@@ -12914,14 +12914,44 @@
               <Style />
             </Paragraph>
           </Paragraphs>
-          <Top>0.68542cm</Top>
-          <Left>0.71803cm</Left>
+          <Top>1.18045cm</Top>
+          <Left>0.66928cm</Left>
           <Height>0.97439cm</Height>
           <Width>18.64144cm</Width>
           <ZIndex>1</ZIndex>
           <Visibility>
             <Hidden>=First(Fields!sndaddtorep_bool.Value, "SoundPowerHeader")</Hidden>
           </Visibility>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+          </Style>
+        </Textbox>
+        <Textbox Name="Legal_Notice3">
+          <CanGrow>true</CanGrow>
+          <KeepTogether>true</KeepTogether>
+          <Paragraphs>
+            <Paragraph>
+              <TextRuns>
+                <TextRun>
+                  <Value>=First(Fields!CustomDisclaimerAccepted.Value, "WaterCoilReport")</Value>
+                  <Style>
+                    <FontFamily>Helvetica</FontFamily>
+                    <FontSize>8pt</FontSize>
+                  </Style>
+                </TextRun>
+              </TextRuns>
+              <Style>
+                <TextAlign>Left</TextAlign>
+              </Style>
+            </Paragraph>
+          </Paragraphs>
+          <Top>0.66281cm</Top>
+          <Left>0.66928cm</Left>
+          <Height>0.5cm</Height>
+          <Width>18.64144cm</Width>
+          <ZIndex>2</ZIndex>
           <Style>
             <Border>
               <Style>None</Style>
@@ -13729,6 +13759,10 @@
           <DataField>Summary</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="CustomDisclaimerAccepted">
+          <DataField>CustomDisclaimerAccepted</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
         <Field Name="ScenarioKey">
           <DataField>ScenarioKey</DataField>
           <rd:TypeName>System.String</rd:TypeName>
@@ -14393,6 +14427,10 @@
           <DataField>Summary</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="CustomDisclaimerAccepted">
+          <DataField>CustomDisclaimerAccepted</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
         <Field Name="ScenarioKey">
           <DataField>ScenarioKey</DataField>
           <rd:TypeName>System.String</rd:TypeName>
@@ -14623,6 +14661,10 @@
         </Field>
         <Field Name="Summary">
           <DataField>Summary</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="CustomDisclaimerAccepted">
+          <DataField>CustomDisclaimerAccepted</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="ScenarioKey">

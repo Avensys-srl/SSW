@@ -126,6 +126,7 @@ End Class
 Public NotInheritable Class CLWaterCoilSelection
 
     Public Property Enabled As Boolean
+    Public Property CustomDesignDisclaimerAccepted As Boolean
     Public Property SelectionCase As String = "Standard"
     Public Property InstallationType As String = "Internal"
     Public Property CalculationMode As String = "HCD"

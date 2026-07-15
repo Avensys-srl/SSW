@@ -477,7 +477,7 @@
   <data name="MainForm_CoilPerformance_Internal" xml:space="preserve"><value>Interna</value></data>
   <data name="MainForm_CoilPerformance_ExternalInstallation" xml:space="preserve"><value>Esterna</value></data>
   <data name="MainForm_CoilPerformance_RequestInternal" xml:space="preserve"><value>Richiedi interna</value></data>
-  <data name="MainForm_CoilPerformance_CustomWarning" xml:space="preserve"><value>Richiedere tempi di consegna e quotazione</value></data>
+  <data name="MainForm_CoilPerformance_CustomWarning" xml:space="preserve"><value>Richiedere ingombri, tempi di consegna e quotazione</value></data>
   <data name="MainForm_Menu_Option_CheckUpdates" xml:space="preserve">
     <value>Verifica aggiornamenti</value>
   </data>
@@ -535,4 +535,9 @@
   <data name="MainForm_CoilPerformance_LowWaterDeltaT" xml:space="preserve"><value>Basso ΔT dell&apos;acqua (3 K ≤ ΔT &lt; 5 K). La portata d&apos;acqua è superiore ai valori tipici.</value></data>
   <data name="MainForm_CoilPerformance_CriticalWaterDeltaT" xml:space="preserve"><value>Delta T dell&apos;acqua molto basso (inferiore a 3 K). Portata e perdita di carico eccessive. Verificare il progetto idraulico.</value></data>
   <data name="MainForm_CoilPerformance_WaterPressureDropWarning" xml:space="preserve"><value>La perdita di carico lato acqua supera il limite consigliato (40 kPa). Il consumo di potenza idraulica e i costi di pompaggio possono diventare eccessivi. Considerare una batteria più grande o ridurre la velocità dell&apos;acqua.</value></data>
+  <data name="MainForm_Project_CreateAlternative" xml:space="preserve"><value>Crea un&apos;alternativa...</value></data>
+  <data name="MainForm_CoilPerformance_DimensionsNote" xml:space="preserve"><value>Le dimensioni sopra indicate si riferiscono esclusivamente alla batteria ad acqua.</value></data>
+  <data name="MainForm_CoilPerformance_CustomDisclaimerTitle" xml:space="preserve"><value>Progettazione batteria personalizzata</value></data>
+  <data name="MainForm_CoilPerformance_CustomDisclaimer" xml:space="preserve"><value>Verificare il corretto funzionamento della batteria personalizzata in tutti i punti di lavoro previsti. Premere OK per accettare questa prescrizione.</value></data>
+  <data name="MainForm_CoilPerformance_CustomDisclaimerAccepted" xml:space="preserve"><value>Disclaimer di progettazione della batteria personalizzata accettato</value></data>
 </root>

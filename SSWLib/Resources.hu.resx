@@ -526,7 +526,7 @@
   <data name="MainForm_CoilPerformance_Internal" xml:space="preserve"><value>Belső</value></data>
   <data name="MainForm_CoilPerformance_ExternalInstallation" xml:space="preserve"><value>Külső</value></data>
   <data name="MainForm_CoilPerformance_RequestInternal" xml:space="preserve"><value>Belső kivitel kérése</value></data>
-  <data name="MainForm_CoilPerformance_CustomWarning" xml:space="preserve"><value>Kérjen szállítási határidőt és árajánlatot</value></data>
+  <data name="MainForm_CoilPerformance_CustomWarning" xml:space="preserve"><value>Kérjen befoglaló méreteket, szállítási határidőt és árajánlatot</value></data>
   <data name="MainForm_Menu_Option_CheckUpdates" xml:space="preserve">
     <value>Frissítések keresése</value>
   </data>
@@ -584,4 +584,9 @@
   <data name="MainForm_CoilPerformance_LowWaterDeltaT" xml:space="preserve"><value>Alacsony vízoldali hőmérséklet-különbség (3 K ≤ ΔT &lt; 5 K). A víztérfogatáram a szokásosnál nagyobb.</value></data>
   <data name="MainForm_CoilPerformance_CriticalWaterDeltaT" xml:space="preserve"><value>Nagyon alacsony vízoldali hőmérséklet-különbség (3 K alatt). Túlzott víztérfogatáram és nyomásesés. Ellenőrizze a hidraulikai tervezést.</value></data>
   <data name="MainForm_CoilPerformance_WaterPressureDropWarning" xml:space="preserve"><value>A vízoldali nyomásesés meghaladja az ajánlott határértéket (40 kPa). A hidraulikus energiafelhasználás és a szivattyúzási költség túlzott lehet. Válasszon nagyobb hőcserélőt vagy csökkentse a víz sebességét.</value></data>
+  <data name="MainForm_Project_CreateAlternative" xml:space="preserve"><value>Alternatíva létrehozása...</value></data>
+  <data name="MainForm_CoilPerformance_DimensionsNote" xml:space="preserve"><value>A fenti méretek kizárólag a vizes hőcserélőre vonatkoznak.</value></data>
+  <data name="MainForm_CoilPerformance_CustomDisclaimerTitle" xml:space="preserve"><value>Egyedi hőcserélő tervezése</value></data>
+  <data name="MainForm_CoilPerformance_CustomDisclaimer" xml:space="preserve"><value>Ellenőrizze az egyedi hőcserélő megfelelő működését minden tervezett munkapontban. A követelmény elfogadásához nyomja meg az OK gombot.</value></data>
+  <data name="MainForm_CoilPerformance_CustomDisclaimerAccepted" xml:space="preserve"><value>Az egyedi hőcserélő tervezési nyilatkozata elfogadva</value></data>
 </root>

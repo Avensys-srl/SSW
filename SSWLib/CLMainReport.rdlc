@@ -9911,6 +9911,10 @@
           <DataField>Summary</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="CustomDisclaimerAccepted">
+          <DataField>CustomDisclaimerAccepted</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
         <Field Name="ScenarioKey">
           <DataField>ScenarioKey</DataField>
           <rd:TypeName>System.String</rd:TypeName>
@@ -10527,6 +10531,10 @@
           <DataField>Summary</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="CustomDisclaimerAccepted">
+          <DataField>CustomDisclaimerAccepted</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
         <Field Name="ScenarioKey">
           <DataField>ScenarioKey</DataField>
           <rd:TypeName>System.String</rd:TypeName>
@@ -10709,6 +10717,10 @@
         </Field>
         <Field Name="Summary">
           <DataField>Summary</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="CustomDisclaimerAccepted">
+          <DataField>CustomDisclaimerAccepted</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="ScenarioKey">

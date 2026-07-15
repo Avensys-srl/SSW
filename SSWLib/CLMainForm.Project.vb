@@ -1,5 +1,6 @@
 Imports System.Globalization
 Imports System.IO
+Imports System.Text.RegularExpressions
 Imports Climalombarda.Common
 Imports Climalombarda.Common.UI
 
@@ -10,6 +11,7 @@ Partial Public Class CLMainForm
     Private ReadOnly m_ProjectMenuSave As New ToolStripMenuItem()
     Private ReadOnly m_ProjectMenuSaveAs As New ToolStripMenuItem()
     Private ReadOnly m_ProjectMenuDuplicate As New ToolStripMenuItem()
+    Private ReadOnly m_ProjectMenuAlternative As New ToolStripMenuItem()
     Private ReadOnly m_ProjectMenuRecent As New ToolStripMenuItem()
     Private ReadOnly m_ProjectMenuSeparator As New ToolStripSeparator()
     Private m_ProjectDocument As CLSelectionProjectDocument
@@ -41,10 +43,12 @@ Partial Public Class CLMainForm
         AddHandler m_ProjectMenuSave.Click, AddressOf Project_SaveClick
         AddHandler m_ProjectMenuSaveAs.Click, AddressOf Project_SaveAsClick
         AddHandler m_ProjectMenuDuplicate.Click, AddressOf Project_DuplicateClick
+        AddHandler m_ProjectMenuAlternative.Click, AddressOf Project_CreateAlternativeClick
 
         tsmiFile.DropDownItems.Insert(0, m_ProjectMenuSeparator)
         tsmiFile.DropDownItems.Insert(0, m_ProjectMenuRecent)
         tsmiFile.DropDownItems.Insert(0, m_ProjectMenuDuplicate)
+        tsmiFile.DropDownItems.Insert(0, m_ProjectMenuAlternative)
         tsmiFile.DropDownItems.Insert(0, m_ProjectMenuSaveAs)
         tsmiFile.DropDownItems.Insert(0, m_ProjectMenuSave)
         tsmiFile.DropDownItems.Insert(0, m_ProjectMenuOpen)
@@ -149,6 +153,7 @@ Partial Public Class CLMainForm
             TextBox6.Text = "50"
             m_SummerCalculationEnabled = True
             SeasonalCalculation_UpdateModeButton()
+            m_CoilCustomDisclaimerAccepted = False
             If chbCoilPerformance_Enable IsNot Nothing Then chbCoilPerformance_Enable.Checked = False
             Calculate()
             Project_CaptureForm(m_ProjectDocument)
@@ -355,6 +360,14 @@ Partial Public Class CLMainForm
     End Sub
 
     Private Sub Project_DuplicateClick(sender As Object, e As EventArgs)
+        Project_Duplicate(False)
+    End Sub
+
+    Private Sub Project_CreateAlternativeClick(sender As Object, e As EventArgs)
+        Project_Duplicate(True)
+    End Sub
+
+    Private Sub Project_Duplicate(createAlternative As Boolean)
         If m_ProjectDocument Is Nothing Then Return
         Project_CaptureForm(m_ProjectDocument)
         Dim originalProjectId As Guid = m_ProjectDocument.ProjectId
@@ -363,12 +376,18 @@ Partial Public Class CLMainForm
         Dim originalRevisionTracking As CLSelectionRevisionTracking = m_ProjectDocument.RevisionTracking
         Dim originalPath As String = m_ProjectFilePath
         Dim originalDirty As Boolean = m_ProjectDirty
+        Dim originalCustomerReference As String = m_ProjectDocument.Selection.CustomerReference
         m_ProjectDocument.ProjectId = Guid.NewGuid()
         m_ProjectDocument.CreatedAtUtc = DateTime.UtcNow
         m_ProjectDocument.Identity = New CLSelectionIdentity With {
             .LocalDraftReference = CLSelectionInstallationStateStore.NextDraftReference()
         }
         m_ProjectDocument.RevisionTracking = New CLSelectionRevisionTracking()
+        If createAlternative Then
+            Dim alternativeReference As String = Project_NextAlternativeReference(originalCustomerReference)
+            m_ProjectDocument.Selection.CustomerReference = alternativeReference
+            m_Note_Text.Text = alternativeReference
+        End If
         m_ProjectFilePath = Nothing
         Project_SetDirty(True)
         If Not Project_Save(True) Then
@@ -377,9 +396,27 @@ Partial Public Class CLMainForm
             m_ProjectDocument.Identity = originalIdentity
             m_ProjectDocument.RevisionTracking = originalRevisionTracking
             m_ProjectFilePath = originalPath
+            m_ProjectDocument.Selection.CustomerReference = originalCustomerReference
+            m_Note_Text.Text = originalCustomerReference
             Project_SetDirty(originalDirty)
         End If
     End Sub
+
+    Private Shared Function Project_NextAlternativeReference(reference As String) As String
+        Dim value As String = If(reference, String.Empty).Trim()
+        Dim match As Match = Regex.Match(value, "^Alt\.\s*(\d+)\s*:\s*(.*)$", RegexOptions.IgnoreCase)
+        Dim number As Integer = 1
+        Dim baseReference As String = value
+        If match.Success Then
+            Dim parsed As Integer
+            If Integer.TryParse(match.Groups(1).Value, NumberStyles.None, CultureInfo.InvariantCulture, parsed) Then
+                number = parsed + 1
+            End If
+            baseReference = match.Groups(2).Value.Trim()
+        End If
+        Dim prefix As String = "Alt. " & number.ToString("00", CultureInfo.InvariantCulture)
+        Return If(String.IsNullOrWhiteSpace(baseReference), prefix, prefix & ": " & baseReference)
+    End Function
 
     Private Function Project_ConfirmDiscardChanges() As Boolean
         If Not m_ProjectDirty Then Return True
@@ -454,6 +491,7 @@ Partial Public Class CLMainForm
         Dim selection As New CLWaterCoilSelection()
         If chbCoilPerformance_Enable Is Nothing Then Return selection
         selection.Enabled = chbCoilPerformance_Enable.Checked
+        selection.CustomDesignDisclaimerAccepted = m_CoilCustomDisclaimerAccepted
         selection.SelectionCase = CoilPerformance_SelectedEditMode().ToString()
         selection.InstallationType = CoilPerformance_SelectedInstallation().ToString()
         selection.CalculationMode = Convert.ToString(cmbCoilPerformance_Mode.SelectedItem, CultureInfo.InvariantCulture)
@@ -603,6 +641,7 @@ Partial Public Class CLMainForm
 
     Private Sub Project_ApplyWaterCoil(selection As CLWaterCoilSelection)
         If chbCoilPerformance_Enable Is Nothing Then Return
+        m_CoilCustomDisclaimerAccepted = selection.CustomDesignDisclaimerAccepted
         Project_SelectWrappedEnum(cmbCoilPerformance_Installation, selection.InstallationType)
         CoilPerformance_FillStandardCoils()
         Project_SelectWrappedEnum(cmbCoilPerformance_EditMode, selection.SelectionCase)
@@ -704,6 +743,7 @@ Partial Public Class CLMainForm
         m_ProjectMenuSave.Text = Project_Text("MainForm_Project_Save", "Save selection")
         m_ProjectMenuSaveAs.Text = Project_Text("MainForm_Project_SaveAs", "Save selection as...")
         m_ProjectMenuDuplicate.Text = Project_Text("MainForm_Project_Duplicate", "Duplicate as new selection...")
+        m_ProjectMenuAlternative.Text = Project_Text("MainForm_Project_CreateAlternative", "Create an alternative...")
         m_ProjectMenuRecent.Text = Project_Text("MainForm_Project_Recent", "Recent selections")
     End Sub
 

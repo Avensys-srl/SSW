@@ -349,7 +349,7 @@
   <data name="MainForm_CoilPerformance_Internal" xml:space="preserve"><value>Notranja</value></data>
   <data name="MainForm_CoilPerformance_ExternalInstallation" xml:space="preserve"><value>Zunanja</value></data>
   <data name="MainForm_CoilPerformance_RequestInternal" xml:space="preserve"><value>Povprašajte za notranjo izvedbo</value></data>
-  <data name="MainForm_CoilPerformance_CustomWarning" xml:space="preserve"><value>Povprašajte za dobavni rok in ponudbo</value></data>
+  <data name="MainForm_CoilPerformance_CustomWarning" xml:space="preserve"><value>Povprašajte za zunanje mere, dobavni rok in ponudbo</value></data>
   <data name="MainForm_Menu_Option_CheckUpdates" xml:space="preserve">
     <value>Preveri posodobitve</value>
   </data>
@@ -407,4 +407,9 @@
   <data name="MainForm_CoilPerformance_LowWaterDeltaT" xml:space="preserve"><value>Nizek temperaturni razpon vode (3 K ≤ ΔT &lt; 5 K). Pretok vode je višji od običajnega.</value></data>
   <data name="MainForm_CoilPerformance_CriticalWaterDeltaT" xml:space="preserve"><value>Zelo nizek temperaturni razpon vode (manj kot 3 K). Prevelik pretok in padec tlaka. Preverite hidravlično zasnovo.</value></data>
   <data name="MainForm_CoilPerformance_WaterPressureDropWarning" xml:space="preserve"><value>Padec tlaka na vodni strani presega priporočeno mejo (40 kPa). Poraba hidravlične energije in stroški črpanja so lahko previsoki. Izberite večjo baterijo ali zmanjšajte hitrost vode.</value></data>
+  <data name="MainForm_Project_CreateAlternative" xml:space="preserve"><value>Ustvari alternativo...</value></data>
+  <data name="MainForm_CoilPerformance_DimensionsNote" xml:space="preserve"><value>Zgornje mere se nanašajo samo na vodno baterijo.</value></data>
+  <data name="MainForm_CoilPerformance_CustomDisclaimerTitle" xml:space="preserve"><value>Načrtovanje prilagojene baterije</value></data>
+  <data name="MainForm_CoilPerformance_CustomDisclaimer" xml:space="preserve"><value>Preverite pravilno delovanje prilagojene baterije v vseh predvidenih delovnih točkah. Pritisnite OK, da sprejmete to zahtevo.</value></data>
+  <data name="MainForm_CoilPerformance_CustomDisclaimerAccepted" xml:space="preserve"><value>Izjava o omejitvi odgovornosti za prilagojeno baterijo je sprejeta</value></data>
 </root>

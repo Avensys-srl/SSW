@@ -10239,7 +10239,7 @@
         </Style>
       </Rectangle>
     </ReportItems>
-    <Height>38.53988cm</Height>
+    <Height>38.48696cm</Height>
     <Style>
       <Border />
     </Style>
@@ -11097,7 +11097,7 @@
       </Style>
     </PageHeader>
     <PageFooter>
-      <Height>1.8cm</Height>
+      <Height>2.3cm</Height>
       <PrintOnFirstPage>true</PrintOnFirstPage>
       <PrintOnLastPage>true</PrintOnLastPage>
       <ReportItems>
@@ -11118,9 +11118,9 @@
               <Style />
             </Paragraph>
           </Paragraphs>
-          <Top>0.10021cm</Top>
+          <Top>0.11486cm</Top>
           <Left>0.71803cm</Left>
-          <Height>0.58521cm</Height>
+          <Height>0.5cm</Height>
           <Width>18.64144cm</Width>
           <Style>
             <Border>
@@ -11145,7 +11145,7 @@
               <Style />
             </Paragraph>
           </Paragraphs>
-          <Top>0.68542cm</Top>
+          <Top>1.15014cm</Top>
           <Left>0.71803cm</Left>
           <Height>0.97439cm</Height>
           <Width>18.64144cm</Width>
@@ -11153,6 +11153,36 @@
           <Visibility>
             <Hidden>=First(Fields!sndaddtorep_bool.Value, "SoundPowerHeader")</Hidden>
           </Visibility>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+          </Style>
+        </Textbox>
+        <Textbox Name="Legal_Notice3">
+          <CanGrow>true</CanGrow>
+          <KeepTogether>true</KeepTogether>
+          <Paragraphs>
+            <Paragraph>
+              <TextRuns>
+                <TextRun>
+                  <Value>=First(Fields!CustomDisclaimerAccepted.Value, "WaterCoilReport")</Value>
+                  <Style>
+                    <FontFamily>Helvetica</FontFamily>
+                    <FontSize>8pt</FontSize>
+                  </Style>
+                </TextRun>
+              </TextRuns>
+              <Style>
+                <TextAlign>Left</TextAlign>
+              </Style>
+            </Paragraph>
+          </Paragraphs>
+          <Top>0.6325cm</Top>
+          <Left>0.71803cm</Left>
+          <Height>0.5cm</Height>
+          <Width>18.64144cm</Width>
+          <ZIndex>2</ZIndex>
           <Style>
             <Border>
               <Style>None</Style>
@@ -11960,6 +11990,10 @@
           <DataField>Summary</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="CustomDisclaimerAccepted">
+          <DataField>CustomDisclaimerAccepted</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
         <Field Name="ScenarioKey">
           <DataField>ScenarioKey</DataField>
           <rd:TypeName>System.String</rd:TypeName>
@@ -12624,6 +12658,10 @@
           <DataField>Summary</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="CustomDisclaimerAccepted">
+          <DataField>CustomDisclaimerAccepted</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
         <Field Name="ScenarioKey">
           <DataField>ScenarioKey</DataField>
           <rd:TypeName>System.String</rd:TypeName>
@@ -12854,6 +12892,10 @@
         </Field>
         <Field Name="Summary">
           <DataField>Summary</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="CustomDisclaimerAccepted">
+          <DataField>CustomDisclaimerAccepted</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="ScenarioKey">

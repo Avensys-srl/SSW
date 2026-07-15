@@ -556,7 +556,7 @@
   <data name="MainForm_CoilPerformance_Internal" xml:space="preserve"><value>Internal</value></data>
   <data name="MainForm_CoilPerformance_ExternalInstallation" xml:space="preserve"><value>External</value></data>
   <data name="MainForm_CoilPerformance_RequestInternal" xml:space="preserve"><value>Request internal</value></data>
-  <data name="MainForm_CoilPerformance_CustomWarning" xml:space="preserve"><value>Please ask for delivery time and quotation</value></data>
+  <data name="MainForm_CoilPerformance_CustomWarning" xml:space="preserve"><value>Please ask for overall dimensions, delivery time and quotation</value></data>
   <data name="MainForm_Menu_Option_CheckUpdates" xml:space="preserve">
     <value>Check for updates</value>
   </data>
@@ -614,4 +614,9 @@
   <data name="MainForm_CoilPerformance_LowWaterDeltaT" xml:space="preserve"><value>Low water delta T (3 K ≤ ΔT &lt; 5 K). Water flow is higher than typical.</value></data>
   <data name="MainForm_CoilPerformance_CriticalWaterDeltaT" xml:space="preserve"><value>Very low water delta T (less than 3 K). Excessive water flow and pressure drop. Verify hydraulic design.</value></data>
   <data name="MainForm_CoilPerformance_WaterPressureDropWarning" xml:space="preserve"><value>Water pressure drop exceeds the recommended limit (40 kPa). Hydraulic power consumption and pumping costs may become excessive. Consider increasing coil size or reducing water velocity.</value></data>
+  <data name="MainForm_Project_CreateAlternative" xml:space="preserve"><value>Create an alternative...</value></data>
+  <data name="MainForm_CoilPerformance_DimensionsNote" xml:space="preserve"><value>The dimensions above refer to the water coil only.</value></data>
+  <data name="MainForm_CoilPerformance_CustomDisclaimerTitle" xml:space="preserve"><value>Custom coil design</value></data>
+  <data name="MainForm_CoilPerformance_CustomDisclaimer" xml:space="preserve"><value>Verify that the customized coil operates correctly at every intended working point. Press OK to acknowledge this requirement.</value></data>
+  <data name="MainForm_CoilPerformance_CustomDisclaimerAccepted" xml:space="preserve"><value>Custom coil design disclaimer accepted</value></data>
 </root>

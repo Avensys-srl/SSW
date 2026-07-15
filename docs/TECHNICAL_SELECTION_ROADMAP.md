@@ -477,6 +477,12 @@ da `/usage` nel Codex CLI.
 
 ### Hardening post-rilascio
 
+- UX selezioni: aggiunto il comando per creare alternative progressive (`Alt. XX`),
+  disclaimer persistito per le batterie personalizzate e relativo campo nel
+  dataset report; completate le indicazioni su ingombri e dimensioni batteria.
+- `1.3.0.51`: pubblicazione delle alternative progressive, del disclaimer
+  batteria custom e dei layout RDLC finali localizzati.
+
 - `1.3.0.48`: bootstrap monouso disponibile anche nel registro utente per non
   dipendere dal refresh delle variabili d'ambiente.
 - `1.3.0.49`: aggiornamento in-app con chiusura della versione precedente e

@@ -424,7 +424,7 @@
   <data name="MainForm_CoilPerformance_Internal" xml:space="preserve"><value>Internă</value></data>
   <data name="MainForm_CoilPerformance_ExternalInstallation" xml:space="preserve"><value>Externă</value></data>
   <data name="MainForm_CoilPerformance_RequestInternal" xml:space="preserve"><value>Solicitați varianta internă</value></data>
-  <data name="MainForm_CoilPerformance_CustomWarning" xml:space="preserve"><value>Solicitați termenul de livrare și oferta</value></data>
+  <data name="MainForm_CoilPerformance_CustomWarning" xml:space="preserve"><value>Solicitați dimensiunile de gabarit, termenul de livrare și oferta</value></data>
   <data name="MainForm_Menu_Option_CheckUpdates" xml:space="preserve">
     <value>Verifică actualizările</value>
   </data>
@@ -482,4 +482,9 @@
   <data name="MainForm_CoilPerformance_LowWaterDeltaT" xml:space="preserve"><value>Diferență mică de temperatură a apei (3 K ≤ ΔT &lt; 5 K). Debitul de apă este mai mare decât cel obișnuit.</value></data>
   <data name="MainForm_CoilPerformance_CriticalWaterDeltaT" xml:space="preserve"><value>Diferență foarte mică de temperatură a apei (sub 3 K). Debit și pierdere de presiune excesive. Verificați proiectarea hidraulică.</value></data>
   <data name="MainForm_CoilPerformance_WaterPressureDropWarning" xml:space="preserve"><value>Pierderea de presiune pe partea de apă depășește limita recomandată (40 kPa). Consumul hidraulic și costurile de pompare pot deveni excesive. Alegeți o baterie mai mare sau reduceți viteza apei.</value></data>
+  <data name="MainForm_Project_CreateAlternative" xml:space="preserve"><value>Creează o alternativă...</value></data>
+  <data name="MainForm_CoilPerformance_DimensionsNote" xml:space="preserve"><value>Dimensiunile de mai sus se referă exclusiv la bateria cu apă.</value></data>
+  <data name="MainForm_CoilPerformance_CustomDisclaimerTitle" xml:space="preserve"><value>Proiectarea bateriei personalizate</value></data>
+  <data name="MainForm_CoilPerformance_CustomDisclaimer" xml:space="preserve"><value>Verificați funcționarea corectă a bateriei personalizate în toate punctele de lucru prevăzute. Apăsați OK pentru a accepta această cerință.</value></data>
+  <data name="MainForm_CoilPerformance_CustomDisclaimerAccepted" xml:space="preserve"><value>Declinarea privind proiectarea bateriei personalizate a fost acceptată</value></data>
 </root>

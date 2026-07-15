@@ -36,6 +36,10 @@ $smoke = Join-Path $repo 'SSWLib\bin\x86\Release\SelectionIdentitySmoke.exe'
 & $smoke
 if ($LASTEXITCODE -ne 0) { throw 'SelectionIdentitySmoke failed.' }
 
+$x86PowerShell = Join-Path $env:WINDIR 'SysWOW64\WindowsPowerShell\v1.0\powershell.exe'
+& $x86PowerShell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $PSScriptRoot 'Invoke-AlternativeReferenceSmoke.ps1')
+if ($LASTEXITCODE -ne 0) { throw 'Alternative reference smoke test failed.' }
+
 $resourceFiles = Get-ChildItem (Join-Path $repo 'SSWLib') -Filter 'Resources.*.resx'
 if ($resourceFiles.Count -ne 12) { throw "Expected 12 localized RESX files, found $($resourceFiles.Count)." }
 $requiredKeys = @('Update_Title','Update_CheckFailed','Update_PackageIntegrityFailed',
@@ -45,7 +49,12 @@ $requiredKeys = @('Update_Title','Update_CheckFailed','Update_PackageIntegrityFa
     'MainForm_CoilPerformance_InvalidHeatingTemperatures',
     'MainForm_CoilPerformance_LowWaterDeltaT',
     'MainForm_CoilPerformance_CriticalWaterDeltaT',
-    'MainForm_CoilPerformance_WaterPressureDropWarning')
+    'MainForm_CoilPerformance_WaterPressureDropWarning',
+    'MainForm_Project_CreateAlternative',
+    'MainForm_CoilPerformance_DimensionsNote',
+    'MainForm_CoilPerformance_CustomDisclaimerTitle',
+    'MainForm_CoilPerformance_CustomDisclaimer',
+    'MainForm_CoilPerformance_CustomDisclaimerAccepted')
 foreach ($file in $resourceFiles) {
     [xml]$document = Get-Content -LiteralPath $file.FullName -Raw
     $names = @($document.root.data | ForEach-Object { $_.name })
