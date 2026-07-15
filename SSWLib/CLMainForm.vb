@@ -102,11 +102,6 @@ Public Class CLMainForm
         AddHandler Environment.LanguageChanged, AddressOf Environment_LanguageChanged
         AddHandler Environment.BranchChanged, AddressOf Environment_BranchChanged
 
-        ' Inizializza il binding source UnitCalculator
-        bsrUnitCalculator.DataSource = m_UnitCalculator
-
-        m_UnitCalculator.AccessoryState = CLUnitCalculator.CLAccessoryState.None
-
         ' Abilita/disabilita le opzioni delle lingue
         tsmiOption_Language_IT.Visible = Environment.FindLanguage(CLEnvironment.LanguageCode_IT).Enabled
         tsmiOption_Language_DE.Visible = Environment.FindLanguage(CLEnvironment.LanguageCode_DE).Enabled
@@ -237,11 +232,6 @@ Public Class CLMainForm
             tbcMain.TabPages.Remove(tbpCertification)
         End If
 
-#If Not COIL Then
-        m_TabPages.Add(tbpAccessory)
-        tbcMain.TabPages.Remove(tbpAccessory)
-#End If
-
         CoilPerformance_InitializeTab()
 
         txbPerformance_AirFlow.Text = "100"
@@ -253,10 +243,6 @@ Public Class CLMainForm
 
         ' Fill Series
         Series_FillCombo()
-
-        ' Fill HWD/CWD FluidType
-        Accessory_HWD_FluidTypeFill()
-        Accessory_CWD_FluidTypeFill()
 
         sap_table_start()
         txbPerformance_AirFlow.Select()
@@ -510,12 +496,6 @@ Public Class CLMainForm
         'txbPerformance_AirFlow.Text = maxflow(MeasureUnit, CurrentUnit.Name, txbPerformance_AirFlow.Text)
         'Calculate()
 
-        'Try
-        '    m_DataChanging = True
-        '    txbAccessory_InputData_AirFlow.Text = txbPerformance_AirFlow.Text
-        'Finally
-        '    m_DataChanging = False
-        'End Try
         txbPerformance_AirFlow_SaveValue = txbPerformance_AirFlow.Text
         DirectCast(sender, TextBox).Tag = DirectCast(sender, TextBox).Text
     End Sub
@@ -550,7 +530,6 @@ Public Class CLMainForm
 
         Try
             m_DataChanging = True
-            txbAccessory_InputData_AirFlow.Text = txbPerformance_AirFlow.Text
             checkworkingpoint()
         Finally
             m_DataChanging = False
@@ -3708,11 +3687,6 @@ Public Class CLMainForm
         Calculate_Sound()
         Calculate_CO2Level()
 
-#If COIL Then
-        Calculate_Accessory()
-#End If
-
-
         ' Aggiornamento UI
         If chbPerformance_PassiveHaus_ShowArea.Checked AndAlso CDbl(txbPerformance_PassiveHaus.Text) <= CDbl(txbPerformance_PassiveHaus_Limit.Text) Then
             txbPerformance_PassiveHaus.BackColor = Color.Green
@@ -4347,16 +4321,6 @@ Public Class CLMainForm
 
     End Sub
 
-    Private Sub Calculate_Accessory()
-        Dim dcHeatRecoveryModel As CLDCHeatRecoveryModel = SelectedHeatRecoveryModel
-
-        ' Calcolo degli accessory
-        m_UnitCalculator.Calculate(dcHeatRecoveryModel,
-         AirFlow,
-         SupplyOutletTemp,
-         SupplyOutletRH)
-    End Sub
-
     Private Sub Calculate_CO2Level()
 
         Dim volume As Double = 0
@@ -4421,235 +4385,6 @@ Public Class CLMainForm
 
 #End Region
 
-#Region "====[ Accessory CWD / HWD / EHD ]===="
-
-    Private m_AccessoryCWD_FluidTypeTec_SaveValue As Double
-    Private m_AccessoryHWD_FluidTypeTec_SaveValue As Double
-
-    Private Sub Accessory_CWD_FluidTypeFill()
-
-        cmbAccessory_CWD_FluidType.Items.Clear()
-
-        cmbAccessory_CWD_FluidType.Items.Add(New CLComboBoxItemWrapper(Of CLCOFluidType)(
-            Environment.Localization.GetString(CLMessageResources.Water.ToString()),
-            CLCOFluidType.Water))
-
-        cmbAccessory_CWD_FluidType.Items.Add(New CLComboBoxItemWrapper(Of CLCOFluidType)(
-            Environment.Localization.GetString(CLMessageResources.Glic_Etil.ToString()),
-            CLCOFluidType.Glic_Etil))
-
-        cmbAccessory_CWD_FluidType.Items.Add(New CLComboBoxItemWrapper(Of CLCOFluidType)(
-            Environment.Localization.GetString(CLMessageResources.Glic_Prop.ToString()),
-            CLCOFluidType.Glic_Prop))
-
-        cmbAccessory_CWD_FluidType.SelectedIndex = 0
-
-    End Sub
-
-    Private Sub Accessory_HWD_FluidTypeFill()
-
-        cmbAccessory_HWD_FluidType.Items.Clear()
-
-        cmbAccessory_HWD_FluidType.Items.Add(New CLComboBoxItemWrapper(Of CLCOFluidType)(
-            Environment.Localization.GetString(CLMessageResources.Water.ToString()),
-            CLCOFluidType.Water))
-
-        cmbAccessory_HWD_FluidType.Items.Add(New CLComboBoxItemWrapper(Of CLCOFluidType)(
-            Environment.Localization.GetString(CLMessageResources.Glic_Etil.ToString()),
-            CLCOFluidType.Glic_Etil))
-
-        cmbAccessory_HWD_FluidType.Items.Add(New CLComboBoxItemWrapper(Of CLCOFluidType)(
-            Environment.Localization.GetString(CLMessageResources.Glic_Prop.ToString()),
-            CLCOFluidType.Glic_Prop))
-
-        cmbAccessory_HWD_FluidType.SelectedIndex = 0
-
-    End Sub
-
-    Private Sub cmbAccessory_CWD_FluidType_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cmbAccessory_CWD_FluidType.SelectedIndexChanged
-
-        Dim fluidType As CLCOFluidType
-
-        If cmbAccessory_CWD_FluidType.SelectedItem Is Nothing Then
-            Return
-        End If
-
-        fluidType = DirectCast(cmbAccessory_CWD_FluidType.SelectedItem, CLComboBoxItemWrapper(Of CLCOFluidType)).Value
-        If fluidType = CLCOFluidType.Water Then
-            nudAccessory_CWD_FluidTypeTec.Visible = False
-            lblAccessory_CWD_FluidTypeTec.Visible = False
-        Else
-            nudAccessory_CWD_FluidTypeTec.Visible = True
-            lblAccessory_CWD_FluidTypeTec.Visible = True
-        End If
-
-        m_UnitCalculator.CWD_FluidType = fluidType
-
-        Calculate_Accessory()
-    End Sub
-
-    Private Sub cmbAccessory_HWD_FluidType_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cmbAccessory_HWD_FluidType.SelectedIndexChanged
-
-        Dim fluidType As CLCOFluidType
-
-        If cmbAccessory_HWD_FluidType.SelectedItem Is Nothing Then
-            Return
-        End If
-
-        fluidType = DirectCast(cmbAccessory_HWD_FluidType.SelectedItem, CLComboBoxItemWrapper(Of CLCOFluidType)).Value
-        If fluidType = CLCOFluidType.Water Then
-            nudAccessory_HWD_FluidTypeTec.Visible = False
-            lblAccessory_HWD_FluidTypeTec.Visible = False
-        Else
-            nudAccessory_HWD_FluidTypeTec.Visible = True
-            lblAccessory_HWD_FluidTypeTec.Visible = True
-        End If
-
-        m_UnitCalculator.HWD_FluidType = fluidType
-        Calculate_Accessory()
-    End Sub
-
-    Private Sub UIAccessoryPanel_SetEnabled(control As Control, enabled As Boolean, cbxControl As CheckBox)
-
-        For Each childControl As Control In control.Controls
-            If cbxControl Is childControl Then
-                Continue For
-            End If
-
-            childControl.Enabled = enabled
-        Next
-
-    End Sub
-
-    Private Sub cbxAccessory_CWDEnabled_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles cbxAccessory_CWDEnabled.CheckedChanged
-
-        If cbxAccessory_CWDEnabled.Checked AndAlso cbxAccessory_HWDEnabled.Checked Then
-            m_UnitCalculator.AccessoryState = CLUnitCalculator.CLAccessoryState.CWD_HWD
-        ElseIf Not cbxAccessory_CWDEnabled.Checked AndAlso cbxAccessory_HWDEnabled.Checked Then
-            m_UnitCalculator.AccessoryState = CLUnitCalculator.CLAccessoryState.HWD
-        ElseIf cbxAccessory_CWDEnabled.Checked AndAlso Not cbxAccessory_HWDEnabled.Checked Then
-            m_UnitCalculator.AccessoryState = CLUnitCalculator.CLAccessoryState.CWD
-        Else
-            m_UnitCalculator.AccessoryState = CLUnitCalculator.CLAccessoryState.EHD
-        End If
-
-        Calculate_Accessory()
-
-    End Sub
-
-    Private Sub cbxAccessory_HWDEnabled_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles cbxAccessory_HWDEnabled.CheckedChanged
-
-        If cbxAccessory_CWDEnabled.Checked AndAlso cbxAccessory_HWDEnabled.Checked Then
-            m_UnitCalculator.AccessoryState = CLUnitCalculator.CLAccessoryState.CWD_HWD
-        ElseIf Not cbxAccessory_CWDEnabled.Checked AndAlso cbxAccessory_HWDEnabled.Checked Then
-            m_UnitCalculator.AccessoryState = CLUnitCalculator.CLAccessoryState.HWD
-        ElseIf cbxAccessory_CWDEnabled.Checked AndAlso Not cbxAccessory_HWDEnabled.Checked Then
-            m_UnitCalculator.AccessoryState = CLUnitCalculator.CLAccessoryState.CWD
-        Else
-            m_UnitCalculator.AccessoryState = CLUnitCalculator.CLAccessoryState.EHD
-        End If
-
-        Calculate_Accessory()
-
-    End Sub
-
-    Private Sub cbxAccessory_EHDEnabled_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles cbxAccessory_EHDEnabled.CheckedChanged
-
-        m_UnitCalculator.AccessoryState = CLUnitCalculator.CLAccessoryState.EHD
-
-        Calculate_Accessory()
-
-    End Sub
-
-    Private Sub txbAccessory_InputData_AirFlow_Validated(sender As System.Object, e As System.EventArgs) Handles txbAccessory_InputData_AirFlow.Validated
-        If m_DataChanging Then
-            Return
-        End If
-
-        txbPerformance_AirFlow.Text = txbAccessory_InputData_AirFlow.Text
-        Calculate()
-
-        Try
-            m_DataChanging = True
-            txbAccessory_InputData_AirFlow.Text = txbPerformance_AirFlow.Text
-        Finally
-            m_DataChanging = False
-        End Try
-    End Sub
-
-    Private Sub txbPerformance_SupplyOutletTemperature_TextChanged(sender As System.Object, e As System.EventArgs) Handles txbPerformance_SupplyOutletTemperature.TextChanged
-        txbAccessory_InputData_Temp.Text = SupplyOutletTemp
-    End Sub
-
-    Private Sub txbPerformance_SupplyOutletRH_TextChanged(sender As System.Object, e As System.EventArgs) Handles txbPerformance_SupplyOutletRH.TextChanged
-        txbAccessory_InputData_RH.Text = SupplyOutletRH
-    End Sub
-
-    Private Sub txbAccessory_CWD_InletTemperature_Validated(sender As System.Object, e As System.EventArgs) Handles txbAccessory_CWD_InletTemperature.Validated
-        Calculate_Accessory()
-    End Sub
-
-    Private Sub txbAccessory_CWD_OutletTemperature_Validated(sender As System.Object, e As System.EventArgs) Handles txbAccessory_CWD_OutletTemperature.Validated
-        Calculate_Accessory()
-    End Sub
-
-    Private Sub txbAccessory_HWD_InletTemperature_Validated(sender As System.Object, e As System.EventArgs) Handles txbAccessory_HWD_InletTemperature.Validated
-        Calculate_Accessory()
-    End Sub
-
-    Private Sub txbAccessory_HWD_OutletTemperature_Validated(sender As System.Object, e As System.EventArgs) Handles txbAccessory_HWD_OutletTemperature.Validated
-        Calculate_Accessory()
-    End Sub
-
-    Private Sub nudAccessory_CWD_FluidTypeTec_MouseUp(sender As System.Object, e As System.Windows.Forms.MouseEventArgs) Handles nudAccessory_CWD_FluidTypeTec.MouseUp
-        If m_AccessoryCWD_FluidTypeTec_SaveValue <> nudAccessory_CWD_FluidTypeTec.Value Then
-            m_UnitCalculator.CWD_FluidTypeTec = nudAccessory_CWD_FluidTypeTec.Value
-            m_AccessoryCWD_FluidTypeTec_SaveValue = nudAccessory_CWD_FluidTypeTec.Value
-            Calculate_Accessory()
-        End If
-    End Sub
-
-    Private Sub nudAccessory_CWD_FluidTypeTec_KeyUp(sender As System.Object, e As System.Windows.Forms.KeyEventArgs) Handles nudAccessory_CWD_FluidTypeTec.KeyUp
-        If (e.KeyValue = Keys.Up OrElse e.KeyValue = Keys.Down) AndAlso m_AccessoryCWD_FluidTypeTec_SaveValue <> nudAccessory_CWD_FluidTypeTec.Value Then
-            m_UnitCalculator.CWD_FluidTypeTec = nudAccessory_CWD_FluidTypeTec.Value
-            m_AccessoryCWD_FluidTypeTec_SaveValue = nudAccessory_CWD_FluidTypeTec.Value
-            Calculate_Accessory()
-        End If
-    End Sub
-
-    Private Sub nudAccessory_CWD_FluidTypeTec_Leave(sender As System.Object, e As System.EventArgs) Handles nudAccessory_CWD_FluidTypeTec.Leave
-        If m_AccessoryCWD_FluidTypeTec_SaveValue <> nudAccessory_CWD_FluidTypeTec.Value Then
-            m_UnitCalculator.CWD_FluidTypeTec = nudAccessory_CWD_FluidTypeTec.Value
-            m_AccessoryCWD_FluidTypeTec_SaveValue = nudAccessory_CWD_FluidTypeTec.Value
-            Calculate_Accessory()
-        End If
-    End Sub
-
-    Private Sub nudAccessory_HWD_FluidTypeTec_MouseUp(sender As System.Object, e As System.Windows.Forms.MouseEventArgs) Handles nudAccessory_HWD_FluidTypeTec.MouseUp
-        If m_AccessoryHWD_FluidTypeTec_SaveValue <> nudAccessory_HWD_FluidTypeTec.Value Then
-            m_AccessoryHWD_FluidTypeTec_SaveValue = nudAccessory_HWD_FluidTypeTec.Value
-            m_UnitCalculator.HWD_FluidTypeTec = nudAccessory_HWD_FluidTypeTec.Value
-            Calculate_Accessory()
-        End If
-    End Sub
-
-    Private Sub nudAccessory_HWD_FluidTypeTec_KeyUp(sender As System.Object, e As System.Windows.Forms.KeyEventArgs) Handles nudAccessory_HWD_FluidTypeTec.KeyUp
-        If m_AccessoryHWD_FluidTypeTec_SaveValue <> nudAccessory_HWD_FluidTypeTec.Value Then
-            m_UnitCalculator.HWD_FluidTypeTec = nudAccessory_HWD_FluidTypeTec.Value
-            m_AccessoryHWD_FluidTypeTec_SaveValue = nudAccessory_HWD_FluidTypeTec.Value
-            Calculate_Accessory()
-        End If
-    End Sub
-
-    Private Sub nudAccessory_HWD_FluidTypeTec_Leave(sender As System.Object, e As System.EventArgs) Handles nudAccessory_HWD_FluidTypeTec.Leave
-        If m_AccessoryHWD_FluidTypeTec_SaveValue <> nudAccessory_HWD_FluidTypeTec.Value Then
-            m_UnitCalculator.HWD_FluidTypeTec = nudAccessory_HWD_FluidTypeTec.Value
-            m_AccessoryHWD_FluidTypeTec_SaveValue = nudAccessory_HWD_FluidTypeTec.Value
-            Calculate_Accessory()
-        End If
-    End Sub
-
-#End Region
 
 #Region "====[ CO2Level ]===="
 
@@ -4946,48 +4681,6 @@ Public Class CLMainForm
 
 #End Region
 
-#Region "====[ Unit Calculator ]===="
-
-    Private WithEvents m_UnitCalculator As New CLUnitCalculator
-
-    Private Sub m_UnitCalculator_PropertyChanged(sender As Object, e As System.ComponentModel.PropertyChangedEventArgs) Handles m_UnitCalculator.PropertyChanged
-
-        If e.PropertyName = CLUnitCalculator.CLPropertyName.AccessoryState.ToString() Then
-            If m_UnitCalculator.AccessoryState = CLUnitCalculator.CLAccessoryState.CWD OrElse m_UnitCalculator.AccessoryState = CLUnitCalculator.CLAccessoryState.CWD_HWD Then
-                UIAccessoryPanel_SetEnabled(grbAccessory_CWD, True, cbxAccessory_CWDEnabled)
-            Else
-                UIAccessoryPanel_SetEnabled(grbAccessory_CWD, False, cbxAccessory_CWDEnabled)
-            End If
-
-            If m_UnitCalculator.AccessoryState = CLUnitCalculator.CLAccessoryState.HWD OrElse m_UnitCalculator.AccessoryState = CLUnitCalculator.CLAccessoryState.CWD_HWD Then
-                UIAccessoryPanel_SetEnabled(grbAccessory_HWD, True, cbxAccessory_HWDEnabled)
-            Else
-                UIAccessoryPanel_SetEnabled(grbAccessory_HWD, False, cbxAccessory_HWDEnabled)
-            End If
-
-            If m_UnitCalculator.AccessoryState = CLUnitCalculator.CLAccessoryState.EHD Then
-                UIAccessoryPanel_SetEnabled(grbAccessory_EHD, True, cbxAccessory_HWDEnabled)
-            Else
-                UIAccessoryPanel_SetEnabled(grbAccessory_EHD, False, cbxAccessory_HWDEnabled)
-            End If
-        End If
-
-    End Sub
-
-    Private Sub m_UnitCalculator_Calculated(sender As Object, e As EventArgs) Handles m_UnitCalculator.Calculated
-
-        Select Case m_UnitCalculator.CalculateState
-            Case CLUnitCalculator.CLCalculateState.AccessoryError
-                lblAccessory_Status.Text = m_UnitCalculator.ErrorMessage
-
-            Case CLUnitCalculator.CLCalculateState.Ok
-                lblAccessory_Status.Text = ""
-
-        End Select
-
-    End Sub
-
-#End Region
 
 #Region "====[ UKUNDA Item code generator ]===="
 

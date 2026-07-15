@@ -24,6 +24,11 @@ registrazione centralizzata delle selezioni SSW.
 - [x] Onda C3 completata il 14/07/2026: punto 16, inclusa impaginazione RDLC.
 - [x] Release pilota `1.3.0.45` compilata, installata e pubblicata il 14/07/2026;
   bootstrap reale, token DPAPI, avvio applicazione e API aggiornamenti verificati.
+- [x] Predisposta la base dati delle batterie elettriche: anagrafica heater,
+  corrente derivata, relazioni modello con quantita', editor Explorer ed export
+  SDF schema 2 con feature `ElectricHeaters`. Le relazioni distinguono
+  installazione interna/esterna e modo EHD (post-riscaldo) / PEHD
+  (pre-riscaldo). Il calcolo SSW resta un passo successivo.
 - [ ] Dopo il reset quota: punto 17, geolocalizzazione approssimativa.
 - [ ] 17-22. Attivita' residue descritte nelle sezioni seguenti.
 

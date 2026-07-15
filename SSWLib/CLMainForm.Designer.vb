@@ -256,57 +256,8 @@ Partial Class CLMainForm
         Me.dgvSAP_RegulationLevel = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.dgvSAP_SpecificFanPower = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.dgvSAP_HeatExchangeEfficiency = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.dgvSAP_EnergySavingTrustBestPracticePerformanceCompliant = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.tbpAccessory = New System.Windows.Forms.TabPage()
-        Me.grbAccessory_OutputData = New System.Windows.Forms.GroupBox()
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
-        Me.Label4 = New System.Windows.Forms.Label()
-        Me.txbAccessory_OutputData_CWDSensibleHeat = New System.Windows.Forms.TextBox()
-        Me.Label3 = New System.Windows.Forms.Label()
-        Me.txbAccessory_OutputData_CWDHeatTransferred = New System.Windows.Forms.TextBox()
-        Me.GroupBox3 = New System.Windows.Forms.GroupBox()
-        Me.GroupBox2 = New System.Windows.Forms.GroupBox()
-        Me.Label6 = New System.Windows.Forms.Label()
-        Me.txbAccessory_OutputData_HWDHeatTransferred = New System.Windows.Forms.TextBox()
-        Me.lblAccessory_Status = New System.Windows.Forms.Label()
-        Me.Label16 = New System.Windows.Forms.Label()
-        Me.Label19 = New System.Windows.Forms.Label()
-        Me.Label17 = New System.Windows.Forms.Label()
-        Me.txbAccessory_OutputData_Temp = New System.Windows.Forms.TextBox()
-        Me.txbAccessory_OutputData_Condensation = New System.Windows.Forms.TextBox()
-        Me.txbAccessory_OutputData_RH = New System.Windows.Forms.TextBox()
-        Me.txbAccessory_OutputData_PressureDrop = New System.Windows.Forms.TextBox()
-        Me.Label18 = New System.Windows.Forms.Label()
-        Me.grbAccessory_EHD = New System.Windows.Forms.GroupBox()
-        Me.cbxAccessory_EHDEnabled = New System.Windows.Forms.CheckBox()
-        Me.grbAccessory_HWD = New System.Windows.Forms.GroupBox()
-        Me.nudAccessory_HWD_FluidTypeTec = New System.Windows.Forms.NumericUpDown()
-        Me.lblAccessory_HWD_OutletTemperature = New System.Windows.Forms.Label()
-        Me.cmbAccessory_HWD_FluidType = New System.Windows.Forms.ComboBox()
-        Me.lblAccessory_HWD_FluidTypeTec = New System.Windows.Forms.Label()
-        Me.lblAccessory_HWD_FluidType = New System.Windows.Forms.Label()
-        Me.lblAccessory_HWD_InletTemperature = New System.Windows.Forms.Label()
-        Me.txbAccessory_HWD_InletTemperature = New System.Windows.Forms.TextBox()
-        Me.txbAccessory_HWD_OutletTemperature = New System.Windows.Forms.TextBox()
-        Me.cbxAccessory_HWDEnabled = New System.Windows.Forms.CheckBox()
-        Me.grbAccessory_CWD = New System.Windows.Forms.GroupBox()
-        Me.nudAccessory_CWD_FluidTypeTec = New System.Windows.Forms.NumericUpDown()
-        Me.lblAccessory_CWD_OutletTemperature = New System.Windows.Forms.Label()
-        Me.cbxAccessory_CWDEnabled = New System.Windows.Forms.CheckBox()
-        Me.cmbAccessory_CWD_FluidType = New System.Windows.Forms.ComboBox()
-        Me.lblAccessory_CWD_FluidTypeTec = New System.Windows.Forms.Label()
-        Me.lblAccessory_CWD_FluidType = New System.Windows.Forms.Label()
-        Me.lblAccessory_CWD_InletTemperature = New System.Windows.Forms.Label()
-        Me.txbAccessory_CWD_InletTemperature = New System.Windows.Forms.TextBox()
-        Me.txbAccessory_CWD_OutletTemperature = New System.Windows.Forms.TextBox()
-        Me.grbAccessory_InputData = New System.Windows.Forms.GroupBox()
-        Me.lblAccessory_InputData_Temp = New System.Windows.Forms.Label()
-        Me.lblAccessory_InputData_RHTemp = New System.Windows.Forms.Label()
-        Me.txbAccessory_InputData_Temp = New System.Windows.Forms.TextBox()
-        Me.txbAccessory_InputData_RH = New System.Windows.Forms.TextBox()
-        Me.txbAccessory_InputData_AirFlow = New System.Windows.Forms.TextBox()
-        Me.lblAccessory_InputData_AirFlow = New System.Windows.Forms.Label()
-        Me.tbpCO2Level = New System.Windows.Forms.TabPage()
+       Me.dgvSAP_EnergySavingTrustBestPracticePerformanceCompliant = New System.Windows.Forms.DataGridViewTextBoxColumn()
+       Me.tbpCO2Level = New System.Windows.Forms.TabPage()
         Me.chbCO2Level_addtoreport = New System.Windows.Forms.CheckBox()
         Me.crtCO2Level_Chart1 = New System.Windows.Forms.DataVisualization.Charting.Chart()
         Me.grbCO2Level_Parameters = New System.Windows.Forms.GroupBox()
@@ -360,7 +311,6 @@ Partial Class CLMainForm
         Me.pnlMain = New System.Windows.Forms.Panel()
         Me.sfdSavePdf = New System.Windows.Forms.SaveFileDialog()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
-        Me.bsrUnitCalculator = New System.Windows.Forms.BindingSource(Me.components)
         Me.GroupBox6 = New System.Windows.Forms.GroupBox()
         Me.GroupBox7 = New System.Windows.Forms.GroupBox()
         Me.mnsMain.SuspendLayout()
@@ -419,25 +369,14 @@ Partial Class CLMainForm
         CType(Me.crtPerformance_Chart3, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tbcMain.SuspendLayout()
         Me.tbpCertification.SuspendLayout()
-        CType(Me.dgvSAP, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.tbpAccessory.SuspendLayout()
-        Me.grbAccessory_OutputData.SuspendLayout()
-        Me.GroupBox1.SuspendLayout()
-        Me.GroupBox2.SuspendLayout()
-        Me.grbAccessory_EHD.SuspendLayout()
-        Me.grbAccessory_HWD.SuspendLayout()
-        CType(Me.nudAccessory_HWD_FluidTypeTec, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.grbAccessory_CWD.SuspendLayout()
-        CType(Me.nudAccessory_CWD_FluidTypeTec, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.grbAccessory_InputData.SuspendLayout()
-        Me.tbpCO2Level.SuspendLayout()
+       CType(Me.dgvSAP, System.ComponentModel.ISupportInitialize).BeginInit()
+       Me.tbpCO2Level.SuspendLayout()
         CType(Me.crtCO2Level_Chart1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.grbCO2Level_Parameters.SuspendLayout()
         Me.grbCO2Level_use.SuspendLayout()
         Me.grbCO2Level_Room.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlMain.SuspendLayout()
-        CType(Me.bsrUnitCalculator, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox6.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -2484,7 +2423,6 @@ Partial Class CLMainForm
         '
         Me.tbcMain.Controls.Add(Me.tbpPerformance)
         Me.tbcMain.Controls.Add(Me.tbpCertification)
-        Me.tbcMain.Controls.Add(Me.tbpAccessory)
         Me.tbcMain.Controls.Add(Me.tbpCO2Level)
         Me.tbcMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tbcMain.Location = New System.Drawing.Point(5, 5)
@@ -2656,504 +2594,8 @@ Partial Class CLMainForm
         Me.dgvSAP_EnergySavingTrustBestPracticePerformanceCompliant.HeaderText = "Energy Saving Trust Best Practice Performance Compliant"
         Me.dgvSAP_EnergySavingTrustBestPracticePerformanceCompliant.Name = "dgvSAP_EnergySavingTrustBestPracticePerformanceCompliant"
         Me.dgvSAP_EnergySavingTrustBestPracticePerformanceCompliant.ReadOnly = True
-        '
-        'tbpAccessory
-        '
-        Me.tbpAccessory.Controls.Add(Me.grbAccessory_OutputData)
-        Me.tbpAccessory.Controls.Add(Me.grbAccessory_EHD)
-        Me.tbpAccessory.Controls.Add(Me.grbAccessory_HWD)
-        Me.tbpAccessory.Controls.Add(Me.grbAccessory_CWD)
-        Me.tbpAccessory.Controls.Add(Me.grbAccessory_InputData)
-        Me.tbpAccessory.Location = New System.Drawing.Point(4, 22)
-        Me.tbpAccessory.Name = "tbpAccessory"
-        Me.tbpAccessory.Padding = New System.Windows.Forms.Padding(3)
-        Me.tbpAccessory.Size = New System.Drawing.Size(1476, 607)
-        Me.tbpAccessory.TabIndex = 2
-        Me.tbpAccessory.Text = "Accessory"
-        Me.tbpAccessory.UseVisualStyleBackColor = True
-        '
-        'grbAccessory_OutputData
-        '
-        Me.grbAccessory_OutputData.Controls.Add(Me.GroupBox1)
-        Me.grbAccessory_OutputData.Controls.Add(Me.GroupBox3)
-        Me.grbAccessory_OutputData.Controls.Add(Me.GroupBox2)
-        Me.grbAccessory_OutputData.Controls.Add(Me.lblAccessory_Status)
-        Me.grbAccessory_OutputData.Controls.Add(Me.Label16)
-        Me.grbAccessory_OutputData.Controls.Add(Me.Label19)
-        Me.grbAccessory_OutputData.Controls.Add(Me.Label17)
-        Me.grbAccessory_OutputData.Controls.Add(Me.txbAccessory_OutputData_Temp)
-        Me.grbAccessory_OutputData.Controls.Add(Me.txbAccessory_OutputData_Condensation)
-        Me.grbAccessory_OutputData.Controls.Add(Me.txbAccessory_OutputData_RH)
-        Me.grbAccessory_OutputData.Controls.Add(Me.txbAccessory_OutputData_PressureDrop)
-        Me.grbAccessory_OutputData.Controls.Add(Me.Label18)
-        Me.grbAccessory_OutputData.Location = New System.Drawing.Point(6, 242)
-        Me.grbAccessory_OutputData.Name = "grbAccessory_OutputData"
-        Me.grbAccessory_OutputData.Size = New System.Drawing.Size(755, 220)
-        Me.grbAccessory_OutputData.TabIndex = 10
-        Me.grbAccessory_OutputData.TabStop = False
-        Me.grbAccessory_OutputData.Text = "Output Data"
-        '
-        'GroupBox1
-        '
-        Me.GroupBox1.Controls.Add(Me.Label4)
-        Me.GroupBox1.Controls.Add(Me.txbAccessory_OutputData_CWDSensibleHeat)
-        Me.GroupBox1.Controls.Add(Me.Label3)
-        Me.GroupBox1.Controls.Add(Me.txbAccessory_OutputData_CWDHeatTransferred)
-        Me.GroupBox1.Location = New System.Drawing.Point(6, 93)
-        Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(234, 79)
-        Me.GroupBox1.TabIndex = 9
-        Me.GroupBox1.TabStop = False
-        Me.GroupBox1.Text = "CWD"
-        '
-        'Label4
-        '
-        Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(2, 48)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(93, 13)
-        Me.Label4.TabIndex = 8
-        Me.Label4.Text = "Sensible Heat [W]"
-        '
-        'txbAccessory_OutputData_CWDSensibleHeat
-        '
-        Me.txbAccessory_OutputData_CWDSensibleHeat.DataBindings.Add(New System.Windows.Forms.Binding("Text", Me.bsrUnitCalculator, "CWD_SensibleHeat", True))
-        Me.txbAccessory_OutputData_CWDSensibleHeat.Location = New System.Drawing.Point(140, 45)
-        Me.txbAccessory_OutputData_CWDSensibleHeat.Name = "txbAccessory_OutputData_CWDSensibleHeat"
-        Me.txbAccessory_OutputData_CWDSensibleHeat.ReadOnly = True
-        Me.txbAccessory_OutputData_CWDSensibleHeat.Size = New System.Drawing.Size(87, 20)
-        Me.txbAccessory_OutputData_CWDSensibleHeat.TabIndex = 9
-        '
-        'Label3
-        '
-        Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(2, 22)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(107, 13)
-        Me.Label3.TabIndex = 6
-        Me.Label3.Text = "Heat Transferred [W]"
-        '
-        'txbAccessory_OutputData_CWDHeatTransferred
-        '
-        Me.txbAccessory_OutputData_CWDHeatTransferred.DataBindings.Add(New System.Windows.Forms.Binding("Text", Me.bsrUnitCalculator, "CWD_HeatTransferred", True))
-        Me.txbAccessory_OutputData_CWDHeatTransferred.Location = New System.Drawing.Point(140, 19)
-        Me.txbAccessory_OutputData_CWDHeatTransferred.Name = "txbAccessory_OutputData_CWDHeatTransferred"
-        Me.txbAccessory_OutputData_CWDHeatTransferred.ReadOnly = True
-        Me.txbAccessory_OutputData_CWDHeatTransferred.Size = New System.Drawing.Size(87, 20)
-        Me.txbAccessory_OutputData_CWDHeatTransferred.TabIndex = 7
-        '
-        'GroupBox3
-        '
-        Me.GroupBox3.Location = New System.Drawing.Point(500, 93)
-        Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(249, 79)
-        Me.GroupBox3.TabIndex = 11
-        Me.GroupBox3.TabStop = False
-        Me.GroupBox3.Text = "EHD"
-        '
-        'GroupBox2
-        '
-        Me.GroupBox2.Controls.Add(Me.Label6)
-        Me.GroupBox2.Controls.Add(Me.txbAccessory_OutputData_HWDHeatTransferred)
-        Me.GroupBox2.Location = New System.Drawing.Point(251, 93)
-        Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(243, 79)
-        Me.GroupBox2.TabIndex = 10
-        Me.GroupBox2.TabStop = False
-        Me.GroupBox2.Text = "HWD"
-        '
-        'Label6
-        '
-        Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(6, 22)
-        Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(107, 13)
-        Me.Label6.TabIndex = 10
-        Me.Label6.Text = "Heat Transferred [W]"
-        '
-        'txbAccessory_OutputData_HWDHeatTransferred
-        '
-        Me.txbAccessory_OutputData_HWDHeatTransferred.DataBindings.Add(New System.Windows.Forms.Binding("Text", Me.bsrUnitCalculator, "HWD_HeatTransferred", True))
-        Me.txbAccessory_OutputData_HWDHeatTransferred.Location = New System.Drawing.Point(144, 19)
-        Me.txbAccessory_OutputData_HWDHeatTransferred.Name = "txbAccessory_OutputData_HWDHeatTransferred"
-        Me.txbAccessory_OutputData_HWDHeatTransferred.ReadOnly = True
-        Me.txbAccessory_OutputData_HWDHeatTransferred.Size = New System.Drawing.Size(87, 20)
-        Me.txbAccessory_OutputData_HWDHeatTransferred.TabIndex = 11
-        '
-        'lblAccessory_Status
-        '
-        Me.lblAccessory_Status.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.lblAccessory_Status.Location = New System.Drawing.Point(3, 193)
-        Me.lblAccessory_Status.Name = "lblAccessory_Status"
-        Me.lblAccessory_Status.Size = New System.Drawing.Size(749, 24)
-        Me.lblAccessory_Status.TabIndex = 8
-        Me.lblAccessory_Status.Text = "Status"
-        Me.lblAccessory_Status.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'Label16
-        '
-        Me.Label16.AutoSize = True
-        Me.Label16.Location = New System.Drawing.Point(8, 28)
-        Me.Label16.Name = "Label16"
-        Me.Label16.Size = New System.Drawing.Size(92, 13)
-        Me.Label16.TabIndex = 4
-        Me.Label16.Text = "Supply Temp. [°C]"
-        '
-        'Label19
-        '
-        Me.Label19.AutoSize = True
-        Me.Label19.Location = New System.Drawing.Point(257, 54)
-        Me.Label19.Name = "Label19"
-        Me.Label19.Size = New System.Drawing.Size(93, 13)
-        Me.Label19.TabIndex = 6
-        Me.Label19.Text = "Condensation [l/s]"
-        '
-        'Label17
-        '
-        Me.Label17.AutoSize = True
-        Me.Label17.Location = New System.Drawing.Point(257, 28)
-        Me.Label17.Name = "Label17"
-        Me.Label17.Size = New System.Drawing.Size(46, 13)
-        Me.Label17.TabIndex = 6
-        Me.Label17.Text = "R.H. [%]"
-        '
-        'txbAccessory_OutputData_Temp
-        '
-        Me.txbAccessory_OutputData_Temp.DataBindings.Add(New System.Windows.Forms.Binding("Text", Me.bsrUnitCalculator, "Accessory_Temp", True))
-        Me.txbAccessory_OutputData_Temp.Location = New System.Drawing.Point(146, 25)
-        Me.txbAccessory_OutputData_Temp.Name = "txbAccessory_OutputData_Temp"
-        Me.txbAccessory_OutputData_Temp.ReadOnly = True
-        Me.txbAccessory_OutputData_Temp.Size = New System.Drawing.Size(87, 20)
-        Me.txbAccessory_OutputData_Temp.TabIndex = 5
-        '
-        'txbAccessory_OutputData_Condensation
-        '
-        Me.txbAccessory_OutputData_Condensation.DataBindings.Add(New System.Windows.Forms.Binding("Text", Me.bsrUnitCalculator, "Accessory_CondensedWater", True))
-        Me.txbAccessory_OutputData_Condensation.Location = New System.Drawing.Point(395, 51)
-        Me.txbAccessory_OutputData_Condensation.Name = "txbAccessory_OutputData_Condensation"
-        Me.txbAccessory_OutputData_Condensation.ReadOnly = True
-        Me.txbAccessory_OutputData_Condensation.Size = New System.Drawing.Size(87, 20)
-        Me.txbAccessory_OutputData_Condensation.TabIndex = 7
-        '
-        'txbAccessory_OutputData_RH
-        '
-        Me.txbAccessory_OutputData_RH.DataBindings.Add(New System.Windows.Forms.Binding("Text", Me.bsrUnitCalculator, "Accessory_RH", True))
-        Me.txbAccessory_OutputData_RH.Location = New System.Drawing.Point(395, 25)
-        Me.txbAccessory_OutputData_RH.Name = "txbAccessory_OutputData_RH"
-        Me.txbAccessory_OutputData_RH.ReadOnly = True
-        Me.txbAccessory_OutputData_RH.Size = New System.Drawing.Size(87, 20)
-        Me.txbAccessory_OutputData_RH.TabIndex = 7
-        '
-        'txbAccessory_OutputData_PressureDrop
-        '
-        Me.txbAccessory_OutputData_PressureDrop.AcceptsReturn = True
-        Me.txbAccessory_OutputData_PressureDrop.DataBindings.Add(New System.Windows.Forms.Binding("Text", Me.bsrUnitCalculator, "Accessory_PressureDrop", True))
-        Me.txbAccessory_OutputData_PressureDrop.Location = New System.Drawing.Point(146, 51)
-        Me.txbAccessory_OutputData_PressureDrop.Name = "txbAccessory_OutputData_PressureDrop"
-        Me.txbAccessory_OutputData_PressureDrop.ReadOnly = True
-        Me.txbAccessory_OutputData_PressureDrop.Size = New System.Drawing.Size(87, 20)
-        Me.txbAccessory_OutputData_PressureDrop.TabIndex = 3
-        Me.txbAccessory_OutputData_PressureDrop.Text = "100"
-        '
-        'Label18
-        '
-        Me.Label18.AutoSize = True
-        Me.Label18.Location = New System.Drawing.Point(8, 54)
-        Me.Label18.Name = "Label18"
-        Me.Label18.Size = New System.Drawing.Size(96, 13)
-        Me.Label18.TabIndex = 2
-        Me.Label18.Text = "Pressure Drop [Pa]"
-        '
-        'grbAccessory_EHD
-        '
-        Me.grbAccessory_EHD.Controls.Add(Me.cbxAccessory_EHDEnabled)
-        Me.grbAccessory_EHD.Location = New System.Drawing.Point(506, 91)
-        Me.grbAccessory_EHD.Name = "grbAccessory_EHD"
-        Me.grbAccessory_EHD.Size = New System.Drawing.Size(255, 145)
-        Me.grbAccessory_EHD.TabIndex = 9
-        Me.grbAccessory_EHD.TabStop = False
-        '
-        'cbxAccessory_EHDEnabled
-        '
-        Me.cbxAccessory_EHDEnabled.AutoSize = True
-        Me.cbxAccessory_EHDEnabled.BackColor = System.Drawing.Color.White
-        Me.cbxAccessory_EHDEnabled.Location = New System.Drawing.Point(6, 0)
-        Me.cbxAccessory_EHDEnabled.Name = "cbxAccessory_EHDEnabled"
-        Me.cbxAccessory_EHDEnabled.Size = New System.Drawing.Size(49, 17)
-        Me.cbxAccessory_EHDEnabled.TabIndex = 12
-        Me.cbxAccessory_EHDEnabled.Text = "EHD"
-        Me.cbxAccessory_EHDEnabled.UseVisualStyleBackColor = False
-        '
-        'grbAccessory_HWD
-        '
-        Me.grbAccessory_HWD.Controls.Add(Me.nudAccessory_HWD_FluidTypeTec)
-        Me.grbAccessory_HWD.Controls.Add(Me.lblAccessory_HWD_OutletTemperature)
-        Me.grbAccessory_HWD.Controls.Add(Me.cmbAccessory_HWD_FluidType)
-        Me.grbAccessory_HWD.Controls.Add(Me.lblAccessory_HWD_FluidTypeTec)
-        Me.grbAccessory_HWD.Controls.Add(Me.lblAccessory_HWD_FluidType)
-        Me.grbAccessory_HWD.Controls.Add(Me.lblAccessory_HWD_InletTemperature)
-        Me.grbAccessory_HWD.Controls.Add(Me.txbAccessory_HWD_InletTemperature)
-        Me.grbAccessory_HWD.Controls.Add(Me.txbAccessory_HWD_OutletTemperature)
-        Me.grbAccessory_HWD.Controls.Add(Me.cbxAccessory_HWDEnabled)
-        Me.grbAccessory_HWD.Location = New System.Drawing.Point(257, 91)
-        Me.grbAccessory_HWD.Name = "grbAccessory_HWD"
-        Me.grbAccessory_HWD.Size = New System.Drawing.Size(243, 145)
-        Me.grbAccessory_HWD.TabIndex = 8
-        Me.grbAccessory_HWD.TabStop = False
-        '
-        'nudAccessory_HWD_FluidTypeTec
-        '
-        Me.nudAccessory_HWD_FluidTypeTec.Location = New System.Drawing.Point(144, 103)
-        Me.nudAccessory_HWD_FluidTypeTec.Maximum = New Decimal(New Integer() {60, 0, 0, 0})
-        Me.nudAccessory_HWD_FluidTypeTec.Minimum = New Decimal(New Integer() {10, 0, 0, 0})
-        Me.nudAccessory_HWD_FluidTypeTec.Name = "nudAccessory_HWD_FluidTypeTec"
-        Me.nudAccessory_HWD_FluidTypeTec.Size = New System.Drawing.Size(59, 20)
-        Me.nudAccessory_HWD_FluidTypeTec.TabIndex = 22
-        Me.nudAccessory_HWD_FluidTypeTec.Value = New Decimal(New Integer() {10, 0, 0, 0})
-        '
-        'lblAccessory_HWD_OutletTemperature
-        '
-        Me.lblAccessory_HWD_OutletTemperature.AutoSize = True
-        Me.lblAccessory_HWD_OutletTemperature.Location = New System.Drawing.Point(6, 53)
-        Me.lblAccessory_HWD_OutletTemperature.Name = "lblAccessory_HWD_OutletTemperature"
-        Me.lblAccessory_HWD_OutletTemperature.Size = New System.Drawing.Size(113, 13)
-        Me.lblAccessory_HWD_OutletTemperature.TabIndex = 21
-        Me.lblAccessory_HWD_OutletTemperature.Text = "Fluid Outlet Temp. [°C]"
-        '
-        'cmbAccessory_HWD_FluidType
-        '
-        Me.cmbAccessory_HWD_FluidType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cmbAccessory_HWD_FluidType.FormattingEnabled = True
-        Me.cmbAccessory_HWD_FluidType.Items.AddRange(New Object() {"CLRC 23", "CLRC 53", "CLRC 93", "CLRC 123", "CLRC 163", "CLRC 223", "CLRC 323", "CLRC 423"})
-        Me.cmbAccessory_HWD_FluidType.Location = New System.Drawing.Point(144, 75)
-        Me.cmbAccessory_HWD_FluidType.Name = "cmbAccessory_HWD_FluidType"
-        Me.cmbAccessory_HWD_FluidType.Size = New System.Drawing.Size(87, 21)
-        Me.cmbAccessory_HWD_FluidType.TabIndex = 20
-        '
-        'lblAccessory_HWD_FluidTypeTec
-        '
-        Me.lblAccessory_HWD_FluidTypeTec.AutoSize = True
-        Me.lblAccessory_HWD_FluidTypeTec.Location = New System.Drawing.Point(206, 105)
-        Me.lblAccessory_HWD_FluidTypeTec.Name = "lblAccessory_HWD_FluidTypeTec"
-        Me.lblAccessory_HWD_FluidTypeTec.Size = New System.Drawing.Size(15, 13)
-        Me.lblAccessory_HWD_FluidTypeTec.TabIndex = 19
-        Me.lblAccessory_HWD_FluidTypeTec.Text = "%"
-        '
-        'lblAccessory_HWD_FluidType
-        '
-        Me.lblAccessory_HWD_FluidType.AutoSize = True
-        Me.lblAccessory_HWD_FluidType.Location = New System.Drawing.Point(6, 79)
-        Me.lblAccessory_HWD_FluidType.Name = "lblAccessory_HWD_FluidType"
-        Me.lblAccessory_HWD_FluidType.Size = New System.Drawing.Size(56, 13)
-        Me.lblAccessory_HWD_FluidType.TabIndex = 18
-        Me.lblAccessory_HWD_FluidType.Text = "Fluid Type"
-        '
-        'lblAccessory_HWD_InletTemperature
-        '
-        Me.lblAccessory_HWD_InletTemperature.AutoSize = True
-        Me.lblAccessory_HWD_InletTemperature.Location = New System.Drawing.Point(6, 26)
-        Me.lblAccessory_HWD_InletTemperature.Name = "lblAccessory_HWD_InletTemperature"
-        Me.lblAccessory_HWD_InletTemperature.Size = New System.Drawing.Size(105, 13)
-        Me.lblAccessory_HWD_InletTemperature.TabIndex = 15
-        Me.lblAccessory_HWD_InletTemperature.Text = "Fluid Inlet Temp. [°C]"
-        '
-        'txbAccessory_HWD_InletTemperature
-        '
-        Me.txbAccessory_HWD_InletTemperature.DataBindings.Add(New System.Windows.Forms.Binding("Text", Me.bsrUnitCalculator, "HWD_InletTemperature", True))
-        Me.txbAccessory_HWD_InletTemperature.Location = New System.Drawing.Point(144, 23)
-        Me.txbAccessory_HWD_InletTemperature.Name = "txbAccessory_HWD_InletTemperature"
-        Me.txbAccessory_HWD_InletTemperature.Size = New System.Drawing.Size(87, 20)
-        Me.txbAccessory_HWD_InletTemperature.TabIndex = 16
-        Me.txbAccessory_HWD_InletTemperature.Text = "0"
-        '
-        'txbAccessory_HWD_OutletTemperature
-        '
-        Me.txbAccessory_HWD_OutletTemperature.DataBindings.Add(New System.Windows.Forms.Binding("Text", Me.bsrUnitCalculator, "HWD_OutletTemperature", True))
-        Me.txbAccessory_HWD_OutletTemperature.Location = New System.Drawing.Point(144, 50)
-        Me.txbAccessory_HWD_OutletTemperature.Name = "txbAccessory_HWD_OutletTemperature"
-        Me.txbAccessory_HWD_OutletTemperature.Size = New System.Drawing.Size(87, 20)
-        Me.txbAccessory_HWD_OutletTemperature.TabIndex = 17
-        Me.txbAccessory_HWD_OutletTemperature.Text = "35"
-        '
-        'cbxAccessory_HWDEnabled
-        '
-        Me.cbxAccessory_HWDEnabled.AutoSize = True
-        Me.cbxAccessory_HWDEnabled.BackColor = System.Drawing.Color.White
-        Me.cbxAccessory_HWDEnabled.Location = New System.Drawing.Point(6, 0)
-        Me.cbxAccessory_HWDEnabled.Name = "cbxAccessory_HWDEnabled"
-        Me.cbxAccessory_HWDEnabled.Size = New System.Drawing.Size(53, 17)
-        Me.cbxAccessory_HWDEnabled.TabIndex = 12
-        Me.cbxAccessory_HWDEnabled.Text = "HWD"
-        Me.cbxAccessory_HWDEnabled.UseVisualStyleBackColor = False
-        '
-        'grbAccessory_CWD
-        '
-        Me.grbAccessory_CWD.Controls.Add(Me.nudAccessory_CWD_FluidTypeTec)
-        Me.grbAccessory_CWD.Controls.Add(Me.lblAccessory_CWD_OutletTemperature)
-        Me.grbAccessory_CWD.Controls.Add(Me.cbxAccessory_CWDEnabled)
-        Me.grbAccessory_CWD.Controls.Add(Me.cmbAccessory_CWD_FluidType)
-        Me.grbAccessory_CWD.Controls.Add(Me.lblAccessory_CWD_FluidTypeTec)
-        Me.grbAccessory_CWD.Controls.Add(Me.lblAccessory_CWD_FluidType)
-        Me.grbAccessory_CWD.Controls.Add(Me.lblAccessory_CWD_InletTemperature)
-        Me.grbAccessory_CWD.Controls.Add(Me.txbAccessory_CWD_InletTemperature)
-        Me.grbAccessory_CWD.Controls.Add(Me.txbAccessory_CWD_OutletTemperature)
-        Me.grbAccessory_CWD.Location = New System.Drawing.Point(6, 91)
-        Me.grbAccessory_CWD.Name = "grbAccessory_CWD"
-        Me.grbAccessory_CWD.Size = New System.Drawing.Size(245, 145)
-        Me.grbAccessory_CWD.TabIndex = 7
-        Me.grbAccessory_CWD.TabStop = False
-        '
-        'nudAccessory_CWD_FluidTypeTec
-        '
-        Me.nudAccessory_CWD_FluidTypeTec.Location = New System.Drawing.Point(146, 103)
-        Me.nudAccessory_CWD_FluidTypeTec.Maximum = New Decimal(New Integer() {60, 0, 0, 0})
-        Me.nudAccessory_CWD_FluidTypeTec.Minimum = New Decimal(New Integer() {10, 0, 0, 0})
-        Me.nudAccessory_CWD_FluidTypeTec.Name = "nudAccessory_CWD_FluidTypeTec"
-        Me.nudAccessory_CWD_FluidTypeTec.Size = New System.Drawing.Size(59, 20)
-        Me.nudAccessory_CWD_FluidTypeTec.TabIndex = 14
-        Me.nudAccessory_CWD_FluidTypeTec.Value = New Decimal(New Integer() {10, 0, 0, 0})
-        '
-        'lblAccessory_CWD_OutletTemperature
-        '
-        Me.lblAccessory_CWD_OutletTemperature.AutoSize = True
-        Me.lblAccessory_CWD_OutletTemperature.Location = New System.Drawing.Point(8, 53)
-        Me.lblAccessory_CWD_OutletTemperature.Name = "lblAccessory_CWD_OutletTemperature"
-        Me.lblAccessory_CWD_OutletTemperature.Size = New System.Drawing.Size(113, 13)
-        Me.lblAccessory_CWD_OutletTemperature.TabIndex = 13
-        Me.lblAccessory_CWD_OutletTemperature.Text = "Fluid Outlet Temp. [°C]"
-        '
-        'cbxAccessory_CWDEnabled
-        '
-        Me.cbxAccessory_CWDEnabled.AutoSize = True
-        Me.cbxAccessory_CWDEnabled.BackColor = System.Drawing.Color.White
-        Me.cbxAccessory_CWDEnabled.Location = New System.Drawing.Point(6, 0)
-        Me.cbxAccessory_CWDEnabled.Name = "cbxAccessory_CWDEnabled"
-        Me.cbxAccessory_CWDEnabled.Size = New System.Drawing.Size(52, 17)
-        Me.cbxAccessory_CWDEnabled.TabIndex = 12
-        Me.cbxAccessory_CWDEnabled.Text = "CWD"
-        Me.cbxAccessory_CWDEnabled.UseVisualStyleBackColor = False
-        '
-        'cmbAccessory_CWD_FluidType
-        '
-        Me.cmbAccessory_CWD_FluidType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cmbAccessory_CWD_FluidType.FormattingEnabled = True
-        Me.cmbAccessory_CWD_FluidType.Location = New System.Drawing.Point(146, 75)
-        Me.cmbAccessory_CWD_FluidType.Name = "cmbAccessory_CWD_FluidType"
-        Me.cmbAccessory_CWD_FluidType.Size = New System.Drawing.Size(87, 21)
-        Me.cmbAccessory_CWD_FluidType.TabIndex = 9
-        '
-        'lblAccessory_CWD_FluidTypeTec
-        '
-        Me.lblAccessory_CWD_FluidTypeTec.AutoSize = True
-        Me.lblAccessory_CWD_FluidTypeTec.Location = New System.Drawing.Point(209, 105)
-        Me.lblAccessory_CWD_FluidTypeTec.Name = "lblAccessory_CWD_FluidTypeTec"
-        Me.lblAccessory_CWD_FluidTypeTec.Size = New System.Drawing.Size(15, 13)
-        Me.lblAccessory_CWD_FluidTypeTec.TabIndex = 8
-        Me.lblAccessory_CWD_FluidTypeTec.Text = "%"
-        '
-        'lblAccessory_CWD_FluidType
-        '
-        Me.lblAccessory_CWD_FluidType.AutoSize = True
-        Me.lblAccessory_CWD_FluidType.Location = New System.Drawing.Point(8, 79)
-        Me.lblAccessory_CWD_FluidType.Name = "lblAccessory_CWD_FluidType"
-        Me.lblAccessory_CWD_FluidType.Size = New System.Drawing.Size(56, 13)
-        Me.lblAccessory_CWD_FluidType.TabIndex = 8
-        Me.lblAccessory_CWD_FluidType.Text = "Fluid Type"
-        '
-        'lblAccessory_CWD_InletTemperature
-        '
-        Me.lblAccessory_CWD_InletTemperature.AutoSize = True
-        Me.lblAccessory_CWD_InletTemperature.Location = New System.Drawing.Point(8, 26)
-        Me.lblAccessory_CWD_InletTemperature.Name = "lblAccessory_CWD_InletTemperature"
-        Me.lblAccessory_CWD_InletTemperature.Size = New System.Drawing.Size(105, 13)
-        Me.lblAccessory_CWD_InletTemperature.TabIndex = 4
-        Me.lblAccessory_CWD_InletTemperature.Text = "Fluid Inlet Temp. [°C]"
-        '
-        'txbAccessory_CWD_InletTemperature
-        '
-        Me.txbAccessory_CWD_InletTemperature.DataBindings.Add(New System.Windows.Forms.Binding("Text", Me.bsrUnitCalculator, "CWD_InletTemperature", True))
-        Me.txbAccessory_CWD_InletTemperature.Location = New System.Drawing.Point(146, 23)
-        Me.txbAccessory_CWD_InletTemperature.Name = "txbAccessory_CWD_InletTemperature"
-        Me.txbAccessory_CWD_InletTemperature.Size = New System.Drawing.Size(87, 20)
-        Me.txbAccessory_CWD_InletTemperature.TabIndex = 5
-        Me.txbAccessory_CWD_InletTemperature.Text = "7"
-        '
-        'txbAccessory_CWD_OutletTemperature
-        '
-        Me.txbAccessory_CWD_OutletTemperature.DataBindings.Add(New System.Windows.Forms.Binding("Text", Me.bsrUnitCalculator, "CWD_OutletTemperature", True))
-        Me.txbAccessory_CWD_OutletTemperature.Location = New System.Drawing.Point(146, 50)
-        Me.txbAccessory_CWD_OutletTemperature.Name = "txbAccessory_CWD_OutletTemperature"
-        Me.txbAccessory_CWD_OutletTemperature.Size = New System.Drawing.Size(87, 20)
-        Me.txbAccessory_CWD_OutletTemperature.TabIndex = 7
-        Me.txbAccessory_CWD_OutletTemperature.Text = "12"
-        '
-        'grbAccessory_InputData
-        '
-        Me.grbAccessory_InputData.Controls.Add(Me.lblAccessory_InputData_Temp)
-        Me.grbAccessory_InputData.Controls.Add(Me.lblAccessory_InputData_RHTemp)
-        Me.grbAccessory_InputData.Controls.Add(Me.txbAccessory_InputData_Temp)
-        Me.grbAccessory_InputData.Controls.Add(Me.txbAccessory_InputData_RH)
-        Me.grbAccessory_InputData.Controls.Add(Me.txbAccessory_InputData_AirFlow)
-        Me.grbAccessory_InputData.Controls.Add(Me.lblAccessory_InputData_AirFlow)
-        Me.grbAccessory_InputData.Location = New System.Drawing.Point(6, 6)
-        Me.grbAccessory_InputData.Name = "grbAccessory_InputData"
-        Me.grbAccessory_InputData.Size = New System.Drawing.Size(755, 79)
-        Me.grbAccessory_InputData.TabIndex = 6
-        Me.grbAccessory_InputData.TabStop = False
-        Me.grbAccessory_InputData.Text = "Input Data"
-        '
-        'lblAccessory_InputData_Temp
-        '
-        Me.lblAccessory_InputData_Temp.AutoSize = True
-        Me.lblAccessory_InputData_Temp.Location = New System.Drawing.Point(8, 26)
-        Me.lblAccessory_InputData_Temp.Name = "lblAccessory_InputData_Temp"
-        Me.lblAccessory_InputData_Temp.Size = New System.Drawing.Size(92, 13)
-        Me.lblAccessory_InputData_Temp.TabIndex = 4
-        Me.lblAccessory_InputData_Temp.Text = "Supply Temp. [°C]"
-        '
-        'lblAccessory_InputData_RHTemp
-        '
-        Me.lblAccessory_InputData_RHTemp.AutoSize = True
-        Me.lblAccessory_InputData_RHTemp.Location = New System.Drawing.Point(285, 26)
-        Me.lblAccessory_InputData_RHTemp.Name = "lblAccessory_InputData_RHTemp"
-        Me.lblAccessory_InputData_RHTemp.Size = New System.Drawing.Size(46, 13)
-        Me.lblAccessory_InputData_RHTemp.TabIndex = 6
-        Me.lblAccessory_InputData_RHTemp.Text = "R.H. [%]"
-        '
-        'txbAccessory_InputData_Temp
-        '
-        Me.txbAccessory_InputData_Temp.Location = New System.Drawing.Point(146, 23)
-        Me.txbAccessory_InputData_Temp.Name = "txbAccessory_InputData_Temp"
-        Me.txbAccessory_InputData_Temp.ReadOnly = True
-        Me.txbAccessory_InputData_Temp.Size = New System.Drawing.Size(87, 20)
-        Me.txbAccessory_InputData_Temp.TabIndex = 5
-        '
-        'txbAccessory_InputData_RH
-        '
-        Me.txbAccessory_InputData_RH.Location = New System.Drawing.Point(407, 23)
-        Me.txbAccessory_InputData_RH.Name = "txbAccessory_InputData_RH"
-        Me.txbAccessory_InputData_RH.ReadOnly = True
-        Me.txbAccessory_InputData_RH.Size = New System.Drawing.Size(87, 20)
-        Me.txbAccessory_InputData_RH.TabIndex = 7
-        '
-        'txbAccessory_InputData_AirFlow
-        '
-        Me.txbAccessory_InputData_AirFlow.AcceptsReturn = True
-        Me.txbAccessory_InputData_AirFlow.Location = New System.Drawing.Point(146, 49)
-        Me.txbAccessory_InputData_AirFlow.Name = "txbAccessory_InputData_AirFlow"
-        Me.txbAccessory_InputData_AirFlow.Size = New System.Drawing.Size(87, 20)
-        Me.txbAccessory_InputData_AirFlow.TabIndex = 3
-        Me.txbAccessory_InputData_AirFlow.Text = "100"
-        '
-        'lblAccessory_InputData_AirFlow
-        '
-        Me.lblAccessory_InputData_AirFlow.AutoSize = True
-        Me.lblAccessory_InputData_AirFlow.Location = New System.Drawing.Point(8, 52)
-        Me.lblAccessory_InputData_AirFlow.Name = "lblAccessory_InputData_AirFlow"
-        Me.lblAccessory_InputData_AirFlow.Size = New System.Drawing.Size(78, 13)
-        Me.lblAccessory_InputData_AirFlow.TabIndex = 2
-        Me.lblAccessory_InputData_AirFlow.Text = "Air Flow [m3/h]"
-        '
+       '
+       '
         'tbpCO2Level
         '
         Me.tbpCO2Level.Controls.Add(Me.chbCO2Level_addtoreport)
@@ -3662,10 +3104,6 @@ Partial Class CLMainForm
         '
         Me.ToolTip1.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info
         '
-        'bsrUnitCalculator
-        '
-        Me.bsrUnitCalculator.DataSource = GetType(SSW.CLUnitCalculator)
-        '
         'GroupBox6
         '
         Me.GroupBox6.Controls.Add(Me.grbPerformance_HeatExchangerPerformances)
@@ -3780,25 +3218,8 @@ Partial Class CLMainForm
         Me.tbcMain.ResumeLayout(False)
         Me.tbpCertification.ResumeLayout(False)
         Me.tbpCertification.PerformLayout()
-        CType(Me.dgvSAP, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.tbpAccessory.ResumeLayout(False)
-        Me.grbAccessory_OutputData.ResumeLayout(False)
-        Me.grbAccessory_OutputData.PerformLayout()
-        Me.GroupBox1.ResumeLayout(False)
-        Me.GroupBox1.PerformLayout()
-        Me.GroupBox2.ResumeLayout(False)
-        Me.GroupBox2.PerformLayout()
-        Me.grbAccessory_EHD.ResumeLayout(False)
-        Me.grbAccessory_EHD.PerformLayout()
-        Me.grbAccessory_HWD.ResumeLayout(False)
-        Me.grbAccessory_HWD.PerformLayout()
-        CType(Me.nudAccessory_HWD_FluidTypeTec, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.grbAccessory_CWD.ResumeLayout(False)
-        Me.grbAccessory_CWD.PerformLayout()
-        CType(Me.nudAccessory_CWD_FluidTypeTec, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.grbAccessory_InputData.ResumeLayout(False)
-        Me.grbAccessory_InputData.PerformLayout()
-        Me.tbpCO2Level.ResumeLayout(False)
+       CType(Me.dgvSAP, System.ComponentModel.ISupportInitialize).EndInit()
+       Me.tbpCO2Level.ResumeLayout(False)
         Me.tbpCO2Level.PerformLayout()
         CType(Me.crtCO2Level_Chart1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.grbCO2Level_Parameters.ResumeLayout(False)
@@ -3809,7 +3230,6 @@ Partial Class CLMainForm
         Me.grbCO2Level_Room.PerformLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlMain.ResumeLayout(False)
-        CType(Me.bsrUnitCalculator, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox6.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
@@ -3914,58 +3334,8 @@ Partial Class CLMainForm
     Friend WithEvents cmbPerformance_Series As System.Windows.Forms.ComboBox
     Friend WithEvents lblPerformance_Series As System.Windows.Forms.Label
     Friend WithEvents sfdSavePdf As System.Windows.Forms.SaveFileDialog
-    Friend WithEvents lblPerformance_ExhaustOutletRH As System.Windows.Forms.Label
-    Friend WithEvents tbpAccessory As System.Windows.Forms.TabPage
-    Friend WithEvents bsrUnitCalculator As System.Windows.Forms.BindingSource
-    Friend WithEvents grbAccessory_OutputData As System.Windows.Forms.GroupBox
-    Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
-    Friend WithEvents Label4 As System.Windows.Forms.Label
-    Friend WithEvents txbAccessory_OutputData_CWDSensibleHeat As System.Windows.Forms.TextBox
-    Friend WithEvents Label3 As System.Windows.Forms.Label
-    Friend WithEvents txbAccessory_OutputData_CWDHeatTransferred As System.Windows.Forms.TextBox
-    Friend WithEvents GroupBox3 As System.Windows.Forms.GroupBox
-    Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
-    Friend WithEvents Label6 As System.Windows.Forms.Label
-    Friend WithEvents txbAccessory_OutputData_HWDHeatTransferred As System.Windows.Forms.TextBox
-    Friend WithEvents lblAccessory_Status As System.Windows.Forms.Label
-    Friend WithEvents Label16 As System.Windows.Forms.Label
-    Friend WithEvents Label19 As System.Windows.Forms.Label
-    Friend WithEvents Label17 As System.Windows.Forms.Label
-    Friend WithEvents txbAccessory_OutputData_Temp As System.Windows.Forms.TextBox
-    Friend WithEvents txbAccessory_OutputData_Condensation As System.Windows.Forms.TextBox
-    Friend WithEvents txbAccessory_OutputData_RH As System.Windows.Forms.TextBox
-    Friend WithEvents txbAccessory_OutputData_PressureDrop As System.Windows.Forms.TextBox
-    Friend WithEvents Label18 As System.Windows.Forms.Label
-    Friend WithEvents grbAccessory_EHD As System.Windows.Forms.GroupBox
-    Friend WithEvents cbxAccessory_EHDEnabled As System.Windows.Forms.CheckBox
-    Friend WithEvents grbAccessory_HWD As System.Windows.Forms.GroupBox
-    Friend WithEvents nudAccessory_HWD_FluidTypeTec As System.Windows.Forms.NumericUpDown
-    Friend WithEvents lblAccessory_HWD_OutletTemperature As System.Windows.Forms.Label
-    Friend WithEvents cmbAccessory_HWD_FluidType As System.Windows.Forms.ComboBox
-    Friend WithEvents lblAccessory_HWD_FluidTypeTec As System.Windows.Forms.Label
-    Friend WithEvents lblAccessory_HWD_FluidType As System.Windows.Forms.Label
-    Friend WithEvents lblAccessory_HWD_InletTemperature As System.Windows.Forms.Label
-    Friend WithEvents txbAccessory_HWD_InletTemperature As System.Windows.Forms.TextBox
-    Friend WithEvents txbAccessory_HWD_OutletTemperature As System.Windows.Forms.TextBox
-    Friend WithEvents cbxAccessory_HWDEnabled As System.Windows.Forms.CheckBox
-    Friend WithEvents grbAccessory_CWD As System.Windows.Forms.GroupBox
-    Friend WithEvents nudAccessory_CWD_FluidTypeTec As System.Windows.Forms.NumericUpDown
-    Friend WithEvents lblAccessory_CWD_OutletTemperature As System.Windows.Forms.Label
-    Friend WithEvents cbxAccessory_CWDEnabled As System.Windows.Forms.CheckBox
-    Friend WithEvents cmbAccessory_CWD_FluidType As System.Windows.Forms.ComboBox
-    Friend WithEvents lblAccessory_CWD_FluidTypeTec As System.Windows.Forms.Label
-    Friend WithEvents lblAccessory_CWD_FluidType As System.Windows.Forms.Label
-    Friend WithEvents lblAccessory_CWD_InletTemperature As System.Windows.Forms.Label
-    Friend WithEvents txbAccessory_CWD_InletTemperature As System.Windows.Forms.TextBox
-    Friend WithEvents txbAccessory_CWD_OutletTemperature As System.Windows.Forms.TextBox
-    Friend WithEvents grbAccessory_InputData As System.Windows.Forms.GroupBox
-    Friend WithEvents lblAccessory_InputData_Temp As System.Windows.Forms.Label
-    Friend WithEvents lblAccessory_InputData_RHTemp As System.Windows.Forms.Label
-    Friend WithEvents txbAccessory_InputData_Temp As System.Windows.Forms.TextBox
-    Friend WithEvents txbAccessory_InputData_RH As System.Windows.Forms.TextBox
-    Friend WithEvents txbAccessory_InputData_AirFlow As System.Windows.Forms.TextBox
-    Friend WithEvents lblAccessory_InputData_AirFlow As System.Windows.Forms.Label
-    Friend WithEvents tsmiOption_Language_PL As System.Windows.Forms.ToolStripMenuItem
+   Friend WithEvents lblPerformance_ExhaustOutletRH As System.Windows.Forms.Label
+   Friend WithEvents tsmiOption_Language_PL As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents tsmiOption_Language_SL As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents grbPerformance_SEL As System.Windows.Forms.GroupBox
     Friend WithEvents nudPerformance_SEL_Limit As System.Windows.Forms.NumericUpDown

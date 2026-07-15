@@ -1,6 +1,11 @@
 SSW Changelog
 =============
 
+Unreleased
+----------
+- Removed the obsolete Accessory tab and the legacy structured COILcalc integration.
+- Retained the HEDes local water-coil calculation used by the Water Coils tab.
+
 1.3.0.45 - 2026-07-14
 ---------------------
 - Added versioned SDF compatibility checks and database metadata diagnostics.

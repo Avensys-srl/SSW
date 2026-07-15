@@ -140,109 +140,15 @@ Public Enum CLCOTypeOfCircuits
 	Fixed = 3
 End Enum
 
-Public Structure CLCOILStructure
-
-	'input
-	Dim COIL As Integer
-	Dim GEOMETRY As Integer
-	Dim ROWSMAT As Integer
-	Dim FINSPACING As Integer
-	Dim FINSPACINGFREE As Double
-	Dim FINMAT As Integer
-	Dim FINOPTION As Integer
-	Dim FLUID_TYPE As Integer
-	Dim FLUID_TYPE_TEC_ As Double
-	Dim HEADERMAT_DE_ As Integer
-	Dim HEADERTYPE_DC_ As Integer
-	Dim TYPEOFCIRCUITS As Integer
-	Dim FREETUBES As Double
-	Dim FLUID_MAXPRESSUREWORK As Integer
-	Dim FLUID_MAXPRESSUREDROP As Double
-	Dim SEALEVEL As Double
-	Dim FOULINGFACTOR As Double
-	Dim SAFETYFACTOR As Double
-	Dim AIR_FLOWRATE As Double
-	Dim AIR_VELOCITY As Double
-	Dim AIR_INLETTEMP As Double
-	Dim AIR_HUMIDITYIN As Double
-	Dim AIR_OUTLETTEMP As Double
-	Dim FLUID_INLETTEMP_TS_ As Double
-	Dim FLUID_OUTLETTEMP_TS_ As Double
-	Dim FLUID_FLOWRATE_TC_ As Double
-	Dim NOMINALCAPACITY As Double
-	Dim LENGHT As Double
-	Dim HEIGHT As Double
-	Dim NUMBEROFROWS As Double
-	Dim NUMBEROFCIRCUITS As Double
-	Dim HEADERCONF As Integer
-
-	'output
-	Dim _AIR_FLOWRATE As Double
-	Dim _AIR_VELOCITY As Double
-	Dim _AIR_INLETTEMP As Double
-	Dim _AIR_HUMIDITYIN As Double
-	Dim _AIR_OUTLETTEMP As Double
-	Dim _AIR_HUMIDITYOUT As Double
-	Dim _AIR_PRESSUREDROP As Double
-	Dim _SHF As Double
-	Dim _AIR_CONDENSEDWATER As Double
-	Dim _FLUID_INLETTEMP_TS As Double
-	Dim _FLUID_OUTLETTEMP_TS As Double
-	Dim _FLUID_FLOWRATE As Double
-	Dim _FLUID_VELOCITY_TEC_ As Double
-	Dim _FLUID_PRESSUREDROP As Double
-	Dim _NOMINALCAPACITY As Double
-	Dim _MAXCAPACITY As Double
-	Dim _LENGHT As Double
-	Dim _HEIGHT As Double
-	Dim _NUMBEROFROWS As Double
-	Dim _NUMBEROFCIRCUITS As Double
-	Dim _INTSURFACE As Double
-	Dim _EXTSURFACE As Double
-	Dim _VOLUME As Double
-	Dim _WEIGHT As Double
-	Dim _AIR_PRESSURE As Double
-	Dim _FLUID_HEADERPRESSUREDROP As Double
-	Dim _AIR_FLOWRATEKGS As Double
-	Dim _FLUID_FLOWRATEKGS As Double
-	Dim _AIR_INLETWATER As Double
-	Dim _AIR_OUTLETWATER As Double
-	Dim _FLUID_INLETVAPORFRACTION As Double
-	Dim _CODE As String
-	Dim _FLUID As String
-	Dim _FLUID_PRESSURETEC As Double
-
-	'others
-	Dim AUXILIARY As Double
-	Dim PASSWORD As String
-	Dim AIR__STD As Double
-	Dim FLUID__NAME As String
-	Dim FLUID__SPECHEAD As Double
-	Dim FLUID__SPECWEIGHT As Double
-	Dim FLUID__VISCOSITY As Double
-	Dim FLUID__CONDUCTIVITY As Double
-
-End Structure
 
 Public Class CLCOIL
 
-	<DllImport("COILcalc.dll", EntryPoint:="COILcalc", CharSet:=CharSet.Auto, CallingConvention:=CallingConvention.Cdecl)> _
-	Public Shared Function COILcalc(ByRef data As CLCOILStructure) As Long
-
-	End Function
 
     <DllImport("COILcalc.dll", EntryPoint:="CoilCalc", CharSet:=CharSet.Ansi, CallingConvention:=CallingConvention.StdCall)> _
     Public Shared Function CoilCalcString(<MarshalAs(UnmanagedType.AnsiBStr)> reqStr As String, ByRef retStr As String) As Integer
 
     End Function
 
-	Public Shared Sub Calculate(ByRef data As CLCOILStructure)
-
-        Dim retValue As Long
-        'data.PASSWORD = "KFLDBNW4L9FN7S"
-        data.PASSWORD = "KFLFMN45698DHN"
-        retValue = COILcalc(data)
-	End Sub
 
     Public Shared Function Calculate(reqStr As String) As String
         Dim retStr As String = New String(New Char(), 5000)

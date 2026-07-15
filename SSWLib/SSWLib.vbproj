@@ -348,7 +348,6 @@
     <Compile Include="CLModule.vb" />
     <Compile Include="CLEnvironment.vb" />
     <Compile Include="CLTechnicalVersions.vb" />
-    <Compile Include="CLUnitCalculator.vb" />
     <Compile Include="Resources.hu.Designer.vb">
       <DependentUpon>Resources.hu.resx</DependentUpon>
       <AutoGen>True</AutoGen>

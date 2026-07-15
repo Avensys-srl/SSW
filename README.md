@@ -17,7 +17,7 @@ This repository targets the .NET Framework and uses SQL Server Compact for the l
 - `SSW.sln`: Visual Studio solution.
 - `SSW/`: C# WinForms executable (entry point, profile selection, build configurations).
 - `SSWLib/`: VB.NET class library with UI forms and domain logic.
-- `3rd/`: third-party binaries (e.g., `COILcalc.dll`).
+- `3rd/`: HEDes local water-coil calculation runtime (`COILcalc.dll`) and its dependencies.
 - `packages/`: NuGet packages (legacy `packages.config` restore).
 
 ## Profiles

@@ -126,6 +126,13 @@ Public NotInheritable Class CLDatabaseCompatibilityReader
                 TableColumnExists(connection, "CLHeatRecoveryModelCoils", "InstallationType")
         })
 
+        result.AddFeature(New CLDatabaseFeatureInfo With {
+            .Code = "ElectricHeaters",
+            .Version = 1,
+            .IsEnabled = TableExists(connection, "CLElectricHeaters") AndAlso
+                TableExists(connection, "CLHeatRecoveryModelElectricHeaters")
+        })
+
         Return result
     End Function
 
