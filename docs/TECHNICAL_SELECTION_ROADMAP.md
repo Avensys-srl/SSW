@@ -486,3 +486,6 @@ da `/usage` nel Codex CLI.
   per IP, cliente attivo, token per installazione, audit e revoca.
 - I sorgenti API canonici in `A:\webavensys\ssw2\api` sono riallineati alla
   copia pubblicata, inclusi geolocalizzazione locale, migrazione 004 e test.
+- GeoIP dietro reverse proxy: `192.168.1.16` e' configurato come proxy fidato;
+  gli header IPv4/IPv6 con porta vengono normalizzati e l'IP cliente effettivo
+  alimenta sia la localizzazione sia il rate limit di enrollment.
