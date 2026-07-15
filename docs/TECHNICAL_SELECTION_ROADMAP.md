@@ -29,6 +29,10 @@ registrazione centralizzata delle selezioni SSW.
   SDF schema 2 con feature `ElectricHeaters`. Le relazioni distinguono
   installazione interna/esterna e modo EHD (post-riscaldo) / PEHD
   (pre-riscaldo). Il calcolo SSW resta un passo successivo.
+- [x] Messa in sicurezza la pubblicazione di `CLDataCentralLib` verso
+  `CLDCExplorer`: build unica, copia della DLL, manifest con versione, commit e
+  SHA-256, verifica bloccante durante la build Explorer e test negativo su
+  manifest non coerente.
 - [ ] Dopo il reset quota: punto 17, geolocalizzazione approssimativa.
 - [ ] 17-22. Attivita' residue descritte nelle sezioni seguenti.
 
@@ -278,6 +282,9 @@ registrazione centralizzata delle selezioni SSW.
 ### 19. Manifest e aggiornamenti dei componenti
 
 - Repository: `D:\mdev\SSW` e `A:\webavensys\api`.
+- Stato parziale: completata la tracciabilita' locale della DLL exporter tra
+  `CLDataCentralLib` e `CLDCExplorer`, con manifest SHA-256/versione/commit e
+  blocco della build in caso di disallineamento.
 - Estendere l'API aggiornamenti con versioni, requisiti e SHA-256 di SSW, DLL,
   SDF e report.
 - La prima versione distribuisce sempre un installer completo e atomico.
@@ -449,6 +456,8 @@ da `/usage` nel Codex CLI.
 
 ### Onda D - Gestione e rilascio
 
+- Stato: avviata; completata la protezione della dipendenza exporter usata da
+  Explorer. Restano il manifest di distribuzione completo e i punti 18, 20-22.
 - Punti 18-22: recupero Avensys, manifest componenti, traduzioni/privacy,
   matrice di test e rilascio pilota.
 - Obiettivo: rendere il sistema operabile, aggiornabile e pubblicabile.
