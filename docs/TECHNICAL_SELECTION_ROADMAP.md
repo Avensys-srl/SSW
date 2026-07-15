@@ -33,7 +33,7 @@ registrazione centralizzata delle selezioni SSW.
   `CLDCExplorer`: build unica, copia della DLL, manifest con versione, commit e
   SHA-256, verifica bloccante durante la build Explorer e test negativo su
   manifest non coerente.
-- [ ] Dopo il reset quota: punto 17, geolocalizzazione approssimativa.
+- [ ] Prossimo punto: 17, geolocalizzazione approssimativa.
 - [ ] 17-22. Attivita' residue descritte nelle sezioni seguenti.
 
 ## Regole architetturali approvate
@@ -264,8 +264,8 @@ registrazione centralizzata delle selezioni SSW.
 
 ### 17. Geolocalizzazione approssimativa
 
-- Pianificazione: rinviata al primo checkpoint successivo al reset della quota;
-  non blocca la release pilota `1.3.0.45`.
+- Pianificazione: prossimo intervento; non ha bloccato la release pilota
+  `1.3.0.45`.
 - Ambiente: API server.
 - Usare un database GeoIP locale aggiornabile.
 - Salvare codice nazione, citta', sorgente e livello di accuratezza.
@@ -449,7 +449,7 @@ da `/usage` nel Codex CLI.
   tradotti e impaginati sotto il logo; layout PDF approvato.
 - Release pilota `1.3.0.45`: installer AV x86 verificato con aggiornamento pulito,
   registrazione zero-touch e consumo della chiave bootstrap; la geolocalizzazione
-  resta intenzionalmente rinviata al primo checkpoint dopo il reset quota.
+  resta da implementare come prossimo punto.
 - Punti 13-17: snapshot, revisioni, Genera report, salvataggio automatico,
   intestazione RDLC e geolocalizzazione.
 - Obiettivo: completare il flusso cliente end-to-end.
