@@ -313,6 +313,7 @@
     </Compile>
     <Compile Include="CLCOIL.vb" />
     <Compile Include="CLCoilPerformanceCalculator.vb" />
+    <Compile Include="CLCoilHydraulicRules.vb" />
     <Compile Include="CLDatabaseCompatibility.vb" />
     <Compile Include="CLReportViewerForm.Designer.vb">
       <DependentUpon>CLReportViewerForm.vb</DependentUpon>
@@ -322,6 +323,7 @@
     </Compile>
     <Compile Include="CLSelectionProjectModel.vb" />
     <Compile Include="CLSelectionProjectSerializer.vb" />
+    <Compile Include="CLSelectionFileName.vb" />
     <Compile Include="CLSelectionInstallationState.vb" />
     <Compile Include="CLSelectionCredentialStore.vb" />
     <Compile Include="CLSelectionApiClient.vb" />

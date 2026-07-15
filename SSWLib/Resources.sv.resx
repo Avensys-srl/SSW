@@ -638,7 +638,7 @@
     <value>Sensibel [W]</value>
   </data>
   <data name="MainForm_CoilPerformance_ResultAirOut" xml:space="preserve">
-    <value>Luft ut [C]</value>
+    <value>Max. utgående lufttemp. [C]</value>
   </data>
   <data name="MainForm_CoilPerformance_ResultRHOut" xml:space="preserve">
     <value>R.F. ut [%]</value>
@@ -742,4 +742,9 @@
   <data name="MainForm_TechnicalSelectionStatus" xml:space="preserve"><value>Status</value></data>
   <data name="MainForm_TechnicalSelectionStatus_Registered" xml:space="preserve"><value>Registrerad</value></data>
   <data name="MainForm_TechnicalSelectionStatus_Draft" xml:space="preserve"><value>Utkast</value></data>
+  <data name="MainForm_CoilPerformance_InvalidCoolingTemperatures" xml:space="preserve"><value>Utgående kylvattentemperatur måste vara minst 1 K högre än ingående temperatur.</value></data>
+  <data name="MainForm_CoilPerformance_InvalidHeatingTemperatures" xml:space="preserve"><value>Ingående varmvattentemperatur måste vara minst 1 K högre än utgående temperatur.</value></data>
+  <data name="MainForm_CoilPerformance_LowWaterDeltaT" xml:space="preserve"><value>Låg temperaturdifferens för vatten (3 K ≤ ΔT &lt; 5 K). Vattenflödet är högre än normalt.</value></data>
+  <data name="MainForm_CoilPerformance_CriticalWaterDeltaT" xml:space="preserve"><value>Mycket låg temperaturdifferens för vatten (under 3 K). För högt vattenflöde och tryckfall. Kontrollera den hydrauliska dimensioneringen.</value></data>
+  <data name="MainForm_CoilPerformance_WaterPressureDropWarning" xml:space="preserve"><value>Tryckfallet på vattensidan överskrider den rekommenderade gränsen (40 kPa). Hydraulisk energianvändning och pumpkostnader kan bli för höga. Överväg ett större batteri eller lägre vattenhastighet.</value></data>
 </root>

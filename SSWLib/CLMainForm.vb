@@ -2960,6 +2960,7 @@ Public Class CLMainForm
         nudCoilPerformance_CoolingOut = CreateCoilNumeric(144, 116, -50, 100, 12, 1)
         nudCoilPerformance_HeatingIn = CreateCoilNumeric(144, 152, -50, 150, 80, 1)
         nudCoilPerformance_HeatingOut = CreateCoilNumeric(144, 180, -50, 150, 70, 1)
+        CoilPerformance_UpdateWaterTemperatureLimits()
 
         grbFluid.Controls.Add(CreateCoilLabel("MainForm_CoilPerformance_FluidType", "Fluid", 12, 27))
         grbFluid.Controls.Add(cmbCoilPerformance_FluidType)
@@ -3037,7 +3038,7 @@ Public Class CLMainForm
         AddCoilGridColumn("Status", "MainForm_CoilPerformance_ResultStatus", "Status")
         AddCoilGridColumn("Capacity", "MainForm_CoilPerformance_ResultCapacity", "Capacity [W]")
         AddCoilGridColumn("Sensible", "MainForm_CoilPerformance_ResultSensible", "Sensible [W]")
-        AddCoilGridColumn("TempOut", "MainForm_CoilPerformance_ResultAirOut", "Air out [C]")
+        AddCoilGridColumn("TempOut", "MainForm_CoilPerformance_ResultAirOut", "Max. outlet air temp. [C]")
         AddCoilGridColumn("RHOut", "MainForm_CoilPerformance_ResultRHOut", "R.H. out [%]")
         AddCoilGridColumn("Cond", "MainForm_CoilPerformance_ResultCond", "Cond. [l/h]")
         AddCoilGridColumn("DP", "MainForm_CoilPerformance_ResultDP", "DP [Pa]")
@@ -3048,8 +3049,10 @@ Public Class CLMainForm
         dgvCoilPerformance_Results.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
 
         lblCoilPerformance_Status = New Label()
-        lblCoilPerformance_Status.AutoSize = True
+        lblCoilPerformance_Status.AutoSize = False
+        lblCoilPerformance_Status.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
         lblCoilPerformance_Status.Location = New Point(8, 332)
+        lblCoilPerformance_Status.Size = New Size(1068, 54)
         lblCoilPerformance_Status.ForeColor = Color.Firebrick
 
         tbpData_CoilPerformance.Controls.Add(grbEnable)
@@ -3107,6 +3110,32 @@ Public Class CLMainForm
 
         Return fallbackText
     End Function
+
+    Private Function CoilPerformance_HydraulicIssueText(code As CLCoilHydraulicIssueCode) As String
+        Select Case code
+            Case CLCoilHydraulicIssueCode.InvalidCoolingTemperatures
+                Return CoilPerformance_Text(
+                    "MainForm_CoilPerformance_InvalidCoolingTemperatures",
+                    "Cooling water outlet temperature must be at least 1 K higher than inlet temperature.")
+            Case CLCoilHydraulicIssueCode.InvalidHeatingTemperatures
+                Return CoilPerformance_Text(
+                    "MainForm_CoilPerformance_InvalidHeatingTemperatures",
+                    "Heating water inlet temperature must be at least 1 K higher than outlet temperature.")
+            Case CLCoilHydraulicIssueCode.LowWaterDeltaT
+                Return CoilPerformance_Text(
+                    "MainForm_CoilPerformance_LowWaterDeltaT",
+                    "Low water delta T (3 K or more, less than 5 K). Water flow is higher than typical.")
+            Case CLCoilHydraulicIssueCode.CriticalWaterDeltaT
+                Return CoilPerformance_Text(
+                    "MainForm_CoilPerformance_CriticalWaterDeltaT",
+                    "Very low water delta T (less than 3 K). Excessive water flow and pressure drop. Verify hydraulic design.")
+        End Select
+        Return code.ToString()
+    End Function
+
+    Private Shared Sub CoilPerformance_AddStatusMessage(messages As List(Of String), message As String)
+        If Not String.IsNullOrWhiteSpace(message) AndAlso Not messages.Contains(message) Then messages.Add(message)
+    End Sub
 
     Private Sub CoilPerformance_UpdateLocalizedTexts()
         If tbpData_CoilPerformance Is Nothing Then
@@ -3395,6 +3424,13 @@ Public Class CLMainForm
             Return
         End If
 
+        If sender Is nudCoilPerformance_CoolingIn OrElse
+            sender Is nudCoilPerformance_CoolingOut OrElse
+            sender Is nudCoilPerformance_HeatingIn OrElse
+            sender Is nudCoilPerformance_HeatingOut Then
+            CoilPerformance_UpdateWaterTemperatureLimits()
+        End If
+
         If sender Is nudCoilPerformance_Tubes AndAlso CoilPerformance_HeightMode() = "tubes" Then
             Try
                 m_CoilPerformanceChanging = True
@@ -3498,6 +3534,46 @@ Public Class CLMainForm
         CoilPerformance_LoadSelectedCoil()
         CoilPerformance_UpdateControlState()
         CoilPerformance_Recalculate()
+    End Sub
+
+    Private Sub CoilPerformance_ResetWaterTemperatureLimits()
+        nudCoilPerformance_CoolingIn.Minimum = -50D
+        nudCoilPerformance_CoolingIn.Maximum = 99D
+        nudCoilPerformance_CoolingOut.Minimum = -49D
+        nudCoilPerformance_CoolingOut.Maximum = 100D
+        nudCoilPerformance_HeatingIn.Minimum = -49D
+        nudCoilPerformance_HeatingIn.Maximum = 150D
+        nudCoilPerformance_HeatingOut.Minimum = -50D
+        nudCoilPerformance_HeatingOut.Maximum = 149D
+    End Sub
+
+    Private Sub CoilPerformance_UpdateWaterTemperatureLimits()
+        If nudCoilPerformance_CoolingIn Is Nothing OrElse
+            nudCoilPerformance_CoolingOut Is Nothing OrElse
+            nudCoilPerformance_HeatingIn Is Nothing OrElse
+            nudCoilPerformance_HeatingOut Is Nothing Then
+            Return
+        End If
+
+        Dim wasChanging As Boolean = m_CoilPerformanceChanging
+        Try
+            m_CoilPerformanceChanging = True
+            CoilPerformance_ResetWaterTemperatureLimits()
+
+            If nudCoilPerformance_CoolingOut.Value < nudCoilPerformance_CoolingIn.Value + 1D Then
+                nudCoilPerformance_CoolingOut.Value = nudCoilPerformance_CoolingIn.Value + 1D
+            End If
+            If nudCoilPerformance_HeatingIn.Value < nudCoilPerformance_HeatingOut.Value + 1D Then
+                nudCoilPerformance_HeatingOut.Value = nudCoilPerformance_HeatingIn.Value - 1D
+            End If
+
+            nudCoilPerformance_CoolingIn.Maximum = nudCoilPerformance_CoolingOut.Value - 1D
+            nudCoilPerformance_CoolingOut.Minimum = nudCoilPerformance_CoolingIn.Value + 1D
+            nudCoilPerformance_HeatingIn.Minimum = nudCoilPerformance_HeatingOut.Value + 1D
+            nudCoilPerformance_HeatingOut.Maximum = nudCoilPerformance_HeatingIn.Value - 1D
+        Finally
+            m_CoilPerformanceChanging = wasChanging
+        End Try
     End Sub
 
     Private Sub CoilPerformance_LoadSelectedCoil()
@@ -3626,12 +3702,31 @@ Public Class CLMainForm
             .HeatingFluidOutletTemperature = CDbl(nudCoilPerformance_HeatingOut.Value)
         }
 
+        Dim hydraulicIssues As List(Of CLCoilHydraulicIssue) = CLCoilHydraulicRules.Evaluate(
+            input.CalculationMode,
+            input.CoolingFluidInletTemperature,
+            input.CoolingFluidOutletTemperature,
+            input.HeatingFluidInletTemperature,
+            input.HeatingFluidOutletTemperature)
+        Dim statusMessages As New List(Of String)()
+        Dim hasCriticalStatus As Boolean = False
+        For Each issue As CLCoilHydraulicIssue In hydraulicIssues
+            CoilPerformance_AddStatusMessage(statusMessages, CoilPerformance_HydraulicIssueText(issue.Code))
+            hasCriticalStatus = hasCriticalStatus OrElse issue.IsBlocking OrElse
+                issue.Code = CLCoilHydraulicIssueCode.CriticalWaterDeltaT
+        Next
+        If hydraulicIssues.Any(Function(issue) issue.IsBlocking) Then
+            lblCoilPerformance_Status.ForeColor = Color.Firebrick
+            lblCoilPerformance_Status.Text = String.Join(System.Environment.NewLine, statusMessages)
+            Return 0
+        End If
+
         Dim results As List(Of CLCoilCalculationResult) = CLCoilPerformanceCalculator.Calculate(input)
         m_CoilPerformanceLastResults.AddRange(results)
 
         For Each result As CLCoilCalculationResult In results
             Dim status As String = If(result.IsOk, CoilPerformance_Text("MainForm_CoilPerformance_OK", "OK"), If(String.IsNullOrEmpty(result.ErrorMessage), result.Auxiliary.ToString(), result.ErrorMessage))
-            dgvCoilPerformance_Results.Rows.Add(
+            Dim rowIndex As Integer = dgvCoilPerformance_Results.Rows.Add(
                 result.Mode.ToString(),
                 status,
                 FormatNumber(result.HeatTransferred, 0),
@@ -3645,19 +3740,35 @@ Public Class CLMainForm
                 FormatNumber(result.FluidSpeed, 2),
                 FormatNumber(result.FaceVelocity, 2))
 
+            If result.WaterPressureDrop > CLCoilHydraulicRules.MaximumRecommendedWaterPressureDrop Then
+                Dim waterPressureCell As DataGridViewCell = dgvCoilPerformance_Results.Rows(rowIndex).Cells("WaterDP")
+                waterPressureCell.Style.BackColor = Color.MistyRose
+                waterPressureCell.Style.ForeColor = Color.Firebrick
+                CoilPerformance_AddStatusMessage(
+                    statusMessages,
+                    CoilPerformance_Text(
+                        "MainForm_CoilPerformance_WaterPressureDropWarning",
+                        "Water pressure drop exceeds the recommended limit (40 kPa). Hydraulic power consumption and pumping costs may become excessive. Consider increasing coil size or reducing water velocity."))
+                hasCriticalStatus = True
+            End If
+
             If Not result.IsOk Then
-                lblCoilPerformance_Status.Text = status
+                CoilPerformance_AddStatusMessage(statusMessages, status)
+                hasCriticalStatus = True
             End If
 
             m_CoilPerformanceLastPressureDrop = Math.Max(m_CoilPerformanceLastPressureDrop, result.AirPressureDrop)
         Next
 
         If m_CoilPerformanceLastPressureDrop > 0 Then
-            lblCoilPerformance_Status.Text = String.Format(
+            statusMessages.Insert(0, String.Format(
                 "{0}: {1} Pa",
                 CoilPerformance_Text("MainForm_CoilPerformance_AirPressureApplied", "Coil air pressure drop applied"),
-                FormatNumber(m_CoilPerformanceLastPressureDrop, 0))
+                FormatNumber(m_CoilPerformanceLastPressureDrop, 0)))
         End If
+
+        lblCoilPerformance_Status.ForeColor = If(hasCriticalStatus, Color.Firebrick, If(statusMessages.Count > 0, Color.DarkOrange, Color.Firebrick))
+        lblCoilPerformance_Status.Text = String.Join(System.Environment.NewLine, statusMessages)
 
         Return m_CoilPerformanceLastPressureDrop
     End Function

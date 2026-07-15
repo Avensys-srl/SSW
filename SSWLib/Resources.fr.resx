@@ -384,7 +384,7 @@
   <data name="MainForm_CoilPerformance_HeightTubes" xml:space="preserve"><value>tubes</value></data>
   <data name="MainForm_CoilPerformance_Length" xml:space="preserve"><value>Longueur [mm]</value></data>
   <data name="MainForm_CoilPerformance_OK" xml:space="preserve"><value>OK</value></data>
-  <data name="MainForm_CoilPerformance_ResultAirOut" xml:space="preserve"><value>Air sortie [C]</value></data>
+  <data name="MainForm_CoilPerformance_ResultAirOut" xml:space="preserve"><value>Temp. max. air en sortie [C]</value></data>
   <data name="MainForm_CoilPerformance_ResultCapacity" xml:space="preserve"><value>Puissance [W]</value></data>
   <data name="MainForm_CoilPerformance_ResultCond" xml:space="preserve"><value>Cond. [l/h]</value></data>
   <data name="MainForm_CoilPerformance_ResultDP" xml:space="preserve"><value>DP [Pa]</value></data>
@@ -465,4 +465,9 @@
   <data name="MainForm_TechnicalSelectionStatus" xml:space="preserve"><value>Statut</value></data>
   <data name="MainForm_TechnicalSelectionStatus_Registered" xml:space="preserve"><value>Enregistrée</value></data>
   <data name="MainForm_TechnicalSelectionStatus_Draft" xml:space="preserve"><value>Brouillon</value></data>
+  <data name="MainForm_CoilPerformance_InvalidCoolingTemperatures" xml:space="preserve"><value>La température de sortie d&apos;eau froide doit être supérieure d&apos;au moins 1 K à la température d&apos;entrée.</value></data>
+  <data name="MainForm_CoilPerformance_InvalidHeatingTemperatures" xml:space="preserve"><value>La température d&apos;entrée d&apos;eau chaude doit être supérieure d&apos;au moins 1 K à la température de sortie.</value></data>
+  <data name="MainForm_CoilPerformance_LowWaterDeltaT" xml:space="preserve"><value>Faible delta T d&apos;eau (3 K ≤ ΔT &lt; 5 K). Le débit d&apos;eau est supérieur aux valeurs habituelles.</value></data>
+  <data name="MainForm_CoilPerformance_CriticalWaterDeltaT" xml:space="preserve"><value>Delta T d&apos;eau très faible (inférieur à 3 K). Débit d&apos;eau et perte de charge excessifs. Vérifier la conception hydraulique.</value></data>
+  <data name="MainForm_CoilPerformance_WaterPressureDropWarning" xml:space="preserve"><value>La perte de charge côté eau dépasse la limite recommandée (40 kPa). La consommation hydraulique et les coûts de pompage peuvent devenir excessifs. Envisager une batterie plus grande ou réduire la vitesse de l&apos;eau.</value></data>
 </root>

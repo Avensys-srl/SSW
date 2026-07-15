@@ -405,7 +405,7 @@
   <data name="MainForm_CoilPerformance_HeightTubes" xml:space="preserve"><value>rury</value></data>
   <data name="MainForm_CoilPerformance_Length" xml:space="preserve"><value>Długość [mm]</value></data>
   <data name="MainForm_CoilPerformance_OK" xml:space="preserve"><value>OK</value></data>
-  <data name="MainForm_CoilPerformance_ResultAirOut" xml:space="preserve"><value>Powietrze wyj. [C]</value></data>
+  <data name="MainForm_CoilPerformance_ResultAirOut" xml:space="preserve"><value>Maks. temp. pow. na wylocie [C]</value></data>
   <data name="MainForm_CoilPerformance_ResultCapacity" xml:space="preserve"><value>Moc [W]</value></data>
   <data name="MainForm_CoilPerformance_ResultCond" xml:space="preserve"><value>Kond. [l/h]</value></data>
   <data name="MainForm_CoilPerformance_ResultDP" xml:space="preserve"><value>DP [Pa]</value></data>
@@ -486,4 +486,9 @@
   <data name="MainForm_TechnicalSelectionStatus" xml:space="preserve"><value>Status</value></data>
   <data name="MainForm_TechnicalSelectionStatus_Registered" xml:space="preserve"><value>Zarejestrowany</value></data>
   <data name="MainForm_TechnicalSelectionStatus_Draft" xml:space="preserve"><value>Wersja robocza</value></data>
+  <data name="MainForm_CoilPerformance_InvalidCoolingTemperatures" xml:space="preserve"><value>Temperatura wody lodowej na wylocie musi być co najmniej o 1 K wyższa od temperatury na wlocie.</value></data>
+  <data name="MainForm_CoilPerformance_InvalidHeatingTemperatures" xml:space="preserve"><value>Temperatura wody grzewczej na wlocie musi być co najmniej o 1 K wyższa od temperatury na wylocie.</value></data>
+  <data name="MainForm_CoilPerformance_LowWaterDeltaT" xml:space="preserve"><value>Niska różnica temperatur wody (3 K ≤ ΔT &lt; 5 K). Przepływ wody jest wyższy niż typowy.</value></data>
+  <data name="MainForm_CoilPerformance_CriticalWaterDeltaT" xml:space="preserve"><value>Bardzo niska różnica temperatur wody (poniżej 3 K). Nadmierny przepływ i spadek ciśnienia. Sprawdź projekt hydrauliczny.</value></data>
+  <data name="MainForm_CoilPerformance_WaterPressureDropWarning" xml:space="preserve"><value>Spadek ciśnienia po stronie wody przekracza zalecany limit (40 kPa). Zużycie energii hydraulicznej i koszty pompowania mogą być nadmierne. Rozważ większą nagrzewnicę lub mniejszą prędkość wody.</value></data>
 </root>

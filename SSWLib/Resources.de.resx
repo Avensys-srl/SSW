@@ -336,7 +336,7 @@
   <data name="MainForm_CoilPerformance_HeightTubes" xml:space="preserve"><value>Rohre</value></data>
   <data name="MainForm_CoilPerformance_Length" xml:space="preserve"><value>Länge [mm]</value></data>
   <data name="MainForm_CoilPerformance_OK" xml:space="preserve"><value>OK</value></data>
-  <data name="MainForm_CoilPerformance_ResultAirOut" xml:space="preserve"><value>Luft aus [C]</value></data>
+  <data name="MainForm_CoilPerformance_ResultAirOut" xml:space="preserve"><value>Max. Luftaustrittstemp. [C]</value></data>
   <data name="MainForm_CoilPerformance_ResultCapacity" xml:space="preserve"><value>Leistung [W]</value></data>
   <data name="MainForm_CoilPerformance_ResultCond" xml:space="preserve"><value>Kond. [l/h]</value></data>
   <data name="MainForm_CoilPerformance_ResultDP" xml:space="preserve"><value>DP [Pa]</value></data>
@@ -417,4 +417,9 @@
   <data name="MainForm_TechnicalSelectionStatus" xml:space="preserve"><value>Status</value></data>
   <data name="MainForm_TechnicalSelectionStatus_Registered" xml:space="preserve"><value>Registriert</value></data>
   <data name="MainForm_TechnicalSelectionStatus_Draft" xml:space="preserve"><value>Entwurf</value></data>
+  <data name="MainForm_CoilPerformance_InvalidCoolingTemperatures" xml:space="preserve"><value>Die Kaltwasseraustrittstemperatur muss mindestens 1 K über der Eintrittstemperatur liegen.</value></data>
+  <data name="MainForm_CoilPerformance_InvalidHeatingTemperatures" xml:space="preserve"><value>Die Warmwassereintrittstemperatur muss mindestens 1 K über der Austrittstemperatur liegen.</value></data>
+  <data name="MainForm_CoilPerformance_LowWaterDeltaT" xml:space="preserve"><value>Niedrige Wasserspreizung (3 K ≤ ΔT &lt; 5 K). Der Wasservolumenstrom ist höher als üblich.</value></data>
+  <data name="MainForm_CoilPerformance_CriticalWaterDeltaT" xml:space="preserve"><value>Sehr niedrige Wasserspreizung (unter 3 K). Übermäßiger Wasservolumenstrom und Druckverlust. Hydraulische Auslegung prüfen.</value></data>
+  <data name="MainForm_CoilPerformance_WaterPressureDropWarning" xml:space="preserve"><value>Der wasserseitige Druckverlust überschreitet den empfohlenen Grenzwert (40 kPa). Hydraulischer Energieverbrauch und Pumpkosten können zu hoch werden. Größere Batterie oder geringere Wassergeschwindigkeit vorsehen.</value></data>
 </root>

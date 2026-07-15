@@ -402,7 +402,7 @@
   <data name="MainForm_CoilPerformance_HeightTubes" xml:space="preserve"><value>buizen</value></data>
   <data name="MainForm_CoilPerformance_Length" xml:space="preserve"><value>Lengte [mm]</value></data>
   <data name="MainForm_CoilPerformance_OK" xml:space="preserve"><value>OK</value></data>
-  <data name="MainForm_CoilPerformance_ResultAirOut" xml:space="preserve"><value>Lucht uit [C]</value></data>
+  <data name="MainForm_CoilPerformance_ResultAirOut" xml:space="preserve"><value>Max. uitblaastemp. [C]</value></data>
   <data name="MainForm_CoilPerformance_ResultCapacity" xml:space="preserve"><value>Vermogen [W]</value></data>
   <data name="MainForm_CoilPerformance_ResultCond" xml:space="preserve"><value>Cond. [l/h]</value></data>
   <data name="MainForm_CoilPerformance_ResultDP" xml:space="preserve"><value>DP [Pa]</value></data>
@@ -483,4 +483,9 @@
   <data name="MainForm_TechnicalSelectionStatus" xml:space="preserve"><value>Status</value></data>
   <data name="MainForm_TechnicalSelectionStatus_Registered" xml:space="preserve"><value>Geregistreerd</value></data>
   <data name="MainForm_TechnicalSelectionStatus_Draft" xml:space="preserve"><value>Concept</value></data>
+  <data name="MainForm_CoilPerformance_InvalidCoolingTemperatures" xml:space="preserve"><value>De uitlaattemperatuur van het koelwater moet minstens 1 K hoger zijn dan de inlaattemperatuur.</value></data>
+  <data name="MainForm_CoilPerformance_InvalidHeatingTemperatures" xml:space="preserve"><value>De inlaattemperatuur van het verwarmingswater moet minstens 1 K hoger zijn dan de uitlaattemperatuur.</value></data>
+  <data name="MainForm_CoilPerformance_LowWaterDeltaT" xml:space="preserve"><value>Lage water-delta T (3 K ≤ ΔT &lt; 5 K). Het waterdebiet is hoger dan gebruikelijk.</value></data>
+  <data name="MainForm_CoilPerformance_CriticalWaterDeltaT" xml:space="preserve"><value>Zeer lage water-delta T (minder dan 3 K). Overmatig waterdebiet en drukverlies. Controleer het hydraulische ontwerp.</value></data>
+  <data name="MainForm_CoilPerformance_WaterPressureDropWarning" xml:space="preserve"><value>Het waterzijdige drukverlies overschrijdt de aanbevolen limiet (40 kPa). Hydraulisch energieverbruik en pompkosten kunnen te hoog worden. Overweeg een grotere batterij of een lagere watersnelheid.</value></data>
 </root>

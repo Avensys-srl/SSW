@@ -39,7 +39,13 @@ if ($LASTEXITCODE -ne 0) { throw 'SelectionIdentitySmoke failed.' }
 $resourceFiles = Get-ChildItem (Join-Path $repo 'SSWLib') -Filter 'Resources.*.resx'
 if ($resourceFiles.Count -ne 12) { throw "Expected 12 localized RESX files, found $($resourceFiles.Count)." }
 $requiredKeys = @('Update_Title','Update_CheckFailed','Update_PackageIntegrityFailed',
-    'MainForm_SelectionRegistration_Title','Water')
+    'MainForm_SelectionRegistration_Title','Water',
+    'MainForm_CoilPerformance_ResultAirOut',
+    'MainForm_CoilPerformance_InvalidCoolingTemperatures',
+    'MainForm_CoilPerformance_InvalidHeatingTemperatures',
+    'MainForm_CoilPerformance_LowWaterDeltaT',
+    'MainForm_CoilPerformance_CriticalWaterDeltaT',
+    'MainForm_CoilPerformance_WaterPressureDropWarning')
 foreach ($file in $resourceFiles) {
     [xml]$document = Get-Content -LiteralPath $file.FullName -Raw
     $names = @($document.root.data | ForEach-Object { $_.name })

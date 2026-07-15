@@ -405,7 +405,7 @@
   <data name="MainForm_CoilPerformance_HeightTubes" xml:space="preserve"><value>тръби</value></data>
   <data name="MainForm_CoilPerformance_Length" xml:space="preserve"><value>Дължина [mm]</value></data>
   <data name="MainForm_CoilPerformance_OK" xml:space="preserve"><value>OK</value></data>
-  <data name="MainForm_CoilPerformance_ResultAirOut" xml:space="preserve"><value>Въздух изход [C]</value></data>
+  <data name="MainForm_CoilPerformance_ResultAirOut" xml:space="preserve"><value>Макс. темп. изх. въздух [C]</value></data>
   <data name="MainForm_CoilPerformance_ResultCapacity" xml:space="preserve"><value>Мощност [W]</value></data>
   <data name="MainForm_CoilPerformance_ResultCond" xml:space="preserve"><value>Конденз [l/h]</value></data>
   <data name="MainForm_CoilPerformance_ResultDP" xml:space="preserve"><value>DP [Pa]</value></data>
@@ -486,4 +486,9 @@
   <data name="MainForm_TechnicalSelectionStatus" xml:space="preserve"><value>Статус</value></data>
   <data name="MainForm_TechnicalSelectionStatus_Registered" xml:space="preserve"><value>Регистрирана</value></data>
   <data name="MainForm_TechnicalSelectionStatus_Draft" xml:space="preserve"><value>Чернова</value></data>
+  <data name="MainForm_CoilPerformance_InvalidCoolingTemperatures" xml:space="preserve"><value>Температурата на изходящата охлаждаща вода трябва да е поне с 1 K по-висока от входящата.</value></data>
+  <data name="MainForm_CoilPerformance_InvalidHeatingTemperatures" xml:space="preserve"><value>Температурата на входящата отоплителна вода трябва да е поне с 1 K по-висока от изходящата.</value></data>
+  <data name="MainForm_CoilPerformance_LowWaterDeltaT" xml:space="preserve"><value>Малка температурна разлика на водата (3 K ≤ ΔT &lt; 5 K). Водният дебит е по-висок от обичайния.</value></data>
+  <data name="MainForm_CoilPerformance_CriticalWaterDeltaT" xml:space="preserve"><value>Много малка температурна разлика на водата (под 3 K). Прекомерен дебит и пад на налягане. Проверете хидравличния проект.</value></data>
+  <data name="MainForm_CoilPerformance_WaterPressureDropWarning" xml:space="preserve"><value>Падът на налягане от страната на водата надвишава препоръчителната граница (40 kPa). Хидравличната мощност и разходите за изпомпване могат да станат прекомерни. Изберете по-голяма батерия или намалете скоростта на водата.</value></data>
 </root>

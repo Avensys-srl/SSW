@@ -498,7 +498,7 @@
   <data name="MainForm_CoilPerformance_HeightTubes" xml:space="preserve"><value>csövek</value></data>
   <data name="MainForm_CoilPerformance_Length" xml:space="preserve"><value>Hossz [mm]</value></data>
   <data name="MainForm_CoilPerformance_OK" xml:space="preserve"><value>OK</value></data>
-  <data name="MainForm_CoilPerformance_ResultAirOut" xml:space="preserve"><value>Kilépő levegő [C]</value></data>
+  <data name="MainForm_CoilPerformance_ResultAirOut" xml:space="preserve"><value>Max. kilépő levegő-hőm. [C]</value></data>
   <data name="MainForm_CoilPerformance_ResultCapacity" xml:space="preserve"><value>Teljesítmény [W]</value></data>
   <data name="MainForm_CoilPerformance_ResultCond" xml:space="preserve"><value>Kond. [l/h]</value></data>
   <data name="MainForm_CoilPerformance_ResultDP" xml:space="preserve"><value>DP [Pa]</value></data>
@@ -579,4 +579,9 @@
   <data name="MainForm_TechnicalSelectionStatus" xml:space="preserve"><value>Állapot</value></data>
   <data name="MainForm_TechnicalSelectionStatus_Registered" xml:space="preserve"><value>Regisztrálva</value></data>
   <data name="MainForm_TechnicalSelectionStatus_Draft" xml:space="preserve"><value>Piszkozat</value></data>
+  <data name="MainForm_CoilPerformance_InvalidCoolingTemperatures" xml:space="preserve"><value>A hűtővíz kilépő hőmérsékletének legalább 1 K-kel magasabbnak kell lennie a belépő hőmérsékletnél.</value></data>
+  <data name="MainForm_CoilPerformance_InvalidHeatingTemperatures" xml:space="preserve"><value>A fűtővíz belépő hőmérsékletének legalább 1 K-kel magasabbnak kell lennie a kilépő hőmérsékletnél.</value></data>
+  <data name="MainForm_CoilPerformance_LowWaterDeltaT" xml:space="preserve"><value>Alacsony vízoldali hőmérséklet-különbség (3 K ≤ ΔT &lt; 5 K). A víztérfogatáram a szokásosnál nagyobb.</value></data>
+  <data name="MainForm_CoilPerformance_CriticalWaterDeltaT" xml:space="preserve"><value>Nagyon alacsony vízoldali hőmérséklet-különbség (3 K alatt). Túlzott víztérfogatáram és nyomásesés. Ellenőrizze a hidraulikai tervezést.</value></data>
+  <data name="MainForm_CoilPerformance_WaterPressureDropWarning" xml:space="preserve"><value>A vízoldali nyomásesés meghaladja az ajánlott határértéket (40 kPa). A hidraulikus energiafelhasználás és a szivattyúzási költség túlzott lehet. Válasszon nagyobb hőcserélőt vagy csökkentse a víz sebességét.</value></data>
 </root>

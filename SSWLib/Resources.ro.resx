@@ -396,7 +396,7 @@
   <data name="MainForm_CoilPerformance_HeightTubes" xml:space="preserve"><value>țevi</value></data>
   <data name="MainForm_CoilPerformance_Length" xml:space="preserve"><value>Lungime [mm]</value></data>
   <data name="MainForm_CoilPerformance_OK" xml:space="preserve"><value>OK</value></data>
-  <data name="MainForm_CoilPerformance_ResultAirOut" xml:space="preserve"><value>Aer ieșire [C]</value></data>
+  <data name="MainForm_CoilPerformance_ResultAirOut" xml:space="preserve"><value>Temp. max. aer la ieșire [C]</value></data>
   <data name="MainForm_CoilPerformance_ResultCapacity" xml:space="preserve"><value>Putere [W]</value></data>
   <data name="MainForm_CoilPerformance_ResultCond" xml:space="preserve"><value>Cond. [l/h]</value></data>
   <data name="MainForm_CoilPerformance_ResultDP" xml:space="preserve"><value>DP [Pa]</value></data>
@@ -477,4 +477,9 @@
   <data name="MainForm_TechnicalSelectionStatus" xml:space="preserve"><value>Stare</value></data>
   <data name="MainForm_TechnicalSelectionStatus_Registered" xml:space="preserve"><value>Înregistrată</value></data>
   <data name="MainForm_TechnicalSelectionStatus_Draft" xml:space="preserve"><value>Ciornă</value></data>
+  <data name="MainForm_CoilPerformance_InvalidCoolingTemperatures" xml:space="preserve"><value>Temperatura apei reci la ieșire trebuie să fie cu cel puțin 1 K mai mare decât temperatura de intrare.</value></data>
+  <data name="MainForm_CoilPerformance_InvalidHeatingTemperatures" xml:space="preserve"><value>Temperatura apei calde la intrare trebuie să fie cu cel puțin 1 K mai mare decât temperatura de ieșire.</value></data>
+  <data name="MainForm_CoilPerformance_LowWaterDeltaT" xml:space="preserve"><value>Diferență mică de temperatură a apei (3 K ≤ ΔT &lt; 5 K). Debitul de apă este mai mare decât cel obișnuit.</value></data>
+  <data name="MainForm_CoilPerformance_CriticalWaterDeltaT" xml:space="preserve"><value>Diferență foarte mică de temperatură a apei (sub 3 K). Debit și pierdere de presiune excesive. Verificați proiectarea hidraulică.</value></data>
+  <data name="MainForm_CoilPerformance_WaterPressureDropWarning" xml:space="preserve"><value>Pierderea de presiune pe partea de apă depășește limita recomandată (40 kPa). Consumul hidraulic și costurile de pompare pot deveni excesive. Alegeți o baterie mai mare sau reduceți viteza apei.</value></data>
 </root>

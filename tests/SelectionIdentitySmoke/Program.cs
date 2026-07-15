@@ -155,11 +155,12 @@ internal static class Program
 
             TestSelectionRegistrationClient(client, handler, context);
             TestSnapshotFingerprints(root);
-            TestSdfFixtures();
+            TestSdfFixtures(root);
             TestRegistrationFailureDialog();
             TestUpdateIntegrity(root);
+            TestPracticalSelectionRules();
 
-            Console.WriteLine("Selection identity/snapshot smoke test passed: token=ok create=R01 reprint=R01 revise=R02 fingerprints=stable dialog=rendered update_integrity=ok");
+            Console.WriteLine("Selection identity/snapshot smoke test passed: token=ok create=R01 reprint=R01 revise=R02 fingerprints=stable dialog=rendered update_integrity=ok practical_rules=ok");
             return 0;
         }
         finally
@@ -170,6 +171,54 @@ internal static class Program
             Environment.SetEnvironmentVariable("SSW_SELECTION_API_BASE_URL", null);
             try { Directory.Delete(root, true); } catch { }
         }
+    }
+
+    private static void TestPracticalSelectionRules()
+    {
+        string suggested = CLSelectionFileName.BuildSuggestedName(
+            "D-ABCD-000123",
+            "  Offerta cliente: reparto nord con nome molto lungo  ");
+        const string baseName = "_D-ABCD-000123";
+        string prefix = suggested.Substring(0, suggested.Length - baseName.Length);
+        if (!suggested.EndsWith(baseName, StringComparison.Ordinal) ||
+            prefix.Length > 30 || suggested.Contains(" ") || suggested.Contains(":"))
+        {
+            throw new InvalidOperationException("Customer reference filename prefix sanitization failed: " + suggested);
+        }
+        if (CLSelectionFileName.BuildSuggestedName("D-ABCD-000123", "  ") != "D-ABCD-000123")
+            throw new InvalidOperationException("Empty customer reference changed the suggested filename.");
+
+        List<CLCoilHydraulicIssue> invalidCooling = CLCoilHydraulicRules.Evaluate(
+            CLCoilPerformanceMode.CWD, 12, 7, 80, 70);
+        if (!invalidCooling.Any(issue => issue.IsBlocking &&
+            issue.Code == CLCoilHydraulicIssueCode.InvalidCoolingTemperatures))
+            throw new InvalidOperationException("Invalid cooling temperature direction was not blocked.");
+
+        List<CLCoilHydraulicIssue> invalidHeating = CLCoilHydraulicRules.Evaluate(
+            CLCoilPerformanceMode.HWD, 7, 12, 70, 80);
+        if (!invalidHeating.Any(issue => issue.IsBlocking &&
+            issue.Code == CLCoilHydraulicIssueCode.InvalidHeatingTemperatures))
+            throw new InvalidOperationException("Invalid heating temperature direction was not blocked.");
+
+        List<CLCoilHydraulicIssue> critical = CLCoilHydraulicRules.Evaluate(
+            CLCoilPerformanceMode.CWD, 7, 9.5, 80, 70);
+        if (!critical.Any(issue => !issue.IsBlocking &&
+            issue.Code == CLCoilHydraulicIssueCode.CriticalWaterDeltaT))
+            throw new InvalidOperationException("Water delta T below 3 K was not classified as critical.");
+
+        List<CLCoilHydraulicIssue> warning = CLCoilHydraulicRules.Evaluate(
+            CLCoilPerformanceMode.HWD, 7, 12, 80, 75.1);
+        if (!warning.Any(issue => !issue.IsBlocking &&
+            issue.Code == CLCoilHydraulicIssueCode.LowWaterDeltaT))
+            throw new InvalidOperationException("Water delta T from 3 K inclusive to 5 K exclusive was not classified as warning.");
+
+        List<CLCoilHydraulicIssue> fiveKelvin = CLCoilHydraulicRules.Evaluate(
+            CLCoilPerformanceMode.HWD, 7, 12, 80, 75);
+        if (fiveKelvin.Any(issue => issue.Code == CLCoilHydraulicIssueCode.LowWaterDeltaT))
+            throw new InvalidOperationException("Water delta T of exactly 5 K must not produce a warning.");
+
+        if (CLCoilHydraulicRules.MaximumRecommendedWaterPressureDrop != 40.0)
+            throw new InvalidOperationException("Recommended water pressure drop limit changed unexpectedly.");
     }
 
     private static void TestUpdateIntegrity(string root)
@@ -203,27 +252,37 @@ internal static class Program
         }
     }
 
-    private static void TestSdfFixtures()
+    private static void TestSdfFixtures(string temporaryRoot)
     {
         string repositoryRoot = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", ".."));
         string fixtureRoot = Path.Combine(repositoryRoot, "tests", "fixtures", "sdf");
+        string legacyPath = CopySdfFixture(fixtureRoot, temporaryRoot, "legacy-0.sdf");
+        string schema1Path = CopySdfFixture(fixtureRoot, temporaryRoot, "schema-1-av.sdf");
+        string schema2Path = CopySdfFixture(fixtureRoot, temporaryRoot, "schema-2-av.sdf");
         CLDatabaseCompatibilityInfo legacy = CLDatabaseCompatibilityReader.Inspect(
-            Path.Combine(fixtureRoot, "legacy-0.sdf"), new Version(1, 3, 0, 45), "035889");
+            legacyPath, new Version(1, 3, 0, 45), "035889");
         if (legacy.State != CLDatabaseCompatibilityState.Legacy || legacy.SchemaVersion != 0)
             throw new InvalidOperationException("Legacy-0 SDF fixture was not recognized.");
 
         CLDatabaseCompatibilityInfo schema1 = CLDatabaseCompatibilityReader.Inspect(
-            Path.Combine(fixtureRoot, "schema-1-av.sdf"), new Version(1, 3, 0, 45), "035889");
+            schema1Path, new Version(1, 3, 0, 45), "035889");
         if (schema1.State != CLDatabaseCompatibilityState.Managed || schema1.SchemaVersion != 1 ||
             !schema1.HasFeature("CoreData") || !schema1.HasFeature("WaterCoils"))
             throw new InvalidOperationException("Managed schema-1 SDF fixture failed compatibility checks.");
 
         CLDatabaseCompatibilityInfo schema2 = CLDatabaseCompatibilityReader.Inspect(
-            Path.Combine(fixtureRoot, "schema-2-av.sdf"), new Version(1, 3, 0, 45), "035889");
+            schema2Path, new Version(1, 3, 0, 45), "035889");
         if (schema2.State != CLDatabaseCompatibilityState.Managed || schema2.SchemaVersion != 2 ||
             !schema2.HasFeature("CoreData") || !schema2.HasFeature("WaterCoils") ||
             !schema2.HasFeature("CoilInstallationType") || !schema2.HasFeature("ElectricHeaters"))
             throw new InvalidOperationException("Managed schema-2 SDF fixture failed compatibility checks.");
+    }
+
+    private static string CopySdfFixture(string fixtureRoot, string temporaryRoot, string fileName)
+    {
+        string destination = Path.Combine(temporaryRoot, fileName);
+        File.Copy(Path.Combine(fixtureRoot, fileName), destination, true);
+        return destination;
     }
 
     private static int RunLiveBootstrap()

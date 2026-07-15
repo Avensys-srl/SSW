@@ -35,6 +35,10 @@ registrazione centralizzata delle selezioni SSW.
   manifest non coerente.
 - [x] Punti 17-22 completati il 15/07/2026 e release `1.3.0.46`
   compilata, collaudata, installata sul pilota e pubblicata.
+- [x] Release `1.3.0.47` compilata, collaudata e pubblicata il 15/07/2026 con
+  manifest verificato e rollback alla `1.3.0.46`; include nomi progetto basati
+  sul riferimento cliente, vincoli e avvisi idraulici localizzati per le
+  batterie ad acqua e temperatura massima aria in uscita esplicitata.
 
 ## Regole architetturali approvate
 

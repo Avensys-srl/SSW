@@ -211,7 +211,9 @@ Partial Public Class CLMainForm
                 dialog.DefaultExt = CLSelectionProjectSerializer.FileExtension.TrimStart("."c)
                 dialog.AddExtension = True
                 If m_ProjectDocument IsNot Nothing AndAlso m_ProjectDocument.Identity IsNot Nothing Then
-                    dialog.FileName = m_ProjectDocument.Identity.LocalDraftReference
+                    dialog.FileName = CLSelectionFileName.BuildSuggestedName(
+                        m_ProjectDocument.Identity.LocalDraftReference,
+                        If(m_Note_Text Is Nothing, String.Empty, m_Note_Text.Text))
                 End If
                 If dialog.ShowDialog(Me) <> DialogResult.OK Then Return False
                 targetPath = dialog.FileName
@@ -618,10 +620,18 @@ Partial Public Class CLMainForm
             Project_SetNumeric(nudCoilPerformance_Circuits, selection.Geometry.NumberOfCircuits)
             If selection.Geometry.FinSpacingMm.HasValue Then CoilPerformance_SelectFinSpacing(selection.Geometry.FinSpacingMm.Value)
         End If
-        Project_SetNumeric(nudCoilPerformance_CoolingIn, selection.CoolingWaterInletTemperatureC)
-        Project_SetNumeric(nudCoilPerformance_CoolingOut, selection.CoolingWaterOutletTemperatureC)
-        Project_SetNumeric(nudCoilPerformance_HeatingIn, selection.HeatingWaterInletTemperatureC)
-        Project_SetNumeric(nudCoilPerformance_HeatingOut, selection.HeatingWaterOutletTemperatureC)
+        Dim wasCoilPerformanceChanging As Boolean = m_CoilPerformanceChanging
+        Try
+            m_CoilPerformanceChanging = True
+            CoilPerformance_ResetWaterTemperatureLimits()
+            Project_SetNumeric(nudCoilPerformance_CoolingIn, selection.CoolingWaterInletTemperatureC)
+            Project_SetNumeric(nudCoilPerformance_CoolingOut, selection.CoolingWaterOutletTemperatureC)
+            Project_SetNumeric(nudCoilPerformance_HeatingIn, selection.HeatingWaterInletTemperatureC)
+            Project_SetNumeric(nudCoilPerformance_HeatingOut, selection.HeatingWaterOutletTemperatureC)
+            CoilPerformance_UpdateWaterTemperatureLimits()
+        Finally
+            m_CoilPerformanceChanging = wasCoilPerformanceChanging
+        End Try
         chbCoilPerformance_Enable.Checked = selection.Enabled AndAlso m_CoilPerformanceAvailable
         CoilPerformance_UpdateControlState()
     End Sub

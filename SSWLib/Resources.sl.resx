@@ -321,7 +321,7 @@
   <data name="MainForm_CoilPerformance_HeightTubes" xml:space="preserve"><value>cevi</value></data>
   <data name="MainForm_CoilPerformance_Length" xml:space="preserve"><value>Dolžina [mm]</value></data>
   <data name="MainForm_CoilPerformance_OK" xml:space="preserve"><value>OK</value></data>
-  <data name="MainForm_CoilPerformance_ResultAirOut" xml:space="preserve"><value>Zrak izstop [C]</value></data>
+  <data name="MainForm_CoilPerformance_ResultAirOut" xml:space="preserve"><value>Najv. temp. izstopnega zraka [C]</value></data>
   <data name="MainForm_CoilPerformance_ResultCapacity" xml:space="preserve"><value>Moč [W]</value></data>
   <data name="MainForm_CoilPerformance_ResultCond" xml:space="preserve"><value>Kond. [l/h]</value></data>
   <data name="MainForm_CoilPerformance_ResultDP" xml:space="preserve"><value>DP [Pa]</value></data>
@@ -402,4 +402,9 @@
   <data name="MainForm_TechnicalSelectionStatus" xml:space="preserve"><value>Stanje</value></data>
   <data name="MainForm_TechnicalSelectionStatus_Registered" xml:space="preserve"><value>Registrirana</value></data>
   <data name="MainForm_TechnicalSelectionStatus_Draft" xml:space="preserve"><value>Osnutek</value></data>
+  <data name="MainForm_CoilPerformance_InvalidCoolingTemperatures" xml:space="preserve"><value>Izstopna temperatura hladne vode mora biti najmanj 1 K višja od vstopne temperature.</value></data>
+  <data name="MainForm_CoilPerformance_InvalidHeatingTemperatures" xml:space="preserve"><value>Vstopna temperatura tople vode mora biti najmanj 1 K višja od izstopne temperature.</value></data>
+  <data name="MainForm_CoilPerformance_LowWaterDeltaT" xml:space="preserve"><value>Nizek temperaturni razpon vode (3 K ≤ ΔT &lt; 5 K). Pretok vode je višji od običajnega.</value></data>
+  <data name="MainForm_CoilPerformance_CriticalWaterDeltaT" xml:space="preserve"><value>Zelo nizek temperaturni razpon vode (manj kot 3 K). Prevelik pretok in padec tlaka. Preverite hidravlično zasnovo.</value></data>
+  <data name="MainForm_CoilPerformance_WaterPressureDropWarning" xml:space="preserve"><value>Padec tlaka na vodni strani presega priporočeno mejo (40 kPa). Poraba hidravlične energije in stroški črpanja so lahko previsoki. Izberite večjo baterijo ali zmanjšajte hitrost vode.</value></data>
 </root>
