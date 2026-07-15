@@ -8,6 +8,7 @@ SSW Changelog
 - Exposed the localized custom-coil disclaimer acceptance in all water-coil report datasets.
 - Clarified that displayed dimensions refer only to the water coil and that overall dimensions, delivery time and quotation must be requested.
 - Refined the localized water-coil report layouts.
+- Kept only the latest verified installer and manifest in the public distribution folder while retaining local build history.
 
 1.3.0.50 - 2026-07-15
 ---------------------

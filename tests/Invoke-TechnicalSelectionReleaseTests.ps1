@@ -40,6 +40,9 @@ $x86PowerShell = Join-Path $env:WINDIR 'SysWOW64\WindowsPowerShell\v1.0\powershe
 & $x86PowerShell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $PSScriptRoot 'Invoke-AlternativeReferenceSmoke.ps1')
 if ($LASTEXITCODE -ne 0) { throw 'Alternative reference smoke test failed.' }
 
+& (Join-Path $PSScriptRoot 'Invoke-PublishedReleaseRetentionSmoke.ps1')
+if ($LASTEXITCODE -ne 0) { throw 'Published release retention smoke test failed.' }
+
 $resourceFiles = Get-ChildItem (Join-Path $repo 'SSWLib') -Filter 'Resources.*.resx'
 if ($resourceFiles.Count -ne 12) { throw "Expected 12 localized RESX files, found $($resourceFiles.Count)." }
 $requiredKeys = @('Update_Title','Update_CheckFailed','Update_PackageIntegrityFailed',

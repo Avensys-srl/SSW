@@ -308,10 +308,11 @@ $manifestPath = [IO.Path]::ChangeExtension($installerPath, '.manifest.json')
 if ($LASTEXITCODE -ne 0) { throw 'Update manifest generation failed.' }
 
 if ($PublishCopyDir) {
-    New-Item -ItemType Directory -Force -Path $PublishCopyDir | Out-Null
-    Copy-Item -LiteralPath $installerPath -Destination $PublishCopyDir -Force
-    Copy-Item -LiteralPath $manifestPath -Destination $PublishCopyDir -Force
-    Write-Host "Installer copied to: $PublishCopyDir"
+    & (Join-Path $PSScriptRoot 'Publish-ReleaseArtifacts.ps1') `
+        -InstallerPath $installerPath `
+        -ManifestPath $manifestPath `
+        -PublishDirectory $PublishCopyDir
+    if ($LASTEXITCODE -ne 0) { throw 'Release publication failed.' }
 }
 
 Write-Host "Installer ready: $installerPath"
