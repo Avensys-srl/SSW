@@ -12203,7 +12203,7 @@
           <Image Name="Image2">
             <Source>Database</Source>
             <Value>=First(Fields!PressureImage.Value, "Diagram")</Value>
-            <MIMEType>image/bmp</MIMEType>
+            <MIMEType>image/png</MIMEType>
             <Sizing>FitProportional</Sizing>
             <Top>0.06033cm</Top>
             <Left>0.38661cm</Left>
@@ -12219,7 +12219,7 @@
           <Image Name="Image3">
             <Source>Database</Source>
             <Value>=First(Fields!PowerImage.Value, "Diagram")</Value>
-            <MIMEType>image/bmp</MIMEType>
+            <MIMEType>image/png</MIMEType>
             <Sizing>FitProportional</Sizing>
             <Top>0.06033cm</Top>
             <Left>9.97004cm</Left>
@@ -12235,11 +12235,11 @@
           <Image Name="Image4">
             <Source>Database</Source>
             <Value>=First(Fields!AirFlowImage.Value, "Diagram")</Value>
-            <MIMEType>image/bmp</MIMEType>
+            <MIMEType>image/png</MIMEType>
             <Sizing>FitProportional</Sizing>
             <Top>5.26033cm</Top>
-            <Left>0.36016cm</Left>
-            <Height>4.85182cm</Height>
+            <Left>0.38661cm</Left>
+            <Height>5.16932cm</Height>
             <Width>9.5746cm</Width>
             <ZIndex>3</ZIndex>
             <Style>
@@ -12251,11 +12251,11 @@
           <Image Name="Image5">
             <Source>Database</Source>
             <Value>=First(Fields!LegendImage.Value, "Diagram")</Value>
-            <MIMEType>image/bmp</MIMEType>
+            <MIMEType>image/png</MIMEType>
             <Sizing>FitProportional</Sizing>
             <Top>5.26033cm</Top>
             <Left>9.97004cm</Left>
-            <Height>4.85182cm</Height>
+            <Height>5.16932cm</Height>
             <Width>9.64516cm</Width>
             <ZIndex>4</ZIndex>
             <Style>

@@ -11,10 +11,126 @@ Public Module CLModule
     Public Const ChartSeries_WorkingPoint_Name As String = "WorkingPoint"
     Public Const ChartSeries_WorkingArea_Name As String = "WorkingArea"
 
-    Public ChartSeries_OriginalCurve_Color As Color = Color.FromArgb(&HFF418CF0)
-    Public ChartSeries_RegulationLevelCurve_Color As Color = Color.FromArgb(&HFFFCB441)
-    Public ChartSeries_WorkingPoint_Color As Color = Color.FromArgb(&HFFE0400A)
-    Public ChartSeries_WorkingArea_Color As Color = Color.FromArgb(104, 179, 215)
+    Public ChartSeries_OriginalCurve_Color As Color = Color.FromArgb(59, 130, 246)
+    Public ChartSeries_RegulationLevelCurve_Color As Color = Color.FromArgb(245, 158, 11)
+    Public ChartSeries_WorkingPoint_Color As Color = Color.FromArgb(225, 70, 45)
+    Public ChartSeries_WorkingArea_Color As Color = Color.FromArgb(48, 59, 130, 246)
+
+    Public Sub Chart_ApplyModernTheme(chart As Chart)
+        If chart Is Nothing Then Return
+
+        Dim renderingDpi As Double = Math.Max(96.0, CDbl(chart.DeviceDpi))
+        chart.RenderingDpiX = renderingDpi
+        chart.RenderingDpiY = renderingDpi
+        chart.BackColor = Color.White
+        chart.BorderlineColor = Color.White
+        chart.BorderlineDashStyle = ChartDashStyle.NotSet
+        chart.AntiAliasing = AntiAliasingStyles.All
+        chart.TextAntiAliasingQuality = TextAntiAliasingQuality.High
+
+        Dim axisColor As Color = Color.FromArgb(156, 163, 175)
+        Dim gridColor As Color = Color.FromArgb(229, 231, 235)
+        Dim textColor As Color = Color.FromArgb(55, 65, 81)
+
+        For Each area As ChartArea In chart.ChartAreas
+            area.BackColor = Color.White
+            area.BorderDashStyle = ChartDashStyle.NotSet
+            area.ShadowColor = Color.Transparent
+
+            For Each axis As Axis In New Axis() {area.AxisX, area.AxisY}
+                axis.LineColor = axisColor
+                axis.LineWidth = 1
+                axis.MajorGrid.Enabled = True
+                axis.MajorGrid.LineColor = gridColor
+                axis.MajorGrid.LineDashStyle = ChartDashStyle.Solid
+                axis.MajorGrid.LineWidth = 1
+                axis.MinorGrid.Enabled = False
+                axis.MajorTickMark.LineColor = axisColor
+                axis.MajorTickMark.LineWidth = 1
+                axis.LabelStyle.ForeColor = textColor
+                axis.LabelStyle.Font = New Font("Segoe UI", 8.0F, FontStyle.Regular)
+                axis.TitleForeColor = textColor
+                axis.TitleFont = New Font("Segoe UI", 9.0F, FontStyle.Regular)
+            Next
+        Next
+
+        For Each series As Series In chart.Series
+            series.ShadowOffset = 0
+            If series.ChartType = SeriesChartType.Point Then
+                series.MarkerStyle = MarkerStyle.Circle
+                series.MarkerSize = 8
+                series.MarkerColor = series.Color
+                series.MarkerBorderColor = Color.White
+                series.MarkerBorderWidth = 2
+            ElseIf series.ChartType = SeriesChartType.Spline OrElse series.ChartType = SeriesChartType.Line Then
+                series.BorderWidth = 2
+            ElseIf series.ChartType = SeriesChartType.SplineArea OrElse series.ChartType = SeriesChartType.Area Then
+                series.BorderWidth = 0
+            End If
+        Next
+
+        For Each legend As Legend In chart.Legends
+            legend.BackColor = Color.White
+            legend.BorderColor = Color.Transparent
+            legend.ForeColor = textColor
+            legend.Font = New Font("Segoe UI", 8.0F, FontStyle.Regular)
+        Next
+    End Sub
+
+    Public Sub Chart_ApplyHighQualityScreenRendering(chart As Chart)
+        If chart Is Nothing Then Return
+
+        ' Render the WinForms chart above the normal screen density so curved
+        ' series remain smooth when the control is stretched horizontally.
+        Dim screenRenderingDpi As Double = Math.Max(192.0, CDbl(chart.DeviceDpi))
+        chart.RenderingDpiX = screenRenderingDpi
+        chart.RenderingDpiY = screenRenderingDpi
+
+        For Each series As Series In chart.Series
+            If series.ChartType = SeriesChartType.Spline OrElse series.ChartType = SeriesChartType.Line Then
+                series.BorderWidth = 2
+            End If
+        Next
+
+        chart.Invalidate()
+    End Sub
+
+    Private Function Chart_GetNiceInterval(maximum As Double, targetIntervals As Integer) As Double
+        If maximum <= 0 OrElse targetIntervals <= 0 Then Return 1
+
+        Dim rawInterval As Double = maximum / targetIntervals
+        Dim magnitude As Double = Math.Pow(10, Math.Floor(Math.Log10(rawInterval)))
+        Dim normalized As Double = rawInterval / magnitude
+        Dim niceNormalized As Double
+
+        If normalized <= 1 Then
+            niceNormalized = 1
+        ElseIf normalized <= 2 Then
+            niceNormalized = 2
+        ElseIf normalized <= 2.5 Then
+            niceNormalized = 2.5
+        ElseIf normalized <= 5 Then
+            niceNormalized = 5
+        Else
+            niceNormalized = 10
+        End If
+
+        Return niceNormalized * magnitude
+    End Function
+
+    Private Sub Chart_ApplySharedAirflowAxis(maximumAirflow As Double, ParamArray charts() As Chart)
+        If maximumAirflow <= 0 Then Return
+
+        Dim interval As Double = Chart_GetNiceInterval(maximumAirflow, 5)
+        Dim axisMaximum As Double = Math.Ceiling(maximumAirflow / interval) * interval
+
+        For Each chart As Chart In charts
+            If chart Is Nothing OrElse chart.ChartAreas.Count = 0 Then Continue For
+            chart.ChartAreas(0).AxisX.Minimum = 0
+            chart.ChartAreas(0).AxisX.Maximum = axisMaximum
+            chart.ChartAreas(0).AxisX.Interval = interval
+        Next
+    End Sub
 
     Private ReadOnly Property Environment As CLEnvironment
         Get
@@ -527,7 +643,8 @@ Public Module CLModule
 
     Private Sub TrimPressureCurveAtZero(ByRef xValues As Double(),
         ByRef pressureValues As Double(),
-        ByRef powerValues As Double())
+        ByRef powerValues As Double(),
+        Optional ByVal closingThreshold As Double = 10)
 
         If xValues Is Nothing OrElse pressureValues Is Nothing OrElse xValues.Length = 0 OrElse pressureValues.Length = 0 Then
             Return
@@ -572,6 +689,47 @@ Public Module CLModule
                 Return
             End If
         Next i
+
+        Dim lastIndex As Integer = pressureValues.Length - 1
+        If lastIndex < 1 OrElse pressureValues(lastIndex) <= closingThreshold Then
+            Return
+        End If
+
+        Dim previousIndex As Integer = lastIndex - 1
+        Dim extensionX0 As Double = xValues(previousIndex)
+        Dim extensionX1 As Double = xValues(lastIndex)
+        Dim extensionY0 As Double = pressureValues(previousIndex)
+        Dim extensionY1 As Double = pressureValues(lastIndex)
+
+        If extensionX1 <= extensionX0 OrElse extensionY1 >= extensionY0 Then
+            Return
+        End If
+
+        Dim extensionZeroAirflow As Double = extensionX0 - extensionY0 *
+            (extensionX1 - extensionX0) / (extensionY1 - extensionY0)
+        If Double.IsNaN(extensionZeroAirflow) OrElse
+            Double.IsInfinity(extensionZeroAirflow) OrElse
+            extensionZeroAirflow <= extensionX1 Then
+            Return
+        End If
+
+        Dim extensionZeroPower As Double = 0
+        If powerValues IsNot Nothing AndAlso powerValues.Length > lastIndex Then
+            extensionZeroPower = powerValues(previousIndex) +
+                (extensionZeroAirflow - extensionX0) *
+                (powerValues(lastIndex) - powerValues(previousIndex)) /
+                (extensionX1 - extensionX0)
+        End If
+
+        ReDim Preserve xValues(lastIndex + 1)
+        ReDim Preserve pressureValues(lastIndex + 1)
+        xValues(lastIndex + 1) = extensionZeroAirflow
+        pressureValues(lastIndex + 1) = 0
+
+        If powerValues IsNot Nothing Then
+            ReDim Preserve powerValues(lastIndex + 1)
+            powerValues(lastIndex + 1) = extensionZeroPower
+        End If
 
     End Sub
 
@@ -802,10 +960,11 @@ Public Module CLModule
             If coilReferenceAirflow > 0 Then
                 ApplyQuadraticPressureDrop(x_new, y_new, coilPressureDrop, coilReferenceAirflow)
                 ApplyQuadraticPressureDrop(x_new_ori, y_new_ori, coilPressureDrop, coilReferenceAirflow)
-                TrimPressureCurveAtZero(x_new, y_new, z_new)
-                TrimPressureCurveAtZero(x_new_ori, y_new_ori, z_new_ori)
             End If
         End If
+
+        TrimPressureCurveAtZero(x_new, y_new, z_new)
+        TrimPressureCurveAtZero(x_new_ori, y_new_ori, z_new_ori)
 
         'Ricalcolo curva di efficienza
         ReDim e(x_new_ori.Length - 1)
@@ -954,10 +1113,8 @@ Public Module CLModule
 
             chart2.Series.Remove(chart2.Series(ChartSeries_OriginalCurve_Name))
 
-            chart2.ChartAreas(0).AxisX.Maximum = Math.Ceiling(x_new_ori.Max() / 4) * 4
             chart2.ChartAreas(0).AxisY.Maximum = Math.Ceiling(z_new_ori.Max() / 4) * 4
 
-            chart2.ChartAreas(0).AxisX.Interval = Math.Ceiling(x_new_ori.Max() / 4)
             chart2.ChartAreas(0).AxisY.Interval = Math.Ceiling(z_new_ori.Max() / 4)
 
             chart2.ChartAreas(0).AxisY.Title = Environment.Localization.GetString(CLMessageResources.MainForm_PowerSupply.ToString()) & " [W]"
@@ -976,7 +1133,7 @@ Public Module CLModule
 
             ' Serie - Curva originale
             currentSeries = chart3.Series.Add(ChartSeries_OriginalCurve_Name)
-            currentSeries.ChartType = DataVisualization.Charting.SeriesChartType.Spline
+            currentSeries.ChartType = DataVisualization.Charting.SeriesChartType.Line
             currentSeries.Points.DataBindXY(x_new_ori, e)
             currentSeries.BorderWidth = 3
             currentSeries.Color = ChartSeries_OriginalCurve_Color
@@ -992,7 +1149,9 @@ Public Module CLModule
             currentSeries.Color = ChartSeries_WorkingPoint_Color
 
             chart3.ChartAreas(0).AxisX.Minimum = 0
-            chart3.ChartAreas(0).AxisY.Minimum = 0
+            chart3.ChartAreas(0).AxisY.Minimum = 60
+            chart3.ChartAreas(0).AxisY.Maximum = 100
+            chart3.ChartAreas(0).AxisY.Interval = 10
 
             If measureUnit = CLMeasureUnit.SI Then
                 chart3.ChartAreas(0).AxisY.Title = Environment.Localization.GetString(CLMessageResources.MainForm_Efficiency.ToString()) & " [%]"
@@ -1005,6 +1164,14 @@ Public Module CLModule
         Catch argEx As ArgumentException
             MsgBox(argEx.Message)
         End Try
+
+        Chart_ApplySharedAirflowAxis(x_new_ori.Max(), chart1, chart2, chart3)
+        Chart_ApplyModernTheme(chart1)
+        Chart_ApplyModernTheme(chart2)
+        Chart_ApplyModernTheme(chart3)
+        Chart_ApplyHighQualityScreenRendering(chart1)
+        Chart_ApplyHighQualityScreenRendering(chart2)
+        Chart_ApplyHighQualityScreenRendering(chart3)
 
         If measureUnit = CLMeasureUnit.IP Then
             workpoint(1) = workpoint(1) / 3.6

@@ -1,6 +1,15 @@
 SSW Changelog
 =============
 
+1.3.0.52 - 2026-07-20
+---------------------
+- Modernized application and report performance charts with high-resolution PNG rendering and circular working points.
+- Synchronized airflow axes and intervals across pressure, absorbed-power and efficiency charts.
+- Split winter and summer efficiency into aligned seasonal plots with a shared 60-100 percent scale.
+- Corrected unstable initial summer-efficiency samples and standardized seasonal curve styling.
+- Extended pressure curves ending above 10 Pa to their interpolated zero-pressure airflow.
+- Refined report chart margins, frames, legends and axis-title alignment to prevent clipping.
+
 1.3.0.51 - 2026-07-15
 ---------------------
 - Added progressive alternatives that duplicate a selection and prefix its customer reference with Alt. 01, Alt. 02 and subsequent numbers.

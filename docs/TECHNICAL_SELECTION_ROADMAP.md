@@ -477,6 +477,11 @@ da `/usage` nel Codex CLI.
 
 ### Hardening post-rilascio
 
+- `1.3.0.52`: modernizzati i grafici applicativi e PDF, introdotti punti di
+  lavoro circolari, assi portata uniformi e grafici rendimento separati per
+  inverno/estate; corretti extrapolazione a zero della pressione, andamento
+  iniziale del rendimento estivo e allineamento finale delle immagini RDLC.
+
 - UX selezioni: aggiunto il comando per creare alternative progressive (`Alt. XX`),
   disclaimer persistito per le batterie personalizzate e relativo campo nel
   dataset report; completate le indicazioni su ingombri e dimensioni batteria.

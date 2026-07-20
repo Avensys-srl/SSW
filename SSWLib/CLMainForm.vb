@@ -40,6 +40,11 @@ Public Class CLMainForm
     Private m_WinterReportScenarioName As String = String.Empty
     Private Const ChartSeries_SummerEfficiencyCurve_Name As String = "SummerEfficiencyCurve"
     Private Const ChartSeries_SummerEfficiencyPoint_Name As String = "SummerEfficiencyPoint"
+    Private Const ChartArea_SummerEfficiency_Name As String = "SummerEfficiencyArea"
+    Private Const ChartTitle_WinterEfficiency_Name As String = "WinterEfficiencyTitle"
+    Private Const ChartTitle_SummerEfficiency_Name As String = "SummerEfficiencyTitle"
+    Private Const ChartTitle_ReportEfficiencyAxis_Name As String = "ReportEfficiencyAxisTitle"
+    Private Const ChartSeries_ReportWinterEfficiency_Name As String = "ReportWinterEfficiencyCurve"
 
     Private tbpData_CoilPerformance As TabPage
     Private chbCoilPerformance_Enable As CheckBox
@@ -730,28 +735,41 @@ Public Class CLMainForm
         Dim image As Bitmap
         Dim memoryStream As New MemoryStream
 
+        ' Report charts already use explicit 4x supersampling. Keep their
+        ' rendering independent from the higher-density on-screen controls.
+        chart.RenderingDpiX = 96
+        chart.RenderingDpiY = 96
         chart.Scale(New SizeF(scale, scale))
 
         chart.BorderlineWidth *= scale
         For Each series As DataVisualization.Charting.Series In chart.Series
             series.BorderWidth *= scale
-            series.Font = New System.Drawing.Font(series.Font.FontFamily.Name, series.Font.Size + (6 * scale))
+            series.Font = New System.Drawing.Font(series.Font.FontFamily.Name, CSng(series.Font.Size * scale), series.Font.Style)
             series.MarkerSize *= scale
+            series.MarkerBorderWidth *= scale
         Next
 
         For Each legend As DataVisualization.Charting.Legend In chart.Legends
             legend.BorderWidth *= scale
-            legend.Font = New System.Drawing.Font(legend.Font.FontFamily.Name, legend.Font.Size + (6 * scale))
-            legend.TitleFont = New System.Drawing.Font(legend.TitleFont.FontFamily.Name, legend.TitleFont.Size + (6 * scale))
+            legend.Font = New System.Drawing.Font(legend.Font.FontFamily.Name, CSng(legend.Font.Size * scale), legend.Font.Style)
+            legend.TitleFont = New System.Drawing.Font(legend.TitleFont.FontFamily.Name, CSng(legend.TitleFont.Size * scale), legend.TitleFont.Style)
+        Next
+
+        For Each title As DataVisualization.Charting.Title In chart.Titles
+            title.Font = New System.Drawing.Font(title.Font.FontFamily.Name, CSng(title.Font.Size * scale), title.Font.Style)
         Next
 
         For Each chartArea As DataVisualization.Charting.ChartArea In chart.ChartAreas
             chartArea.AxisX.LineWidth *= scale
-            chartArea.AxisX.TitleFont = New System.Drawing.Font(chartArea.AxisX.TitleFont.FontFamily.Name, chartArea.AxisX.TitleFont.Size + (6 * scale))
-            chartArea.AxisX.LabelStyle.Font = New System.Drawing.Font(chartArea.AxisX.LabelStyle.Font.FontFamily.Name, chartArea.AxisX.LabelStyle.Font.Size + (6 * scale))
+            chartArea.AxisX.MajorGrid.LineWidth *= scale
+            chartArea.AxisX.MajorTickMark.LineWidth *= scale
+            chartArea.AxisX.TitleFont = New System.Drawing.Font(chartArea.AxisX.TitleFont.FontFamily.Name, CSng(chartArea.AxisX.TitleFont.Size * scale), chartArea.AxisX.TitleFont.Style)
+            chartArea.AxisX.LabelStyle.Font = New System.Drawing.Font(chartArea.AxisX.LabelStyle.Font.FontFamily.Name, CSng(chartArea.AxisX.LabelStyle.Font.Size * scale), chartArea.AxisX.LabelStyle.Font.Style)
             chartArea.AxisY.LineWidth *= scale
-            chartArea.AxisY.TitleFont = New System.Drawing.Font(chartArea.AxisY.TitleFont.FontFamily.Name, chartArea.AxisY.TitleFont.Size + (6 * scale))
-            chartArea.AxisY.LabelStyle.Font = New System.Drawing.Font(chartArea.AxisY.LabelStyle.Font.FontFamily.Name, chartArea.AxisY.LabelStyle.Font.Size + (6 * scale))
+            chartArea.AxisY.MajorGrid.LineWidth *= scale
+            chartArea.AxisY.MajorTickMark.LineWidth *= scale
+            chartArea.AxisY.TitleFont = New System.Drawing.Font(chartArea.AxisY.TitleFont.FontFamily.Name, CSng(chartArea.AxisY.TitleFont.Size * scale), chartArea.AxisY.TitleFont.Style)
+            chartArea.AxisY.LabelStyle.Font = New System.Drawing.Font(chartArea.AxisY.LabelStyle.Font.FontFamily.Name, CSng(chartArea.AxisY.LabelStyle.Font.Size * scale), chartArea.AxisY.LabelStyle.Font.Style)
         Next
 
         chart.SaveImage(memoryStream, ImageFormat.Png)
@@ -765,12 +783,14 @@ Public Class CLMainForm
             Return
         End If
 
+        Chart_ApplyModernTheme(chart)
+
         Dim curveSeries As Series = chart.Series.FindByName(ChartSeries_SummerEfficiencyCurve_Name)
         If curveSeries IsNot Nothing Then
             curveSeries.Color = Color.SeaGreen
             curveSeries.BorderColor = Color.SeaGreen
             curveSeries.BorderDashStyle = ChartDashStyle.Solid
-            curveSeries.BorderWidth = Math.Max(curveSeries.BorderWidth, 2)
+            curveSeries.BorderWidth = 2
             curveSeries.LegendText = Chart_SummerEfficiencyLegendText()
             curveSeries.IsVisibleInLegend = True
         End If
@@ -780,12 +800,109 @@ Public Class CLMainForm
             pointSeries.Color = Color.SeaGreen
             pointSeries.MarkerColor = Color.SeaGreen
             pointSeries.MarkerBorderColor = Color.SeaGreen
-            pointSeries.MarkerStyle = MarkerStyle.Square
-            pointSeries.MarkerSize = Math.Max(pointSeries.MarkerSize, 10)
+            pointSeries.MarkerStyle = MarkerStyle.Circle
+            pointSeries.MarkerSize = 8
+            pointSeries.MarkerBorderColor = Color.White
+            pointSeries.MarkerBorderWidth = 2
             pointSeries.LegendText = Chart_SummerWorkingPointLegendText()
             pointSeries.IsVisibleInLegend = True
         End If
     End Sub
+
+    Private Sub Chart_RemoveEfficiencyScenarioTitles(chart As Chart)
+        For Each titleName As String In New String() {ChartTitle_WinterEfficiency_Name, ChartTitle_SummerEfficiency_Name}
+            Dim title As Title = chart.Titles.FindByName(titleName)
+            If title IsNot Nothing Then chart.Titles.Remove(title)
+        Next
+    End Sub
+
+    Private Sub Chart_AddEfficiencyScenarioTitle(chart As Chart, area As ChartArea, titleName As String, text As String)
+        Dim title As New Title With {
+            .Name = titleName,
+            .Text = text,
+            .Docking = Docking.Top,
+            .DockedToChartArea = area.Name,
+            .IsDockedInsideChartArea = True,
+            .Alignment = ContentAlignment.TopRight,
+            .Font = New System.Drawing.Font("Segoe UI", 8.0F, FontStyle.Bold),
+            .ForeColor = Color.FromArgb(55, 65, 81)
+        }
+        chart.Titles.Add(title)
+    End Sub
+
+    Private Sub Chart_ConfigureSingleEfficiencyArea(chart As Chart)
+        If chart Is Nothing OrElse chart.ChartAreas.Count = 0 Then Return
+
+        For index As Integer = chart.ChartAreas.Count - 1 To 1 Step -1
+            chart.ChartAreas.RemoveAt(index)
+        Next
+
+        Chart_RemoveEfficiencyScenarioTitles(chart)
+        Dim area As ChartArea = chart.ChartAreas(0)
+        area.Position.Auto = True
+        area.InnerPlotPosition.Auto = True
+        area.AxisX.LabelStyle.Enabled = True
+        area.AxisX.MajorTickMark.Enabled = True
+        area.AxisY.Minimum = 60
+        area.AxisY.Maximum = 100
+        area.AxisY.Interval = 10
+    End Sub
+
+    Private Function Chart_ConfigureSplitEfficiencyAreas(chart As Chart) As ChartArea
+        Dim winterArea As ChartArea = chart.ChartAreas(0)
+        Dim summerArea As ChartArea = chart.ChartAreas.FindByName(ChartArea_SummerEfficiency_Name)
+        If summerArea Is Nothing Then
+            summerArea = New ChartArea(ChartArea_SummerEfficiency_Name)
+            chart.ChartAreas.Add(summerArea)
+        End If
+
+        Chart_RemoveEfficiencyScenarioTitles(chart)
+
+        Dim airflowTitle As String = winterArea.AxisX.Title
+        Dim efficiencyTitle As String = winterArea.AxisY.Title
+        Dim axisMaximum As Double = winterArea.AxisX.Maximum
+        Dim axisInterval As Double = winterArea.AxisX.Interval
+
+        winterArea.Position.Auto = False
+        winterArea.Position = New ElementPosition(0, 0, 100, 49)
+        winterArea.InnerPlotPosition.Auto = False
+        winterArea.InnerPlotPosition = New ElementPosition(15, 13, 82, 75)
+        winterArea.AxisX.LabelStyle.Enabled = False
+        winterArea.AxisX.MajorTickMark.Enabled = False
+        winterArea.AxisX.Title = ""
+        winterArea.AxisY.Minimum = 60
+        winterArea.AxisY.Maximum = 100
+        winterArea.AxisY.Interval = 10
+
+        summerArea.Position.Auto = False
+        summerArea.Position = New ElementPosition(0, 51, 100, 49)
+        summerArea.InnerPlotPosition.Auto = False
+        summerArea.InnerPlotPosition = New ElementPosition(15, 8, 82, 68)
+        summerArea.AxisX.Minimum = 0
+        summerArea.AxisX.Maximum = axisMaximum
+        summerArea.AxisX.Interval = axisInterval
+        summerArea.AxisX.Title = airflowTitle
+        summerArea.AxisY.Minimum = 60
+        summerArea.AxisY.Maximum = 100
+        summerArea.AxisY.Interval = 10
+        summerArea.AxisY.Title = efficiencyTitle
+        summerArea.AlignWithChartArea = winterArea.Name
+        summerArea.AlignmentOrientation = AreaAlignmentOrientations.Vertical
+        summerArea.AlignmentStyle = AreaAlignmentStyles.AxesView
+
+        Chart_AddEfficiencyScenarioTitle(
+            chart,
+            winterArea,
+            ChartTitle_WinterEfficiency_Name,
+            Environment.Localization.GetString(CLMessageResources.MainForm_Winter.ToString()))
+        Chart_AddEfficiencyScenarioTitle(
+            chart,
+            summerArea,
+            ChartTitle_SummerEfficiency_Name,
+            Environment.Localization.GetString(CLMessageResources.MainForm_Summer.ToString()))
+
+        Return summerArea
+    End Function
 
     Private Async Sub tsmiOption_CheckUpdates_Click(ByVal sender As Object, ByVal e As EventArgs) Handles tsmiOption_CheckUpdates.Click
         tsmiOption_CheckUpdates.Enabled = False
@@ -804,7 +921,7 @@ Public Class CLMainForm
         Dim curveSeries As Series = chart.Series.FindByName(ChartSeries_SummerEfficiencyCurve_Name)
         If curveSeries Is Nothing Then
             curveSeries = chart.Series.Add(ChartSeries_SummerEfficiencyCurve_Name)
-            curveSeries.ChartType = SeriesChartType.Spline
+            curveSeries.ChartType = SeriesChartType.Line
             curveSeries.Points.AddXY(0, 0)
         End If
 
@@ -829,6 +946,73 @@ Public Class CLMainForm
             Environment.Localization.GetString(CLMessageResources.MainForm_Summer.ToString()),
             Environment.Localization.GetString(CLMessageResources.PDF_WorkingPoint.ToString()))
     End Function
+
+    Private Function Chart_WinterEfficiencyLegendText() As String
+        Return String.Format("{0} {1}",
+            Environment.Localization.GetString(CLMessageResources.MainForm_Winter.ToString()),
+            Environment.Localization.GetString(CLMessageResources.MainForm_Efficiency.ToString()))
+    End Function
+
+    Private Sub Chart_ConfigureReportEfficiency(chart As Chart)
+        If chart Is Nothing OrElse chart.ChartAreas.Count = 0 Then Return
+
+        Chart_ApplySummerEfficiencyStyle(chart)
+        Chart_RemoveEfficiencyScenarioTitles(chart)
+
+        Dim efficiencyTitle As String = chart.ChartAreas(0).AxisY.Title
+        For Each area As ChartArea In chart.ChartAreas
+            area.AxisY.Title = String.Empty
+        Next
+
+        Dim existingTitle As Title = chart.Titles.FindByName(ChartTitle_ReportEfficiencyAxis_Name)
+        If existingTitle IsNot Nothing Then chart.Titles.Remove(existingTitle)
+
+        chart.Titles.Add(New Title With {
+            .Name = ChartTitle_ReportEfficiencyAxis_Name,
+            .Text = efficiencyTitle,
+            .Docking = Docking.Left,
+            .DockingOffset = 4,
+            .Alignment = ContentAlignment.MiddleCenter,
+            .TextOrientation = TextOrientation.Rotated270,
+            .Font = New System.Drawing.Font("Segoe UI", 9.0F, FontStyle.Regular),
+            .ForeColor = Color.FromArgb(31, 41, 55)
+        })
+    End Sub
+
+    Private Sub Chart_AlignReportPlotHorizontally(chart As Chart,
+                                                    Optional plotX As Single = 18.0F,
+                                                    Optional plotWidth As Single = 80.0F)
+        If chart Is Nothing OrElse chart.ChartAreas.Count = 0 Then Return
+
+        ' Resolve automatic vertical layout before fixing identical horizontal
+        ' plot bounds for the pressure and efficiency report images.
+        Using layoutStream As New MemoryStream()
+            chart.SaveImage(layoutStream, ChartImageFormat.Png)
+        End Using
+
+        For Each area As ChartArea In chart.ChartAreas
+            Dim plotPosition As ElementPosition = area.InnerPlotPosition
+            area.InnerPlotPosition = New ElementPosition(plotX, plotPosition.Y, plotWidth, plotPosition.Height)
+        Next
+    End Sub
+
+    Private Sub Chart_AddReportWinterEfficiencyLegendItem(chart As Chart)
+        If chart Is Nothing Then Return
+
+        Dim series As Series = chart.Series.FindByName(ChartSeries_ReportWinterEfficiency_Name)
+        If series Is Nothing Then
+            series = chart.Series.Add(ChartSeries_ReportWinterEfficiency_Name)
+            series.ChartType = SeriesChartType.Line
+            series.Points.AddXY(0, 0)
+        End If
+
+        series.Color = ChartSeries_OriginalCurve_Color
+        series.BorderColor = ChartSeries_OriginalCurve_Color
+        series.BorderDashStyle = ChartDashStyle.Solid
+        series.BorderWidth = 2
+        series.LegendText = Chart_WinterEfficiencyLegendText()
+        series.IsVisibleInLegend = True
+    End Sub
 
 #End Region
 
@@ -1065,7 +1249,7 @@ Public Class CLMainForm
         Dim airflowImage As System.Drawing.Bitmap
         Dim legendImage As System.Drawing.Bitmap
         Dim CO2Image As System.Drawing.Bitmap
-        Dim chartScale As Double = 3
+        Dim chartScale As Double = 4
         Dim cloneChart As DataVisualization.Charting.Chart
         Dim chartSeries As Series
         Dim chartOriginalSize As New Size(360, 200)
@@ -1080,18 +1264,22 @@ Public Class CLMainForm
 
         ' Build image Pressure
         cloneChart = Chart_Clone(crtPerformance_Chart1)
+        Chart_ApplyModernTheme(cloneChart)
         cloneChart.Size = chartOriginalSize
+        Chart_AlignReportPlotHorizontally(cloneChart)
         pressureImage = Chart_GetImage(cloneChart, chartScale)
 
         ' Build image Power
         cloneChart = Chart_Clone(crtPerformance_Chart2)
+        Chart_ApplyModernTheme(cloneChart)
         cloneChart.Size = chartOriginalSize
         powerImage = Chart_GetImage(cloneChart, chartScale)
 
         ' Build image AirFlow
         cloneChart = Chart_Clone(crtPerformance_Chart3)
-        Chart_ApplySummerEfficiencyStyle(cloneChart)
+        Chart_ConfigureReportEfficiency(cloneChart)
         cloneChart.Size = chartOriginalSize
+        Chart_AlignReportPlotHorizontally(cloneChart, 20.5F, 75.0F)
         airflowImage = Chart_GetImage(cloneChart, chartScale)
 
         ' Build image CO2
@@ -1101,6 +1289,7 @@ Public Class CLMainForm
 
         ' Legends
         cloneChart = Chart_Clone(crtPerformance_Chart1)
+        Chart_ApplyModernTheme(cloneChart)
         cloneChart.Size = chartOriginalSize
         cloneChart.Height /= 2
         cloneChart.Legends.Add("Legends")
@@ -1151,6 +1340,7 @@ Public Class CLMainForm
             End If
         End If
 
+        Chart_AddReportWinterEfficiencyLegendItem(cloneChart)
         If m_SummerCalculationEnabled AndAlso m_HasLastSummerThermo Then
             Chart_AddSummerEfficiencyLegendItems(cloneChart)
         End If
@@ -4407,20 +4597,60 @@ Public Class CLMainForm
             yValues.Add(100 * summerThermo.efficiency)
         Next
 
+        Chart_ExtrapolateEfficiencyAtZero(xValues, yValues)
+
+        Dim summerArea As ChartArea = Chart_ConfigureSplitEfficiencyAreas(crtPerformance_Chart3)
+
         Dim curveSeries As Series = crtPerformance_Chart3.Series.Add(curveName)
-        curveSeries.ChartType = SeriesChartType.Spline
+        curveSeries.ChartArea = summerArea.Name
+        curveSeries.ChartType = SeriesChartType.Line
         curveSeries.Points.DataBindXY(xValues.ToArray(), yValues.ToArray())
         curveSeries.BorderWidth = 2
         curveSeries.Color = Color.SeaGreen
 
         Dim pointSeries As Series = crtPerformance_Chart3.Series.Add(pointName)
+        pointSeries.ChartArea = summerArea.Name
         pointSeries.ChartType = SeriesChartType.Point
         pointSeries.Points.DataBindXY(New Double() {summerResult.WorkPoint(1)}, New Double() {100 * summerResult.Thermo.efficiency})
-        pointSeries.MarkerSize = 10
-        pointSeries.MarkerStyle = MarkerStyle.Square
+        pointSeries.MarkerSize = 8
+        pointSeries.MarkerStyle = MarkerStyle.Circle
+        pointSeries.MarkerBorderColor = Color.White
+        pointSeries.MarkerBorderWidth = 2
         pointSeries.Color = Color.SeaGreen
 
         Chart_ApplySummerEfficiencyStyle(crtPerformance_Chart3)
+        Chart_ApplyHighQualityScreenRendering(crtPerformance_Chart3)
+    End Sub
+
+    Private Sub Chart_ExtrapolateEfficiencyAtZero(xValues As IList(Of Double), yValues As IList(Of Double))
+        If xValues Is Nothing OrElse yValues Is Nothing OrElse
+           xValues.Count < 3 OrElse xValues.Count <> yValues.Count OrElse xValues(0) <> 0 Then Return
+
+        Dim stableStartIndex As Integer = -1
+        For index As Integer = 1 To xValues.Count - 3
+            If xValues(index) <= 0 OrElse
+               Double.IsNaN(yValues(index)) OrElse Double.IsInfinity(yValues(index)) OrElse
+               Double.IsNaN(yValues(index + 1)) OrElse Double.IsInfinity(yValues(index + 1)) OrElse
+               Double.IsNaN(yValues(index + 2)) OrElse Double.IsInfinity(yValues(index + 2)) Then Continue For
+
+            If yValues(index + 1) <= yValues(index) AndAlso yValues(index + 2) <= yValues(index + 1) Then
+                stableStartIndex = index
+                Exit For
+            End If
+        Next
+
+        If stableStartIndex < 0 Then Return
+
+        Dim x1 As Double = xValues(stableStartIndex)
+        Dim x2 As Double = xValues(stableStartIndex + 1)
+        If x2 <= x1 Then Return
+
+        Dim y1 As Double = yValues(stableStartIndex)
+        Dim slope As Double = (yValues(stableStartIndex + 1) - y1) / (x2 - x1)
+        For index As Integer = 0 To stableStartIndex - 1
+            Dim extrapolated As Double = y1 + (xValues(index) - x1) * slope
+            yValues(index) = Math.Max(0, Math.Min(100, extrapolated))
+        Next
     End Sub
 
     Private Sub Clear_SummerThermalOutputs()
@@ -4492,6 +4722,7 @@ Public Class CLMainForm
 
             If Not m_SummerCalculationEnabled Then
                 Clear_SummerThermalOutputs()
+                Chart_ConfigureSingleEfficiencyArea(crtPerformance_Chart3)
                 Return
             End If
 
