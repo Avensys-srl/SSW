@@ -477,6 +477,15 @@ da `/usage` nel Codex CLI.
 
 ### Hardening post-rilascio
 
+- Accessori e funzioni di controllo: contratto funzionale e piano operativo
+  approvati il 20/07/2026. La roadmap dedicata e' disponibile in
+  `docs/ACCESSORIES_CONTROL_FUNCTIONS_ROADMAP.md`; l'implementazione procede
+  per checkpoint indipendenti da database centrale a Explorer, SDF, SSW,
+  report e portale.
+- Onda A accessori completata il 20/07/2026: backup verificato delle tabelle
+  legacy, nuovo catalogo centrale vuoto, vista di precedenza, vincoli, trigger,
+  rollback e test SQL applicati su `CLDataCentral2`.
+
 - `1.3.0.52`: modernizzati i grafici applicativi e PDF, introdotti punti di
   lavoro circolari, assi portata uniformi e grafici rendimento separati per
   inverno/estate; corretti extrapolazione a zero della pressione, andamento
@@ -500,3 +509,12 @@ da `/usage` nel Codex CLI.
 - GeoIP dietro reverse proxy: `192.168.1.16` e' configurato come proxy fidato;
   gli header IPv4/IPv6 con porta vengono normalizzati e l'IP cliente effettivo
   alimenta sia la localizzazione sia il rate limit di enrollment.
+
+## Sviluppi tecnici successivi
+
+Questi punti restano esplicitamente fuori dalla roadmap accessori e saranno
+affrontati dopo il completamento della selezione accessori e funzioni:
+
+- calcolo termodinamico e aeraulico con portate di mandata e ripresa
+  sbilanciate;
+- scelta e persistenza del layout installativo delle unita'.
