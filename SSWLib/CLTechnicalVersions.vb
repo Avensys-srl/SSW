@@ -5,7 +5,7 @@ Public NotInheritable Class CLTechnicalVersions
     Private Sub New()
     End Sub
 
-    Public Const CurrentDatabaseSchemaVersion As Integer = 2
+    Public Const CurrentDatabaseSchemaVersion As Integer = 3
     Public Const CurrentSelectionFormatVersion As Integer = 1
     Public Const CurrentReportTemplateVersion As Integer = 2
     Public Const CurrentApiContractVersion As Integer = 1

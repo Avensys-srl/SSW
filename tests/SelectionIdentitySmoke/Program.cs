@@ -332,6 +332,7 @@ internal static class Program
         string legacyPath = CopySdfFixture(fixtureRoot, temporaryRoot, "legacy-0.sdf");
         string schema1Path = CopySdfFixture(fixtureRoot, temporaryRoot, "schema-1-av.sdf");
         string schema2Path = CopySdfFixture(fixtureRoot, temporaryRoot, "schema-2-av.sdf");
+        string schema3Path = CopySdfFixture(fixtureRoot, temporaryRoot, "schema-3-av.sdf");
         CLDatabaseCompatibilityInfo legacy = CLDatabaseCompatibilityReader.Inspect(
             legacyPath, new Version(1, 3, 0, 45), "035889");
         if (legacy.State != CLDatabaseCompatibilityState.Legacy || legacy.SchemaVersion != 0)
@@ -349,6 +350,14 @@ internal static class Program
             !schema2.HasFeature("CoreData") || !schema2.HasFeature("WaterCoils") ||
             !schema2.HasFeature("CoilInstallationType") || !schema2.HasFeature("ElectricHeaters"))
             throw new InvalidOperationException("Managed schema-2 SDF fixture failed compatibility checks.");
+
+        CLDatabaseCompatibilityInfo schema3 = CLDatabaseCompatibilityReader.Inspect(
+            schema3Path, new Version(1, 3, 0, 52), "035889");
+        if (schema3.State != CLDatabaseCompatibilityState.Managed || schema3.SchemaVersion != 3 ||
+            !schema3.HasFeature("CoreData") || !schema3.HasFeature("WaterCoils") ||
+            !schema3.HasFeature("CoilInstallationType") || !schema3.HasFeature("ElectricHeaters") ||
+            !schema3.HasFeature("AccessoriesAndControlFunctions"))
+            throw new InvalidOperationException("Managed schema-3 SDF fixture failed compatibility checks.");
     }
 
     private static string CopySdfFixture(string fixtureRoot, string temporaryRoot, string fileName)

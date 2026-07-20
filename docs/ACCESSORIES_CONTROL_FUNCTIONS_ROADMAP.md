@@ -212,6 +212,22 @@ Stima: 45-75 mila token.
 Checkpoint C: un SDF AV contiene esclusivamente le opzioni effettive dei
 modelli esportati ed e' leggibile senza logica di ereditarieta' lato client.
 
+Stato al 20/07/2026: completata.
+
+- `CLDataCentralLib` aggiornata a exporter `1.2.0`, schema SDF `3` e versione
+  minima SSW `1.3.0.52`;
+- esportate sette tabelle per categorie, elementi, traduzioni, collegamenti,
+  dipendenze e relazioni effettive modello-elemento gia' risolte lato server;
+- escluse dall'SDF le relazioni con disponibilita' `Unavailable`, mantenute
+  soltanto nel database centrale per la gestione amministrativa;
+- aggiunta la feature `AccessoriesAndControlFunctions` versione 1 nel manifest
+  SDF e pubblicata la DLL con manifest e SHA-256 verificati nell'Explorer;
+- export AV reale verificato con 62 elementi e 6.149 relazioni effettive; la
+  copia diretta dell'intero catalogo centrale contiene 8.954 relazioni;
+- SSW aggiornato per accettare schema 3 e fixture storica immutabile aggiunta;
+  build `AV|x86` e matrice completa di compatibilita', persistenza, API e
+  release superate.
+
 ### Onda D - Selezione SSW e persistenza
 
 Stima: 90-145 mila token.
