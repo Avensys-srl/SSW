@@ -550,4 +550,7 @@
   <data name="MainForm_ElectricHeater_CustomDisclaimerAccepted" xml:space="preserve">
     <value>Clause de non-responsabilité de la batterie électrique personnalisée acceptée</value>
   </data>
+  <data name="MainForm_CoilPerformance_ElectricPostHeaterConflict" xml:space="preserve">
+    <value>Désactivez la batterie électrique de post-chauffage (EHD) pour activer le post-chauffage à eau.</value>
+  </data>
 </root>

@@ -487,4 +487,7 @@
   <data name="MainForm_ElectricHeater_CustomDisclaimerAccepted" xml:space="preserve">
     <value>Izjava o omejitvi odgovornosti za prilagojen električni grelnik sprejeta</value>
   </data>
+  <data name="MainForm_CoilPerformance_ElectricPostHeaterConflict" xml:space="preserve">
+    <value>Za vklop vodnega dogrevanja izklopite električni dogrelnik (EHD).</value>
+  </data>
 </root>

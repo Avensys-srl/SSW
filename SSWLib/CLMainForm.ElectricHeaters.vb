@@ -89,14 +89,14 @@ Partial Public Class CLMainForm
         result.Group.Controls.Add(result.Heater)
 
         result.Power = ElectricHeater_AddOutput(result.Group, "MainForm_ElectricHeater_Power", "Power [W]", 14, 148)
-        result.Voltage = ElectricHeater_AddOutput(result.Group, "MainForm_ElectricHeater_Voltage", "Voltage [V]", 250, 148, 160)
+        result.Voltage = ElectricHeater_AddOutput(result.Group, "MainForm_ElectricHeater_Voltage", "Voltage [V]", 248, 148, 160)
         result.Phases = ElectricHeater_AddOutput(result.Group, "MainForm_ElectricHeater_Phases", "Phases", 14, 176)
-        result.Current = ElectricHeater_AddOutput(result.Group, "MainForm_ElectricHeater_Current", "Current [A]", 250, 176, 160)
+        result.Current = ElectricHeater_AddOutput(result.Group, "MainForm_ElectricHeater_Current", "Current [A]", 248, 176, 160)
         result.AirIn = ElectricHeater_AddOutput(result.Group, "MainForm_ElectricHeater_AirIn", "Air inlet [C]", 14, 204)
-        result.AirOut = ElectricHeater_AddOutput(result.Group, "MainForm_ElectricHeater_AirOut", "Max. air outlet [C]", 250, 204, 160)
+        result.AirOut = ElectricHeater_AddOutput(result.Group, "MainForm_ElectricHeater_AirOut", "Max. air outlet [C]", 248, 204, 160)
         result.PressureDrop = ElectricHeater_AddOutput(result.Group, "MainForm_ElectricHeater_PressureDrop", "Air DP [Pa]", 14, 232)
         If mode = CLElectricHeaterMode.PEHD Then
-            result.ExhaustOut = ElectricHeater_AddOutput(result.Group, "MainForm_ElectricHeater_ExhaustOut", "Exhaust outlet [C]", 250, 232, 160)
+            result.ExhaustOut = ElectricHeater_AddOutput(result.Group, "MainForm_ElectricHeater_ExhaustOut", "Exhaust outlet [C]", 248, 232, 160)
         End If
 
         result.Conflict = New Label With {.Location = New Point(14, 265), .Size = New Size(500, 28), .ForeColor = Color.Firebrick, .Font = New Font(result.Group.Font, FontStyle.Bold)}
@@ -236,6 +236,7 @@ Partial Public Class CLMainForm
         If controls.Enable.Checked AndAlso controls.Mode = CLElectricHeaterMode.EHD AndAlso ElectricHeater_HasWaterHeatingConflict() Then
             controls.Enable.Checked = False
         End If
+        CoilPerformance_UpdateControlState()
         ElectricHeater_UpdateControlState()
         Calculate()
     End Sub
@@ -291,8 +292,15 @@ Partial Public Class CLMainForm
         Return mode = CLCoilPerformanceMode.HWD OrElse mode = CLCoilPerformanceMode.HCD
     End Function
 
+    Private Function ElectricHeater_IsModeEnabled(mode As CLElectricHeaterMode) As Boolean
+        If Not m_ElectricModeControls.ContainsKey(mode) Then Return False
+        Dim controls As CLElectricModeControls = m_ElectricModeControls(mode)
+        Return controls.Enable.Checked AndAlso TypeOf controls.Heater.SelectedItem Is CLElectricHeaterDefinition
+    End Function
+
     Private Sub ElectricHeater_UpdateControlState()
         If tbpData_ElectricHeaters Is Nothing Then Return
+        CoilPerformance_ApplyElectricPostHeaterConstraint()
         Dim conflict = ElectricHeater_HasWaterHeatingConflict()
         For Each modeControls As CLElectricModeControls In m_ElectricModeControls.Values
             Dim hasMode = m_ElectricHeaters.Any(Function(item) item.Mode = modeControls.Mode)

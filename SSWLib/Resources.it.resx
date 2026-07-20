@@ -615,4 +615,7 @@
   <data name="MainForm_ElectricHeater_CustomDisclaimerAccepted" xml:space="preserve">
     <value>Disclaimer batteria elettrica personalizzata accettato</value>
   </data>
+  <data name="MainForm_CoilPerformance_ElectricPostHeaterConflict" xml:space="preserve">
+    <value>Disabilitare il post-riscaldatore elettrico (EHD) per attivare il post-riscaldamento ad acqua.</value>
+  </data>
 </root>

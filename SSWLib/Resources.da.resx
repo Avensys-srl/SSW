@@ -730,4 +730,7 @@
   <data name="MainForm_ElectricHeater_CustomDisclaimerAccepted" xml:space="preserve">
     <value>Ansvarsfraskrivelse for tilpasset elektrisk varmeflade accepteret</value>
   </data>
+  <data name="MainForm_CoilPerformance_ElectricPostHeaterConflict" xml:space="preserve">
+    <value>Deaktivér den elektriske eftervarmer (EHD) for at aktivere vandeftervarmning.</value>
+  </data>
 </root>

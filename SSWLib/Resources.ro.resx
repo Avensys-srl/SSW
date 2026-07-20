@@ -562,4 +562,7 @@
   <data name="MainForm_ElectricHeater_CustomDisclaimerAccepted" xml:space="preserve">
     <value>Declinarea de responsabilitate pentru bateria electrică personalizată a fost acceptată</value>
   </data>
+  <data name="MainForm_CoilPerformance_ElectricPostHeaterConflict" xml:space="preserve">
+    <value>Dezactivați bateria electrică de postîncălzire (EHD) pentru a activa postîncălzirea cu apă.</value>
+  </data>
 </root>

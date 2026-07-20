@@ -3379,6 +3379,11 @@ Public Class CLMainForm
     End Function
 
     Private Sub CoilPerformance_ModeChanged(sender As Object, e As EventArgs)
+        If m_CoilPerformanceChanging Then
+            Return
+        End If
+
+        CoilPerformance_UpdateControlState()
         ElectricHeater_UpdateControlState()
         CoilPerformance_Recalculate()
     End Sub
@@ -3647,7 +3652,18 @@ Public Class CLMainForm
             Return
         End If
 
+        CoilPerformance_ApplyElectricPostHeaterConstraint()
+
         Dim enabled As Boolean = m_CoilPerformanceAvailable AndAlso chbCoilPerformance_Enable.Checked
+        Dim electricPostHeaterActive As Boolean = enabled AndAlso ElectricHeater_IsModeEnabled(CLElectricHeaterMode.EHD)
+        Dim calculationMode As CLCoilPerformanceMode = If(
+            cmbCoilPerformance_Mode.SelectedItem Is Nothing,
+            CLCoilPerformanceMode.HCD,
+            DirectCast(cmbCoilPerformance_Mode.SelectedItem, CLCoilPerformanceMode))
+        Dim coolingEnabled As Boolean = enabled AndAlso
+            (calculationMode = CLCoilPerformanceMode.CWD OrElse calculationMode = CLCoilPerformanceMode.HCD)
+        Dim heatingEnabled As Boolean = enabled AndAlso
+            (calculationMode = CLCoilPerformanceMode.HWD OrElse calculationMode = CLCoilPerformanceMode.HCD)
         Dim editMode As CLCoilPerformanceEditMode = CoilPerformance_SelectedEditMode()
         Dim geometryEnabled As Boolean = enabled AndAlso editMode <> CLCoilPerformanceEditMode.Standard
         Dim externalCustomized As Boolean = geometryEnabled AndAlso CoilPerformance_UsesExternalGeometry()
@@ -3658,14 +3674,14 @@ Public Class CLMainForm
         chbCoilPerformance_Enable.Enabled = m_CoilPerformanceAvailable
         cmbCoilPerformance_EditMode.Enabled = enabled
         cmbCoilPerformance_Installation.Enabled = enabled AndAlso cmbCoilPerformance_Installation.Items.Count > 1
-        cmbCoilPerformance_Mode.Enabled = enabled
+        cmbCoilPerformance_Mode.Enabled = enabled AndAlso Not electricPostHeaterActive
         cmbCoilPerformance_Coil.Enabled = enabled
         cmbCoilPerformance_FluidType.Enabled = enabled
         nudCoilPerformance_FluidTec.Enabled = enabled AndAlso fluidType <> CLCOFluidType.Water
-        nudCoilPerformance_CoolingIn.Enabled = enabled
-        nudCoilPerformance_CoolingOut.Enabled = enabled
-        nudCoilPerformance_HeatingIn.Enabled = enabled
-        nudCoilPerformance_HeatingOut.Enabled = enabled
+        nudCoilPerformance_CoolingIn.Enabled = coolingEnabled
+        nudCoilPerformance_CoolingOut.Enabled = coolingEnabled
+        nudCoilPerformance_HeatingIn.Enabled = heatingEnabled
+        nudCoilPerformance_HeatingOut.Enabled = heatingEnabled
         nudCoilPerformance_Rows.Enabled = geometryEnabled
         cmbCoilPerformance_FinSpacing.Enabled = geometryEnabled
         nudCoilPerformance_Circuits.Enabled = geometryEnabled
@@ -3683,6 +3699,26 @@ Public Class CLMainForm
             lblCoilPerformance_Status.Text = ""
             m_CoilPerformanceLastPressureDrop = 0
         End If
+    End Sub
+
+    Private Sub CoilPerformance_ApplyElectricPostHeaterConstraint()
+        If chbCoilPerformance_Enable Is Nothing OrElse Not chbCoilPerformance_Enable.Checked OrElse
+            cmbCoilPerformance_Mode Is Nothing OrElse Not ElectricHeater_IsModeEnabled(CLElectricHeaterMode.EHD) Then
+            Return
+        End If
+
+        If cmbCoilPerformance_Mode.SelectedItem IsNot Nothing AndAlso
+            DirectCast(cmbCoilPerformance_Mode.SelectedItem, CLCoilPerformanceMode) = CLCoilPerformanceMode.CWD Then
+            Return
+        End If
+
+        Dim wasChanging As Boolean = m_CoilPerformanceChanging
+        Try
+            m_CoilPerformanceChanging = True
+            cmbCoilPerformance_Mode.SelectedItem = CLCoilPerformanceMode.CWD
+        Finally
+            m_CoilPerformanceChanging = wasChanging
+        End Try
     End Sub
 
     Private Function CoilPerformance_GetEditedCoil() As CLCoilDefinition
@@ -3752,6 +3788,14 @@ Public Class CLMainForm
             input.HeatingFluidOutletTemperature)
         Dim statusMessages As New List(Of String)()
         Dim hasCriticalStatus As Boolean = False
+        If ElectricHeater_IsModeEnabled(CLElectricHeaterMode.EHD) Then
+            CoilPerformance_AddStatusMessage(
+                statusMessages,
+                CoilPerformance_Text(
+                    "MainForm_CoilPerformance_ElectricPostHeaterConflict",
+                    "Disable the electric post-heater (EHD) to enable water post-heating."))
+            hasCriticalStatus = True
+        End If
         For Each issue As CLCoilHydraulicIssue In hydraulicIssues
             CoilPerformance_AddStatusMessage(statusMessages, CoilPerformance_HydraulicIssueText(issue.Code))
             hasCriticalStatus = hasCriticalStatus OrElse issue.IsBlocking OrElse

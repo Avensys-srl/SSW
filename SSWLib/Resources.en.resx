@@ -694,4 +694,7 @@
   <data name="MainForm_ElectricHeater_CustomDisclaimerAccepted" xml:space="preserve">
     <value>Custom electric-heater disclaimer accepted</value>
   </data>
+  <data name="MainForm_CoilPerformance_ElectricPostHeaterConflict" xml:space="preserve">
+    <value>Disable the electric post-heater (EHD) to enable water post-heating.</value>
+  </data>
 </root>

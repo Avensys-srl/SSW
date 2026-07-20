@@ -571,4 +571,7 @@
   <data name="MainForm_ElectricHeater_CustomDisclaimerAccepted" xml:space="preserve">
     <value>Zaakceptowano zastrzeżenie dotyczące niestandardowej nagrzewnicy elektrycznej</value>
   </data>
+  <data name="MainForm_CoilPerformance_ElectricPostHeaterConflict" xml:space="preserve">
+    <value>Wyłącz elektryczną nagrzewnicę wtórną (EHD), aby włączyć wodne dogrzewanie.</value>
+  </data>
 </root>

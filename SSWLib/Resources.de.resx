@@ -502,4 +502,7 @@
   <data name="MainForm_ElectricHeater_CustomDisclaimerAccepted" xml:space="preserve">
     <value>Haftungsausschluss für kundenspezifisches Elektroheizregister akzeptiert</value>
   </data>
+  <data name="MainForm_CoilPerformance_ElectricPostHeaterConflict" xml:space="preserve">
+    <value>Deaktivieren Sie den elektrischen Nachheizer (EHD), um die Wasser-Nachheizung zu aktivieren.</value>
+  </data>
 </root>

@@ -568,4 +568,7 @@
   <data name="MainForm_ElectricHeater_CustomDisclaimerAccepted" xml:space="preserve">
     <value>Disclaimer voor aangepaste elektrische verwarmer geaccepteerd</value>
   </data>
+  <data name="MainForm_CoilPerformance_ElectricPostHeaterConflict" xml:space="preserve">
+    <value>Schakel de elektrische naverwarmer (EHD) uit om waternaverwarming in te schakelen.</value>
+  </data>
 </root>

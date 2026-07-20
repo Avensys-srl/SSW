@@ -827,4 +827,7 @@
   <data name="MainForm_ElectricHeater_CustomDisclaimerAccepted" xml:space="preserve">
     <value>Ansvarsfriskrivning för kundanpassad elektrisk värmare accepterad</value>
   </data>
+  <data name="MainForm_CoilPerformance_ElectricPostHeaterConflict" xml:space="preserve">
+    <value>Avaktivera den elektriska eftervärmaren (EHD) för att aktivera vattenburen eftervärmning.</value>
+  </data>
 </root>

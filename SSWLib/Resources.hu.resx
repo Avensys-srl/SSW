@@ -664,4 +664,7 @@
   <data name="MainForm_ElectricHeater_CustomDisclaimerAccepted" xml:space="preserve">
     <value>Az egyedi elektromos fűtőelem felelősségkizárása elfogadva</value>
   </data>
+  <data name="MainForm_CoilPerformance_ElectricPostHeaterConflict" xml:space="preserve">
+    <value>A vizes utófűtés engedélyezéséhez kapcsolja ki az elektromos utófűtőt (EHD).</value>
+  </data>
 </root>

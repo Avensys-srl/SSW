@@ -571,4 +571,7 @@
   <data name="MainForm_ElectricHeater_CustomDisclaimerAccepted" xml:space="preserve">
     <value>Прието е условието за персонализиран електрически нагревател</value>
   </data>
+  <data name="MainForm_CoilPerformance_ElectricPostHeaterConflict" xml:space="preserve">
+    <value>Деактивирайте електрическия нагревател за последващо подгряване (EHD), за да активирате водното последващо подгряване.</value>
+  </data>
 </root>

@@ -58,6 +58,7 @@ $requiredKeys = @('Update_Title','Update_CheckFailed','Update_PackageIntegrityFa
     'MainForm_CoilPerformance_CustomDisclaimerTitle',
     'MainForm_CoilPerformance_CustomDisclaimer',
     'MainForm_CoilPerformance_CustomDisclaimerAccepted',
+    'MainForm_CoilPerformance_ElectricPostHeaterConflict',
     'MainForm_ElectricHeater_Tab',
     'MainForm_ElectricHeater_Enable',
     'MainForm_ElectricHeater_WaterConflict',
