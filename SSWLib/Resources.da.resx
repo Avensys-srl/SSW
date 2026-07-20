@@ -680,7 +680,7 @@
     <value>Luft ind [C]</value>
   </data>
   <data name="MainForm_ElectricHeater_AirOut" xml:space="preserve">
-    <value>Maks. luft ud [C]</value>
+    <value>Maks. afgangslufttemp. [°C]</value>
   </data>
   <data name="MainForm_ElectricHeater_PressureDrop" xml:space="preserve">
     <value>Luft-DP [Pa]</value>

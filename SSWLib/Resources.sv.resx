@@ -777,7 +777,7 @@
     <value>Luft in [C]</value>
   </data>
   <data name="MainForm_ElectricHeater_AirOut" xml:space="preserve">
-    <value>Max. luft ut [C]</value>
+    <value>Max. utluftstemp. [°C]</value>
   </data>
   <data name="MainForm_ElectricHeater_PressureDrop" xml:space="preserve">
     <value>Luft-DP [Pa]</value>

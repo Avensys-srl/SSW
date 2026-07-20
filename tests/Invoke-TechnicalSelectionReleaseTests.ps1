@@ -61,6 +61,7 @@ $requiredKeys = @('Update_Title','Update_CheckFailed','Update_PackageIntegrityFa
     'MainForm_CoilPerformance_ElectricPostHeaterConflict',
     'MainForm_ElectricHeater_Tab',
     'MainForm_ElectricHeater_Enable',
+    'MainForm_ElectricHeater_AirOut',
     'MainForm_ElectricHeater_WaterConflict',
     'MainForm_ElectricHeater_CustomDisclaimer',
     'MainForm_ElectricHeater_FrostWarning',
@@ -89,6 +90,26 @@ foreach ($report in @('CLMainReport.rdlc','CLMainReportWithCO2.rdlc','CLMainRepo
         if ($reportDataSetNames -notcontains $requiredDataSet) {
             throw "$report is missing dataset $requiredDataSet."
         }
+    }
+}
+
+foreach ($report in @('CLMainReport_Coil.rdlc','CLMainReportWithCO2_Coil.rdlc')) {
+    $reportPath = Join-Path $repo "SSWLib\$report"
+    [xml]$reportDocument = Get-Content -LiteralPath $reportPath -Raw
+    $namespace = New-Object System.Xml.XmlNamespaceManager($reportDocument.NameTable)
+    $namespace.AddNamespace('r', $reportDocument.DocumentElement.NamespaceURI)
+
+    $electricTable = $reportDocument.SelectSingleNode('//r:Tablix[@Name="TablixElectricHeaterReport"]', $namespace)
+    if ($null -eq $electricTable -or $electricTable.DataSetName -ne 'ElectricHeaterReport') {
+        throw "$report does not contain the electric-heater result table."
+    }
+
+    $winterTemperature = $reportDocument.SelectSingleNode('//r:Tablix[@Name="Tablix8"]', $namespace)
+    if ($null -eq $winterTemperature -or $winterTemperature.InnerXml -match 'ElectricHeaterPEHDReport') {
+        throw "$report repeats the PEHD air condition in the winter heat-exchanger block."
+    }
+    if ($electricTable.InnerXml -notmatch 'AirOutCaption' -or $electricTable.InnerXml -notmatch 'AirOut') {
+        throw "$report electric-heater table does not expose the combined outlet temperature and humidity."
     }
 }
 

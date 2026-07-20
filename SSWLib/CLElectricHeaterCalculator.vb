@@ -50,6 +50,7 @@ Public Class CLElectricHeaterCalculationResult
     Public Property CurrentA As Double
     Public Property AirInletTemperatureC As Double
     Public Property AirOutletTemperatureC As Double
+    Public Property AirOutletRelativeHumidityPercent As Double
     Public Property AirPressureDropPa As Double
     Public Property NominalAirPressureDropPa As Double
     Public Property ExhaustOutletTemperatureC As Double?

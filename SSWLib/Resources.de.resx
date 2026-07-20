@@ -452,7 +452,7 @@
     <value>Lufteintritt [C]</value>
   </data>
   <data name="MainForm_ElectricHeater_AirOut" xml:space="preserve">
-    <value>Max. Luftaustritt [C]</value>
+    <value>Max. Luftaustrittstemp. [°C]</value>
   </data>
   <data name="MainForm_ElectricHeater_PressureDrop" xml:space="preserve">
     <value>Luft-DP [Pa]</value>

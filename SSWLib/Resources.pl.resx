@@ -521,7 +521,7 @@
     <value>Wlot powietrza [C]</value>
   </data>
   <data name="MainForm_ElectricHeater_AirOut" xml:space="preserve">
-    <value>Maks. wylot powietrza [C]</value>
+    <value>Maks. temp. pow. wylot. [°C]</value>
   </data>
   <data name="MainForm_ElectricHeater_PressureDrop" xml:space="preserve">
     <value>DP powietrza [Pa]</value>

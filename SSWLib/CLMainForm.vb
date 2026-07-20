@@ -1615,11 +1615,13 @@ Public Class CLMainForm
         waitForm.Hide()
 
         Dim hasWaterCoilReport As Boolean = waterCoilReportDataTable.Rows.Count > 0
+        Dim hasElectricHeaterReport As Boolean = electricHeaterReportDataTable.Rows.Count > 0
+        Dim hasAirTreatmentAccessoryReport As Boolean = hasWaterCoilReport OrElse hasElectricHeaterReport
         Dim reportFileName As String
         If chbCO2Level_addtoreport.Checked Then
-            reportFileName = If(hasWaterCoilReport, "CLMainReportWithCO2_Coil.rdlc", "CLMainReportWithCO2.rdlc")
+            reportFileName = If(hasAirTreatmentAccessoryReport, "CLMainReportWithCO2_Coil.rdlc", "CLMainReportWithCO2.rdlc")
         Else
-            reportFileName = If(hasWaterCoilReport, "CLMainReport_Coil.rdlc", "CLMainReport.rdlc")
+            reportFileName = If(hasAirTreatmentAccessoryReport, "CLMainReport_Coil.rdlc", "CLMainReport.rdlc")
         End If
 
         reportViewForm.SetReport(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), reportFileName),

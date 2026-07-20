@@ -644,7 +644,7 @@
     <value>Air inlet [C]</value>
   </data>
   <data name="MainForm_ElectricHeater_AirOut" xml:space="preserve">
-    <value>Max. air outlet [C]</value>
+    <value>Max. air out temp. [°C]</value>
   </data>
   <data name="MainForm_ElectricHeater_PressureDrop" xml:space="preserve">
     <value>Air DP [Pa]</value>

@@ -521,7 +521,7 @@
     <value>Входящ въздух [C]</value>
   </data>
   <data name="MainForm_ElectricHeater_AirOut" xml:space="preserve">
-    <value>Макс. изходящ въздух [C]</value>
+    <value>Макс. темп. изх. въздух [°C]</value>
   </data>
   <data name="MainForm_ElectricHeater_PressureDrop" xml:space="preserve">
     <value>DP въздух [Pa]</value>

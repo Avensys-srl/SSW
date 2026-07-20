@@ -437,7 +437,7 @@
     <value>Vstop zraka [C]</value>
   </data>
   <data name="MainForm_ElectricHeater_AirOut" xml:space="preserve">
-    <value>Najv. izstop zraka [C]</value>
+    <value>Najv. temp. izst. zraka [°C]</value>
   </data>
   <data name="MainForm_ElectricHeater_PressureDrop" xml:space="preserve">
     <value>DP zraka [Pa]</value>

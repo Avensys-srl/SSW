@@ -565,7 +565,7 @@
     <value>Aria in [C]</value>
   </data>
   <data name="MainForm_ElectricHeater_AirOut" xml:space="preserve">
-    <value>Temp. max. aria in uscita [C]</value>
+    <value>Temp. max aria out [°C]</value>
   </data>
   <data name="MainForm_ElectricHeater_PressureDrop" xml:space="preserve">
     <value>DP aria [Pa]</value>

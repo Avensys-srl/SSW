@@ -614,7 +614,7 @@
     <value>Belépő levegő [C]</value>
   </data>
   <data name="MainForm_ElectricHeater_AirOut" xml:space="preserve">
-    <value>Max. kilépő levegő [C]</value>
+    <value>Max. kilépő levegő-hőm. [°C]</value>
   </data>
   <data name="MainForm_ElectricHeater_PressureDrop" xml:space="preserve">
     <value>Levegő DP [Pa]</value>

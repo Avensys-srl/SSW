@@ -512,7 +512,7 @@
     <value>Aer intrare [C]</value>
   </data>
   <data name="MainForm_ElectricHeater_AirOut" xml:space="preserve">
-    <value>Temp. max. aer ieșire [C]</value>
+    <value>Temp. max. aer ieșire [°C]</value>
   </data>
   <data name="MainForm_ElectricHeater_PressureDrop" xml:space="preserve">
     <value>DP aer [Pa]</value>

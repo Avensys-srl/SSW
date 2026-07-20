@@ -5,6 +5,7 @@ Imports Climalombarda.Common.UI
 Imports Climalombarda.DataCentral
 
 Partial Public Class CLMainForm
+    Private Const ElectricHeaterCustomSelectionEnabled As Boolean = False
     Private m_ElectricHeaterChanging As Boolean
     Private m_ElectricHeaterModelId As Integer = -1
     Private m_ElectricHeaters As New List(Of CLElectricHeaterDefinition)()
@@ -29,6 +30,7 @@ Partial Public Class CLMainForm
         Public Current As TextBox
         Public AirIn As TextBox
         Public AirOut As TextBox
+        Public AirOutRH As TextBox
         Public PressureDrop As TextBox
         Public ExhaustOut As TextBox
         Public CustomDisclaimerAccepted As Boolean
@@ -65,7 +67,7 @@ Partial Public Class CLMainForm
         Dim result As New CLElectricModeControls With {.Mode = mode}
         result.Group = New GroupBox With {
             .Location = New Point(x, 8),
-            .Size = New Size(536, 332),
+            .Size = New Size(536, 360),
             .Text = mode.ToString()
         }
 
@@ -93,21 +95,22 @@ Partial Public Class CLMainForm
         result.Phases = ElectricHeater_AddOutput(result.Group, "MainForm_ElectricHeater_Phases", "Phases", 14, 176)
         result.Current = ElectricHeater_AddOutput(result.Group, "MainForm_ElectricHeater_Current", "Current [A]", 248, 176, 160)
         result.AirIn = ElectricHeater_AddOutput(result.Group, "MainForm_ElectricHeater_AirIn", "Air inlet [C]", 14, 204)
-        result.AirOut = ElectricHeater_AddOutput(result.Group, "MainForm_ElectricHeater_AirOut", "Max. air outlet [C]", 248, 204, 160)
+        result.AirOut = ElectricHeater_AddOutput(result.Group, "MainForm_ElectricHeater_AirOut", "Max. air out temp. [°C]", 248, 204, 160)
         result.PressureDrop = ElectricHeater_AddOutput(result.Group, "MainForm_ElectricHeater_PressureDrop", "Air DP [Pa]", 14, 232)
+        result.AirOutRH = ElectricHeater_AddOutput(result.Group, "MainForm_CoilPerformance_ResultRHOut", "R.H. out [%]", 248, 232, 160)
         If mode = CLElectricHeaterMode.PEHD Then
-            result.ExhaustOut = ElectricHeater_AddOutput(result.Group, "MainForm_ElectricHeater_ExhaustOut", "Exhaust outlet [C]", 248, 232, 160)
+            result.ExhaustOut = ElectricHeater_AddOutput(result.Group, "MainForm_ElectricHeater_ExhaustOut", "Exhaust outlet [C]", 14, 260, 136, True)
         End If
 
-        result.Conflict = New Label With {.Location = New Point(14, 265), .Size = New Size(500, 28), .ForeColor = Color.Firebrick, .Font = New Font(result.Group.Font, FontStyle.Bold)}
+        result.Conflict = New Label With {.Location = New Point(14, 293), .Size = New Size(500, 28), .ForeColor = Color.Firebrick, .Font = New Font(result.Group.Font, FontStyle.Bold)}
         ElectricHeater_Tag(result.Conflict, "MainForm_ElectricHeater_WaterConflict", "Deselect the heating water coil to enable the electric post-heater.")
         result.Group.Controls.Add(result.Conflict)
         If mode = CLElectricHeaterMode.PEHD Then
-            result.FrostStatus = New Label With {.Location = New Point(14, 265), .Size = New Size(500, 28), .ForeColor = Color.Firebrick, .Font = New Font(result.Group.Font, FontStyle.Bold), .Visible = False}
+            result.FrostStatus = New Label With {.Location = New Point(14, 293), .Size = New Size(500, 28), .ForeColor = Color.Firebrick, .Font = New Font(result.Group.Font, FontStyle.Bold), .Visible = False}
             ElectricHeater_Tag(result.FrostStatus, "MainForm_ElectricHeater_FrostWarning", "Exhaust temperature is not above the 3 C frost-protection target.")
             result.Group.Controls.Add(result.FrostStatus)
         End If
-        result.CustomNote = New Label With {.Location = New Point(14, 294), .Size = New Size(500, 28), .ForeColor = Color.Firebrick, .Font = New Font(result.Group.Font, FontStyle.Bold)}
+        result.CustomNote = New Label With {.Location = New Point(14, 322), .Size = New Size(500, 28), .ForeColor = Color.Firebrick, .Font = New Font(result.Group.Font, FontStyle.Bold)}
         ElectricHeater_Tag(result.CustomNote, "MainForm_ElectricHeater_CustomPending", "Custom electric-heater parameters will be defined in a later step.")
         result.Group.Controls.Add(result.CustomNote)
         Return result
@@ -117,8 +120,19 @@ Partial Public Class CLMainForm
         Return New ComboBox With {.DropDownStyle = ComboBoxStyle.DropDownList, .Location = New Point(x, y), .Size = New Size(width, 21)}
     End Function
 
-    Private Sub ElectricHeater_AddLabel(parent As Control, key As String, fallback As String, x As Integer, y As Integer)
-        Dim label As New Label With {.AutoSize = True, .Location = New Point(x, y)}
+    Private Sub ElectricHeater_AddLabel(parent As Control,
+        key As String,
+        fallback As String,
+        x As Integer,
+        y As Integer,
+        Optional width As Integer = 0,
+        Optional height As Integer = 0)
+
+        Dim label As New Label With {.AutoSize = width <= 0, .Location = New Point(x, y)}
+        If width > 0 Then
+            label.Size = New Size(width, height)
+            label.TextAlign = ContentAlignment.MiddleLeft
+        End If
         ElectricHeater_Tag(label, key, fallback)
         parent.Controls.Add(label)
     End Sub
@@ -128,9 +142,14 @@ Partial Public Class CLMainForm
         fallback As String,
         x As Integer,
         y As Integer,
-        Optional valueOffset As Integer = 136) As TextBox
+        Optional valueOffset As Integer = 136,
+        Optional wrapLabel As Boolean = False) As TextBox
 
-        ElectricHeater_AddLabel(parent, key, fallback, x, y + 3)
+        If wrapLabel Then
+            ElectricHeater_AddLabel(parent, key, fallback, x, y - 4, valueOffset - 8, 32)
+        Else
+            ElectricHeater_AddLabel(parent, key, fallback, x, y + 3)
+        End If
         Dim output As New TextBox With {.Location = New Point(x + valueOffset, y), .Size = New Size(92, 20), .ReadOnly = True}
         parent.Controls.Add(output)
         Return output
@@ -170,7 +189,7 @@ Partial Public Class CLMainForm
             controls.EditMode.Items.Clear()
             controls.EditMode.Items.Add(New CLElectricChoice(Of CLCoilPerformanceEditMode)(CoilPerformance_Text("MainForm_CoilPerformance_Standard", "Standard"), CLCoilPerformanceEditMode.Standard))
             controls.EditMode.Items.Add(New CLElectricChoice(Of CLCoilPerformanceEditMode)(CoilPerformance_Text("MainForm_CoilPerformance_StandardCustomized", "Customized"), CLCoilPerformanceEditMode.StandardCustomized))
-            controls.EditMode.SelectedIndex = If(wasCustomized, 1, 0)
+            controls.EditMode.SelectedIndex = If(ElectricHeaterCustomSelectionEnabled AndAlso wasCustomized, 1, 0)
 
             controls.Installation.Items.Clear()
             Dim hasInternal = available.Any(Function(item) item.Installation = CLCoilInstallationType.Internal)
@@ -275,7 +294,7 @@ Partial Public Class CLMainForm
     Private Sub ElectricHeater_LoadSelected(controls As CLElectricModeControls)
         Dim heater = TryCast(controls.Heater.SelectedItem, CLElectricHeaterDefinition)
         If heater Is Nothing Then
-            For Each box In New TextBox() {controls.Power, controls.Voltage, controls.Phases, controls.Current, controls.AirIn, controls.AirOut, controls.PressureDrop, controls.ExhaustOut}
+            For Each box In New TextBox() {controls.Power, controls.Voltage, controls.Phases, controls.Current, controls.AirIn, controls.AirOut, controls.AirOutRH, controls.PressureDrop, controls.ExhaustOut}
                 If box IsNot Nothing Then box.Clear()
             Next
             Return
@@ -312,7 +331,7 @@ Partial Public Class CLMainForm
             End If
             modeControls.Enable.Enabled = hasMode AndAlso Not blocked
             Dim enabled = hasMode AndAlso modeControls.Enable.Checked AndAlso Not blocked
-            modeControls.EditMode.Enabled = enabled
+            modeControls.EditMode.Enabled = ElectricHeaterCustomSelectionEnabled AndAlso enabled
             modeControls.Installation.Enabled = enabled AndAlso modeControls.Installation.Items.Count > 1
             modeControls.Heater.Enabled = enabled
             modeControls.Conflict.Visible = blocked
@@ -338,7 +357,7 @@ Partial Public Class CLMainForm
         For Each modeControls As CLElectricModeControls In m_ElectricModeControls.Values
             Dim heater = TryCast(modeControls.Heater.SelectedItem, CLElectricHeaterDefinition)
             If heater Is Nothing OrElse Not modeControls.Enable.Checked OrElse (modeControls.Mode = CLElectricHeaterMode.EHD AndAlso ElectricHeater_HasWaterHeatingConflict()) Then
-                modeControls.AirIn.Clear() : modeControls.AirOut.Clear() : modeControls.PressureDrop.Clear()
+                modeControls.AirIn.Clear() : modeControls.AirOut.Clear() : modeControls.AirOutRH.Clear() : modeControls.PressureDrop.Clear()
                 If modeControls.ExhaustOut IsNot Nothing Then modeControls.ExhaustOut.Clear()
                 If modeControls.FrostStatus IsNot Nothing Then modeControls.FrostStatus.Visible = False
                 Continue For
@@ -350,10 +369,17 @@ Partial Public Class CLMainForm
                 inlet = If(m_HasLastWinterThermo, m_LastWinterThermo.Supply_outlet_temp, SupplyOutletTemp)
             End If
             Dim outlet = inlet + CLElectricHeaterCalculator.TemperatureRise(heater.TotalPowerW, airflow)
+            Dim inletRhPercent = If(modeControls.Mode = CLElectricHeaterMode.PEHD,
+                ParseUIDouble(txbPerformance_RHFreshInlet.Text),
+                If(m_HasLastWinterThermo, 100D * m_LastWinterThermo.Supply_outlet_rh, SupplyOutletRH))
+            Dim inletHumidity = PsychroCalc(inlet, Math.Max(0D, Math.Min(100D, inletRhPercent)) / 100D)
+            Dim outletRhPercent = 100D * PsychroCalcW(outlet, inletHumidity.w).rh
+            outletRhPercent = Math.Max(0D, Math.Min(100D, outletRhPercent))
             Dim nominalDrop = CLElectricHeaterCalculator.NominalPressureDrop(nominalAirflow) * Math.Max(1, heater.Quantity)
             Dim pressureDrop = CLElectricHeaterCalculator.PressureDropAtAirflow(nominalDrop, airflow, nominalAirflow)
             modeControls.AirIn.Text = FormatNumber(inlet, 1)
             modeControls.AirOut.Text = FormatNumber(outlet, 1)
+            modeControls.AirOutRH.Text = FormatNumber(outletRhPercent, 0)
             modeControls.PressureDrop.Text = FormatNumber(pressureDrop, 1)
             If modeControls.ExhaustOut IsNot Nothing AndAlso m_HasLastWinterThermo Then
                 modeControls.ExhaustOut.Text = FormatNumber(m_LastWinterThermo.Exhaust_outlet_temp, 1)
@@ -367,6 +393,7 @@ Partial Public Class CLMainForm
                 .CurrentA = heater.TotalCurrentA,
                 .AirInletTemperatureC = inlet,
                 .AirOutletTemperatureC = outlet,
+                .AirOutletRelativeHumidityPercent = outletRhPercent,
                 .AirPressureDropPa = pressureDrop,
                 .NominalAirPressureDropPa = nominalDrop,
                 .ExhaustOutletTemperatureC = If(modeControls.Mode = CLElectricHeaterMode.PEHD AndAlso m_HasLastWinterThermo, CType(m_LastWinterThermo.Exhaust_outlet_temp, Double?), Nothing)
@@ -453,7 +480,11 @@ Partial Public Class CLMainForm
                     End If
                 Next
             End If
-            controls.EditMode.SelectedIndex = If(String.Equals(selection.SelectionCase, CLCoilPerformanceEditMode.StandardCustomized.ToString(), StringComparison.OrdinalIgnoreCase), 1, 0)
+            controls.EditMode.SelectedIndex = If(
+                ElectricHeaterCustomSelectionEnabled AndAlso
+                String.Equals(selection.SelectionCase, CLCoilPerformanceEditMode.StandardCustomized.ToString(), StringComparison.OrdinalIgnoreCase),
+                1,
+                0)
             controls.Enable.Checked = selection.Enabled AndAlso controls.Heater.Items.Count > 0
         Finally
             m_ElectricHeaterChanging = False
@@ -473,6 +504,7 @@ Partial Public Class CLMainForm
                 .CurrentA = result.CurrentA,
                 .AirInletTemperatureC = result.AirInletTemperatureC,
                 .AirOutletTemperatureC = result.AirOutletTemperatureC,
+                .AirOutletRelativeHumidityPercent = result.AirOutletRelativeHumidityPercent,
                 .AirPressureDropPa = result.AirPressureDropPa,
                 .ExhaustOutletTemperatureC = result.ExhaustOutletTemperatureC
             })
@@ -554,8 +586,12 @@ Partial Public Class CLMainForm
             row("Quantity") = heater.Quantity.ToString(CultureInfo.CurrentCulture)
             row("AirInCaption") = CoilPerformance_Text("MainForm_ElectricHeater_AirIn", "Air inlet [C]")
             row("AirIn") = FormatNumber(calculation.AirInletTemperatureC, 1)
-            row("AirOutCaption") = CoilPerformance_Text("MainForm_ElectricHeater_AirOut", "Max. air outlet [C]")
-            row("AirOut") = FormatNumber(calculation.AirOutletTemperatureC, 1)
+            row("AirOutCaption") = String.Format("{0} - {1}",
+                CoilPerformance_Text("MainForm_ElectricHeater_AirOut", "Max. air out temp. [°C]"),
+                CoilPerformance_Text("MainForm_CoilPerformance_ResultRHOut", "R.H. out [%]"))
+            row("AirOut") = String.Format("{0} - {1}",
+                FormatNumber(calculation.AirOutletTemperatureC, 1),
+                FormatNumber(calculation.AirOutletRelativeHumidityPercent, 0))
             row("AirDPCaption") = CoilPerformance_Text("MainForm_ElectricHeater_PressureDrop", "Air DP [Pa]")
             row("AirDP") = FormatNumber(calculation.AirPressureDropPa, 1)
             row("NominalAirDPCaption") = CoilPerformance_Text("MainForm_ElectricHeater_NominalPressureDrop", "Nominal air DP [Pa]")
