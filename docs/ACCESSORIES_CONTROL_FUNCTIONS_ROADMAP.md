@@ -180,6 +180,24 @@ Stima: 80-125 mila token.
 Checkpoint B: il catalogo e le relazioni sono completamente gestibili da
 Explorer, inclusi nuovi elementi futuri, senza interventi SQL manuali.
 
+Stato al 20/07/2026: completata.
+
+- aggiunto in Explorer il form MDI `Catalogo accessori e funzioni` con editor
+  per categorie, elementi, traduzioni, regole serie/modello, collegamenti e
+  dipendenze;
+- aggiunta la matrice serie/modello con ereditarieta', filtri per tipo e
+  categoria e applicazione massiva dello stato alle celle selezionate;
+- aggiunti import `.xlsx` con anteprima/validazione e applicazione
+  transazionale, piu' export CSV modificabile con Excel;
+- importato il catalogo iniziale validato: 62 elementi in 12 categorie, prezzi
+  null, quattro varianti KTS, override Quark/Serie 7 SG, sei collegamenti
+  accessorio-funzione e quattro dipendenze;
+- verificata l'idempotenza del seed e superati gli smoke test SQL; verificata
+  anche la lettura delle 79 righe del file Excel mentre il file era aperto;
+- Explorer portato alla versione `2.1.19.0` e soluzione compilata con successo
+  in `Release|x86`; rimangono solo warning storici per riferimenti DevExpress
+  opzionali non installati.
+
 ### Onda C - Exporter e SDF schema 3
 
 Stima: 45-75 mila token.
