@@ -603,6 +603,7 @@ Partial Public Class CLMainForm
                 txbPerformance_FreshInletTemperature, txbPerformance_RHFreshInlet,
                 txbPerformance_ReturnInletTemperature, txbPerformance_RHReturnInlet)
             Project_ApplyScenario(document.Selection.Summer, TextBox1, TextBox2, TextBox3, TextBox4, TextBox5, TextBox6)
+            Project_ApplyRegulationLevel(document.Selection.Winter, document.Selection.Summer)
             m_SummerCalculationEnabled = document.Selection.Summer.Enabled
             m_WinterReportScenarioName = document.Selection.Winter.StandardCode
             SeasonalCalculation_UpdateModeButton()
@@ -640,9 +641,17 @@ Partial Public Class CLMainForm
         Project_SetNullableText(outdoorRh, scenario.OutdoorRelativeHumidityPercent)
         Project_SetNullableText(returnTemperature, scenario.ReturnTemperatureC)
         Project_SetNullableText(returnRh, scenario.ReturnRelativeHumidityPercent)
-        If scenario.RegulationPercent.HasValue Then
-            hsbPerformance_RegulationLevel.Value = Math.Max(hsbPerformance_RegulationLevel.Minimum,
-                Math.Min(hsbPerformance_RegulationLevel.Maximum, CInt(Math.Round(scenario.RegulationPercent.Value))))
+    End Sub
+
+    Private Sub Project_ApplyRegulationLevel(winter As CLOperatingScenarioInput, summer As CLOperatingScenarioInput)
+        Dim regulationPercent As Double? = Nothing
+        If winter IsNot Nothing AndAlso winter.RegulationPercent.HasValue Then
+            regulationPercent = winter.RegulationPercent
+        ElseIf summer IsNot Nothing AndAlso summer.RegulationPercent.HasValue Then
+            regulationPercent = summer.RegulationPercent
+        End If
+        If regulationPercent.HasValue Then
+            Performance_ApplyRegulationLevel(CInt(Math.Round(regulationPercent.Value)), False)
         End If
     End Sub
 

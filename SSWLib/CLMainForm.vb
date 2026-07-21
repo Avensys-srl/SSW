@@ -484,9 +484,25 @@ Public Class CLMainForm
 #Region "====[ Performances ]===="
 
     Private Sub hsbPerformance_RegulationLevel_Scroll(ByVal sender As System.Object, ByVal e As System.Windows.Forms.ScrollEventArgs) Handles hsbPerformance_RegulationLevel.Scroll
-        lblPerformance_RegulationLevelValue.Text = e.NewValue & " %"
-        prbPerformance_RegulationLevel.Value = e.NewValue
-        Calculate()
+        Performance_ApplyRegulationLevel(e.NewValue, True)
+    End Sub
+
+    Private Sub Performance_ApplyRegulationLevel(value As Integer, recalculate As Boolean)
+        Performance_SynchronizeRegulationLevelControls(hsbPerformance_RegulationLevel,
+            lblPerformance_RegulationLevelValue, prbPerformance_RegulationLevel, value)
+        If recalculate Then Calculate()
+    End Sub
+
+    Private Shared Sub Performance_SynchronizeRegulationLevelControls(scrollBar As HScrollBar,
+        valueLabel As Label, progressBar As ProgressBar, value As Integer)
+        Dim maximumValue As Integer = Math.Min(progressBar.Maximum,
+            scrollBar.Maximum - scrollBar.LargeChange + 1)
+        Dim normalizedValue As Integer = Math.Max(scrollBar.Minimum,
+            Math.Min(maximumValue, value))
+
+        scrollBar.Value = normalizedValue
+        valueLabel.Text = normalizedValue.ToString(CultureInfo.CurrentCulture) & " %"
+        progressBar.Value = normalizedValue
     End Sub
 
     Private Sub txbPerformance_PassiveHaus_ElectricalEfficiency_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles txbPerformance_PassiveHaus.TextChanged

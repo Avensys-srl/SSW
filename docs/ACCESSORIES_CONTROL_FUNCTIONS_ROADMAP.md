@@ -339,6 +339,8 @@ Stima: 45-75 mila token.
 
 1. Testare matrici, dipendenze, quantita', KTS e migrazioni storiche.
 2. Testare SDF schema 2/3 e progetto V1/V2.
+   - Verificato il ripristino del livello di regolazione dai file `.sswsel`:
+     scrollbar, percentuale, progress bar e ricalcolo usano lo stesso valore.
 3. Build AV x86, test grafico dall'eseguibile canonico e report multilingua.
 4. Commit e push di ogni repository coinvolto.
 5. Generare installer, manifest aggiornamenti e rollback.

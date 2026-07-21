@@ -167,6 +167,7 @@ internal static class Program
             TestAccessoryLocalization();
             TestAccessoryReportTemplates();
             TestKtsExclusiveGroupReplacement();
+            TestRegulationLevelControlSynchronization();
             TestRegistrationFailureDialog();
             TestUpdateIntegrity(root);
             TestPracticalSelectionRules();
@@ -276,6 +277,27 @@ internal static class Program
 
         if (selected.Contains(sma.Id) || selected.Contains(dependent.Id) || !selected.Contains(unrelated.Id))
             throw new InvalidOperationException("KTS replacement did not remove only incompatible dependent functions.");
+    }
+
+    private static void TestRegulationLevelControlSynchronization()
+    {
+        MethodInfo method = typeof(CLMainForm).GetMethod(
+            "Performance_SynchronizeRegulationLevelControls",
+            BindingFlags.NonPublic | BindingFlags.Static);
+        if (method == null) throw new InvalidOperationException("Regulation-level control synchronization was not found.");
+
+        using (var scrollBar = new HScrollBar { Minimum = 20, Maximum = 109, LargeChange = 10, Value = 100 })
+        using (var valueLabel = new Label { Text = "100 %" })
+        using (var progressBar = new ProgressBar { Minimum = 0, Maximum = 100, Value = 100 })
+        {
+            method.Invoke(null, new object[] { scrollBar, valueLabel, progressBar, 88 });
+            if (scrollBar.Value != 88 || progressBar.Value != 88 || valueLabel.Text != "88 %")
+                throw new InvalidOperationException("Loaded regulation level did not synchronize all UI controls.");
+
+            method.Invoke(null, new object[] { scrollBar, valueLabel, progressBar, 109 });
+            if (scrollBar.Value != 100 || progressBar.Value != 100 || valueLabel.Text != "100 %")
+                throw new InvalidOperationException("Regulation-level upper bound is invalid.");
+        }
     }
 
     private static void TestAccessoryReportTemplates()
