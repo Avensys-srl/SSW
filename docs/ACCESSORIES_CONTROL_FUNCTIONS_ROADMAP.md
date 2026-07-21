@@ -281,6 +281,15 @@ vecchi `.sswsel` e vecchi SDF restano gestiti in modo controllato.
 
 Stima: 75-120 mila token.
 
+Stato parziale al 21/07/2026:
+
+- aggiunte e applicate al database centrale le traduzioni dei nomi visualizzati
+  per 12 categorie e 62 elementi del catalogo nelle 11 lingue non inglesi;
+- l'inglese resta la sorgente canonica e il fallback rimane lingua selezionata,
+  inglese, acronimo;
+- migrazione SQL idempotente verificata senza valori vuoti o `?`; resta da
+  riesportare l'SDF AV e verificare visivamente il catalogo nelle 12 lingue.
+
 1. Aggiungere dataset e sezione condizionale nei quattro RDLC esistenti.
 2. Mostrare solo standard e opzioni selezionate con funzioni multilinea.
 3. Mostrare gli stessi dati nel dettaglio di SSW Portal.
