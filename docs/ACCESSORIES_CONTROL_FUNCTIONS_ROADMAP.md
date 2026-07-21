@@ -232,6 +232,25 @@ Stato al 20/07/2026: completata.
 
 Stima: 90-145 mila token.
 
+Stato al 21/07/2026: **D1 completato; D2 e D3 da eseguire**.
+
+- aggiunto il tab dinamico `Accessori e funzioni`, disponibile soltanto quando
+  il manifest SDF espone la feature `AccessoriesAndControlFunctions`;
+- letti dal nuovo SDF schema 3 catalogo effettivo, categorie, descrizioni,
+  stato, installazione, quantita' e funzioni associate, con fallback lingua,
+  inglese e acronimo;
+- aggiunti ricerca, filtro categoria, raggruppamento visivo, selezione delle
+  opzioni, quantita' entro i limiti esportati e riepilogo live degli acronimi;
+- gli elementi standard sono preselezionati e bloccati; le selezioni di D1
+  restano intenzionalmente in memoria fino al contratto di persistenza D3;
+- aggiunto smoke test x86 sul SDF AV reale; verificati 55 elementi e quattro
+  accessori con funzioni per il modello campione, oltre alla build `AV|x86`.
+
+Prossimi checkpoint interni:
+
+- D2: motore di dipendenze, conflitti, KTS e tooltip;
+- D3: DTO progetto V2, migrazione V1, hash, dirty state e payload online.
+
 1. Aggiungere il tab Accessori e funzioni, raggruppato e filtrabile.
 2. Implementare stati standard, opzionale, interno, esterno e non disponibile.
 3. Implementare quantita', dipendenze, conflitti e tooltip esplicativi.

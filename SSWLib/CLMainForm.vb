@@ -241,6 +241,7 @@ Public Class CLMainForm
 
         CoilPerformance_InitializeTab()
         ElectricHeater_InitializeTab()
+        Accessories_InitializeTab()
 
         txbPerformance_AirFlow.Text = "100"
         TextBox1.Text = txbPerformance_AirFlow.Text
@@ -468,6 +469,7 @@ Public Class CLMainForm
 
         CoilPerformance_FillStandardCoils()
         ElectricHeater_FillAvailable()
+        Accessories_FillAvailable()
         Calculate()
         sap_table_fill()
     End Sub
@@ -2588,6 +2590,7 @@ Public Class CLMainForm
 
         CoilPerformance_UpdateLocalizedTexts()
         ElectricHeater_UpdateLocalizedTexts()
+        Accessories_UpdateLocalizedTexts()
 
         UpdateLocalization_MeasureUnit()
     End Sub

@@ -318,6 +318,11 @@
       <DependentUpon>CLMainForm.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="CLMainForm.Accessories.vb">
+      <DependentUpon>CLMainForm.vb</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CLSelectionCatalog.vb" />
     <Compile Include="CLCoilHydraulicRules.vb" />
     <Compile Include="CLDatabaseCompatibility.vb" />
     <Compile Include="CLReportViewerForm.Designer.vb">
