@@ -13,6 +13,7 @@ Partial Public Class CLMainForm
     Private m_AccessoryItems As New List(Of CLSelectionCatalogItem)()
     Private ReadOnly m_AccessorySelected As New HashSet(Of Integer)()
     Private ReadOnly m_AccessoryQuantities As New Dictionary(Of Integer, Integer)()
+    Private m_AccessoryUnresolvedSelections As New List(Of CLAccessorySelection)()
 
     Private Sub Accessories_InitializeTab()
         If tbpData_Accessories IsNot Nothing Then Return
@@ -116,6 +117,7 @@ Partial Public Class CLMainForm
         If modelChanged Then
             m_AccessorySelected.Clear()
             m_AccessoryQuantities.Clear()
+            m_AccessoryUnresolvedSelections.Clear()
             For Each item In m_AccessoryItems
                 If item.IsStandard OrElse item.DefaultSelected Then m_AccessorySelected.Add(item.Id)
                 m_AccessoryQuantities(item.Id) = item.DefaultQuantity
@@ -248,6 +250,7 @@ Partial Public Class CLMainForm
             End If
             Accessories_NormalizeSelection()
             Accessories_ApplyFilter()
+            Project_MarkDirty()
         ElseIf dgvAccessories.Columns(e.ColumnIndex).Name = "Quantity" Then
             Accessories_StoreQuantity(row, item)
         End If
@@ -270,9 +273,75 @@ Partial Public Class CLMainForm
     Private Sub Accessories_StoreQuantity(row As DataGridViewRow, item As CLSelectionCatalogItem)
         Dim value As Integer
         If Integer.TryParse(Convert.ToString(row.Cells("Quantity").Value, CultureInfo.CurrentCulture), value) Then
-            m_AccessoryQuantities(item.Id) = Math.Max(1, Math.Min(item.MaxQuantity, value))
+            Dim normalized = Math.Max(1, Math.Min(item.MaxQuantity, value))
+            Dim previous = If(m_AccessoryQuantities.ContainsKey(item.Id), m_AccessoryQuantities(item.Id), item.DefaultQuantity)
+            m_AccessoryQuantities(item.Id) = normalized
+            If previous <> normalized Then Project_MarkDirty()
         End If
     End Sub
+
+    Private Function Accessories_CaptureSelection() As List(Of CLAccessorySelection)
+        Dim result As New List(Of CLAccessorySelection)()
+        For Each item In m_AccessoryItems.
+            Where(Function(candidate) m_AccessorySelected.Contains(candidate.Id)).
+            OrderBy(Function(candidate) candidate.Code, StringComparer.OrdinalIgnoreCase)
+
+            result.Add(New CLAccessorySelection With {
+                .Code = item.Code,
+                .ItemType = item.ItemType,
+                .Quantity = If(m_AccessoryQuantities.ContainsKey(item.Id), m_AccessoryQuantities(item.Id), item.DefaultQuantity),
+                .Availability = item.Availability,
+                .InstallationType = item.InstallationType
+            })
+        Next
+        For Each saved In m_AccessoryUnresolvedSelections.
+            Where(Function(candidate) Not result.Any(Function(current) String.Equals(current.Code, candidate.Code, StringComparison.OrdinalIgnoreCase))).
+            OrderBy(Function(candidate) candidate.Code, StringComparer.OrdinalIgnoreCase)
+
+            result.Add(Accessories_CloneSelection(saved))
+        Next
+        Return result
+    End Function
+
+    Private Sub Accessories_ApplySelection(savedSelections As List(Of CLAccessorySelection))
+        m_AccessoriesChanging = True
+        Try
+            m_AccessorySelected.Clear()
+            m_AccessoryQuantities.Clear()
+            m_AccessoryUnresolvedSelections.Clear()
+
+            For Each item In m_AccessoryItems
+                m_AccessoryQuantities(item.Id) = item.DefaultQuantity
+                If item.IsStandard Then m_AccessorySelected.Add(item.Id)
+            Next
+
+            For Each saved In If(savedSelections, New List(Of CLAccessorySelection)())
+                If saved Is Nothing OrElse String.IsNullOrWhiteSpace(saved.Code) Then Continue For
+                Dim item = m_AccessoryItems.FirstOrDefault(
+                    Function(candidate) String.Equals(candidate.Code, saved.Code, StringComparison.OrdinalIgnoreCase))
+                If item Is Nothing Then
+                    m_AccessoryUnresolvedSelections.Add(Accessories_CloneSelection(saved))
+                Else
+                    m_AccessorySelected.Add(item.Id)
+                    m_AccessoryQuantities(item.Id) = Math.Max(1, Math.Min(item.MaxQuantity, saved.Quantity))
+                End If
+            Next
+            Accessories_NormalizeSelection()
+        Finally
+            m_AccessoriesChanging = False
+        End Try
+        Accessories_ApplyFilter()
+    End Sub
+
+    Private Shared Function Accessories_CloneSelection(value As CLAccessorySelection) As CLAccessorySelection
+        Return New CLAccessorySelection With {
+            .Code = value.Code,
+            .ItemType = value.ItemType,
+            .Quantity = value.Quantity,
+            .Availability = value.Availability,
+            .InstallationType = value.InstallationType
+        }
+    End Function
 
     Private Sub Accessories_NormalizeSelection()
         For Each item In m_AccessoryItems.Where(Function(candidate) candidate.IsStandard)

@@ -86,7 +86,18 @@ Public NotInheritable Class CLTechnicalSelection
     Public Property Summer As New CLOperatingScenarioInput With {.Enabled = False, .ScenarioCode = "Summer"}
     Public Property WaterCoil As New CLWaterCoilSelection()
     Public Property ElectricHeater As New CLElectricHeaterSelection()
+    Public Property Accessories As New List(Of CLAccessorySelection)()
     Public Property Report As New CLReportSelectionOptions()
+
+End Class
+
+Public NotInheritable Class CLAccessorySelection
+
+    Public Property Code As String
+    Public Property ItemType As String
+    Public Property Quantity As Integer = 1
+    Public Property Availability As String
+    Public Property InstallationType As String
 
 End Class
 

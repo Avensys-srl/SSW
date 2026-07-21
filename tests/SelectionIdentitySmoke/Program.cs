@@ -48,7 +48,8 @@ internal sealed class TokenHandler : HttpMessageHandler
             VerifySelectionHeaders(request);
             string body = request.Content.ReadAsStringAsync().GetAwaiter().GetResult();
             if (!body.Contains("\"project_id\"") || !body.Contains("\"selection\"") ||
-                !body.Contains("\"versions\"") || !body.Contains("\"fingerprints\""))
+                !body.Contains("\"versions\"") || !body.Contains("\"fingerprints\"") ||
+                !body.Contains("\"Accessories\"") || !body.Contains("\"KTS EXTRA\""))
                 throw new InvalidOperationException("Create-selection payload is incomplete.");
             latestSnapshotHash = JsonString(body, "snapshot_hash");
             latestResumeToken = JsonString(body, "resume_token");
@@ -479,6 +480,11 @@ internal static class Program
         AssertChange(document, CLSelectionChangeKind.TechnicalChange);
         document.Selection.Winter.SupplyAirflowM3h = 100;
 
+        document.Selection.Accessories[0].Quantity = 2;
+        CLSelectionSnapshotService.Refresh(document);
+        AssertChange(document, CLSelectionChangeKind.TechnicalChange);
+        document.Selection.Accessories[0].Quantity = 1;
+
         document.Versions.DatabaseContentHash = "DIFFERENT-SDF";
         CLSelectionSnapshotService.Refresh(document);
         AssertChange(document, CLSelectionChangeKind.DatabaseChange);
@@ -499,7 +505,10 @@ internal static class Program
         if (loaded.RevisionTracking == null || loaded.RevisionTracking.Current == null ||
             loaded.RevisionTracking.Current.SnapshotHash != document.RevisionTracking.Current.SnapshotHash ||
             loaded.Identity.ResumeToken != "resume-token" ||
-            !loaded.Selection.WaterCoil.CustomDesignDisclaimerAccepted)
+            !loaded.Selection.WaterCoil.CustomDesignDisclaimerAccepted ||
+            loaded.Selection.Accessories.Count != 1 ||
+            loaded.Selection.Accessories[0].Code != "KTS EXTRA" ||
+            loaded.Selection.Accessories[0].Quantity != 1)
         {
             throw new InvalidOperationException("Snapshot/revision metadata round-trip failed.");
         }
@@ -521,10 +530,21 @@ internal static class Program
         string repositoryRoot = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", ".."));
         foreach (string fixtureName in new[] { "selection-v1.sswsel", "selection-v1-sparse.sswsel" })
         {
-            CLSelectionProjectDocument legacy = CLSelectionProjectSerializer.Load(
-                Path.Combine(repositoryRoot, "docs", "examples", fixtureName));
-            if (legacy.SelectionFormatVersion != 1 || legacy.RevisionTracking == null)
+            string migratedPath = Path.Combine(root, fixtureName);
+            File.Copy(Path.Combine(repositoryRoot, "docs", "examples", fixtureName), migratedPath, true);
+            CLSelectionProjectDocument legacy = CLSelectionProjectSerializer.Load(migratedPath);
+            if (legacy.SelectionFormatVersion != 2 || legacy.SourceFormatVersion != 1 ||
+                !legacy.RequiresMigrationBackup || legacy.RevisionTracking == null ||
+                legacy.Selection.Accessories == null || legacy.Selection.Accessories.Count != 0)
                 throw new InvalidOperationException("Legacy V1 fixture compatibility failed: " + fixtureName);
+            CLSelectionProjectSerializer.Save(migratedPath, legacy);
+            string backupPath = migratedPath + ".pre-migration-v1.bak";
+            if (!File.Exists(backupPath) || !File.ReadAllText(backupPath).Contains("\"selectionFormatVersion\": 1"))
+                throw new InvalidOperationException("Legacy V1 migration backup failed: " + fixtureName);
+            CLSelectionProjectDocument reloaded = CLSelectionProjectSerializer.Load(migratedPath);
+            if (reloaded.SelectionFormatVersion != 2 || reloaded.SourceFormatVersion != 2 ||
+                reloaded.RequiresMigrationBackup)
+                throw new InvalidOperationException("Migrated V2 round-trip failed: " + fixtureName);
         }
     }
 
@@ -545,7 +565,7 @@ internal static class Program
                 DatabaseSchemaVersion = 1,
                 DatabaseDataVersion = "2026.07.14",
                 DatabaseContentHash = "A280D8C",
-                SelectionFormatVersion = 1,
+                SelectionFormatVersion = CLTechnicalVersions.CurrentSelectionFormatVersion,
                 ReportTemplateVersion = 1,
                 ApiContractVersion = 1
             },
@@ -572,6 +592,17 @@ internal static class Program
                     Enabled = true,
                     SelectionCase = "StandardCustomized",
                     CustomDesignDisclaimerAccepted = true
+                },
+                Accessories = new List<CLAccessorySelection>
+                {
+                    new CLAccessorySelection
+                    {
+                        Code = "KTS EXTRA",
+                        ItemType = "Accessory",
+                        Quantity = 1,
+                        Availability = "Optional",
+                        InstallationType = "External"
+                    }
                 },
                 Report = new CLReportSelectionOptions { LanguageCode = "IT", IncludePerformanceCharts = true }
             },

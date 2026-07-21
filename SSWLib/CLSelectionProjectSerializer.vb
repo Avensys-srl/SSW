@@ -1,4 +1,5 @@
 Imports System.IO
+Imports System.Linq
 Imports System.Text
 Imports System.Text.Json
 
@@ -239,6 +240,10 @@ Public NotInheritable Class CLSelectionProjectSerializer
             document.Selection.ElectricHeater.PEHD = New CLElectricHeaterModeSelection With {.Mode = "PEHD"}
             changed = True
         End If
+        If document.Selection.Accessories Is Nothing Then
+            document.Selection.Accessories = New List(Of CLAccessorySelection)()
+            changed = True
+        End If
         If document.Selection.Report Is Nothing Then
             document.Selection.Report = New CLReportSelectionOptions()
             changed = True
@@ -283,9 +288,34 @@ Public NotInheritable Class CLSelectionProjectSerializer
         If document.Versions.SelectionFormatVersion <> document.SelectionFormatVersion Then
             Throw New InvalidDataException("The envelope and calculation version blocks are inconsistent.")
         End If
+        ValidateAccessories(document.Selection.Accessories)
         ValidateRevisionTracking(document.RevisionTracking)
 
     End Sub
+
+    Private Shared Sub ValidateAccessories(accessories As List(Of CLAccessorySelection))
+        If accessories Is Nothing Then
+            Throw New InvalidDataException("The accessory selection block is missing.")
+        End If
+        Dim codes As New HashSet(Of String)(StringComparer.OrdinalIgnoreCase)
+        For Each accessory In accessories
+            If accessory Is Nothing OrElse String.IsNullOrWhiteSpace(accessory.Code) OrElse
+                String.IsNullOrWhiteSpace(accessory.ItemType) OrElse accessory.Quantity < 1 Then
+                Throw New InvalidDataException("The accessory selection contains an invalid item.")
+            End If
+            If Not codes.Add(accessory.Code.Trim()) Then
+                Throw New InvalidDataException("The accessory selection contains duplicate codes.")
+            End If
+            If Not IsOneOf(accessory.Availability, "Standard", "Optional", "Unavailable") OrElse
+                Not IsOneOf(accessory.InstallationType, "Internal", "External", "NotApplicable") Then
+                Throw New InvalidDataException("The accessory selection contains an invalid state.")
+            End If
+        Next
+    End Sub
+
+    Private Shared Function IsOneOf(value As String, ParamArray allowedValues() As String) As Boolean
+        Return allowedValues.Any(Function(allowed) String.Equals(value, allowed, StringComparison.OrdinalIgnoreCase))
+    End Function
 
     Private Shared Sub ValidateRevisionTracking(tracking As CLSelectionRevisionTracking)
         If tracking Is Nothing Then Return
@@ -322,6 +352,13 @@ End Class
 
 Friend NotInheritable Class CLSelectionMigrationRunner
 
+    Private Shared ReadOnly MigrationOptions As New JsonSerializerOptions With {
+        .PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+        .PropertyNameCaseInsensitive = True,
+        .WriteIndented = True,
+        .IgnoreNullValues = True
+    }
+
     Private Sub New()
     End Sub
 
@@ -331,6 +368,9 @@ Friend NotInheritable Class CLSelectionMigrationRunner
 
         While currentVersion < CLTechnicalVersions.CurrentSelectionFormatVersion
             Select Case currentVersion
+                Case 1
+                    currentJson = MigrateV1ToV2(currentJson)
+                    currentVersion = 2
                 Case Else
                     Throw New NotSupportedException(String.Format(
                         "No migration is registered from selection format {0} to {1}.",
@@ -343,6 +383,17 @@ Friend NotInheritable Class CLSelectionMigrationRunner
             .Json = currentJson,
             .WasMigrated = currentVersion <> sourceVersion
         }
+    End Function
+
+    Private Shared Function MigrateV1ToV2(json As String) As String
+        Dim document = JsonSerializer.Deserialize(Of CLSelectionProjectDocument)(json, MigrationOptions)
+        If document Is Nothing OrElse document.Selection Is Nothing OrElse document.Versions Is Nothing Then
+            Throw New InvalidDataException("Selection format 1 cannot be migrated because required blocks are missing.")
+        End If
+        document.SelectionFormatVersion = 2
+        document.Versions.SelectionFormatVersion = 2
+        document.Selection.Accessories = New List(Of CLAccessorySelection)()
+        Return JsonSerializer.Serialize(document, MigrationOptions)
     End Function
 
 End Class

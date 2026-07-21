@@ -232,7 +232,7 @@ Stato al 20/07/2026: completata.
 
 Stima: 90-145 mila token.
 
-Stato al 21/07/2026: **D1 e D2 completati; D3 da eseguire**.
+Stato al 21/07/2026: **completata**.
 
 - aggiunto il tab dinamico `Accessori e funzioni`, disponibile soltanto quando
   il manifest SDF espone la feature `AccessoriesAndControlFunctions`;
@@ -241,8 +241,7 @@ Stato al 21/07/2026: **D1 e D2 completati; D3 da eseguire**.
   inglese e acronimo;
 - aggiunti ricerca, filtro categoria, raggruppamento visivo, selezione delle
   opzioni, quantita' entro i limiti esportati e riepilogo live degli acronimi;
-- gli elementi standard sono preselezionati e bloccati; le selezioni di D1
-  restano intenzionalmente in memoria fino al contratto di persistenza D3;
+- gli elementi standard sono preselezionati e bloccati;
 - aggiunto smoke test x86 sul SDF AV reale; verificati 55 elementi e quattro
   accessori con funzioni per il modello campione, oltre alla build `AV|x86`.
 - implementate le regole `Enables`, `Requires`, `Includes` e `Conflicts` con
@@ -253,10 +252,17 @@ Stato al 21/07/2026: **D1 e D2 completati; D3 da eseguire**.
   selezione richiede Extra o superiore, senza sostituzioni silenziose;
 - lo smoke test verifica anche dipendenze, gruppo KTS e livello controller
   letti dal SDF AV reale.
-
-Prossimi checkpoint interni:
-
-- D3: DTO progetto V2, migrazione V1, hash, dirty state e payload online.
+- introdotto il formato progetto V2 con accessori identificati dall'acronimo
+  stabile, tipo, quantita', stato e installazione;
+- salvataggio, riapertura, dirty state e payload API includono le scelte; i
+  codici non piu' risolvibili nell'SDF vengono conservati senza perdita
+  silenziosa;
+- gli accessori non vuoti entrano nell'hash tecnico e producono una nuova
+  revisione, mentre l'array vuoto mantiene compatibili i fingerprint V1;
+- implementata la migrazione V1 -> V2 con array vuoto e backup automatico
+  `pre-migration-v1` al primo salvataggio sul file originale;
+- build `AV|x86`, smoke catalogo e matrice tecnica completa superati, incluse
+  le due fixture V1, round-trip V2 e verifica del payload online.
 
 1. Aggiungere il tab Accessori e funzioni, raggruppato e filtrabile.
 2. Implementare stati standard, opzionale, interno, esterno e non disponibile.

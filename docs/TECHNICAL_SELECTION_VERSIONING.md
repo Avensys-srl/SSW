@@ -28,6 +28,10 @@ ReportTemplateVersion = 1
 ApiContractVersion = 1
 ```
 
+Dal 21/07/2026 il formato progetto corrente e' `SelectionFormatVersion = 2`.
+La relativa estensione e la migrazione da V1 sono descritte in
+`TECHNICAL_SELECTION_FORMAT_V2.md`.
+
 `SoftwareVersion` e `CalculationEngineVersion` sono lette dalle versioni reali
 degli assembly distribuiti e non vengono duplicate come costanti testuali.
 

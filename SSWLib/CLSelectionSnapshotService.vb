@@ -143,6 +143,7 @@ Public NotInheritable Class CLSelectionSnapshotService
                 Dim first As Boolean = True
                 For Each propertyValue As JsonProperty In element.EnumerateObject().
                     Where(Function(item) excludedProperties Is Nothing OrElse Not excludedProperties.Contains(item.Name)).
+                    Where(Function(item) Not IsEmptyCompatibilityProperty(item)).
                     OrderBy(Function(item) item.Name, StringComparer.Ordinal)
                     If Not first Then output.Append(","c)
                     first = False
@@ -179,6 +180,12 @@ Public NotInheritable Class CLSelectionSnapshotService
                 Throw New InvalidDataException("Unsupported value in canonical technical selection JSON.")
         End Select
     End Sub
+
+    Private Shared Function IsEmptyCompatibilityProperty(propertyValue As JsonProperty) As Boolean
+        Return propertyValue.NameEquals("accessories") AndAlso
+            propertyValue.Value.ValueKind = JsonValueKind.Array AndAlso
+            propertyValue.Value.GetArrayLength() = 0
+    End Function
 
     Private Shared Function CloneFingerprints(value As CLSelectionFingerprintSet) As CLSelectionFingerprintSet
         Return New CLSelectionFingerprintSet With {
