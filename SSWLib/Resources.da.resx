@@ -757,7 +757,7 @@
   <data name="MainForm_Accessories_PEHDDescription" xml:space="preserve"><value>Elektrisk forvarmeflade</value></data>
   <data name="ReportViewer_Email" xml:space="preserve"><value>Send via e-mail</value></data>
   <data name="ReportViewer_EmailTooltip" xml:space="preserve"><value>Send PDF via e-mail</value></data>
-  <data name="ReportViewer_EmailSubject" xml:space="preserve"><value>Valg af ventilationsaggregat - {0}</value></data>
+  <data name="ReportViewer_EmailSubject" xml:space="preserve"><value>Valg - {0}</value></data>
   <data name="ReportViewer_EmailBody" xml:space="preserve"><value>Goddag,
 
 vedhæftet fremsendes PDF-filen for valget af ventilationsaggregat {0}, udarbejdet med SSW-softwaren.

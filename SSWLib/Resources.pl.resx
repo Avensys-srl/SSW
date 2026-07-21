@@ -598,7 +598,7 @@
   <data name="MainForm_Accessories_PEHDDescription" xml:space="preserve"><value>Elektryczna nagrzewnica wstępna</value></data>
   <data name="ReportViewer_Email" xml:space="preserve"><value>Wyślij e-mailem</value></data>
   <data name="ReportViewer_EmailTooltip" xml:space="preserve"><value>Wyślij plik PDF e-mailem</value></data>
-  <data name="ReportViewer_EmailSubject" xml:space="preserve"><value>Dobór centrali wentylacyjnej - {0}</value></data>
+  <data name="ReportViewer_EmailSubject" xml:space="preserve"><value>Dobór - {0}</value></data>
   <data name="ReportViewer_EmailBody" xml:space="preserve"><value>Dzień dobry,
 
 w załączeniu przesyłamy plik PDF dotyczący doboru centrali wentylacyjnej {0}, przygotowany za pomocą oprogramowania SSW.

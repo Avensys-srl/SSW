@@ -854,7 +854,7 @@
   <data name="MainForm_Accessories_PEHDDescription" xml:space="preserve"><value>Elektriskt förvärmningsbatteri</value></data>
   <data name="ReportViewer_Email" xml:space="preserve"><value>Skicka via e-post</value></data>
   <data name="ReportViewer_EmailTooltip" xml:space="preserve"><value>Skicka PDF via e-post</value></data>
-  <data name="ReportViewer_EmailSubject" xml:space="preserve"><value>Val av ventilationsaggregat - {0}</value></data>
+  <data name="ReportViewer_EmailSubject" xml:space="preserve"><value>Val - {0}</value></data>
   <data name="ReportViewer_EmailBody" xml:space="preserve"><value>Hej,
 
 bifogat skickar vi PDF-filen för valet av ventilationsaggregat {0}, framtagen med SSW-programvaran.

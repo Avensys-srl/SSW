@@ -529,7 +529,7 @@
   <data name="MainForm_Accessories_PEHDDescription" xml:space="preserve"><value>Elektrisches Vorheizregister</value></data>
   <data name="ReportViewer_Email" xml:space="preserve"><value>Per E-Mail senden</value></data>
   <data name="ReportViewer_EmailTooltip" xml:space="preserve"><value>PDF per E-Mail senden</value></data>
-  <data name="ReportViewer_EmailSubject" xml:space="preserve"><value>Auswahl des Lüftungsgeräts - {0}</value></data>
+  <data name="ReportViewer_EmailSubject" xml:space="preserve"><value>Auswahl - {0}</value></data>
   <data name="ReportViewer_EmailBody" xml:space="preserve"><value>Guten Tag,
 
 anbei erhalten Sie das PDF zur Auswahl des Lüftungsgeräts {0}, das mit der SSW-Software erstellt wurde.

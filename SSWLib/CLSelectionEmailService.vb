@@ -6,12 +6,14 @@ Public NotInheritable Class CLSelectionEmailComposer
 
     Public Shared Function BuildSubject(subjectFormat As String,
         modelName As String,
-        selectionReference As String) As String
+        customerReference As String,
+        registrationReference As String) As String
 
-        Dim model As String = If(modelName, String.Empty).Trim()
+        Dim model As String = CLSelectionFileName.BuildSuggestedName(
+            If(modelName, String.Empty).Trim(), customerReference)
         Dim subject As String = String.Format(Globalization.CultureInfo.CurrentCulture,
             subjectFormat, model)
-        Dim reference As String = If(selectionReference, String.Empty).Trim()
+        Dim reference As String = If(registrationReference, String.Empty).Trim()
         If Not String.IsNullOrWhiteSpace(reference) Then subject &= " - " & reference
         Return subject
     End Function

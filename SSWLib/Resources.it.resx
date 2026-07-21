@@ -642,7 +642,7 @@
   <data name="MainForm_Accessories_PEHDDescription" xml:space="preserve"><value>Batteria elettrica di preriscaldamento</value></data>
   <data name="ReportViewer_Email" xml:space="preserve"><value>Invia via email</value></data>
   <data name="ReportViewer_EmailTooltip" xml:space="preserve"><value>Invia il PDF via email</value></data>
-  <data name="ReportViewer_EmailSubject" xml:space="preserve"><value>Selezione unità di ventilazione - {0}</value></data>
+  <data name="ReportViewer_EmailSubject" xml:space="preserve"><value>Selezione - {0}</value></data>
   <data name="ReportViewer_EmailBody" xml:space="preserve"><value>Buongiorno,
 
 in allegato trasmettiamo il PDF relativo alla selezione dell'unità di ventilazione {0}, elaborata tramite il software SSW.

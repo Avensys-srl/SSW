@@ -691,7 +691,7 @@
   <data name="MainForm_Accessories_PEHDDescription" xml:space="preserve"><value>Elektromos előfűtő</value></data>
   <data name="ReportViewer_Email" xml:space="preserve"><value>Küldés e-mailben</value></data>
   <data name="ReportViewer_EmailTooltip" xml:space="preserve"><value>PDF küldése e-mailben</value></data>
-  <data name="ReportViewer_EmailSubject" xml:space="preserve"><value>Szellőztetőgép kiválasztása - {0}</value></data>
+  <data name="ReportViewer_EmailSubject" xml:space="preserve"><value>Kiválasztás - {0}</value></data>
   <data name="ReportViewer_EmailBody" xml:space="preserve"><value>Jó napot kívánunk,
 
 mellékelten küldjük a(z) {0} szellőztetőgép SSW szoftverrel készített kiválasztásának PDF-fájlját.

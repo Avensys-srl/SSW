@@ -304,13 +304,13 @@ internal static class Program
     private static void TestReportEmailFeature()
     {
         string subject = CLSelectionEmailComposer.BuildSubject(
-            "Ventilation unit selection - {0}", "CLRC 038 OSC", "Project 42");
-        if (subject != "Ventilation unit selection - CLRC 038 OSC - Project 42")
+            "Selection - {0}", "CLRC 038 OSC", "Project 42", "1234-5678-9012-3456");
+        if (subject != "Selection - Project_42_CLRC 038 OSC - 1234-5678-9012-3456")
             throw new InvalidOperationException("Selection email subject is invalid.");
 
         string subjectWithoutReference = CLSelectionEmailComposer.BuildSubject(
-            "Ventilation unit selection - {0}", "CLRC 038 OSC", " ");
-        if (subjectWithoutReference != "Ventilation unit selection - CLRC 038 OSC")
+            "Selection - {0}", "CLRC 038 OSC", " ", " ");
+        if (subjectWithoutReference != "Selection - CLRC 038 OSC")
             throw new InvalidOperationException("Selection email subject has a trailing separator.");
 
         string body = CLSelectionEmailComposer.BuildBody("Selected unit: {0}", "CLRC 038 OSC");

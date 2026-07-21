@@ -5,11 +5,16 @@ Public Class CLReportViewerForm
     Private m_PdfExportButton As ToolStripButton
     Private m_EmailButton As ToolStripButton
     Private m_EmailModelName As String = String.Empty
-    Private m_EmailSelectionReference As String = String.Empty
+    Private m_EmailCustomerReference As String = String.Empty
+    Private m_EmailRegistrationReference As String = String.Empty
 
-    Public Sub SetEmailContext(modelName As String, selectionReference As String)
+    Public Sub SetEmailContext(modelName As String,
+        customerReference As String,
+        registrationReference As String)
+
         m_EmailModelName = If(modelName, String.Empty).Trim()
-        m_EmailSelectionReference = If(selectionReference, String.Empty).Trim()
+        m_EmailCustomerReference = If(customerReference, String.Empty).Trim()
+        m_EmailRegistrationReference = If(registrationReference, String.Empty).Trim()
         UpdateEmailButtonState()
     End Sub
 
@@ -113,9 +118,10 @@ Public Class CLReportViewerForm
         Try
             Dim subject As String = CLSelectionEmailComposer.BuildSubject(
                 EmailText(CLMessageResources.ReportViewer_EmailSubject,
-                    "Ventilation unit selection - {0}"),
+                    "Selection - {0}"),
                 m_EmailModelName,
-                m_EmailSelectionReference)
+                m_EmailCustomerReference,
+                m_EmailRegistrationReference)
             Dim body As String = CLSelectionEmailComposer.BuildBody(
                 EmailText(CLMessageResources.ReportViewer_EmailBody,
                     "Good morning," & Environment.NewLine & Environment.NewLine &

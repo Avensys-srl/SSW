@@ -721,7 +721,7 @@
   <data name="MainForm_Accessories_PEHDDescription" xml:space="preserve"><value>Electric pre-heater</value></data>
   <data name="ReportViewer_Email" xml:space="preserve"><value>Send by email</value></data>
   <data name="ReportViewer_EmailTooltip" xml:space="preserve"><value>Send the PDF by email</value></data>
-  <data name="ReportViewer_EmailSubject" xml:space="preserve"><value>Ventilation unit selection - {0}</value></data>
+  <data name="ReportViewer_EmailSubject" xml:space="preserve"><value>Selection - {0}</value></data>
   <data name="ReportViewer_EmailBody" xml:space="preserve"><value>Good morning,
 
 please find attached the PDF for the selection of ventilation unit {0}, prepared using SSW software.
