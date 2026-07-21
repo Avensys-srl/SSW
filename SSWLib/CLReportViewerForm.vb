@@ -6,14 +6,20 @@ Public Class CLReportViewerForm
     Private m_EmailButton As ToolStripButton
     Private m_EmailModelName As String = String.Empty
     Private m_EmailCustomerReference As String = String.Empty
+    Private m_EmailAirFlow As String = String.Empty
+    Private m_EmailPressure As String = String.Empty
     Private m_EmailRegistrationReference As String = String.Empty
 
     Public Sub SetEmailContext(modelName As String,
         customerReference As String,
+        airFlow As String,
+        pressure As String,
         registrationReference As String)
 
         m_EmailModelName = If(modelName, String.Empty).Trim()
         m_EmailCustomerReference = If(customerReference, String.Empty).Trim()
+        m_EmailAirFlow = If(airFlow, String.Empty).Trim()
+        m_EmailPressure = If(pressure, String.Empty).Trim()
         m_EmailRegistrationReference = If(registrationReference, String.Empty).Trim()
         UpdateEmailButtonState()
     End Sub
@@ -121,6 +127,8 @@ Public Class CLReportViewerForm
                     "Selection - {0}"),
                 m_EmailModelName,
                 m_EmailCustomerReference,
+                m_EmailAirFlow,
+                m_EmailPressure,
                 m_EmailRegistrationReference)
             Dim body As String = CLSelectionEmailComposer.BuildBody(
                 EmailText(CLMessageResources.ReportViewer_EmailBody,

@@ -7,12 +7,20 @@ Public NotInheritable Class CLSelectionEmailComposer
     Public Shared Function BuildSubject(subjectFormat As String,
         modelName As String,
         customerReference As String,
+        airFlow As String,
+        pressure As String,
         registrationReference As String) As String
 
-        Dim model As String = CLSelectionFileName.BuildSuggestedName(
+        Dim selectionName As String = CLSelectionFileName.BuildSuggestedName(
             If(modelName, String.Empty).Trim(), customerReference)
+        If Not String.IsNullOrWhiteSpace(airFlow) Then
+            selectionName &= "_" & airFlow.Trim()
+        End If
+        If Not String.IsNullOrWhiteSpace(pressure) Then
+            selectionName &= "_" & pressure.Trim()
+        End If
         Dim subject As String = String.Format(Globalization.CultureInfo.CurrentCulture,
-            subjectFormat, model)
+            subjectFormat, selectionName)
         Dim reference As String = If(registrationReference, String.Empty).Trim()
         If Not String.IsNullOrWhiteSpace(reference) Then subject &= " - " & reference
         Return subject

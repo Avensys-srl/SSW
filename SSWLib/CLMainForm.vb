@@ -1846,6 +1846,8 @@ Public Class CLMainForm
         End If
         reportViewForm.SetEmailContext(SelectedHeatRecoveryModelCustomerName,
             customerReference,
+            workingPointDataRow.AirFlow_Value,
+            workingPointDataRow.MaxPressure_Value,
             registrationReference)
 
         Dim nomeFileSuffisso As String
