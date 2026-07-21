@@ -760,11 +760,14 @@
   <data name="ReportViewer_EmailSubject" xml:space="preserve"><value>Valg - {0}</value></data>
   <data name="ReportViewer_EmailBody" xml:space="preserve"><value>Goddag,
 
-vedhæftet fremsendes PDF-filen for valget af ventilationsaggregat {0}, udarbejdet med SSW-softwaren.
+Tak for jeres forespørgsel.
+
+Vedhæftet fremsender vi PDF-filen for valget af ventilationsaggregat {0} ved en luftmængde på {1} m³/h og et tryk på {2} Pa.{3}
 
 Vi står til rådighed for eventuelle spørgsmål eller yderligere tekniske oplysninger.
 
 Med venlig hilsen</value></data>
+  <data name="ReportViewer_EmailCustomerReference" xml:space="preserve"><value>Jeres reference: {0}</value></data>
   <data name="ReportViewer_EmailPdfError" xml:space="preserve"><value>PDF-filen for valget kunne ikke genereres.</value></data>
   <data name="ReportViewer_EmailOutlookUnavailable" xml:space="preserve"><value>Microsoft Outlook er ikke tilgængelig eller kan ikke startes.</value></data>
   <data name="ReportViewer_EmailAttachmentError" xml:space="preserve"><value>PDF-filen kunne ikke vedhæftes den nye e-mail.</value></data>

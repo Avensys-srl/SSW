@@ -532,11 +532,14 @@
   <data name="ReportViewer_EmailSubject" xml:space="preserve"><value>Auswahl - {0}</value></data>
   <data name="ReportViewer_EmailBody" xml:space="preserve"><value>Guten Tag,
 
-anbei erhalten Sie das PDF zur Auswahl des Lüftungsgeräts {0}, das mit der SSW-Software erstellt wurde.
+Vielen Dank für Ihre Anfrage.
+
+Anbei erhalten Sie das PDF zur Auswahl des Lüftungsgeräts {0} bei einem Luftvolumenstrom von {1} m³/h und einem Druck von {2} Pa.{3}
 
 Für Rückfragen oder weitere technische Informationen stehen wir Ihnen gerne zur Verfügung.
 
 Mit freundlichen Grüßen</value></data>
+  <data name="ReportViewer_EmailCustomerReference" xml:space="preserve"><value>Ihre Referenz: {0}</value></data>
   <data name="ReportViewer_EmailPdfError" xml:space="preserve"><value>Das PDF der Auswahl konnte nicht erstellt werden.</value></data>
   <data name="ReportViewer_EmailOutlookUnavailable" xml:space="preserve"><value>Microsoft Outlook ist nicht verfügbar oder kann nicht gestartet werden.</value></data>
   <data name="ReportViewer_EmailAttachmentError" xml:space="preserve"><value>Das PDF konnte nicht an die neue E-Mail angehängt werden.</value></data>

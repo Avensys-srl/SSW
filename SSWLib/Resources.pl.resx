@@ -601,11 +601,14 @@
   <data name="ReportViewer_EmailSubject" xml:space="preserve"><value>Dobór - {0}</value></data>
   <data name="ReportViewer_EmailBody" xml:space="preserve"><value>Dzień dobry,
 
-w załączeniu przesyłamy plik PDF dotyczący doboru centrali wentylacyjnej {0}, przygotowany za pomocą oprogramowania SSW.
+Dziękujemy za Państwa zapytanie.
+
+W załączeniu przesyłamy plik PDF dotyczący doboru centrali wentylacyjnej {0} przy przepływie powietrza {1} m³/h i ciśnieniu {2} Pa.{3}
 
 Pozostajemy do dyspozycji w razie pytań lub potrzeby uzyskania dodatkowych informacji technicznych.
 
 Z poważaniem</value></data>
+  <data name="ReportViewer_EmailCustomerReference" xml:space="preserve"><value>Państwa numer referencyjny: {0}</value></data>
   <data name="ReportViewer_EmailPdfError" xml:space="preserve"><value>Nie można wygenerować pliku PDF doboru.</value></data>
   <data name="ReportViewer_EmailOutlookUnavailable" xml:space="preserve"><value>Program Microsoft Outlook jest niedostępny lub nie można go uruchomić.</value></data>
   <data name="ReportViewer_EmailAttachmentError" xml:space="preserve"><value>Nie można dołączyć pliku PDF do nowej wiadomości.</value></data>

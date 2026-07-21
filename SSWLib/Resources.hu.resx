@@ -694,11 +694,14 @@
   <data name="ReportViewer_EmailSubject" xml:space="preserve"><value>Kiválasztás - {0}</value></data>
   <data name="ReportViewer_EmailBody" xml:space="preserve"><value>Jó napot kívánunk,
 
-mellékelten küldjük a(z) {0} szellőztetőgép SSW szoftverrel készített kiválasztásának PDF-fájlját.
+Köszönjük megkeresését.
+
+Mellékelten küldjük a(z) {0} szellőztetőgép kiválasztásának PDF-fájlját {1} m³/h légszállítás és {2} Pa nyomás mellett.{3}
 
 További kérdések vagy műszaki információk esetén állunk rendelkezésére.
 
 Üdvözlettel</value></data>
+  <data name="ReportViewer_EmailCustomerReference" xml:space="preserve"><value>Az Ön hivatkozása: {0}</value></data>
   <data name="ReportViewer_EmailPdfError" xml:space="preserve"><value>A kiválasztás PDF-fájlja nem hozható létre.</value></data>
   <data name="ReportViewer_EmailOutlookUnavailable" xml:space="preserve"><value>A Microsoft Outlook nem érhető el vagy nem indítható el.</value></data>
   <data name="ReportViewer_EmailAttachmentError" xml:space="preserve"><value>A PDF nem csatolható az új e-mailhez.</value></data>

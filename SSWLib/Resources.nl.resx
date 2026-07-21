@@ -598,11 +598,14 @@
   <data name="ReportViewer_EmailSubject" xml:space="preserve"><value>Selectie - {0}</value></data>
   <data name="ReportViewer_EmailBody" xml:space="preserve"><value>Goedendag,
 
-bijgevoegd vindt u de PDF van de selectie van ventilatie-unit {0}, opgesteld met de SSW-software.
+Hartelijk dank voor uw aanvraag.
+
+Bijgevoegd vindt u de PDF van de selectie van ventilatie-unit {0} bij een luchtdebiet van {1} m³/h en een druk van {2} Pa.{3}
 
 Voor vragen of aanvullende technische informatie staan wij graag tot uw beschikking.
 
 Met vriendelijke groet</value></data>
+  <data name="ReportViewer_EmailCustomerReference" xml:space="preserve"><value>Uw referentie: {0}</value></data>
   <data name="ReportViewer_EmailPdfError" xml:space="preserve"><value>De PDF van de selectie kan niet worden gegenereerd.</value></data>
   <data name="ReportViewer_EmailOutlookUnavailable" xml:space="preserve"><value>Microsoft Outlook is niet beschikbaar of kan niet worden gestart.</value></data>
   <data name="ReportViewer_EmailAttachmentError" xml:space="preserve"><value>De PDF kan niet aan de nieuwe e-mail worden toegevoegd.</value></data>

@@ -517,11 +517,14 @@
   <data name="ReportViewer_EmailSubject" xml:space="preserve"><value>Izbor - {0}</value></data>
   <data name="ReportViewer_EmailBody" xml:space="preserve"><value>Pozdravljeni,
 
-v prilogi pošiljamo PDF z izborom prezračevalne enote {0}, pripravljen s programsko opremo SSW.
+Hvala za vaše povpraševanje.
+
+V prilogi pošiljamo PDF z izborom prezračevalne enote {0} pri pretoku zraka {1} m³/h in tlaku {2} Pa.{3}
 
 Za dodatna pojasnila ali tehnične informacije smo vam na voljo.
 
 Lep pozdrav</value></data>
+  <data name="ReportViewer_EmailCustomerReference" xml:space="preserve"><value>Vaša referenca: {0}</value></data>
   <data name="ReportViewer_EmailPdfError" xml:space="preserve"><value>PDF-ja izbora ni mogoče ustvariti.</value></data>
   <data name="ReportViewer_EmailOutlookUnavailable" xml:space="preserve"><value>Microsoft Outlook ni na voljo ali ga ni mogoče zagnati.</value></data>
   <data name="ReportViewer_EmailAttachmentError" xml:space="preserve"><value>PDF-ja ni mogoče priložiti novemu e-poštnemu sporočilu.</value></data>

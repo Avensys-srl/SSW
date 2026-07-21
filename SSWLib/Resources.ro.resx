@@ -592,11 +592,14 @@
   <data name="ReportViewer_EmailSubject" xml:space="preserve"><value>Selecție - {0}</value></data>
   <data name="ReportViewer_EmailBody" xml:space="preserve"><value>Bună ziua,
 
-vă transmitem atașat PDF-ul aferent selecției unității de ventilație {0}, realizată cu software-ul SSW.
+Vă mulțumim pentru solicitare.
+
+Vă transmitem atașat PDF-ul aferent selecției unității de ventilație {0}, la un debit de aer de {1} m³/h și o presiune de {2} Pa.{3}
 
 Vă stăm la dispoziție pentru clarificări sau informații tehnice suplimentare.
 
 Cu stimă</value></data>
+  <data name="ReportViewer_EmailCustomerReference" xml:space="preserve"><value>Referința dumneavoastră: {0}</value></data>
   <data name="ReportViewer_EmailPdfError" xml:space="preserve"><value>PDF-ul selecției nu poate fi generat.</value></data>
   <data name="ReportViewer_EmailOutlookUnavailable" xml:space="preserve"><value>Microsoft Outlook nu este disponibil sau nu poate fi pornit.</value></data>
   <data name="ReportViewer_EmailAttachmentError" xml:space="preserve"><value>PDF-ul nu poate fi atașat noului e-mail.</value></data>

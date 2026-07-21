@@ -724,11 +724,14 @@
   <data name="ReportViewer_EmailSubject" xml:space="preserve"><value>Selection - {0}</value></data>
   <data name="ReportViewer_EmailBody" xml:space="preserve"><value>Good morning,
 
-please find attached the PDF for the selection of ventilation unit {0}, prepared using SSW software.
+Thank you for your enquiry.
+
+Please find attached the PDF relating to the selection of ventilation unit {0} at an airflow of {1} m³/h and pressure of {2} Pa.{3}
 
 Please contact us if you require any clarification or further technical information.
 
 Kind regards</value></data>
+  <data name="ReportViewer_EmailCustomerReference" xml:space="preserve"><value>Your reference: {0}</value></data>
   <data name="ReportViewer_EmailPdfError" xml:space="preserve"><value>Unable to generate the selection PDF.</value></data>
   <data name="ReportViewer_EmailOutlookUnavailable" xml:space="preserve"><value>Microsoft Outlook is not available or cannot be started.</value></data>
   <data name="ReportViewer_EmailAttachmentError" xml:space="preserve"><value>Unable to attach the PDF to the new email.</value></data>

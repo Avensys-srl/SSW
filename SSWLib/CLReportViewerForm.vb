@@ -133,11 +133,17 @@ Public Class CLReportViewerForm
             Dim body As String = CLSelectionEmailComposer.BuildBody(
                 EmailText(CLMessageResources.ReportViewer_EmailBody,
                     "Good morning," & Environment.NewLine & Environment.NewLine &
-                    "please find attached the PDF for the selection of ventilation unit {0}, prepared using SSW software." &
+                    "Thank you for your enquiry." & Environment.NewLine & Environment.NewLine &
+                    "Please find attached the PDF relating to the selection of ventilation unit {0} at an airflow of {1} m³/h and pressure of {2} Pa.{3}" &
                     Environment.NewLine & Environment.NewLine &
                     "Please contact us if you require any clarification or further technical information." &
                     Environment.NewLine & Environment.NewLine & "Kind regards"),
-                m_EmailModelName)
+                EmailText(CLMessageResources.ReportViewer_EmailCustomerReference,
+                    "Your reference: {0}"),
+                m_EmailModelName,
+                m_EmailAirFlow,
+                m_EmailPressure,
+                m_EmailCustomerReference)
             CLOutlookEmailService.DisplayMessage(subject, body, pdfPath)
         Catch ex As CLOutlookEmailException
             Diagnostics.Trace.WriteLine(ex.ToString())

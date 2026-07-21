@@ -136,6 +136,7 @@ Public Enum CLMessageResources
     ReportViewer_EmailTooltip
     ReportViewer_EmailSubject
     ReportViewer_EmailBody
+    ReportViewer_EmailCustomerReference
     ReportViewer_EmailPdfError
     ReportViewer_EmailOutlookUnavailable
     ReportViewer_EmailAttachmentError

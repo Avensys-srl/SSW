@@ -857,11 +857,14 @@
   <data name="ReportViewer_EmailSubject" xml:space="preserve"><value>Val - {0}</value></data>
   <data name="ReportViewer_EmailBody" xml:space="preserve"><value>Hej,
 
-bifogat skickar vi PDF-filen för valet av ventilationsaggregat {0}, framtagen med SSW-programvaran.
+Tack för er förfrågan.
+
+Bifogat skickar vi PDF-filen för valet av ventilationsaggregat {0} vid ett luftflöde på {1} m³/h och ett tryck på {2} Pa.{3}
 
 Vi står till förfogande för frågor eller ytterligare teknisk information.
 
 Med vänliga hälsningar</value></data>
+  <data name="ReportViewer_EmailCustomerReference" xml:space="preserve"><value>Er referens: {0}</value></data>
   <data name="ReportViewer_EmailPdfError" xml:space="preserve"><value>Det gick inte att skapa PDF-filen för valet.</value></data>
   <data name="ReportViewer_EmailOutlookUnavailable" xml:space="preserve"><value>Microsoft Outlook är inte tillgängligt eller kan inte startas.</value></data>
   <data name="ReportViewer_EmailAttachmentError" xml:space="preserve"><value>PDF-filen kunde inte bifogas till det nya e-postmeddelandet.</value></data>

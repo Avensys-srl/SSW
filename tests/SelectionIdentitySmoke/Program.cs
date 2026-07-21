@@ -314,9 +314,18 @@ internal static class Program
         if (subjectWithoutReference != "Selection - CLRC 038 OSC_100_421")
             throw new InvalidOperationException("Selection email subject has a trailing separator.");
 
-        string body = CLSelectionEmailComposer.BuildBody("Selected unit: {0}", "CLRC 038 OSC");
-        if (body != "Selected unit: CLRC 038 OSC")
+        string body = CLSelectionEmailComposer.BuildBody(
+            "Selected unit: {0}; airflow: {1}; pressure: {2}.{3}",
+            "Your reference: {0}", "CLRC 038 OSC", "100", "421", "Project 42");
+        if (body != "Selected unit: CLRC 038 OSC; airflow: 100; pressure: 421." +
+            Environment.NewLine + Environment.NewLine + "Your reference: Project 42")
             throw new InvalidOperationException("Selection email body is invalid.");
+
+        string bodyWithoutReference = CLSelectionEmailComposer.BuildBody(
+            "Selected unit: {0}; airflow: {1}; pressure: {2}.{3}",
+            "Your reference: {0}", "CLRC 038 OSC", "100", "421", " ");
+        if (bodyWithoutReference != "Selected unit: CLRC 038 OSC; airflow: 100; pressure: 421.")
+            throw new InvalidOperationException("Selection email body contains an empty reference paragraph.");
 
         string repositoryRoot = Path.GetFullPath(Path.Combine(
             AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", ".."));
@@ -324,7 +333,7 @@ internal static class Program
         string[] keys =
         {
             "ReportViewer_Email", "ReportViewer_EmailTooltip", "ReportViewer_EmailSubject",
-            "ReportViewer_EmailBody", "ReportViewer_EmailPdfError",
+            "ReportViewer_EmailBody", "ReportViewer_EmailCustomerReference", "ReportViewer_EmailPdfError",
             "ReportViewer_EmailOutlookUnavailable", "ReportViewer_EmailAttachmentError",
             "ReportViewer_EmailError"
         };

@@ -26,9 +26,25 @@ Public NotInheritable Class CLSelectionEmailComposer
         Return subject
     End Function
 
-    Public Shared Function BuildBody(bodyFormat As String, modelName As String) As String
+    Public Shared Function BuildBody(bodyFormat As String,
+        customerReferenceFormat As String,
+        modelName As String,
+        airFlow As String,
+        pressure As String,
+        customerReference As String) As String
+
+        Dim referenceParagraph As String = String.Empty
+        If Not String.IsNullOrWhiteSpace(customerReference) Then
+            referenceParagraph = Environment.NewLine & Environment.NewLine &
+                String.Format(Globalization.CultureInfo.CurrentCulture,
+                    customerReferenceFormat, customerReference.Trim())
+        End If
         Return String.Format(Globalization.CultureInfo.CurrentCulture,
-            bodyFormat, If(modelName, String.Empty).Trim())
+            bodyFormat,
+            If(modelName, String.Empty).Trim(),
+            If(airFlow, String.Empty).Trim(),
+            If(pressure, String.Empty).Trim(),
+            referenceParagraph)
     End Function
 End Class
 

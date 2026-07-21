@@ -601,11 +601,14 @@
   <data name="ReportViewer_EmailSubject" xml:space="preserve"><value>Избор - {0}</value></data>
   <data name="ReportViewer_EmailBody" xml:space="preserve"><value>Здравейте,
 
-приложено изпращаме PDF файла за избора на вентилационен агрегат {0}, изготвен със софтуера SSW.
+Благодарим Ви за запитването.
+
+Приложено изпращаме PDF файла за избора на вентилационен агрегат {0} при въздушен дебит {1} m³/h и налягане {2} Pa.{3}
 
 Оставаме на разположение за допълнителни разяснения или техническа информация.
 
 С уважение</value></data>
+  <data name="ReportViewer_EmailCustomerReference" xml:space="preserve"><value>Ваш референтен номер: {0}</value></data>
   <data name="ReportViewer_EmailPdfError" xml:space="preserve"><value>PDF файлът на избора не може да бъде генериран.</value></data>
   <data name="ReportViewer_EmailOutlookUnavailable" xml:space="preserve"><value>Microsoft Outlook не е наличен или не може да бъде стартиран.</value></data>
   <data name="ReportViewer_EmailAttachmentError" xml:space="preserve"><value>PDF файлът не може да бъде прикачен към новия имейл.</value></data>
