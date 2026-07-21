@@ -461,16 +461,16 @@ da `/usage` nel Codex CLI.
 - C3 report: riferimento, revisione e stato sono disponibili nei quattro RDLC,
   tradotti e impaginati sotto il logo; layout PDF approvato.
 - Release pilota `1.3.0.45`: installer AV x86 verificato con aggiornamento pulito,
-  registrazione zero-touch e consumo della chiave bootstrap; la geolocalizzazione
-  resta da implementare come prossimo punto.
+  registrazione zero-touch e consumo della chiave bootstrap. La
+  geolocalizzazione e' stata completata e distribuita nelle release successive.
 - Punti 13-17: snapshot, revisioni, Genera report, salvataggio automatico,
   intestazione RDLC e geolocalizzazione.
 - Obiettivo: completare il flusso cliente end-to-end.
 
 ### Onda D - Gestione e rilascio
 
-- Stato: avviata; completata la protezione della dipendenza exporter usata da
-  Explorer. Restano il manifest di distribuzione completo e i punti 18, 20-22.
+- Stato: **completata** il 15/07/2026; recupero amministrativo, manifest,
+  traduzioni/privacy, matrice di test e rilascio pilota sono operativi.
 - Punti 18-22: recupero Avensys, manifest componenti, traduzioni/privacy,
   matrice di test e rilascio pilota.
 - Obiettivo: rendere il sistema operabile, aggiornabile e pubblicabile.
@@ -490,6 +490,12 @@ da `/usage` nel Codex CLI.
   lavoro circolari, assi portata uniformi e grafici rendimento separati per
   inverno/estate; corretti extrapolazione a zero della pressione, andamento
   iniziale del rendimento estivo e allineamento finale delle immagini RDLC.
+
+- `1.3.0.53`: aggiunti progetti multi-selezione, email riepilogative con PDF,
+  sincronizzazione centrale best-effort, viste progetto nel portale e
+  tracciamento localizzato di primi download e aggiornamenti senza persistenza
+  dell'indirizzo IP. La build AV pubblica non incorpora piu' la credenziale
+  bootstrap obsoleta.
 
 - UX selezioni: aggiunto il comando per creare alternative progressive (`Alt. XX`),
   disclaimer persistito per le batterie personalizzate e relativo campo nel
@@ -518,3 +524,28 @@ affrontati dopo il completamento della selezione accessori e funzioni:
 - calcolo termodinamico e aeraulico con portate di mandata e ripresa
   sbilanciate;
 - scelta e persistenza del layout installativo delle unita'.
+
+### Preselezione guidata - in cantiere, non avviata
+
+La preselezione sara' una premessa al selettore corrente e aiutera' chi non
+conosce nel dettaglio tutte le famiglie e i modelli Avensys. Non modifica ne'
+limita il flusso esistente una volta aperta la selezione completa.
+
+- acquisire punto di lavoro e caratteristiche richieste per cercare modelli
+  compatibili tra famiglie diverse;
+- mostrare i candidati in tabella, ordinati in modo decrescente secondo un
+  parametro di merito ancora da definire;
+- al clic singolo eseguire e mostrare un rapido calcolo preliminare con i
+  principali dati tecnici;
+- al doppio clic aprire il modello nel selettore dettagliato corrente;
+- nel selettore dettagliato mantenere libera la modifica di famiglia, modello,
+  configurazione e di ogni altro parametro, come avviene oggi;
+- analizzare e riutilizzare come riferimento funzionale la bozza web presente
+  in `A:\webavensys\ssw2`;
+- progettare il nuovo modulo con contratti dati riutilizzabili anche dalla
+  futura versione web completa di SSW, destinata a utenti non Windows o che
+  preferiscono l'uso da browser.
+
+Prima dell'implementazione dovranno essere definiti il parametro di ranking,
+i filtri minimi, i dati del riepilogo rapido e i criteri di esclusione dei
+modelli. La feature resta deliberatamente fuori dalla release `1.3.0.53`.

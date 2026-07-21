@@ -14,16 +14,13 @@
 #define OutputDir "output"
 #endif
 
-#ifndef BootstrapKey
-#error BootstrapKey is required for a distributable build
-#endif
-
-#ifndef BootstrapEnvironmentName
-#error BootstrapEnvironmentName is required for a distributable build
-#endif
-
-#ifndef BootstrapRegistryValueName
-#error BootstrapRegistryValueName is required for a distributable build
+#ifdef BootstrapKey
+  #ifndef BootstrapEnvironmentName
+    #error BootstrapEnvironmentName is required when BootstrapKey is defined
+  #endif
+  #ifndef BootstrapRegistryValueName
+    #error BootstrapRegistryValueName is required when BootstrapKey is defined
+  #endif
 #endif
 
 [Setup]
@@ -67,8 +64,10 @@ Name: "{group}\Uninstall {#AppName}"; Filename: "{uninstallexe}"
 Name: "{autodesktop}\{#AppName}"; Filename: "{app}\{#AppExeName}"; Tasks: desktopicon
 
 [Registry]
+#ifdef BootstrapKey
 Root: HKCU; Subkey: "Environment"; ValueType: string; ValueName: "{#BootstrapEnvironmentName}"; ValueData: "{#BootstrapKey}"; Flags: preservestringtype uninsdeletevalue
 Root: HKCU; Subkey: "Software\Avensys\SSW\TechnicalSelection"; ValueType: string; ValueName: "{#BootstrapRegistryValueName}"; ValueData: "{#BootstrapKey}"; Flags: uninsdeletevalue
+#endif
 
 [Run]
 Filename: "{app}\{#AppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(AppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent

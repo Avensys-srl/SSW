@@ -604,4 +604,88 @@ Cu stimă</value></data>
   <data name="ReportViewer_EmailOutlookUnavailable" xml:space="preserve"><value>Microsoft Outlook nu este disponibil sau nu poate fi pornit.</value></data>
   <data name="ReportViewer_EmailAttachmentError" xml:space="preserve"><value>PDF-ul nu poate fi atașat noului e-mail.</value></data>
   <data name="ReportViewer_EmailError" xml:space="preserve"><value>Noul e-mail nu poate fi creat.</value></data>
+  <data name="MultiProject_Title" xml:space="preserve">
+    <value>Proiect de selecție</value>
+  </data>
+  <data name="MultiProject_Menu" xml:space="preserve">
+    <value>Proiect de selecție...</value>
+  </data>
+  <data name="MultiProject_DefaultReference" xml:space="preserve">
+    <value>Proiect 01</value>
+  </data>
+  <data name="MultiProject_Filter" xml:space="preserve">
+    <value>Proiect selecții SSW</value>
+  </data>
+  <data name="MultiProject_Reference" xml:space="preserve">
+    <value>Referință proiect</value>
+  </data>
+  <data name="MultiProject_Language" xml:space="preserve">
+    <value>Limbă</value>
+  </data>
+  <data name="MultiProject_New" xml:space="preserve">
+    <value>Nou</value>
+  </data>
+  <data name="MultiProject_Open" xml:space="preserve">
+    <value>Deschide...</value>
+  </data>
+  <data name="MultiProject_Save" xml:space="preserve">
+    <value>Salvează</value>
+  </data>
+  <data name="MultiProject_SaveAs" xml:space="preserve">
+    <value>Salvează ca...</value>
+  </data>
+  <data name="MultiProject_Remove" xml:space="preserve">
+    <value>Elimină</value>
+  </data>
+  <data name="MultiProject_OpenSelection" xml:space="preserve">
+    <value>Deschide selecția</value>
+  </data>
+  <data name="MultiProject_Email" xml:space="preserve">
+    <value>Trimite proiectul</value>
+  </data>
+  <data name="MultiProject_Close" xml:space="preserve">
+    <value>Închide</value>
+  </data>
+  <data name="MultiProject_ColumnReference" xml:space="preserve">
+    <value>Referință</value>
+  </data>
+  <data name="MultiProject_ColumnUnit" xml:space="preserve">
+    <value>Unitate selectată</value>
+  </data>
+  <data name="MultiProject_ColumnAirflow" xml:space="preserve">
+    <value>Debit [m³/h]</value>
+  </data>
+  <data name="MultiProject_ColumnPressure" xml:space="preserve">
+    <value>Presiune [Pa]</value>
+  </data>
+  <data name="MultiProject_ColumnPdf" xml:space="preserve">
+    <value>Fișier PDF</value>
+  </data>
+  <data name="MultiProject_ColumnStatus" xml:space="preserve">
+    <value>Stare</value>
+  </data>
+  <data name="MultiProject_Ready" xml:space="preserve">
+    <value>Pregătit</value>
+  </data>
+  <data name="MultiProject_Incomplete" xml:space="preserve">
+    <value>Incomplet</value>
+  </data>
+  <data name="MultiProject_ReferenceRequired" xml:space="preserve">
+    <value>Referința proiectului este obligatorie.</value>
+  </data>
+  <data name="MultiProject_RemoveConfirm" xml:space="preserve">
+    <value>Eliminați raportul selectat din proiect?</value>
+  </data>
+  <data name="MultiProject_Empty" xml:space="preserve">
+    <value>Proiectul nu conține rapoarte.</value>
+  </data>
+  <data name="MultiProject_Added" xml:space="preserve">
+    <value>Raportul a fost adăugat la proiectul de selecție.</value>
+  </data>
+  <data name="ReportViewer_AddToProject" xml:space="preserve">
+    <value>Adaugă la proiect</value>
+  </data>
+  <data name="ReportViewer_AddToProjectTooltip" xml:space="preserve">
+    <value>Adaugă sau actualizează acest raport într-un proiect cu selecții multiple</value>
+  </data>
 </root>

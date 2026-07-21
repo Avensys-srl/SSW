@@ -610,4 +610,88 @@ Met vriendelijke groet</value></data>
   <data name="ReportViewer_EmailOutlookUnavailable" xml:space="preserve"><value>Microsoft Outlook is niet beschikbaar of kan niet worden gestart.</value></data>
   <data name="ReportViewer_EmailAttachmentError" xml:space="preserve"><value>De PDF kan niet aan de nieuwe e-mail worden toegevoegd.</value></data>
   <data name="ReportViewer_EmailError" xml:space="preserve"><value>De nieuwe e-mail kan niet worden aangemaakt.</value></data>
+  <data name="MultiProject_Title" xml:space="preserve">
+    <value>Selectieproject</value>
+  </data>
+  <data name="MultiProject_Menu" xml:space="preserve">
+    <value>Selectieproject...</value>
+  </data>
+  <data name="MultiProject_DefaultReference" xml:space="preserve">
+    <value>Project 01</value>
+  </data>
+  <data name="MultiProject_Filter" xml:space="preserve">
+    <value>SSW-selectieproject</value>
+  </data>
+  <data name="MultiProject_Reference" xml:space="preserve">
+    <value>Projectreferentie</value>
+  </data>
+  <data name="MultiProject_Language" xml:space="preserve">
+    <value>Taal</value>
+  </data>
+  <data name="MultiProject_New" xml:space="preserve">
+    <value>Nieuw</value>
+  </data>
+  <data name="MultiProject_Open" xml:space="preserve">
+    <value>Openen...</value>
+  </data>
+  <data name="MultiProject_Save" xml:space="preserve">
+    <value>Opslaan</value>
+  </data>
+  <data name="MultiProject_SaveAs" xml:space="preserve">
+    <value>Opslaan als...</value>
+  </data>
+  <data name="MultiProject_Remove" xml:space="preserve">
+    <value>Verwijderen</value>
+  </data>
+  <data name="MultiProject_OpenSelection" xml:space="preserve">
+    <value>Selectie openen</value>
+  </data>
+  <data name="MultiProject_Email" xml:space="preserve">
+    <value>Project e-mailen</value>
+  </data>
+  <data name="MultiProject_Close" xml:space="preserve">
+    <value>Sluiten</value>
+  </data>
+  <data name="MultiProject_ColumnReference" xml:space="preserve">
+    <value>Referentie</value>
+  </data>
+  <data name="MultiProject_ColumnUnit" xml:space="preserve">
+    <value>Geselecteerde unit</value>
+  </data>
+  <data name="MultiProject_ColumnAirflow" xml:space="preserve">
+    <value>Luchtdebiet [m³/h]</value>
+  </data>
+  <data name="MultiProject_ColumnPressure" xml:space="preserve">
+    <value>Druk [Pa]</value>
+  </data>
+  <data name="MultiProject_ColumnPdf" xml:space="preserve">
+    <value>PDF-bestand</value>
+  </data>
+  <data name="MultiProject_ColumnStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="MultiProject_Ready" xml:space="preserve">
+    <value>Gereed</value>
+  </data>
+  <data name="MultiProject_Incomplete" xml:space="preserve">
+    <value>Onvolledig</value>
+  </data>
+  <data name="MultiProject_ReferenceRequired" xml:space="preserve">
+    <value>De projectreferentie is verplicht.</value>
+  </data>
+  <data name="MultiProject_RemoveConfirm" xml:space="preserve">
+    <value>Het geselecteerde rapport uit het project verwijderen?</value>
+  </data>
+  <data name="MultiProject_Empty" xml:space="preserve">
+    <value>Het project bevat geen rapporten.</value>
+  </data>
+  <data name="MultiProject_Added" xml:space="preserve">
+    <value>Het rapport is aan het selectieproject toegevoegd.</value>
+  </data>
+  <data name="ReportViewer_AddToProject" xml:space="preserve">
+    <value>Aan project toevoegen</value>
+  </data>
+  <data name="ReportViewer_AddToProjectTooltip" xml:space="preserve">
+    <value>Dit rapport toevoegen aan of bijwerken in een meervoudig selectieproject</value>
+  </data>
 </root>

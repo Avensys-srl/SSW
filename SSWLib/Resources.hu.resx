@@ -706,4 +706,88 @@ További kérdések vagy műszaki információk esetén állunk rendelkezésére
   <data name="ReportViewer_EmailOutlookUnavailable" xml:space="preserve"><value>A Microsoft Outlook nem érhető el vagy nem indítható el.</value></data>
   <data name="ReportViewer_EmailAttachmentError" xml:space="preserve"><value>A PDF nem csatolható az új e-mailhez.</value></data>
   <data name="ReportViewer_EmailError" xml:space="preserve"><value>Az új e-mail nem hozható létre.</value></data>
+  <data name="MultiProject_Title" xml:space="preserve">
+    <value>Kiválasztási projekt</value>
+  </data>
+  <data name="MultiProject_Menu" xml:space="preserve">
+    <value>Kiválasztási projekt...</value>
+  </data>
+  <data name="MultiProject_DefaultReference" xml:space="preserve">
+    <value>Projekt 01</value>
+  </data>
+  <data name="MultiProject_Filter" xml:space="preserve">
+    <value>SSW kiválasztási projekt</value>
+  </data>
+  <data name="MultiProject_Reference" xml:space="preserve">
+    <value>Projekt hivatkozása</value>
+  </data>
+  <data name="MultiProject_Language" xml:space="preserve">
+    <value>Nyelv</value>
+  </data>
+  <data name="MultiProject_New" xml:space="preserve">
+    <value>Új</value>
+  </data>
+  <data name="MultiProject_Open" xml:space="preserve">
+    <value>Megnyitás...</value>
+  </data>
+  <data name="MultiProject_Save" xml:space="preserve">
+    <value>Mentés</value>
+  </data>
+  <data name="MultiProject_SaveAs" xml:space="preserve">
+    <value>Mentés másként...</value>
+  </data>
+  <data name="MultiProject_Remove" xml:space="preserve">
+    <value>Eltávolítás</value>
+  </data>
+  <data name="MultiProject_OpenSelection" xml:space="preserve">
+    <value>Kiválasztás megnyitása</value>
+  </data>
+  <data name="MultiProject_Email" xml:space="preserve">
+    <value>Projekt küldése</value>
+  </data>
+  <data name="MultiProject_Close" xml:space="preserve">
+    <value>Bezárás</value>
+  </data>
+  <data name="MultiProject_ColumnReference" xml:space="preserve">
+    <value>Hivatkozás</value>
+  </data>
+  <data name="MultiProject_ColumnUnit" xml:space="preserve">
+    <value>Kiválasztott egység</value>
+  </data>
+  <data name="MultiProject_ColumnAirflow" xml:space="preserve">
+    <value>Légszállítás [m³/h]</value>
+  </data>
+  <data name="MultiProject_ColumnPressure" xml:space="preserve">
+    <value>Nyomás [Pa]</value>
+  </data>
+  <data name="MultiProject_ColumnPdf" xml:space="preserve">
+    <value>PDF-fájl</value>
+  </data>
+  <data name="MultiProject_ColumnStatus" xml:space="preserve">
+    <value>Állapot</value>
+  </data>
+  <data name="MultiProject_Ready" xml:space="preserve">
+    <value>Kész</value>
+  </data>
+  <data name="MultiProject_Incomplete" xml:space="preserve">
+    <value>Hiányos</value>
+  </data>
+  <data name="MultiProject_ReferenceRequired" xml:space="preserve">
+    <value>A projekt hivatkozása kötelező.</value>
+  </data>
+  <data name="MultiProject_RemoveConfirm" xml:space="preserve">
+    <value>Eltávolítja a kiválasztott jelentést a projektből?</value>
+  </data>
+  <data name="MultiProject_Empty" xml:space="preserve">
+    <value>A projekt nem tartalmaz jelentést.</value>
+  </data>
+  <data name="MultiProject_Added" xml:space="preserve">
+    <value>A jelentés hozzáadva a kiválasztási projekthez.</value>
+  </data>
+  <data name="ReportViewer_AddToProject" xml:space="preserve">
+    <value>Hozzáadás projekthez</value>
+  </data>
+  <data name="ReportViewer_AddToProjectTooltip" xml:space="preserve">
+    <value>A jelentés hozzáadása vagy frissítése többkiválasztásos projektben</value>
+  </data>
 </root>

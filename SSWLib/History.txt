@@ -1,6 +1,15 @@
 SSW Changelog
 =============
 
+1.3.0.53 - 2026-07-21
+---------------------
+- Added multi-selection projects with localized project names, reusable selection links and consolidated PDF email composition.
+- Added centralized best-effort synchronization of projects and their selection summaries while preserving offline operation.
+- Corrected technical-selection idempotency so an updated customer reference can be registered without reusing a stale request key.
+- Added update-download context so the server can distinguish first downloads from application updates.
+- Added localized project management and email content in all supported languages.
+- Removed the obsolete bootstrap credential requirement from public AV installer builds.
+
 1.3.0.52 - 2026-07-20
 ---------------------
 - Modernized application and report performance charts with high-resolution PNG rendering and circular working points.

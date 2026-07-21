@@ -1,9 +1,11 @@
 Public Class CLReportViewerForm
 
     Public Event PdfExported As EventHandler(Of CLPdfExportedEventArgs)
+    Public Event AddToProjectRequested As EventHandler(Of CLPdfExportedEventArgs)
 
     Private m_PdfExportButton As ToolStripButton
     Private m_EmailButton As ToolStripButton
+    Private m_AddToProjectButton As ToolStripButton
     Private m_EmailModelName As String = String.Empty
     Private m_EmailCustomerReference As String = String.Empty
     Private m_EmailAirFlow As String = String.Empty
@@ -81,8 +83,30 @@ Public Class CLReportViewerForm
         }
         AddHandler m_EmailButton.Click, AddressOf EmailButton_Click
         toolStrip.Items.Insert(toolStrip.Items.IndexOf(m_PdfExportButton) + 1, m_EmailButton)
+        m_AddToProjectButton = New ToolStripButton With {
+            .Name = "addToSelectionProject",
+            .Text = EmailText("ReportViewer_AddToProject", "Add to project"),
+            .ToolTipText = EmailText("ReportViewer_AddToProjectTooltip", "Add or update this report in a multi-selection project"),
+            .Image = CreateProjectIcon(),
+            .DisplayStyle = ToolStripItemDisplayStyle.Image
+        }
+        AddHandler m_AddToProjectButton.Click, AddressOf AddToProjectButton_Click
+        toolStrip.Items.Insert(toolStrip.Items.IndexOf(m_EmailButton) + 1, m_AddToProjectButton)
         UpdateEmailButtonState()
         exportButton.Visible = False
+    End Sub
+
+    Private Sub AddToProjectButton_Click(sender As Object, eventArgs As EventArgs)
+        Try
+            Cursor = Cursors.WaitCursor
+            Dim pdfPath As String = ExportPdf(CreateTemporaryEmailPdfPath(rpvReport.LocalReport.DisplayName))
+            RaiseEvent AddToProjectRequested(Me, New CLPdfExportedEventArgs(pdfPath))
+        Catch ex As Exception
+            Diagnostics.Trace.WriteLine(ex.ToString())
+            MessageBox.Show(Me, ex.Message, Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Error)
+        Finally
+            Cursor = Cursors.Default
+        End Try
     End Sub
 
     Private Sub PdfExportButton_Click(sender As Object, eventArgs As EventArgs)
@@ -210,6 +234,21 @@ Public Class CLReportViewerForm
         Return bitmap
     End Function
 
+    Private Shared Function CreateProjectIcon() As Image
+        Dim bitmap As New Bitmap(16, 16)
+        Using graphics As Graphics = Graphics.FromImage(bitmap)
+            graphics.Clear(Color.Transparent)
+            Using pen As New Pen(SystemColors.ControlText, 1.4F)
+                graphics.DrawRectangle(pen, 1.5F, 3.5F, 9.0F, 10.0F)
+                graphics.DrawLine(pen, 3.0F, 6.0F, 9.0F, 6.0F)
+                graphics.DrawLine(pen, 3.0F, 8.5F, 7.0F, 8.5F)
+                graphics.DrawLine(pen, 12.5F, 7.0F, 12.5F, 14.0F)
+                graphics.DrawLine(pen, 9.0F, 10.5F, 16.0F, 10.5F)
+            End Using
+        End Using
+        Return bitmap
+    End Function
+
     Private Sub UpdateEmailButtonState()
         If m_EmailButton IsNot Nothing Then
             m_EmailButton.Enabled = Not String.IsNullOrWhiteSpace(m_EmailModelName)
@@ -224,6 +263,11 @@ Public Class CLReportViewerForm
     Private Shared Function EmailText(resource As CLMessageResources, fallback As String) As String
         Dim value As String = CLEnvironment.Current.Localization.GetString(resource.ToString())
         Return If(String.IsNullOrWhiteSpace(value), fallback, value)
+    End Function
+
+    Private Shared Function EmailText(resourceName As String, fallback As String) As String
+        Dim value As String = CLEnvironment.Current.Localization.GetString(resourceName)
+        Return If(String.IsNullOrWhiteSpace(value) OrElse value = "?", fallback, value)
     End Function
 
     Private Shared Function GetSafePdfFileName(displayName As String) As String

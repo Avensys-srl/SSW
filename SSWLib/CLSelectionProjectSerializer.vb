@@ -50,8 +50,6 @@ Public NotInheritable Class CLSelectionProjectSerializer
     End Function
 
     Public Shared Sub Save(filePath As String, document As CLSelectionProjectDocument)
-        Validate(document)
-
         If String.IsNullOrWhiteSpace(filePath) Then
             Throw New ArgumentException("The selection project path is empty.", NameOf(filePath))
         End If
@@ -62,8 +60,7 @@ Public NotInheritable Class CLSelectionProjectSerializer
             Throw New DirectoryNotFoundException("The selection project directory does not exist.")
         End If
 
-        document.ModifiedAtUtc = DateTime.UtcNow
-        Dim json As String = JsonSerializer.Serialize(document, SerializerOptions)
+        Dim json As String = Serialize(document)
         Dim temporaryPath As String = fullPath & ".tmp-" & Guid.NewGuid().ToString("N")
         Dim backupPath As String = temporaryPath & ".bak"
 
@@ -99,7 +96,18 @@ Public NotInheritable Class CLSelectionProjectSerializer
         End If
 
         Dim fullPath As String = Path.GetFullPath(filePath)
-        Dim json As String = File.ReadAllText(fullPath, Encoding.UTF8)
+        Dim document As CLSelectionProjectDocument = Deserialize(File.ReadAllText(fullPath, Encoding.UTF8))
+        document.SourceFilePath = fullPath
+        Return document
+    End Function
+
+    Public Shared Function Serialize(document As CLSelectionProjectDocument) As String
+        Validate(document)
+        document.ModifiedAtUtc = DateTime.UtcNow
+        Return JsonSerializer.Serialize(document, SerializerOptions)
+    End Function
+
+    Public Shared Function Deserialize(json As String) As CLSelectionProjectDocument
         Dim sourceFormatVersion As Integer = InspectEnvelope(json)
         Dim migrationResult As CLSelectionMigrationResult =
             CLSelectionMigrationRunner.Run(json, sourceFormatVersion)
@@ -110,7 +118,6 @@ Public NotInheritable Class CLSelectionProjectSerializer
         Validate(document)
         document.SourceFormatVersion = sourceFormatVersion
         document.RequiresMigrationBackup = migrationResult.WasMigrated OrElse normalized
-        document.SourceFilePath = fullPath
         Return document
     End Function
 

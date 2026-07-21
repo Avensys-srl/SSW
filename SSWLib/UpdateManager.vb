@@ -41,7 +41,9 @@ Public Class UpdateManager
             Try
                 Using client As New HttpClient()
                     client.Timeout = TimeSpan.FromSeconds(15)
-                    Using response As HttpResponseMessage = Await client.GetAsync(CheckUpdateUrl)
+                    Dim checkUri As String = CheckUpdateUrl & "?current_version=" &
+                        Uri.EscapeDataString(currentAppVersion.ToString())
+                    Using response As HttpResponseMessage = Await client.GetAsync(checkUri)
                         If Not response.IsSuccessStatusCode Then
                             ShowCheckError(interactive, $"{response.StatusCode} - {response.ReasonPhrase}")
                             Return
@@ -134,7 +136,8 @@ Public Class UpdateManager
     Private Shared Async Function DownloadAndStartInstaller(versionInfo As SoftwareVersionInfo) As Task
         Dim downloadUrl As String = versionInfo.download_url
         If String.IsNullOrWhiteSpace(downloadUrl) Then
-            downloadUrl = "https://www.avensys-srl.com/api/ssw_download.php"
+            downloadUrl = "https://www.avensys-srl.com/api/ssw_download.php?source=update&from_version=" &
+                Uri.EscapeDataString(Application.ProductVersion)
         End If
 
         Dim fileName As String = versionInfo.filename

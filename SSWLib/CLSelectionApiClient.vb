@@ -119,6 +119,62 @@ Public NotInheritable Class CLSelectionApiClient
         Return Await SendSelectionAsync(document, accessToken, cancellationToken).ConfigureAwait(False)
     End Function
 
+    Public Async Function SyncMultiSelectionProjectAsync(document As CLMultiSelectionProjectDocument,
+        context As CLSelectionRegistrationContext,
+        Optional cancellationToken As CancellationToken = Nothing) As Task
+
+        If document Is Nothing OrElse document.ProjectId = Guid.Empty OrElse
+            String.IsNullOrWhiteSpace(document.Reference) Then
+            Throw New InvalidDataException("The selection project is invalid.")
+        End If
+        ValidateContext(context)
+        Dim accessToken As String = Await EnsureAccessTokenAsync(context, cancellationToken).ConfigureAwait(False)
+        Try
+            Await SendMultiSelectionProjectAsync(document, accessToken, cancellationToken).ConfigureAwait(False)
+            Return
+        Catch ex As CLSelectionApiException When ex.StatusCode = HttpStatusCode.Unauthorized
+            CLSelectionCredentialStore.ClearAccessToken()
+        End Try
+        accessToken = Await EnsureAccessTokenAsync(context, cancellationToken).ConfigureAwait(False)
+        Await SendMultiSelectionProjectAsync(document, accessToken, cancellationToken).ConfigureAwait(False)
+    End Function
+
+    Private Async Function SendMultiSelectionProjectAsync(document As CLMultiSelectionProjectDocument,
+        accessToken As String,
+        cancellationToken As CancellationToken) As Task
+
+        Dim items As New List(Of Dictionary(Of String, Object))()
+        For Each item As CLMultiSelectionProjectItem In document.Items
+            items.Add(New Dictionary(Of String, Object) From {
+                {"item_id", item.ItemId.ToString("D")},
+                {"selection_project_id", item.SelectionProjectId.ToString("D")},
+                {"customer_reference", If(String.IsNullOrWhiteSpace(item.CustomerReference), Nothing, item.CustomerReference)},
+                {"unit_name", If(String.IsNullOrWhiteSpace(item.UnitName), Nothing, item.UnitName)},
+                {"airflow_m3h", item.AirflowM3h},
+                {"pressure_pa", item.PressurePa},
+                {"pdf_filename", If(String.IsNullOrWhiteSpace(item.PdfFileName), Nothing, item.PdfFileName)},
+                {"language_code", item.LanguageCode},
+                {"snapshot_hash", If(String.IsNullOrWhiteSpace(item.SnapshotHash), Nothing, item.SnapshotHash)}
+            })
+        Next
+        Dim payload As New Dictionary(Of String, Object) From {
+            {"reference", document.Reference},
+            {"language_code", document.LanguageCode},
+            {"items", items}
+        }
+        Dim payloadJson As String = JsonSerializer.Serialize(payload, JsonOptions)
+        Dim idempotencyKey As String = CreateIdempotencyKey("project-sync", document.ProjectId, payloadJson)
+        Using request As New HttpRequestMessage(HttpMethod.Post, BuildUri("projects/" & document.ProjectId.ToString("D")))
+            request.Headers.Authorization = New AuthenticationHeaderValue("Bearer", accessToken)
+            request.Headers.Add("Idempotency-Key", idempotencyKey)
+            request.Content = New StringContent(payloadJson, Encoding.UTF8, "application/json")
+            Using response As HttpResponseMessage = Await m_HttpClient.SendAsync(request, cancellationToken).ConfigureAwait(False)
+                Dim body As String = Await response.Content.ReadAsStringAsync().ConfigureAwait(False)
+                If Not response.IsSuccessStatusCode Then Throw CreateApiException(response.StatusCode, body)
+            End Using
+        End Using
+    End Function
+
     Private Async Function SendSelectionAsync(document As CLSelectionProjectDocument,
         accessToken As String,
         cancellationToken As CancellationToken) As Task(Of CLSelectionRegistrationResult)
@@ -146,12 +202,12 @@ Public NotInheritable Class CLSelectionApiClient
             payload.Add("project_id", document.ProjectId.ToString("D"))
         End If
 
-        Dim idempotencyKey As String = CreateIdempotencyKey(operation, document.ProjectId,
-            document.RevisionTracking.Current.SnapshotHash)
+        Dim payloadJson As String = JsonSerializer.Serialize(payload, JsonOptions)
+        Dim idempotencyKey As String = CreateIdempotencyKey(operation, document.ProjectId, payloadJson)
         Using request As New HttpRequestMessage(HttpMethod.Post, BuildUri(relativePath))
             request.Headers.Authorization = New AuthenticationHeaderValue("Bearer", accessToken)
             request.Headers.Add("Idempotency-Key", idempotencyKey)
-            request.Content = JsonContent(payload)
+            request.Content = New StringContent(payloadJson, Encoding.UTF8, "application/json")
             Using response As HttpResponseMessage = Await m_HttpClient.SendAsync(request, cancellationToken).ConfigureAwait(False)
                 Dim body As String = Await response.Content.ReadAsStringAsync().ConfigureAwait(False)
                 If Not response.IsSuccessStatusCode Then Throw CreateApiException(response.StatusCode, body)
@@ -284,8 +340,8 @@ Public NotInheritable Class CLSelectionApiClient
         Return digits
     End Function
 
-    Private Shared Function CreateIdempotencyKey(operation As String, projectId As Guid, snapshotHash As String) As String
-        Dim material As String = operation & "|" & projectId.ToString("D") & "|" & snapshotHash
+    Private Shared Function CreateIdempotencyKey(operation As String, projectId As Guid, payloadJson As String) As String
+        Dim material As String = operation & "|" & projectId.ToString("D") & "|" & payloadJson
         Using algorithm As SHA256 = SHA256.Create()
             Dim hash As String = String.Concat(algorithm.ComputeHash(Encoding.UTF8.GetBytes(material)).
                 Select(Function(item) item.ToString("x2")))

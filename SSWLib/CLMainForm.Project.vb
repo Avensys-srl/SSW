@@ -761,6 +761,7 @@ Partial Public Class CLMainForm
         m_ProjectMenuDuplicate.Text = Project_Text("MainForm_Project_Duplicate", "Duplicate as new selection...")
         m_ProjectMenuAlternative.Text = Project_Text("MainForm_Project_CreateAlternative", "Create an alternative...")
         m_ProjectMenuRecent.Text = Project_Text("MainForm_Project_Recent", "Recent selections")
+        m_MultiSelectionMenu.Text = Project_Text("MultiProject_Menu", "Selection project...")
     End Sub
 
     Private Function Project_Text(resourceName As String, fallback As String) As String

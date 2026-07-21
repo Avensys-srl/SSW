@@ -772,4 +772,88 @@ Med venlig hilsen</value></data>
   <data name="ReportViewer_EmailOutlookUnavailable" xml:space="preserve"><value>Microsoft Outlook er ikke tilgængelig eller kan ikke startes.</value></data>
   <data name="ReportViewer_EmailAttachmentError" xml:space="preserve"><value>PDF-filen kunne ikke vedhæftes den nye e-mail.</value></data>
   <data name="ReportViewer_EmailError" xml:space="preserve"><value>Den nye e-mail kunne ikke oprettes.</value></data>
+  <data name="MultiProject_Title" xml:space="preserve">
+    <value>Udvælgelsesprojekt</value>
+  </data>
+  <data name="MultiProject_Menu" xml:space="preserve">
+    <value>Udvælgelsesprojekt...</value>
+  </data>
+  <data name="MultiProject_DefaultReference" xml:space="preserve">
+    <value>Projekt 01</value>
+  </data>
+  <data name="MultiProject_Filter" xml:space="preserve">
+    <value>SSW-udvælgelsesprojekt</value>
+  </data>
+  <data name="MultiProject_Reference" xml:space="preserve">
+    <value>Projektreference</value>
+  </data>
+  <data name="MultiProject_Language" xml:space="preserve">
+    <value>Sprog</value>
+  </data>
+  <data name="MultiProject_New" xml:space="preserve">
+    <value>Nyt</value>
+  </data>
+  <data name="MultiProject_Open" xml:space="preserve">
+    <value>Åbn...</value>
+  </data>
+  <data name="MultiProject_Save" xml:space="preserve">
+    <value>Gem</value>
+  </data>
+  <data name="MultiProject_SaveAs" xml:space="preserve">
+    <value>Gem som...</value>
+  </data>
+  <data name="MultiProject_Remove" xml:space="preserve">
+    <value>Fjern</value>
+  </data>
+  <data name="MultiProject_OpenSelection" xml:space="preserve">
+    <value>Åbn valg</value>
+  </data>
+  <data name="MultiProject_Email" xml:space="preserve">
+    <value>Send projekt</value>
+  </data>
+  <data name="MultiProject_Close" xml:space="preserve">
+    <value>Luk</value>
+  </data>
+  <data name="MultiProject_ColumnReference" xml:space="preserve">
+    <value>Reference</value>
+  </data>
+  <data name="MultiProject_ColumnUnit" xml:space="preserve">
+    <value>Valgt aggregat</value>
+  </data>
+  <data name="MultiProject_ColumnAirflow" xml:space="preserve">
+    <value>Luftmængde [m³/h]</value>
+  </data>
+  <data name="MultiProject_ColumnPressure" xml:space="preserve">
+    <value>Tryk [Pa]</value>
+  </data>
+  <data name="MultiProject_ColumnPdf" xml:space="preserve">
+    <value>PDF-fil</value>
+  </data>
+  <data name="MultiProject_ColumnStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="MultiProject_Ready" xml:space="preserve">
+    <value>Klar</value>
+  </data>
+  <data name="MultiProject_Incomplete" xml:space="preserve">
+    <value>Ufuldstændig</value>
+  </data>
+  <data name="MultiProject_ReferenceRequired" xml:space="preserve">
+    <value>Projektreferencen er påkrævet.</value>
+  </data>
+  <data name="MultiProject_RemoveConfirm" xml:space="preserve">
+    <value>Fjern den valgte rapport fra projektet?</value>
+  </data>
+  <data name="MultiProject_Empty" xml:space="preserve">
+    <value>Projektet indeholder ingen rapporter.</value>
+  </data>
+  <data name="MultiProject_Added" xml:space="preserve">
+    <value>Rapporten blev føjet til udvælgelsesprojektet.</value>
+  </data>
+  <data name="ReportViewer_AddToProject" xml:space="preserve">
+    <value>Føj til projekt</value>
+  </data>
+  <data name="ReportViewer_AddToProjectTooltip" xml:space="preserve">
+    <value>Tilføj eller opdater denne rapport i et projekt med flere valg</value>
+  </data>
 </root>

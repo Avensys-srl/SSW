@@ -25,6 +25,7 @@ internal sealed class TokenHandler : HttpMessageHandler
     public int RenewalCount { get; private set; }
     public int SelectionCreateCount { get; private set; }
     public int SelectionRevisionCount { get; private set; }
+    public int ProjectSyncCount { get; private set; }
     public bool LastRegistrationHadBootstrap { get; private set; }
     public List<string> IdempotencyKeys { get; } = new List<string>();
     private string latestSnapshotHash;
@@ -84,6 +85,16 @@ internal sealed class TokenHandler : HttpMessageHandler
                 + "\",\"reference_digits\":\"4827193650482715\",\"revision\":" + latestRevision
                 + ",\"snapshot_hash\":\"" + snapshotHash + "\",\"change_kind\":\""
                 + (reprint ? "Reprint" : "TechnicalChange") + "\"}");
+        }
+        else if (request.RequestUri.AbsolutePath.Contains("/projects/"))
+        {
+            ProjectSyncCount++;
+            VerifySelectionHeaders(request);
+            string body = request.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            if (!body.Contains("\"reference\"") || !body.Contains("\"items\"") ||
+                !body.Contains("\"selection_project_id\"") || !body.Contains("\"pdf_filename\""))
+                throw new InvalidOperationException("Multi-selection project payload is incomplete.");
+            return JsonResponse(HttpStatusCode.OK, "{\"synchronized\":true,\"items\":1}");
         }
         else
         {
@@ -163,8 +174,11 @@ internal static class Program
 
             TestSelectionRegistrationClient(client, handler, context);
             TestSnapshotFingerprints(root);
+            TestMultiSelectionProject(root);
+            TestMultiSelectionEmailAndDialog(root);
             TestSdfFixtures(root);
             TestAccessoryLocalization();
+            TestMultiSelectionLocalization();
             TestAccessoryReportTemplates();
             TestKtsExclusiveGroupReplacement();
             TestRegulationLevelControlSynchronization();
@@ -255,6 +269,30 @@ internal static class Program
                 "/root/data[@name='MainForm_Accessories_HCDDescription']/value").InnerText !=
                 "Batteria ad acqua a 2 tubi per riscaldamento e raffreddamento")
                 throw new InvalidOperationException("Italian HCD description localization is invalid.");
+        }
+    }
+
+    private static void TestMultiSelectionLocalization()
+    {
+        string repositoryRoot = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", ".."));
+        string[] languages = { "bg", "da", "de", "en", "fr", "hu", "it", "nl", "pl", "ro", "sl", "sv" };
+        string[] keys =
+        {
+            "MultiProject_Title", "MultiProject_DefaultReference", "MultiProject_Reference",
+            "MultiProject_ColumnUnit", "MultiProject_ColumnAirflow", "MultiProject_ColumnPressure",
+            "MultiProject_ColumnPdf", "MultiProject_Ready", "ReportViewer_AddToProject",
+            "ReportViewer_AddToProjectTooltip"
+        };
+        foreach (string language in languages)
+        {
+            var document = new XmlDocument();
+            document.Load(Path.Combine(repositoryRoot, "SSWLib", "Resources." + language + ".resx"));
+            foreach (string key in keys)
+            {
+                XmlNode node = document.SelectSingleNode("/root/data[@name='" + key + "']/value");
+                if (node == null || String.IsNullOrWhiteSpace(node.InnerText) || node.InnerText == "?")
+                    throw new InvalidOperationException("Multi-selection localization is missing: " + language + "/" + key);
+            }
         }
     }
 
@@ -678,11 +716,35 @@ internal static class Program
         if (reprint.Revision != 1 || reprint.ChangeKind != "Reprint")
             throw new InvalidOperationException("Unchanged selection did not remain at R01.");
 
-        document.Selection.Winter.SupplyAirflowM3h = 120;
-        CLSelectionSnapshotService.Refresh(document);
-        CLSelectionRegistrationResult revised = client.RegisterSelectionAsync(document, context).GetAwaiter().GetResult();
-        if (revised.Revision != 2 || revised.ChangeKind != "TechnicalChange" || handler.SelectionRevisionCount != 2)
+        CLSelectionProjectDocument reopened = CLSelectionProjectSerializer.Deserialize(
+            CLSelectionProjectSerializer.Serialize(document));
+        reopened.Selection.CustomerReference = "updated after opening from project";
+        CLSelectionSnapshotService.Refresh(reopened);
+        CLSelectionRegistrationResult updatedReference = client.RegisterSelectionAsync(reopened, context).GetAwaiter().GetResult();
+        if (updatedReference.Revision != 1 || updatedReference.ChangeKind != "Reprint" ||
+            handler.IdempotencyKeys[2] == handler.IdempotencyKeys[3])
+            throw new InvalidOperationException("A changed customer reference reused the previous request idempotency key.");
+
+        reopened.Selection.Winter.SupplyAirflowM3h = 120;
+        CLSelectionSnapshotService.Refresh(reopened);
+        CLSelectionRegistrationResult revised = client.RegisterSelectionAsync(reopened, context).GetAwaiter().GetResult();
+        if (revised.Revision != 2 || revised.ChangeKind != "TechnicalChange" || handler.SelectionRevisionCount != 3)
             throw new InvalidOperationException("Changed selection did not create R02.");
+
+        var multiProject = CLMultiSelectionProjectSerializer.CreateNew("Project 01", "en");
+        multiProject.Items.Add(new CLMultiSelectionProjectItem
+        {
+            SelectionProjectId = reopened.ProjectId,
+            CustomerReference = reopened.Selection.CustomerReference,
+            UnitName = reopened.Selection.Unit.Name,
+            AirflowM3h = 120,
+            PressurePa = 473,
+            PdfFileName = "selection.pdf",
+            LanguageCode = "en",
+            SnapshotHash = reopened.RevisionTracking.Current.SnapshotHash
+        });
+        client.SyncMultiSelectionProjectAsync(multiProject, context).GetAwaiter().GetResult();
+        if (handler.ProjectSyncCount != 1) throw new InvalidOperationException("Multi-selection project was not synchronized.");
     }
 
     private static void TestSnapshotFingerprints(string root)
@@ -782,6 +844,89 @@ internal static class Program
                 reloaded.RequiresMigrationBackup)
                 throw new InvalidOperationException("Migrated V2 round-trip failed: " + fixtureName);
         }
+    }
+
+    private static void TestMultiSelectionProject(string root)
+    {
+        string pdfPath = Path.Combine(root, "selection-report.pdf");
+        File.WriteAllBytes(pdfPath, Encoding.ASCII.GetBytes("%PDF-1.4\n%%EOF"));
+
+        CLSelectionProjectDocument selection = CreateCalculatedDocument();
+        CLSelectionSnapshotService.Refresh(selection);
+        CLMultiSelectionProjectDocument project = CLMultiSelectionProjectSerializer.CreateNew("Progetto 01", "it");
+        CLMultiSelectionProjectSerializer.AddOrUpdate(project, selection, pdfPath, "IT");
+        if (project.Items.Count != 1 || project.Items[0].UnitName != "CLRC 06A OSC" ||
+            project.Items[0].AirflowM3h != 100 || project.Items[0].PressurePa != 473)
+            throw new InvalidOperationException("Multi-selection project item metadata is invalid.");
+
+        selection.Selection.Winter.SupplyAirflowM3h = 120;
+        CLSelectionSnapshotService.Refresh(selection);
+        CLMultiSelectionProjectSerializer.AddOrUpdate(project, selection, pdfPath, "it");
+        if (project.Items.Count != 1 || project.Items[0].AirflowM3h != 120)
+            throw new InvalidOperationException("Updating a project selection did not preserve its row.");
+
+        CLSelectionProjectDocument alternative = CLSelectionProjectSerializer.Deserialize(
+            CLSelectionProjectSerializer.Serialize(selection));
+        alternative.ProjectId = Guid.NewGuid();
+        alternative.Selection.CustomerReference = "Alt. 01: initial note";
+        CLMultiSelectionProjectSerializer.AddOrUpdate(project, alternative, pdfPath, "it");
+        if (project.Items.Count != 2 || project.Items[1].CustomerReference != "Alt. 01: initial note")
+            throw new InvalidOperationException("An alternative was not appended to the project.");
+
+        bool languageRejected = false;
+        try { CLMultiSelectionProjectSerializer.AddOrUpdate(project, alternative, pdfPath, "fr"); }
+        catch (InvalidDataException) { languageRejected = true; }
+        if (!languageRejected) throw new InvalidOperationException("Mixed project languages were accepted.");
+
+        string projectPath = Path.Combine(root, "multi-selection.sswproj");
+        CLMultiSelectionProjectSerializer.Save(projectPath, project);
+        CLMultiSelectionProjectDocument loaded = CLMultiSelectionProjectSerializer.Load(projectPath);
+        if (loaded.Items.Count != 2 || loaded.LanguageCode != "it" ||
+            !CLMultiSelectionProjectSerializer.IsCurrent(loaded.Items[0], loaded.LanguageCode))
+            throw new InvalidOperationException("Multi-selection project round-trip failed.");
+        string extracted = CLMultiSelectionProjectSerializer.ExtractPdf(loaded.Items[0], Path.Combine(root, "extracted"));
+        if (!File.ReadAllBytes(extracted).SequenceEqual(File.ReadAllBytes(pdfPath)))
+            throw new InvalidOperationException("Embedded project PDF extraction failed.");
+    }
+
+    private static void TestMultiSelectionEmailAndDialog(string root)
+    {
+        string pdfPath = Path.Combine(root, "project-email.pdf");
+        File.WriteAllBytes(pdfPath, Encoding.ASCII.GetBytes("%PDF-1.4\n%%EOF"));
+        CLSelectionProjectDocument selection = CreateCalculatedDocument();
+        CLMultiSelectionProjectDocument project = CLMultiSelectionProjectSerializer.CreateNew("Project 01", "en");
+        CLMultiSelectionProjectSerializer.AddOrUpdate(project, selection, pdfPath, "en");
+        foreach (string language in new[] { "bg", "da", "de", "en", "fr", "hu", "it", "nl", "pl", "ro", "sl", "sv" })
+        {
+            project.LanguageCode = language;
+            project.Items[0].LanguageCode = language;
+            string subject = CLMultiSelectionEmailComposer.BuildSubject(project);
+            string html = CLMultiSelectionEmailComposer.BuildHtml(project);
+            if (String.IsNullOrWhiteSpace(subject) || !subject.Contains(project.Reference) ||
+                !html.Contains("<table") || !html.Contains("CLRC 06A OSC") || !html.Contains("project-email.pdf"))
+                throw new InvalidOperationException("Localized project email is incomplete: " + language);
+        }
+
+        project.LanguageCode = "en";
+        project.Items[0].LanguageCode = "en";
+        string imagePath = Path.Combine(root, "multi-selection-project-dialog.png");
+        using (var form = new CLMultiSelectionProjectForm(project, null, "Project 01", "en"))
+        {
+            form.StartPosition = FormStartPosition.Manual;
+            form.Location = new Point(-32000, -32000);
+            form.Show();
+            Application.DoEvents();
+            if (form.Controls.Count == 0 || form.Width < 850 || form.Height < 430)
+                throw new InvalidOperationException("Multi-selection project dialog layout is incomplete.");
+            using (var bitmap = new Bitmap(form.Width, form.Height))
+            {
+                form.DrawToBitmap(bitmap, new Rectangle(Point.Empty, form.Size));
+                bitmap.Save(imagePath, ImageFormat.Png);
+            }
+            form.Hide();
+        }
+        if (!File.Exists(imagePath) || new FileInfo(imagePath).Length < 5000)
+            throw new InvalidOperationException("Multi-selection project dialog did not render correctly.");
     }
 
     private static void AssertChange(CLSelectionProjectDocument document, CLSelectionChangeKind expected)

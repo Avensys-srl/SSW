@@ -544,4 +544,88 @@ Mit freundlichen Grüßen</value></data>
   <data name="ReportViewer_EmailOutlookUnavailable" xml:space="preserve"><value>Microsoft Outlook ist nicht verfügbar oder kann nicht gestartet werden.</value></data>
   <data name="ReportViewer_EmailAttachmentError" xml:space="preserve"><value>Das PDF konnte nicht an die neue E-Mail angehängt werden.</value></data>
   <data name="ReportViewer_EmailError" xml:space="preserve"><value>Die neue E-Mail konnte nicht erstellt werden.</value></data>
+  <data name="MultiProject_Title" xml:space="preserve">
+    <value>Auswahlprojekt</value>
+  </data>
+  <data name="MultiProject_Menu" xml:space="preserve">
+    <value>Auswahlprojekt...</value>
+  </data>
+  <data name="MultiProject_DefaultReference" xml:space="preserve">
+    <value>Projekt 01</value>
+  </data>
+  <data name="MultiProject_Filter" xml:space="preserve">
+    <value>SSW-Auswahlprojekt</value>
+  </data>
+  <data name="MultiProject_Reference" xml:space="preserve">
+    <value>Projektreferenz</value>
+  </data>
+  <data name="MultiProject_Language" xml:space="preserve">
+    <value>Sprache</value>
+  </data>
+  <data name="MultiProject_New" xml:space="preserve">
+    <value>Neu</value>
+  </data>
+  <data name="MultiProject_Open" xml:space="preserve">
+    <value>Öffnen...</value>
+  </data>
+  <data name="MultiProject_Save" xml:space="preserve">
+    <value>Speichern</value>
+  </data>
+  <data name="MultiProject_SaveAs" xml:space="preserve">
+    <value>Speichern unter...</value>
+  </data>
+  <data name="MultiProject_Remove" xml:space="preserve">
+    <value>Entfernen</value>
+  </data>
+  <data name="MultiProject_OpenSelection" xml:space="preserve">
+    <value>Auswahl öffnen</value>
+  </data>
+  <data name="MultiProject_Email" xml:space="preserve">
+    <value>Projekt senden</value>
+  </data>
+  <data name="MultiProject_Close" xml:space="preserve">
+    <value>Schließen</value>
+  </data>
+  <data name="MultiProject_ColumnReference" xml:space="preserve">
+    <value>Referenz</value>
+  </data>
+  <data name="MultiProject_ColumnUnit" xml:space="preserve">
+    <value>Ausgewähltes Gerät</value>
+  </data>
+  <data name="MultiProject_ColumnAirflow" xml:space="preserve">
+    <value>Luftmenge [m³/h]</value>
+  </data>
+  <data name="MultiProject_ColumnPressure" xml:space="preserve">
+    <value>Druck [Pa]</value>
+  </data>
+  <data name="MultiProject_ColumnPdf" xml:space="preserve">
+    <value>PDF-Datei</value>
+  </data>
+  <data name="MultiProject_ColumnStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="MultiProject_Ready" xml:space="preserve">
+    <value>Bereit</value>
+  </data>
+  <data name="MultiProject_Incomplete" xml:space="preserve">
+    <value>Unvollständig</value>
+  </data>
+  <data name="MultiProject_ReferenceRequired" xml:space="preserve">
+    <value>Die Projektreferenz ist erforderlich.</value>
+  </data>
+  <data name="MultiProject_RemoveConfirm" xml:space="preserve">
+    <value>Den ausgewählten Bericht aus dem Projekt entfernen?</value>
+  </data>
+  <data name="MultiProject_Empty" xml:space="preserve">
+    <value>Das Projekt enthält keine Berichte.</value>
+  </data>
+  <data name="MultiProject_Added" xml:space="preserve">
+    <value>Der Bericht wurde dem Auswahlprojekt hinzugefügt.</value>
+  </data>
+  <data name="ReportViewer_AddToProject" xml:space="preserve">
+    <value>Zum Projekt hinzufügen</value>
+  </data>
+  <data name="ReportViewer_AddToProjectTooltip" xml:space="preserve">
+    <value>Diesen Bericht in einem Mehrfachauswahlprojekt hinzufügen oder aktualisieren</value>
+  </data>
 </root>

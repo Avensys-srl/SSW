@@ -869,4 +869,88 @@ Med vänliga hälsningar</value></data>
   <data name="ReportViewer_EmailOutlookUnavailable" xml:space="preserve"><value>Microsoft Outlook är inte tillgängligt eller kan inte startas.</value></data>
   <data name="ReportViewer_EmailAttachmentError" xml:space="preserve"><value>PDF-filen kunde inte bifogas till det nya e-postmeddelandet.</value></data>
   <data name="ReportViewer_EmailError" xml:space="preserve"><value>Det nya e-postmeddelandet kunde inte skapas.</value></data>
+  <data name="MultiProject_Title" xml:space="preserve">
+    <value>Urvalsprojekt</value>
+  </data>
+  <data name="MultiProject_Menu" xml:space="preserve">
+    <value>Urvalsprojekt...</value>
+  </data>
+  <data name="MultiProject_DefaultReference" xml:space="preserve">
+    <value>Projekt 01</value>
+  </data>
+  <data name="MultiProject_Filter" xml:space="preserve">
+    <value>SSW-urvalsprojekt</value>
+  </data>
+  <data name="MultiProject_Reference" xml:space="preserve">
+    <value>Projektreferens</value>
+  </data>
+  <data name="MultiProject_Language" xml:space="preserve">
+    <value>Språk</value>
+  </data>
+  <data name="MultiProject_New" xml:space="preserve">
+    <value>Nytt</value>
+  </data>
+  <data name="MultiProject_Open" xml:space="preserve">
+    <value>Öppna...</value>
+  </data>
+  <data name="MultiProject_Save" xml:space="preserve">
+    <value>Spara</value>
+  </data>
+  <data name="MultiProject_SaveAs" xml:space="preserve">
+    <value>Spara som...</value>
+  </data>
+  <data name="MultiProject_Remove" xml:space="preserve">
+    <value>Ta bort</value>
+  </data>
+  <data name="MultiProject_OpenSelection" xml:space="preserve">
+    <value>Öppna urval</value>
+  </data>
+  <data name="MultiProject_Email" xml:space="preserve">
+    <value>Skicka projekt</value>
+  </data>
+  <data name="MultiProject_Close" xml:space="preserve">
+    <value>Stäng</value>
+  </data>
+  <data name="MultiProject_ColumnReference" xml:space="preserve">
+    <value>Referens</value>
+  </data>
+  <data name="MultiProject_ColumnUnit" xml:space="preserve">
+    <value>Valt aggregat</value>
+  </data>
+  <data name="MultiProject_ColumnAirflow" xml:space="preserve">
+    <value>Luftflöde [m³/h]</value>
+  </data>
+  <data name="MultiProject_ColumnPressure" xml:space="preserve">
+    <value>Tryck [Pa]</value>
+  </data>
+  <data name="MultiProject_ColumnPdf" xml:space="preserve">
+    <value>PDF-fil</value>
+  </data>
+  <data name="MultiProject_ColumnStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="MultiProject_Ready" xml:space="preserve">
+    <value>Klar</value>
+  </data>
+  <data name="MultiProject_Incomplete" xml:space="preserve">
+    <value>Ofullständig</value>
+  </data>
+  <data name="MultiProject_ReferenceRequired" xml:space="preserve">
+    <value>Projektreferensen är obligatorisk.</value>
+  </data>
+  <data name="MultiProject_RemoveConfirm" xml:space="preserve">
+    <value>Ta bort den valda rapporten från projektet?</value>
+  </data>
+  <data name="MultiProject_Empty" xml:space="preserve">
+    <value>Projektet innehåller inga rapporter.</value>
+  </data>
+  <data name="MultiProject_Added" xml:space="preserve">
+    <value>Rapporten lades till i urvalsprojektet.</value>
+  </data>
+  <data name="ReportViewer_AddToProject" xml:space="preserve">
+    <value>Lägg till i projekt</value>
+  </data>
+  <data name="ReportViewer_AddToProjectTooltip" xml:space="preserve">
+    <value>Lägg till eller uppdatera rapporten i ett projekt med flera urval</value>
+  </data>
 </root>

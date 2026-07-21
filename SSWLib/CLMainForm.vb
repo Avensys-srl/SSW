@@ -87,6 +87,7 @@ Public Class CLMainForm
         ' Chiamata richiesta dalla finestra di progettazione.
         InitializeComponent()
         Project_InitializeMenus()
+        MultiSelection_InitializeMenus()
 
         Try
             tsmiOption_CommercialSheetAutoSync.Checked = My.Settings.CommercialSheetAutoSyncEnabled
@@ -1795,6 +1796,7 @@ Public Class CLMainForm
         ' --------------------------------------------
         Dim reportViewForm As New CLReportViewerForm
         AddHandler reportViewForm.PdfExported, AddressOf Project_ReportPdfExported
+        AddHandler reportViewForm.AddToProjectRequested, AddressOf MultiSelection_AddCurrentReport
         Dim reportDataSources As New List(Of Microsoft.Reporting.WinForms.ReportDataSource)
 
         reportDataSources.Add(New Microsoft.Reporting.WinForms.ReportDataSource("Header", DirectCast(reportDataSet.HeaderDataTable, System.Data.DataTable)))

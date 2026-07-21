@@ -613,4 +613,88 @@
   <data name="ReportViewer_EmailOutlookUnavailable" xml:space="preserve"><value>Microsoft Outlook не е наличен или не може да бъде стартиран.</value></data>
   <data name="ReportViewer_EmailAttachmentError" xml:space="preserve"><value>PDF файлът не може да бъде прикачен към новия имейл.</value></data>
   <data name="ReportViewer_EmailError" xml:space="preserve"><value>Новият имейл не може да бъде създаден.</value></data>
+  <data name="MultiProject_Title" xml:space="preserve">
+    <value>Проект за избор</value>
+  </data>
+  <data name="MultiProject_Menu" xml:space="preserve">
+    <value>Проект за избор...</value>
+  </data>
+  <data name="MultiProject_DefaultReference" xml:space="preserve">
+    <value>Проект 01</value>
+  </data>
+  <data name="MultiProject_Filter" xml:space="preserve">
+    <value>SSW проект за избор</value>
+  </data>
+  <data name="MultiProject_Reference" xml:space="preserve">
+    <value>Референция на проекта</value>
+  </data>
+  <data name="MultiProject_Language" xml:space="preserve">
+    <value>Език</value>
+  </data>
+  <data name="MultiProject_New" xml:space="preserve">
+    <value>Нов</value>
+  </data>
+  <data name="MultiProject_Open" xml:space="preserve">
+    <value>Отвори...</value>
+  </data>
+  <data name="MultiProject_Save" xml:space="preserve">
+    <value>Запази</value>
+  </data>
+  <data name="MultiProject_SaveAs" xml:space="preserve">
+    <value>Запази като...</value>
+  </data>
+  <data name="MultiProject_Remove" xml:space="preserve">
+    <value>Премахни</value>
+  </data>
+  <data name="MultiProject_OpenSelection" xml:space="preserve">
+    <value>Отвори избор</value>
+  </data>
+  <data name="MultiProject_Email" xml:space="preserve">
+    <value>Изпрати проекта</value>
+  </data>
+  <data name="MultiProject_Close" xml:space="preserve">
+    <value>Затвори</value>
+  </data>
+  <data name="MultiProject_ColumnReference" xml:space="preserve">
+    <value>Референция</value>
+  </data>
+  <data name="MultiProject_ColumnUnit" xml:space="preserve">
+    <value>Избран модул</value>
+  </data>
+  <data name="MultiProject_ColumnAirflow" xml:space="preserve">
+    <value>Дебит [m³/h]</value>
+  </data>
+  <data name="MultiProject_ColumnPressure" xml:space="preserve">
+    <value>Налягане [Pa]</value>
+  </data>
+  <data name="MultiProject_ColumnPdf" xml:space="preserve">
+    <value>PDF файл</value>
+  </data>
+  <data name="MultiProject_ColumnStatus" xml:space="preserve">
+    <value>Състояние</value>
+  </data>
+  <data name="MultiProject_Ready" xml:space="preserve">
+    <value>Готов</value>
+  </data>
+  <data name="MultiProject_Incomplete" xml:space="preserve">
+    <value>Непълен</value>
+  </data>
+  <data name="MultiProject_ReferenceRequired" xml:space="preserve">
+    <value>Референцията на проекта е задължителна.</value>
+  </data>
+  <data name="MultiProject_RemoveConfirm" xml:space="preserve">
+    <value>Да се премахне ли избраният отчет от проекта?</value>
+  </data>
+  <data name="MultiProject_Empty" xml:space="preserve">
+    <value>Проектът не съдържа отчети.</value>
+  </data>
+  <data name="MultiProject_Added" xml:space="preserve">
+    <value>Отчетът беше добавен към проекта за избор.</value>
+  </data>
+  <data name="ReportViewer_AddToProject" xml:space="preserve">
+    <value>Добави към проект</value>
+  </data>
+  <data name="ReportViewer_AddToProjectTooltip" xml:space="preserve">
+    <value>Добавяне или обновяване на този отчет в проект с няколко избора</value>
+  </data>
 </root>

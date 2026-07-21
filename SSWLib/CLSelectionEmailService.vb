@@ -1,4 +1,5 @@
 Imports System.Runtime.InteropServices
+Imports System.Collections.Generic
 
 Public NotInheritable Class CLSelectionEmailComposer
     Private Sub New()
@@ -72,15 +73,28 @@ Public NotInheritable Class CLOutlookEmailService
     End Sub
 
     Public Shared Sub DisplayMessage(subject As String, body As String, attachmentPath As String)
-        If String.IsNullOrWhiteSpace(attachmentPath) OrElse Not IO.File.Exists(attachmentPath) Then
+        DisplayMessageCore(subject, body, Nothing, New String() {attachmentPath})
+    End Sub
+
+    Public Shared Sub DisplayHtmlMessage(subject As String, htmlBody As String,
+        attachmentPaths As IEnumerable(Of String))
+
+        DisplayMessageCore(subject, Nothing, htmlBody, attachmentPaths)
+    End Sub
+
+    Private Shared Sub DisplayMessageCore(subject As String, body As String, htmlBody As String,
+        attachmentPaths As IEnumerable(Of String))
+
+        Dim paths As New List(Of String)()
+        If attachmentPaths IsNot Nothing Then paths.AddRange(attachmentPaths)
+        If paths.Count = 0 OrElse paths.Exists(Function(path) String.IsNullOrWhiteSpace(path) OrElse Not IO.File.Exists(path)) Then
             Throw New CLOutlookEmailException(CLOutlookEmailFailure.AttachmentFailed,
-                New IO.FileNotFoundException("Email attachment not found.", attachmentPath))
+                New IO.FileNotFoundException("One or more email attachments were not found."))
         End If
 
         Dim outlookApplication As Object = Nothing
         Dim mailItem As Object = Nothing
         Dim attachments As Object = Nothing
-        Dim attachment As Object = Nothing
         Try
             Dim outlookType As Type = Type.GetTypeFromProgID("Outlook.Application")
             If outlookType Is Nothing Then
@@ -98,10 +112,21 @@ Public NotInheritable Class CLOutlookEmailService
             End Try
 
             mailItem.Subject = subject
-            mailItem.Body = body
+            If String.IsNullOrWhiteSpace(htmlBody) Then
+                mailItem.Body = body
+            Else
+                mailItem.HTMLBody = htmlBody
+            End If
             Try
                 attachments = mailItem.Attachments
-                attachment = attachments.Add(IO.Path.GetFullPath(attachmentPath))
+                For Each path As String In paths
+                    Dim attachment As Object = Nothing
+                    Try
+                        attachment = attachments.Add(IO.Path.GetFullPath(path))
+                    Finally
+                        ReleaseComObject(attachment)
+                    End Try
+                Next
             Catch ex As Exception
                 Throw New CLOutlookEmailException(CLOutlookEmailFailure.AttachmentFailed, ex)
             End Try
@@ -112,7 +137,6 @@ Public NotInheritable Class CLOutlookEmailService
                 Throw New CLOutlookEmailException(CLOutlookEmailFailure.MessageFailed, ex)
             End Try
         Finally
-            ReleaseComObject(attachment)
             ReleaseComObject(attachments)
             ReleaseComObject(mailItem)
             ReleaseComObject(outlookApplication)

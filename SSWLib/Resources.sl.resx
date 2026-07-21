@@ -529,4 +529,88 @@ Lep pozdrav</value></data>
   <data name="ReportViewer_EmailOutlookUnavailable" xml:space="preserve"><value>Microsoft Outlook ni na voljo ali ga ni mogoče zagnati.</value></data>
   <data name="ReportViewer_EmailAttachmentError" xml:space="preserve"><value>PDF-ja ni mogoče priložiti novemu e-poštnemu sporočilu.</value></data>
   <data name="ReportViewer_EmailError" xml:space="preserve"><value>Novega e-poštnega sporočila ni mogoče ustvariti.</value></data>
+  <data name="MultiProject_Title" xml:space="preserve">
+    <value>Projekt izbire</value>
+  </data>
+  <data name="MultiProject_Menu" xml:space="preserve">
+    <value>Projekt izbire...</value>
+  </data>
+  <data name="MultiProject_DefaultReference" xml:space="preserve">
+    <value>Projekt 01</value>
+  </data>
+  <data name="MultiProject_Filter" xml:space="preserve">
+    <value>Projekt izbir SSW</value>
+  </data>
+  <data name="MultiProject_Reference" xml:space="preserve">
+    <value>Referenca projekta</value>
+  </data>
+  <data name="MultiProject_Language" xml:space="preserve">
+    <value>Jezik</value>
+  </data>
+  <data name="MultiProject_New" xml:space="preserve">
+    <value>Novo</value>
+  </data>
+  <data name="MultiProject_Open" xml:space="preserve">
+    <value>Odpri...</value>
+  </data>
+  <data name="MultiProject_Save" xml:space="preserve">
+    <value>Shrani</value>
+  </data>
+  <data name="MultiProject_SaveAs" xml:space="preserve">
+    <value>Shrani kot...</value>
+  </data>
+  <data name="MultiProject_Remove" xml:space="preserve">
+    <value>Odstrani</value>
+  </data>
+  <data name="MultiProject_OpenSelection" xml:space="preserve">
+    <value>Odpri izbiro</value>
+  </data>
+  <data name="MultiProject_Email" xml:space="preserve">
+    <value>Pošlji projekt</value>
+  </data>
+  <data name="MultiProject_Close" xml:space="preserve">
+    <value>Zapri</value>
+  </data>
+  <data name="MultiProject_ColumnReference" xml:space="preserve">
+    <value>Referenca</value>
+  </data>
+  <data name="MultiProject_ColumnUnit" xml:space="preserve">
+    <value>Izbrana enota</value>
+  </data>
+  <data name="MultiProject_ColumnAirflow" xml:space="preserve">
+    <value>Pretok [m³/h]</value>
+  </data>
+  <data name="MultiProject_ColumnPressure" xml:space="preserve">
+    <value>Tlak [Pa]</value>
+  </data>
+  <data name="MultiProject_ColumnPdf" xml:space="preserve">
+    <value>Datoteka PDF</value>
+  </data>
+  <data name="MultiProject_ColumnStatus" xml:space="preserve">
+    <value>Stanje</value>
+  </data>
+  <data name="MultiProject_Ready" xml:space="preserve">
+    <value>Pripravljeno</value>
+  </data>
+  <data name="MultiProject_Incomplete" xml:space="preserve">
+    <value>Nepopolno</value>
+  </data>
+  <data name="MultiProject_ReferenceRequired" xml:space="preserve">
+    <value>Referenca projekta je obvezna.</value>
+  </data>
+  <data name="MultiProject_RemoveConfirm" xml:space="preserve">
+    <value>Odstranim izbrano poročilo iz projekta?</value>
+  </data>
+  <data name="MultiProject_Empty" xml:space="preserve">
+    <value>Projekt ne vsebuje poročil.</value>
+  </data>
+  <data name="MultiProject_Added" xml:space="preserve">
+    <value>Poročilo je bilo dodano projektu izbire.</value>
+  </data>
+  <data name="ReportViewer_AddToProject" xml:space="preserve">
+    <value>Dodaj projektu</value>
+  </data>
+  <data name="ReportViewer_AddToProjectTooltip" xml:space="preserve">
+    <value>Dodaj ali posodobi to poročilo v projektu več izbir</value>
+  </data>
 </root>
