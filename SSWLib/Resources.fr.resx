@@ -575,4 +575,18 @@
   <data name="MainForm_Accessories_HCDDescription" xml:space="preserve"><value>Batterie à eau 2 tubes pour chauffage et refroidissement</value></data>
   <data name="MainForm_Accessories_EHDDescription" xml:space="preserve"><value>Batterie électrique de post-chauffage</value></data>
   <data name="MainForm_Accessories_PEHDDescription" xml:space="preserve"><value>Batterie électrique de préchauffage</value></data>
+  <data name="ReportViewer_Email" xml:space="preserve"><value>Envoyer par e-mail</value></data>
+  <data name="ReportViewer_EmailTooltip" xml:space="preserve"><value>Envoyer le PDF par e-mail</value></data>
+  <data name="ReportViewer_EmailSubject" xml:space="preserve"><value>Sélection de l'unité de ventilation - {0}</value></data>
+  <data name="ReportViewer_EmailBody" xml:space="preserve"><value>Bonjour,
+
+veuillez trouver ci-joint le PDF relatif à la sélection de l'unité de ventilation {0}, réalisée avec le logiciel SSW.
+
+Nous restons à votre disposition pour tout renseignement ou complément technique.
+
+Cordialement</value></data>
+  <data name="ReportViewer_EmailPdfError" xml:space="preserve"><value>Impossible de générer le PDF de la sélection.</value></data>
+  <data name="ReportViewer_EmailOutlookUnavailable" xml:space="preserve"><value>Microsoft Outlook n'est pas disponible ou ne peut pas être démarré.</value></data>
+  <data name="ReportViewer_EmailAttachmentError" xml:space="preserve"><value>Impossible de joindre le PDF au nouvel e-mail.</value></data>
+  <data name="ReportViewer_EmailError" xml:space="preserve"><value>Impossible de créer le nouvel e-mail.</value></data>
 </root>

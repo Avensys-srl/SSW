@@ -719,4 +719,18 @@
   <data name="MainForm_Accessories_HCDDescription" xml:space="preserve"><value>Two-pipe water coil for heating and cooling</value></data>
   <data name="MainForm_Accessories_EHDDescription" xml:space="preserve"><value>Electric post-heater</value></data>
   <data name="MainForm_Accessories_PEHDDescription" xml:space="preserve"><value>Electric pre-heater</value></data>
+  <data name="ReportViewer_Email" xml:space="preserve"><value>Send by email</value></data>
+  <data name="ReportViewer_EmailTooltip" xml:space="preserve"><value>Send the PDF by email</value></data>
+  <data name="ReportViewer_EmailSubject" xml:space="preserve"><value>Ventilation unit selection - {0}</value></data>
+  <data name="ReportViewer_EmailBody" xml:space="preserve"><value>Good morning,
+
+please find attached the PDF for the selection of ventilation unit {0}, prepared using SSW software.
+
+Please contact us if you require any clarification or further technical information.
+
+Kind regards</value></data>
+  <data name="ReportViewer_EmailPdfError" xml:space="preserve"><value>Unable to generate the selection PDF.</value></data>
+  <data name="ReportViewer_EmailOutlookUnavailable" xml:space="preserve"><value>Microsoft Outlook is not available or cannot be started.</value></data>
+  <data name="ReportViewer_EmailAttachmentError" xml:space="preserve"><value>Unable to attach the PDF to the new email.</value></data>
+  <data name="ReportViewer_EmailError" xml:space="preserve"><value>Unable to create the new email.</value></data>
 </root>

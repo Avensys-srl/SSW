@@ -323,6 +323,9 @@ Stato al 21/07/2026: **completata**.
 - build `AV|x86`, matrice tecnica, lint PHP e 23 test portale superati; uno smoke
   test ReportViewer renderizza tutti e quattro gli RDLC con selezione corta e
   con 80 righe, verificando anche la produzione multipagina.
+- il ReportViewer puo' generare il PDF visualizzato in area temporanea e aprire
+  una nuova email Outlook modificabile, con oggetto, corpo e allegato nelle 12
+  lingue, senza invio automatico ne' dipendenze Outlook version-specifiche.
 
 1. Aggiungere dataset e sezione condizionale nei quattro RDLC esistenti.
 2. Mostrare solo standard e opzioni selezionate con funzioni multilinea.

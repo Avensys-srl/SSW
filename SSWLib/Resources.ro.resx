@@ -587,4 +587,18 @@
   <data name="MainForm_Accessories_HCDDescription" xml:space="preserve"><value>Baterie cu apă cu 2 țevi pentru încălzire și răcire</value></data>
   <data name="MainForm_Accessories_EHDDescription" xml:space="preserve"><value>Baterie electrică de postîncălzire</value></data>
   <data name="MainForm_Accessories_PEHDDescription" xml:space="preserve"><value>Baterie electrică de preîncălzire</value></data>
+  <data name="ReportViewer_Email" xml:space="preserve"><value>Trimite prin e-mail</value></data>
+  <data name="ReportViewer_EmailTooltip" xml:space="preserve"><value>Trimite PDF-ul prin e-mail</value></data>
+  <data name="ReportViewer_EmailSubject" xml:space="preserve"><value>Selecție unitate de ventilație - {0}</value></data>
+  <data name="ReportViewer_EmailBody" xml:space="preserve"><value>Bună ziua,
+
+vă transmitem atașat PDF-ul aferent selecției unității de ventilație {0}, realizată cu software-ul SSW.
+
+Vă stăm la dispoziție pentru clarificări sau informații tehnice suplimentare.
+
+Cu stimă</value></data>
+  <data name="ReportViewer_EmailPdfError" xml:space="preserve"><value>PDF-ul selecției nu poate fi generat.</value></data>
+  <data name="ReportViewer_EmailOutlookUnavailable" xml:space="preserve"><value>Microsoft Outlook nu este disponibil sau nu poate fi pornit.</value></data>
+  <data name="ReportViewer_EmailAttachmentError" xml:space="preserve"><value>PDF-ul nu poate fi atașat noului e-mail.</value></data>
+  <data name="ReportViewer_EmailError" xml:space="preserve"><value>Noul e-mail nu poate fi creat.</value></data>
 </root>

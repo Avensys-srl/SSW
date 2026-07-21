@@ -3,6 +3,15 @@ Public Class CLReportViewerForm
     Public Event PdfExported As EventHandler(Of CLPdfExportedEventArgs)
 
     Private m_PdfExportButton As ToolStripButton
+    Private m_EmailButton As ToolStripButton
+    Private m_EmailModelName As String = String.Empty
+    Private m_EmailSelectionReference As String = String.Empty
+
+    Public Sub SetEmailContext(modelName As String, selectionReference As String)
+        m_EmailModelName = If(modelName, String.Empty).Trim()
+        m_EmailSelectionReference = If(selectionReference, String.Empty).Trim()
+        UpdateEmailButtonState()
+    End Sub
 
     Public Sub SetReport(reportPath As String,
         reportDataSources As Microsoft.Reporting.WinForms.ReportDataSource(),
@@ -52,6 +61,16 @@ Public Class CLReportViewerForm
         }
         AddHandler m_PdfExportButton.Click, AddressOf PdfExportButton_Click
         toolStrip.Items.Insert(toolStrip.Items.IndexOf(exportButton), m_PdfExportButton)
+        m_EmailButton = New ToolStripButton With {
+            .Name = "emailPdf",
+            .Text = EmailText(CLMessageResources.ReportViewer_Email, "Email"),
+            .ToolTipText = EmailText(CLMessageResources.ReportViewer_EmailTooltip, "Send the PDF by email"),
+            .Image = CreateEmailIcon(),
+            .DisplayStyle = ToolStripItemDisplayStyle.Image
+        }
+        AddHandler m_EmailButton.Click, AddressOf EmailButton_Click
+        toolStrip.Items.Insert(toolStrip.Items.IndexOf(m_PdfExportButton) + 1, m_EmailButton)
+        UpdateEmailButtonState()
         exportButton.Visible = False
     End Sub
 
@@ -65,9 +84,8 @@ Public Class CLReportViewerForm
             If dialog.ShowDialog(Me) <> DialogResult.OK Then Return
             Try
                 Cursor = Cursors.WaitCursor
-                Dim bytes As Byte() = rpvReport.LocalReport.Render("PDF")
-                WritePdfAtomically(dialog.FileName, bytes)
-                RaiseEvent PdfExported(Me, New CLPdfExportedEventArgs(dialog.FileName))
+                Dim exportedPath As String = ExportPdf(dialog.FileName)
+                RaiseEvent PdfExported(Me, New CLPdfExportedEventArgs(exportedPath))
             Catch ex As Exception
                 MessageBox.Show(Me, ex.Message, Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Error)
             Finally
@@ -75,6 +93,118 @@ Public Class CLReportViewerForm
             End Try
         End Using
     End Sub
+
+    Private Sub EmailButton_Click(sender As Object, eventArgs As EventArgs)
+        If String.IsNullOrWhiteSpace(m_EmailModelName) Then Return
+
+        Dim pdfPath As String
+        Try
+            Cursor = Cursors.WaitCursor
+            pdfPath = ExportPdf(CreateTemporaryEmailPdfPath(rpvReport.LocalReport.DisplayName))
+        Catch ex As Exception
+            Diagnostics.Trace.WriteLine(ex.ToString())
+            ShowEmailError(EmailText(CLMessageResources.ReportViewer_EmailPdfError,
+                "Unable to generate the selection PDF."))
+            Return
+        Finally
+            Cursor = Cursors.Default
+        End Try
+
+        Try
+            Dim subject As String = CLSelectionEmailComposer.BuildSubject(
+                EmailText(CLMessageResources.ReportViewer_EmailSubject,
+                    "Ventilation unit selection - {0}"),
+                m_EmailModelName,
+                m_EmailSelectionReference)
+            Dim body As String = CLSelectionEmailComposer.BuildBody(
+                EmailText(CLMessageResources.ReportViewer_EmailBody,
+                    "Good morning," & Environment.NewLine & Environment.NewLine &
+                    "please find attached the PDF for the selection of ventilation unit {0}, prepared using SSW software." &
+                    Environment.NewLine & Environment.NewLine &
+                    "Please contact us if you require any clarification or further technical information." &
+                    Environment.NewLine & Environment.NewLine & "Kind regards"),
+                m_EmailModelName)
+            CLOutlookEmailService.DisplayMessage(subject, body, pdfPath)
+        Catch ex As CLOutlookEmailException
+            Diagnostics.Trace.WriteLine(ex.ToString())
+            Select Case ex.Failure
+                Case CLOutlookEmailFailure.OutlookUnavailable
+                    ShowEmailError(EmailText(CLMessageResources.ReportViewer_EmailOutlookUnavailable,
+                        "Microsoft Outlook is not available or cannot be started."))
+                Case CLOutlookEmailFailure.AttachmentFailed
+                    ShowEmailError(EmailText(CLMessageResources.ReportViewer_EmailAttachmentError,
+                        "Unable to attach the PDF to the new email."))
+                Case Else
+                    ShowEmailError(EmailText(CLMessageResources.ReportViewer_EmailError,
+                        "Unable to create the new email."))
+            End Select
+        Catch ex As Exception
+            Diagnostics.Trace.WriteLine(ex.ToString())
+            ShowEmailError(EmailText(CLMessageResources.ReportViewer_EmailError,
+                "Unable to create the new email."))
+        End Try
+    End Sub
+
+    Private Function ExportPdf(filePath As String) As String
+        Dim fullPath As String = IO.Path.GetFullPath(filePath)
+        Dim bytes As Byte() = rpvReport.LocalReport.Render("PDF")
+        WritePdfAtomically(fullPath, bytes)
+        If Not IO.File.Exists(fullPath) OrElse New IO.FileInfo(fullPath).Length = 0 Then
+            Throw New IO.IOException("The rendered PDF was not created.")
+        End If
+        Return fullPath
+    End Function
+
+    Private Shared Function CreateTemporaryEmailPdfPath(displayName As String) As String
+        Dim rootPath As String = IO.Path.Combine(IO.Path.GetTempPath(), "Avensys", "SSW", "Email")
+        CleanupTemporaryEmailPdfs(rootPath)
+        Dim messageDirectory As String = IO.Path.Combine(rootPath,
+            DateTime.Now.ToString("yyyyMMdd-HHmmss") & "-" & Guid.NewGuid().ToString("N"))
+        IO.Directory.CreateDirectory(messageDirectory)
+        Return IO.Path.Combine(messageDirectory, GetSafePdfFileName(displayName) & ".pdf")
+    End Function
+
+    Private Shared Sub CleanupTemporaryEmailPdfs(rootPath As String)
+        If Not IO.Directory.Exists(rootPath) Then Return
+        Try
+            For Each directoryPath As String In IO.Directory.GetDirectories(rootPath)
+                If IO.Directory.GetCreationTimeUtc(directoryPath) < DateTime.UtcNow.AddDays(-7) Then
+                    IO.Directory.Delete(directoryPath, True)
+                End If
+            Next
+        Catch ex As Exception
+            Diagnostics.Trace.WriteLine(ex.ToString())
+        End Try
+    End Sub
+
+    Private Shared Function CreateEmailIcon() As Image
+        Dim bitmap As New Bitmap(16, 16)
+        Using graphics As Graphics = Graphics.FromImage(bitmap)
+            graphics.Clear(Color.Transparent)
+            Using pen As New Pen(SystemColors.ControlText, 1.4F)
+                graphics.DrawRectangle(pen, 1.5F, 3.5F, 13.0F, 9.0F)
+                graphics.DrawLine(pen, 2.0F, 4.0F, 8.0F, 9.0F)
+                graphics.DrawLine(pen, 14.0F, 4.0F, 8.0F, 9.0F)
+            End Using
+        End Using
+        Return bitmap
+    End Function
+
+    Private Sub UpdateEmailButtonState()
+        If m_EmailButton IsNot Nothing Then
+            m_EmailButton.Enabled = Not String.IsNullOrWhiteSpace(m_EmailModelName)
+        End If
+    End Sub
+
+    Private Sub ShowEmailError(message As String)
+        MessageBox.Show(Me, message, EmailText(CLMessageResources.ReportViewer_Email, "Email"),
+            MessageBoxButtons.OK, MessageBoxIcon.Warning)
+    End Sub
+
+    Private Shared Function EmailText(resource As CLMessageResources, fallback As String) As String
+        Dim value As String = CLEnvironment.Current.Localization.GetString(resource.ToString())
+        Return If(String.IsNullOrWhiteSpace(value), fallback, value)
+    End Function
 
     Private Shared Function GetSafePdfFileName(displayName As String) As String
         Dim fileName As String = If(displayName, String.Empty).Trim()

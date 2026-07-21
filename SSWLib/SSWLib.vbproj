@@ -331,6 +331,7 @@
     <Compile Include="CLReportViewerForm.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="CLSelectionEmailService.vb" />
     <Compile Include="CLSelectionProjectModel.vb" />
     <Compile Include="CLSelectionProjectSerializer.vb" />
     <Compile Include="CLSelectionFileName.vb" />

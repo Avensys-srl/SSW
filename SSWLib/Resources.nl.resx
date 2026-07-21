@@ -593,4 +593,18 @@
   <data name="MainForm_Accessories_HCDDescription" xml:space="preserve"><value>2-pijps waterbatterij voor verwarmen en koelen</value></data>
   <data name="MainForm_Accessories_EHDDescription" xml:space="preserve"><value>Elektrische naverwarmer</value></data>
   <data name="MainForm_Accessories_PEHDDescription" xml:space="preserve"><value>Elektrische voorverwarmer</value></data>
+  <data name="ReportViewer_Email" xml:space="preserve"><value>Per e-mail verzenden</value></data>
+  <data name="ReportViewer_EmailTooltip" xml:space="preserve"><value>PDF per e-mail verzenden</value></data>
+  <data name="ReportViewer_EmailSubject" xml:space="preserve"><value>Selectie ventilatie-unit - {0}</value></data>
+  <data name="ReportViewer_EmailBody" xml:space="preserve"><value>Goedendag,
+
+bijgevoegd vindt u de PDF van de selectie van ventilatie-unit {0}, opgesteld met de SSW-software.
+
+Voor vragen of aanvullende technische informatie staan wij graag tot uw beschikking.
+
+Met vriendelijke groet</value></data>
+  <data name="ReportViewer_EmailPdfError" xml:space="preserve"><value>De PDF van de selectie kan niet worden gegenereerd.</value></data>
+  <data name="ReportViewer_EmailOutlookUnavailable" xml:space="preserve"><value>Microsoft Outlook is niet beschikbaar of kan niet worden gestart.</value></data>
+  <data name="ReportViewer_EmailAttachmentError" xml:space="preserve"><value>De PDF kan niet aan de nieuwe e-mail worden toegevoegd.</value></data>
+  <data name="ReportViewer_EmailError" xml:space="preserve"><value>De nieuwe e-mail kan niet worden aangemaakt.</value></data>
 </root>

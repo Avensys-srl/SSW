@@ -1837,6 +1837,15 @@ Public Class CLMainForm
         reportViewForm.SetReport(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), reportFileName),
         reportDataSources.ToArray(), Microsoft.Reporting.WinForms.DisplayMode.PrintLayout)
 
+        Dim emailReference As String = If(m_Note_Text Is Nothing, String.Empty, m_Note_Text.Text.Trim())
+        If String.IsNullOrWhiteSpace(emailReference) AndAlso m_ProjectDocument IsNot Nothing AndAlso
+            m_ProjectDocument.Identity IsNot Nothing Then
+            emailReference = If(Not String.IsNullOrWhiteSpace(m_ProjectDocument.Identity.PublicReference),
+                m_ProjectDocument.Identity.PublicReference,
+                m_ProjectDocument.Identity.LocalDraftReference)
+        End If
+        reportViewForm.SetEmailContext(SelectedHeatRecoveryModelCustomerName, emailReference)
+
         Dim nomeFileSuffisso As String
 
         If (m_Note_Text.Text.Length()) Then

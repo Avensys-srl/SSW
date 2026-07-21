@@ -640,4 +640,18 @@
   <data name="MainForm_Accessories_HCDDescription" xml:space="preserve"><value>Batteria ad acqua a 2 tubi per riscaldamento e raffreddamento</value></data>
   <data name="MainForm_Accessories_EHDDescription" xml:space="preserve"><value>Batteria elettrica di post-riscaldamento</value></data>
   <data name="MainForm_Accessories_PEHDDescription" xml:space="preserve"><value>Batteria elettrica di preriscaldamento</value></data>
+  <data name="ReportViewer_Email" xml:space="preserve"><value>Invia via email</value></data>
+  <data name="ReportViewer_EmailTooltip" xml:space="preserve"><value>Invia il PDF via email</value></data>
+  <data name="ReportViewer_EmailSubject" xml:space="preserve"><value>Selezione unità di ventilazione - {0}</value></data>
+  <data name="ReportViewer_EmailBody" xml:space="preserve"><value>Buongiorno,
+
+in allegato trasmettiamo il PDF relativo alla selezione dell'unità di ventilazione {0}, elaborata tramite il software SSW.
+
+Rimaniamo a disposizione per eventuali chiarimenti o approfondimenti tecnici.
+
+Cordiali saluti</value></data>
+  <data name="ReportViewer_EmailPdfError" xml:space="preserve"><value>Impossibile generare il PDF della selezione.</value></data>
+  <data name="ReportViewer_EmailOutlookUnavailable" xml:space="preserve"><value>Microsoft Outlook non è disponibile o non può essere avviato.</value></data>
+  <data name="ReportViewer_EmailAttachmentError" xml:space="preserve"><value>Impossibile allegare il PDF alla nuova email.</value></data>
+  <data name="ReportViewer_EmailError" xml:space="preserve"><value>Impossibile creare la nuova email.</value></data>
 </root>

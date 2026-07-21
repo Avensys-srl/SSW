@@ -168,6 +168,7 @@ internal static class Program
             TestAccessoryReportTemplates();
             TestKtsExclusiveGroupReplacement();
             TestRegulationLevelControlSynchronization();
+            TestReportEmailFeature();
             TestRegistrationFailureDialog();
             TestUpdateIntegrity(root);
             TestPracticalSelectionRules();
@@ -297,6 +298,45 @@ internal static class Program
             method.Invoke(null, new object[] { scrollBar, valueLabel, progressBar, 109 });
             if (scrollBar.Value != 100 || progressBar.Value != 100 || valueLabel.Text != "100 %")
                 throw new InvalidOperationException("Regulation-level upper bound is invalid.");
+        }
+    }
+
+    private static void TestReportEmailFeature()
+    {
+        string subject = CLSelectionEmailComposer.BuildSubject(
+            "Ventilation unit selection - {0}", "CLRC 038 OSC", "Project 42");
+        if (subject != "Ventilation unit selection - CLRC 038 OSC - Project 42")
+            throw new InvalidOperationException("Selection email subject is invalid.");
+
+        string subjectWithoutReference = CLSelectionEmailComposer.BuildSubject(
+            "Ventilation unit selection - {0}", "CLRC 038 OSC", " ");
+        if (subjectWithoutReference != "Ventilation unit selection - CLRC 038 OSC")
+            throw new InvalidOperationException("Selection email subject has a trailing separator.");
+
+        string body = CLSelectionEmailComposer.BuildBody("Selected unit: {0}", "CLRC 038 OSC");
+        if (body != "Selected unit: CLRC 038 OSC")
+            throw new InvalidOperationException("Selection email body is invalid.");
+
+        string repositoryRoot = Path.GetFullPath(Path.Combine(
+            AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", ".."));
+        string[] languages = { "bg", "da", "de", "en", "fr", "hu", "it", "nl", "pl", "ro", "sl", "sv" };
+        string[] keys =
+        {
+            "ReportViewer_Email", "ReportViewer_EmailTooltip", "ReportViewer_EmailSubject",
+            "ReportViewer_EmailBody", "ReportViewer_EmailPdfError",
+            "ReportViewer_EmailOutlookUnavailable", "ReportViewer_EmailAttachmentError",
+            "ReportViewer_EmailError"
+        };
+        foreach (string language in languages)
+        {
+            var document = new XmlDocument();
+            document.Load(Path.Combine(repositoryRoot, "SSWLib", "Resources." + language + ".resx"));
+            foreach (string key in keys)
+            {
+                XmlNode value = document.SelectSingleNode("/root/data[@name='" + key + "']/value");
+                if (value == null || String.IsNullOrWhiteSpace(value.InnerText))
+                    throw new InvalidOperationException("Missing email translation " + key + " for " + language + ".");
+            }
         }
     }
 

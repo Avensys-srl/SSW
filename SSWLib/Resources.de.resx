@@ -527,4 +527,18 @@
   <data name="MainForm_Accessories_HCDDescription" xml:space="preserve"><value>2-Rohr-Wasserregister zum Heizen und Kühlen</value></data>
   <data name="MainForm_Accessories_EHDDescription" xml:space="preserve"><value>Elektrisches Nachheizregister</value></data>
   <data name="MainForm_Accessories_PEHDDescription" xml:space="preserve"><value>Elektrisches Vorheizregister</value></data>
+  <data name="ReportViewer_Email" xml:space="preserve"><value>Per E-Mail senden</value></data>
+  <data name="ReportViewer_EmailTooltip" xml:space="preserve"><value>PDF per E-Mail senden</value></data>
+  <data name="ReportViewer_EmailSubject" xml:space="preserve"><value>Auswahl des Lüftungsgeräts - {0}</value></data>
+  <data name="ReportViewer_EmailBody" xml:space="preserve"><value>Guten Tag,
+
+anbei erhalten Sie das PDF zur Auswahl des Lüftungsgeräts {0}, das mit der SSW-Software erstellt wurde.
+
+Für Rückfragen oder weitere technische Informationen stehen wir Ihnen gerne zur Verfügung.
+
+Mit freundlichen Grüßen</value></data>
+  <data name="ReportViewer_EmailPdfError" xml:space="preserve"><value>Das PDF der Auswahl konnte nicht erstellt werden.</value></data>
+  <data name="ReportViewer_EmailOutlookUnavailable" xml:space="preserve"><value>Microsoft Outlook ist nicht verfügbar oder kann nicht gestartet werden.</value></data>
+  <data name="ReportViewer_EmailAttachmentError" xml:space="preserve"><value>Das PDF konnte nicht an die neue E-Mail angehängt werden.</value></data>
+  <data name="ReportViewer_EmailError" xml:space="preserve"><value>Die neue E-Mail konnte nicht erstellt werden.</value></data>
 </root>

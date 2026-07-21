@@ -132,6 +132,14 @@ Public Enum CLMessageResources
     PDF_WorkingPoint
     PDF_WorkingArea
     PDF_RegLev
+    ReportViewer_Email
+    ReportViewer_EmailTooltip
+    ReportViewer_EmailSubject
+    ReportViewer_EmailBody
+    ReportViewer_EmailPdfError
+    ReportViewer_EmailOutlookUnavailable
+    ReportViewer_EmailAttachmentError
+    ReportViewer_EmailError
 
 	' Other
     Water

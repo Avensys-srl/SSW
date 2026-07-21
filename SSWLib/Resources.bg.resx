@@ -596,4 +596,18 @@
   <data name="MainForm_Accessories_HCDDescription" xml:space="preserve"><value>Двутръбна водна секция за отопление и охлаждане</value></data>
   <data name="MainForm_Accessories_EHDDescription" xml:space="preserve"><value>Електрически нагревател за последващо подгряване</value></data>
   <data name="MainForm_Accessories_PEHDDescription" xml:space="preserve"><value>Електрически нагревател за предварително подгряване</value></data>
+  <data name="ReportViewer_Email" xml:space="preserve"><value>Изпращане по имейл</value></data>
+  <data name="ReportViewer_EmailTooltip" xml:space="preserve"><value>Изпращане на PDF по имейл</value></data>
+  <data name="ReportViewer_EmailSubject" xml:space="preserve"><value>Избор на вентилационен агрегат - {0}</value></data>
+  <data name="ReportViewer_EmailBody" xml:space="preserve"><value>Здравейте,
+
+приложено изпращаме PDF файла за избора на вентилационен агрегат {0}, изготвен със софтуера SSW.
+
+Оставаме на разположение за допълнителни разяснения или техническа информация.
+
+С уважение</value></data>
+  <data name="ReportViewer_EmailPdfError" xml:space="preserve"><value>PDF файлът на избора не може да бъде генериран.</value></data>
+  <data name="ReportViewer_EmailOutlookUnavailable" xml:space="preserve"><value>Microsoft Outlook не е наличен или не може да бъде стартиран.</value></data>
+  <data name="ReportViewer_EmailAttachmentError" xml:space="preserve"><value>PDF файлът не може да бъде прикачен към новия имейл.</value></data>
+  <data name="ReportViewer_EmailError" xml:space="preserve"><value>Новият имейл не може да бъде създаден.</value></data>
 </root>
