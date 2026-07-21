@@ -635,4 +635,9 @@
   <data name="MainForm_Accessories_Status" xml:space="preserve"><value>Stato</value></data>
   <data name="MainForm_Accessories_Standard" xml:space="preserve"><value>Di serie</value></data>
   <data name="MainForm_Accessories_Optional" xml:space="preserve"><value>Opzionale</value></data>
+  <data name="MainForm_Accessories_CWDDescription" xml:space="preserve"><value>Batteria ad acqua per raffreddamento</value></data>
+  <data name="MainForm_Accessories_HWDDescription" xml:space="preserve"><value>Batteria ad acqua per riscaldamento</value></data>
+  <data name="MainForm_Accessories_HCDDescription" xml:space="preserve"><value>Batteria ad acqua a 2 tubi per riscaldamento e raffreddamento</value></data>
+  <data name="MainForm_Accessories_EHDDescription" xml:space="preserve"><value>Batteria elettrica di post-riscaldamento</value></data>
+  <data name="MainForm_Accessories_PEHDDescription" xml:space="preserve"><value>Batteria elettrica di preriscaldamento</value></data>
 </root>

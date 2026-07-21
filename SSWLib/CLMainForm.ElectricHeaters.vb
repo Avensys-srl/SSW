@@ -338,6 +338,7 @@ Partial Public Class CLMainForm
             If modeControls.FrostStatus IsNot Nothing AndAlso Not enabled Then modeControls.FrostStatus.Visible = False
             modeControls.CustomNote.Visible = enabled AndAlso ElectricHeater_IsCustomized(modeControls)
         Next
+        Accessories_UpdateSummary()
     End Sub
 
     Private Function ElectricHeater_GetEnabledPower(mode As CLElectricHeaterMode) As Double

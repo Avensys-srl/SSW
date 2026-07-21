@@ -522,4 +522,9 @@
   <data name="MainForm_Accessories_Status" xml:space="preserve"><value>Status</value></data>
   <data name="MainForm_Accessories_Standard" xml:space="preserve"><value>Serienmäßig</value></data>
   <data name="MainForm_Accessories_Optional" xml:space="preserve"><value>Optional</value></data>
+  <data name="MainForm_Accessories_CWDDescription" xml:space="preserve"><value>Kaltwasser-Kühlregister</value></data>
+  <data name="MainForm_Accessories_HWDDescription" xml:space="preserve"><value>Warmwasser-Heizregister</value></data>
+  <data name="MainForm_Accessories_HCDDescription" xml:space="preserve"><value>2-Rohr-Wasserregister zum Heizen und Kühlen</value></data>
+  <data name="MainForm_Accessories_EHDDescription" xml:space="preserve"><value>Elektrisches Nachheizregister</value></data>
+  <data name="MainForm_Accessories_PEHDDescription" xml:space="preserve"><value>Elektrisches Vorheizregister</value></data>
 </root>

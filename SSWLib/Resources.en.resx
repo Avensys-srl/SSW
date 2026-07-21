@@ -714,4 +714,9 @@
   <data name="MainForm_Accessories_Status" xml:space="preserve"><value>Status</value></data>
   <data name="MainForm_Accessories_Standard" xml:space="preserve"><value>Standard</value></data>
   <data name="MainForm_Accessories_Optional" xml:space="preserve"><value>Optional</value></data>
+  <data name="MainForm_Accessories_CWDDescription" xml:space="preserve"><value>Chilled-water cooling coil</value></data>
+  <data name="MainForm_Accessories_HWDDescription" xml:space="preserve"><value>Hot-water heating coil</value></data>
+  <data name="MainForm_Accessories_HCDDescription" xml:space="preserve"><value>Two-pipe water coil for heating and cooling</value></data>
+  <data name="MainForm_Accessories_EHDDescription" xml:space="preserve"><value>Electric post-heater</value></data>
+  <data name="MainForm_Accessories_PEHDDescription" xml:space="preserve"><value>Electric pre-heater</value></data>
 </root>

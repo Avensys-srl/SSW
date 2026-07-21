@@ -847,4 +847,9 @@
   <data name="MainForm_Accessories_Status" xml:space="preserve"><value>Status</value></data>
   <data name="MainForm_Accessories_Standard" xml:space="preserve"><value>Standard</value></data>
   <data name="MainForm_Accessories_Optional" xml:space="preserve"><value>Tillval</value></data>
+  <data name="MainForm_Accessories_CWDDescription" xml:space="preserve"><value>Kylbatteri för kallvatten</value></data>
+  <data name="MainForm_Accessories_HWDDescription" xml:space="preserve"><value>Värmebatteri för varmvatten</value></data>
+  <data name="MainForm_Accessories_HCDDescription" xml:space="preserve"><value>2-rörs vattenbatteri för värme och kyla</value></data>
+  <data name="MainForm_Accessories_EHDDescription" xml:space="preserve"><value>Elektriskt eftervärmningsbatteri</value></data>
+  <data name="MainForm_Accessories_PEHDDescription" xml:space="preserve"><value>Elektriskt förvärmningsbatteri</value></data>
 </root>

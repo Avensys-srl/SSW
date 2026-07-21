@@ -582,4 +582,9 @@
   <data name="MainForm_Accessories_Status" xml:space="preserve"><value>Stare</value></data>
   <data name="MainForm_Accessories_Standard" xml:space="preserve"><value>Standard</value></data>
   <data name="MainForm_Accessories_Optional" xml:space="preserve"><value>Opțional</value></data>
+  <data name="MainForm_Accessories_CWDDescription" xml:space="preserve"><value>Baterie de răcire cu apă</value></data>
+  <data name="MainForm_Accessories_HWDDescription" xml:space="preserve"><value>Baterie de încălzire cu apă</value></data>
+  <data name="MainForm_Accessories_HCDDescription" xml:space="preserve"><value>Baterie cu apă cu 2 țevi pentru încălzire și răcire</value></data>
+  <data name="MainForm_Accessories_EHDDescription" xml:space="preserve"><value>Baterie electrică de postîncălzire</value></data>
+  <data name="MainForm_Accessories_PEHDDescription" xml:space="preserve"><value>Baterie electrică de preîncălzire</value></data>
 </root>

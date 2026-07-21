@@ -591,4 +591,9 @@
   <data name="MainForm_Accessories_Status" xml:space="preserve"><value>Състояние</value></data>
   <data name="MainForm_Accessories_Standard" xml:space="preserve"><value>Стандартно</value></data>
   <data name="MainForm_Accessories_Optional" xml:space="preserve"><value>Опционално</value></data>
+  <data name="MainForm_Accessories_CWDDescription" xml:space="preserve"><value>Водна охлаждаща секция</value></data>
+  <data name="MainForm_Accessories_HWDDescription" xml:space="preserve"><value>Водна отоплителна секция</value></data>
+  <data name="MainForm_Accessories_HCDDescription" xml:space="preserve"><value>Двутръбна водна секция за отопление и охлаждане</value></data>
+  <data name="MainForm_Accessories_EHDDescription" xml:space="preserve"><value>Електрически нагревател за последващо подгряване</value></data>
+  <data name="MainForm_Accessories_PEHDDescription" xml:space="preserve"><value>Електрически нагревател за предварително подгряване</value></data>
 </root>

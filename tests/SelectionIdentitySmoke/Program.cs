@@ -229,6 +229,9 @@ internal static class Program
             "MainForm_Accessories_Code", "MainForm_Accessories_Description",
             "MainForm_Accessories_Functions", "MainForm_Accessories_Status",
             "MainForm_Accessories_Standard", "MainForm_Accessories_Optional",
+            "MainForm_Accessories_CWDDescription", "MainForm_Accessories_HWDDescription",
+            "MainForm_Accessories_HCDDescription", "MainForm_Accessories_EHDDescription",
+            "MainForm_Accessories_PEHDDescription",
             "MainForm_CoilPerformance_ExternalInstallation"
         };
 
@@ -246,6 +249,10 @@ internal static class Program
             if (language == "it" && document.SelectSingleNode(
                 "/root/data[@name='MainForm_CoilPerformance_ExternalInstallation']/value").InnerText != "Esterna")
                 throw new InvalidOperationException("Italian external-installation localization is invalid.");
+            if (language == "it" && document.SelectSingleNode(
+                "/root/data[@name='MainForm_Accessories_HCDDescription']/value").InnerText !=
+                "Batteria ad acqua a 2 tubi per riscaldamento e raffreddamento")
+                throw new InvalidOperationException("Italian HCD description localization is invalid.");
         }
     }
 

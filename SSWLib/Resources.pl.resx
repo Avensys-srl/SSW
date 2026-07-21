@@ -591,4 +591,9 @@
   <data name="MainForm_Accessories_Status" xml:space="preserve"><value>Stan</value></data>
   <data name="MainForm_Accessories_Standard" xml:space="preserve"><value>Standardowe</value></data>
   <data name="MainForm_Accessories_Optional" xml:space="preserve"><value>Opcjonalne</value></data>
+  <data name="MainForm_Accessories_CWDDescription" xml:space="preserve"><value>Chłodnica wodna</value></data>
+  <data name="MainForm_Accessories_HWDDescription" xml:space="preserve"><value>Nagrzewnica wodna</value></data>
+  <data name="MainForm_Accessories_HCDDescription" xml:space="preserve"><value>2-rurowa nagrzewnico-chłodnica wodna</value></data>
+  <data name="MainForm_Accessories_EHDDescription" xml:space="preserve"><value>Elektryczna nagrzewnica wtórna</value></data>
+  <data name="MainForm_Accessories_PEHDDescription" xml:space="preserve"><value>Elektryczna nagrzewnica wstępna</value></data>
 </root>

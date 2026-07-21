@@ -316,7 +316,11 @@ Stato al 21/07/2026: **completata**.
 - il riepilogo accessori comprende anche le batterie termodinamiche selezionate
   CWD, HWD, HCD, EHD e PEHD, pur mantenendo invariati i relativi blocchi tecnici
   di dettaglio nel report e nel portale;
-- build `AV|x86`, matrice tecnica, lint PHP e 21 test portale superati; uno smoke
+- le batterie termodinamiche sono descritte nel riepilogo, nel report e nel
+  portale per funzione (raffreddamento/riscaldamento ad acqua, preriscaldo o
+  post-riscaldo elettrico), senza duplicare il modello gia' pubblicato nelle
+  tabelle tecniche; le descrizioni SSW sono disponibili nelle 12 lingue;
+- build `AV|x86`, matrice tecnica, lint PHP e 23 test portale superati; uno smoke
   test ReportViewer renderizza tutti e quattro gli RDLC con selezione corta e
   con 80 righe, verificando anche la produzione multipagina.
 

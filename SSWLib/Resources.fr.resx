@@ -570,4 +570,9 @@
   <data name="MainForm_Accessories_Status" xml:space="preserve"><value>État</value></data>
   <data name="MainForm_Accessories_Standard" xml:space="preserve"><value>De série</value></data>
   <data name="MainForm_Accessories_Optional" xml:space="preserve"><value>Optionnel</value></data>
+  <data name="MainForm_Accessories_CWDDescription" xml:space="preserve"><value>Batterie à eau glacée pour le refroidissement</value></data>
+  <data name="MainForm_Accessories_HWDDescription" xml:space="preserve"><value>Batterie à eau chaude pour le chauffage</value></data>
+  <data name="MainForm_Accessories_HCDDescription" xml:space="preserve"><value>Batterie à eau 2 tubes pour chauffage et refroidissement</value></data>
+  <data name="MainForm_Accessories_EHDDescription" xml:space="preserve"><value>Batterie électrique de post-chauffage</value></data>
+  <data name="MainForm_Accessories_PEHDDescription" xml:space="preserve"><value>Batterie électrique de préchauffage</value></data>
 </root>

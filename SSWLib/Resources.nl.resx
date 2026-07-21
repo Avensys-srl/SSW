@@ -588,4 +588,9 @@
   <data name="MainForm_Accessories_Status" xml:space="preserve"><value>Status</value></data>
   <data name="MainForm_Accessories_Standard" xml:space="preserve"><value>Standaard</value></data>
   <data name="MainForm_Accessories_Optional" xml:space="preserve"><value>Optioneel</value></data>
+  <data name="MainForm_Accessories_CWDDescription" xml:space="preserve"><value>Koudwaterkoelbatterij</value></data>
+  <data name="MainForm_Accessories_HWDDescription" xml:space="preserve"><value>Warmwaterverwarmingsbatterij</value></data>
+  <data name="MainForm_Accessories_HCDDescription" xml:space="preserve"><value>2-pijps waterbatterij voor verwarmen en koelen</value></data>
+  <data name="MainForm_Accessories_EHDDescription" xml:space="preserve"><value>Elektrische naverwarmer</value></data>
+  <data name="MainForm_Accessories_PEHDDescription" xml:space="preserve"><value>Elektrische voorverwarmer</value></data>
 </root>

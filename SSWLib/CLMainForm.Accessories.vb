@@ -394,8 +394,7 @@ Partial Public Class CLMainForm
         Dim waterCoil = Project_CaptureWaterCoil()
         If waterCoil.Enabled Then
             Dim mode = If(String.IsNullOrWhiteSpace(waterCoil.CalculationMode), "HCD", waterCoil.CalculationMode)
-            Dim description = If(String.IsNullOrWhiteSpace(waterCoil.Coil.Name), waterCoil.Coil.Code, waterCoil.Coil.Name)
-            Report_AddAccessoryRow(table, mode, If(String.IsNullOrWhiteSpace(description), mode, description),
+            Report_AddAccessoryRow(table, mode, Accessories_ThermodynamicDescription(mode),
                 Nothing, False, waterCoil.InstallationType)
         End If
 
@@ -405,8 +404,7 @@ Partial Public Class CLMainForm
             For Each heaterMode In New CLElectricHeaterModeSelection() {electricHeater.PEHD, electricHeater.EHD}
                 If heaterMode Is Nothing OrElse Not heaterMode.Enabled Then Continue For
                 Dim mode = If(String.IsNullOrWhiteSpace(heaterMode.Mode), "-", heaterMode.Mode)
-                Dim description = If(String.IsNullOrWhiteSpace(heaterMode.Heater.Name), heaterMode.Heater.Code, heaterMode.Heater.Name)
-                Report_AddAccessoryRow(table, mode, If(String.IsNullOrWhiteSpace(description), mode, description),
+                Report_AddAccessoryRow(table, mode, Accessories_ThermodynamicDescription(mode),
                     Nothing, False, heaterMode.InstallationType)
             Next
         End If
@@ -634,16 +632,55 @@ Partial Public Class CLMainForm
             ToArray()
         Dim codes = selectedItems.
             Select(Function(item) item.Code).
-            ToArray()
+            ToList()
         Dim descriptions = selectedItems.
             Select(Function(item) item.Name).
             Where(Function(description) Not String.IsNullOrWhiteSpace(description)).
-            ToArray()
+            ToList()
+        Accessories_AddThermodynamicSummary(codes, descriptions)
         Dim separator = " " & ChrW(&HB7) & " "
-        lblAccessoriesSummary.Text = If(codes.Length = 0, "-", String.Join(separator, codes))
+        lblAccessoriesSummary.Text = If(codes.Count = 0, "-", String.Join(separator, codes))
         ToolTip1.SetToolTip(lblAccessoriesSummary,
-            If(descriptions.Length = 0, "-", String.Join(System.Environment.NewLine, descriptions)))
+            If(descriptions.Count = 0, "-", String.Join(System.Environment.NewLine, descriptions)))
     End Sub
+
+    Private Sub Accessories_AddThermodynamicSummary(codes As List(Of String), descriptions As List(Of String))
+        If chbCoilPerformance_Enable IsNot Nothing AndAlso chbCoilPerformance_Enable.Checked AndAlso
+            cmbCoilPerformance_Mode IsNot Nothing AndAlso cmbCoilPerformance_Mode.SelectedItem IsNot Nothing Then
+            Accessories_AddThermodynamicSummaryItem(codes, descriptions,
+                Convert.ToString(cmbCoilPerformance_Mode.SelectedItem, CultureInfo.InvariantCulture))
+        End If
+
+        For Each mode In New CLElectricHeaterMode() {CLElectricHeaterMode.PEHD, CLElectricHeaterMode.EHD}
+            If m_ElectricModeControls.ContainsKey(mode) AndAlso m_ElectricModeControls(mode).Enable.Checked Then
+                Accessories_AddThermodynamicSummaryItem(codes, descriptions, mode.ToString())
+            End If
+        Next
+    End Sub
+
+    Private Sub Accessories_AddThermodynamicSummaryItem(codes As List(Of String), descriptions As List(Of String), mode As String)
+        If String.IsNullOrWhiteSpace(mode) OrElse
+            codes.Any(Function(code) String.Equals(code, mode, StringComparison.OrdinalIgnoreCase)) Then Return
+        codes.Add(mode.ToUpperInvariant())
+        descriptions.Add(Accessories_ThermodynamicDescription(mode))
+    End Sub
+
+    Private Function Accessories_ThermodynamicDescription(mode As String) As String
+        Select Case If(mode, String.Empty).Trim().ToUpperInvariant()
+            Case "CWD"
+                Return Accessories_Text("MainForm_Accessories_CWDDescription", "Chilled-water cooling coil")
+            Case "HWD"
+                Return Accessories_Text("MainForm_Accessories_HWDDescription", "Hot-water heating coil")
+            Case "HCD"
+                Return Accessories_Text("MainForm_Accessories_HCDDescription", "Two-pipe water coil for heating and cooling")
+            Case "EHD"
+                Return Accessories_Text("MainForm_Accessories_EHDDescription", "Electric post-heater")
+            Case "PEHD"
+                Return Accessories_Text("MainForm_Accessories_PEHDDescription", "Electric pre-heater")
+            Case Else
+                Return mode
+        End Select
+    End Function
 
     Private Sub Accessories_UpdateLocalizedTexts()
         If tbpData_Accessories Is Nothing Then Return

@@ -684,4 +684,9 @@
   <data name="MainForm_Accessories_Status" xml:space="preserve"><value>Állapot</value></data>
   <data name="MainForm_Accessories_Standard" xml:space="preserve"><value>Alapfelszereltség</value></data>
   <data name="MainForm_Accessories_Optional" xml:space="preserve"><value>Opcionális</value></data>
+  <data name="MainForm_Accessories_CWDDescription" xml:space="preserve"><value>Hidegvizes hűtőkalorifer</value></data>
+  <data name="MainForm_Accessories_HWDDescription" xml:space="preserve"><value>Melegvizes fűtőkalorifer</value></data>
+  <data name="MainForm_Accessories_HCDDescription" xml:space="preserve"><value>Kétcsöves vizes fűtő- és hűtőkalorifer</value></data>
+  <data name="MainForm_Accessories_EHDDescription" xml:space="preserve"><value>Elektromos utófűtő</value></data>
+  <data name="MainForm_Accessories_PEHDDescription" xml:space="preserve"><value>Elektromos előfűtő</value></data>
 </root>
