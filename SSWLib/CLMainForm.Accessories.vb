@@ -79,6 +79,7 @@ Partial Public Class CLMainForm
         AddHandler dgvAccessories.CurrentCellDirtyStateChanged, AddressOf Accessories_CurrentCellDirtyStateChanged
         AddHandler dgvAccessories.CellValueChanged, AddressOf Accessories_CellValueChanged
         AddHandler dgvAccessories.CellValidating, AddressOf Accessories_CellValidating
+        AddHandler tbcData.Selected, AddressOf Accessories_TabSelected
 
         tbcData.TabPages.Insert(Math.Min(3, tbcData.TabPages.Count), tbpData_Accessories)
         Accessories_UpdateLocalizedTexts()
@@ -219,6 +220,25 @@ Partial Public Class CLMainForm
             m_AccessoriesChanging = False
         End Try
         Accessories_UpdateSummary()
+    End Sub
+
+    Private Sub Accessories_TabSelected(sender As Object, e As TabControlEventArgs)
+        If e.TabPage IsNot tbpData_Accessories Then Return
+        Accessories_QueueGridLayoutRefresh()
+    End Sub
+
+    Private Sub Accessories_QueueGridLayoutRefresh()
+        If dgvAccessories Is Nothing OrElse dgvAccessories.IsDisposed OrElse
+            Not dgvAccessories.IsHandleCreated Then Return
+
+        dgvAccessories.BeginInvoke(New MethodInvoker(AddressOf Accessories_RefreshGridLayout))
+    End Sub
+
+    Private Sub Accessories_RefreshGridLayout()
+        If dgvAccessories Is Nothing OrElse dgvAccessories.IsDisposed Then Return
+        dgvAccessories.AutoResizeRows(DataGridViewAutoSizeRowsMode.AllCells)
+        dgvAccessories.PerformLayout()
+        dgvAccessories.Invalidate()
     End Sub
 
     Private Function Accessories_ItemMatchesFilter(item As CLSelectionCatalogItem,
