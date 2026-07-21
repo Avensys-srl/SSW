@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -15,6 +16,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
 using Microsoft.Win32;
+using Microsoft.Reporting.WinForms;
 using SSW;
 
 internal sealed class TokenHandler : HttpMessageHandler
@@ -50,7 +52,8 @@ internal sealed class TokenHandler : HttpMessageHandler
             string body = request.Content.ReadAsStringAsync().GetAwaiter().GetResult();
             if (!body.Contains("\"project_id\"") || !body.Contains("\"selection\"") ||
                 !body.Contains("\"versions\"") || !body.Contains("\"fingerprints\"") ||
-                !body.Contains("\"Accessories\"") || !body.Contains("\"KTS EXTRA\""))
+                !body.Contains("\"Accessories\"") || !body.Contains("\"KTS EXTRA\"") ||
+                !body.Contains("\"LocalizedDisplayName\""))
                 throw new InvalidOperationException("Create-selection payload is incomplete.");
             latestSnapshotHash = JsonString(body, "snapshot_hash");
             latestResumeToken = JsonString(body, "resume_token");
@@ -162,6 +165,7 @@ internal static class Program
             TestSnapshotFingerprints(root);
             TestSdfFixtures(root);
             TestAccessoryLocalization();
+            TestAccessoryReportTemplates();
             TestKtsExclusiveGroupReplacement();
             TestRegistrationFailureDialog();
             TestUpdateIntegrity(root);
@@ -261,6 +265,91 @@ internal static class Program
 
         if (selected.Contains(sma.Id) || selected.Contains(dependent.Id) || !selected.Contains(unrelated.Id))
             throw new InvalidOperationException("KTS replacement did not remove only incompatible dependent functions.");
+    }
+
+    private static void TestAccessoryReportTemplates()
+    {
+        string repositoryRoot = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", ".."));
+        string[] reportFiles = {
+            "CLMainReport.rdlc", "CLMainReport_Coil.rdlc",
+            "CLMainReportWithCO2.rdlc", "CLMainReportWithCO2_Coil.rdlc"
+        };
+        string[] fields = {
+            "Title", "CodeCaption", "DescriptionCaption", "FunctionsCaption", "StatusCaption",
+            "Code", "Description", "Functions", "Status"
+        };
+        foreach (string reportFile in reportFiles)
+        {
+            var document = new XmlDocument();
+            document.Load(Path.Combine(repositoryRoot, "SSWLib", reportFile));
+            var namespaces = new XmlNamespaceManager(document.NameTable);
+            namespaces.AddNamespace("r", document.DocumentElement.NamespaceURI);
+            if (document.SelectSingleNode("//r:Rectangle[@Name='AccessorySelectionBlock']", namespaces) == null ||
+                document.SelectSingleNode("//r:Tablix[@Name='TablixAccessoryReport']", namespaces) == null)
+                throw new InvalidOperationException("Accessory report section is missing: " + reportFile);
+            foreach (string field in fields)
+            {
+                string query = "//r:DataSet[@Name='AccessoryReport']/r:Fields/r:Field[@Name='" + field + "']";
+                if (document.SelectSingleNode(query, namespaces) == null)
+                    throw new InvalidOperationException("Accessory report field is missing: " + reportFile + "/" + field);
+            }
+
+            byte[] shortReport = RenderAccessoryReport(document, Path.Combine(repositoryRoot, "SSWLib", reportFile), 1);
+            byte[] longReport = RenderAccessoryReport(document, Path.Combine(repositoryRoot, "SSWLib", reportFile), 80);
+            if (shortReport.Length < 1000 || longReport.Length < 1000)
+                throw new InvalidOperationException("Accessory report PDF rendering is empty: " + reportFile);
+            if (PdfPageCount(longReport) < 2)
+                throw new InvalidOperationException("Long accessory report did not paginate: " + reportFile);
+        }
+    }
+
+    private static byte[] RenderAccessoryReport(XmlDocument document, string reportPath, int accessoryRows)
+    {
+        string reportNamespace = document.DocumentElement.NamespaceURI;
+        var namespaces = new XmlNamespaceManager(document.NameTable);
+        namespaces.AddNamespace("r", reportNamespace);
+        namespaces.AddNamespace("rd", "http://schemas.microsoft.com/SQLServer/reporting/reportdesigner");
+
+        using (var report = new LocalReport { ReportPath = reportPath })
+        {
+            foreach (XmlNode dataSetNode in document.SelectNodes("//r:DataSets/r:DataSet", namespaces))
+            {
+                string dataSetName = dataSetNode.Attributes["Name"].Value;
+                var table = new DataTable(dataSetName);
+                foreach (XmlNode fieldNode in dataSetNode.SelectNodes("r:Fields/r:Field", namespaces))
+                {
+                    string fieldName = fieldNode.Attributes["Name"].Value;
+                    XmlNode typeNode = fieldNode.SelectSingleNode("rd:TypeName", namespaces);
+                    Type fieldType = typeNode == null ? typeof(string) : Type.GetType(typeNode.InnerText, false) ?? typeof(string);
+                    table.Columns.Add(fieldName, fieldType);
+                }
+
+                if (dataSetName == "AccessoryReport")
+                {
+                    for (int rowIndex = 0; rowIndex < accessoryRows; rowIndex++)
+                    {
+                        DataRow row = table.NewRow();
+                        row["Title"] = "Accessories and functions";
+                        row["CodeCaption"] = "Accessory";
+                        row["DescriptionCaption"] = "Description";
+                        row["FunctionsCaption"] = "Functions";
+                        row["StatusCaption"] = "Status";
+                        row["Code"] = "ACC " + (rowIndex + 1).ToString("00");
+                        row["Description"] = "Accessory description used to verify report growth and pagination";
+                        row["Functions"] = "First associated function" + Environment.NewLine + "Second associated function";
+                        row["Status"] = "\u25A0 Optional - External";
+                        table.Rows.Add(row);
+                    }
+                }
+                report.DataSources.Add(new ReportDataSource(dataSetName, table));
+            }
+            return report.Render("PDF");
+        }
+    }
+
+    private static int PdfPageCount(byte[] pdf)
+    {
+        return Regex.Matches(Encoding.ASCII.GetString(pdf), @"/Type\s*/Page\b").Count;
     }
 
     private static void TestRegistryBootstrapProvisioning()
@@ -521,6 +610,12 @@ internal static class Program
         document.Selection.CustomerReference = "changed customer note";
         CLSelectionFingerprintSet nonTechnical = CLSelectionSnapshotService.Refresh(document);
         if (initial.SnapshotHash != nonTechnical.SnapshotHash) throw new InvalidOperationException("Volatile/non-technical data changed the snapshot hash.");
+        document.Selection.Accessories[0].LocalizedDisplayName = "Localized controller name";
+        document.Selection.Accessories[0].LocalizedDescription = "Localized presentation text";
+        document.Selection.Accessories[0].LocalizedFunctionNames = new List<string> { "Localized function" };
+        CLSelectionFingerprintSet localizedPresentation = CLSelectionSnapshotService.Refresh(document);
+        if (nonTechnical.SnapshotHash != localizedPresentation.SnapshotHash)
+            throw new InvalidOperationException("Localized accessory presentation changed the technical snapshot hash.");
 
         CLSelectionSnapshotService.MarkRegistered(document, "4827-1936-5048-2715", 1, "resume-token", DateTime.UtcNow);
         CLSelectionSnapshotService.Refresh(document);
@@ -564,7 +659,9 @@ internal static class Program
             !loaded.Selection.WaterCoil.CustomDesignDisclaimerAccepted ||
             loaded.Selection.Accessories.Count != 1 ||
             loaded.Selection.Accessories[0].Code != "KTS EXTRA" ||
-            loaded.Selection.Accessories[0].Quantity != 1)
+            loaded.Selection.Accessories[0].Quantity != 1 ||
+            loaded.Selection.Accessories[0].LocalizedDisplayName != "Localized controller name" ||
+            loaded.Selection.Accessories[0].LocalizedFunctionNames.Count != 1)
         {
             throw new InvalidOperationException("Snapshot/revision metadata round-trip failed.");
         }
@@ -657,7 +754,10 @@ internal static class Program
                         ItemType = "Accessory",
                         Quantity = 1,
                         Availability = "Optional",
-                        InstallationType = "External"
+                        InstallationType = "External",
+                        LocalizedDisplayName = "KTS Extra touch screen controller",
+                        LocalizedDescription = "Touch screen controller",
+                        LocalizedFunctionNames = new List<string> { "Constant airflow control" }
                     }
                 },
                 Report = new CLReportSelectionOptions { LanguageCode = "IT", IncludePerformanceCharts = true }

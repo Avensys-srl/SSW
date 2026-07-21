@@ -98,6 +98,9 @@ Public NotInheritable Class CLAccessorySelection
     Public Property Quantity As Integer = 1
     Public Property Availability As String
     Public Property InstallationType As String
+    Public Property LocalizedDisplayName As String
+    Public Property LocalizedDescription As String
+    Public Property LocalizedFunctionNames As New List(Of String)()
 
 End Class
 

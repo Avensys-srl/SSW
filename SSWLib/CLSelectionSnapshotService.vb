@@ -32,7 +32,10 @@ Public NotInheritable Class CLSelectionSnapshotService
 
         Dim technicalInputHash As String = HashCanonical(
             document.Selection,
-            New HashSet(Of String)(New String() {"customerCode", "customerReference"}, StringComparer.Ordinal))
+            New HashSet(Of String)(New String() {
+                "customerCode", "customerReference", "localizedDisplayName",
+                "localizedDescription", "localizedFunctionNames"
+            }, StringComparer.Ordinal))
         Dim outputHash As String = HashCanonical(
             document.Snapshot,
             New HashSet(Of String)(New String() {"calculatedAtUtc", "versions"}, StringComparer.Ordinal))

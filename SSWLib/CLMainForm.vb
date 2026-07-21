@@ -1376,6 +1376,7 @@ Public Class CLMainForm
         Dim CO2LevelParametersDataRow As CLMainReportDataSet.CO2LevelParametersRow
         Dim waterCoilReportDataTable As DataTable = Report_CreateWaterCoilReportTable()
         Dim electricHeaterReportDataTable As DataTable = Report_CreateElectricHeaterReportTable()
+        Dim accessoryReportDataTable As DataTable = Report_CreateAccessoryReportTable()
 
         'CO2 LevelParameters
         '---------------------------------------------------
@@ -1803,6 +1804,7 @@ Public Class CLMainForm
         reportDataSources.Add(New Microsoft.Reporting.WinForms.ReportDataSource("ElectricHeaterReport", electricHeaterReportDataTable))
         reportDataSources.Add(New Microsoft.Reporting.WinForms.ReportDataSource("ElectricHeaterEHDReport", electricHeaterEHDReportTable))
         reportDataSources.Add(New Microsoft.Reporting.WinForms.ReportDataSource("ElectricHeaterPEHDReport", electricHeaterPEHDReportTable))
+        reportDataSources.Add(New Microsoft.Reporting.WinForms.ReportDataSource("AccessoryReport", accessoryReportDataTable))
 
         waitForm.Hide()
 

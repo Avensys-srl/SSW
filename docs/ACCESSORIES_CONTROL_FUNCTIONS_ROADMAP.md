@@ -290,14 +290,29 @@ vecchi `.sswsel` e vecchi SDF restano gestiti in modo controllato.
 
 Stima: 75-120 mila token.
 
-Stato parziale al 21/07/2026:
+Stato al 21/07/2026: **completata**.
 
 - aggiunte e applicate al database centrale le traduzioni dei nomi visualizzati
   per 12 categorie e 62 elementi del catalogo nelle 11 lingue non inglesi;
 - l'inglese resta la sorgente canonica e il fallback rimane lingua selezionata,
   inglese, acronimo;
-- migrazione SQL idempotente verificata senza valori vuoti o `?`; resta da
-  riesportare l'SDF AV e verificare visivamente il catalogo nelle 12 lingue.
+- migrazione SQL idempotente verificata senza valori vuoti o `?`; il nuovo SDF
+  AV e' stato esportato e il catalogo localizzato e' stato verificato in SSW;
+- aggiunto il dataset dinamico `AccessoryReport` ai quattro RDLC esistenti,
+  senza introdurre template paralleli; la sezione condizionale mostra soltanto
+  accessori standard e opzioni selezionate, con descrizione localizzata,
+  funzioni multilinea, quantita', installazione e simbologia di stato;
+- i testi localizzati necessari a report e portale vengono salvati nel progetto
+  e inviati nel payload online, ma sono esclusi dall'hash tecnico per evitare
+  revisioni causate esclusivamente da lingua o aggiornamenti editoriali;
+- `ReportTemplateVersion` portata a 3 per identificare il nuovo contenuto
+  tecnico pubblicato;
+- il dettaglio di SSW Portal mostra la stessa selezione in una tabella a quattro
+  colonne e il confronto revisioni riassume i codici e le quantita'; i payload
+  storici senza metadati localizzati mantengono il fallback sull'acronimo;
+- build `AV|x86`, matrice tecnica, lint PHP e 15 test portale superati; uno smoke
+  test ReportViewer renderizza tutti e quattro gli RDLC con selezione corta e
+  con 80 righe, verificando anche la produzione multipagina.
 
 1. Aggiungere dataset e sezione condizionale nei quattro RDLC esistenti.
 2. Mostrare solo standard e opzioni selezionate con funzioni multilinea.

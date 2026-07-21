@@ -1,3 +1,4 @@
+Imports System.Data
 Imports System.Globalization
 
 Partial Public Class CLMainForm
@@ -306,7 +307,10 @@ Partial Public Class CLMainForm
                 .ItemType = item.ItemType,
                 .Quantity = If(m_AccessoryQuantities.ContainsKey(item.Id), m_AccessoryQuantities(item.Id), item.DefaultQuantity),
                 .Availability = item.Availability,
-                .InstallationType = item.InstallationType
+                .InstallationType = item.InstallationType,
+                .LocalizedDisplayName = item.Name,
+                .LocalizedDescription = item.Description,
+                .LocalizedFunctionNames = item.FunctionNames.ToList()
             })
         Next
         For Each saved In m_AccessoryUnresolvedSelections.
@@ -354,8 +358,58 @@ Partial Public Class CLMainForm
             .ItemType = value.ItemType,
             .Quantity = value.Quantity,
             .Availability = value.Availability,
-            .InstallationType = value.InstallationType
+            .InstallationType = value.InstallationType,
+            .LocalizedDisplayName = value.LocalizedDisplayName,
+            .LocalizedDescription = value.LocalizedDescription,
+            .LocalizedFunctionNames = If(value.LocalizedFunctionNames,
+                New List(Of String)()).ToList()
         }
+    End Function
+
+    Private Function Report_CreateAccessoryReportTable() As DataTable
+        Dim table As New DataTable("AccessoryReport")
+        For Each columnName In New String() {
+            "Title", "CodeCaption", "DescriptionCaption", "FunctionsCaption", "StatusCaption",
+            "Code", "Description", "Functions", "Status"
+        }
+            table.Columns.Add(columnName, GetType(String))
+        Next
+
+        For Each selected In Accessories_CaptureSelection()
+            Dim item = m_AccessoryItems.FirstOrDefault(
+                Function(candidate) String.Equals(candidate.Code, selected.Code,
+                    StringComparison.OrdinalIgnoreCase))
+            Dim displayName = If(item Is Nothing, selected.LocalizedDisplayName, item.Name)
+            Dim functionNames = If(item Is Nothing,
+                If(selected.LocalizedFunctionNames, New List(Of String)()),
+                item.FunctionNames)
+            Dim availability = If(String.Equals(selected.Availability, "Standard",
+                StringComparison.OrdinalIgnoreCase),
+                Accessories_Text("MainForm_Accessories_Standard", "Standard"),
+                Accessories_Text("MainForm_Accessories_Optional", "Optional"))
+            Dim installation = Accessories_InstallationText(selected.InstallationType)
+            Dim statusSymbol = If(String.Equals(selected.Availability, "Standard",
+                StringComparison.OrdinalIgnoreCase), ChrW(&H25CF),
+                If(String.Equals(selected.InstallationType, "Internal",
+                    StringComparison.OrdinalIgnoreCase), ChrW(&H2666), ChrW(&H25A0)))
+            Dim code = selected.Code
+            If selected.Quantity > 1 Then code &= " x" & selected.Quantity.ToString(CultureInfo.CurrentCulture)
+
+            Dim row = table.NewRow()
+            row("Title") = Accessories_Text("MainForm_Accessories_Tab", "Accessories and functions")
+            row("CodeCaption") = Accessories_Text("MainForm_Accessories_Code", "Code")
+            row("DescriptionCaption") = Accessories_Text("MainForm_Accessories_Description", "Description")
+            row("FunctionsCaption") = Accessories_Text("MainForm_Accessories_Functions", "Functions")
+            row("StatusCaption") = Accessories_Text("MainForm_Accessories_Status", "Status")
+            row("Code") = code
+            row("Description") = If(String.IsNullOrWhiteSpace(displayName), selected.Code, displayName)
+            row("Functions") = If(functionNames.Count = 0, "-",
+                String.Join(System.Environment.NewLine, functionNames))
+            row("Status") = String.Format(CultureInfo.CurrentCulture, "{0} {1} - {2}",
+                statusSymbol, availability, installation)
+            table.Rows.Add(row)
+        Next
+        Return table
     End Function
 
     Private Sub Accessories_NormalizeSelection()
