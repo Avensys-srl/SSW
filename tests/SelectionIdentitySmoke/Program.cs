@@ -228,7 +228,8 @@ internal static class Program
             "MainForm_Accessories_Search", "MainForm_Accessories_Category",
             "MainForm_Accessories_Code", "MainForm_Accessories_Description",
             "MainForm_Accessories_Functions", "MainForm_Accessories_Status",
-            "MainForm_Accessories_Standard", "MainForm_Accessories_Optional"
+            "MainForm_Accessories_Standard", "MainForm_Accessories_Optional",
+            "MainForm_CoilPerformance_ExternalInstallation"
         };
 
         foreach (string language in languages)
@@ -242,6 +243,9 @@ internal static class Program
                     nodes[0].InnerText == "?")
                     throw new InvalidOperationException("Accessory localization is missing or invalid: " + language + "/" + key);
             }
+            if (language == "it" && document.SelectSingleNode(
+                "/root/data[@name='MainForm_CoilPerformance_ExternalInstallation']/value").InnerText != "Esterna")
+                throw new InvalidOperationException("Italian external-installation localization is invalid.");
         }
     }
 

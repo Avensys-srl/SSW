@@ -383,34 +383,64 @@ Partial Public Class CLMainForm
             Dim functionNames = If(item Is Nothing,
                 If(selected.LocalizedFunctionNames, New List(Of String)()),
                 item.FunctionNames)
-            Dim availability = If(String.Equals(selected.Availability, "Standard",
-                StringComparison.OrdinalIgnoreCase),
-                Accessories_Text("MainForm_Accessories_Standard", "Standard"),
-                Accessories_Text("MainForm_Accessories_Optional", "Optional"))
-            Dim installation = Accessories_InstallationText(selected.InstallationType)
-            Dim statusSymbol = If(String.Equals(selected.Availability, "Standard",
-                StringComparison.OrdinalIgnoreCase), ChrW(&H25CF),
-                If(String.Equals(selected.InstallationType, "Internal",
-                    StringComparison.OrdinalIgnoreCase), ChrW(&H2666), ChrW(&H25A0)))
             Dim code = selected.Code
             If selected.Quantity > 1 Then code &= " x" & selected.Quantity.ToString(CultureInfo.CurrentCulture)
-
-            Dim row = table.NewRow()
-            row("Title") = Accessories_Text("MainForm_Accessories_Tab", "Accessories and functions")
-            row("CodeCaption") = Accessories_Text("MainForm_Accessories_Code", "Code")
-            row("DescriptionCaption") = Accessories_Text("MainForm_Accessories_Description", "Description")
-            row("FunctionsCaption") = Accessories_Text("MainForm_Accessories_Functions", "Functions")
-            row("StatusCaption") = Accessories_Text("MainForm_Accessories_Status", "Status")
-            row("Code") = code
-            row("Description") = If(String.IsNullOrWhiteSpace(displayName), selected.Code, displayName)
-            row("Functions") = If(functionNames.Count = 0, "-",
-                String.Join(System.Environment.NewLine, functionNames))
-            row("Status") = String.Format(CultureInfo.CurrentCulture, "{0} {1} - {2}",
-                statusSymbol, availability, installation)
-            table.Rows.Add(row)
+            Report_AddAccessoryRow(table, code,
+                If(String.IsNullOrWhiteSpace(displayName), selected.Code, displayName),
+                functionNames, String.Equals(selected.Availability, "Standard",
+                    StringComparison.OrdinalIgnoreCase), selected.InstallationType)
         Next
+
+        Dim waterCoil = Project_CaptureWaterCoil()
+        If waterCoil.Enabled Then
+            Dim mode = If(String.IsNullOrWhiteSpace(waterCoil.CalculationMode), "HCD", waterCoil.CalculationMode)
+            Dim description = If(String.IsNullOrWhiteSpace(waterCoil.Coil.Name), waterCoil.Coil.Code, waterCoil.Coil.Name)
+            Report_AddAccessoryRow(table, mode, If(String.IsNullOrWhiteSpace(description), mode, description),
+                Nothing, False, waterCoil.InstallationType)
+        End If
+
+        If m_ElectricModeControls.ContainsKey(CLElectricHeaterMode.PEHD) AndAlso
+            m_ElectricModeControls.ContainsKey(CLElectricHeaterMode.EHD) Then
+            Dim electricHeater = ElectricHeater_CaptureSelection()
+            For Each heaterMode In New CLElectricHeaterModeSelection() {electricHeater.PEHD, electricHeater.EHD}
+                If heaterMode Is Nothing OrElse Not heaterMode.Enabled Then Continue For
+                Dim mode = If(String.IsNullOrWhiteSpace(heaterMode.Mode), "-", heaterMode.Mode)
+                Dim description = If(String.IsNullOrWhiteSpace(heaterMode.Heater.Name), heaterMode.Heater.Code, heaterMode.Heater.Name)
+                Report_AddAccessoryRow(table, mode, If(String.IsNullOrWhiteSpace(description), mode, description),
+                    Nothing, False, heaterMode.InstallationType)
+            Next
+        End If
         Return table
     End Function
+
+    Private Sub Report_AddAccessoryRow(table As DataTable,
+        code As String,
+        description As String,
+        functionNames As IEnumerable(Of String),
+        isStandard As Boolean,
+        installationType As String)
+
+        Dim installation = Accessories_InstallationText(installationType)
+        Dim statusSymbol = If(isStandard, ChrW(&H25CF),
+            If(String.Equals(installationType, "Internal", StringComparison.OrdinalIgnoreCase),
+                ChrW(&H2666), ChrW(&H25A0)))
+        Dim statusText = If(isStandard,
+            Accessories_Text("MainForm_Accessories_Standard", "Standard"), installation)
+        Dim functions = If(functionNames, Enumerable.Empty(Of String)()).
+            Where(Function(value) Not String.IsNullOrWhiteSpace(value)).ToList()
+
+        Dim row = table.NewRow()
+        row("Title") = Accessories_Text("MainForm_Accessories_Tab", "Accessories and functions")
+        row("CodeCaption") = Accessories_Text("MainForm_Accessories_Code", "Code")
+        row("DescriptionCaption") = Accessories_Text("MainForm_Accessories_Description", "Description")
+        row("FunctionsCaption") = Accessories_Text("MainForm_Accessories_Functions", "Functions")
+        row("StatusCaption") = Accessories_Text("MainForm_Accessories_Status", "Status")
+        row("Code") = code
+        row("Description") = description
+        row("Functions") = If(functions.Count = 0, "-", String.Join(System.Environment.NewLine, functions))
+        row("Status") = String.Format(CultureInfo.CurrentCulture, "{0} {1}", statusSymbol, statusText)
+        table.Rows.Add(row)
+    End Sub
 
     Private Sub Accessories_NormalizeSelection()
         For Each item In m_AccessoryItems.Where(Function(candidate) candidate.IsStandard)
@@ -635,14 +665,17 @@ Partial Public Class CLMainForm
     Private Function Accessories_StatusText(item As CLSelectionCatalogItem) As String
         Return If(item.IsStandard,
             Accessories_Text("MainForm_Accessories_Standard", "Standard"),
-            Accessories_Text("MainForm_Accessories_Optional", "Optional"))
+            String.Empty)
     End Function
 
     Private Function Accessories_InstallationText(value As String) As String
         If String.Equals(value, "Internal", StringComparison.OrdinalIgnoreCase) Then
             Return CoilPerformance_Text("MainForm_CoilPerformance_Internal", "Internal")
         End If
-        Return CoilPerformance_Text("MainForm_CoilPerformance_External", "External")
+        If String.Equals(value, "RequestedInternal", StringComparison.OrdinalIgnoreCase) Then
+            Return CoilPerformance_Text("MainForm_CoilPerformance_RequestInternal", "Request internal")
+        End If
+        Return CoilPerformance_Text("MainForm_CoilPerformance_ExternalInstallation", "External")
     End Function
 
     Private Function Accessories_Text(key As String, fallback As String) As String

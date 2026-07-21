@@ -310,7 +310,13 @@ Stato al 21/07/2026: **completata**.
 - il dettaglio di SSW Portal mostra la stessa selezione in una tabella a quattro
   colonne e il confronto revisioni riassume i codici e le quantita'; i payload
   storici senza metadati localizzati mantengono il fallback sull'acronimo;
-- build `AV|x86`, matrice tecnica, lint PHP e 15 test portale superati; uno smoke
+- nella colonna stato, un elemento standard e' indicato come `Di serie`, mentre
+  per un'opzione gia' scelta viene mostrata soltanto l'installazione localizzata;
+  la dicitura `Opzionale` non compare nella selezione effettiva;
+- il riepilogo accessori comprende anche le batterie termodinamiche selezionate
+  CWD, HWD, HCD, EHD e PEHD, pur mantenendo invariati i relativi blocchi tecnici
+  di dettaglio nel report e nel portale;
+- build `AV|x86`, matrice tecnica, lint PHP e 21 test portale superati; uno smoke
   test ReportViewer renderizza tutti e quattro gli RDLC con selezione corta e
   con 80 righe, verificando anche la produzione multipagina.
 
