@@ -741,6 +741,7 @@
   <data name="MainForm_Accessories_ControllerLevel" xml:space="preserve"><value>Kræver et højere styringsniveau på grund af: {0}.</value></data>
   <data name="MainForm_Accessories_RequiredBy" xml:space="preserve"><value>Kræves af: {0}.</value></data>
   <data name="MainForm_Accessories_Selected" xml:space="preserve"><value>Valgte</value></data>
+  <data name="MainForm_Accessories_Summary" xml:space="preserve"><value>Valgt tilbehør</value></data>
   <data name="MainForm_Accessories_Search" xml:space="preserve"><value>Søg</value></data>
   <data name="MainForm_Accessories_Category" xml:space="preserve"><value>Kategori</value></data>
   <data name="MainForm_Accessories_Code" xml:space="preserve"><value>Kode</value></data>

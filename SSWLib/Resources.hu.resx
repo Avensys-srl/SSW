@@ -675,6 +675,7 @@
   <data name="MainForm_Accessories_ControllerLevel" xml:space="preserve"><value>Magasabb vezérlési szint szükséges a következő miatt: {0}.</value></data>
   <data name="MainForm_Accessories_RequiredBy" xml:space="preserve"><value>Szükséges ehhez: {0}.</value></data>
   <data name="MainForm_Accessories_Selected" xml:space="preserve"><value>Kiválasztva</value></data>
+  <data name="MainForm_Accessories_Summary" xml:space="preserve"><value>Kiválasztott tartozékok</value></data>
   <data name="MainForm_Accessories_Search" xml:space="preserve"><value>Keresés</value></data>
   <data name="MainForm_Accessories_Category" xml:space="preserve"><value>Kategória</value></data>
   <data name="MainForm_Accessories_Code" xml:space="preserve"><value>Kód</value></data>

@@ -582,6 +582,7 @@
   <data name="MainForm_Accessories_ControllerLevel" xml:space="preserve"><value>Wymaga wyższego poziomu sterowania z powodu: {0}.</value></data>
   <data name="MainForm_Accessories_RequiredBy" xml:space="preserve"><value>Wymagane przez: {0}.</value></data>
   <data name="MainForm_Accessories_Selected" xml:space="preserve"><value>Wybrane</value></data>
+  <data name="MainForm_Accessories_Summary" xml:space="preserve"><value>Wybrane akcesoria</value></data>
   <data name="MainForm_Accessories_Search" xml:space="preserve"><value>Szukaj</value></data>
   <data name="MainForm_Accessories_Category" xml:space="preserve"><value>Kategoria</value></data>
   <data name="MainForm_Accessories_Code" xml:space="preserve"><value>Kod</value></data>

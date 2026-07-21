@@ -579,6 +579,7 @@
   <data name="MainForm_Accessories_ControllerLevel" xml:space="preserve"><value>Vereist een hoger regelniveau vanwege: {0}.</value></data>
   <data name="MainForm_Accessories_RequiredBy" xml:space="preserve"><value>Vereist door: {0}.</value></data>
   <data name="MainForm_Accessories_Selected" xml:space="preserve"><value>Geselecteerd</value></data>
+  <data name="MainForm_Accessories_Summary" xml:space="preserve"><value>Geselecteerde accessoires</value></data>
   <data name="MainForm_Accessories_Search" xml:space="preserve"><value>Zoeken</value></data>
   <data name="MainForm_Accessories_Category" xml:space="preserve"><value>Categorie</value></data>
   <data name="MainForm_Accessories_Code" xml:space="preserve"><value>Code</value></data>

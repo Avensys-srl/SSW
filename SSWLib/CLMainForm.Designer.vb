@@ -649,8 +649,7 @@ Partial Class CLMainForm
         '
         'grbPerformance_TemperatureConditions
         '
-        Me.grbPerformance_TemperatureConditions.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
+        Me.grbPerformance_TemperatureConditions.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.grbPerformance_TemperatureConditions.Controls.Add(Me.btn_summer)
         Me.grbPerformance_TemperatureConditions.Controls.Add(Me.btn_winter)
@@ -670,7 +669,7 @@ Partial Class CLMainForm
         Me.grbPerformance_TemperatureConditions.Controls.Add(Me.lblPerformance_RHReturnInlet)
         Me.grbPerformance_TemperatureConditions.Location = New System.Drawing.Point(7, 150)
         Me.grbPerformance_TemperatureConditions.Name = "grbPerformance_TemperatureConditions"
-        Me.grbPerformance_TemperatureConditions.Size = New System.Drawing.Size(429, 171)
+        Me.grbPerformance_TemperatureConditions.Size = New System.Drawing.Size(429, 130)
         Me.grbPerformance_TemperatureConditions.TabIndex = 1
         Me.grbPerformance_TemperatureConditions.TabStop = False
         Me.grbPerformance_TemperatureConditions.Text = "Temperature Conditions"
@@ -678,9 +677,9 @@ Partial Class CLMainForm
         'btn_summer
         '
         Me.btn_summer.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btn_summer.Location = New System.Drawing.Point(320, 116)
+        Me.btn_summer.Location = New System.Drawing.Point(320, 95)
         Me.btn_summer.Name = "btn_summer"
-        Me.btn_summer.Size = New System.Drawing.Size(103, 32)
+        Me.btn_summer.Size = New System.Drawing.Size(103, 25)
         Me.btn_summer.TabIndex = 8
         Me.btn_summer.Text = "Summer"
         Me.btn_summer.UseVisualStyleBackColor = True
@@ -688,9 +687,9 @@ Partial Class CLMainForm
         'btn_winter
         '
         Me.btn_winter.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btn_winter.Location = New System.Drawing.Point(320, 81)
+        Me.btn_winter.Location = New System.Drawing.Point(320, 67)
         Me.btn_winter.Name = "btn_winter"
-        Me.btn_winter.Size = New System.Drawing.Size(103, 32)
+        Me.btn_winter.Size = New System.Drawing.Size(103, 25)
         Me.btn_winter.TabIndex = 8
         Me.btn_winter.Text = "Winter"
         Me.btn_winter.UseVisualStyleBackColor = True
@@ -698,9 +697,9 @@ Partial Class CLMainForm
         'btnEN13141
         '
         Me.btnEN13141.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnEN13141.Location = New System.Drawing.Point(320, 46)
+        Me.btnEN13141.Location = New System.Drawing.Point(320, 39)
         Me.btnEN13141.Name = "btnEN13141"
-        Me.btnEN13141.Size = New System.Drawing.Size(103, 32)
+        Me.btnEN13141.Size = New System.Drawing.Size(103, 25)
         Me.btnEN13141.TabIndex = 8
         Me.btnEN13141.Text = "EN13141-7"
         Me.btnEN13141.UseVisualStyleBackColor = True
@@ -710,7 +709,7 @@ Partial Class CLMainForm
         Me.btnEN308.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnEN308.Location = New System.Drawing.Point(320, 11)
         Me.btnEN308.Name = "btnEN308"
-        Me.btnEN308.Size = New System.Drawing.Size(103, 32)
+        Me.btnEN308.Size = New System.Drawing.Size(103, 25)
         Me.btnEN308.TabIndex = 8
         Me.btnEN308.Text = "EN308"
         Me.btnEN308.UseVisualStyleBackColor = True
@@ -719,7 +718,7 @@ Partial Class CLMainForm
         '
         Me.TextBox6.AcceptsReturn = True
         Me.TextBox6.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.TextBox6.Location = New System.Drawing.Point(249, 110)
+        Me.TextBox6.Location = New System.Drawing.Point(249, 96)
         Me.TextBox6.Name = "TextBox6"
         Me.TextBox6.Size = New System.Drawing.Size(65, 20)
         Me.TextBox6.TabIndex = 7
@@ -728,7 +727,7 @@ Partial Class CLMainForm
         'txbPerformance_RHReturnInlet
         '
         Me.txbPerformance_RHReturnInlet.AcceptsReturn = True
-        Me.txbPerformance_RHReturnInlet.Location = New System.Drawing.Point(161, 110)
+        Me.txbPerformance_RHReturnInlet.Location = New System.Drawing.Point(161, 96)
         Me.txbPerformance_RHReturnInlet.Name = "txbPerformance_RHReturnInlet"
         Me.txbPerformance_RHReturnInlet.Size = New System.Drawing.Size(65, 20)
         Me.txbPerformance_RHReturnInlet.TabIndex = 7
@@ -738,7 +737,7 @@ Partial Class CLMainForm
         '
         Me.TextBox5.AcceptsReturn = True
         Me.TextBox5.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.TextBox5.Location = New System.Drawing.Point(249, 79)
+        Me.TextBox5.Location = New System.Drawing.Point(249, 70)
         Me.TextBox5.Name = "TextBox5"
         Me.TextBox5.Size = New System.Drawing.Size(65, 20)
         Me.TextBox5.TabIndex = 5
@@ -747,7 +746,7 @@ Partial Class CLMainForm
         'txbPerformance_ReturnInletTemperature
         '
         Me.txbPerformance_ReturnInletTemperature.AcceptsReturn = True
-        Me.txbPerformance_ReturnInletTemperature.Location = New System.Drawing.Point(161, 79)
+        Me.txbPerformance_ReturnInletTemperature.Location = New System.Drawing.Point(161, 70)
         Me.txbPerformance_ReturnInletTemperature.Name = "txbPerformance_ReturnInletTemperature"
         Me.txbPerformance_ReturnInletTemperature.Size = New System.Drawing.Size(65, 20)
         Me.txbPerformance_ReturnInletTemperature.TabIndex = 5
@@ -757,7 +756,7 @@ Partial Class CLMainForm
         '
         Me.TextBox4.AcceptsReturn = True
         Me.TextBox4.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.TextBox4.Location = New System.Drawing.Point(249, 50)
+        Me.TextBox4.Location = New System.Drawing.Point(249, 44)
         Me.TextBox4.Name = "TextBox4"
         Me.TextBox4.Size = New System.Drawing.Size(65, 20)
         Me.TextBox4.TabIndex = 3
@@ -766,7 +765,7 @@ Partial Class CLMainForm
         'txbPerformance_RHFreshInlet
         '
         Me.txbPerformance_RHFreshInlet.AcceptsReturn = True
-        Me.txbPerformance_RHFreshInlet.Location = New System.Drawing.Point(161, 50)
+        Me.txbPerformance_RHFreshInlet.Location = New System.Drawing.Point(161, 44)
         Me.txbPerformance_RHFreshInlet.Name = "txbPerformance_RHFreshInlet"
         Me.txbPerformance_RHFreshInlet.Size = New System.Drawing.Size(65, 20)
         Me.txbPerformance_RHFreshInlet.TabIndex = 3
@@ -776,7 +775,7 @@ Partial Class CLMainForm
         '
         Me.TextBox3.AcceptsReturn = True
         Me.TextBox3.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.TextBox3.Location = New System.Drawing.Point(249, 21)
+        Me.TextBox3.Location = New System.Drawing.Point(249, 18)
         Me.TextBox3.Name = "TextBox3"
         Me.TextBox3.Size = New System.Drawing.Size(65, 20)
         Me.TextBox3.TabIndex = 1
@@ -785,7 +784,7 @@ Partial Class CLMainForm
         'txbPerformance_FreshInletTemperature
         '
         Me.txbPerformance_FreshInletTemperature.AcceptsReturn = True
-        Me.txbPerformance_FreshInletTemperature.Location = New System.Drawing.Point(161, 21)
+        Me.txbPerformance_FreshInletTemperature.Location = New System.Drawing.Point(161, 18)
         Me.txbPerformance_FreshInletTemperature.Name = "txbPerformance_FreshInletTemperature"
         Me.txbPerformance_FreshInletTemperature.Size = New System.Drawing.Size(65, 20)
         Me.txbPerformance_FreshInletTemperature.TabIndex = 1
@@ -793,36 +792,36 @@ Partial Class CLMainForm
         '
         'lblPerformance_FreshInletTemperature
         '
-        Me.lblPerformance_FreshInletTemperature.Location = New System.Drawing.Point(6, 17)
+        Me.lblPerformance_FreshInletTemperature.Location = New System.Drawing.Point(6, 14)
         Me.lblPerformance_FreshInletTemperature.Name = "lblPerformance_FreshInletTemperature"
-        Me.lblPerformance_FreshInletTemperature.Size = New System.Drawing.Size(163, 26)
+        Me.lblPerformance_FreshInletTemperature.Size = New System.Drawing.Size(163, 24)
         Me.lblPerformance_FreshInletTemperature.TabIndex = 0
         Me.lblPerformance_FreshInletTemperature.Text = "Fresh Inlet Temp. [°C]"
         Me.lblPerformance_FreshInletTemperature.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'lblPerformance_RHFreshInlet
         '
-        Me.lblPerformance_RHFreshInlet.Location = New System.Drawing.Point(6, 46)
+        Me.lblPerformance_RHFreshInlet.Location = New System.Drawing.Point(6, 40)
         Me.lblPerformance_RHFreshInlet.Name = "lblPerformance_RHFreshInlet"
-        Me.lblPerformance_RHFreshInlet.Size = New System.Drawing.Size(163, 26)
+        Me.lblPerformance_RHFreshInlet.Size = New System.Drawing.Size(163, 24)
         Me.lblPerformance_RHFreshInlet.TabIndex = 2
         Me.lblPerformance_RHFreshInlet.Text = "R.H. [%]"
         Me.lblPerformance_RHFreshInlet.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'lblPerformance_ReturnInletTemperature
         '
-        Me.lblPerformance_ReturnInletTemperature.Location = New System.Drawing.Point(6, 75)
+        Me.lblPerformance_ReturnInletTemperature.Location = New System.Drawing.Point(6, 66)
         Me.lblPerformance_ReturnInletTemperature.Name = "lblPerformance_ReturnInletTemperature"
-        Me.lblPerformance_ReturnInletTemperature.Size = New System.Drawing.Size(163, 26)
+        Me.lblPerformance_ReturnInletTemperature.Size = New System.Drawing.Size(163, 24)
         Me.lblPerformance_ReturnInletTemperature.TabIndex = 4
         Me.lblPerformance_ReturnInletTemperature.Text = "Return Inlet Temp. [°C]"
         Me.lblPerformance_ReturnInletTemperature.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'lblPerformance_RHReturnInlet
         '
-        Me.lblPerformance_RHReturnInlet.Location = New System.Drawing.Point(6, 104)
+        Me.lblPerformance_RHReturnInlet.Location = New System.Drawing.Point(6, 92)
         Me.lblPerformance_RHReturnInlet.Name = "lblPerformance_RHReturnInlet"
-        Me.lblPerformance_RHReturnInlet.Size = New System.Drawing.Size(163, 26)
+        Me.lblPerformance_RHReturnInlet.Size = New System.Drawing.Size(163, 24)
         Me.lblPerformance_RHReturnInlet.TabIndex = 6
         Me.lblPerformance_RHReturnInlet.Text = "R.H. [%]"
         Me.lblPerformance_RHReturnInlet.TextAlign = System.Drawing.ContentAlignment.MiddleLeft

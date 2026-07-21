@@ -626,6 +626,7 @@
   <data name="MainForm_Accessories_ControllerLevel" xml:space="preserve"><value>Richiede un livello di controllo superiore per: {0}.</value></data>
   <data name="MainForm_Accessories_RequiredBy" xml:space="preserve"><value>Richiesto da: {0}.</value></data>
   <data name="MainForm_Accessories_Selected" xml:space="preserve"><value>Selezionati</value></data>
+  <data name="MainForm_Accessories_Summary" xml:space="preserve"><value>Accessori selezionati</value></data>
   <data name="MainForm_Accessories_Search" xml:space="preserve"><value>Cerca</value></data>
   <data name="MainForm_Accessories_Category" xml:space="preserve"><value>Categoria</value></data>
   <data name="MainForm_Accessories_Code" xml:space="preserve"><value>Codice</value></data>

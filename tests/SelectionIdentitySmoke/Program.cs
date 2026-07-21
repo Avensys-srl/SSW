@@ -162,6 +162,7 @@ internal static class Program
             TestSnapshotFingerprints(root);
             TestSdfFixtures(root);
             TestAccessoryLocalization();
+            TestKtsExclusiveGroupReplacement();
             TestRegistrationFailureDialog();
             TestUpdateIntegrity(root);
             TestPracticalSelectionRules();
@@ -219,6 +220,7 @@ internal static class Program
             "MainForm_Accessories_RequiresExtraController", "MainForm_Accessories_EnableFirst",
             "MainForm_Accessories_ConflictsWith", "MainForm_Accessories_ControllerLevel",
             "MainForm_Accessories_RequiredBy", "MainForm_Accessories_Selected",
+            "MainForm_Accessories_Summary",
             "MainForm_Accessories_Search", "MainForm_Accessories_Category",
             "MainForm_Accessories_Code", "MainForm_Accessories_Description",
             "MainForm_Accessories_Functions", "MainForm_Accessories_Status",
@@ -237,6 +239,28 @@ internal static class Program
                     throw new InvalidOperationException("Accessory localization is missing or invalid: " + language + "/" + key);
             }
         }
+    }
+
+    private static void TestKtsExclusiveGroupReplacement()
+    {
+        var extra = new CLSelectionCatalogItem { Id = 1, Code = "KTS EXTRA", ExclusiveGroupCode = "KTS", Availability = "Optional" };
+        var wifi = new CLSelectionCatalogItem { Id = 2, Code = "KTS WIFI", ExclusiveGroupCode = "KTS", Availability = "Optional" };
+        var sma = new CLSelectionCatalogItem { Id = 3, Code = "SMA", Availability = "Optional" };
+        sma.Dependencies.Add(new CLSelectionDependencyRule { DependencyType = "Requires", TargetItemId = wifi.Id });
+        var dependent = new CLSelectionCatalogItem { Id = 4, Code = "SMA CHILD", Availability = "Optional" };
+        dependent.Dependencies.Add(new CLSelectionDependencyRule { DependencyType = "Includes", TargetItemId = sma.Id });
+        var unrelated = new CLSelectionCatalogItem { Id = 5, Code = "DPC", Availability = "Optional" };
+        var items = new List<CLSelectionCatalogItem> { extra, wifi, sma, dependent, unrelated };
+        var selected = new HashSet<int> { wifi.Id, sma.Id, dependent.Id, unrelated.Id };
+
+        MethodInfo method = typeof(CLMainForm).GetMethod(
+            "Accessories_RemoveDependentsForExclusiveGroupChange",
+            BindingFlags.NonPublic | BindingFlags.Static);
+        if (method == null) throw new InvalidOperationException("KTS replacement rule was not found.");
+        method.Invoke(null, new object[] { items, selected, extra });
+
+        if (selected.Contains(sma.Id) || selected.Contains(dependent.Id) || !selected.Contains(unrelated.Id))
+            throw new InvalidOperationException("KTS replacement did not remove only incompatible dependent functions.");
     }
 
     private static void TestRegistryBootstrapProvisioning()

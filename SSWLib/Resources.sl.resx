@@ -498,6 +498,7 @@
   <data name="MainForm_Accessories_ControllerLevel" xml:space="preserve"><value>Zahteva višji nivo krmiljenja zaradi: {0}.</value></data>
   <data name="MainForm_Accessories_RequiredBy" xml:space="preserve"><value>Zahtevano za: {0}.</value></data>
   <data name="MainForm_Accessories_Selected" xml:space="preserve"><value>Izbrano</value></data>
+  <data name="MainForm_Accessories_Summary" xml:space="preserve"><value>Izbrana dodatna oprema</value></data>
   <data name="MainForm_Accessories_Search" xml:space="preserve"><value>Iskanje</value></data>
   <data name="MainForm_Accessories_Category" xml:space="preserve"><value>Kategorija</value></data>
   <data name="MainForm_Accessories_Code" xml:space="preserve"><value>Koda</value></data>

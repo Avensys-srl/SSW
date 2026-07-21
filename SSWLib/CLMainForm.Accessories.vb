@@ -7,6 +7,7 @@ Partial Public Class CLMainForm
     Private cmbAccessoriesCategory As ComboBox
     Private lblAccessoriesSearch As Label
     Private lblAccessoriesCategory As Label
+    Private grbAccessoriesSummary As GroupBox
     Private lblAccessoriesSummary As Label
     Private m_AccessoriesChanging As Boolean
     Private m_AccessoriesModelId As Integer = -1
@@ -22,7 +23,7 @@ Partial Public Class CLMainForm
             .UseVisualStyleBackColor = True
         }
 
-        Dim header As New Panel With {.Dock = DockStyle.Top, .Height = 64, .Padding = New Padding(10, 8, 10, 6)}
+        Dim header As New Panel With {.Dock = DockStyle.Top, .Height = 40, .Padding = New Padding(10, 8, 10, 6)}
         lblAccessoriesSearch = New Label With {.AutoSize = True, .Location = New Point(10, 12)}
         lblAccessoriesCategory = New Label With {.AutoSize = True, .Location = New Point(330, 12)}
         txtAccessoriesSearch = New TextBox With {.Location = New Point(78, 9), .Width = 230}
@@ -31,16 +32,28 @@ Partial Public Class CLMainForm
             .Width = 230,
             .DropDownStyle = ComboBoxStyle.DropDownList
         }
+        grbAccessoriesSummary = New GroupBox With {
+            .Location = New Point(grbPerformance_TemperatureConditions.Left,
+                grbPerformance_TemperatureConditions.Bottom + 6),
+            .Size = New Size(grbPerformance_TemperatureConditions.Width, 35),
+            .Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        }
         lblAccessoriesSummary = New Label With {
-            .Location = New Point(10, 38),
+            .Location = New Point(6, 14),
             .AutoEllipsis = True,
-            .Size = New Size(1040, 20),
-            .Font = New Font(tbpData_Accessories.Font, FontStyle.Bold)
+            .Size = New Size(grbAccessoriesSummary.ClientSize.Width - 12, 17),
+            .Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right,
+            .Font = New Font(grbPerformance_TemperatureConditions.Font, FontStyle.Bold),
+            .TextAlign = ContentAlignment.MiddleLeft,
+            .UseMnemonic = False
         }
         header.Controls.AddRange(New Control() {
             lblAccessoriesSearch, txtAccessoriesSearch, lblAccessoriesCategory,
-            cmbAccessoriesCategory, lblAccessoriesSummary
+            cmbAccessoriesCategory
         })
+        grbAccessoriesSummary.Controls.Add(lblAccessoriesSummary)
+        pnlPerformance_Data.Controls.Add(grbAccessoriesSummary)
+        grbAccessoriesSummary.BringToFront()
 
         dgvAccessories = New DataGridView With {
             .Dock = DockStyle.Fill,
@@ -237,6 +250,8 @@ Partial Public Class CLMainForm
         If dgvAccessories.Columns(e.ColumnIndex).Name = "Selected" Then
             Dim selected = Convert.ToBoolean(row.Cells("Selected").Value, CultureInfo.InvariantCulture)
             If selected Then
+                Accessories_RemoveDependentsForExclusiveGroupChange(
+                    m_AccessoryItems, m_AccessorySelected, item)
                 m_AccessorySelected.Add(item.Id)
                 Accessories_SelectDependencies(item)
                 Accessories_ApplyExclusiveGroup(item)
@@ -389,6 +404,41 @@ Partial Public Class CLMainForm
         Next
     End Sub
 
+    Private Shared Sub Accessories_RemoveDependentsForExclusiveGroupChange(
+        items As IEnumerable(Of CLSelectionCatalogItem),
+        selectedIds As HashSet(Of Integer),
+        selectedItem As CLSelectionCatalogItem)
+
+        If String.IsNullOrWhiteSpace(selectedItem.ExclusiveGroupCode) Then Return
+
+        Dim itemList = items.ToList()
+        Dim removedTargets As New HashSet(Of Integer)(itemList.
+            Where(Function(item) item.Id <> selectedItem.Id AndAlso
+                selectedIds.Contains(item.Id) AndAlso
+                String.Equals(item.ExclusiveGroupCode, selectedItem.ExclusiveGroupCode,
+                    StringComparison.OrdinalIgnoreCase)).
+            Select(Function(item) item.Id))
+        If removedTargets.Count = 0 Then Return
+
+        Dim changed As Boolean
+        Do
+            changed = False
+            For Each dependent In itemList.
+                Where(Function(item) selectedIds.Contains(item.Id) AndAlso
+                    Not item.IsStandard).
+                ToArray()
+
+                If dependent.Dependencies.Any(
+                    Function(dependency) Accessories_IsAutoDependency(dependency.DependencyType) AndAlso
+                        removedTargets.Contains(dependency.TargetItemId)) Then
+                    selectedIds.Remove(dependent.Id)
+                    removedTargets.Add(dependent.Id)
+                    changed = True
+                End If
+            Next
+        Loop While changed
+    End Sub
+
     Private Sub Accessories_RemoveEnabledDependents(targetItemId As Integer)
         For Each item In m_AccessoryItems
             If Accessories_HasDependency(item, "Enables", targetItemId) Then
@@ -494,18 +544,27 @@ Partial Public Class CLMainForm
 
     Private Sub Accessories_UpdateSummary()
         If lblAccessoriesSummary Is Nothing Then Return
-        Dim codes = m_AccessoryItems.
+        Dim selectedItems = m_AccessoryItems.
             Where(Function(item) m_AccessorySelected.Contains(item.Id)).
-            Select(Function(item) item.Code).
-            OrderBy(Function(code) code).
+            OrderBy(Function(item) item.Code).
             ToArray()
-        lblAccessoriesSummary.Text = Accessories_Text("MainForm_Accessories_Selected", "Selected") & ": " &
-            If(codes.Length = 0, "-", String.Join(" | ", codes))
+        Dim codes = selectedItems.
+            Select(Function(item) item.Code).
+            ToArray()
+        Dim descriptions = selectedItems.
+            Select(Function(item) item.Name).
+            Where(Function(description) Not String.IsNullOrWhiteSpace(description)).
+            ToArray()
+        Dim separator = " " & ChrW(&HB7) & " "
+        lblAccessoriesSummary.Text = If(codes.Length = 0, "-", String.Join(separator, codes))
+        ToolTip1.SetToolTip(lblAccessoriesSummary,
+            If(descriptions.Length = 0, "-", String.Join(System.Environment.NewLine, descriptions)))
     End Sub
 
     Private Sub Accessories_UpdateLocalizedTexts()
         If tbpData_Accessories Is Nothing Then Return
         tbpData_Accessories.Text = Accessories_Text("MainForm_Accessories_Tab", "Accessories and functions")
+        grbAccessoriesSummary.Text = Accessories_Text("MainForm_Accessories_Summary", "Selected accessories")
         lblAccessoriesSearch.Text = Accessories_Text("MainForm_Accessories_Search", "Search")
         lblAccessoriesCategory.Text = Accessories_Text("MainForm_Accessories_Category", "Category")
         dgvAccessories.Columns("Selected").HeaderText = Accessories_Text("MainForm_Accessories_Selected", "Selected")

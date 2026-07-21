@@ -266,6 +266,15 @@ Stato al 21/07/2026: **completata**.
 - completate le 16 etichette statiche del tab nelle 12 lingue supportate e
   aggiunto un test che rifiuta chiavi mancanti, duplicate o valorizzate con
   `?`; il fallback considera ora `?` una traduzione non risolta.
+- spostato il riepilogo degli acronimi selezionati fuori dal tab Accessori e
+  sotto le condizioni climatiche, con aggiornamento live, testo localizzato e
+  tooltip contenente sempre l'elenco completo delle descrizioni localizzate.
+- la sostituzione tra KTS Extra, RFM e Wi-Fi rimuove le funzioni dipendenti
+  esclusivamente dalla variante abbandonata, evitando che la normalizzazione
+  ripristini il controller precedente; i vincoli di livello del Basic restano.
+- il riepilogo usa il punto centrale come separatore, mantiene nel tooltip le
+  descrizioni complete e segue posizione, larghezza e ridimensionamento del
+  gruppo delle condizioni di temperatura e umidita'.
 
 1. Aggiungere il tab Accessori e funzioni, raggruppato e filtrabile.
 2. Implementare stati standard, opzionale, interno, esterno e non disponibile.
