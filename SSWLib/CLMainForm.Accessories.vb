@@ -120,6 +120,7 @@ Partial Public Class CLMainForm
                 If item.IsStandard OrElse item.DefaultSelected Then m_AccessorySelected.Add(item.Id)
                 m_AccessoryQuantities(item.Id) = item.DefaultQuantity
             Next
+            Accessories_NormalizeSelection()
         End If
 
         Accessories_FillCategories()
@@ -182,9 +183,16 @@ Partial Public Class CLMainForm
                     quantity)
                 Dim row = dgvAccessories.Rows(rowIndex)
                 row.Tag = item
-                row.Cells("Selected").ReadOnly = item.IsStandard OrElse Not item.CustomerSelectable
+                Dim disabledReason = Accessories_DisabledReason(item)
+                Dim requiredReason = Accessories_RequiredReason(item)
+                row.Cells("Selected").ReadOnly = item.IsStandard OrElse Not item.CustomerSelectable OrElse
+                    Not String.IsNullOrEmpty(disabledReason) OrElse Not String.IsNullOrEmpty(requiredReason)
                 row.Cells("Quantity").ReadOnly = Not selected OrElse item.MaxQuantity <= 1
                 row.Cells("Quantity").ToolTipText = String.Format(CultureInfo.CurrentCulture, "1 - {0}", item.MaxQuantity)
+                row.Cells("Selected").ToolTipText = FirstAccessoryMessage(disabledReason, requiredReason)
+                If Not String.IsNullOrEmpty(disabledReason) Then
+                    row.DefaultCellStyle.ForeColor = SystemColors.GrayText
+                End If
                 If Not String.Equals(previousCategory, item.CategoryCode, StringComparison.OrdinalIgnoreCase) Then
                     row.DefaultCellStyle.BackColor = Color.FromArgb(242, 246, 251)
                     row.Cells("Category").Style.Font = New Font(dgvAccessories.Font, FontStyle.Bold)
@@ -228,11 +236,18 @@ Partial Public Class CLMainForm
             Dim selected = Convert.ToBoolean(row.Cells("Selected").Value, CultureInfo.InvariantCulture)
             If selected Then
                 m_AccessorySelected.Add(item.Id)
+                Accessories_SelectDependencies(item)
+                Accessories_ApplyExclusiveGroup(item)
             Else
-                m_AccessorySelected.Remove(item.Id)
+                If String.IsNullOrEmpty(Accessories_RequiredReason(item)) Then
+                    m_AccessorySelected.Remove(item.Id)
+                    Accessories_RemoveEnabledDependents(item.Id)
+                Else
+                    m_AccessorySelected.Add(item.Id)
+                End If
             End If
-            row.Cells("Quantity").ReadOnly = Not selected OrElse item.MaxQuantity <= 1
-            Accessories_UpdateSummary()
+            Accessories_NormalizeSelection()
+            Accessories_ApplyFilter()
         ElseIf dgvAccessories.Columns(e.ColumnIndex).Name = "Quantity" Then
             Accessories_StoreQuantity(row, item)
         End If
@@ -258,6 +273,155 @@ Partial Public Class CLMainForm
             m_AccessoryQuantities(item.Id) = Math.Max(1, Math.Min(item.MaxQuantity, value))
         End If
     End Sub
+
+    Private Sub Accessories_NormalizeSelection()
+        For Each item In m_AccessoryItems.Where(Function(candidate) candidate.IsStandard)
+            m_AccessorySelected.Add(item.Id)
+        Next
+
+        Dim changed As Boolean
+        Do
+            changed = False
+            For Each item In m_AccessoryItems.Where(Function(candidate) m_AccessorySelected.Contains(candidate.Id))
+                For Each dependency In item.Dependencies
+                    If Accessories_IsAutoDependency(dependency.DependencyType) AndAlso
+                        Not m_AccessorySelected.Contains(dependency.TargetItemId) Then
+                        m_AccessorySelected.Add(dependency.TargetItemId)
+                        Dim target = m_AccessoryItems.FirstOrDefault(Function(candidate) candidate.Id = dependency.TargetItemId)
+                        If target IsNot Nothing Then Accessories_ApplyExclusiveGroup(target)
+                        changed = True
+                    ElseIf String.Equals(dependency.DependencyType, "Enables", StringComparison.OrdinalIgnoreCase) AndAlso
+                        Not m_AccessorySelected.Contains(dependency.TargetItemId) Then
+                        m_AccessorySelected.Remove(item.Id)
+                        changed = True
+                    End If
+                Next
+            Next
+        Loop While changed
+    End Sub
+
+    Private Sub Accessories_SelectDependencies(item As CLSelectionCatalogItem)
+        For Each dependency In item.Dependencies
+            If Accessories_IsAutoDependency(dependency.DependencyType) Then
+                m_AccessorySelected.Add(dependency.TargetItemId)
+                Dim target = m_AccessoryItems.FirstOrDefault(Function(candidate) candidate.Id = dependency.TargetItemId)
+                If target IsNot Nothing Then Accessories_ApplyExclusiveGroup(target)
+            End If
+        Next
+    End Sub
+
+    Private Sub Accessories_ApplyExclusiveGroup(selectedItem As CLSelectionCatalogItem)
+        If String.IsNullOrWhiteSpace(selectedItem.ExclusiveGroupCode) Then Return
+        For Each item In m_AccessoryItems
+            If item.Id <> selectedItem.Id AndAlso
+                String.Equals(item.ExclusiveGroupCode, selectedItem.ExclusiveGroupCode, StringComparison.OrdinalIgnoreCase) Then
+                m_AccessorySelected.Remove(item.Id)
+            End If
+        Next
+    End Sub
+
+    Private Sub Accessories_RemoveEnabledDependents(targetItemId As Integer)
+        For Each item In m_AccessoryItems
+            If Accessories_HasDependency(item, "Enables", targetItemId) Then
+                m_AccessorySelected.Remove(item.Id)
+            End If
+        Next
+    End Sub
+
+    Private Function Accessories_DisabledReason(item As CLSelectionCatalogItem) As String
+        If Not String.Equals(item.ExclusiveGroupCode, "KTS", StringComparison.OrdinalIgnoreCase) Then
+            Dim selectedController = m_AccessoryItems.FirstOrDefault(
+                Function(candidate) Accessories_IsSelectedKts(candidate))
+            If selectedController IsNot Nothing AndAlso
+                selectedController.ControllerLevel < item.MinimumControllerLevel Then
+                Return Accessories_Text("MainForm_Accessories_RequiresExtraController",
+                    "Requires KTS Extra or higher.")
+            End If
+        End If
+
+        For Each dependency In item.Dependencies
+            If String.Equals(dependency.DependencyType, "Enables", StringComparison.OrdinalIgnoreCase) AndAlso
+                Not m_AccessorySelected.Contains(dependency.TargetItemId) Then
+                Return String.Format(CultureInfo.CurrentCulture,
+                    Accessories_Text("MainForm_Accessories_EnableFirst", "Select {0} first."),
+                    dependency.TargetCode)
+            End If
+            If String.Equals(dependency.DependencyType, "Conflicts", StringComparison.OrdinalIgnoreCase) AndAlso
+                m_AccessorySelected.Contains(dependency.TargetItemId) Then
+                Return String.Format(CultureInfo.CurrentCulture,
+                    Accessories_Text("MainForm_Accessories_ConflictsWith", "Not compatible with {0}."),
+                    dependency.TargetCode)
+            End If
+        Next
+
+        Dim reverseConflict = m_AccessoryItems.FirstOrDefault(
+            Function(source) m_AccessorySelected.Contains(source.Id) AndAlso
+                Accessories_HasDependency(source, "Conflicts", item.Id))
+        If reverseConflict IsNot Nothing Then
+            Return String.Format(CultureInfo.CurrentCulture,
+                Accessories_Text("MainForm_Accessories_ConflictsWith", "Not compatible with {0}."),
+                reverseConflict.Code)
+        End If
+
+        If String.Equals(item.ExclusiveGroupCode, "KTS", StringComparison.OrdinalIgnoreCase) Then
+            Dim requiringItems = m_AccessoryItems.Where(
+                Function(candidate) Accessories_RequiresHigherController(candidate, item.ControllerLevel)).
+                Select(Function(candidate) candidate.Code).ToArray()
+            If requiringItems.Length > 0 Then
+                Return String.Format(CultureInfo.CurrentCulture,
+                    Accessories_Text("MainForm_Accessories_ControllerLevel", "Requires a higher controller level because of: {0}."),
+                    String.Join(", ", requiringItems))
+            End If
+        End If
+
+        Return String.Empty
+    End Function
+
+    Private Function Accessories_RequiredReason(item As CLSelectionCatalogItem) As String
+        Dim requiringItems = m_AccessoryItems.Where(
+            Function(source) m_AccessorySelected.Contains(source.Id) AndAlso
+                (Accessories_HasDependency(source, "Requires", item.Id) OrElse
+                 Accessories_HasDependency(source, "Includes", item.Id))).
+            Select(Function(source) source.Code).ToArray()
+        If requiringItems.Length = 0 Then Return String.Empty
+        Return String.Format(CultureInfo.CurrentCulture,
+            Accessories_Text("MainForm_Accessories_RequiredBy", "Required by: {0}."),
+            String.Join(", ", requiringItems))
+    End Function
+
+    Private Shared Function Accessories_HasDependency(item As CLSelectionCatalogItem,
+        dependencyType As String,
+        targetItemId As Integer) As Boolean
+
+        Return item.Dependencies.Any(Function(dependency) String.Equals(
+            dependency.DependencyType, dependencyType, StringComparison.OrdinalIgnoreCase) AndAlso
+            dependency.TargetItemId = targetItemId)
+    End Function
+
+    Private Shared Function Accessories_IsAutoDependency(dependencyType As String) As Boolean
+        Return String.Equals(dependencyType, "Requires", StringComparison.OrdinalIgnoreCase) OrElse
+            String.Equals(dependencyType, "Includes", StringComparison.OrdinalIgnoreCase)
+    End Function
+
+    Private Function Accessories_RequiresHigherController(item As CLSelectionCatalogItem,
+        controllerLevel As Integer) As Boolean
+
+        Return m_AccessorySelected.Contains(item.Id) AndAlso
+            Not String.Equals(item.ExclusiveGroupCode, "KTS", StringComparison.OrdinalIgnoreCase) AndAlso
+            item.MinimumControllerLevel > controllerLevel
+    End Function
+
+    Private Function Accessories_IsSelectedKts(item As CLSelectionCatalogItem) As Boolean
+        Return m_AccessorySelected.Contains(item.Id) AndAlso
+            String.Equals(item.ExclusiveGroupCode, "KTS", StringComparison.OrdinalIgnoreCase)
+    End Function
+
+    Private Shared Function FirstAccessoryMessage(ParamArray messages() As String) As String
+        For Each message In messages
+            If Not String.IsNullOrWhiteSpace(message) Then Return message
+        Next
+        Return String.Empty
+    End Function
 
     Private Sub Accessories_UpdateSummary()
         If lblAccessoriesSummary Is Nothing Then Return

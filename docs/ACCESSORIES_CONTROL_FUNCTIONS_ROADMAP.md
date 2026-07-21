@@ -232,7 +232,7 @@ Stato al 20/07/2026: completata.
 
 Stima: 90-145 mila token.
 
-Stato al 21/07/2026: **D1 completato; D2 e D3 da eseguire**.
+Stato al 21/07/2026: **D1 e D2 completati; D3 da eseguire**.
 
 - aggiunto il tab dinamico `Accessori e funzioni`, disponibile soltanto quando
   il manifest SDF espone la feature `AccessoriesAndControlFunctions`;
@@ -245,10 +245,17 @@ Stato al 21/07/2026: **D1 completato; D2 e D3 da eseguire**.
   restano intenzionalmente in memoria fino al contratto di persistenza D3;
 - aggiunto smoke test x86 sul SDF AV reale; verificati 55 elementi e quattro
   accessori con funzioni per il modello campione, oltre alla build `AV|x86`.
+- implementate le regole `Enables`, `Requires`, `Includes` e `Conflicts` con
+  selezione automatica dei requisiti, blocco dei componenti richiesti,
+  rimozione dei dipendenti non piu' abilitati e tooltip esplicativi;
+- applicati i gruppi esclusivi esportati dal database: Basic, Extra, RFM e
+  WiFi sono mutuamente esclusivi; il livello minimo impedisce Basic quando la
+  selezione richiede Extra o superiore, senza sostituzioni silenziose;
+- lo smoke test verifica anche dipendenze, gruppo KTS e livello controller
+  letti dal SDF AV reale.
 
 Prossimi checkpoint interni:
 
-- D2: motore di dipendenze, conflitti, KTS e tooltip;
 - D3: DTO progetto V2, migrazione V1, hash, dirty state e payload online.
 
 1. Aggiungere il tab Accessori e funzioni, raggruppato e filtrabile.

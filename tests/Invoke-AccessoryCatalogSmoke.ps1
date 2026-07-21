@@ -52,4 +52,12 @@ if (($items | Where-Object { $_.IsStandard -and -not $_.DefaultSelected }).Count
 }
 
 $functionCount = ($items | Where-Object { $_.FunctionNames.Count -gt 0 }).Count
-Write-Host "Accessory catalog smoke passed: model=$modelId items=$($items.Count) linkedAccessories=$functionCount"
+$dependencyCount = ($items | ForEach-Object { $_.Dependencies.Count } | Measure-Object -Sum).Sum
+$ktsItems = @($items | Where-Object { $_.ExclusiveGroupCode -eq 'KTS' })
+if ($dependencyCount -lt 1) { throw 'No dependency rules were returned for the model.' }
+if ($ktsItems.Count -ne 4) { throw "Expected four mutually exclusive KTS items; found $($ktsItems.Count)." }
+$basicKts = @($ktsItems | Where-Object { $_.Code -eq 'KTS BASIC' })
+if ($basicKts.Count -ne 1 -or $basicKts[0].ControllerLevel -ne 0) {
+    throw 'KTS Basic controller level was not exported correctly.'
+}
+Write-Host "Accessory catalog smoke passed: model=$modelId items=$($items.Count) linkedAccessories=$functionCount dependencies=$dependencyCount kts=$($ktsItems.Count)"

@@ -15,9 +15,12 @@ Public NotInheritable Class CLSelectionCatalogItem
     Public Property DefaultQuantity As Integer
     Public Property MaxQuantity As Integer
     Public Property CustomerSelectable As Boolean
+    Public Property ControllerLevel As Integer
+    Public Property ExclusiveGroupCode As String
     Public Property MinimumControllerLevel As Integer
     Public Property SortOrder As Integer
     Public Property FunctionNames As New List(Of String)()
+    Public Property Dependencies As New List(Of CLSelectionDependencyRule)()
 
     Public ReadOnly Property IsStandard As Boolean
         Get
@@ -30,6 +33,12 @@ Public NotInheritable Class CLSelectionCatalogItem
             Return String.Join(System.Environment.NewLine, FunctionNames)
         End Get
     End Property
+End Class
+
+Public NotInheritable Class CLSelectionDependencyRule
+    Public Property TargetItemId As Integer
+    Public Property TargetCode As String
+    Public Property DependencyType As String
 End Class
 
 Public NotInheritable Class CLSelectionCatalogRepository
@@ -60,7 +69,8 @@ Public NotInheritable Class CLSelectionCatalogRepository
                     "it.Name AS TranslatedItemName, i.EnglishName AS ItemEnglishName, " &
                     "it.Description AS TranslatedItemDescription, i.EnglishDescription AS ItemEnglishDescription, " &
                     "r.Availability, r.InstallationType, r.DefaultSelected, r.DefaultQuantity, " &
-                    "r.MaxQuantity, i.CustomerSelectable, r.MinimumControllerLevel, r.SortOrder " &
+                    "r.MaxQuantity, i.CustomerSelectable, i.ControllerLevel, i.ExclusiveGroupCode, " &
+                    "r.MinimumControllerLevel, r.SortOrder " &
                     "FROM CLHeatRecoveryModelSelectionItems r " &
                     "INNER JOIN CLSelectionItems i ON i.Id = r.IdSelectionItem " &
                     "INNER JOIN CLSelectionCategories c ON c.Id = i.IdCategory " &
@@ -94,6 +104,8 @@ Public NotInheritable Class CLSelectionCatalogRepository
                             .DefaultQuantity = Math.Max(1, ReadInt(reader, "DefaultQuantity")),
                             .MaxQuantity = Math.Max(1, ReadInt(reader, "MaxQuantity")),
                             .CustomerSelectable = ReadBoolean(reader, "CustomerSelectable"),
+                            .ControllerLevel = ReadInt(reader, "ControllerLevel"),
+                            .ExclusiveGroupCode = ReadString(reader, "ExclusiveGroupCode"),
                             .MinimumControllerLevel = ReadInt(reader, "MinimumControllerLevel"),
                             .SortOrder = ReadInt(reader, "SortOrder")
                         })
@@ -127,6 +139,31 @@ Public NotInheritable Class CLSelectionCatalogRepository
                             If Not String.IsNullOrWhiteSpace(functionName) AndAlso Not item.FunctionNames.Contains(functionName) Then
                                 item.FunctionNames.Add(functionName)
                             End If
+                        End If
+                    End While
+                End Using
+            End Using
+
+            Using command = connection.CreateCommand()
+                command.CommandText =
+                    "SELECT dependency.IdSourceItem, dependency.IdTargetItem, dependency.DependencyType, targetItem.Code AS TargetCode " &
+                    "FROM CLSelectionItemDependencies dependency " &
+                    "INNER JOIN CLSelectionItems targetItem ON targetItem.Id = dependency.IdTargetItem " &
+                    "INNER JOIN CLHeatRecoveryModelSelectionItems sourceRelation ON sourceRelation.IdSelectionItem = dependency.IdSourceItem " &
+                    "INNER JOIN CLHeatRecoveryModelSelectionItems targetRelation ON targetRelation.IdSelectionItem = dependency.IdTargetItem " &
+                    "WHERE sourceRelation.IdHeatRecoveryModel = @ModelId " &
+                    "AND targetRelation.IdHeatRecoveryModel = @ModelId"
+                command.Parameters.Add(New SqlCeParameter("@ModelId", modelId))
+                Using reader = command.ExecuteReader()
+                    While reader.Read()
+                        Dim sourceId = ReadInt(reader, "IdSourceItem")
+                        Dim source As CLSelectionCatalogItem = Nothing
+                        If byId.TryGetValue(sourceId, source) Then
+                            source.Dependencies.Add(New CLSelectionDependencyRule With {
+                                .TargetItemId = ReadInt(reader, "IdTargetItem"),
+                                .TargetCode = ReadString(reader, "TargetCode"),
+                                .DependencyType = ReadString(reader, "DependencyType")
+                            })
                         End If
                     End While
                 End Using
