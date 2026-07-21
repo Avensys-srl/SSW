@@ -571,4 +571,20 @@
   <data name="MainForm_CoilPerformance_ElectricPostHeaterConflict" xml:space="preserve">
     <value>Schakel de elektrische naverwarmer (EHD) uit om waternaverwarming in te schakelen.</value>
   </data>
+  <data name="MainForm_Accessories_Tab" xml:space="preserve"><value>Accessoires en functies</value></data>
+  <data name="MainForm_Accessories_AllCategories" xml:space="preserve"><value>Alle categorieën</value></data>
+  <data name="MainForm_Accessories_RequiresExtraController" xml:space="preserve"><value>Vereist KTS Extra of hoger.</value></data>
+  <data name="MainForm_Accessories_EnableFirst" xml:space="preserve"><value>Selecteer eerst {0}.</value></data>
+  <data name="MainForm_Accessories_ConflictsWith" xml:space="preserve"><value>Niet compatibel met {0}.</value></data>
+  <data name="MainForm_Accessories_ControllerLevel" xml:space="preserve"><value>Vereist een hoger regelniveau vanwege: {0}.</value></data>
+  <data name="MainForm_Accessories_RequiredBy" xml:space="preserve"><value>Vereist door: {0}.</value></data>
+  <data name="MainForm_Accessories_Selected" xml:space="preserve"><value>Geselecteerd</value></data>
+  <data name="MainForm_Accessories_Search" xml:space="preserve"><value>Zoeken</value></data>
+  <data name="MainForm_Accessories_Category" xml:space="preserve"><value>Categorie</value></data>
+  <data name="MainForm_Accessories_Code" xml:space="preserve"><value>Code</value></data>
+  <data name="MainForm_Accessories_Description" xml:space="preserve"><value>Beschrijving</value></data>
+  <data name="MainForm_Accessories_Functions" xml:space="preserve"><value>Functies</value></data>
+  <data name="MainForm_Accessories_Status" xml:space="preserve"><value>Status</value></data>
+  <data name="MainForm_Accessories_Standard" xml:space="preserve"><value>Standaard</value></data>
+  <data name="MainForm_Accessories_Optional" xml:space="preserve"><value>Optioneel</value></data>
 </root>

@@ -3323,7 +3323,8 @@ Public Class CLMainForm
     Private Function CoilPerformance_Text(resourceName As String, fallbackText As String) As String
         Try
             Dim value As String = Environment.Localization.GetString(resourceName)
-            If Not String.IsNullOrEmpty(value) AndAlso Not value.StartsWith("@@", StringComparison.Ordinal) Then
+            If Not String.IsNullOrWhiteSpace(value) AndAlso value <> "?" AndAlso
+                Not value.StartsWith("@@", StringComparison.Ordinal) Then
                 Return value
             End If
         Catch

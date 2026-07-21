@@ -574,4 +574,20 @@
   <data name="MainForm_CoilPerformance_ElectricPostHeaterConflict" xml:space="preserve">
     <value>Wyłącz elektryczną nagrzewnicę wtórną (EHD), aby włączyć wodne dogrzewanie.</value>
   </data>
+  <data name="MainForm_Accessories_Tab" xml:space="preserve"><value>Akcesoria i funkcje</value></data>
+  <data name="MainForm_Accessories_AllCategories" xml:space="preserve"><value>Wszystkie kategorie</value></data>
+  <data name="MainForm_Accessories_RequiresExtraController" xml:space="preserve"><value>Wymaga KTS Extra lub wyższego.</value></data>
+  <data name="MainForm_Accessories_EnableFirst" xml:space="preserve"><value>Najpierw wybierz {0}.</value></data>
+  <data name="MainForm_Accessories_ConflictsWith" xml:space="preserve"><value>Niezgodne z {0}.</value></data>
+  <data name="MainForm_Accessories_ControllerLevel" xml:space="preserve"><value>Wymaga wyższego poziomu sterowania z powodu: {0}.</value></data>
+  <data name="MainForm_Accessories_RequiredBy" xml:space="preserve"><value>Wymagane przez: {0}.</value></data>
+  <data name="MainForm_Accessories_Selected" xml:space="preserve"><value>Wybrane</value></data>
+  <data name="MainForm_Accessories_Search" xml:space="preserve"><value>Szukaj</value></data>
+  <data name="MainForm_Accessories_Category" xml:space="preserve"><value>Kategoria</value></data>
+  <data name="MainForm_Accessories_Code" xml:space="preserve"><value>Kod</value></data>
+  <data name="MainForm_Accessories_Description" xml:space="preserve"><value>Opis</value></data>
+  <data name="MainForm_Accessories_Functions" xml:space="preserve"><value>Funkcje</value></data>
+  <data name="MainForm_Accessories_Status" xml:space="preserve"><value>Stan</value></data>
+  <data name="MainForm_Accessories_Standard" xml:space="preserve"><value>Standardowe</value></data>
+  <data name="MainForm_Accessories_Optional" xml:space="preserve"><value>Opcjonalne</value></data>
 </root>

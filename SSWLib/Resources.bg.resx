@@ -574,4 +574,20 @@
   <data name="MainForm_CoilPerformance_ElectricPostHeaterConflict" xml:space="preserve">
     <value>Деактивирайте електрическия нагревател за последващо подгряване (EHD), за да активирате водното последващо подгряване.</value>
   </data>
+  <data name="MainForm_Accessories_Tab" xml:space="preserve"><value>Аксесоари и функции</value></data>
+  <data name="MainForm_Accessories_AllCategories" xml:space="preserve"><value>Всички категории</value></data>
+  <data name="MainForm_Accessories_RequiresExtraController" xml:space="preserve"><value>Изисква KTS Extra или по-висок.</value></data>
+  <data name="MainForm_Accessories_EnableFirst" xml:space="preserve"><value>Първо изберете {0}.</value></data>
+  <data name="MainForm_Accessories_ConflictsWith" xml:space="preserve"><value>Несъвместимо с {0}.</value></data>
+  <data name="MainForm_Accessories_ControllerLevel" xml:space="preserve"><value>Изисква по-високо ниво на управление поради: {0}.</value></data>
+  <data name="MainForm_Accessories_RequiredBy" xml:space="preserve"><value>Изисква се от: {0}.</value></data>
+  <data name="MainForm_Accessories_Selected" xml:space="preserve"><value>Избрани</value></data>
+  <data name="MainForm_Accessories_Search" xml:space="preserve"><value>Търсене</value></data>
+  <data name="MainForm_Accessories_Category" xml:space="preserve"><value>Категория</value></data>
+  <data name="MainForm_Accessories_Code" xml:space="preserve"><value>Код</value></data>
+  <data name="MainForm_Accessories_Description" xml:space="preserve"><value>Описание</value></data>
+  <data name="MainForm_Accessories_Functions" xml:space="preserve"><value>Функции</value></data>
+  <data name="MainForm_Accessories_Status" xml:space="preserve"><value>Състояние</value></data>
+  <data name="MainForm_Accessories_Standard" xml:space="preserve"><value>Стандартно</value></data>
+  <data name="MainForm_Accessories_Optional" xml:space="preserve"><value>Опционално</value></data>
 </root>

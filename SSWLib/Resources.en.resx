@@ -697,4 +697,20 @@
   <data name="MainForm_CoilPerformance_ElectricPostHeaterConflict" xml:space="preserve">
     <value>Disable the electric post-heater (EHD) to enable water post-heating.</value>
   </data>
+  <data name="MainForm_Accessories_Tab" xml:space="preserve"><value>Accessories and functions</value></data>
+  <data name="MainForm_Accessories_AllCategories" xml:space="preserve"><value>All categories</value></data>
+  <data name="MainForm_Accessories_RequiresExtraController" xml:space="preserve"><value>Requires KTS Extra or higher.</value></data>
+  <data name="MainForm_Accessories_EnableFirst" xml:space="preserve"><value>Select {0} first.</value></data>
+  <data name="MainForm_Accessories_ConflictsWith" xml:space="preserve"><value>Not compatible with {0}.</value></data>
+  <data name="MainForm_Accessories_ControllerLevel" xml:space="preserve"><value>Requires a higher controller level because of: {0}.</value></data>
+  <data name="MainForm_Accessories_RequiredBy" xml:space="preserve"><value>Required by: {0}.</value></data>
+  <data name="MainForm_Accessories_Selected" xml:space="preserve"><value>Selected</value></data>
+  <data name="MainForm_Accessories_Search" xml:space="preserve"><value>Search</value></data>
+  <data name="MainForm_Accessories_Category" xml:space="preserve"><value>Category</value></data>
+  <data name="MainForm_Accessories_Code" xml:space="preserve"><value>Code</value></data>
+  <data name="MainForm_Accessories_Description" xml:space="preserve"><value>Description</value></data>
+  <data name="MainForm_Accessories_Functions" xml:space="preserve"><value>Functions</value></data>
+  <data name="MainForm_Accessories_Status" xml:space="preserve"><value>Status</value></data>
+  <data name="MainForm_Accessories_Standard" xml:space="preserve"><value>Standard</value></data>
+  <data name="MainForm_Accessories_Optional" xml:space="preserve"><value>Optional</value></data>
 </root>

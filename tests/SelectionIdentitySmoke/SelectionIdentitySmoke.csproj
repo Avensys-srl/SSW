@@ -19,6 +19,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
     <Reference Include="SSWLib">
       <HintPath>..\..\SSWLib\bin\x86\Release\SSWLib.dll</HintPath>
       <Private>False</Private>

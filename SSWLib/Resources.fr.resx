@@ -553,4 +553,20 @@
   <data name="MainForm_CoilPerformance_ElectricPostHeaterConflict" xml:space="preserve">
     <value>Désactivez la batterie électrique de post-chauffage (EHD) pour activer le post-chauffage à eau.</value>
   </data>
+  <data name="MainForm_Accessories_Tab" xml:space="preserve"><value>Accessoires et fonctions</value></data>
+  <data name="MainForm_Accessories_AllCategories" xml:space="preserve"><value>Toutes les catégories</value></data>
+  <data name="MainForm_Accessories_RequiresExtraController" xml:space="preserve"><value>Nécessite KTS Extra ou supérieur.</value></data>
+  <data name="MainForm_Accessories_EnableFirst" xml:space="preserve"><value>Sélectionnez d'abord {0}.</value></data>
+  <data name="MainForm_Accessories_ConflictsWith" xml:space="preserve"><value>Incompatible avec {0}.</value></data>
+  <data name="MainForm_Accessories_ControllerLevel" xml:space="preserve"><value>Nécessite un niveau de contrôle supérieur en raison de : {0}.</value></data>
+  <data name="MainForm_Accessories_RequiredBy" xml:space="preserve"><value>Requis par : {0}.</value></data>
+  <data name="MainForm_Accessories_Selected" xml:space="preserve"><value>Sélectionnés</value></data>
+  <data name="MainForm_Accessories_Search" xml:space="preserve"><value>Rechercher</value></data>
+  <data name="MainForm_Accessories_Category" xml:space="preserve"><value>Catégorie</value></data>
+  <data name="MainForm_Accessories_Code" xml:space="preserve"><value>Code</value></data>
+  <data name="MainForm_Accessories_Description" xml:space="preserve"><value>Description</value></data>
+  <data name="MainForm_Accessories_Functions" xml:space="preserve"><value>Fonctions</value></data>
+  <data name="MainForm_Accessories_Status" xml:space="preserve"><value>État</value></data>
+  <data name="MainForm_Accessories_Standard" xml:space="preserve"><value>De série</value></data>
+  <data name="MainForm_Accessories_Optional" xml:space="preserve"><value>Optionnel</value></data>
 </root>

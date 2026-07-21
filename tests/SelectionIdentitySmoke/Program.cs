@@ -13,6 +13,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml;
 using Microsoft.Win32;
 using SSW;
 
@@ -160,6 +161,7 @@ internal static class Program
             TestSelectionRegistrationClient(client, handler, context);
             TestSnapshotFingerprints(root);
             TestSdfFixtures(root);
+            TestAccessoryLocalization();
             TestRegistrationFailureDialog();
             TestUpdateIntegrity(root);
             TestPracticalSelectionRules();
@@ -204,6 +206,36 @@ internal static class Program
         finally
         {
             Environment.SetEnvironmentVariable("SSW_SELECTION_CREDENTIAL_PATH", originalCredentialPath);
+        }
+    }
+
+    private static void TestAccessoryLocalization()
+    {
+        string repositoryRoot = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", ".."));
+        string[] languages = { "bg", "da", "de", "en", "fr", "hu", "it", "nl", "pl", "ro", "sl", "sv" };
+        string[] keys =
+        {
+            "MainForm_Accessories_Tab", "MainForm_Accessories_AllCategories",
+            "MainForm_Accessories_RequiresExtraController", "MainForm_Accessories_EnableFirst",
+            "MainForm_Accessories_ConflictsWith", "MainForm_Accessories_ControllerLevel",
+            "MainForm_Accessories_RequiredBy", "MainForm_Accessories_Selected",
+            "MainForm_Accessories_Search", "MainForm_Accessories_Category",
+            "MainForm_Accessories_Code", "MainForm_Accessories_Description",
+            "MainForm_Accessories_Functions", "MainForm_Accessories_Status",
+            "MainForm_Accessories_Standard", "MainForm_Accessories_Optional"
+        };
+
+        foreach (string language in languages)
+        {
+            var document = new XmlDocument();
+            document.Load(Path.Combine(repositoryRoot, "SSWLib", "Resources." + language + ".resx"));
+            foreach (string key in keys)
+            {
+                XmlNodeList nodes = document.SelectNodes("/root/data[@name='" + key + "']/value");
+                if (nodes == null || nodes.Count != 1 || String.IsNullOrWhiteSpace(nodes[0].InnerText) ||
+                    nodes[0].InnerText == "?")
+                    throw new InvalidOperationException("Accessory localization is missing or invalid: " + language + "/" + key);
+            }
         }
     }
 

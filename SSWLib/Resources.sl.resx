@@ -490,4 +490,20 @@
   <data name="MainForm_CoilPerformance_ElectricPostHeaterConflict" xml:space="preserve">
     <value>Za vklop vodnega dogrevanja izklopite električni dogrelnik (EHD).</value>
   </data>
+  <data name="MainForm_Accessories_Tab" xml:space="preserve"><value>Dodatna oprema in funkcije</value></data>
+  <data name="MainForm_Accessories_AllCategories" xml:space="preserve"><value>Vse kategorije</value></data>
+  <data name="MainForm_Accessories_RequiresExtraController" xml:space="preserve"><value>Zahteva KTS Extra ali višji nivo.</value></data>
+  <data name="MainForm_Accessories_EnableFirst" xml:space="preserve"><value>Najprej izberite {0}.</value></data>
+  <data name="MainForm_Accessories_ConflictsWith" xml:space="preserve"><value>Ni združljivo z {0}.</value></data>
+  <data name="MainForm_Accessories_ControllerLevel" xml:space="preserve"><value>Zahteva višji nivo krmiljenja zaradi: {0}.</value></data>
+  <data name="MainForm_Accessories_RequiredBy" xml:space="preserve"><value>Zahtevano za: {0}.</value></data>
+  <data name="MainForm_Accessories_Selected" xml:space="preserve"><value>Izbrano</value></data>
+  <data name="MainForm_Accessories_Search" xml:space="preserve"><value>Iskanje</value></data>
+  <data name="MainForm_Accessories_Category" xml:space="preserve"><value>Kategorija</value></data>
+  <data name="MainForm_Accessories_Code" xml:space="preserve"><value>Koda</value></data>
+  <data name="MainForm_Accessories_Description" xml:space="preserve"><value>Opis</value></data>
+  <data name="MainForm_Accessories_Functions" xml:space="preserve"><value>Funkcije</value></data>
+  <data name="MainForm_Accessories_Status" xml:space="preserve"><value>Stanje</value></data>
+  <data name="MainForm_Accessories_Standard" xml:space="preserve"><value>Serijsko</value></data>
+  <data name="MainForm_Accessories_Optional" xml:space="preserve"><value>Izbirno</value></data>
 </root>

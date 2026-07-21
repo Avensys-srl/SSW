@@ -263,6 +263,9 @@ Stato al 21/07/2026: **completata**.
   `pre-migration-v1` al primo salvataggio sul file originale;
 - build `AV|x86`, smoke catalogo e matrice tecnica completa superati, incluse
   le due fixture V1, round-trip V2 e verifica del payload online.
+- completate le 16 etichette statiche del tab nelle 12 lingue supportate e
+  aggiunto un test che rifiuta chiavi mancanti, duplicate o valorizzate con
+  `?`; il fallback considera ora `?` una traduzione non risolta.
 
 1. Aggiungere il tab Accessori e funzioni, raggruppato e filtrabile.
 2. Implementare stati standard, opzionale, interno, esterno e non disponibile.

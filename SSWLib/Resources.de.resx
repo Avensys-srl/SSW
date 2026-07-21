@@ -505,4 +505,20 @@
   <data name="MainForm_CoilPerformance_ElectricPostHeaterConflict" xml:space="preserve">
     <value>Deaktivieren Sie den elektrischen Nachheizer (EHD), um die Wasser-Nachheizung zu aktivieren.</value>
   </data>
+  <data name="MainForm_Accessories_Tab" xml:space="preserve"><value>Zubehör und Funktionen</value></data>
+  <data name="MainForm_Accessories_AllCategories" xml:space="preserve"><value>Alle Kategorien</value></data>
+  <data name="MainForm_Accessories_RequiresExtraController" xml:space="preserve"><value>Erfordert KTS Extra oder höher.</value></data>
+  <data name="MainForm_Accessories_EnableFirst" xml:space="preserve"><value>Wählen Sie zuerst {0}.</value></data>
+  <data name="MainForm_Accessories_ConflictsWith" xml:space="preserve"><value>Nicht kompatibel mit {0}.</value></data>
+  <data name="MainForm_Accessories_ControllerLevel" xml:space="preserve"><value>Erfordert eine höhere Steuerungsebene aufgrund von: {0}.</value></data>
+  <data name="MainForm_Accessories_RequiredBy" xml:space="preserve"><value>Benötigt von: {0}.</value></data>
+  <data name="MainForm_Accessories_Selected" xml:space="preserve"><value>Ausgewählt</value></data>
+  <data name="MainForm_Accessories_Search" xml:space="preserve"><value>Suchen</value></data>
+  <data name="MainForm_Accessories_Category" xml:space="preserve"><value>Kategorie</value></data>
+  <data name="MainForm_Accessories_Code" xml:space="preserve"><value>Code</value></data>
+  <data name="MainForm_Accessories_Description" xml:space="preserve"><value>Beschreibung</value></data>
+  <data name="MainForm_Accessories_Functions" xml:space="preserve"><value>Funktionen</value></data>
+  <data name="MainForm_Accessories_Status" xml:space="preserve"><value>Status</value></data>
+  <data name="MainForm_Accessories_Standard" xml:space="preserve"><value>Serienmäßig</value></data>
+  <data name="MainForm_Accessories_Optional" xml:space="preserve"><value>Optional</value></data>
 </root>
