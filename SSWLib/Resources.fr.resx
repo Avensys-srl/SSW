@@ -676,4 +676,98 @@ Cordialement</value></data>
   <data name="ReportViewer_AddToProjectTooltip" xml:space="preserve">
     <value>Ajouter ou mettre à jour ce rapport dans un projet multi-sélection</value>
   </data>
+  <data name="MainForm_Menu_Option_Language_Norwegian" xml:space="preserve"><value>Norsk</value></data>
+  <data name="MainForm_Menu_Option_Language_Icelandic" xml:space="preserve"><value>Íslenska</value></data>
+  <data name="Help_Menu" xml:space="preserve"><value>Aide</value></data>
+  <data name="Help_OpenGuide" xml:space="preserve"><value>Guide de l&apos;utilisateur</value></data>
+  <data name="Help_ShowToolTips" xml:space="preserve"><value>Afficher les conseils d&apos;aide</value></data>
+  <data name="Help_Title" xml:space="preserve"><value>Guide de l&apos;utilisateur SSW</value></data>
+  <data name="Help_Search" xml:space="preserve"><value>Recherche</value></data>
+  <data name="Help_Close" xml:space="preserve"><value>Fermer</value></data>
+  <data name="Help_Tip_Series" xml:space="preserve"><value>Choisissez d&apos;abord la famille de produits ; la liste des unités est filtrée en conséquence.</value></data>
+  <data name="Help_Tip_Unit" xml:space="preserve"><value>Choisissez l&apos;unité de ventilation à calculer.</value></data>
+  <data name="Help_Tip_Airflow" xml:space="preserve"><value>Entrez le débit d&apos;air de conception hivernal. Le flux d’air d’été est actuellement synchronisé.</value></data>
+  <data name="Help_Tip_Pressure" xml:space="preserve"><value>Pression statique externe disponible au débit d&apos;air sélectionné.</value></data>
+  <data name="Help_Tip_Conditions" xml:space="preserve"><value>Réglez les conditions hivernales à gauche et les conditions estivales à droite.</value></data>
+  <data name="Help_Tip_Summer" xml:space="preserve"><value>Activer ou désactiver le calcul d&apos;été indépendant.</value></data>
+  <data name="Help_Tip_Regulation" xml:space="preserve"><value>Déplacez le niveau de contrôle et SSW recalcule le point de fonctionnement et les performances.</value></data>
+  <data name="Help_Tip_Reference" xml:space="preserve"><value>Référence client utilisée dans les noms de fichiers, rapports et projets enregistrés.</value></data>
+  <data name="Help_Tip_WaterCoils" xml:space="preserve"><value>Sélectionnez et calculez les batteries à eau compatibles. Le chauffage et le post-chauffage EHD s’excluent mutuellement.</value></data>
+  <data name="Help_Tip_ElectricHeaters" xml:space="preserve"><value>Sélectionnez des préchauffeurs (PEHD) et des post-chauffages (EHD) compatibles.</value></data>
+  <data name="Help_Tip_Accessories" xml:space="preserve"><value>Complétez la sélection avec des accessoires et des fonctions de contrôle compatibles.</value></data>
+  <data name="Help_Tip_Report" xml:space="preserve"><value>Enregistrez la sélection technique et générez son rapport PDF localisé.</value></data>
+  <data name="Help_Topic_GettingStarted_Title" xml:space="preserve"><value>Commencer</value></data>
+  <data name="Help_Topic_GettingStarted_Body" xml:space="preserve"><value>Commencez par choisir la famille de produits et l’unité de ventilation. Saisissez le débit d&apos;air hivernal et la pression statique externe disponible, puis définissez les conditions de température et d&apos;humidité hivernales et, si nécessaire, estivales.
+
+Revoir le point de fonctionnement sur les graphiques avant d&apos;ajouter des serpentins, des résistances électriques, des accessoires ou des fonctions de contrôle. Compléter la référence client avant de sauvegarder ou de générer un rapport ; il est utilisé dans les noms de fichiers, les rapports et les projets de sélection.</value></data>
+  <data name="Help_Topic_Conditions_Title" xml:space="preserve"><value>Conditions hivernales et estivales</value></data>
+  <data name="Help_Topic_Conditions_Body" xml:space="preserve"><value>Les entrées hiver sont affichées à gauche et les entrées été à droite. Le flux d’air d’été reste actuellement synchronisé avec le flux d’air d’hiver. Utilisez Activer l&apos;été pour exécuter les deux calculs thermodynamiques ; désactivez-le lorsque seul le cas hiver est requis.
+
+Le préréglage Été/Hiver rétablit les conditions de conception standard. Les préréglages EN 308 et EN 13141-7 affectent uniquement le cas hivernal et n&apos;écrasent pas les entrées été.</value></data>
+  <data name="Help_Topic_Performance_Title" xml:space="preserve"><value>Performances en lecture</value></data>
+  <data name="Help_Topic_Performance_Body" xml:space="preserve"><value>Le contrôle de régulation déplace le point sélectionné le long de la courbe du ventilateur et recalcule la pression, la puissance absorbée et les performances de récupération de chaleur. Le point orange identifie le débit d&apos;air et la pression actifs ; les graphiques d&apos;efficacité montrent les points de travail d&apos;hiver et, lorsqu&apos;ils sont activés, d&apos;été.
+
+Vérifiez que le débit d&apos;air demandé se situe à l&apos;intérieur de la courbe du ventilateur utilisable. Tout serpentin à eau ou électrique activé ajoute sa perte de pression côté air et peut réduire le débit d&apos;air maximum admissible.</value></data>
+  <data name="Help_Topic_WaterCoils_Title" xml:space="preserve"><value>Batteries à eau</value></data>
+  <data name="Help_Topic_WaterCoils_Body" xml:space="preserve"><value>L&apos;onglet Batteries à eau est disponible uniquement lorsque l&apos;unité sélectionnée a des relations compatibles dans la base de données. Choisissez le mode de calcul CWD, HWD ou HCD, l&apos;installation interne ou externe, le fluide et ses températures.
+
+Standard utilise la géométrie du catalogue. La personnalisation permet les changements géométriques autorisés et nécessite la clause de non-responsabilité de conception. Vérifiez la capacité, la température maximale de sortie d&apos;air, la chute de pression de l&apos;air, la chute de pression de l&apos;eau, le débit et la vitesse du fluide. HCD effectue des calculs de chauffage et de refroidissement sur la même géométrie fixe. Le chauffage de l&apos;eau et le post-chauffage électrique EHD ne peuvent pas être activés ensemble.</value></data>
+  <data name="Help_Topic_ElectricHeaters_Title" xml:space="preserve"><value>Radiateurs électriques</value></data>
+  <data name="Help_Topic_ElectricHeaters_Body" xml:space="preserve"><value>PEHD est un préchauffeur électrique : il chauffe l&apos;air frais hivernal avant l&apos;échangeur thermique et modifie donc les températures d&apos;entrée et de sortie de l&apos;échangeur. EHD est un post-chauffage électrique : il réchauffe l&apos;air soufflé après récupération de chaleur.
+
+Seuls les radiateurs liés à l&apos;unité sélectionnée sont disponibles. Leur perte de charge côté air est incluse dans la courbe du ventilateur. PEHD peut être combiné avec les modes batterie à eau ; EHD ne peut pas être combiné avec HWD ou la partie chauffante de HCD.</value></data>
+  <data name="Help_Topic_Accessories_Title" xml:space="preserve"><value>Accessoires et fonctions</value></data>
+  <data name="Help_Topic_Accessories_Body" xml:space="preserve"><value>Utilisez les filtres de recherche et de catégorie pour trouver des accessoires et des fonctions de contrôle compatibles. Les éléments standard sont sélectionnés automatiquement et ne peuvent pas être supprimés. Les éléments facultatifs peuvent être sélectionnés ou effacés ; les choix indisponibles restent désactivés et leur info-bulle explique le prérequis.
+
+Certaines fonctions nécessitent un niveau d&apos;accessoire ou de contrôleur spécifique. Le récapitulatif des accessoires sélectionnés reste visible en dehors de l&apos;onglet afin que la configuration actuelle puisse être vérifiée à tout moment.</value></data>
+  <data name="Help_Topic_Save_Title" xml:space="preserve"><value>Créer, enregistrer et rouvrir des sélections</value></data>
+  <data name="Help_Topic_Save_Body" xml:space="preserve"><value>Une nouvelle sélection démarre une sélection technique vierge après avoir proposé de sauvegarder le travail non sauvegardé. La sélection ouverte restaure un fichier .sswsel, y compris sa configuration, ses accessoires, sa référence de brouillon local et son historique de sélection enregistré.
+
+Enregistrer met à jour le fichier actuel. Enregistrer sous écrit la même sélection technique dans un autre chemin : cela modifie l&apos;emplacement du fichier, pas l&apos;identité de la sélection. La référence client est épurée et utilisée comme préfixe dans le nom du fichier proposé. Un astérisque dans le titre de la fenêtre indique les modifications non enregistrées.</value></data>
+  <data name="Help_Topic_Duplicate_Title" xml:space="preserve"><value>Dupliquer et créer des alternatives</value></data>
+  <data name="Help_Topic_Duplicate_Body" xml:space="preserve"><value>Dupliquer en tant que nouvelle sélection copie la configuration actuelle mais attribue une nouvelle identité de sélection indépendante et une référence de brouillon locale. Utilisez-le lorsque l&apos;unité copiée ne doit plus partager l&apos;historique des révisions d&apos;origine.
+
+Créer une alternative crée également une identité indépendante, mais ajoute Alt. 01 à la référence client. La création d&apos;une autre alternative à partir d&apos;une alternative existante incrémente le nombre. Utiliser des alternatives pour des propositions techniquement comparables appartenant à la même demande client.</value></data>
+  <data name="Help_Topic_Report_Title" xml:space="preserve"><value>Rapports et révisions</value></data>
+  <data name="Help_Topic_Report_Body" xml:space="preserve"><value>Générer un rapport valide la configuration actuelle, enregistre la sélection technique lorsque le service est disponible, crée un PDF localisé et ouvre la visionneuse de rapports. Depuis la visionneuse, vous pouvez inspecter le résultat, envoyer le PDF par e-mail ou l&apos;ajouter à un projet de sélection.
+
+La génération à nouveau d&apos;un rapport après avoir modifié une sélection déjà enregistrée crée la prochaine révision de la même identité. Dupliquer ou créer une alternative crée d’abord une identité différente. Si l&apos;inscription en ligne n&apos;est pas disponible, SSW peut générer un brouillon local sans interrompre le travail technique.</value></data>
+  <data name="Help_Topic_Project_Title" xml:space="preserve"><value>Projets multi-sélections</value></data>
+  <data name="Help_Topic_Project_Body" xml:space="preserve"><value>Un projet de sélection (.sswproj) regroupe les rapports de plusieurs unités de ventilation sous une même référence de projet et une seule langue. Il ne remplace pas les fichiers .sswsel individuels : chaque ligne conserve la sélection sérialisée et son PDF actuel.
+
+Créez ou ouvrez le projet à partir de Fichier &gt; Projet de sélection. Générez chaque rapport d&apos;unité et utilisez Ajouter au projet dans la visionneuse de rapports. Dans la fenêtre du projet, vous pouvez rouvrir une sélection, supprimer les lignes obsolètes, mettre à jour les PDF et préparer un e-mail localisé contenant chaque rapport actuel et un tableau récapitulatif.</value></data>
+  <data name="Help_Topic_Tips_Title" xml:space="preserve"><value>Conseils d&apos;aide</value></data>
+  <data name="Help_Topic_Tips_Body" xml:space="preserve"><value>Des conseils d&apos;aide contextuelle expliquent les commandes et les commandes de menu opérationnelles sans ouvrir le guide. Ils sont activés par défaut sur une nouvelle installation. Désactivez-les ou activez-les depuis Options ou Aide ; la préférence est stockée dans le profil utilisateur Windows et est conservée après une mise à jour SSW.
+
+Les noms de langue dans le menu des langues sont intentionnellement toujours affichés sous forme d&apos;autonymes, afin que chaque utilisateur puisse reconnaître sa propre langue même lorsque l&apos;interface actuelle utilise une autre langue.</value></data>
+  <data name="Help_MenuTip_New" xml:space="preserve"><value>Commencez une sélection technique vierge. Vous pouvez enregistrer les modifications actuelles avant de continuer.</value></data>
+  <data name="Help_MenuTip_Open" xml:space="preserve"><value>Ouvrez un fichier .sswsel et restaurez sa configuration enregistrée et son identité de sélection.</value></data>
+  <data name="Help_MenuTip_Save" xml:space="preserve"><value>Enregistrez les modifications apportées au fichier .sswsel actuel ou choisissez un nom de fichier s&apos;il n&apos;a pas été enregistré auparavant.</value></data>
+  <data name="Help_MenuTip_SaveAs" xml:space="preserve"><value>Enregistrez la sélection actuelle dans un autre fichier .sswsel tout en conservant la même identité de sélection technique.</value></data>
+  <data name="Help_MenuTip_Duplicate" xml:space="preserve"><value>Créez une sélection indépendante avec une nouvelle identité, en conservant la configuration actuelle comme point de départ.</value></data>
+  <data name="Help_MenuTip_Alternative" xml:space="preserve"><value>Créez une alternative indépendante et ajoutez ou incrémentez le préfixe Alt. XX dans la référence client.</value></data>
+  <data name="Help_MenuTip_Recent" xml:space="preserve"><value>Ouvrez l&apos;un des fichiers .sswsel les plus récemment utilisés.</value></data>
+  <data name="Help_MenuTip_Project" xml:space="preserve"><value>Créez ou gérez un projet regroupant plusieurs sélections et leurs rapports PDF.</value></data>
+  <data name="Help_MenuTip_Report" xml:space="preserve"><value>Enregistrez la sélection technique actuelle et générez son rapport PDF localisé.</value></data>
+  <data name="Help_MenuTip_CommercialSheet" xml:space="preserve"><value>Générez la fiche produit commerciale lorsqu&apos;elle est disponible pour l&apos;unité et la langue sélectionnées.</value></data>
+  <data name="Help_MenuTip_Iom" xml:space="preserve"><value>Générer le document d&apos;installation, d&apos;exploitation et de maintenance lorsqu&apos;il est disponible.</value></data>
+  <data name="Help_MenuTip_Exit" xml:space="preserve"><value>Fermez SSW. Il vous sera demandé si vous souhaitez enregistrer les modifications de sélection non enregistrées.</value></data>
+  <data name="Help_MenuTip_Language" xml:space="preserve"><value>Changez l’interface, le rapport et la langue de communication. Les noms de langues restent écrits dans leur propre langue.</value></data>
+  <data name="Help_MenuTip_Units" xml:space="preserve"><value>Choisissez le système de mesure utilisé par l&apos;interface et les documents générés.</value></data>
+  <data name="Help_MenuTip_CommercialSync" xml:space="preserve"><value>Synchronisez automatiquement la fiche commerciale avec la sélection active lorsque cette option est disponible.</value></data>
+  <data name="Help_MenuTip_Updates" xml:space="preserve"><value>Vérifiez manuellement si une version plus récente de SSW est disponible.</value></data>
+  <data name="Help_MenuTip_OpenGuide" xml:space="preserve"><value>Ouvrez le guide de l&apos;utilisateur consultable pour les sélections, les rapports et les projets.</value></data>
+  <data name="Help_MenuTip_ToggleTips" xml:space="preserve"><value>Activez ou désactivez les conseils d&apos;aide contextuelle dans SSW.</value></data>
+  <data name="Help_Topic_Workflow_Title" xml:space="preserve"><value>Flux de travail de sélection recommandé</value></data>
+  <data name="Help_Topic_Workflow_Body" xml:space="preserve"><value>1. Choisissez la famille et l&apos;unité.
+2. Entrez les conditions de débit d&apos;air, de pression et de conception.
+3. Ajustez le niveau de régulation et vérifiez le point de fonctionnement.
+4. Ajoutez des serpentins à eau, des radiateurs électriques, des accessoires et des fonctions compatibles.
+5. Saisissez la référence client et enregistrez le fichier .sswsel.
+6. Générez et examinez le PDF localisé.
+7. Si le travail contient plusieurs unités, ajoutez chaque rapport à un projet de sélection.</value></data>
+  <data name="Help_Topic_Exports_Title" xml:space="preserve"><value>Fiche commerciale et IOM</value></data>
+  <data name="Help_Topic_Exports_Body" xml:space="preserve"><value>La fiche commerciale et IOM sont des documents complémentaires et ne sont activés que lorsque le contenu existe pour l&apos;unité, la branche et la langue sélectionnées. Ils ne sauvegardent pas la sélection technique et ne remplacent pas le rapport de calcul.
+
+Enregistrez d&apos;abord le fichier .sswsel lorsque vous devez conserver les entrées de calcul modifiables. Générez un rapport lorsque vous avez besoin du résultat technique traçable et de sa référence de révision.</value></data>
 </root>

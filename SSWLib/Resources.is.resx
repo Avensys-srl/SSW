@@ -1,0 +1,1270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root xmlns:ns1="urn:schemas-microsoft-com:xml-msdata" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:schema id="root">
+    <xs:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xs:element name="root" ns1:IsDataSet="true">
+      <xs:complexType>
+        <xs:choice maxOccurs="unbounded">
+          <xs:element name="metadata">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="value" type="xsd:string" minOccurs="0" />
+              </xs:sequence>
+              <xs:attribute name="name" use="required" type="xsd:string" />
+              <xs:attribute name="type" type="xsd:string" />
+              <xs:attribute name="mimetype" type="xsd:string" />
+              <xs:attribute ref="xml:space" />
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="assembly">
+            <xs:complexType>
+              <xs:attribute name="alias" type="xsd:string" />
+              <xs:attribute name="name" type="xsd:string" />
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="data">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="value" type="xsd:string" minOccurs="0" ns1:Ordinal="1" />
+                <xs:element name="comment" type="xsd:string" minOccurs="0" ns1:Ordinal="2" />
+              </xs:sequence>
+              <xs:attribute name="name" type="xsd:string" use="required" ns1:Ordinal="1" />
+              <xs:attribute name="type" type="xsd:string" ns1:Ordinal="3" />
+              <xs:attribute name="mimetype" type="xsd:string" ns1:Ordinal="4" />
+              <xs:attribute ref="xml:space" />
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="resheader">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="value" type="xsd:string" minOccurs="0" ns1:Ordinal="1" />
+              </xs:sequence>
+              <xs:attribute name="name" type="xsd:string" use="required" />
+            </xs:complexType>
+          </xs:element>
+        </xs:choice>
+      </xs:complexType>
+    </xs:element>
+  </xs:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="About" xml:space="preserve">
+    <value>Um það bil</value>
+  </data>
+  <data name="AboutBoxForm_AirflowPressure" xml:space="preserve">
+    <value>@@AirflowPressure</value>
+  </data>
+  <data name="AboutBoxForm_ElectricPowerInput" xml:space="preserve">
+    <value>@@ElectricPowerInput</value>
+  </data>
+  <data name="AboutBoxForm_ExternalLeakage" xml:space="preserve">
+    <value>@@ExternalLeakage</value>
+  </data>
+  <data name="AboutBoxForm_InternalLeakage" xml:space="preserve">
+    <value>@@InternalLeakage</value>
+  </data>
+  <data name="AboutBoxForm_NoiseLevel" xml:space="preserve">
+    <value>@@NoiseLevel</value>
+  </data>
+  <data name="AboutBoxForm_Title" xml:space="preserve">
+    <value>@@PerformancesAccordanceWith</value>
+  </data>
+  <data name="AirflowPressure" xml:space="preserve">
+    <value>Loftflæði / þrýstingur</value>
+  </data>
+  <data name="CO2Level" xml:space="preserve">
+    <value>CO2 stig</value>
+  </data>
+  <data name="CO2Level_AddToReport" xml:space="preserve">
+    <value>Bæta við skýrslu</value>
+  </data>
+  <data name="CO2Level_Parameters" xml:space="preserve">
+    <value>Færibreytur</value>
+  </data>
+  <data name="CO2Level_Parameters_Af_area" xml:space="preserve">
+    <value>Loftflæði á svæði</value>
+  </data>
+  <data name="CO2Level_Parameters_Af_demand" xml:space="preserve">
+    <value>Krafist loftflæðis</value>
+  </data>
+  <data name="CO2Level_Parameters_Af_person" xml:space="preserve">
+    <value>Loftflæði á mann</value>
+  </data>
+  <data name="CO2Level_Parameters_Af_set" xml:space="preserve">
+    <value>Stilltu loftflæði</value>
+  </data>
+  <data name="CO2Level_Parameters_CalcMet" xml:space="preserve">
+    <value>Útreikningsaðferð</value>
+  </data>
+  <data name="CO2Level_Parameters_CalcMet_Fixed_Af" xml:space="preserve">
+    <value>Fast rennsli</value>
+  </data>
+  <data name="CO2Level_Parameters_CalcMet_MaxCO2" xml:space="preserve">
+    <value>Hámark. CO2 stig</value>
+  </data>
+  <data name="CO2Level_Parameters_CalcMet_PersonRelated" xml:space="preserve">
+    <value>Tengt einstaklingi</value>
+  </data>
+  <data name="CO2Level_Parameters_checkwp" xml:space="preserve">
+    <value>Athugaðu vinnustað</value>
+  </data>
+  <data name="CO2Level_Parameters_ExtCO2" xml:space="preserve">
+    <value>CO2-stig utandyra</value>
+  </data>
+  <data name="CO2Level_Parameters_MaxCO2" xml:space="preserve">
+    <value>Hámark. CO2 stig</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset" xml:space="preserve">
+    <value>Staðlað forstilling</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_01" xml:space="preserve">
+    <value>Engin</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_02" xml:space="preserve">
+    <value>Byggingaskýrsla 101: Hámark 1000 ppm CO2</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_03" xml:space="preserve">
+    <value>EN15251 köttur I,B1: 10 l/s pers &amp; 0,5 l/s m2</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_04" xml:space="preserve">
+    <value>EN15251 cat I,B2: 10 l/s pers &amp; 1,0 l/s m2</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_05" xml:space="preserve">
+    <value>EN15251 köttur I,B3: 10 l/s pers &amp; 2,0 l/s m2</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_06" xml:space="preserve">
+    <value>EN15251 cat II,B1: 7 l/s pers &amp; 0,35 l/s m2</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_07" xml:space="preserve">
+    <value>EN15251 cat II,B2: 7 l/s pers &amp; 0,7 l/s m2</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_08" xml:space="preserve">
+    <value>EN15251 cat II,B3: 7 l/s pers &amp; 1,4 l/s m2</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_09" xml:space="preserve">
+    <value>EN15251 cat III,B1: 4 l/s pers &amp; 0,2 l/s m2</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_10" xml:space="preserve">
+    <value>EN15251 cat III,B2: 4 l/s pers &amp; 0,4 l/s m2</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_11" xml:space="preserve">
+    <value>EN15251 cat III,B3: 4 l/s pers &amp; 0,8 l/s m2</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_12" xml:space="preserve">
+    <value>EN15251 köttur I: C02 hámark 700 ppm</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_13" xml:space="preserve">
+    <value>EN15251 cat II: C02 max 850 ppm</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_14" xml:space="preserve">
+    <value>EN15251 köttur III: C02 hámark 1150 ppm</value>
+  </data>
+  <data name="CO2Level_PeriodOfTime" xml:space="preserve">
+    <value>Tímabil</value>
+  </data>
+  <data name="CO2Level_Room" xml:space="preserve">
+    <value>Herbergi</value>
+  </data>
+  <data name="CO2Level_Room_Height" xml:space="preserve">
+    <value>Hæð</value>
+  </data>
+  <data name="CO2Level_Room_Length" xml:space="preserve">
+    <value>Lengd</value>
+  </data>
+  <data name="CO2Level_Room_Witdh" xml:space="preserve">
+    <value>Witdh</value>
+  </data>
+  <data name="CO2Level_Usage" xml:space="preserve">
+    <value>Notkun</value>
+  </data>
+  <data name="CO2Level_Usage_Break" xml:space="preserve">
+    <value>Hlé</value>
+  </data>
+  <data name="CO2Level_Usage_CO2prod" xml:space="preserve">
+    <value>CO2 Framleiðsla</value>
+  </data>
+  <data name="CO2Level_Usage_LevelAct" xml:space="preserve">
+    <value>Virknistig</value>
+  </data>
+  <data name="CO2Level_Usage_People" xml:space="preserve">
+    <value>Fólk</value>
+  </data>
+  <data name="CO2Level_Usage_Period" xml:space="preserve">
+    <value>Tímabil</value>
+  </data>
+  <data name="CO2Level_Usage_Presence" xml:space="preserve">
+    <value>Viðvera</value>
+  </data>
+  <data name="CommercialSheet" xml:space="preserve">
+    <value>Viðskiptablað</value>
+  </data>
+  <data name="ElectricPowerInput" xml:space="preserve">
+    <value>Rafmagnsinntak</value>
+  </data>
+  <data name="ExternalLeakage" xml:space="preserve">
+    <value>Ytri leki</value>
+  </data>
+  <data name="InternalLeakage" xml:space="preserve">
+    <value>Innri leki</value>
+  </data>
+  <data name="IOM" xml:space="preserve">
+    <value>IOM</value>
+  </data>
+  <data name="MainForm" xml:space="preserve">
+    <value>Sýningar</value>
+  </data>
+  <data name="MainForm_AirFlow" xml:space="preserve">
+    <value>Loftflæði</value>
+  </data>
+  <data name="MainForm_CantSaveFile" xml:space="preserve">
+    <value>Ekki er hægt að vista skrána</value>
+  </data>
+  <data name="MainForm_Certification" xml:space="preserve">
+    <value>vottun</value>
+  </data>
+  <data name="MainForm_Close" xml:space="preserve">
+    <value>Loka</value>
+  </data>
+  <data name="MainForm_Date" xml:space="preserve">
+    <value>Dagsetning</value>
+  </data>
+  <data name="MainForm_Efficiency" xml:space="preserve">
+    <value>Skilvirkni</value>
+  </data>
+  <data name="MainForm_ElectricalPerformances" xml:space="preserve">
+    <value>Rafmagnsflutningur</value>
+  </data>
+  <data name="MainForm_ExhaustOutletTemperature" xml:space="preserve">
+    <value>Hiti útblástursúttaks.</value>
+  </data>
+  <data name="MainForm_FileSaved" xml:space="preserve">
+    <value>Skrá vistuð</value>
+  </data>
+  <data name="MainForm_FreshInletTemperature" xml:space="preserve">
+    <value>Nýtt inntakshiti.</value>
+  </data>
+  <data name="MainForm_GridSAP_Date" xml:space="preserve">
+    <value>Dagsetning</value>
+  </data>
+  <data name="MainForm_GridSAP_EnergySavingTrustBestPracticePerformanceCompliant" xml:space="preserve">
+    <value>Orkusparandi traust Samhæft við bestu starfsvenjur</value>
+  </data>
+  <data name="MainForm_GridSAP_EstimatedSAPTestTable" xml:space="preserve">
+    <value>Áætluð SAP próftafla</value>
+  </data>
+  <data name="MainForm_GridSAP_ExhaustTerminalConfiguration" xml:space="preserve">
+    <value>Stilling útblástursstöðvar</value>
+  </data>
+  <data name="MainForm_GridSAP_HeatExchangeEffiency" xml:space="preserve">
+    <value>Skilvirkni varmaskipta</value>
+  </data>
+  <data name="MainForm_GridSAP_RegulationLevel" xml:space="preserve">
+    <value>Reglustig</value>
+  </data>
+  <data name="MainForm_GridSAP_SpecificFanPower" xml:space="preserve">
+    <value>Sérstakt viftuafl</value>
+  </data>
+  <data name="MainForm_GridSAP_TotalExhaustFlowRate" xml:space="preserve">
+    <value>Heildarrennsli útblásturs</value>
+  </data>
+  <data name="MainForm_GridSAP_TotalSupplyFlowRate" xml:space="preserve">
+    <value>Heildarflæðishraði</value>
+  </data>
+  <data name="MainForm_GridSAP_UnitSelected" xml:space="preserve">
+    <value>Eining valin</value>
+  </data>
+  <data name="MainForm_HeatExchangerPerformances" xml:space="preserve">
+    <value>Flutningur hitaskipta</value>
+  </data>
+  <data name="MainForm_HeatTransferred" xml:space="preserve">
+    <value>Hiti fluttur</value>
+  </data>
+  <data name="MainForm_InputData" xml:space="preserve">
+    <value>Inntaksgögn</value>
+  </data>
+  <data name="MainForm_LatentHeat" xml:space="preserve">
+    <value>Duldur hiti</value>
+  </data>
+  <data name="MainForm_MaxPressure" xml:space="preserve">
+    <value>Hámarksþrýstingur</value>
+  </data>
+  <data name="MainForm_Menu_About" xml:space="preserve">
+    <value>Um</value>
+  </data>
+  <data name="MainForm_Menu_File" xml:space="preserve">
+    <value>Skrá</value>
+  </data>
+  <data name="MainForm_Menu_File_Exit" xml:space="preserve">
+    <value>Hætta</value>
+  </data>
+  <data name="MainForm_Menu_File_GenerateReport" xml:space="preserve">
+    <value>Búa til skýrslu</value>
+  </data>
+  <data name="MainForm_Menu_File_Open" xml:space="preserve">
+    <value>Opið</value>
+  </data>
+  <data name="MainForm_Menu_Option" xml:space="preserve">
+    <value>Valkostur</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language" xml:space="preserve">
+    <value>Tungumál</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Bulgarian" xml:space="preserve">
+    <value>Български</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Deutsch" xml:space="preserve">
+    <value>Deutsch</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Dutch" xml:space="preserve">
+    <value>Nederlands</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_English" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Français" xml:space="preserve">
+    <value>Français</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Italian" xml:space="preserve">
+    <value>Italiano</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Polish" xml:space="preserve">
+    <value>Polski</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Romanian" xml:space="preserve">
+    <value>Română</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Slovenian" xml:space="preserve">
+    <value>Slovenščina</value>
+  </data>
+  <data name="MainForm_Menu_Option_SelectMode" xml:space="preserve">
+    <value>Veldu stillingu</value>
+  </data>
+  <data name="MainForm_Menu_Option_SelectMode_Checking" xml:space="preserve">
+    <value>Athugun</value>
+  </data>
+  <data name="MainForm_Menu_Option_SelectMode_Design" xml:space="preserve">
+    <value>Hönnun</value>
+  </data>
+  <data name="MainForm_Menu_Option_Unit" xml:space="preserve">
+    <value>Eining</value>
+  </data>
+  <data name="MainForm_Menu_Option_Unit_IP" xml:space="preserve">
+    <value>I.P.</value>
+  </data>
+  <data name="MainForm_Menu_Option_Unit_SI" xml:space="preserve">
+    <value>S.I.</value>
+  </data>
+  <data name="MainForm_PassiveHouse" xml:space="preserve">
+    <value>Passíuhús</value>
+  </data>
+  <data name="MainForm_PassiveHouseElectricalEfficienty" xml:space="preserve">
+    <value>Rafmagn í sjálfvirkum húsum. Eff.</value>
+  </data>
+  <data name="MainForm_Performance" xml:space="preserve">
+    <value>Flutningur</value>
+  </data>
+  <data name="MainForm_Performances" xml:space="preserve">
+    <value>Sýningar</value>
+  </data>
+  <data name="MainForm_PowerInput" xml:space="preserve">
+    <value>Aflinntak</value>
+  </data>
+  <data name="MainForm_PowerSupply" xml:space="preserve">
+    <value>Aflgjafi</value>
+  </data>
+  <data name="MainForm_Pressure" xml:space="preserve">
+    <value>Þrýstingur</value>
+  </data>
+  <data name="MainForm_RegulationLevel" xml:space="preserve">
+    <value>Reglustig</value>
+  </data>
+  <data name="MainForm_ReturnInletTemperature" xml:space="preserve">
+    <value>Returinntakshiti.</value>
+  </data>
+  <data name="MainForm_RHExhaustOutletTemperature" xml:space="preserve">
+    <value>R.H.</value>
+  </data>
+  <data name="MainForm_RHFreshInletTemperature" xml:space="preserve">
+    <value>R.H.</value>
+  </data>
+  <data name="MainForm_RHReturnInletTemperature" xml:space="preserve">
+    <value>R.H.</value>
+  </data>
+  <data name="MainForm_RHSupplyOutletTemperature" xml:space="preserve">
+    <value>R.H.</value>
+  </data>
+  <data name="MainForm_SEL" xml:space="preserve">
+    <value>SPI</value>
+  </data>
+  <data name="MainForm_SelectPdfFile" xml:space="preserve">
+    <value>Veldu pdf skjal</value>
+  </data>
+  <data name="MainForm_SensibleHeat" xml:space="preserve">
+    <value>Skynsamlegur hiti</value>
+  </data>
+  <data name="MainForm_SFP" xml:space="preserve">
+    <value>SFP</value>
+  </data>
+  <data name="MainForm_ShowPassiveHouseArea" xml:space="preserve">
+    <value>Sýna hlutlausa húsasvæði</value>
+  </data>
+  <data name="MainForm_ShowSELArea" xml:space="preserve">
+    <value>Sýna SEL svæði</value>
+  </data>
+  <data name="MainForm_ShowSFPArea" xml:space="preserve">
+    <value>Sýna SFP svæði</value>
+  </data>
+  <data name="MainForm_SingleBranch" xml:space="preserve">
+    <value>ein grein</value>
+  </data>
+  <data name="MainForm_SupplyOutletTemperature" xml:space="preserve">
+    <value>Hitastig framboðsúttaks.</value>
+  </data>
+  <data name="MainForm_TemperatureConditionsAndUmidity" xml:space="preserve">
+    <value>Hitastig og raki</value>
+  </data>
+  <data name="MainForm_Unit" xml:space="preserve">
+    <value>Eining</value>
+  </data>
+  <data name="MainForm_UnitSelected" xml:space="preserve">
+    <value>Eining valin</value>
+  </data>
+  <data name="MainForm_UnitSelection" xml:space="preserve">
+    <value>Einingarval</value>
+  </data>
+  <data name="MainForm_UpdateSAPTable" xml:space="preserve">
+    <value>Uppfæra SAP töflu</value>
+  </data>
+  <data name="MainForm_WaterProduced" xml:space="preserve">
+    <value>Vatn framleitt</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Nei</value>
+  </data>
+  <data name="NoiseLevel" xml:space="preserve">
+    <value>Hávaðastig</value>
+  </data>
+  <data name="Page" xml:space="preserve">
+    <value>Síða</value>
+  </data>
+  <data name="PDF_HeatExchangerPerformances" xml:space="preserve">
+    <value>Flutningur hitaskipta</value>
+  </data>
+  <data name="PDF_RegLev" xml:space="preserve">
+    <value>Reg. Lev.</value>
+  </data>
+  <data name="PDF_TemperatureConditions" xml:space="preserve">
+    <value>Hitaskilyrði</value>
+  </data>
+  <data name="PDF_WorkingArea" xml:space="preserve">
+    <value>Vinnusvæði</value>
+  </data>
+  <data name="PDF_WorkingPoint" xml:space="preserve">
+    <value>Vinnustaður</value>
+  </data>
+  <data name="PerformancesAccordanceWith" xml:space="preserve">
+    <value>Allar sýningar hafa verið framkvæmdar í samræmi við:</value>
+  </data>
+  <data name="PleaseWaitForm_Message" xml:space="preserve">
+    <value>Vinsamlegast bíddu í nokkrar sekúndur...</value>
+  </data>
+  <data name="Release" xml:space="preserve">
+    <value>Hugbúnaðarútgáfa</value>
+  </data>
+  <data name="SaveCommercialSheet" xml:space="preserve">
+    <value>Vista auglýsingablað</value>
+  </data>
+  <data name="SaveIOM" xml:space="preserve">
+    <value>Vista IOM</value>
+  </data>
+  <data name="Series" xml:space="preserve">
+    <value>Röð</value>
+  </data>
+  <data name="SoundInlet" xml:space="preserve">
+    <value>Inntak</value>
+  </data>
+  <data name="SoundOutlet" xml:space="preserve">
+    <value>Útgangur</value>
+  </data>
+  <data name="SoundPower" xml:space="preserve">
+    <value>Hljóðstyrkur</value>
+  </data>
+  <data name="Sound_Breakout" xml:space="preserve">
+    <value>Brot</value>
+  </data>
+  <data name="Sound_Exhaust" xml:space="preserve">
+    <value>Útblástur</value>
+  </data>
+  <data name="Sound_Fresh" xml:space="preserve">
+    <value>Nýtt</value>
+  </data>
+  <data name="Sound_Return" xml:space="preserve">
+    <value>Til baka</value>
+  </data>
+  <data name="Sound_Supply" xml:space="preserve">
+    <value>Framboð</value>
+  </data>
+  <data name="Sound_Total" xml:space="preserve">
+    <value>Samtals</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Já</value>
+  </data>
+  <data name="Legal_Notice" xml:space="preserve">
+    <value>Lagatilkynning: Gögnin hafa verið prófuð á sérstökum vinnustöðum í samræmi við ofangreinda staðla. Raunverulegt tilvik getur verið öðruvísi en staðlað tilvik. Gögnin sem eftir eru hafa verið framreiknuð. Ef uppsetningin er sérstaklega viðkvæm fyrir hávaðagögnum, vinsamlegast hafðu samband við okkur (hugbúnaðurinn er ekki vottaður). Brotútreikningurinn er framkvæmdur samkvæmt ASHRAE Handbook - HVAC Applications, kafla 47 staðlinum.</value>
+  </data>
+  <data name="Item_Code" xml:space="preserve">
+    <value>Atriðakóðun</value>
+  </data>
+  <data name="RegLev_Note" xml:space="preserve">
+    <value>Í sumum tilfellum gæti verið að það sé ekki línulegt samband á milli stjórnstigs og þess sem er á einingunni</value>
+  </data>
+  <data name="MainForm_ShowERPArea" xml:space="preserve">
+    <value>Sýna ERP 2018 svæði</value>
+  </data>
+  <data name="MainForm_MoistureRecovery" xml:space="preserve">
+    <value>Endurheimt raka</value>
+  </data>
+  <data name="MainForm_Summer" xml:space="preserve">
+    <value>Sumar</value>
+  </data>
+  <data name="MainForm_Winter" xml:space="preserve">
+    <value>Vetur</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Hungarian" xml:space="preserve">
+    <value>Magyar</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Danish" xml:space="preserve">
+    <value>Dansk</value>
+  </data>
+  <data name="MainForm_Menu_Option_CommercialSheetAutoSync" xml:space="preserve">
+    <value>Commercial Sheets Auto Sync</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Tab" xml:space="preserve">
+    <value>Vatnsspólur</value>
+  </data>
+  <data name="MainForm_CoilPerformance_EnableGroup" xml:space="preserve">
+    <value>Vatnsspóluútreikningur</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Enable" xml:space="preserve">
+    <value>Virkja spólureikning</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Selection" xml:space="preserve">
+    <value>Spóluval</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Case" xml:space="preserve">
+    <value>Mál</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Standard" xml:space="preserve">
+    <value>Staðall</value>
+  </data>
+  <data name="MainForm_CoilPerformance_StandardCustomized" xml:space="preserve">
+    <value>Sérsniðin</value>
+  </data>
+  <data name="MainForm_CoilPerformance_External" xml:space="preserve">
+    <value>Ytri</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Type" xml:space="preserve">
+    <value>Tegund</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Coil" xml:space="preserve">
+    <value>Spóla</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Fluid" xml:space="preserve">
+    <value>Hitastig vökva og vatns</value>
+  </data>
+  <data name="MainForm_CoilPerformance_FluidType" xml:space="preserve">
+    <value>Vökvi</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Glycol" xml:space="preserve">
+    <value>Glýkól [%]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_CoolingIn" xml:space="preserve">
+    <value>Kæling í [C]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_CoolingOut" xml:space="preserve">
+    <value>Kælir út [C]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_HeatingIn" xml:space="preserve">
+    <value>Upphitun í [C]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_HeatingOut" xml:space="preserve">
+    <value>Upphitun [C]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Geometry" xml:space="preserve">
+    <value>Rúmfræði</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Length" xml:space="preserve">
+    <value>Lengd [mm]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Height" xml:space="preserve">
+    <value>Hæð [mm/rör]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_HeightMm" xml:space="preserve">
+    <value>mm</value>
+  </data>
+  <data name="MainForm_CoilPerformance_HeightTubes" xml:space="preserve">
+    <value>rör</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Rows" xml:space="preserve">
+    <value>Raðir</value>
+  </data>
+  <data name="MainForm_CoilPerformance_FinSpacing" xml:space="preserve">
+    <value>Laugabil [mm]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Circuits" xml:space="preserve">
+    <value>Hringrásir</value>
+  </data>
+  <data name="MainForm_CoilPerformance_ResultMode" xml:space="preserve">
+    <value>ham</value>
+  </data>
+  <data name="MainForm_CoilPerformance_ResultStatus" xml:space="preserve">
+    <value>Staða</value>
+  </data>
+  <data name="MainForm_CoilPerformance_ResultCapacity" xml:space="preserve">
+    <value>Stærð [W]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_ResultSensible" xml:space="preserve">
+    <value>Skynsamur [W]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_ResultAirOut" xml:space="preserve">
+    <value>Hámark. hitastig úttakslofts. [C]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_ResultRHOut" xml:space="preserve">
+    <value>R.H. út [%]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_ResultCond" xml:space="preserve">
+    <value>Stjórn. [l/klst.]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_ResultDP" xml:space="preserve">
+    <value>DP [Pa]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_ResultFace" xml:space="preserve">
+    <value>Andlit vel. [m/s]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_OK" xml:space="preserve">
+    <value>Í lagi</value>
+  </data>
+  <data name="MainForm_CoilPerformance_AirPressureApplied" xml:space="preserve">
+    <value>Loftþrýstingsfall í spólu beitt</value>
+  </data>
+  <data name="MainForm_CoilPerformance_ResultWaterDP" xml:space="preserve">
+    <value>Vatn DP [kPa]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_ResultFluidFlow" xml:space="preserve">
+    <value>Vökvaflæði [l/klst.]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_ResultFluidSpeed" xml:space="preserve">
+    <value>Vökvahraði [m/s]</value>
+  </data>
+  <data name="Water" xml:space="preserve">
+    <value>Vatn</value>
+  </data>
+  <data name="Glic_Etil" xml:space="preserve">
+    <value>Etýlenglýkól</value>
+  </data>
+  <data name="Glic_Prop" xml:space="preserve">
+    <value>Própýlenglýkól</value>
+  </data>
+  <data name="MainForm_WinterSummer" xml:space="preserve">
+    <value>Sumar / vetur</value>
+  </data>
+  <data name="MainForm_SummerEnable" xml:space="preserve">
+    <value>Sumarvirkja</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Swedish" xml:space="preserve">
+    <value>Svenska</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Installation" xml:space="preserve">
+    <value>Uppsetning</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Internal" xml:space="preserve">
+    <value>Innri</value>
+  </data>
+  <data name="MainForm_CoilPerformance_ExternalInstallation" xml:space="preserve">
+    <value>Ytri</value>
+  </data>
+  <data name="MainForm_CoilPerformance_RequestInternal" xml:space="preserve">
+    <value>Innri beiðni</value>
+  </data>
+  <data name="MainForm_CoilPerformance_CustomWarning" xml:space="preserve">
+    <value>Vinsamlegast biðjið um heildarmál, afhendingartíma og tilboð</value>
+  </data>
+  <data name="MainForm_Menu_Option_CheckUpdates" xml:space="preserve">
+    <value>Leitaðu að uppfærslum</value>
+  </data>
+  <data name="Update_Title" xml:space="preserve">
+    <value>Hugbúnaðaruppfærsla</value>
+  </data>
+  <data name="Update_ErrorTitle" xml:space="preserve">
+    <value>Uppfærsluvilla</value>
+  </data>
+  <data name="Update_UpToDate" xml:space="preserve">
+    <value>Hugbúnaðurinn er uppfærður.</value>
+  </data>
+  <data name="Update_NewAvailable" xml:space="preserve">
+    <value>Ný hugbúnaðaruppfærsla er fáanleg!</value>
+  </data>
+  <data name="Update_CurrentVersion" xml:space="preserve">
+    <value>Núverandi útgáfa</value>
+  </data>
+  <data name="Update_NewVersion" xml:space="preserve">
+    <value>Ný útgáfa</value>
+  </data>
+  <data name="Update_DownloadQuestion" xml:space="preserve">
+    <value>Sækja og ræsa uppsetningarforritið núna?</value>
+  </data>
+  <data name="Update_CheckFailed" xml:space="preserve">
+    <value>Ekki hægt að leita að uppfærslum: {0}</value>
+  </data>
+  <data name="Update_PackageIntegrityFailed" xml:space="preserve">
+    <value>Uppfærslupakkinn mistókst að sannprófa heilleika.</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Calculating" xml:space="preserve">
+    <value>Er að reikna, vinsamlegast bíðið...</value>
+  </data>
+  <data name="MainForm_Project_New" xml:space="preserve">
+    <value>Nýtt úrval</value>
+  </data>
+  <data name="MainForm_Project_Open" xml:space="preserve">
+    <value>Opna val...</value>
+  </data>
+  <data name="MainForm_Project_Save" xml:space="preserve">
+    <value>Vista val</value>
+  </data>
+  <data name="MainForm_Project_SaveAs" xml:space="preserve">
+    <value>Vista val sem...</value>
+  </data>
+  <data name="MainForm_Project_Duplicate" xml:space="preserve">
+    <value>Afrita sem nýtt val...</value>
+  </data>
+  <data name="MainForm_Project_Recent" xml:space="preserve">
+    <value>Nýleg val</value>
+  </data>
+  <data name="MainForm_Project_Title" xml:space="preserve">
+    <value>Tæknival</value>
+  </data>
+  <data name="MainForm_Project_Filter" xml:space="preserve">
+    <value>SSW tæknilegt val</value>
+  </data>
+  <data name="MainForm_Project_Unsaved" xml:space="preserve">
+    <value>Núverandi val hefur óvistaðar breytingar. Vista þá núna?</value>
+  </data>
+  <data name="MainForm_Project_OpenError" xml:space="preserve">
+    <value>Ekki tókst að opna valverkefnið: {0}</value>
+  </data>
+  <data name="MainForm_Project_SaveError" xml:space="preserve">
+    <value>Ekki tókst að vista valverkefnið: {0}</value>
+  </data>
+  <data name="MainForm_SelectionRegistration_Title" xml:space="preserve">
+    <value>Tæknival</value>
+  </data>
+  <data name="MainForm_SelectionRegistration_Wait" xml:space="preserve">
+    <value>Skráning á tæknivali. Vinsamlegast bíddu...</value>
+  </data>
+  <data name="MainForm_SelectionRegistration_Failed" xml:space="preserve">
+    <value>Ekki tókst að skrá tæknivalið: {0}</value>
+  </data>
+  <data name="MainForm_SelectionRegistration_Retry" xml:space="preserve">
+    <value>Reyndu aftur</value>
+  </data>
+  <data name="MainForm_SelectionRegistration_Draft" xml:space="preserve">
+    <value>Búa til drög</value>
+  </data>
+  <data name="MainForm_SelectionRegistration_Cancel" xml:space="preserve">
+    <value>Hætta við</value>
+  </data>
+  <data name="MainForm_TechnicalSelectionRevision" xml:space="preserve">
+    <value>Endurskoðun</value>
+  </data>
+  <data name="MainForm_TechnicalSelectionStatus" xml:space="preserve">
+    <value>Staða</value>
+  </data>
+  <data name="MainForm_TechnicalSelectionStatus_Registered" xml:space="preserve">
+    <value>Skráð</value>
+  </data>
+  <data name="MainForm_TechnicalSelectionStatus_Draft" xml:space="preserve">
+    <value>Drög</value>
+  </data>
+  <data name="MainForm_CoilPerformance_InvalidCoolingTemperatures" xml:space="preserve">
+    <value>Úttakshiti kælivatns verður að vera að minnsta kosti 1 K hærra en hitastig inntaks.</value>
+  </data>
+  <data name="MainForm_CoilPerformance_InvalidHeatingTemperatures" xml:space="preserve">
+    <value>Inntakshiti hitavatns verður að vera að minnsta kosti 1 K hærra en úttakshiti.</value>
+  </data>
+  <data name="MainForm_CoilPerformance_LowWaterDeltaT" xml:space="preserve">
+    <value>Lágt vatn delta T (3 K ≤ ΔT &lt; 5 K). Vatnsrennsli er hærra en venjulega.</value>
+  </data>
+  <data name="MainForm_CoilPerformance_CriticalWaterDeltaT" xml:space="preserve">
+    <value>Mjög lágt vatn delta T (minna en 3 K). Of mikið vatnsrennsli og þrýstingsfall. Staðfestu vökvahönnun.</value>
+  </data>
+  <data name="MainForm_CoilPerformance_WaterPressureDropWarning" xml:space="preserve">
+    <value>Vatnsþrýstingsfall fer yfir ráðlögð mörk (40 kPa). Vökvaorkunotkun og dælukostnaður getur orðið óhóflegur. Íhugaðu að auka stærð spólunnar eða draga úr vatnshraða.</value>
+  </data>
+  <data name="MainForm_Project_CreateAlternative" xml:space="preserve">
+    <value>Búðu til annan...</value>
+  </data>
+  <data name="MainForm_CoilPerformance_DimensionsNote" xml:space="preserve">
+    <value>Málin hér að ofan vísa eingöngu til vatnsspólunnar.</value>
+  </data>
+  <data name="MainForm_CoilPerformance_CustomDisclaimerTitle" xml:space="preserve">
+    <value>Sérsniðin spóluhönnun</value>
+  </data>
+  <data name="MainForm_CoilPerformance_CustomDisclaimer" xml:space="preserve">
+    <value>Gakktu úr skugga um að sérsniðna spólan virki rétt á hverjum fyrirhuguðum vinnustað. Ýttu á OK til að staðfesta þessa kröfu.</value>
+  </data>
+  <data name="MainForm_CoilPerformance_CustomDisclaimerAccepted" xml:space="preserve">
+    <value>Sérsniðin spóluhönnun fyrirvari samþykktur</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Tab" xml:space="preserve">
+    <value>Rafmagnshitarar</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Enable" xml:space="preserve">
+    <value>Virkja útreikning</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Heater" xml:space="preserve">
+    <value>Rafmagnshitari</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Power" xml:space="preserve">
+    <value>Afl [W]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Voltage" xml:space="preserve">
+    <value>Spenna [V]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Phases" xml:space="preserve">
+    <value>Áfangar</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Current" xml:space="preserve">
+    <value>Núverandi [A]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_AirIn" xml:space="preserve">
+    <value>Loftinntak [C]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_AirOut" xml:space="preserve">
+    <value>Hámark. loft út hitastig. [°C]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_PressureDrop" xml:space="preserve">
+    <value>Air DP [Pa]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_ExhaustOut" xml:space="preserve">
+    <value>Útblástursúttak [C]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_WaterConflict" xml:space="preserve">
+    <value>Afvelja hitavatnsspóluna til að virkja rafmagns eftirhitara.</value>
+  </data>
+  <data name="MainForm_ElectricHeater_CustomPending" xml:space="preserve">
+    <value>Sérsniðnar færibreytur rafmagnshitara verða skilgreindar í seinna skrefi.</value>
+  </data>
+  <data name="MainForm_ElectricHeater_CustomDisclaimer" xml:space="preserve">
+    <value>Val á sérsniðnum rafhitara verður að vera staðfest fyrir hvern fyrirhugaðan rekstrarstað. Halda áfram?</value>
+  </data>
+  <data name="MainForm_ElectricHeater_FrostWarning" xml:space="preserve">
+    <value>Útblásturshiti er ekki yfir 3 C frostvarnamarkmiðinu.</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Code" xml:space="preserve">
+    <value>Kóði</value>
+  </data>
+  <data name="MainForm_ElectricHeater_ManagementCode" xml:space="preserve">
+    <value>Stjórnunarkóði</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Frequency" xml:space="preserve">
+    <value>Tíðni [Hz]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Stages" xml:space="preserve">
+    <value>Stig</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Quantity" xml:space="preserve">
+    <value>Magn</value>
+  </data>
+  <data name="MainForm_ElectricHeater_NominalPressureDrop" xml:space="preserve">
+    <value>Nafn DP [Pa]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_FrostStatus" xml:space="preserve">
+    <value>Frostvarnarmarkmið</value>
+  </data>
+  <data name="MainForm_ElectricHeater_FrostTargetReached" xml:space="preserve">
+    <value>Markmiði náð</value>
+  </data>
+  <data name="MainForm_ElectricHeater_FrostTargetNotReached" xml:space="preserve">
+    <value>Markmiði ekki náð</value>
+  </data>
+  <data name="MainForm_ElectricHeater_CustomDisclaimerAccepted" xml:space="preserve">
+    <value>Sérsniðin fyrirvari fyrir rafhitara samþykktur</value>
+  </data>
+  <data name="MainForm_CoilPerformance_ElectricPostHeaterConflict" xml:space="preserve">
+    <value>Slökktu á rafmagns eftirhitara (EHD) til að virkja eftirhitun vatns.</value>
+  </data>
+  <data name="MainForm_Accessories_Tab" xml:space="preserve">
+    <value>Aukabúnaður og aðgerðir</value>
+  </data>
+  <data name="MainForm_Accessories_AllCategories" xml:space="preserve">
+    <value>Allir flokkar</value>
+  </data>
+  <data name="MainForm_Accessories_RequiresExtraController" xml:space="preserve">
+    <value>Krefst KTS Extra eða hærra.</value>
+  </data>
+  <data name="MainForm_Accessories_EnableFirst" xml:space="preserve">
+    <value>Veldu {0} fyrst.</value>
+  </data>
+  <data name="MainForm_Accessories_ConflictsWith" xml:space="preserve">
+    <value>Ekki samhæft við {0}.</value>
+  </data>
+  <data name="MainForm_Accessories_ControllerLevel" xml:space="preserve">
+    <value>Krefst hærra stýringarstigs vegna: {0}.</value>
+  </data>
+  <data name="MainForm_Accessories_RequiredBy" xml:space="preserve">
+    <value>Krafist af: {0}.</value>
+  </data>
+  <data name="MainForm_Accessories_Selected" xml:space="preserve">
+    <value>Valið</value>
+  </data>
+  <data name="MainForm_Accessories_Summary" xml:space="preserve">
+    <value>Valdir aukahlutir</value>
+  </data>
+  <data name="MainForm_Accessories_Search" xml:space="preserve">
+    <value>Leit</value>
+  </data>
+  <data name="MainForm_Accessories_Category" xml:space="preserve">
+    <value>Flokkur</value>
+  </data>
+  <data name="MainForm_Accessories_Code" xml:space="preserve">
+    <value>Kóði</value>
+  </data>
+  <data name="MainForm_Accessories_Description" xml:space="preserve">
+    <value>Lýsing</value>
+  </data>
+  <data name="MainForm_Accessories_Functions" xml:space="preserve">
+    <value>Aðgerðir</value>
+  </data>
+  <data name="MainForm_Accessories_Status" xml:space="preserve">
+    <value>Staða</value>
+  </data>
+  <data name="MainForm_Accessories_Standard" xml:space="preserve">
+    <value>Staðall</value>
+  </data>
+  <data name="MainForm_Accessories_Optional" xml:space="preserve">
+    <value>Valfrjálst</value>
+  </data>
+  <data name="MainForm_Accessories_CWDDescription" xml:space="preserve">
+    <value>Kælivatnskælispóla</value>
+  </data>
+  <data name="MainForm_Accessories_HWDDescription" xml:space="preserve">
+    <value>Heittvatns hitaspíra</value>
+  </data>
+  <data name="MainForm_Accessories_HCDDescription" xml:space="preserve">
+    <value>Tveggja pípa vatnsspólu til upphitunar og kælingar</value>
+  </data>
+  <data name="MainForm_Accessories_EHDDescription" xml:space="preserve">
+    <value>Rafmagns eftirhitari</value>
+  </data>
+  <data name="MainForm_Accessories_PEHDDescription" xml:space="preserve">
+    <value>Rafmagnsforhitari</value>
+  </data>
+  <data name="ReportViewer_Email" xml:space="preserve">
+    <value>Senda með tölvupósti</value>
+  </data>
+  <data name="ReportViewer_EmailTooltip" xml:space="preserve">
+    <value>Sendu PDF með tölvupósti</value>
+  </data>
+  <data name="ReportViewer_EmailSubject" xml:space="preserve">
+    <value>Val - {0}</value>
+  </data>
+  <data name="ReportViewer_EmailBody" xml:space="preserve">
+    <value>Góðan daginn,
+
+Þakka þér fyrir fyrirspurn þína.
+
+Vinsamlega finndu meðfylgjandi PDF sem tengist vali á loftræstieiningu {0} með loftstreymi {1} m³/klst. og þrýstingi {2} Pa.{3}
+
+Vinsamlegast hafðu samband við okkur ef þú þarft einhverjar skýringar eða frekari tæknilegar upplýsingar.
+
+Kær kveðja</value>
+  </data>
+  <data name="ReportViewer_EmailCustomerReference" xml:space="preserve">
+    <value>Tilvísun þín: {0}</value>
+  </data>
+  <data name="ReportViewer_EmailPdfError" xml:space="preserve">
+    <value>Ekki tókst að búa til val PDF.</value>
+  </data>
+  <data name="ReportViewer_EmailOutlookUnavailable" xml:space="preserve">
+    <value>Microsoft Outlook er ekki tiltækt eða ekki hægt að ræsa það.</value>
+  </data>
+  <data name="ReportViewer_EmailAttachmentError" xml:space="preserve">
+    <value>Ekki tókst að hengja PDF við nýja tölvupóstinn.</value>
+  </data>
+  <data name="ReportViewer_EmailError" xml:space="preserve">
+    <value>Ekki tókst að búa til nýja tölvupóstinn.</value>
+  </data>
+  <data name="MultiProject_Title" xml:space="preserve">
+    <value>Valverkefni</value>
+  </data>
+  <data name="MultiProject_Menu" xml:space="preserve">
+    <value>Valverkefni...</value>
+  </data>
+  <data name="MultiProject_DefaultReference" xml:space="preserve">
+    <value>Verkefni 01</value>
+  </data>
+  <data name="MultiProject_Filter" xml:space="preserve">
+    <value>SSW valverkefni</value>
+  </data>
+  <data name="MultiProject_Reference" xml:space="preserve">
+    <value>Verkefnatilvísun</value>
+  </data>
+  <data name="MultiProject_Language" xml:space="preserve">
+    <value>Tungumál</value>
+  </data>
+  <data name="MultiProject_New" xml:space="preserve">
+    <value>Nýtt</value>
+  </data>
+  <data name="MultiProject_Open" xml:space="preserve">
+    <value>Opið...</value>
+  </data>
+  <data name="MultiProject_Save" xml:space="preserve">
+    <value>Vista</value>
+  </data>
+  <data name="MultiProject_SaveAs" xml:space="preserve">
+    <value>Vista sem...</value>
+  </data>
+  <data name="MultiProject_Remove" xml:space="preserve">
+    <value>Fjarlægja</value>
+  </data>
+  <data name="MultiProject_OpenSelection" xml:space="preserve">
+    <value>Opna val</value>
+  </data>
+  <data name="MultiProject_Email" xml:space="preserve">
+    <value>Tölvupóstverkefni</value>
+  </data>
+  <data name="MultiProject_Close" xml:space="preserve">
+    <value>Loka</value>
+  </data>
+  <data name="MultiProject_ColumnReference" xml:space="preserve">
+    <value>Tilvísun</value>
+  </data>
+  <data name="MultiProject_ColumnUnit" xml:space="preserve">
+    <value>Valin eining</value>
+  </data>
+  <data name="MultiProject_ColumnAirflow" xml:space="preserve">
+    <value>Loftflæði [m³/klst.]</value>
+  </data>
+  <data name="MultiProject_ColumnPressure" xml:space="preserve">
+    <value>Þrýstingur [Pa]</value>
+  </data>
+  <data name="MultiProject_ColumnPdf" xml:space="preserve">
+    <value>PDF skjal</value>
+  </data>
+  <data name="MultiProject_ColumnStatus" xml:space="preserve">
+    <value>Staða</value>
+  </data>
+  <data name="MultiProject_Ready" xml:space="preserve">
+    <value>Tilbúið</value>
+  </data>
+  <data name="MultiProject_Incomplete" xml:space="preserve">
+    <value>Ófullnægjandi</value>
+  </data>
+  <data name="MultiProject_ReferenceRequired" xml:space="preserve">
+    <value>Tilvísun verkefnisins er nauðsynleg.</value>
+  </data>
+  <data name="MultiProject_RemoveConfirm" xml:space="preserve">
+    <value>Fjarlægja valda skýrslu úr verkefninu?</value>
+  </data>
+  <data name="MultiProject_Empty" xml:space="preserve">
+    <value>Verkefnið inniheldur engar skýrslur.</value>
+  </data>
+  <data name="MultiProject_Added" xml:space="preserve">
+    <value>Skýrslunni var bætt við valverkefnið.</value>
+  </data>
+  <data name="ReportViewer_AddToProject" xml:space="preserve">
+    <value>Bæta við verkefni</value>
+  </data>
+  <data name="ReportViewer_AddToProjectTooltip" xml:space="preserve">
+    <value>Bættu við eða uppfærðu þessa skýrslu í fjölvalsverkefni</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Norwegian" xml:space="preserve">
+    <value>Norsk</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Icelandic" xml:space="preserve">
+    <value>Íslenska</value>
+  </data>
+  <data name="Help_Menu" xml:space="preserve">
+    <value>Hjálp</value>
+  </data>
+  <data name="Help_OpenGuide" xml:space="preserve">
+    <value>Notendahandbók</value>
+  </data>
+  <data name="Help_ShowToolTips" xml:space="preserve">
+    <value>Sýna hjálparráð</value>
+  </data>
+  <data name="Help_Title" xml:space="preserve">
+    <value>SSW notendahandbók</value>
+  </data>
+  <data name="Help_Search" xml:space="preserve">
+    <value>Leit</value>
+  </data>
+  <data name="Help_Close" xml:space="preserve">
+    <value>Loka</value>
+  </data>
+  <data name="Help_Tip_Series" xml:space="preserve">
+    <value>Veldu vöruflokkinn fyrst; einingalistinn er síaður í samræmi við það.</value>
+  </data>
+  <data name="Help_Tip_Unit" xml:space="preserve">
+    <value>Veldu loftræstieininguna til að reikna út.</value>
+  </data>
+  <data name="Help_Tip_Airflow" xml:space="preserve">
+    <value>Sláðu inn vetrarhönnunarloftflæði. Sumarloftstreymi er nú haldið samstilltu.</value>
+  </data>
+  <data name="Help_Tip_Pressure" xml:space="preserve">
+    <value>Tiltækur ytri stöðuþrýstingur við valið loftflæði.</value>
+  </data>
+  <data name="Help_Tip_Conditions" xml:space="preserve">
+    <value>Stilltu vetrarskilyrði vinstra megin og sumarskilyrði hægra megin.</value>
+  </data>
+  <data name="Help_Tip_Summer" xml:space="preserve">
+    <value>Virkja eða slökkva á óháða sumarútreikningnum.</value>
+  </data>
+  <data name="Help_Tip_Regulation" xml:space="preserve">
+    <value>Færðu stjórnstigið og SSW endurreiknar rekstrarpunkt og afköst.</value>
+  </data>
+  <data name="Help_Tip_Reference" xml:space="preserve">
+    <value>Tilvísun viðskiptavinar notuð í vistuðum skráarnöfnum, skýrslum og verkefnum.</value>
+  </data>
+  <data name="Help_Tip_WaterCoils" xml:space="preserve">
+    <value>Veldu og reiknaðu út samhæfar vatnsspólur. Upphitun og EHD eftirhitun útiloka gagnkvæmt.</value>
+  </data>
+  <data name="Help_Tip_ElectricHeaters" xml:space="preserve">
+    <value>Veldu samhæfa forhitara (PEHD) og eftirhitara (EHD).</value>
+  </data>
+  <data name="Help_Tip_Accessories" xml:space="preserve">
+    <value>Ljúktu við úrvalið með samhæfum aukahlutum og stjórnunaraðgerðum.</value>
+  </data>
+  <data name="Help_Tip_Report" xml:space="preserve">
+    <value>Skráðu tæknivalið og búðu til staðfærða PDF skýrslu þess.</value>
+  </data>
+  <data name="Help_Topic_GettingStarted_Title" xml:space="preserve">
+    <value>Að byrja</value>
+  </data>
+  <data name="Help_Topic_GettingStarted_Body" xml:space="preserve">
+    <value>Byrjaðu á því að velja vöruflokk og loftræstieiningar. Sláðu inn vetrarloftstreymi og tiltækan ytri stöðuþrýsting, stilltu síðan vetur og, þegar þörf krefur, sumarhita- og rakaskilyrði.
+
+Skoðaðu rekstrarpunktinn á línuritunum áður en þú bætir við spólum, rafmagnshitara, aukahlutum eða stjórnunaraðgerðum. Ljúktu við tilvísun viðskiptavina áður en þú vistar eða býrð til skýrslu; það er notað í skráarnöfnum, skýrslum og valverkefnum.</value>
+  </data>
+  <data name="Help_Topic_Conditions_Title" xml:space="preserve">
+    <value>Vetrar- og sumaraðstæður</value>
+  </data>
+  <data name="Help_Topic_Conditions_Body" xml:space="preserve">
+    <value>Vetrarinntak eru sýnd til vinstri og sumarinntak hægra megin. Sumarloftstreymi er sem stendur samstillt við vetrarloftstreymi. Notaðu Virkja sumar til að keyra báða varmafræðilega útreikninga; slökktu á því þegar aðeins er krafist vetrarhylkis.
+
+Sumar/vetur forstillingin endurheimtir staðlaðar hönnunarskilyrði. Forstillingar EN 308 og EN 13141-7 hafa aðeins áhrif á vetrartilfelli og skrifa ekki yfir sumarinntak.</value>
+  </data>
+  <data name="Help_Topic_Performance_Title" xml:space="preserve">
+    <value>Lestrarframmistaða</value>
+  </data>
+  <data name="Help_Topic_Performance_Body" xml:space="preserve">
+    <value>Reglustýringin færir valinn punkt meðfram viftukúrfunni og endurreiknar þrýsting, frásogað afl og varmaendurheimt. Appelsínuguli punkturinn auðkennir virkt loftflæði og þrýsting; skilvirknigrafin sýna veturinn og, þegar það er virkt, sumarvinnupunkta.
+
+Staðfestu að umbeðið loftstreymi liggi inni í nothæfa viftukúrfunni. Sérhver virkt vatns- eða rafmagnsspóla bætir við loftþrýstingstapi sínu og getur dregið úr hámarks leyfilegu loftflæði.</value>
+  </data>
+  <data name="Help_Topic_WaterCoils_Title" xml:space="preserve">
+    <value>Vatnsspólur</value>
+  </data>
+  <data name="Help_Topic_WaterCoils_Body" xml:space="preserve">
+    <value>Vatnsspólaflipinn er aðeins tiltækur þegar valin eining hefur samhæf tengsl í gagnagrunninum. Veldu útreikningshaminn CWD, HWD eða HCD, innri eða ytri uppsetningu, vökvann og hitastig hans.
+
+Standard notar rúmfræði vörulistans. Sérsniðin leyfir leyfilegar rúmfræðilegar breytingar og krefst hönnunarfyrirvara. Athugaðu afkastagetu, hámarkshitastig loftúttaks, loftþrýstingsfall, vatnsþrýstingsfall, vökvaflæði og hraða. HCD framkvæmir hitunar- og kælireikninga á sömu föstu rúmfræði. Ekki er hægt að virkja vatnshitun og EHD rafmagns eftirhitun saman.</value>
+  </data>
+  <data name="Help_Topic_ElectricHeaters_Title" xml:space="preserve">
+    <value>Rafmagns hitari</value>
+  </data>
+  <data name="Help_Topic_ElectricHeaters_Body" xml:space="preserve">
+    <value>PEHD er rafmagnsforhitari: hann hitar ferskt vetrarloft fyrir varmaskipti og breytir því hitastigi inntaks og úttaks skiptis. EHD er rafknúinn eftirhitari: hann hitar innblástursloft eftir endurheimt hita.
+
+Aðeins hitarar sem tengjast valinni einingu eru fáanlegir. Þrýstingstap þeirra á lofthliðinni er innifalið í viftukúrfunni. PEHD má sameina með vatnsspólustillingum; Ekki er hægt að sameina EHD með HWD eða upphitunarhluta HCD.</value>
+  </data>
+  <data name="Help_Topic_Accessories_Title" xml:space="preserve">
+    <value>Aukabúnaður og aðgerðir</value>
+  </data>
+  <data name="Help_Topic_Accessories_Body" xml:space="preserve">
+    <value>Notaðu leitar- og flokkasíur til að finna samhæfan aukabúnað og stjórnunaraðgerðir. Venjuleg atriði eru valin sjálfkrafa og ekki er hægt að fjarlægja þau. Hægt er að velja eða hreinsa valfrjálsa hluti; ótiltækir valkostir eru áfram óvirkir og leiðbeiningar þeirra útskýrir forsendu.
+
+Sumar aðgerðir krefjast tiltekins aukabúnaðar eða stýringarstigs. Yfirlit yfir valinn fylgihluti er áfram sýnilegt fyrir utan flipann svo hægt sé að athuga núverandi uppsetningu hvenær sem er.</value>
+  </data>
+  <data name="Help_Topic_Save_Title" xml:space="preserve">
+    <value>Nýtt, vistaðu og opnaðu valið aftur</value>
+  </data>
+  <data name="Help_Topic_Save_Body" xml:space="preserve">
+    <value>Nýtt val byrjar autt tæknival eftir að hafa boðið að vista óvistaða vinnu. Opið val endurheimtir .sswsel skrá, þar á meðal uppsetningu hennar, fylgihluti, staðbundin uppkast tilvísunar og skráða valsögu.
+
+Vista uppfærir núverandi skrá. Vista sem skrifar sama tæknilega valið á aðra leið: það breytir staðsetningu skráarinnar, ekki auðkenni valsins. Tilvísun viðskiptavinarins er sótthreinsuð og notuð sem forskeyti í fyrirhuguðu skráarheiti. Stjarna í gluggatitlinum gefur til kynna óvistaðar breytingar.</value>
+  </data>
+  <data name="Help_Topic_Duplicate_Title" xml:space="preserve">
+    <value>Afritaðu og búðu til valkosti</value>
+  </data>
+  <data name="Help_Topic_Duplicate_Body" xml:space="preserve">
+    <value>Afrita sem nýtt val afritar núverandi uppsetningu en úthlutar nýju sjálfstæðu valauðkenni og staðbundinni tilvísun til uppkasts. Notaðu það þegar afritaða einingin má ekki lengur deila upprunalegu endurskoðunarsögunni.
+
+Búa til val skapar einnig sjálfstæða sjálfsmynd, en bætir Alt. 01 við tilvísun viðskiptavinarins. Að búa til annan valkost úr þeim sem fyrir er eykur fjöldann. Notaðu valkosti fyrir tæknilega sambærilegar tillögur sem tilheyra sömu beiðni viðskiptavina.</value>
+  </data>
+  <data name="Help_Topic_Report_Title" xml:space="preserve">
+    <value>Skýrslur og endurskoðun</value>
+  </data>
+  <data name="Help_Topic_Report_Body" xml:space="preserve">
+    <value>Búa til skýrslu staðfestir núverandi uppsetningu, skráir tæknilegt val þegar þjónustan er tiltæk, býr til staðbundið PDF og opnar skýrsluskoðarann. Frá áhorfandanum geturðu skoðað niðurstöðuna, sent PDF með tölvupósti eða bætt því við valverkefni.
+
+Að búa til skýrslu aftur eftir að hafa breytt þegar skráðu vali skapar næstu endurskoðun á sama auðkenni. Að afrita eða búa til val skapar fyrst aðra sjálfsmynd í staðinn. Ef netskráning er ekki tiltæk getur SSW búið til staðbundin drög án þess að trufla tæknivinnu.</value>
+  </data>
+  <data name="Help_Topic_Project_Title" xml:space="preserve">
+    <value>Fjölvalsverkefni</value>
+  </data>
+  <data name="Help_Topic_Project_Body" xml:space="preserve">
+    <value>Valverkefni (.sswproj) flokkar skýrslur fyrir nokkrar loftræstieiningar undir einni verkvísun og tungumáli. Það kemur ekki í stað einstakra .sswsel skráa: hver röð heldur raðvalinu og núverandi PDF.
+
+Búðu til eða opnaðu verkefnið úr Skrá &gt; Valverkefni. Búðu til hverja einingaskýrslu og notaðu Bæta við verkefni í skýrsluskoðaranum. Í verkefnaglugganum er hægt að opna val aftur, fjarlægja úreltar línur, uppfæra PDF og útbúa einn staðfærðan tölvupóst sem inniheldur hverja núverandi skýrslu og yfirlitstöflu.</value>
+  </data>
+  <data name="Help_Topic_Tips_Title" xml:space="preserve">
+    <value>Hjálparráð</value>
+  </data>
+  <data name="Help_Topic_Tips_Body" xml:space="preserve">
+    <value>Ábendingar um samhengi útskýra stýringar og stjórnunarvalmyndarskipanir án þess að opna handbókina. Þeir eru sjálfgefið virkjaðir á nýrri uppsetningu. Slökktu á eða virkjaðu þau úr Valkostum eða Hjálp; valið er geymt í Windows notendasniðinu og er haldið eftir SSW uppfærslu.
+
+Tungumálsnöfn í tungumálavalmyndinni eru viljandi alltaf sýnd sem sjálfheiti, þannig að hver notandi getur þekkt sitt eigið tungumál, jafnvel þegar núverandi viðmót notar annað tungumál.</value>
+  </data>
+  <data name="Help_MenuTip_New" xml:space="preserve"><value>Byrjaðu autt tæknival. Þú getur vistað núverandi breytingar áður en þú heldur áfram.</value></data>
+  <data name="Help_MenuTip_Open" xml:space="preserve"><value>Opnaðu .sswsel skrá og endurheimtu vistaðar stillingar og valauðkenni hennar.</value></data>
+  <data name="Help_MenuTip_Save" xml:space="preserve"><value>Vistaðu breytingar á núverandi .sswsel skrá, eða veldu skráarheiti ef það hefur ekki verið vistað áður.</value></data>
+  <data name="Help_MenuTip_SaveAs" xml:space="preserve"><value>Vistaðu núverandi val í annarri .sswsel skrá á sama tíma og þú heldur sama tæknilega vali.</value></data>
+  <data name="Help_MenuTip_Duplicate" xml:space="preserve"><value>Búðu til sjálfstætt val með nýju auðkenni og varðveittu núverandi uppsetningu sem upphafspunkt.</value></data>
+  <data name="Help_MenuTip_Alternative" xml:space="preserve"><value>Búðu til sjálfstæðan valkost og bættu við eða bættu við Alt. XX forskeytinu í tilvísun viðskiptavinarins.</value></data>
+  <data name="Help_MenuTip_Recent" xml:space="preserve"><value>Opnaðu eina af nýjustu .sswsel skránum.</value></data>
+  <data name="Help_MenuTip_Project" xml:space="preserve"><value>Búðu til eða stjórnaðu verkefni sem flokkar nokkur val og PDF skýrslur þeirra.</value></data>
+  <data name="Help_MenuTip_Report" xml:space="preserve"><value>Skráðu núverandi tæknival og búðu til staðbundna PDF skýrslu þess.</value></data>
+  <data name="Help_MenuTip_CommercialSheet" xml:space="preserve"><value>Búðu til auglýsingavörublaðið þegar það er tiltækt fyrir valda einingu og tungumál.</value></data>
+  <data name="Help_MenuTip_Iom" xml:space="preserve"><value>Búðu til uppsetningar-, rekstrar- og viðhaldsskjal þegar það er tiltækt.</value></data>
+  <data name="Help_MenuTip_Exit" xml:space="preserve"><value>Lokaðu SSW. Þú verður spurður hvort eigi að vista óvistaðar valbreytingar.</value></data>
+  <data name="Help_MenuTip_Language" xml:space="preserve"><value>Breyttu viðmóti, skýrslu og samskiptamáli. Tungumálanöfn eru áfram skrifuð á þeirra eigin tungumáli.</value></data>
+  <data name="Help_MenuTip_Units" xml:space="preserve"><value>Veldu mælikerfið sem viðmótið og útbúin skjöl notar.</value></data>
+  <data name="Help_MenuTip_CommercialSync" xml:space="preserve"><value>Samstilltu auglýsingablaðið sjálfkrafa við virka valið þegar þessi valkostur er tiltækur.</value></data>
+  <data name="Help_MenuTip_Updates" xml:space="preserve"><value>Athugaðu handvirkt hvort nýrri SSW útgáfa sé fáanleg.</value></data>
+  <data name="Help_MenuTip_OpenGuide" xml:space="preserve"><value>Opnaðu leitarhæfa notendahandbók fyrir val, skýrslur og verkefni.</value></data>
+  <data name="Help_MenuTip_ToggleTips" xml:space="preserve"><value>Virkja eða slökkva á samhengishjálparábendingum í gegnum SSW.</value></data>
+  <data name="Help_Topic_Workflow_Title" xml:space="preserve"><value>Mælt er með verkflæði fyrir val</value></data>
+  <data name="Help_Topic_Workflow_Body" xml:space="preserve"><value>1. Veldu fjölskyldu og einingu.
+2. Sláðu inn loftflæði, þrýsting og hönnunarskilyrði.
+3. Stilltu reglugerðarstigið og staðfestu vinnustaðinn.
+4. Bættu við samhæfðum vatnsspólum, rafmagnshitara, fylgihlutum og aðgerðum.
+5. Sláðu inn tilvísun viðskiptavinar og vistaðu .sswsel skrána.
+6. Búðu til og skoðaðu staðfærða PDF.
+7. Ef starfið inniheldur nokkrar einingar, bætið hverri skýrslu við valverkefni.</value></data>
+  <data name="Help_Topic_Exports_Title" xml:space="preserve"><value>Viðskiptablað og IOM</value></data>
+  <data name="Help_Topic_Exports_Body" xml:space="preserve"><value>Viðskiptablað og IOM eru viðbótarskjöl og eru aðeins virkjuð þegar efni er til fyrir valda einingu, útibú og tungumál. Þau vista ekki tæknivalið og koma ekki í stað útreikningsskýrslunnar.
+
+Vistaðu .sswsel skrána fyrst þegar þú þarft að varðveita breytanleg útreikningsinntak. Búðu til skýrslu þegar þú þarft rekjanlega tæknilega niðurstöðu og endurskoðunartilvísun hennar.</value></data>
+</root>

@@ -324,6 +324,11 @@
       <DependentUpon>CLMainForm.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="CLMainForm.Help.vb">
+      <DependentUpon>CLMainForm.vb</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CLHelpForm.vb" />
     <Compile Include="CLSelectionCatalog.vb" />
     <Compile Include="CLCoilHydraulicRules.vb" />
     <Compile Include="CLDatabaseCompatibility.vb" />
@@ -510,6 +515,8 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Resources.da.resx" />
     <EmbeddedResource Include="Resources.sv.resx" />
+    <EmbeddedResource Include="Resources.no.resx" />
+    <EmbeddedResource Include="Resources.is.resx" />
     <EmbeddedResource Include="Resources.hu.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.hu.Designer.vb</LastGenOutput>

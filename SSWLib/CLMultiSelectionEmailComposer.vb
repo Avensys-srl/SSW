@@ -65,10 +65,12 @@ Public NotInheritable Class CLMultiSelectionEmailComposer
             Case "hu" : cultureName = "hu-HU"
             Case "it" : cultureName = "it-IT"
             Case "nl" : cultureName = "nl-NL"
+            Case "no" : cultureName = "nb-NO"
             Case "pl" : cultureName = "pl-PL"
             Case "ro" : cultureName = "ro-RO"
             Case "sl" : cultureName = "sl-SI"
             Case "sv" : cultureName = "sv-SE"
+            Case "is" : cultureName = "is-IS"
             Case Else : cultureName = "en-GB"
         End Select
         Return CultureInfo.GetCultureInfo(cultureName)
@@ -113,6 +115,10 @@ Friend NotInheritable Class CLMultiSelectionEmailText
                 Return T("Projekt - {0}", "Goddag,", "Tak for jeres forespørgsel.", "Projektreference", "Vedlagt fremsendes PDF-filerne for de valg, der er angivet i tabellen nedenfor.", "Reference", "Valgt aggregat", "Luftmængde", "Tryk", "PDF-fil", "Vi står til rådighed for spørgsmål eller yderligere tekniske oplysninger.", "Med venlig hilsen")
             Case "sv"
                 Return T("Projekt - {0}", "Hej,", "Tack för er förfrågan.", "Projektreferens", "Bifogat skickar vi PDF-filerna för valen i tabellen nedan.", "Referens", "Valt aggregat", "Luftflöde", "Tryck", "PDF-fil", "Vi står till förfogande för frågor eller ytterligare teknisk information.", "Med vänlig hälsning")
+            Case "no"
+                Return T("Prosjekt - {0}", "God dag,", "Takk for forespørselen.", "Prosjektreferanse", "Vedlagt følger PDF-filene for valgene i tabellen nedenfor.", "Referanse", "Valgt aggregat", "Luftmengde", "Trykk", "PDF-fil", "Ta gjerne kontakt dersom dere trenger avklaringer eller ytterligere teknisk informasjon.", "Med vennlig hilsen")
+            Case "is"
+                Return T("Verkefni - {0}", "Góðan dag,", "Takk fyrir fyrirspurnina.", "Tilvísun verkefnis", "Meðfylgjandi eru PDF-skjölin fyrir valkostina í töflunni hér að neðan.", "Tilvísun", "Valin eining", "Loftflæði", "Þrýstingur", "PDF-skjal", "Vinsamlegast hafið samband ef þörf er á frekari skýringum eða tæknilegum upplýsingum.", "Með bestu kveðju")
             Case Else
                 Return T("Project - {0}", "Good morning,", "Thank you for your enquiry.", "Project reference", "Please find attached the PDF files relating to the selections listed in the following table.", "Reference", "Selected unit", "Airflow", "Pressure", "PDF file", "Please contact us if you require any clarification or further technical information.", "Kind regards")
         End Select

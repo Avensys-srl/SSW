@@ -233,7 +233,7 @@ internal static class Program
     private static void TestAccessoryLocalization()
     {
         string repositoryRoot = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", ".."));
-        string[] languages = { "bg", "da", "de", "en", "fr", "hu", "it", "nl", "pl", "ro", "sl", "sv" };
+        string[] languages = { "bg", "da", "de", "en", "fr", "hu", "is", "it", "nl", "no", "pl", "ro", "sl", "sv" };
         string[] keys =
         {
             "MainForm_Accessories_Tab", "MainForm_Accessories_AllCategories",
@@ -275,7 +275,7 @@ internal static class Program
     private static void TestMultiSelectionLocalization()
     {
         string repositoryRoot = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", ".."));
-        string[] languages = { "bg", "da", "de", "en", "fr", "hu", "it", "nl", "pl", "ro", "sl", "sv" };
+        string[] languages = { "bg", "da", "de", "en", "fr", "hu", "is", "it", "nl", "no", "pl", "ro", "sl", "sv" };
         string[] keys =
         {
             "MultiProject_Title", "MultiProject_DefaultReference", "MultiProject_Reference",
@@ -367,7 +367,7 @@ internal static class Program
 
         string repositoryRoot = Path.GetFullPath(Path.Combine(
             AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", ".."));
-        string[] languages = { "bg", "da", "de", "en", "fr", "hu", "it", "nl", "pl", "ro", "sl", "sv" };
+        string[] languages = { "bg", "da", "de", "en", "fr", "hu", "is", "it", "nl", "no", "pl", "ro", "sl", "sv" };
         string[] keys =
         {
             "ReportViewer_Email", "ReportViewer_EmailTooltip", "ReportViewer_EmailSubject",
@@ -896,7 +896,7 @@ internal static class Program
         CLSelectionProjectDocument selection = CreateCalculatedDocument();
         CLMultiSelectionProjectDocument project = CLMultiSelectionProjectSerializer.CreateNew("Project 01", "en");
         CLMultiSelectionProjectSerializer.AddOrUpdate(project, selection, pdfPath, "en");
-        foreach (string language in new[] { "bg", "da", "de", "en", "fr", "hu", "it", "nl", "pl", "ro", "sl", "sv" })
+        foreach (string language in new[] { "bg", "da", "de", "en", "fr", "hu", "is", "it", "nl", "no", "pl", "ro", "sl", "sv" })
         {
             project.LanguageCode = language;
             project.Items[0].LanguageCode = language;

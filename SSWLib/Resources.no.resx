@@ -1,0 +1,1270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root xmlns:ns1="urn:schemas-microsoft-com:xml-msdata" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:schema id="root">
+    <xs:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xs:element name="root" ns1:IsDataSet="true">
+      <xs:complexType>
+        <xs:choice maxOccurs="unbounded">
+          <xs:element name="metadata">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="value" type="xsd:string" minOccurs="0" />
+              </xs:sequence>
+              <xs:attribute name="name" use="required" type="xsd:string" />
+              <xs:attribute name="type" type="xsd:string" />
+              <xs:attribute name="mimetype" type="xsd:string" />
+              <xs:attribute ref="xml:space" />
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="assembly">
+            <xs:complexType>
+              <xs:attribute name="alias" type="xsd:string" />
+              <xs:attribute name="name" type="xsd:string" />
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="data">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="value" type="xsd:string" minOccurs="0" ns1:Ordinal="1" />
+                <xs:element name="comment" type="xsd:string" minOccurs="0" ns1:Ordinal="2" />
+              </xs:sequence>
+              <xs:attribute name="name" type="xsd:string" use="required" ns1:Ordinal="1" />
+              <xs:attribute name="type" type="xsd:string" ns1:Ordinal="3" />
+              <xs:attribute name="mimetype" type="xsd:string" ns1:Ordinal="4" />
+              <xs:attribute ref="xml:space" />
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="resheader">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="value" type="xsd:string" minOccurs="0" ns1:Ordinal="1" />
+              </xs:sequence>
+              <xs:attribute name="name" type="xsd:string" use="required" />
+            </xs:complexType>
+          </xs:element>
+        </xs:choice>
+      </xs:complexType>
+    </xs:element>
+  </xs:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="About" xml:space="preserve">
+    <value>Omtrent</value>
+  </data>
+  <data name="AboutBoxForm_AirflowPressure" xml:space="preserve">
+    <value>@@AirflowPressure</value>
+  </data>
+  <data name="AboutBoxForm_ElectricPowerInput" xml:space="preserve">
+    <value>@@ElectricPowerInput</value>
+  </data>
+  <data name="AboutBoxForm_ExternalLeakage" xml:space="preserve">
+    <value>@@ExternalLeakage</value>
+  </data>
+  <data name="AboutBoxForm_InternalLeakage" xml:space="preserve">
+    <value>@@InternalLeakage</value>
+  </data>
+  <data name="AboutBoxForm_NoiseLevel" xml:space="preserve">
+    <value>@@NoiseLevel</value>
+  </data>
+  <data name="AboutBoxForm_Title" xml:space="preserve">
+    <value>@@PerformancesAccordanceWith</value>
+  </data>
+  <data name="AirflowPressure" xml:space="preserve">
+    <value>Luftstrøm / trykk</value>
+  </data>
+  <data name="CO2Level" xml:space="preserve">
+    <value>CO2-nivå</value>
+  </data>
+  <data name="CO2Level_AddToReport" xml:space="preserve">
+    <value>Legg til i rapport</value>
+  </data>
+  <data name="CO2Level_Parameters" xml:space="preserve">
+    <value>Parametere</value>
+  </data>
+  <data name="CO2Level_Parameters_Af_area" xml:space="preserve">
+    <value>Luftmengde per område</value>
+  </data>
+  <data name="CO2Level_Parameters_Af_demand" xml:space="preserve">
+    <value>Etterspurt luftstrøm</value>
+  </data>
+  <data name="CO2Level_Parameters_Af_person" xml:space="preserve">
+    <value>Luftstrøm per person</value>
+  </data>
+  <data name="CO2Level_Parameters_Af_set" xml:space="preserve">
+    <value>Still inn luftstrøm</value>
+  </data>
+  <data name="CO2Level_Parameters_CalcMet" xml:space="preserve">
+    <value>Beregningsmetode</value>
+  </data>
+  <data name="CO2Level_Parameters_CalcMet_Fixed_Af" xml:space="preserve">
+    <value>Fast strømningshastighet</value>
+  </data>
+  <data name="CO2Level_Parameters_CalcMet_MaxCO2" xml:space="preserve">
+    <value>Maks. CO2-nivå</value>
+  </data>
+  <data name="CO2Level_Parameters_CalcMet_PersonRelated" xml:space="preserve">
+    <value>Personrelatert</value>
+  </data>
+  <data name="CO2Level_Parameters_checkwp" xml:space="preserve">
+    <value>Kontroller arbeidspunktet</value>
+  </data>
+  <data name="CO2Level_Parameters_ExtCO2" xml:space="preserve">
+    <value>Utendørs CO2-nivå</value>
+  </data>
+  <data name="CO2Level_Parameters_MaxCO2" xml:space="preserve">
+    <value>Maks. CO2-nivå</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset" xml:space="preserve">
+    <value>Standard forhåndsinnstilling</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_01" xml:space="preserve">
+    <value>Ingen</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_02" xml:space="preserve">
+    <value>Byggebulletin 101 : Maks 1000 ppm CO2</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_03" xml:space="preserve">
+    <value>EN15251 kat I,B1: 10 l/s pers &amp; 0,5 l/s m2</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_04" xml:space="preserve">
+    <value>EN15251 kat I,B2: 10 l/s pers &amp; 1,0 l/s m2</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_05" xml:space="preserve">
+    <value>EN15251 kat I,B3: 10 l/s pers &amp; 2,0 l/s m2</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_06" xml:space="preserve">
+    <value>EN15251 kat II,B1: 7 l/s pers &amp; 0,35 l/s m2</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_07" xml:space="preserve">
+    <value>EN15251 cat II,B2: 7 l/s pers &amp; 0,7 l/s m2</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_08" xml:space="preserve">
+    <value>EN15251 kat II,B3: 7 l/s pers &amp; 1,4 l/s m2</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_09" xml:space="preserve">
+    <value>EN15251 kat III,B1: 4 l/s pers &amp; 0,2 l/s m2</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_10" xml:space="preserve">
+    <value>EN15251 kat III,B2: 4 l/s pers &amp; 0,4 l/s m2</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_11" xml:space="preserve">
+    <value>EN15251 kat III,B3: 4 l/s pers &amp; 0,8 l/s m2</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_12" xml:space="preserve">
+    <value>EN15251 kat I: C02 maks. 700 ppm</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_13" xml:space="preserve">
+    <value>EN15251 kat II: C02 maks. 850 ppm</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_14" xml:space="preserve">
+    <value>EN15251 kat III: C02 maks. 1150 ppm</value>
+  </data>
+  <data name="CO2Level_PeriodOfTime" xml:space="preserve">
+    <value>Tidsperiode</value>
+  </data>
+  <data name="CO2Level_Room" xml:space="preserve">
+    <value>Rom</value>
+  </data>
+  <data name="CO2Level_Room_Height" xml:space="preserve">
+    <value>Høyde</value>
+  </data>
+  <data name="CO2Level_Room_Length" xml:space="preserve">
+    <value>Lengde</value>
+  </data>
+  <data name="CO2Level_Room_Witdh" xml:space="preserve">
+    <value>Witdh</value>
+  </data>
+  <data name="CO2Level_Usage" xml:space="preserve">
+    <value>Bruk</value>
+  </data>
+  <data name="CO2Level_Usage_Break" xml:space="preserve">
+    <value>Pause</value>
+  </data>
+  <data name="CO2Level_Usage_CO2prod" xml:space="preserve">
+    <value>CO2-produksjon</value>
+  </data>
+  <data name="CO2Level_Usage_LevelAct" xml:space="preserve">
+    <value>Aktivitetsnivå</value>
+  </data>
+  <data name="CO2Level_Usage_People" xml:space="preserve">
+    <value>Mennesker</value>
+  </data>
+  <data name="CO2Level_Usage_Period" xml:space="preserve">
+    <value>Periode</value>
+  </data>
+  <data name="CO2Level_Usage_Presence" xml:space="preserve">
+    <value>Tilstedeværelse</value>
+  </data>
+  <data name="CommercialSheet" xml:space="preserve">
+    <value>Kommersielt ark</value>
+  </data>
+  <data name="ElectricPowerInput" xml:space="preserve">
+    <value>Elektrisk strøminngang</value>
+  </data>
+  <data name="ExternalLeakage" xml:space="preserve">
+    <value>Ekstern lekkasje</value>
+  </data>
+  <data name="InternalLeakage" xml:space="preserve">
+    <value>Intern lekkasje</value>
+  </data>
+  <data name="IOM" xml:space="preserve">
+    <value>IOM</value>
+  </data>
+  <data name="MainForm" xml:space="preserve">
+    <value>Forestillinger</value>
+  </data>
+  <data name="MainForm_AirFlow" xml:space="preserve">
+    <value>Luftstrøm</value>
+  </data>
+  <data name="MainForm_CantSaveFile" xml:space="preserve">
+    <value>Kan ikke lagre filen</value>
+  </data>
+  <data name="MainForm_Certification" xml:space="preserve">
+    <value>Sertifisering</value>
+  </data>
+  <data name="MainForm_Close" xml:space="preserve">
+    <value>Lukk</value>
+  </data>
+  <data name="MainForm_Date" xml:space="preserve">
+    <value>Dato</value>
+  </data>
+  <data name="MainForm_Efficiency" xml:space="preserve">
+    <value>Effektivitet</value>
+  </data>
+  <data name="MainForm_ElectricalPerformances" xml:space="preserve">
+    <value>Elektriske ytelser</value>
+  </data>
+  <data name="MainForm_ExhaustOutletTemperature" xml:space="preserve">
+    <value>Eksosuttakstemp.</value>
+  </data>
+  <data name="MainForm_FileSaved" xml:space="preserve">
+    <value>Filen er lagret</value>
+  </data>
+  <data name="MainForm_FreshInletTemperature" xml:space="preserve">
+    <value>Fresh Inlet Temp.</value>
+  </data>
+  <data name="MainForm_GridSAP_Date" xml:space="preserve">
+    <value>Dato</value>
+  </data>
+  <data name="MainForm_GridSAP_EnergySavingTrustBestPracticePerformanceCompliant" xml:space="preserve">
+    <value>Energisparende tillit Beste praksis Ytelsesoverensstemmelse</value>
+  </data>
+  <data name="MainForm_GridSAP_EstimatedSAPTestTable" xml:space="preserve">
+    <value>Estimert SAP-testtabell</value>
+  </data>
+  <data name="MainForm_GridSAP_ExhaustTerminalConfiguration" xml:space="preserve">
+    <value>Eksosterminalkonfigurasjon</value>
+  </data>
+  <data name="MainForm_GridSAP_HeatExchangeEffiency" xml:space="preserve">
+    <value>Varmevekslingseffektivitet</value>
+  </data>
+  <data name="MainForm_GridSAP_RegulationLevel" xml:space="preserve">
+    <value>Reguleringsnivå</value>
+  </data>
+  <data name="MainForm_GridSAP_SpecificFanPower" xml:space="preserve">
+    <value>Spesifikk vifteeffekt</value>
+  </data>
+  <data name="MainForm_GridSAP_TotalExhaustFlowRate" xml:space="preserve">
+    <value>Total eksosstrømhastighet</value>
+  </data>
+  <data name="MainForm_GridSAP_TotalSupplyFlowRate" xml:space="preserve">
+    <value>Total tilførselsstrøm</value>
+  </data>
+  <data name="MainForm_GridSAP_UnitSelected" xml:space="preserve">
+    <value>Enhet valgt</value>
+  </data>
+  <data name="MainForm_HeatExchangerPerformances" xml:space="preserve">
+    <value>Varmevekslerens ytelser</value>
+  </data>
+  <data name="MainForm_HeatTransferred" xml:space="preserve">
+    <value>Varmeoverført</value>
+  </data>
+  <data name="MainForm_InputData" xml:space="preserve">
+    <value>Inndata</value>
+  </data>
+  <data name="MainForm_LatentHeat" xml:space="preserve">
+    <value>Latent varme</value>
+  </data>
+  <data name="MainForm_MaxPressure" xml:space="preserve">
+    <value>Maks trykk</value>
+  </data>
+  <data name="MainForm_Menu_About" xml:space="preserve">
+    <value>Om</value>
+  </data>
+  <data name="MainForm_Menu_File" xml:space="preserve">
+    <value>Fil</value>
+  </data>
+  <data name="MainForm_Menu_File_Exit" xml:space="preserve">
+    <value>Avslutt</value>
+  </data>
+  <data name="MainForm_Menu_File_GenerateReport" xml:space="preserve">
+    <value>Generer rapport</value>
+  </data>
+  <data name="MainForm_Menu_File_Open" xml:space="preserve">
+    <value>Åpne</value>
+  </data>
+  <data name="MainForm_Menu_Option" xml:space="preserve">
+    <value>Alternativ</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language" xml:space="preserve">
+    <value>Språk</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Bulgarian" xml:space="preserve">
+    <value>Български</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Deutsch" xml:space="preserve">
+    <value>Deutsch</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Dutch" xml:space="preserve">
+    <value>Nederlands</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_English" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Français" xml:space="preserve">
+    <value>Français</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Italian" xml:space="preserve">
+    <value>Italiano</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Polish" xml:space="preserve">
+    <value>Polski</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Romanian" xml:space="preserve">
+    <value>Română</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Slovenian" xml:space="preserve">
+    <value>Slovenščina</value>
+  </data>
+  <data name="MainForm_Menu_Option_SelectMode" xml:space="preserve">
+    <value>Velg modus</value>
+  </data>
+  <data name="MainForm_Menu_Option_SelectMode_Checking" xml:space="preserve">
+    <value>Kontrollerer</value>
+  </data>
+  <data name="MainForm_Menu_Option_SelectMode_Design" xml:space="preserve">
+    <value>Design</value>
+  </data>
+  <data name="MainForm_Menu_Option_Unit" xml:space="preserve">
+    <value>Enhet</value>
+  </data>
+  <data name="MainForm_Menu_Option_Unit_IP" xml:space="preserve">
+    <value>I.P.</value>
+  </data>
+  <data name="MainForm_Menu_Option_Unit_SI" xml:space="preserve">
+    <value>S.I.</value>
+  </data>
+  <data name="MainForm_PassiveHouse" xml:space="preserve">
+    <value>Passivhus</value>
+  </data>
+  <data name="MainForm_PassiveHouseElectricalEfficienty" xml:space="preserve">
+    <value>Passivhuselektr. Eff.</value>
+  </data>
+  <data name="MainForm_Performance" xml:space="preserve">
+    <value>Ytelse</value>
+  </data>
+  <data name="MainForm_Performances" xml:space="preserve">
+    <value>Forestillinger</value>
+  </data>
+  <data name="MainForm_PowerInput" xml:space="preserve">
+    <value>Strøminngang</value>
+  </data>
+  <data name="MainForm_PowerSupply" xml:space="preserve">
+    <value>Strømforsyning</value>
+  </data>
+  <data name="MainForm_Pressure" xml:space="preserve">
+    <value>Trykk</value>
+  </data>
+  <data name="MainForm_RegulationLevel" xml:space="preserve">
+    <value>Reguleringsnivå</value>
+  </data>
+  <data name="MainForm_ReturnInletTemperature" xml:space="preserve">
+    <value>Returinnløpstemp.</value>
+  </data>
+  <data name="MainForm_RHExhaustOutletTemperature" xml:space="preserve">
+    <value>R.H.</value>
+  </data>
+  <data name="MainForm_RHFreshInletTemperature" xml:space="preserve">
+    <value>R.H.</value>
+  </data>
+  <data name="MainForm_RHReturnInletTemperature" xml:space="preserve">
+    <value>R.H.</value>
+  </data>
+  <data name="MainForm_RHSupplyOutletTemperature" xml:space="preserve">
+    <value>R.H.</value>
+  </data>
+  <data name="MainForm_SEL" xml:space="preserve">
+    <value>SPI</value>
+  </data>
+  <data name="MainForm_SelectPdfFile" xml:space="preserve">
+    <value>Velg en pdf-fil</value>
+  </data>
+  <data name="MainForm_SensibleHeat" xml:space="preserve">
+    <value>Fornuftig varme</value>
+  </data>
+  <data name="MainForm_SFP" xml:space="preserve">
+    <value>SFP</value>
+  </data>
+  <data name="MainForm_ShowPassiveHouseArea" xml:space="preserve">
+    <value>Vis passivhusområdet</value>
+  </data>
+  <data name="MainForm_ShowSELArea" xml:space="preserve">
+    <value>Vis SEL-området</value>
+  </data>
+  <data name="MainForm_ShowSFPArea" xml:space="preserve">
+    <value>Vis SFP-område</value>
+  </data>
+  <data name="MainForm_SingleBranch" xml:space="preserve">
+    <value>enkelt gren</value>
+  </data>
+  <data name="MainForm_SupplyOutletTemperature" xml:space="preserve">
+    <value>Tilførselsuttakstemp.</value>
+  </data>
+  <data name="MainForm_TemperatureConditionsAndUmidity" xml:space="preserve">
+    <value>Temperaturforhold og fuktighet</value>
+  </data>
+  <data name="MainForm_Unit" xml:space="preserve">
+    <value>Enhet</value>
+  </data>
+  <data name="MainForm_UnitSelected" xml:space="preserve">
+    <value>Enhet valgt</value>
+  </data>
+  <data name="MainForm_UnitSelection" xml:space="preserve">
+    <value>Enhetsvalg</value>
+  </data>
+  <data name="MainForm_UpdateSAPTable" xml:space="preserve">
+    <value>Oppdater SAP-tabell</value>
+  </data>
+  <data name="MainForm_WaterProduced" xml:space="preserve">
+    <value>Vann produsert</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Nei</value>
+  </data>
+  <data name="NoiseLevel" xml:space="preserve">
+    <value>Støynivå</value>
+  </data>
+  <data name="Page" xml:space="preserve">
+    <value>Side</value>
+  </data>
+  <data name="PDF_HeatExchangerPerformances" xml:space="preserve">
+    <value>Varmevekslerens ytelser</value>
+  </data>
+  <data name="PDF_RegLev" xml:space="preserve">
+    <value>Reg. Lev.</value>
+  </data>
+  <data name="PDF_TemperatureConditions" xml:space="preserve">
+    <value>Temperaturforhold</value>
+  </data>
+  <data name="PDF_WorkingArea" xml:space="preserve">
+    <value>Arbeidsområde</value>
+  </data>
+  <data name="PDF_WorkingPoint" xml:space="preserve">
+    <value>Arbeidspunkt</value>
+  </data>
+  <data name="PerformancesAccordanceWith" xml:space="preserve">
+    <value>Alle forestillinger er utført i henhold til:</value>
+  </data>
+  <data name="PleaseWaitForm_Message" xml:space="preserve">
+    <value>Vennligst vent noen sekunder...</value>
+  </data>
+  <data name="Release" xml:space="preserve">
+    <value>Programvareutgivelse</value>
+  </data>
+  <data name="SaveCommercialSheet" xml:space="preserve">
+    <value>Lagre reklameark</value>
+  </data>
+  <data name="SaveIOM" xml:space="preserve">
+    <value>Lagre IOM</value>
+  </data>
+  <data name="Series" xml:space="preserve">
+    <value>serien</value>
+  </data>
+  <data name="SoundInlet" xml:space="preserve">
+    <value>Innløp</value>
+  </data>
+  <data name="SoundOutlet" xml:space="preserve">
+    <value>Uttak</value>
+  </data>
+  <data name="SoundPower" xml:space="preserve">
+    <value>Lydkraft</value>
+  </data>
+  <data name="Sound_Breakout" xml:space="preserve">
+    <value>Breakout</value>
+  </data>
+  <data name="Sound_Exhaust" xml:space="preserve">
+    <value>Eksos</value>
+  </data>
+  <data name="Sound_Fresh" xml:space="preserve">
+    <value>Fersk</value>
+  </data>
+  <data name="Sound_Return" xml:space="preserve">
+    <value>Retur</value>
+  </data>
+  <data name="Sound_Supply" xml:space="preserve">
+    <value>Forsyning</value>
+  </data>
+  <data name="Sound_Total" xml:space="preserve">
+    <value>Totalt</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Ja</value>
+  </data>
+  <data name="Legal_Notice" xml:space="preserve">
+    <value>Juridisk merknad: Dataene er testet på spesifikke driftspunkter i samsvar med de ovennevnte standardene. Det virkelige tilfellet kan avvike fra det normative tilfellet. De resterende dataene er ekstrapolert. Hvis installasjonen er spesielt følsom for støydata, vennligst kontakt oss (programvaren er ikke sertifisert). Utbruddsberegningen utføres i henhold til ASHRAE-håndboken - HVAC-applikasjoner, kapittel 47-standarden.</value>
+  </data>
+  <data name="Item_Code" xml:space="preserve">
+    <value>Varekoding</value>
+  </data>
+  <data name="RegLev_Note" xml:space="preserve">
+    <value>I noen tilfeller kan det ikke være et lineært forhold mellom reguleringsnivået og det på enheten</value>
+  </data>
+  <data name="MainForm_ShowERPArea" xml:space="preserve">
+    <value>Vis ERP 2018-området</value>
+  </data>
+  <data name="MainForm_MoistureRecovery" xml:space="preserve">
+    <value>Fuktgjenvinning</value>
+  </data>
+  <data name="MainForm_Summer" xml:space="preserve">
+    <value>Sommer</value>
+  </data>
+  <data name="MainForm_Winter" xml:space="preserve">
+    <value>Vinter</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Hungarian" xml:space="preserve">
+    <value>Magyar</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Danish" xml:space="preserve">
+    <value>Dansk</value>
+  </data>
+  <data name="MainForm_Menu_Option_CommercialSheetAutoSync" xml:space="preserve">
+    <value>Commercial Sheets Auto Sync</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Tab" xml:space="preserve">
+    <value>Vannspiraler</value>
+  </data>
+  <data name="MainForm_CoilPerformance_EnableGroup" xml:space="preserve">
+    <value>Vannbatteriberegning</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Enable" xml:space="preserve">
+    <value>Aktiver spoleberegning</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Selection" xml:space="preserve">
+    <value>Valg av spole</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Case" xml:space="preserve">
+    <value>Etui</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Standard" xml:space="preserve">
+    <value>Standard</value>
+  </data>
+  <data name="MainForm_CoilPerformance_StandardCustomized" xml:space="preserve">
+    <value>Tilpasset</value>
+  </data>
+  <data name="MainForm_CoilPerformance_External" xml:space="preserve">
+    <value>Ekstern</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Type" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Coil" xml:space="preserve">
+    <value>Spole</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Fluid" xml:space="preserve">
+    <value>Væske- og vanntemperaturer</value>
+  </data>
+  <data name="MainForm_CoilPerformance_FluidType" xml:space="preserve">
+    <value>Væske</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Glycol" xml:space="preserve">
+    <value>Glykol [%]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_CoolingIn" xml:space="preserve">
+    <value>Avkjøling i [C]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_CoolingOut" xml:space="preserve">
+    <value>Avkjøling [C]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_HeatingIn" xml:space="preserve">
+    <value>Oppvarming i [C]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_HeatingOut" xml:space="preserve">
+    <value>Oppvarming ut [C]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Geometry" xml:space="preserve">
+    <value>Geometri</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Length" xml:space="preserve">
+    <value>Lengde [mm]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Height" xml:space="preserve">
+    <value>Høyde [mm/rør]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_HeightMm" xml:space="preserve">
+    <value>mm</value>
+  </data>
+  <data name="MainForm_CoilPerformance_HeightTubes" xml:space="preserve">
+    <value>rør</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Rows" xml:space="preserve">
+    <value>Rader</value>
+  </data>
+  <data name="MainForm_CoilPerformance_FinSpacing" xml:space="preserve">
+    <value>Finneavstand [mm]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Circuits" xml:space="preserve">
+    <value>Kretser</value>
+  </data>
+  <data name="MainForm_CoilPerformance_ResultMode" xml:space="preserve">
+    <value>Modus</value>
+  </data>
+  <data name="MainForm_CoilPerformance_ResultStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="MainForm_CoilPerformance_ResultCapacity" xml:space="preserve">
+    <value>Kapasitet [W]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_ResultSensible" xml:space="preserve">
+    <value>Fornuftig [W]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_ResultAirOut" xml:space="preserve">
+    <value>Maks. utløpsluft temp. [C]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_ResultRHOut" xml:space="preserve">
+    <value>R.H. ut [%]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_ResultCond" xml:space="preserve">
+    <value>Kond. [l/t]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_ResultDP" xml:space="preserve">
+    <value>DP [Pa]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_ResultFace" xml:space="preserve">
+    <value>Ansikt vel. [m/s]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="MainForm_CoilPerformance_AirPressureApplied" xml:space="preserve">
+    <value>Spolelufttrykkfall påført</value>
+  </data>
+  <data name="MainForm_CoilPerformance_ResultWaterDP" xml:space="preserve">
+    <value>Vann DP [kPa]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_ResultFluidFlow" xml:space="preserve">
+    <value>Væskestrøm [l/t]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_ResultFluidSpeed" xml:space="preserve">
+    <value>Væskehastighet [m/s]</value>
+  </data>
+  <data name="Water" xml:space="preserve">
+    <value>Vann</value>
+  </data>
+  <data name="Glic_Etil" xml:space="preserve">
+    <value>Etylenglykol</value>
+  </data>
+  <data name="Glic_Prop" xml:space="preserve">
+    <value>Propylenglykol</value>
+  </data>
+  <data name="MainForm_WinterSummer" xml:space="preserve">
+    <value>Sommer / vinter</value>
+  </data>
+  <data name="MainForm_SummerEnable" xml:space="preserve">
+    <value>Sommeraktivering</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Swedish" xml:space="preserve">
+    <value>Svenska</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Installation" xml:space="preserve">
+    <value>Installasjon</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Internal" xml:space="preserve">
+    <value>Intern</value>
+  </data>
+  <data name="MainForm_CoilPerformance_ExternalInstallation" xml:space="preserve">
+    <value>Ekstern</value>
+  </data>
+  <data name="MainForm_CoilPerformance_RequestInternal" xml:space="preserve">
+    <value>Intern forespørsel</value>
+  </data>
+  <data name="MainForm_CoilPerformance_CustomWarning" xml:space="preserve">
+    <value>Vennligst be om generelle dimensjoner, leveringstid og tilbud</value>
+  </data>
+  <data name="MainForm_Menu_Option_CheckUpdates" xml:space="preserve">
+    <value>Se etter oppdateringer</value>
+  </data>
+  <data name="Update_Title" xml:space="preserve">
+    <value>Programvareoppdatering</value>
+  </data>
+  <data name="Update_ErrorTitle" xml:space="preserve">
+    <value>Oppdateringsfeil</value>
+  </data>
+  <data name="Update_UpToDate" xml:space="preserve">
+    <value>Programvaren er oppdatert.</value>
+  </data>
+  <data name="Update_NewAvailable" xml:space="preserve">
+    <value>En ny programvareoppdatering er tilgjengelig!</value>
+  </data>
+  <data name="Update_CurrentVersion" xml:space="preserve">
+    <value>Gjeldende versjon</value>
+  </data>
+  <data name="Update_NewVersion" xml:space="preserve">
+    <value>Ny versjon</value>
+  </data>
+  <data name="Update_DownloadQuestion" xml:space="preserve">
+    <value>Last ned og start installasjonsprogrammet nå?</value>
+  </data>
+  <data name="Update_CheckFailed" xml:space="preserve">
+    <value>Kan ikke se etter oppdateringer: {0}</value>
+  </data>
+  <data name="Update_PackageIntegrityFailed" xml:space="preserve">
+    <value>Oppdateringspakken mislyktes med integritetsverifisering.</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Calculating" xml:space="preserve">
+    <value>Beregner, vennligst vent...</value>
+  </data>
+  <data name="MainForm_Project_New" xml:space="preserve">
+    <value>Nytt utvalg</value>
+  </data>
+  <data name="MainForm_Project_Open" xml:space="preserve">
+    <value>Åpne utvalg...</value>
+  </data>
+  <data name="MainForm_Project_Save" xml:space="preserve">
+    <value>Lagre valg</value>
+  </data>
+  <data name="MainForm_Project_SaveAs" xml:space="preserve">
+    <value>Lagre valg som...</value>
+  </data>
+  <data name="MainForm_Project_Duplicate" xml:space="preserve">
+    <value>Dupliser som nytt utvalg...</value>
+  </data>
+  <data name="MainForm_Project_Recent" xml:space="preserve">
+    <value>Nylige valg</value>
+  </data>
+  <data name="MainForm_Project_Title" xml:space="preserve">
+    <value>Teknisk utvalg</value>
+  </data>
+  <data name="MainForm_Project_Filter" xml:space="preserve">
+    <value>SSW teknisk utvalg</value>
+  </data>
+  <data name="MainForm_Project_Unsaved" xml:space="preserve">
+    <value>Det gjeldende utvalget har ulagrede endringer. Lagre dem nå?</value>
+  </data>
+  <data name="MainForm_Project_OpenError" xml:space="preserve">
+    <value>Kan ikke åpne utvalgsprosjektet: {0}</value>
+  </data>
+  <data name="MainForm_Project_SaveError" xml:space="preserve">
+    <value>Kan ikke lagre utvalgsprosjektet: {0}</value>
+  </data>
+  <data name="MainForm_SelectionRegistration_Title" xml:space="preserve">
+    <value>Teknisk utvalg</value>
+  </data>
+  <data name="MainForm_SelectionRegistration_Wait" xml:space="preserve">
+    <value>Registrerer det tekniske utvalget. Vennligst vent...</value>
+  </data>
+  <data name="MainForm_SelectionRegistration_Failed" xml:space="preserve">
+    <value>Det tekniske utvalget kunne ikke registreres: {0}</value>
+  </data>
+  <data name="MainForm_SelectionRegistration_Retry" xml:space="preserve">
+    <value>Prøv på nytt</value>
+  </data>
+  <data name="MainForm_SelectionRegistration_Draft" xml:space="preserve">
+    <value>Generer utkast</value>
+  </data>
+  <data name="MainForm_SelectionRegistration_Cancel" xml:space="preserve">
+    <value>Avbryt</value>
+  </data>
+  <data name="MainForm_TechnicalSelectionRevision" xml:space="preserve">
+    <value>Revisjon</value>
+  </data>
+  <data name="MainForm_TechnicalSelectionStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="MainForm_TechnicalSelectionStatus_Registered" xml:space="preserve">
+    <value>Registrert</value>
+  </data>
+  <data name="MainForm_TechnicalSelectionStatus_Draft" xml:space="preserve">
+    <value>Utkast</value>
+  </data>
+  <data name="MainForm_CoilPerformance_InvalidCoolingTemperatures" xml:space="preserve">
+    <value>Kjølevannets utløpstemperatur må være minst 1 K høyere enn innløpstemperaturen.</value>
+  </data>
+  <data name="MainForm_CoilPerformance_InvalidHeatingTemperatures" xml:space="preserve">
+    <value>Innløpstemperatur for varmevann må være minst 1 K høyere enn utløpstemperatur.</value>
+  </data>
+  <data name="MainForm_CoilPerformance_LowWaterDeltaT" xml:space="preserve">
+    <value>Lavvann delta T (3 K ≤ ΔT &lt; 5 K). Vannføringen er høyere enn vanlig.</value>
+  </data>
+  <data name="MainForm_CoilPerformance_CriticalWaterDeltaT" xml:space="preserve">
+    <value>Svært lavt vann delta T (mindre enn 3 K). Overdreven vannstrøm og trykkfall. Bekreft hydraulisk design.</value>
+  </data>
+  <data name="MainForm_CoilPerformance_WaterPressureDropWarning" xml:space="preserve">
+    <value>Vanntrykkfallet overskrider anbefalt grense (40 kPa). Hydraulisk strømforbruk og pumpekostnader kan bli for høye. Vurder å øke spolestørrelsen eller redusere vannhastigheten.</value>
+  </data>
+  <data name="MainForm_Project_CreateAlternative" xml:space="preserve">
+    <value>Opprett et alternativ...</value>
+  </data>
+  <data name="MainForm_CoilPerformance_DimensionsNote" xml:space="preserve">
+    <value>Dimensjonene ovenfor refererer kun til vannbatteriet.</value>
+  </data>
+  <data name="MainForm_CoilPerformance_CustomDisclaimerTitle" xml:space="preserve">
+    <value>Egendefinert spoledesign</value>
+  </data>
+  <data name="MainForm_CoilPerformance_CustomDisclaimer" xml:space="preserve">
+    <value>Kontroller at den tilpassede spolen fungerer som den skal ved hvert tiltenkte arbeidspunkt. Trykk OK for å bekrefte dette kravet.</value>
+  </data>
+  <data name="MainForm_CoilPerformance_CustomDisclaimerAccepted" xml:space="preserve">
+    <value>Ansvarsfraskrivelse for tilpasset spoledesign akseptert</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Tab" xml:space="preserve">
+    <value>Elektriske varmebatterier</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Enable" xml:space="preserve">
+    <value>Aktiver beregning</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Heater" xml:space="preserve">
+    <value>Elektrisk varmebatteri</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Power" xml:space="preserve">
+    <value>Strøm [W]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Voltage" xml:space="preserve">
+    <value>Spenning [V]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Phases" xml:space="preserve">
+    <value>Faser</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Current" xml:space="preserve">
+    <value>Nåværende [A]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_AirIn" xml:space="preserve">
+    <value>Luftinntak [C]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_AirOut" xml:space="preserve">
+    <value>Maks. luft ut temp. [°C]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_PressureDrop" xml:space="preserve">
+    <value>Air DP [Pa]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_ExhaustOut" xml:space="preserve">
+    <value>Eksosuttak [C]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_WaterConflict" xml:space="preserve">
+    <value>Fjern markeringen av oppvarmingsvannbatteriet for å aktivere den elektriske ettervarmeren.</value>
+  </data>
+  <data name="MainForm_ElectricHeater_CustomPending" xml:space="preserve">
+    <value>Egendefinerte parametere for elektrisk varmeapparat vil bli definert i et senere trinn.</value>
+  </data>
+  <data name="MainForm_ElectricHeater_CustomDisclaimer" xml:space="preserve">
+    <value>Valg av tilpasset elektrisk varmebatteri må verifiseres for hvert tiltenkt driftspunkt. Fortsette?</value>
+  </data>
+  <data name="MainForm_ElectricHeater_FrostWarning" xml:space="preserve">
+    <value>Eksostemperaturen er ikke over frostbeskyttelsesmålet på 3 C.</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Code" xml:space="preserve">
+    <value>Kode</value>
+  </data>
+  <data name="MainForm_ElectricHeater_ManagementCode" xml:space="preserve">
+    <value>Administrasjonskode</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Frequency" xml:space="preserve">
+    <value>Frekvens [Hz]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Stages" xml:space="preserve">
+    <value>Stadier</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Quantity" xml:space="preserve">
+    <value>Antall</value>
+  </data>
+  <data name="MainForm_ElectricHeater_NominalPressureDrop" xml:space="preserve">
+    <value>Nominell luft DP [Pa]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_FrostStatus" xml:space="preserve">
+    <value>Frostbeskyttelsesmål</value>
+  </data>
+  <data name="MainForm_ElectricHeater_FrostTargetReached" xml:space="preserve">
+    <value>Mål nådd</value>
+  </data>
+  <data name="MainForm_ElectricHeater_FrostTargetNotReached" xml:space="preserve">
+    <value>Mål ikke nådd</value>
+  </data>
+  <data name="MainForm_ElectricHeater_CustomDisclaimerAccepted" xml:space="preserve">
+    <value>Ansvarsfraskrivelse for tilpasset elektrisk varmeapparat akseptert</value>
+  </data>
+  <data name="MainForm_CoilPerformance_ElectricPostHeaterConflict" xml:space="preserve">
+    <value>Deaktiver den elektriske ettervarmeren (EHD) for å aktivere ettervarme av vann.</value>
+  </data>
+  <data name="MainForm_Accessories_Tab" xml:space="preserve">
+    <value>Tilbehør og funksjoner</value>
+  </data>
+  <data name="MainForm_Accessories_AllCategories" xml:space="preserve">
+    <value>Alle kategorier</value>
+  </data>
+  <data name="MainForm_Accessories_RequiresExtraController" xml:space="preserve">
+    <value>Krever KTS Extra eller høyere.</value>
+  </data>
+  <data name="MainForm_Accessories_EnableFirst" xml:space="preserve">
+    <value>Velg {0} først.</value>
+  </data>
+  <data name="MainForm_Accessories_ConflictsWith" xml:space="preserve">
+    <value>Ikke kompatibel med {0}.</value>
+  </data>
+  <data name="MainForm_Accessories_ControllerLevel" xml:space="preserve">
+    <value>Krever et høyere kontrollernivå på grunn av: {0}.</value>
+  </data>
+  <data name="MainForm_Accessories_RequiredBy" xml:space="preserve">
+    <value>Påkrevd av: {0}.</value>
+  </data>
+  <data name="MainForm_Accessories_Selected" xml:space="preserve">
+    <value>Valgt</value>
+  </data>
+  <data name="MainForm_Accessories_Summary" xml:space="preserve">
+    <value>Valgt tilbehør</value>
+  </data>
+  <data name="MainForm_Accessories_Search" xml:space="preserve">
+    <value>Søk</value>
+  </data>
+  <data name="MainForm_Accessories_Category" xml:space="preserve">
+    <value>Kategori</value>
+  </data>
+  <data name="MainForm_Accessories_Code" xml:space="preserve">
+    <value>Kode</value>
+  </data>
+  <data name="MainForm_Accessories_Description" xml:space="preserve">
+    <value>Beskrivelse</value>
+  </data>
+  <data name="MainForm_Accessories_Functions" xml:space="preserve">
+    <value>Funksjoner</value>
+  </data>
+  <data name="MainForm_Accessories_Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="MainForm_Accessories_Standard" xml:space="preserve">
+    <value>Standard</value>
+  </data>
+  <data name="MainForm_Accessories_Optional" xml:space="preserve">
+    <value>Valgfritt</value>
+  </data>
+  <data name="MainForm_Accessories_CWDDescription" xml:space="preserve">
+    <value>Kjølebatteri for kjølt vann</value>
+  </data>
+  <data name="MainForm_Accessories_HWDDescription" xml:space="preserve">
+    <value>Varmtvannsvarmebatteri</value>
+  </data>
+  <data name="MainForm_Accessories_HCDDescription" xml:space="preserve">
+    <value>To-rørs vannbatteri for oppvarming og kjøling</value>
+  </data>
+  <data name="MainForm_Accessories_EHDDescription" xml:space="preserve">
+    <value>Elektrisk ettervarmer</value>
+  </data>
+  <data name="MainForm_Accessories_PEHDDescription" xml:space="preserve">
+    <value>Elektrisk forvarmer</value>
+  </data>
+  <data name="ReportViewer_Email" xml:space="preserve">
+    <value>Send via e-post</value>
+  </data>
+  <data name="ReportViewer_EmailTooltip" xml:space="preserve">
+    <value>Send PDF-en via e-post</value>
+  </data>
+  <data name="ReportViewer_EmailSubject" xml:space="preserve">
+    <value>Utvalg - {0}</value>
+  </data>
+  <data name="ReportViewer_EmailBody" xml:space="preserve">
+    <value>God morgen,
+
+Takk for henvendelsen.
+
+Vedlagt finner du PDF-en som gjelder valg av ventilasjonsenhet {0} ved en luftmengde på {1} m³/h og trykk på {2} Pa.{3}
+
+Ta kontakt med oss hvis du trenger avklaring eller ytterligere teknisk informasjon.
+
+Vennlig hilsen</value>
+  </data>
+  <data name="ReportViewer_EmailCustomerReference" xml:space="preserve">
+    <value>Din referanse: {0}</value>
+  </data>
+  <data name="ReportViewer_EmailPdfError" xml:space="preserve">
+    <value>Kan ikke generere valg-PDFen.</value>
+  </data>
+  <data name="ReportViewer_EmailOutlookUnavailable" xml:space="preserve">
+    <value>Microsoft Outlook er ikke tilgjengelig eller kan ikke startes.</value>
+  </data>
+  <data name="ReportViewer_EmailAttachmentError" xml:space="preserve">
+    <value>Kan ikke legge ved PDF-en til den nye e-posten.</value>
+  </data>
+  <data name="ReportViewer_EmailError" xml:space="preserve">
+    <value>Kan ikke opprette den nye e-posten.</value>
+  </data>
+  <data name="MultiProject_Title" xml:space="preserve">
+    <value>Utvalgsprosjekt</value>
+  </data>
+  <data name="MultiProject_Menu" xml:space="preserve">
+    <value>Utvalgsprosjekt...</value>
+  </data>
+  <data name="MultiProject_DefaultReference" xml:space="preserve">
+    <value>Prosjekt 01</value>
+  </data>
+  <data name="MultiProject_Filter" xml:space="preserve">
+    <value>SSW utvalgsprosjekt</value>
+  </data>
+  <data name="MultiProject_Reference" xml:space="preserve">
+    <value>Prosjektreferanse</value>
+  </data>
+  <data name="MultiProject_Language" xml:space="preserve">
+    <value>Språk</value>
+  </data>
+  <data name="MultiProject_New" xml:space="preserve">
+    <value>Ny</value>
+  </data>
+  <data name="MultiProject_Open" xml:space="preserve">
+    <value>Åpne...</value>
+  </data>
+  <data name="MultiProject_Save" xml:space="preserve">
+    <value>Lagre</value>
+  </data>
+  <data name="MultiProject_SaveAs" xml:space="preserve">
+    <value>Lagre som...</value>
+  </data>
+  <data name="MultiProject_Remove" xml:space="preserve">
+    <value>Fjern</value>
+  </data>
+  <data name="MultiProject_OpenSelection" xml:space="preserve">
+    <value>Åpne utvalget</value>
+  </data>
+  <data name="MultiProject_Email" xml:space="preserve">
+    <value>E-postprosjekt</value>
+  </data>
+  <data name="MultiProject_Close" xml:space="preserve">
+    <value>Lukk</value>
+  </data>
+  <data name="MultiProject_ColumnReference" xml:space="preserve">
+    <value>Referanse</value>
+  </data>
+  <data name="MultiProject_ColumnUnit" xml:space="preserve">
+    <value>Valgt enhet</value>
+  </data>
+  <data name="MultiProject_ColumnAirflow" xml:space="preserve">
+    <value>Luftmengde [m³/t]</value>
+  </data>
+  <data name="MultiProject_ColumnPressure" xml:space="preserve">
+    <value>Trykk [Pa]</value>
+  </data>
+  <data name="MultiProject_ColumnPdf" xml:space="preserve">
+    <value>PDF-fil</value>
+  </data>
+  <data name="MultiProject_ColumnStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="MultiProject_Ready" xml:space="preserve">
+    <value>Klar</value>
+  </data>
+  <data name="MultiProject_Incomplete" xml:space="preserve">
+    <value>Ufullstendig</value>
+  </data>
+  <data name="MultiProject_ReferenceRequired" xml:space="preserve">
+    <value>Prosjektreferansen er påkrevd.</value>
+  </data>
+  <data name="MultiProject_RemoveConfirm" xml:space="preserve">
+    <value>Vil du fjerne den valgte rapporten fra prosjektet?</value>
+  </data>
+  <data name="MultiProject_Empty" xml:space="preserve">
+    <value>Prosjektet inneholder ingen rapporter.</value>
+  </data>
+  <data name="MultiProject_Added" xml:space="preserve">
+    <value>Rapporten ble lagt til utvalgsprosjektet.</value>
+  </data>
+  <data name="ReportViewer_AddToProject" xml:space="preserve">
+    <value>Legg til i prosjekt</value>
+  </data>
+  <data name="ReportViewer_AddToProjectTooltip" xml:space="preserve">
+    <value>Legg til eller oppdater denne rapporten i et flervalgsprosjekt</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Norwegian" xml:space="preserve">
+    <value>Norsk</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Icelandic" xml:space="preserve">
+    <value>Íslenska</value>
+  </data>
+  <data name="Help_Menu" xml:space="preserve">
+    <value>Hjelp</value>
+  </data>
+  <data name="Help_OpenGuide" xml:space="preserve">
+    <value>Brukerveiledning</value>
+  </data>
+  <data name="Help_ShowToolTips" xml:space="preserve">
+    <value>Vis hjelpetips</value>
+  </data>
+  <data name="Help_Title" xml:space="preserve">
+    <value>SSW brukerveiledning</value>
+  </data>
+  <data name="Help_Search" xml:space="preserve">
+    <value>Søk</value>
+  </data>
+  <data name="Help_Close" xml:space="preserve">
+    <value>Lukk</value>
+  </data>
+  <data name="Help_Tip_Series" xml:space="preserve">
+    <value>Velg produktfamilien først; enhetslisten filtreres deretter.</value>
+  </data>
+  <data name="Help_Tip_Unit" xml:space="preserve">
+    <value>Velg ventilasjonsaggregatet som skal beregnes.</value>
+  </data>
+  <data name="Help_Tip_Airflow" xml:space="preserve">
+    <value>Angi vinterdesignluftstrømmen. Sommerluftstrømmen holdes for øyeblikket synkronisert.</value>
+  </data>
+  <data name="Help_Tip_Pressure" xml:space="preserve">
+    <value>Tilgjengelig eksternt statisk trykk ved valgt luftstrøm.</value>
+  </data>
+  <data name="Help_Tip_Conditions" xml:space="preserve">
+    <value>Still inn vinterforhold til venstre og sommerforhold til høyre.</value>
+  </data>
+  <data name="Help_Tip_Summer" xml:space="preserve">
+    <value>Aktiver eller deaktiver den uavhengige sommerberegningen.</value>
+  </data>
+  <data name="Help_Tip_Regulation" xml:space="preserve">
+    <value>Flytt kontrollnivået og SSW beregner driftspunktet og ytelsen på nytt.</value>
+  </data>
+  <data name="Help_Tip_Reference" xml:space="preserve">
+    <value>Kundereferanse brukt i lagrede filnavn, rapporter og prosjekter.</value>
+  </data>
+  <data name="Help_Tip_WaterCoils" xml:space="preserve">
+    <value>Velg og beregn kompatible vannbatterier. Vannbåren oppvarming og EHD-ettervarme utelukker hverandre.</value>
+  </data>
+  <data name="Help_Tip_ElectricHeaters" xml:space="preserve">
+    <value>Velg kompatible forvarmere (PEHD) og ettervarmere (EHD).</value>
+  </data>
+  <data name="Help_Tip_Accessories" xml:space="preserve">
+    <value>Fullfør utvalget med kompatibelt tilbehør og kontrollfunksjoner.</value>
+  </data>
+  <data name="Help_Tip_Report" xml:space="preserve">
+    <value>Registrer det tekniske utvalget og generer dets lokaliserte PDF-rapport.</value>
+  </data>
+  <data name="Help_Topic_GettingStarted_Title" xml:space="preserve">
+    <value>Komme i gang</value>
+  </data>
+  <data name="Help_Topic_GettingStarted_Body" xml:space="preserve">
+    <value>Begynn med å velge produktfamilie og ventilasjonsaggregat. Angi vinterluftstrømmen og tilgjengelig eksternt statisk trykk, og still inn vinter- og, når det er nødvendig, sommertemperatur og fuktighetsforhold.
+
+Se gjennom driftspunktet på grafene før du legger til spoler, elektriske varmeovner, tilbehør eller kontrollfunksjoner. Fyll ut kundereferansen før du lagrer eller genererer en rapport; den brukes i filnavn, rapporter og utvalgsprosjekter.</value>
+  </data>
+  <data name="Help_Topic_Conditions_Title" xml:space="preserve">
+    <value>Vinter og sommerforhold</value>
+  </data>
+  <data name="Help_Topic_Conditions_Body" xml:space="preserve">
+    <value>Vinterinnganger vises til venstre og sommerinnganger til høyre. Sommerluftstrømmen forblir for tiden synkronisert med vinterluftstrømmen. Bruk Aktiver sommer for å kjøre begge termodynamiske beregninger; deaktiver den når bare vinterdekselet er nødvendig.
+
+Forhåndsinnstillingen Sommer/Vinter gjenoppretter standarddesignforholdene. Forhåndsinnstillinger for EN 308 og EN 13141-7 påvirker kun vintertilfellet og overskriver ikke sommerinngangene.</value>
+  </data>
+  <data name="Help_Topic_Performance_Title" xml:space="preserve">
+    <value>Leseprestasjon</value>
+  </data>
+  <data name="Help_Topic_Performance_Body" xml:space="preserve">
+    <value>Reguleringskontrollen flytter det valgte punktet langs viftekurven og beregner trykk, absorbert effekt og varmegjenvinningsytelse på nytt. Det oransje punktet identifiserer den aktive luftstrømmen og trykket; effektivitetsgrafene viser vinter- og, når aktivert, sommerarbeidspunkter.
+
+Kontroller at den forespurte luftstrømmen ligger innenfor den brukbare viftekurven. Enhver aktivert vann- eller elektrisk spole øker trykktapet på luftsiden og kan redusere den maksimalt tillatte luftstrømmen.</value>
+  </data>
+  <data name="Help_Topic_WaterCoils_Title" xml:space="preserve">
+    <value>Vannspiraler</value>
+  </data>
+  <data name="Help_Topic_WaterCoils_Body" xml:space="preserve">
+    <value>Fanen Vannspiraler er kun tilgjengelig når den valgte enheten har kompatible relasjoner i databasen. Velg beregningsmodus CWD, HWD eller HCD, den interne eller eksterne installasjonen, væsken og dens temperaturer.
+
+Standard bruker kataloggeometrien. Tilpasset tillater de tillatte geometriske endringene og krever designfraskrivelsen. Sjekk kapasitet, maksimal luftutløpstemperatur, lufttrykkfall, vanntrykkfall, væskestrøm og hastighet. HCD utfører varme- og kjøleberegninger på samme faste geometri. Vannoppvarming og EHD elektrisk ettervarme kan ikke aktiveres sammen.</value>
+  </data>
+  <data name="Help_Topic_ElectricHeaters_Title" xml:space="preserve">
+    <value>Elektriske varmeovner</value>
+  </data>
+  <data name="Help_Topic_ElectricHeaters_Body" xml:space="preserve">
+    <value>PEHD er en elektrisk forvarmer: den varmer opp vinterfrisk luft før varmeveksleren og endrer derfor vekslerens innløps- og utløpstemperaturer. EHD er en elektrisk ettervarmer: den varmer opp tilluften etter varmegjenvinning.
+
+Kun varmeovner relatert til den valgte enheten er tilgjengelig. Deres trykktap på luftsiden er inkludert i viftekurven. PEHD kan kombineres med vannbatterimoduser; EHD kan ikke kombineres med HWD eller varmedelen av HCD.</value>
+  </data>
+  <data name="Help_Topic_Accessories_Title" xml:space="preserve">
+    <value>Tilbehør og funksjoner</value>
+  </data>
+  <data name="Help_Topic_Accessories_Body" xml:space="preserve">
+    <value>Bruk søke- og kategorifiltre for å finne kompatibelt tilbehør og kontrollfunksjoner. Standardelementer velges automatisk og kan ikke fjernes. Valgfrie elementer kan velges eller slettes; utilgjengelige valg forblir deaktivert og verktøytipset forklarer forutsetningen.
+
+Noen funksjoner krever et spesifikt tilbehør eller kontrollernivå. Sammendraget av valgt tilbehør forblir synlig utenfor fanen slik at gjeldende konfigurasjon kan kontrolleres når som helst.</value>
+  </data>
+  <data name="Help_Topic_Save_Title" xml:space="preserve">
+    <value>Nye, lagre og åpne valg på nytt</value>
+  </data>
+  <data name="Help_Topic_Save_Body" xml:space="preserve">
+    <value>Nytt utvalg starter et tomt teknisk utvalg etter tilbud om å lagre ulagret arbeid. Åpent utvalg gjenoppretter en .sswsel-fil, inkludert dens konfigurasjon, tilbehør, lokal utkastreferanse og registrert utvalgshistorikk.
+
+Lagre oppdaterer gjeldende fil. Lagre som skriver det samme tekniske utvalget til en annen bane: det endrer filplasseringen, ikke identiteten til utvalget. Kundereferansen renses og brukes som et prefiks i det foreslåtte filnavnet. En stjerne i vindustittelen indikerer ulagrede endringer.</value>
+  </data>
+  <data name="Help_Topic_Duplicate_Title" xml:space="preserve">
+    <value>Dupliser og lag alternativer</value>
+  </data>
+  <data name="Help_Topic_Duplicate_Body" xml:space="preserve">
+    <value>Dupliser som nytt utvalg kopierer gjeldende konfigurasjon, men tildeler en ny uavhengig utvalgsidentitet og lokal utkastreferanse. Bruk den når den kopierte enheten ikke lenger må dele den originale revisjonshistorikken.
+
+Opprett et alternativ skaper også en uavhengig identitet, men legger Alt. 01 til kundereferansen. Hvis du oppretter et annet alternativ fra et eksisterende, øker antallet. Bruk alternativer for teknisk sammenlignbare forslag som tilhører samme kundeforespørsel.</value>
+  </data>
+  <data name="Help_Topic_Report_Title" xml:space="preserve">
+    <value>Rapporter og revisjoner</value>
+  </data>
+  <data name="Help_Topic_Report_Body" xml:space="preserve">
+    <value>Generer rapport validerer gjeldende konfigurasjon, registrerer det tekniske utvalget når tjenesten er tilgjengelig, oppretter en lokalisert PDF og åpner rapportvisningen. Fra seeren kan du inspisere resultatet, sende PDF via e-post eller legge det til et utvalgsprosjekt.
+
+Generering av en rapport på nytt etter endring av et allerede registrert utvalg oppretter neste revisjon av samme identitet. Å duplisere eller lage et alternativ skaper først en annen identitet i stedet. Hvis online registrering ikke er tilgjengelig, kan SSW generere et lokalt utkast uten å avbryte teknisk arbeid.</value>
+  </data>
+  <data name="Help_Topic_Project_Title" xml:space="preserve">
+    <value>Flervalgsprosjekter</value>
+  </data>
+  <data name="Help_Topic_Project_Body" xml:space="preserve">
+    <value>Et utvalgsprosjekt (.sswproj) samler rapporter for flere ventilasjonsaggregater under én prosjektreferanse og språk. Den erstatter ikke de individuelle .sswsel-filene: hver rad beholder det serialiserte utvalget og dets gjeldende PDF.
+
+Opprett eller åpne prosjektet fra Fil &gt; Utvalgsprosjekt. Generer hver enhetsrapport og bruk Legg til i prosjekt i rapportvisningen. I prosjektvinduet kan du åpne et utvalg på nytt, fjerne foreldede rader, oppdatere PDF-er og forberede en lokalisert e-post som inneholder hver gjeldende rapport og en sammendragstabell.</value>
+  </data>
+  <data name="Help_Topic_Tips_Title" xml:space="preserve">
+    <value>Hjelpetips</value>
+  </data>
+  <data name="Help_Topic_Tips_Body" xml:space="preserve">
+    <value>Kontekstuelle hjelpetips forklarer kontroller og operative menykommandoer uten å åpne veiledningen. De er aktivert som standard på en ny installasjon. Deaktiver eller aktiver dem fra Alternativer eller Hjelp; preferansen lagres i Windows-brukerprofilen og beholdes etter en SSW-oppdatering.
+
+Språknavn i språkmenyen vises med vilje alltid som autonym, slik at hver bruker kan gjenkjenne sitt eget språk selv når det gjeldende grensesnittet bruker et annet språk.</value>
+  </data>
+  <data name="Help_MenuTip_New" xml:space="preserve"><value>Start et tomt teknisk utvalg. Du kan lagre de gjeldende endringene før du fortsetter.</value></data>
+  <data name="Help_MenuTip_Open" xml:space="preserve"><value>Åpne en .sswsel-fil og gjenopprett dens lagrede konfigurasjons- og utvalgsidentitet.</value></data>
+  <data name="Help_MenuTip_Save" xml:space="preserve"><value>Lagre endringer i gjeldende .sswsel-fil, eller velg et filnavn hvis det ikke har blitt lagret før.</value></data>
+  <data name="Help_MenuTip_SaveAs" xml:space="preserve"><value>Lagre det gjeldende utvalget til en annen .sswsel-fil mens du beholder den samme tekniske utvalgsidentiteten.</value></data>
+  <data name="Help_MenuTip_Duplicate" xml:space="preserve"><value>Opprett et uavhengig utvalg med en ny identitet, og bevar den gjeldende konfigurasjonen som utgangspunkt.</value></data>
+  <data name="Help_MenuTip_Alternative" xml:space="preserve"><value>Opprett et uavhengig alternativ og legg til eller øk Alt. XX-prefikset i kundereferansen.</value></data>
+  <data name="Help_MenuTip_Recent" xml:space="preserve"><value>Åpne en av de sist brukte .sswsel-filene.</value></data>
+  <data name="Help_MenuTip_Project" xml:space="preserve"><value>Opprett eller administrer et prosjekt som grupperer flere utvalg og deres PDF-rapporter.</value></data>
+  <data name="Help_MenuTip_Report" xml:space="preserve"><value>Registrer det gjeldende tekniske utvalget og generer dets lokaliserte PDF-rapport.</value></data>
+  <data name="Help_MenuTip_CommercialSheet" xml:space="preserve"><value>Generer det kommersielle produktarket når det er tilgjengelig for den valgte enheten og språket.</value></data>
+  <data name="Help_MenuTip_Iom" xml:space="preserve"><value>Generer installasjons-, drifts- og vedlikeholdsdokumentet når det er tilgjengelig.</value></data>
+  <data name="Help_MenuTip_Exit" xml:space="preserve"><value>Lukk SSW. Du vil bli spurt om du vil lagre ulagrede utvalgsendringer.</value></data>
+  <data name="Help_MenuTip_Language" xml:space="preserve"><value>Endre grensesnitt, rapport og kommunikasjonsspråk. Språknavn forblir skrevet på deres eget språk.</value></data>
+  <data name="Help_MenuTip_Units" xml:space="preserve"><value>Velg målesystemet som brukes av grensesnittet og genererte dokumenter.</value></data>
+  <data name="Help_MenuTip_CommercialSync" xml:space="preserve"><value>Synkroniser automatisk det kommersielle arket med det aktive utvalget når dette alternativet er tilgjengelig.</value></data>
+  <data name="Help_MenuTip_Updates" xml:space="preserve"><value>Sjekk manuelt om en nyere SSW-versjon er tilgjengelig.</value></data>
+  <data name="Help_MenuTip_OpenGuide" xml:space="preserve"><value>Åpne den søkbare brukerveiledningen for utvalg, rapporter og prosjekter.</value></data>
+  <data name="Help_MenuTip_ToggleTips" xml:space="preserve"><value>Aktiver eller deaktiver kontekstuelle hjelpetips gjennom hele SSW.</value></data>
+  <data name="Help_Topic_Workflow_Title" xml:space="preserve"><value>Anbefalt arbeidsflyt for valg</value></data>
+  <data name="Help_Topic_Workflow_Body" xml:space="preserve"><value>1. Velg familie og enhet.
+2. Angi luftstrøm, trykk og designforhold.
+3. Juster reguleringsnivået og kontroller driftspunktet.
+4. Legg til kompatible vannspiraler, elektriske varmeovner, tilbehør og funksjoner.
+5. Skriv inn kundereferansen og lagre .sswsel-filen.
+6. Generer og se gjennom den lokaliserte PDF.
+7. Hvis jobben inneholder flere enheter, legger du hver rapport til et utvalgsprosjekt.</value></data>
+  <data name="Help_Topic_Exports_Title" xml:space="preserve"><value>Kommersielt ark og IOM</value></data>
+  <data name="Help_Topic_Exports_Body" xml:space="preserve"><value>Kommersielt ark og IOM er tilleggsdokumenter og er kun aktivert når det finnes innhold for den valgte enheten, grenen og språket. De lagrer ikke det tekniske utvalget og erstatter ikke beregningsrapporten.
+
+Lagre .sswsel-filen først når du trenger å bevare redigerbare beregningsinndata. Generer rapport når du trenger det sporbare tekniske resultatet og revisjonsreferansen.</value></data>
+</root>

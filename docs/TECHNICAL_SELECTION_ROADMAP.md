@@ -506,6 +506,11 @@ da `/usage` nel Codex CLI.
   dell'indirizzo IP. La build AV pubblica non incorpora piu' la credenziale
   bootstrap obsoleta.
 
+- `1.3.0.54`: aggiunte le localizzazioni norvegese e islandese, la guida utente
+  localizzata con suggerimenti contestuali disattivabili, le relazioni batterie
+  elettriche SG/PRIME aggiornate e le roadmap approvate per layout installativo
+  e promemoria commerciali locali.
+
 - UX selezioni: aggiunto il comando per creare alternative progressive (`Alt. XX`),
   disclaimer persistito per le batterie personalizzate e relativo campo nel
   dataset report; completate le indicazioni su ingombri e dimensioni batteria.
@@ -538,7 +543,10 @@ affrontati dopo il completamento della selezione accessori e funzioni:
 
 - calcolo termodinamico e aeraulico con portate di mandata e ripresa
   sbilanciate;
-- scelta e persistenza del layout installativo delle unita'.
+- scelta e persistenza del layout installativo delle unita'. Il contratto
+  funzionale, il modello dati proposto, le ondate operative e la matrice di
+  test sono definiti nella roadmap dedicata
+  `docs/INSTALLATION_LAYOUT_ROADMAP.md` (approvata il 22/07/2026).
 
 ### Preselezione guidata - in cantiere, non avviata
 
@@ -563,4 +571,4 @@ limita il flusso esistente una volta aperta la selezione completa.
 
 Prima dell'implementazione dovranno essere definiti il parametro di ranking,
 i filtri minimi, i dati del riepilogo rapido e i criteri di esclusione dei
-modelli. La feature resta deliberatamente fuori dalla release `1.3.0.53`.
+modelli. La feature resta deliberatamente fuori dalla release `1.3.0.54`.

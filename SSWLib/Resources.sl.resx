@@ -613,4 +613,98 @@ Lep pozdrav</value></data>
   <data name="ReportViewer_AddToProjectTooltip" xml:space="preserve">
     <value>Dodaj ali posodobi to poročilo v projektu več izbir</value>
   </data>
+  <data name="MainForm_Menu_Option_Language_Norwegian" xml:space="preserve"><value>Norsk</value></data>
+  <data name="MainForm_Menu_Option_Language_Icelandic" xml:space="preserve"><value>Íslenska</value></data>
+  <data name="Help_Menu" xml:space="preserve"><value>Pomoč</value></data>
+  <data name="Help_OpenGuide" xml:space="preserve"><value>Uporabniški priročnik</value></data>
+  <data name="Help_ShowToolTips" xml:space="preserve"><value>Pokaži nasvete za pomoč</value></data>
+  <data name="Help_Title" xml:space="preserve"><value>SSW uporabniški priročnik</value></data>
+  <data name="Help_Search" xml:space="preserve"><value>Iskanje</value></data>
+  <data name="Help_Close" xml:space="preserve"><value>Zapri</value></data>
+  <data name="Help_Tip_Series" xml:space="preserve"><value>Najprej izberite družino izdelkov; seznam enot je ustrezno filtriran.</value></data>
+  <data name="Help_Tip_Unit" xml:space="preserve"><value>Izberite prezračevalno enoto za izračun.</value></data>
+  <data name="Help_Tip_Airflow" xml:space="preserve"><value>Vnesite zimski načrt pretoka zraka. Poletni pretok zraka je trenutno sinhroniziran.</value></data>
+  <data name="Help_Tip_Pressure" xml:space="preserve"><value>Razpoložljiv zunanji statični tlak pri izbranem pretoku zraka.</value></data>
+  <data name="Help_Tip_Conditions" xml:space="preserve"><value>Nastavite zimske pogoje na levi in ​​poletne pogoje na desni.</value></data>
+  <data name="Help_Tip_Summer" xml:space="preserve"><value>Omogoči ali onemogoči neodvisen poletni izračun.</value></data>
+  <data name="Help_Tip_Regulation" xml:space="preserve"><value>Premaknite nadzorni nivo in SSW ponovno izračuna delovno točko in zmogljivost.</value></data>
+  <data name="Help_Tip_Reference" xml:space="preserve"><value>Referenca stranke, uporabljena v shranjenih imenih datotek, poročilih in projektih.</value></data>
+  <data name="Help_Tip_WaterCoils" xml:space="preserve"><value>Izberite in izračunajte združljive vodne tuljave. Ogrevanje in naknadno ogrevanje EHD se med seboj izključujeta.</value></data>
+  <data name="Help_Tip_ElectricHeaters" xml:space="preserve"><value>Izberite združljive predgrelnike (PEHD) in naknadne grelnike (EHD).</value></data>
+  <data name="Help_Tip_Accessories" xml:space="preserve"><value>Dopolnite izbiro z združljivo dodatno opremo in krmilnimi funkcijami.</value></data>
+  <data name="Help_Tip_Report" xml:space="preserve"><value>Prijavite tehnični izbor in ustvarite njegovo lokalizirano poročilo PDF.</value></data>
+  <data name="Help_Topic_GettingStarted_Title" xml:space="preserve"><value>Začetek</value></data>
+  <data name="Help_Topic_GettingStarted_Body" xml:space="preserve"><value>Začnite z izbiro družine izdelkov in prezračevalne enote. Vnesite zimski pretok zraka in razpoložljivi zunanji statični tlak, nato pa nastavite zimske in po potrebi poletne pogoje temperature in vlažnosti.
+
+Preglejte delovno točko na grafih, preden dodate tuljave, električne grelnike, dodatke ali krmilne funkcije. Izpolnite referenco stranke, preden shranite ali ustvarite poročilo; uporablja se v imenih datotek, poročilih in selekcijskih projektih.</value></data>
+  <data name="Help_Topic_Conditions_Title" xml:space="preserve"><value>Zimske in poletne razmere</value></data>
+  <data name="Help_Topic_Conditions_Body" xml:space="preserve"><value>Zimski vnosi so prikazani na levi, poletni vnosi pa na desni. Poletni pretok zraka trenutno ostaja sinhroniziran z zimskim pretokom zraka. Uporabite Omogoči poletje, da izvedete oba termodinamična izračuna; onemogočite, ko je potrebno le zimsko ohišje.
+
+Prednastavitev poletje/zima obnovi standardne pogoje načrtovanja. Prednastavitvi EN 308 in EN 13141-7 vplivata samo na zimski primer in ne prepišeta poletnih vnosov.</value></data>
+  <data name="Help_Topic_Performance_Title" xml:space="preserve"><value>Bralna uspešnost</value></data>
+  <data name="Help_Topic_Performance_Body" xml:space="preserve"><value>Regulacijski nadzor premakne izbrano točko vzdolž krivulje ventilatorja in ponovno izračuna tlak, absorbirano moč in zmogljivost rekuperacije toplote. Oranžna točka označuje aktivni pretok zraka in tlak; grafi učinkovitosti prikazujejo zimsko in, ko je omogočeno, poletno delovno točko.
+
+Preverite, ali je zahtevani pretok zraka znotraj uporabne krivulje ventilatorja. Vsaka omogočena vodna ali električna tuljava dodaja izgubo tlaka na strani zraka in lahko zmanjša največji dovoljeni pretok zraka.</value></data>
+  <data name="Help_Topic_WaterCoils_Title" xml:space="preserve"><value>Vodne tuljave</value></data>
+  <data name="Help_Topic_WaterCoils_Body" xml:space="preserve"><value>Zavihek Vodne tuljave je na voljo samo, če ima izbrana enota združljiva razmerja v bazi podatkov. Izberite način izračuna CWD, HWD ali HCD, notranjo ali zunanjo namestitev, tekočino in njene temperature.
+
+Standard uporablja kataloško geometrijo. Prilagojeno dovoljuje dovoljene geometrijske spremembe in zahteva zavrnitev odgovornosti glede oblikovanja. Preverite kapaciteto, najvišjo temperaturo izhodnega zraka, padec zračnega tlaka, padec vodnega tlaka, pretok in hitrost tekočine. HCD izvaja izračune ogrevanja in hlajenja na isti fiksni geometriji. Ogrevanja vode in EHD električnega naknadnega ogrevanja ni mogoče omogočiti skupaj.</value></data>
+  <data name="Help_Topic_ElectricHeaters_Title" xml:space="preserve"><value>Električni grelci</value></data>
+  <data name="Help_Topic_ElectricHeaters_Body" xml:space="preserve"><value>PEHD je električni predgrelnik: segreva zimski sveži zrak pred toplotnim izmenjevalnikom in tako spreminja vstopno in izstopno temperaturo izmenjevalnika. EHD je električni naknadni grelec: segreva dovodni zrak po rekuperaciji toplote.
+
+Na voljo so le grelniki, povezani z izbrano enoto. Njihova izguba tlaka na strani zraka je vključena v krivuljo ventilatorja. PEHD se lahko kombinira z načini vodne tuljave; EHD ni mogoče kombinirati z HWD ali grelnim delom HCD.</value></data>
+  <data name="Help_Topic_Accessories_Title" xml:space="preserve"><value>Dodatki in funkcije</value></data>
+  <data name="Help_Topic_Accessories_Body" xml:space="preserve"><value>Uporabite filtre za iskanje in kategorije, da poiščete združljivo dodatno opremo in nadzorne funkcije. Standardni elementi so izbrani samodejno in jih ni mogoče odstraniti. Neobvezne elemente je mogoče izbrati ali počistiti; nerazpoložljive izbire ostanejo onemogočene in njihov opis orodja pojasnjuje predpogoj.
+
+Nekatere funkcije zahtevajo določeno dodatno opremo ali nivo krmilnika. Povzetek izbranih dodatkov ostane viden zunaj zavihka, tako da je trenutno konfiguracijo mogoče kadar koli preveriti.</value></data>
+  <data name="Help_Topic_Save_Title" xml:space="preserve"><value>Novo, shranjevanje in ponovno odpiranje izbir</value></data>
+  <data name="Help_Topic_Save_Body" xml:space="preserve"><value>Nova izbira začne prazen tehnični izbor po ponudbi shranjevanja neshranjenega dela. Odprta izbira obnovi datoteko .sswsel, vključno z njeno konfiguracijo, dodatki, lokalno referenco osnutka in registrirano zgodovino izbire.
+
+Shrani posodobi trenutno datoteko. Shrani kot zapiše isti tehnični izbor na drugo pot: spremeni lokacijo datoteke, ne identitete izbora. Referenca stranke je prečiščena in uporabljena kot predpona v predlaganem imenu datoteke. Zvezdica v naslovu okna označuje neshranjene spremembe.</value></data>
+  <data name="Help_Topic_Duplicate_Title" xml:space="preserve"><value>Podvojite in ustvarite alternative</value></data>
+  <data name="Help_Topic_Duplicate_Body" xml:space="preserve"><value>Podvoji kot nov izbor kopira trenutno konfiguracijo, vendar dodeli novo neodvisno identiteto izbora in referenco lokalnega osnutka. Uporabite ga, ko kopirana enota ne sme več deliti izvirne zgodovine revizij.
+
+Ustvari alternativo prav tako ustvari neodvisno identiteto, vendar doda Alt. 01 referenci stranke. Ustvarjanje druge alternative iz obstoječe poveča število. Uporabite alternative za tehnično primerljive predloge, ki pripadajo isti zahtevi stranke.</value></data>
+  <data name="Help_Topic_Report_Title" xml:space="preserve"><value>Poročila in revizije</value></data>
+  <data name="Help_Topic_Report_Body" xml:space="preserve"><value>Generate report potrdi trenutno konfiguracijo, registrira tehnično izbiro, ko je storitev na voljo, ustvari lokaliziran PDF in odpre pregledovalnik poročil. V pregledovalniku lahko pregledate rezultat, pošljete PDF po e-pošti ali ga dodate izbirnemu projektu.
+
+Ponovno ustvarjanje poročila po spremembi že registriranega izbora ustvari naslednjo revizijo iste identitete. Podvajanje ali ustvarjanje alternative najprej ustvari drugačno identiteto. Če spletna registracija ni na voljo, lahko SSW ustvari lokalni osnutek brez prekinitve tehničnega dela.</value></data>
+  <data name="Help_Topic_Project_Title" xml:space="preserve"><value>Projekti z več selekcijami</value></data>
+  <data name="Help_Topic_Project_Body" xml:space="preserve"><value>Izbirni projekt (.sswproj) združuje poročila za več prezračevalnih enot pod eno referenco projekta in jezik. Ne nadomesti posameznih datotek .sswsel: vsaka vrstica ohrani serializiran izbor in svoj trenutni PDF.
+
+Ustvarite ali odprite projekt v Datoteka &gt; Izbira projekta. Ustvarite poročilo o vsaki enoti in uporabite Dodaj v projekt v pregledovalniku poročil. V oknu projekta lahko znova odprete izbor, odstranite zastarele vrstice, posodobite PDF in pripravite eno lokalizirano e-pošto, ki vsebuje vsako trenutno poročilo in tabelo s povzetkom.</value></data>
+  <data name="Help_Topic_Tips_Title" xml:space="preserve"><value>Nasveti za pomoč</value></data>
+  <data name="Help_Topic_Tips_Body" xml:space="preserve"><value>Kontekstualni nasveti za pomoč razlagajo kontrole in ukaze operativnega menija, ne da bi odprli vodnik. Ob novi namestitvi so privzeto omogočeni. Onemogočite ali omogočite jih v možnostih ali pomoči; nastavitev je shranjena v uporabniškem profilu Windows in se ohrani po posodobitvi SSW.
+
+Imena jezikov v jezikovnem meniju so namerno vedno prikazana kot avtonimi, tako da lahko vsak uporabnik prepozna svoj jezik, tudi če trenutni vmesnik uporablja drug jezik.</value></data>
+  <data name="Help_MenuTip_New" xml:space="preserve"><value>Začnite prazno tehnično izbiro. Pred nadaljevanjem lahko shranite trenutne spremembe.</value></data>
+  <data name="Help_MenuTip_Open" xml:space="preserve"><value>Odprite datoteko .sswsel in obnovite njeno shranjeno konfiguracijo in izbirno identiteto.</value></data>
+  <data name="Help_MenuTip_Save" xml:space="preserve"><value>Shranite spremembe trenutne datoteke .sswsel ali izberite ime datoteke, če še ni bila shranjena.</value></data>
+  <data name="Help_MenuTip_SaveAs" xml:space="preserve"><value>Shranite trenutni izbor v drugo datoteko .sswsel, pri tem pa ohranite isto tehnično identiteto izbora.</value></data>
+  <data name="Help_MenuTip_Duplicate" xml:space="preserve"><value>Ustvarite neodvisen izbor z novo identiteto in ohranite trenutno konfiguracijo kot izhodišče.</value></data>
+  <data name="Help_MenuTip_Alternative" xml:space="preserve"><value>Ustvarite neodvisno alternativo in dodajte ali povečajte predpono Alt. XX v referenci stranke.</value></data>
+  <data name="Help_MenuTip_Recent" xml:space="preserve"><value>Odprite eno od nazadnje uporabljenih datotek .sswsel.</value></data>
+  <data name="Help_MenuTip_Project" xml:space="preserve"><value>Ustvarite ali upravljajte projekt, ki združuje več izbir in njihovih PDF poročil.</value></data>
+  <data name="Help_MenuTip_Report" xml:space="preserve"><value>Registrirajte trenutni tehnični izbor in ustvarite njegovo lokalizirano poročilo PDF.</value></data>
+  <data name="Help_MenuTip_CommercialSheet" xml:space="preserve"><value>Ustvari komercialni list izdelkov, ko je na voljo za izbrano enoto in jezik.</value></data>
+  <data name="Help_MenuTip_Iom" xml:space="preserve"><value>Ustvarite dokument o namestitvi, delovanju in vzdrževanju, ko je na voljo.</value></data>
+  <data name="Help_MenuTip_Exit" xml:space="preserve"><value>Zapri SSW. Vprašani boste, ali želite shraniti neshranjene spremembe izbire.</value></data>
+  <data name="Help_MenuTip_Language" xml:space="preserve"><value>Spremenite vmesnik, poročilo in komunikacijski jezik. Imena jezikov ostanejo zapisana v svojem jeziku.</value></data>
+  <data name="Help_MenuTip_Units" xml:space="preserve"><value>Izberite sistem merjenja, ki ga uporablja vmesnik in generirani dokumenti.</value></data>
+  <data name="Help_MenuTip_CommercialSync" xml:space="preserve"><value>Samodejno sinhroniziraj komercialni list z aktivnim izborom, ko je ta možnost na voljo.</value></data>
+  <data name="Help_MenuTip_Updates" xml:space="preserve"><value>Ročno preverite, ali je na voljo novejša različica SSW.</value></data>
+  <data name="Help_MenuTip_OpenGuide" xml:space="preserve"><value>Odprite uporabniški priročnik po iskanju za izbore, poročila in projekte.</value></data>
+  <data name="Help_MenuTip_ToggleTips" xml:space="preserve"><value>Omogočite ali onemogočite kontekstualne nasvete za pomoč v SSW.</value></data>
+  <data name="Help_Topic_Workflow_Title" xml:space="preserve"><value>Priporočen potek izbire</value></data>
+  <data name="Help_Topic_Workflow_Body" xml:space="preserve"><value>1. Izberite družino in enoto.
+2. Vnesite pretok zraka, tlak in konstrukcijske pogoje.
+3. Prilagodite nivo regulacije in preverite delovno točko.
+4. Dodajte združljive vodne tuljave, električne grelnike, dodatke in funkcije.
+5. Vnesite referenco stranke in shranite datoteko .sswsel.
+6. Ustvarite in preglejte lokalizirani PDF.
+7. Če opravilo vsebuje več enot, dodajte vsako poročilo izbirnemu projektu.</value></data>
+  <data name="Help_Topic_Exports_Title" xml:space="preserve"><value>Komercialni list in IOM</value></data>
+  <data name="Help_Topic_Exports_Body" xml:space="preserve"><value>Komercialni list in IOM sta dopolnilna dokumenta in sta omogočena le, če obstaja vsebina za izbrano enoto, vejo in jezik. Tehničnega izbora ne shranjujejo in ne nadomeščajo obračunskega poročila.
+
+Ko morate ohraniti vnose izračuna, ki jih je mogoče urejati, najprej shranite datoteko .sswsel. Ustvarite poročilo, ko potrebujete sledljiv tehnični rezultat in referenco njegove revizije.</value></data>
 </root>

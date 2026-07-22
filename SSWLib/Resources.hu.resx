@@ -790,4 +790,98 @@ További kérdések vagy műszaki információk esetén állunk rendelkezésére
   <data name="ReportViewer_AddToProjectTooltip" xml:space="preserve">
     <value>A jelentés hozzáadása vagy frissítése többkiválasztásos projektben</value>
   </data>
+  <data name="MainForm_Menu_Option_Language_Norwegian" xml:space="preserve"><value>Norsk</value></data>
+  <data name="MainForm_Menu_Option_Language_Icelandic" xml:space="preserve"><value>Íslenska</value></data>
+  <data name="Help_Menu" xml:space="preserve"><value>Súgó</value></data>
+  <data name="Help_OpenGuide" xml:space="preserve"><value>Használati útmutató</value></data>
+  <data name="Help_ShowToolTips" xml:space="preserve"><value>Súgótippek megjelenítése</value></data>
+  <data name="Help_Title" xml:space="preserve"><value>SSW felhasználói kézikönyv</value></data>
+  <data name="Help_Search" xml:space="preserve"><value>Keresés</value></data>
+  <data name="Help_Close" xml:space="preserve"><value>Bezárás</value></data>
+  <data name="Help_Tip_Series" xml:space="preserve"><value>Először válassza ki a termékcsaládot; az egységlista ennek megfelelően szűrésre kerül.</value></data>
+  <data name="Help_Tip_Unit" xml:space="preserve"><value>Válassza ki a kiszámítani kívánt szellőztető egységet.</value></data>
+  <data name="Help_Tip_Airflow" xml:space="preserve"><value>Adja meg a téli tervezésű légáramlást. A nyári légáramlás jelenleg szinkronban van tartva.</value></data>
+  <data name="Help_Tip_Pressure" xml:space="preserve"><value>Elérhető külső statikus nyomás a kiválasztott légáramlásnál.</value></data>
+  <data name="Help_Tip_Conditions" xml:space="preserve"><value>Állítsa be a bal oldalon a téli, a jobb oldalon a nyári feltételeket.</value></data>
+  <data name="Help_Tip_Summer" xml:space="preserve"><value>A független nyári számítás engedélyezése vagy letiltása.</value></data>
+  <data name="Help_Tip_Regulation" xml:space="preserve"><value>Mozgassa a vezérlési szintet, és az SSW újraszámolja a működési pontot és a teljesítményt.</value></data>
+  <data name="Help_Tip_Reference" xml:space="preserve"><value>A mentett fájlnevekben, jelentésekben és projektekben használt ügyfélhivatkozás.</value></data>
+  <data name="Help_Tip_WaterCoils" xml:space="preserve"><value>Válassza ki és számítsa ki a kompatibilis víztekercseket. A fűtés és az EHD utófűtés kölcsönösen kizárják egymást.</value></data>
+  <data name="Help_Tip_ElectricHeaters" xml:space="preserve"><value>Válasszon kompatibilis előmelegítőket (PEHD) és utófűtőket (EHD).</value></data>
+  <data name="Help_Tip_Accessories" xml:space="preserve"><value>Egészítse ki a választékot kompatibilis tartozékokkal és vezérlőfunkciókkal.</value></data>
+  <data name="Help_Tip_Report" xml:space="preserve"><value>Regisztrálja a műszaki választékot, és készítse el a lokalizált PDF jelentést.</value></data>
+  <data name="Help_Topic_GettingStarted_Title" xml:space="preserve"><value>Kezdő lépések</value></data>
+  <data name="Help_Topic_GettingStarted_Body" xml:space="preserve"><value>Kezdje a termékcsalád és a szellőzőegység kiválasztásával. Adja meg a téli légáramlást és a rendelkezésre álló külső statikus nyomást, majd állítsa be a téli és szükség esetén a nyári hőmérsékleti és páratartalmi feltételeket.
+
+Tekercsek, elektromos fűtőtestek, tartozékok vagy vezérlési funkciók hozzáadása előtt tekintse át a grafikonokon a működési pontot. Mentés vagy jelentés generálása előtt töltse ki az ügyfélreferenciát; fájlnevekben, jelentésekben és kiválasztási projektekben használatos.</value></data>
+  <data name="Help_Topic_Conditions_Title" xml:space="preserve"><value>Téli és nyári körülmények</value></data>
+  <data name="Help_Topic_Conditions_Body" xml:space="preserve"><value>A téli bemenetek a bal oldalon, a nyári bemenetek a jobb oldalon láthatók. A nyári légáramlás jelenleg szinkronban marad a téli légáramlással. Használja a Nyár engedélyezése lehetőséget mindkét termodinamikai számítás futtatásához; tiltsa le, ha csak a téli tokra van szükség.
+
+A nyári/téli előbeállítás visszaállítja a szabványos tervezési feltételeket. A EN 308 és EN 13141-7 előbeállítások csak a téli esetet érintik, és nem írják felül a nyári bemeneteket.</value></data>
+  <data name="Help_Topic_Performance_Title" xml:space="preserve"><value>Olvasási teljesítmény</value></data>
+  <data name="Help_Topic_Performance_Body" xml:space="preserve"><value>A szabályozási vezérlő mozgatja a kiválasztott pontot a ventilátorgörbe mentén, és újraszámolja a nyomást, az elnyelt teljesítményt és a hővisszanyerési teljesítményt. A narancssárga pont az aktív légáramlást és nyomást jelöli; a hatékonysági grafikonok a téli és ha engedélyezve vannak, a nyári munkapontokat mutatják.
+
+Ellenőrizze, hogy a kért légáramlás a használható ventilátorgörbén belül van-e. Bármely engedélyezett víz- vagy elektromos tekercs növeli a levegő oldali nyomásveszteségét, és csökkentheti a maximálisan megengedett légáramlást.</value></data>
+  <data name="Help_Topic_WaterCoils_Title" xml:space="preserve"><value>Víztekercsek</value></data>
+  <data name="Help_Topic_WaterCoils_Body" xml:space="preserve"><value>A Víztekercsek lap csak akkor érhető el, ha a kiválasztott egység kompatibilis kapcsolatokkal rendelkezik az adatbázisban. Válassza ki a CWD, HWD vagy HCD számítási módot, a belső vagy külső telepítést, a folyadékot és annak hőmérsékletét.
+
+A Standard a katalógus geometriáját használja. A testreszabott lehetővé teszi a megengedett geometriai változtatásokat, és megköveteli a tervezési felelősség kizárását. Ellenőrizze a kapacitást, a maximális kilépő levegő hőmérsékletet, a légnyomásesést, a víznyomásesést, a folyadékáramlást és a sebességet. A HCD fűtési és hűtési számításokat végez ugyanazon a rögzített geometrián. A vízmelegítés és a EHD elektromos utófűtés együtt nem engedélyezhető.</value></data>
+  <data name="Help_Topic_ElectricHeaters_Title" xml:space="preserve"><value>Elektromos melegítők</value></data>
+  <data name="Help_Topic_ElectricHeaters_Body" xml:space="preserve"><value>A PEHD egy elektromos előmelegítő: a téli friss levegőt a hőcserélő előtt melegíti fel, és ezáltal megváltoztatja a hőcserélő bemeneti és kimeneti hőmérsékletét. A EHD egy elektromos utófűtő: hővisszanyerés után melegíti a befújt levegőt.
+
+Csak a kiválasztott egységhez kapcsolódó fűtőelemek állnak rendelkezésre. A légoldali nyomásveszteségüket a ventilátorgörbe tartalmazza. A PEHD kombinálható víztekercses üzemmódokkal; A EHD nem kombinálható a HWD-vel vagy a HCD fűtési részével.</value></data>
+  <data name="Help_Topic_Accessories_Title" xml:space="preserve"><value>Tartozékok és funkciók</value></data>
+  <data name="Help_Topic_Accessories_Body" xml:space="preserve"><value>Használja a keresési és kategóriaszűrőket a kompatibilis tartozékok és vezérlési funkciók megtalálásához. A standard elemek automatikusan kiválasztódnak, és nem távolíthatók el. Az opcionális elemek kiválaszthatók vagy törölhetők; a nem elérhető lehetőségek le vannak tiltva, és az eszköztippük elmagyarázza az előfeltételt.
+
+Egyes funkciókhoz speciális tartozék vagy vezérlőszint szükséges. A kiválasztott kiegészítők összefoglalója a lapon kívül is látható marad, így az aktuális konfiguráció bármikor ellenőrizhető.</value></data>
+  <data name="Help_Topic_Save_Title" xml:space="preserve"><value>Új, mentse és nyissa meg újra a kijelöléseket</value></data>
+  <data name="Help_Topic_Save_Body" xml:space="preserve"><value>Az új kijelölés üres technikai kijelölést indít, miután felajánlotta a nem mentett munka mentését. A megnyitott kijelölés visszaállítja a .sswsel fájlt, beleértve a konfigurációt, a tartozékokat, a helyi piszkozati referenciát és a regisztrált kiválasztási előzményeket.
+
+A Mentés frissíti az aktuális fájlt. A Mentés másként ugyanazt a technikai kijelölést egy másik elérési útra írja: a fájl helyét változtatja meg, nem a kijelölés azonosságát. Az ügyfél hivatkozását megtisztítják, és előtagként használják a javasolt fájlnévben. Az ablak címében lévő csillag a nem mentett változtatásokat jelzi.</value></data>
+  <data name="Help_Topic_Duplicate_Title" xml:space="preserve"><value>Másoljon és hozzon létre alternatívákat</value></data>
+  <data name="Help_Topic_Duplicate_Body" xml:space="preserve"><value>A „Duplikálás új kijelölésként” másolja az aktuális konfigurációt, de hozzárendel egy új független kiválasztási identitást és helyi vázlatos hivatkozást. Használja, ha a másolt egységnek már nem kell megosztania az eredeti verzióelőzményeket.
+
+Alternatív létrehozása szintén létrehoz egy független identitást, de hozzáadja a Alt. 01 Alt. 01-t az ügyfélreferenciához. Egy másik alternatíva létrehozása egy meglévőből növeli a számot. Használjon alternatívákat az azonos vevői igényhez tartozó, műszakilag összehasonlítható ajánlatokhoz.</value></data>
+  <data name="Help_Topic_Report_Title" xml:space="preserve"><value>Jelentések és felülvizsgálatok</value></data>
+  <data name="Help_Topic_Report_Body" xml:space="preserve"><value>A Jelentés generálása ellenőrzi az aktuális konfigurációt, regisztrálja a műszaki kiválasztást, amikor a szolgáltatás elérhető, létrehoz egy lokalizált PDF-t, és megnyitja a jelentésnézegetőt. A nézőből megtekintheti az eredményt, elküldheti a PDF-t e-mailben, vagy hozzáadhatja egy kiválasztási projekthez.
+
+Ha egy már regisztrált kijelölés módosítása után újra generál egy jelentést, akkor ugyanazon identitás következő változata jön létre. A megkettőzés vagy alternatíva létrehozása először egy másik identitást hoz létre. Ha az online regisztráció nem érhető el, a SSW a műszaki munka megszakítása nélkül tud helyi piszkozatot generálni.</value></data>
+  <data name="Help_Topic_Project_Title" xml:space="preserve"><value>Többszörös kiválasztási projektek</value></data>
+  <data name="Help_Topic_Project_Body" xml:space="preserve"><value>Egy kiválasztási projekt (.sswproj) több szellőztető egység jelentését csoportosítja egy projektreferencia és nyelv alatt. Nem helyettesíti az egyes .sswsel fájlokat: minden sor megtartja a soros kijelölést és az aktuális PDF fájlt.
+
+Hozzon létre vagy nyissa meg a projektet a Fájl &gt; Kijelölési projekt menüpontban. Hozzon létre minden egységjelentést, és használja a Hozzáadás projekthez lehetőséget a jelentésnézőben. A projekt ablakban újranyithat egy kijelölést, eltávolíthatja az elavult sorokat, frissítheti a PDF-ket, és elkészíthet egy lokalizált e-mailt, amely minden aktuális jelentést és egy összefoglaló táblázatot tartalmaz.</value></data>
+  <data name="Help_Topic_Tips_Title" xml:space="preserve"><value>Súgó tippek</value></data>
+  <data name="Help_Topic_Tips_Body" xml:space="preserve"><value>A kontextuális súgótippek az útmutató megnyitása nélkül ismertetik a vezérlőket és a működési menüparancsokat. Új telepítéskor alapértelmezés szerint engedélyezve vannak. Tiltsa le vagy engedélyezze őket az Opciók vagy a Súgó segítségével; a beállítás a Windows felhasználói profilban tárolódik, és a SSW frissítés után is megmarad.
+
+A nyelvmenüben a nyelvnevek szándékosan mindig autonimként jelennek meg, így minden felhasználó felismerheti saját nyelvét akkor is, ha az aktuális felület más nyelvet használ.</value></data>
+  <data name="Help_MenuTip_New" xml:space="preserve"><value>Indítson el egy üres műszaki kiválasztást. A folytatás előtt mentheti az aktuális változtatásokat.</value></data>
+  <data name="Help_MenuTip_Open" xml:space="preserve"><value>Nyisson meg egy .sswsel fájlt, és állítsa vissza a mentett konfigurációs és kiválasztási azonosságot.</value></data>
+  <data name="Help_MenuTip_Save" xml:space="preserve"><value>Mentse el az aktuális .sswsel fájl módosításait, vagy válasszon fájlnevet, ha korábban nem mentette.</value></data>
+  <data name="Help_MenuTip_SaveAs" xml:space="preserve"><value>Mentse el az aktuális kijelölést egy másik .sswsel fájlba, miközben megtartja ugyanazt a technikai kiválasztási azonosságot.</value></data>
+  <data name="Help_MenuTip_Duplicate" xml:space="preserve"><value>Hozzon létre egy független kijelölést új identitással, megőrizve az aktuális konfigurációt kiindulópontként.</value></data>
+  <data name="Help_MenuTip_Alternative" xml:space="preserve"><value>Hozzon létre egy független alternatívát, és adja hozzá vagy növelje a Alt. XX előtagot az ügyfélreferenciában.</value></data>
+  <data name="Help_MenuTip_Recent" xml:space="preserve"><value>Nyissa meg az egyik legutóbb használt .sswsel fájlt.</value></data>
+  <data name="Help_MenuTip_Project" xml:space="preserve"><value>Hozzon létre vagy kezeljen egy projektet, amely több kijelölést és azok PDF jelentéseit csoportosítja.</value></data>
+  <data name="Help_MenuTip_Report" xml:space="preserve"><value>Regisztrálja az aktuális műszaki választékot, és készítse el annak lokalizált PDF jelentését.</value></data>
+  <data name="Help_MenuTip_CommercialSheet" xml:space="preserve"><value>Hozzon létre kereskedelmi terméklapot, ha az elérhető a kiválasztott egységhez és nyelvhez.</value></data>
+  <data name="Help_MenuTip_Iom" xml:space="preserve"><value>Ha rendelkezésre áll, készítse el a telepítési, üzemeltetési és karbantartási dokumentumot.</value></data>
+  <data name="Help_MenuTip_Exit" xml:space="preserve"><value>SSW bezárása. A rendszer megkérdezi, hogy mentse-e a nem mentett kiválasztási módosításokat.</value></data>
+  <data name="Help_MenuTip_Language" xml:space="preserve"><value>Módosítsa a felületet, a jelentést és a kommunikációs nyelvet. A nyelvnevek a saját nyelvükön maradnak.</value></data>
+  <data name="Help_MenuTip_Units" xml:space="preserve"><value>Válassza ki a felület és a generált dokumentumok által használt mérési rendszert.</value></data>
+  <data name="Help_MenuTip_CommercialSync" xml:space="preserve"><value>A kereskedelmi lap automatikus szinkronizálása az aktív kijelöléssel, ha ez a lehetőség elérhető.</value></data>
+  <data name="Help_MenuTip_Updates" xml:space="preserve"><value>Ellenőrizze manuálisan, hogy elérhető-e újabb SSW verzió.</value></data>
+  <data name="Help_MenuTip_OpenGuide" xml:space="preserve"><value>Nyissa meg a kereshető felhasználói útmutatót a kiválasztásokhoz, jelentésekhez és projektekhez.</value></data>
+  <data name="Help_MenuTip_ToggleTips" xml:space="preserve"><value>A kontextuális súgótippek engedélyezése vagy letiltása a SSW programban.</value></data>
+  <data name="Help_Topic_Workflow_Title" xml:space="preserve"><value>Javasolt kiválasztási munkafolyamat</value></data>
+  <data name="Help_Topic_Workflow_Body" xml:space="preserve"><value>1. Válassza ki a családot és az egységet.
+2. Adja meg a légáramlást, a nyomást és a tervezési feltételeket.
+3. Állítsa be a szabályozási szintet és ellenőrizze a működési pontot.
+4. Adjon hozzá kompatibilis vízmelegítőket, elektromos fűtőtesteket, tartozékokat és funkciókat.
+5. Adja meg az ügyfél hivatkozását, és mentse el a .sswsel fájlt.
+6. Hozza létre és tekintse át a lokalizált PDF fájlt.
+7. Ha a job több egységet tartalmaz, minden jelentést adjon hozzá egy kiválasztási projekthez.</value></data>
+  <data name="Help_Topic_Exports_Title" xml:space="preserve"><value>Kereskedelmi lap és IOM</value></data>
+  <data name="Help_Topic_Exports_Body" xml:space="preserve"><value>A kereskedelmi lap és a IOM kiegészítő dokumentumok, és csak akkor engedélyezettek, ha a kiválasztott egységhez, ágazathoz és nyelvhez létezik tartalom. Nem mentik el a műszaki válogatást és nem helyettesítik a számítási jegyzőkönyvet.
+
+Először mentse a .sswsel fájlt, ha meg kell őriznie a szerkeszthető számítási bemeneteket. Készítsen jelentést, amikor szüksége van a nyomon követhető műszaki eredményre és annak felülvizsgálati hivatkozására.</value></data>
 </root>

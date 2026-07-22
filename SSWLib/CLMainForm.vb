@@ -88,6 +88,7 @@ Public Class CLMainForm
         InitializeComponent()
         Project_InitializeMenus()
         MultiSelection_InitializeMenus()
+        Help_InitializeMenus()
 
         Try
             tsmiOption_CommercialSheetAutoSync.Checked = My.Settings.CommercialSheetAutoSyncEnabled
@@ -123,6 +124,8 @@ Public Class CLMainForm
         tsmiOption_Language_HU.Visible = Environment.FindLanguage(CLEnvironment.LanguageCode_HU).Enabled
         tsmiOption_Language_DA.Visible = Environment.FindLanguage(CLEnvironment.LanguageCode_DA).Enabled
         tsmiOption_Language_SV.Visible = Environment.FindLanguage(CLEnvironment.LanguageCode_SV).Enabled
+        tsmiOption_Language_NO.Visible = Environment.FindLanguage(CLEnvironment.LanguageCode_NO).Enabled
+        tsmiOption_Language_IS.Visible = Environment.FindLanguage(CLEnvironment.LanguageCode_IS).Enabled
 
         txbPerformance_PassiveHaus_Limit.Text = (0.45D).ToString()
         If Not Environment.HasBranchs Then
@@ -243,6 +246,7 @@ Public Class CLMainForm
         CoilPerformance_InitializeTab()
         ElectricHeater_InitializeTab()
         Accessories_InitializeTab()
+        Help_ApplyToolTips()
 
         txbPerformance_AirFlow.Text = "100"
         TextBox1.Text = txbPerformance_AirFlow.Text
@@ -2360,6 +2364,8 @@ Public Class CLMainForm
         tsmiOption_Language_HU.Checked = IIf(Environment.PrimaryLanguageCode = CLEnvironment.LanguageCode_HU, True, False)
         tsmiOption_Language_DA.Checked = IIf(Environment.PrimaryLanguageCode = CLEnvironment.LanguageCode_DA, True, False)
         tsmiOption_Language_SV.Checked = IIf(Environment.PrimaryLanguageCode = CLEnvironment.LanguageCode_SV, True, False)
+        tsmiOption_Language_NO.Checked = IIf(Environment.PrimaryLanguageCode = CLEnvironment.LanguageCode_NO, True, False)
+        tsmiOption_Language_IS.Checked = IIf(Environment.PrimaryLanguageCode = CLEnvironment.LanguageCode_IS, True, False)
 
         UpdateLocalization()
         Calculate()
@@ -2516,6 +2522,8 @@ Public Class CLMainForm
         tsmiOption_Language_HU.Text = "Magyar"
         tsmiOption_Language_DA.Text = "Dansk"
         tsmiOption_Language_SV.Text = "Svenska"
+        tsmiOption_Language_NO.Text = "Norsk"
+        tsmiOption_Language_IS.Text = "Íslenska"
 
         tsmiOption_Unit.Text = Environment.Localization.GetString(CLMessageResources.MainForm_Menu_Option_Unit.ToString())
         tsmiOption_Unit_IP.Text = Environment.Localization.GetString(CLMessageResources.MainForm_Menu_Option_Unit_IP.ToString())
@@ -2624,6 +2632,7 @@ Public Class CLMainForm
         CoilPerformance_UpdateLocalizedTexts()
         ElectricHeater_UpdateLocalizedTexts()
         Accessories_UpdateLocalizedTexts()
+        Help_UpdateLocalizedTexts()
 
         UpdateLocalization_MeasureUnit()
     End Sub
@@ -2701,6 +2710,14 @@ Public Class CLMainForm
 
     Private Sub tsmiOption_Language_SV_Click(sender As Object, e As EventArgs) Handles tsmiOption_Language_SV.Click
         Environment.SetLanguage(Environment.FindLanguage(CLEnvironment.LanguageCode_SV))
+    End Sub
+
+    Private Sub tsmiOption_Language_NO_Click(sender As Object, e As EventArgs) Handles tsmiOption_Language_NO.Click
+        Environment.SetLanguage(Environment.FindLanguage(CLEnvironment.LanguageCode_NO))
+    End Sub
+
+    Private Sub tsmiOption_Language_IS_Click(sender As Object, e As EventArgs) Handles tsmiOption_Language_IS.Click
+        Environment.SetLanguage(Environment.FindLanguage(CLEnvironment.LanguageCode_IS))
     End Sub
 #End Region
 

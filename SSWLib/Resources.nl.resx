@@ -694,4 +694,98 @@ Met vriendelijke groet</value></data>
   <data name="ReportViewer_AddToProjectTooltip" xml:space="preserve">
     <value>Dit rapport toevoegen aan of bijwerken in een meervoudig selectieproject</value>
   </data>
+  <data name="MainForm_Menu_Option_Language_Norwegian" xml:space="preserve"><value>Norsk</value></data>
+  <data name="MainForm_Menu_Option_Language_Icelandic" xml:space="preserve"><value>Íslenska</value></data>
+  <data name="Help_Menu" xml:space="preserve"><value>Hulp</value></data>
+  <data name="Help_OpenGuide" xml:space="preserve"><value>Gebruikershandleiding</value></data>
+  <data name="Help_ShowToolTips" xml:space="preserve"><value>Hulptips weergeven</value></data>
+  <data name="Help_Title" xml:space="preserve"><value>SSW-gebruikershandleiding</value></data>
+  <data name="Help_Search" xml:space="preserve"><value>Zoeken</value></data>
+  <data name="Help_Close" xml:space="preserve"><value>Sluiten</value></data>
+  <data name="Help_Tip_Series" xml:space="preserve"><value>Kies eerst de productfamilie; de eenhedenlijst wordt dienovereenkomstig gefilterd.</value></data>
+  <data name="Help_Tip_Unit" xml:space="preserve"><value>Kies de ventilatie-eenheid die u wilt berekenen.</value></data>
+  <data name="Help_Tip_Airflow" xml:space="preserve"><value>Voer de winterontwerpluchtstroom in. De zomerluchtstroom wordt momenteel gesynchroniseerd gehouden.</value></data>
+  <data name="Help_Tip_Pressure" xml:space="preserve"><value>Beschikbare externe statische druk bij de geselecteerde luchtstroom.</value></data>
+  <data name="Help_Tip_Conditions" xml:space="preserve"><value>Stel de winteromstandigheden aan de linkerkant en de zomeromstandigheden aan de rechterkant in.</value></data>
+  <data name="Help_Tip_Summer" xml:space="preserve"><value>Schakel de onafhankelijke zomerberekening in of uit.</value></data>
+  <data name="Help_Tip_Regulation" xml:space="preserve"><value>Verplaats het bedieningsniveau en SSW herberekent het bedrijfspunt en de prestaties.</value></data>
+  <data name="Help_Tip_Reference" xml:space="preserve"><value>Klantreferentie gebruikt in opgeslagen bestandsnamen, rapporten en projecten.</value></data>
+  <data name="Help_Tip_WaterCoils" xml:space="preserve"><value>Selecteer en bereken compatibele waterbatterijen. Verwarming en EHD-naverwarming sluiten elkaar uit.</value></data>
+  <data name="Help_Tip_ElectricHeaters" xml:space="preserve"><value>Selecteer compatibele voorverwarmers (PEHD) en naverwarmers (EHD).</value></data>
+  <data name="Help_Tip_Accessories" xml:space="preserve"><value>Maak de selectie compleet met compatibele accessoires en bedieningsfuncties.</value></data>
+  <data name="Help_Tip_Report" xml:space="preserve"><value>Registreer de technische selectie en genereer het gelokaliseerde PDF-rapport.</value></data>
+  <data name="Help_Topic_GettingStarted_Title" xml:space="preserve"><value>Aan de slag</value></data>
+  <data name="Help_Topic_GettingStarted_Body" xml:space="preserve"><value>Begin met het kiezen van de productfamilie en ventilatie-unit. Voer de winterluchtstroom en de beschikbare externe statische druk in en stel vervolgens de winter- en, indien nodig, zomertemperatuur en vochtigheidsomstandigheden in.
+
+Bekijk het bedrijfspunt in de grafieken voordat u batterijen, elektrische verwarmers, accessoires of bedieningsfuncties toevoegt. Vul de klantreferentie in voordat u een rapport opslaat of genereert; het wordt gebruikt in bestandsnamen, rapporten en selectieprojecten.</value></data>
+  <data name="Help_Topic_Conditions_Title" xml:space="preserve"><value>Winter- en zomeromstandigheden</value></data>
+  <data name="Help_Topic_Conditions_Body" xml:space="preserve"><value>De winteringangen worden links weergegeven en de zomeringangen rechts. De zomerluchtstroom blijft momenteel gesynchroniseerd met de winterluchtstroom. Gebruik Zomer inschakelen om beide thermodynamische berekeningen uit te voeren; schakel het uit als alleen de winterkoffer nodig is.
+
+De voorinstelling Zomer/Winter herstelt de standaard ontwerpomstandigheden. De voorinstellingen EN 308 en EN 13141-7 zijn alleen van toepassing op de wintersituatie en overschrijven de zomeringangen niet.</value></data>
+  <data name="Help_Topic_Performance_Title" xml:space="preserve"><value>Leesprestaties</value></data>
+  <data name="Help_Topic_Performance_Body" xml:space="preserve"><value>De regelregeling verplaatst het geselecteerde punt langs de ventilatorcurve en herberekent de druk, het opgenomen vermogen en de warmteterugwinningsprestaties. Het oranje punt identificeert de actieve luchtstroom en druk; de efficiëntiegrafieken tonen de werkpunten in de winter en, indien ingeschakeld, in de zomer.
+
+Controleer of de gevraagde luchtstroom binnen de bruikbare ventilatorcurve ligt. Elke ingeschakelde water- of elektrische batterij voegt drukverlies aan de luchtzijde toe en kan de maximaal toegestane luchtstroom verminderen.</value></data>
+  <data name="Help_Topic_WaterCoils_Title" xml:space="preserve"><value>Waterspiralen</value></data>
+  <data name="Help_Topic_WaterCoils_Body" xml:space="preserve"><value>Het tabblad Waterbatterijen is alleen beschikbaar als de geselecteerde unit compatibele relaties in de database heeft. Kies de berekeningsmodus CWD, HWD of HCD, de interne of externe installatie, de vloeistof en de temperaturen ervan.
+
+Standaard gebruikt de catalogusgeometrie. Maatwerk staat de toegestane geometrische veranderingen toe en vereist de ontwerpdisclaimer. Controleer capaciteit, maximale luchtuitlaattemperatuur, luchtdrukval, waterdrukval, vloeistofstroom en snelheid. HCD voert verwarmings- en koelingsberekeningen uit op dezelfde vaste geometrie. Waterverwarming en EHD elektrische naverwarming kunnen niet samen worden ingeschakeld.</value></data>
+  <data name="Help_Topic_ElectricHeaters_Title" xml:space="preserve"><value>Elektrische kachels</value></data>
+  <data name="Help_Topic_ElectricHeaters_Body" xml:space="preserve"><value>PEHD is een elektrische voorverwarmer: deze verwarmt verse winterlucht vóór de warmtewisselaar en verandert daardoor de inlaat- en uitlaattemperaturen van de wisselaar. EHD is een elektrische naverwarmer: deze verwarmt de toevoerlucht na warmteterugwinning.
+
+Er zijn alleen verwarmingen beschikbaar die betrekking hebben op de geselecteerde unit. Hun drukverlies aan de luchtzijde is opgenomen in de ventilatorcurve. PEHD kan worden gecombineerd met waterbatterijmodi; EHD kan niet worden gecombineerd met HWD of het verwarmingsgedeelte van HCD.</value></data>
+  <data name="Help_Topic_Accessories_Title" xml:space="preserve"><value>Accessoires en functies</value></data>
+  <data name="Help_Topic_Accessories_Body" xml:space="preserve"><value>Gebruik zoek- en categoriefilters om compatibele accessoires en bedieningsfuncties te vinden. Standaarditems worden automatisch geselecteerd en kunnen niet worden verwijderd. Optionele items kunnen worden geselecteerd of gewist; niet-beschikbare keuzes blijven uitgeschakeld en hun tooltip legt de vereiste uit.
+
+Voor sommige functies is een specifiek accessoire- of controllerniveau vereist. Het overzicht van de geselecteerde accessoires blijft buiten het tabblad zichtbaar, zodat de huidige configuratie op elk moment kan worden gecontroleerd.</value></data>
+  <data name="Help_Topic_Save_Title" xml:space="preserve"><value>Nieuwe selecties, opslaan en opnieuw openen</value></data>
+  <data name="Help_Topic_Save_Body" xml:space="preserve"><value>Nieuwe selectie start een blanco technische selectie nadat wordt aangeboden om niet-opgeslagen werk op te slaan. Open selectie herstelt een .sswsel-bestand, inclusief de configuratie, accessoires, lokale conceptreferentie en geregistreerde selectiegeschiedenis.
+
+Opslaan werkt het huidige bestand bij. Opslaan als schrijft dezelfde technische selectie naar een ander pad: het verandert de bestandslocatie, niet de identiteit van de selectie. De klantreferentie wordt opgeschoond en gebruikt als voorvoegsel in de voorgestelde bestandsnaam. Een asterisk in de venstertitel geeft aan dat er niet-opgeslagen wijzigingen zijn.</value></data>
+  <data name="Help_Topic_Duplicate_Title" xml:space="preserve"><value>Dupliceer en creëer alternatieven</value></data>
+  <data name="Help_Topic_Duplicate_Body" xml:space="preserve"><value>Dupliceren als nieuwe selectie kopieert de huidige configuratie, maar wijst een nieuwe onafhankelijke selectie-identiteit en lokale conceptreferentie toe. Gebruik het wanneer het gekopieerde apparaat niet langer de originele revisiegeschiedenis mag delen.
+
+Creëer een alternatief creëert ook een onafhankelijke identiteit, maar voegt Alt. 01 toe aan de klantreferentie. Als u een ander alternatief maakt op basis van een bestaand alternatief, wordt het aantal verhoogd. Gebruik alternatieven voor technisch vergelijkbare voorstellen die tot dezelfde klantvraag behoren.</value></data>
+  <data name="Help_Topic_Report_Title" xml:space="preserve"><value>Rapporten en revisies</value></data>
+  <data name="Help_Topic_Report_Body" xml:space="preserve"><value>Rapport genereren valideert de huidige configuratie, registreert de technische selectie wanneer de service beschikbaar is, creëert een gelokaliseerde PDF en opent de rapportviewer. Vanuit de viewer kunt u het resultaat bekijken, de PDF per e-mail versturen of toevoegen aan een selectieproject.
+
+Door opnieuw een rapport te genereren na het wijzigen van een reeds geregistreerde selectie, ontstaat de volgende revisie van dezelfde identiteit. Door eerst een alternatief te dupliceren of te creëren, ontstaat in plaats daarvan een andere identiteit. Als online registratie niet beschikbaar is, kan SSW een lokaal concept genereren zonder de technische werkzaamheden te onderbreken.</value></data>
+  <data name="Help_Topic_Project_Title" xml:space="preserve"><value>Multi-selectieprojecten</value></data>
+  <data name="Help_Topic_Project_Body" xml:space="preserve"><value>Een selectieproject (.sswproj) groepeert rapporten voor meerdere ventilatie-eenheden onder één projectreferentie en taal. Het vervangt niet de individuele .sswsel-bestanden: elke rij behoudt de geserialiseerde selectie en de huidige PDF.
+
+Maak of open het project vanuit Bestand &gt; Selectieproject. Genereer elk eenheidsrapport en gebruik Toevoegen aan project in de rapportviewer. In het projectvenster kunt u een selectie opnieuw openen, verouderde rijen verwijderen, PDF&apos;s bijwerken en één gelokaliseerde e-mail voorbereiden met elk actueel rapport en een samenvattende tabel.</value></data>
+  <data name="Help_Topic_Tips_Title" xml:space="preserve"><value>Hulptips</value></data>
+  <data name="Help_Topic_Tips_Body" xml:space="preserve"><value>Contextuele hulptips leggen bedieningselementen en operationele menuopdrachten uit zonder de gids te openen. Bij een nieuwe installatie zijn ze standaard ingeschakeld. Schakel ze uit of in via Opties of Help; de voorkeur wordt opgeslagen in het Windows-gebruikersprofiel en blijft behouden na een SSW-update.
+
+Taalnamen in het taalmenu worden opzettelijk altijd weergegeven als autoniemen, zodat elke gebruiker zijn eigen taal kan herkennen, zelfs als de huidige interface een andere taal gebruikt.</value></data>
+  <data name="Help_MenuTip_New" xml:space="preserve"><value>Start een blanco technische selectie. U kunt de huidige wijzigingen opslaan voordat u doorgaat.</value></data>
+  <data name="Help_MenuTip_Open" xml:space="preserve"><value>Open een .sswsel-bestand en herstel de opgeslagen configuratie- en selectie-identiteit.</value></data>
+  <data name="Help_MenuTip_Save" xml:space="preserve"><value>Sla wijzigingen op in het huidige .sswsel-bestand, of kies een bestandsnaam als dit nog niet eerder is opgeslagen.</value></data>
+  <data name="Help_MenuTip_SaveAs" xml:space="preserve"><value>Sla de huidige selectie op in een ander .sswsel-bestand met behoud van dezelfde technische selectie-identiteit.</value></data>
+  <data name="Help_MenuTip_Duplicate" xml:space="preserve"><value>Creëer een onafhankelijke selectie met een nieuwe identiteit, waarbij de huidige configuratie als uitgangspunt blijft.</value></data>
+  <data name="Help_MenuTip_Alternative" xml:space="preserve"><value>Creëer een onafhankelijk alternatief en voeg het voorvoegsel Alt. XX toe of verhoog het in de klantreferentie.</value></data>
+  <data name="Help_MenuTip_Recent" xml:space="preserve"><value>Open een van de meest recent gebruikte .sswsel-bestanden.</value></data>
+  <data name="Help_MenuTip_Project" xml:space="preserve"><value>Maak of beheer een project dat verschillende selecties en hun PDF-rapporten groepeert.</value></data>
+  <data name="Help_MenuTip_Report" xml:space="preserve"><value>Registreer de huidige technische selectie en genereer het gelokaliseerde PDF-rapport.</value></data>
+  <data name="Help_MenuTip_CommercialSheet" xml:space="preserve"><value>Genereer de commerciële productfiche zodra deze beschikbaar is voor de geselecteerde eenheid en taal.</value></data>
+  <data name="Help_MenuTip_Iom" xml:space="preserve"><value>Genereer het installatie-, bedienings- en onderhoudsdocument zodra dit beschikbaar is.</value></data>
+  <data name="Help_MenuTip_Exit" xml:space="preserve"><value>Sluit SSW. U wordt gevraagd of u niet-opgeslagen selectiewijzigingen wilt opslaan.</value></data>
+  <data name="Help_MenuTip_Language" xml:space="preserve"><value>Wijzig de interface, rapport- en communicatietaal. Taalnamen blijven in hun eigen taal geschreven.</value></data>
+  <data name="Help_MenuTip_Units" xml:space="preserve"><value>Kies het meetsysteem dat door de interface en gegenereerde documenten wordt gebruikt.</value></data>
+  <data name="Help_MenuTip_CommercialSync" xml:space="preserve"><value>Synchroniseer de reclamefiche automatisch met de actieve selectie wanneer deze optie beschikbaar is.</value></data>
+  <data name="Help_MenuTip_Updates" xml:space="preserve"><value>Controleer handmatig of er een nieuwere SSW-versie beschikbaar is.</value></data>
+  <data name="Help_MenuTip_OpenGuide" xml:space="preserve"><value>Open de doorzoekbare gebruikershandleiding voor selecties, rapporten en projecten.</value></data>
+  <data name="Help_MenuTip_ToggleTips" xml:space="preserve"><value>Schakel contextuele helptips in of uit in SSW.</value></data>
+  <data name="Help_Topic_Workflow_Title" xml:space="preserve"><value>Aanbevolen selectieworkflow</value></data>
+  <data name="Help_Topic_Workflow_Body" xml:space="preserve"><value>1. Kies de familie en eenheid.
+2. Voer de luchtstroom, druk en ontwerpomstandigheden in.
+3. Pas het regelniveau aan en controleer het werkingspunt.
+4. Voeg compatibele waterbatterijen, elektrische verwarmers, accessoires en functies toe.
+5. Voer de klantreferentie in en sla het .sswsel-bestand op.
+6. Genereer en bekijk de gelokaliseerde PDF.
+7. Als de taak meerdere eenheden bevat, voegt u elk rapport toe aan een selectieproject.</value></data>
+  <data name="Help_Topic_Exports_Title" xml:space="preserve"><value>Commercieel blad en IOM</value></data>
+  <data name="Help_Topic_Exports_Body" xml:space="preserve"><value>Commercieel blad en IOM zijn aanvullende documenten en worden alleen ingeschakeld als er inhoud bestaat voor de geselecteerde eenheid, branche en taal. Ze bewaren de technische selectie niet en vervangen het rekenrapport niet.
+
+Sla het .sswsel-bestand eerst op als u bewerkbare berekeningsinvoer wilt behouden. Genereer een rapport wanneer u het traceerbare technische resultaat en de revisiereferentie ervan nodig heeft.</value></data>
 </root>

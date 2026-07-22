@@ -688,4 +688,98 @@ Cu stimă</value></data>
   <data name="ReportViewer_AddToProjectTooltip" xml:space="preserve">
     <value>Adaugă sau actualizează acest raport într-un proiect cu selecții multiple</value>
   </data>
+  <data name="MainForm_Menu_Option_Language_Norwegian" xml:space="preserve"><value>Norsk</value></data>
+  <data name="MainForm_Menu_Option_Language_Icelandic" xml:space="preserve"><value>Íslenska</value></data>
+  <data name="Help_Menu" xml:space="preserve"><value>Ajutor</value></data>
+  <data name="Help_OpenGuide" xml:space="preserve"><value>Ghid de utilizare</value></data>
+  <data name="Help_ShowToolTips" xml:space="preserve"><value>Afișați sfaturi de ajutor</value></data>
+  <data name="Help_Title" xml:space="preserve"><value>Ghid de utilizare SSW</value></data>
+  <data name="Help_Search" xml:space="preserve"><value>Căutare</value></data>
+  <data name="Help_Close" xml:space="preserve"><value>Închide</value></data>
+  <data name="Help_Tip_Series" xml:space="preserve"><value>Alegeți mai întâi familia de produse; lista de unități este filtrată corespunzător.</value></data>
+  <data name="Help_Tip_Unit" xml:space="preserve"><value>Alegeți unitatea de ventilație de calculat.</value></data>
+  <data name="Help_Tip_Airflow" xml:space="preserve"><value>Introduceți fluxul de aer de proiectare de iarnă. Fluxul de aer de vară este în prezent menținut sincronizat.</value></data>
+  <data name="Help_Tip_Pressure" xml:space="preserve"><value>Presiune statică externă disponibilă la debitul de aer selectat.</value></data>
+  <data name="Help_Tip_Conditions" xml:space="preserve"><value>Setați condițiile de iarnă în stânga și condițiile de vară în dreapta.</value></data>
+  <data name="Help_Tip_Summer" xml:space="preserve"><value>Activați sau dezactivați calculul independent de vară.</value></data>
+  <data name="Help_Tip_Regulation" xml:space="preserve"><value>Mutați nivelul de control și SSW recalculează punctul de funcționare și performanța.</value></data>
+  <data name="Help_Tip_Reference" xml:space="preserve"><value>Referința clientului utilizată în numele fișierelor salvate, rapoarte și proiecte.</value></data>
+  <data name="Help_Tip_WaterCoils" xml:space="preserve"><value>Selectați și calculați serpentinele de apă compatibile. Încălzirea și postîncălzirea EHD se exclud reciproc.</value></data>
+  <data name="Help_Tip_ElectricHeaters" xml:space="preserve"><value>Selectați preîncălzitoare compatibile (PEHD) și postîncălzitoare (EHD).</value></data>
+  <data name="Help_Tip_Accessories" xml:space="preserve"><value>Completați selecția cu accesorii și funcții de control compatibile.</value></data>
+  <data name="Help_Tip_Report" xml:space="preserve"><value>Înregistrați selecția tehnică și generați raportul PDF localizat al acesteia.</value></data>
+  <data name="Help_Topic_GettingStarted_Title" xml:space="preserve"><value>Pentru început</value></data>
+  <data name="Help_Topic_GettingStarted_Body" xml:space="preserve"><value>Începeți prin a alege familia de produse și unitatea de ventilație. Introduceți debitul de aer de iarnă și presiunea statică externă disponibilă, apoi setați condițiile de temperatură și umiditate de iarnă și, atunci când este necesar, de vară.
+
+Examinați punctul de funcționare din grafice înainte de a adăuga bobine, încălzitoare electrice, accesorii sau funcții de control. Completați referința clientului înainte de a salva sau de a genera un raport; este utilizat în nume de fișiere, rapoarte și proiecte de selecție.</value></data>
+  <data name="Help_Topic_Conditions_Title" xml:space="preserve"><value>Condiții de iarnă și vară</value></data>
+  <data name="Help_Topic_Conditions_Body" xml:space="preserve"><value>Intrările de iarnă sunt afișate în stânga și intrările de vară în dreapta. Fluxul de aer de vară rămâne în prezent sincronizat cu fluxul de aer de iarnă. Utilizați Activare vară pentru a rula ambele calcule termodinamice; dezactivați-l când este necesar doar carcasa de iarnă.
+
+Presetarea Vară/Iarnă restabilește condițiile standard de proiectare. Presetări EN 308 și EN 13141-7 afectează doar cazul de iarnă și nu suprascrie intrările de vară.</value></data>
+  <data name="Help_Topic_Performance_Title" xml:space="preserve"><value>Performanță de lectură</value></data>
+  <data name="Help_Topic_Performance_Body" xml:space="preserve"><value>Controlul de reglare deplasează punctul selectat de-a lungul curbei ventilatorului și recalculează presiunea, puterea absorbită și performanța de recuperare a căldurii. Punctul portocaliu identifică debitul de aer activ și presiunea; graficele de eficiență arată punctele de lucru de iarnă și, atunci când sunt activate, de vară.
+
+Verificați dacă debitul de aer solicitat se află în interiorul curbei ventilatorului utilizabil. Orice bobină de apă sau electrică activată adaugă pierderea de presiune din partea aerului și poate reduce debitul maxim admisibil de aer.</value></data>
+  <data name="Help_Topic_WaterCoils_Title" xml:space="preserve"><value>Serpentine de apă</value></data>
+  <data name="Help_Topic_WaterCoils_Body" xml:space="preserve"><value>Fila Baterii de apă este disponibilă numai atunci când unitatea selectată are relații compatibile în baza de date. Alegeți modul de calcul CWD, HWD sau HCD, instalația internă sau externă, fluidul și temperaturile acestuia.
+
+Standard utilizează geometria catalogului. Personalizat permite modificările geometrice permise și necesită declinarea răspunderii pentru proiectare. Verificați capacitatea, temperatura maximă de evacuare a aerului, scăderea presiunii aerului, scăderea presiunii apei, debitul fluidului și viteza. HCD efectuează calcule de încălzire și răcire pe aceeași geometrie fixă. Încălzirea apei și postîncălzirea electrică EHD nu pot fi activate împreună.</value></data>
+  <data name="Help_Topic_ElectricHeaters_Title" xml:space="preserve"><value>Incalzitoare electrice</value></data>
+  <data name="Help_Topic_ElectricHeaters_Body" xml:space="preserve"><value>PEHD este un preîncălzitor electric: încălzește aerul proaspăt de iarnă înaintea schimbătorului de căldură și, prin urmare, modifică temperaturile de intrare și de ieșire ale schimbătorului. EHD este un postîncălzitor electric: încălzește aerul de alimentare după recuperarea căldurii.
+
+Sunt disponibile doar încălzitoarele aferente unității selectate. Pierderea lor de presiune din partea aerului este inclusă în curba ventilatorului. PEHD poate fi combinat cu moduri de bobină de apă; EHD nu poate fi combinat cu HWD sau cu partea de încălzire a HCD.</value></data>
+  <data name="Help_Topic_Accessories_Title" xml:space="preserve"><value>Accesorii și funcții</value></data>
+  <data name="Help_Topic_Accessories_Body" xml:space="preserve"><value>Utilizați filtrele de căutare și de categorii pentru a găsi accesorii și funcții de control compatibile. Elementele standard sunt selectate automat și nu pot fi eliminate. Elementele opționale pot fi selectate sau șterse; opțiunile indisponibile rămân dezactivate, iar balonul explicativ explică condiția prealabilă.
+
+Unele funcții necesită un anumit accesoriu sau un nivel de controler. Rezumatul accesoriilor selectate rămâne vizibil în afara filei, astfel încât configurația curentă poate fi verificată în orice moment.</value></data>
+  <data name="Help_Topic_Save_Title" xml:space="preserve"><value>Noi, salvați și redeschideți selecțiile</value></data>
+  <data name="Help_Topic_Save_Body" xml:space="preserve"><value>Noua selecție începe o selecție tehnică goală după ce se oferă să salveze lucrările nesalvate. Deschideți selecția restaurează un fișier .sswsel, inclusiv configurația acestuia, accesoriile, referința la schița locală și istoricul selecției înregistrate.
+
+Salvare actualizează fișierul curent. Salvare ca scrie aceeași selecție tehnică pe altă cale: schimbă locația fișierului, nu identitatea selecției. Referința clientului este igienizată și utilizată ca prefix în numele fișierului propus. Un asterisc în titlul ferestrei indică modificări nesalvate.</value></data>
+  <data name="Help_Topic_Duplicate_Title" xml:space="preserve"><value>Duplicați și creați alternative</value></data>
+  <data name="Help_Topic_Duplicate_Body" xml:space="preserve"><value>Duplicați pe măsură ce selecția nouă copiază configurația curentă, dar atribuie o nouă identitate de selecție independentă și o referință la schița locală. Utilizați-l atunci când unitatea copiată nu mai trebuie să partajeze istoricul revizuirilor inițiale.
+
+Crearea unei alternative creează și o identitate independentă, dar adaugă Alt. 01 la referința clientului. Crearea unei alte alternative de la una existentă crește numărul. Utilizați alternative pentru propuneri comparabile din punct de vedere tehnic care aparțin aceleiași solicitări ale clientului.</value></data>
+  <data name="Help_Topic_Report_Title" xml:space="preserve"><value>Rapoarte și revizuiri</value></data>
+  <data name="Help_Topic_Report_Body" xml:space="preserve"><value>Generare raport validează configurația curentă, înregistrează selecția tehnică atunci când serviciul este disponibil, creează un PDF localizat și deschide vizualizatorul de rapoarte. Din vizualizator puteți inspecta rezultatul, puteți trimite PDF prin e-mail sau îl puteți adăuga la un proiect de selecție.
+
+Generarea din nou a unui raport după modificarea unei selecții deja înregistrate creează următoarea revizuire a aceleiași identități. Dublarea sau crearea unei alternative creează mai întâi o identitate diferită. Dacă înregistrarea online nu este disponibilă, SSW poate genera o schiță locală fără a întrerupe munca tehnică.</value></data>
+  <data name="Help_Topic_Project_Title" xml:space="preserve"><value>Proiecte cu selecție multiplă</value></data>
+  <data name="Help_Topic_Project_Body" xml:space="preserve"><value>Un proiect de selecție (.sswproj) grupează rapoarte pentru mai multe unități de ventilație sub o singură referință de proiect și o singură limbă. Nu înlocuiește fișierele individuale .sswsel: fiecare rând păstrează selecția serializată și PDF curent.
+
+Creați sau deschideți proiectul din Fișier &gt; Proiect de selecție. Generați fiecare raport de unitate și utilizați Adăugați la proiect în vizualizatorul de rapoarte. În fereastra proiectului puteți redeschide o selecție, elimina rânduri învechite, actualiza PDF și pregăti un e-mail localizat care conține fiecare raport curent și un tabel rezumat.</value></data>
+  <data name="Help_Topic_Tips_Title" xml:space="preserve"><value>Sfaturi de ajutor</value></data>
+  <data name="Help_Topic_Tips_Body" xml:space="preserve"><value>Sfaturile de ajutor contextual explică comenzile și comenzile operaționale din meniu fără a deschide ghidul. Acestea sunt activate implicit la o nouă instalare. Dezactivați sau activați-le din Opțiuni sau Ajutor; preferința este stocată în profilul de utilizator Windows și este păstrată după o actualizare SSW.
+
+Numele limbilor din meniul de limbă sunt întotdeauna afișate în mod intenționat ca autonime, astfel încât fiecare utilizator își poate recunoaște propria limbă chiar și atunci când interfața curentă folosește o altă limbă.</value></data>
+  <data name="Help_MenuTip_New" xml:space="preserve"><value>Începeți o selecție tehnică goală. Puteți salva modificările curente înainte de a continua.</value></data>
+  <data name="Help_MenuTip_Open" xml:space="preserve"><value>Deschideți un fișier .sswsel și restaurați configurația salvată și identitatea de selecție.</value></data>
+  <data name="Help_MenuTip_Save" xml:space="preserve"><value>Salvați modificările la fișierul .sswsel curent sau alegeți un nume de fișier dacă nu a fost salvat înainte.</value></data>
+  <data name="Help_MenuTip_SaveAs" xml:space="preserve"><value>Salvați selecția curentă într-un alt fișier .sswsel păstrând în același timp aceeași identitate de selecție tehnică.</value></data>
+  <data name="Help_MenuTip_Duplicate" xml:space="preserve"><value>Creați o selecție independentă cu o nouă identitate, păstrând configurația curentă ca punct de plecare.</value></data>
+  <data name="Help_MenuTip_Alternative" xml:space="preserve"><value>Creați o alternativă independentă și adăugați sau incrementați prefixul Alt. XX în referința clientului.</value></data>
+  <data name="Help_MenuTip_Recent" xml:space="preserve"><value>Deschideți unul dintre cele mai recent utilizate fișiere .sswsel.</value></data>
+  <data name="Help_MenuTip_Project" xml:space="preserve"><value>Creați sau gestionați un proiect care grupează mai multe selecții și rapoartele PDF ale acestora.</value></data>
+  <data name="Help_MenuTip_Report" xml:space="preserve"><value>Înregistrați selecția tehnică curentă și generați raportul PDF localizat al acesteia.</value></data>
+  <data name="Help_MenuTip_CommercialSheet" xml:space="preserve"><value>Generați fișa de produs comercial atunci când este disponibilă pentru unitatea și limba selectate.</value></data>
+  <data name="Help_MenuTip_Iom" xml:space="preserve"><value>Generați documentul de instalare, operare și întreținere atunci când acesta este disponibil.</value></data>
+  <data name="Help_MenuTip_Exit" xml:space="preserve"><value>Închideți SSW. Veți fi întrebat dacă salvați modificările selecției nesalvate.</value></data>
+  <data name="Help_MenuTip_Language" xml:space="preserve"><value>Schimbați interfața, raportul și limba de comunicare. Numele de limbă rămân scrise în limba lor proprie.</value></data>
+  <data name="Help_MenuTip_Units" xml:space="preserve"><value>Alegeți sistemul de măsurare utilizat de interfață și documentele generate.</value></data>
+  <data name="Help_MenuTip_CommercialSync" xml:space="preserve"><value>Sincronizează automat foaia comercială cu selecția activă atunci când această opțiune este disponibilă.</value></data>
+  <data name="Help_MenuTip_Updates" xml:space="preserve"><value>Verificați manual dacă este disponibilă o versiune SSW mai nouă.</value></data>
+  <data name="Help_MenuTip_OpenGuide" xml:space="preserve"><value>Deschideți ghidul utilizatorului care poate fi căutat pentru selecții, rapoarte și proiecte.</value></data>
+  <data name="Help_MenuTip_ToggleTips" xml:space="preserve"><value>Activați sau dezactivați sfaturile de ajutor contextual în SSW.</value></data>
+  <data name="Help_Topic_Workflow_Title" xml:space="preserve"><value>Flux de lucru de selecție recomandat</value></data>
+  <data name="Help_Topic_Workflow_Body" xml:space="preserve"><value>1. Alegeți familia și unitatea.
+2. Introduceți debitul de aer, presiunea și condițiile de proiectare.
+3. Reglați nivelul de reglare și verificați punctul de funcționare.
+4. Adăugați serpentine de apă compatibile, încălzitoare electrice, accesorii și funcții.
+5. Introduceți referința clientului și salvați fișierul .sswsel.
+6. Generați și revizuiți PDF localizat.
+7. Dacă jobul conține mai multe unități, adăugați fiecare raport la un proiect de selecție.</value></data>
+  <data name="Help_Topic_Exports_Title" xml:space="preserve"><value>Fișă comercială și IOM</value></data>
+  <data name="Help_Topic_Exports_Body" xml:space="preserve"><value>Fișa comercială și IOM sunt documente suplimentare și sunt activate numai atunci când există conținut pentru unitatea, ramura și limba selectate. Ele nu salvează selecția tehnică și nu înlocuiesc raportul de calcul.
+
+Salvați mai întâi fișierul .sswsel când trebuie să păstrați intrările de calcul editabile. Generați raport atunci când aveți nevoie de rezultatul tehnic urmăribil și referința de revizuire a acestuia.</value></data>
 </root>

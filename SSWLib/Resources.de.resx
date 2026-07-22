@@ -628,4 +628,98 @@ Mit freundlichen Grüßen</value></data>
   <data name="ReportViewer_AddToProjectTooltip" xml:space="preserve">
     <value>Diesen Bericht in einem Mehrfachauswahlprojekt hinzufügen oder aktualisieren</value>
   </data>
+  <data name="MainForm_Menu_Option_Language_Norwegian" xml:space="preserve"><value>Norsk</value></data>
+  <data name="MainForm_Menu_Option_Language_Icelandic" xml:space="preserve"><value>Íslenska</value></data>
+  <data name="Help_Menu" xml:space="preserve"><value>Hilfe</value></data>
+  <data name="Help_OpenGuide" xml:space="preserve"><value>Benutzerhandbuch</value></data>
+  <data name="Help_ShowToolTips" xml:space="preserve"><value>Hilfetipps anzeigen</value></data>
+  <data name="Help_Title" xml:space="preserve"><value>SSW-Benutzerhandbuch</value></data>
+  <data name="Help_Search" xml:space="preserve"><value>Suche</value></data>
+  <data name="Help_Close" xml:space="preserve"><value>Schließen</value></data>
+  <data name="Help_Tip_Series" xml:space="preserve"><value>Wählen Sie zuerst die Produktfamilie; Die Einheitenliste wird entsprechend gefiltert.</value></data>
+  <data name="Help_Tip_Unit" xml:space="preserve"><value>Wählen Sie das zu berechnende Lüftungsgerät aus.</value></data>
+  <data name="Help_Tip_Airflow" xml:space="preserve"><value>Geben Sie den Winterdesign-Luftstrom ein. Der Luftstrom im Sommer wird derzeit synchron gehalten.</value></data>
+  <data name="Help_Tip_Pressure" xml:space="preserve"><value>Verfügbarer externer statischer Druck beim ausgewählten Luftstrom.</value></data>
+  <data name="Help_Tip_Conditions" xml:space="preserve"><value>Stellen Sie links die Winterbedingungen und rechts die Sommerbedingungen ein.</value></data>
+  <data name="Help_Tip_Summer" xml:space="preserve"><value>Aktivieren oder deaktivieren Sie die unabhängige Sommerberechnung.</value></data>
+  <data name="Help_Tip_Regulation" xml:space="preserve"><value>Verschieben Sie die Regelebene und SSW berechnet den Arbeitspunkt und die Leistung neu.</value></data>
+  <data name="Help_Tip_Reference" xml:space="preserve"><value>Kundenreferenz, die in gespeicherten Dateinamen, Berichten und Projekten verwendet wird.</value></data>
+  <data name="Help_Tip_WaterCoils" xml:space="preserve"><value>Wählen und berechnen Sie kompatible Wasserregister. Heizen und EHD-Nachheizen schließen sich gegenseitig aus.</value></data>
+  <data name="Help_Tip_ElectricHeaters" xml:space="preserve"><value>Wählen Sie kompatible Vorheizer (PEHD) und Nachheizer (EHD).</value></data>
+  <data name="Help_Tip_Accessories" xml:space="preserve"><value>Ergänzen Sie die Auswahl mit kompatiblem Zubehör und Steuerfunktionen.</value></data>
+  <data name="Help_Tip_Report" xml:space="preserve"><value>Registrieren Sie die technische Auswahl und generieren Sie den lokalisierten PDF-Bericht.</value></data>
+  <data name="Help_Topic_GettingStarted_Title" xml:space="preserve"><value>Erste Schritte</value></data>
+  <data name="Help_Topic_GettingStarted_Body" xml:space="preserve"><value>Beginnen Sie mit der Auswahl der Produktfamilie und des Lüftungsgerätes. Geben Sie den Luftstrom für den Winter und den verfügbaren externen statischen Druck ein und stellen Sie dann die Temperatur- und Luftfeuchtigkeitsbedingungen für den Winter und bei Bedarf auch für den Sommer ein.
+
+Überprüfen Sie den Betriebspunkt in den Diagrammen, bevor Sie Spulen, Elektroheizungen, Zubehör oder Steuerfunktionen hinzufügen. Vervollständigen Sie die Kundenreferenz, bevor Sie einen Bericht speichern oder erstellen. Es wird in Dateinamen, Berichten und Auswahlprojekten verwendet.</value></data>
+  <data name="Help_Topic_Conditions_Title" xml:space="preserve"><value>Winter- und Sommerbedingungen</value></data>
+  <data name="Help_Topic_Conditions_Body" xml:space="preserve"><value>Die Wintereingänge werden links und die Sommereingänge rechts angezeigt. Der Luftstrom im Sommer bleibt derzeit mit dem Luftstrom im Winter synchronisiert. Verwenden Sie „Sommer aktivieren“, um beide thermodynamischen Berechnungen auszuführen. Deaktivieren Sie es, wenn nur das Wintergehäuse benötigt wird.
+
+Die Voreinstellung „Sommer/Winter“ stellt die standardmäßigen Designbedingungen wieder her. Die Voreinstellungen EN 308 und EN 13141-7 wirken sich nur auf den Winterfall aus und überschreiben nicht die Sommereingänge.</value></data>
+  <data name="Help_Topic_Performance_Title" xml:space="preserve"><value>Leseleistung</value></data>
+  <data name="Help_Topic_Performance_Body" xml:space="preserve"><value>Die Regulierungssteuerung verschiebt den ausgewählten Punkt entlang der Lüfterkurve und berechnet den Druck, die aufgenommene Leistung und die Wärmerückgewinnungsleistung neu. Der orangefarbene Punkt kennzeichnet den aktiven Luftstrom und Druck; Die Effizienzdiagramme zeigen die Arbeitspunkte im Winter und, sofern aktiviert, im Sommer.
+
+Stellen Sie sicher, dass der erforderliche Luftstrom innerhalb der nutzbaren Lüfterkurve liegt. Jedes aktivierte Wasser- oder Elektroregister erhöht den luftseitigen Druckverlust und kann den maximal zulässigen Luftstrom verringern.</value></data>
+  <data name="Help_Topic_WaterCoils_Title" xml:space="preserve"><value>Wasserspulen</value></data>
+  <data name="Help_Topic_WaterCoils_Body" xml:space="preserve"><value>Die Registerkarte „Wasserregister“ ist nur verfügbar, wenn die ausgewählte Einheit kompatible Beziehungen in der Datenbank aufweist. Wählen Sie den Berechnungsmodus CWD, HWD oder HCD, die interne oder externe Installation, das Fluid und seine Temperaturen.
+
+Standard verwendet die Kataloggeometrie. „Customized“ erlaubt die zulässigen geometrischen Änderungen und erfordert den Design-Haftungsausschluss. Überprüfen Sie die Kapazität, die maximale Luftaustrittstemperatur, den Luftdruckabfall, den Wasserdruckabfall, den Flüssigkeitsdurchfluss und die Geschwindigkeit. HCD führt Heiz- und Kühlberechnungen für dieselbe feste Geometrie durch. Warmwasserbereitung und elektrische Nachheizung EHD können nicht gemeinsam aktiviert werden.</value></data>
+  <data name="Help_Topic_ElectricHeaters_Title" xml:space="preserve"><value>Elektrische Heizungen</value></data>
+  <data name="Help_Topic_ElectricHeaters_Body" xml:space="preserve"><value>PEHD ist ein elektrischer Vorheizer: Er erwärmt winterliche Frischluft vor dem Wärmetauscher und verändert so die Ein- und Austrittstemperaturen des Wärmetauschers. EHD ist ein elektrischer Nacherhitzer: Er erwärmt die Zuluft nach Wärmerückgewinnung.
+
+Es sind nur Heizgeräte verfügbar, die sich auf die ausgewählte Einheit beziehen. Ihr luftseitiger Druckverlust geht in die Lüfterkurve ein. PEHD kann mit Wasserspulenmodi kombiniert werden; EHD kann nicht mit HWD oder dem Heizteil von HCD kombiniert werden.</value></data>
+  <data name="Help_Topic_Accessories_Title" xml:space="preserve"><value>Zubehör und Funktionen</value></data>
+  <data name="Help_Topic_Accessories_Body" xml:space="preserve"><value>Verwenden Sie Such- und Kategoriefilter, um kompatibles Zubehör und Steuerfunktionen zu finden. Standardelemente werden automatisch ausgewählt und können nicht entfernt werden. Optionale Elemente können ausgewählt oder gelöscht werden; Nicht verfügbare Auswahlmöglichkeiten bleiben deaktiviert und der Tooltip erklärt die Voraussetzung.
+
+Für einige Funktionen ist eine bestimmte Zubehör- oder Controllerebene erforderlich. Die Zusammenfassung der ausgewählten Zubehörteile bleibt außerhalb der Registerkarte sichtbar, sodass die aktuelle Konfiguration jederzeit überprüft werden kann.</value></data>
+  <data name="Help_Topic_Save_Title" xml:space="preserve"><value>Neue Auswahlen, Speichern und erneutes Öffnen</value></data>
+  <data name="Help_Topic_Save_Body" xml:space="preserve"><value>Eine neue Auswahl startet eine leere technische Auswahl, nachdem angeboten wurde, nicht gespeicherte Arbeit zu speichern. Durch Öffnen der Auswahl wird eine .sswsel-Datei wiederhergestellt, einschließlich ihrer Konfiguration, ihres Zubehörs, ihrer lokalen Entwurfsreferenz und ihres registrierten Auswahlverlaufs.
+
+Speichern aktualisiert die aktuelle Datei. „Speichern unter“ schreibt dieselbe technische Auswahl in einen anderen Pfad: Es ändert den Speicherort der Datei, nicht die Identität der Auswahl. Die Kundenreferenz wird bereinigt und als Präfix im vorgeschlagenen Dateinamen verwendet. Ein Sternchen im Fenstertitel weist auf nicht gespeicherte Änderungen hin.</value></data>
+  <data name="Help_Topic_Duplicate_Title" xml:space="preserve"><value>Duplizieren und Alternativen erstellen</value></data>
+  <data name="Help_Topic_Duplicate_Body" xml:space="preserve"><value>Als neue Auswahl duplizieren kopiert die aktuelle Konfiguration, weist jedoch eine neue unabhängige Auswahlidentität und eine lokale Entwurfsreferenz zu. Verwenden Sie es, wenn die kopierte Einheit nicht mehr den ursprünglichen Revisionsverlauf aufweisen darf.
+
+„Alternative erstellen“ erstellt ebenfalls eine unabhängige Identität, fügt jedoch Alt. 01 zur Kundenreferenz hinzu. Durch das Erstellen einer weiteren Alternative aus einer bestehenden wird die Zahl erhöht. Nutzen Sie Alternativen für technisch vergleichbare Angebote, die zur gleichen Kundenanfrage gehören.</value></data>
+  <data name="Help_Topic_Report_Title" xml:space="preserve"><value>Berichte und Überarbeitungen</value></data>
+  <data name="Help_Topic_Report_Body" xml:space="preserve"><value>„Bericht generieren“ validiert die aktuelle Konfiguration, registriert die technische Auswahl, wenn der Dienst verfügbar ist, erstellt ein lokalisiertes PDF und öffnet den Berichtsviewer. Im Viewer können Sie das Ergebnis prüfen, das PDF per E-Mail versenden oder es einem Auswahlprojekt hinzufügen.
+
+Wenn Sie nach der Änderung einer bereits registrierten Auswahl erneut einen Bericht erstellen, wird die nächste Revision derselben Identität erstellt. Durch das Duplizieren oder Erstellen einer Alternative entsteht stattdessen zunächst eine andere Identität. Wenn die Online-Registrierung nicht verfügbar ist, kann SSW einen lokalen Entwurf erstellen, ohne die technische Arbeit zu unterbrechen.</value></data>
+  <data name="Help_Topic_Project_Title" xml:space="preserve"><value>Mehrfachauswahlprojekte</value></data>
+  <data name="Help_Topic_Project_Body" xml:space="preserve"><value>Ein Auswahlprojekt (.sswproj) gruppiert Berichte für mehrere Lüftungsgeräte unter einer Projektreferenz und einer Sprache. Es ersetzt nicht die einzelnen .sswsel-Dateien: Jede Zeile behält die serialisierte Auswahl und ihre aktuelle PDF.
+
+Erstellen oder öffnen Sie das Projekt über Datei &gt; Auswahlprojekt. Generieren Sie jeden Einheitenbericht und verwenden Sie „Zum Projekt hinzufügen“ im Berichtsviewer. Im Projektfenster können Sie eine Auswahl erneut öffnen, veraltete Zeilen entfernen, PDFs aktualisieren und eine lokalisierte E-Mail mit allen aktuellen Berichten und einer Übersichtstabelle vorbereiten.</value></data>
+  <data name="Help_Topic_Tips_Title" xml:space="preserve"><value>Hilfe-Tipps</value></data>
+  <data name="Help_Topic_Tips_Body" xml:space="preserve"><value>Kontextbezogene Hilfetipps erklären Steuerelemente und operative Menübefehle, ohne die Anleitung öffnen zu müssen. Sie sind bei einer Neuinstallation standardmäßig aktiviert. Deaktivieren oder aktivieren Sie sie über Optionen oder Hilfe. Die Einstellung wird im Windows-Benutzerprofil gespeichert und bleibt nach einem SSW-Update erhalten.
+
+Sprachnamen im Sprachmenü werden bewusst immer als Autonyme angezeigt, sodass jeder Benutzer seine eigene Sprache erkennen kann, auch wenn die aktuelle Oberfläche eine andere Sprache verwendet.</value></data>
+  <data name="Help_MenuTip_New" xml:space="preserve"><value>Starten Sie eine leere technische Auswahl. Sie können die aktuellen Änderungen speichern, bevor Sie fortfahren.</value></data>
+  <data name="Help_MenuTip_Open" xml:space="preserve"><value>Öffnen Sie eine .sswsel-Datei und stellen Sie ihre gespeicherte Konfiguration und Auswahlidentität wieder her.</value></data>
+  <data name="Help_MenuTip_Save" xml:space="preserve"><value>Speichern Sie die Änderungen an der aktuellen .sswsel-Datei oder wählen Sie einen Dateinamen, wenn dieser noch nicht gespeichert wurde.</value></data>
+  <data name="Help_MenuTip_SaveAs" xml:space="preserve"><value>Speichern Sie die aktuelle Auswahl in einer anderen .sswsel-Datei und behalten Sie dabei die gleiche technische Auswahlidentität bei.</value></data>
+  <data name="Help_MenuTip_Duplicate" xml:space="preserve"><value>Erstellen Sie eine unabhängige Auswahl mit einer neuen Identität und behalten Sie dabei die aktuelle Konfiguration als Ausgangspunkt bei.</value></data>
+  <data name="Help_MenuTip_Alternative" xml:space="preserve"><value>Erstellen Sie eine unabhängige Alternative und fügen Sie das Präfix Alt. XX in der Kundenreferenz hinzu oder erhöhen Sie es.</value></data>
+  <data name="Help_MenuTip_Recent" xml:space="preserve"><value>Öffnen Sie eine der zuletzt verwendeten .sswsel-Dateien.</value></data>
+  <data name="Help_MenuTip_Project" xml:space="preserve"><value>Erstellen oder verwalten Sie ein Projekt, das mehrere Auswahlen und ihre PDF-Berichte gruppiert.</value></data>
+  <data name="Help_MenuTip_Report" xml:space="preserve"><value>Registrieren Sie die aktuelle technische Auswahl und generieren Sie den lokalisierten PDF-Bericht.</value></data>
+  <data name="Help_MenuTip_CommercialSheet" xml:space="preserve"><value>Generieren Sie das kommerzielle Produktblatt, wenn es für die ausgewählte Einheit und Sprache verfügbar ist.</value></data>
+  <data name="Help_MenuTip_Iom" xml:space="preserve"><value>Erstellen Sie das Installations-, Betriebs- und Wartungsdokument, sobald es verfügbar ist.</value></data>
+  <data name="Help_MenuTip_Exit" xml:space="preserve"><value>Schließen Sie SSW. Sie werden gefragt, ob nicht gespeicherte Auswahländerungen gespeichert werden sollen.</value></data>
+  <data name="Help_MenuTip_Language" xml:space="preserve"><value>Ändern Sie die Benutzeroberfläche, den Bericht und die Kommunikationssprache. Sprachnamen bleiben in ihrer eigenen Sprache geschrieben.</value></data>
+  <data name="Help_MenuTip_Units" xml:space="preserve"><value>Wählen Sie das Messsystem aus, das von der Schnittstelle und den generierten Dokumenten verwendet wird.</value></data>
+  <data name="Help_MenuTip_CommercialSync" xml:space="preserve"><value>Synchronisieren Sie das Werbeblatt automatisch mit der aktiven Auswahl, wenn diese Option verfügbar ist.</value></data>
+  <data name="Help_MenuTip_Updates" xml:space="preserve"><value>Prüfen Sie manuell, ob eine neuere SSW-Version verfügbar ist.</value></data>
+  <data name="Help_MenuTip_OpenGuide" xml:space="preserve"><value>Öffnen Sie das durchsuchbare Benutzerhandbuch für Auswahlen, Berichte und Projekte.</value></data>
+  <data name="Help_MenuTip_ToggleTips" xml:space="preserve"><value>Aktivieren oder deaktivieren Sie kontextbezogene Hilfetipps im gesamten SSW.</value></data>
+  <data name="Help_Topic_Workflow_Title" xml:space="preserve"><value>Empfohlener Auswahl-Workflow</value></data>
+  <data name="Help_Topic_Workflow_Body" xml:space="preserve"><value>1. Wählen Sie die Familie und die Einheit.
+2. Geben Sie Luftstrom, Druck und Auslegungsbedingungen ein.
+3. Stellen Sie das Regelniveau ein und überprüfen Sie den Betriebspunkt.
+4. Fügen Sie kompatible Wasserregister, Elektroheizungen, Zubehör und Funktionen hinzu.
+5. Geben Sie die Kundenreferenz ein und speichern Sie die Datei .sswsel.
+6. Generieren und überprüfen Sie das lokalisierte PDF.
+7. Wenn der Job mehrere Einheiten enthält, fügen Sie jeden Bericht einem Auswahlprojekt hinzu.</value></data>
+  <data name="Help_Topic_Exports_Title" xml:space="preserve"><value>Handelsblatt und IOM</value></data>
+  <data name="Help_Topic_Exports_Body" xml:space="preserve"><value>Handelsblatt und IOM sind ergänzende Dokumente und werden nur aktiviert, wenn Inhalte für die ausgewählte Einheit, Branche und Sprache vorhanden sind. Sie speichern nicht die technische Auswahl und ersetzen nicht den Berechnungsbericht.
+
+Speichern Sie zuerst die Datei .sswsel, wenn Sie bearbeitbare Berechnungseingaben beibehalten müssen. Erstellen Sie einen Bericht, wenn Sie das nachvollziehbare technische Ergebnis und dessen Revisionsreferenz benötigen.</value></data>
 </root>

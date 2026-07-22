@@ -697,4 +697,98 @@ Z poważaniem</value></data>
   <data name="ReportViewer_AddToProjectTooltip" xml:space="preserve">
     <value>Dodaj lub zaktualizuj ten raport w projekcie wielu doborów</value>
   </data>
+  <data name="MainForm_Menu_Option_Language_Norwegian" xml:space="preserve"><value>Norsk</value></data>
+  <data name="MainForm_Menu_Option_Language_Icelandic" xml:space="preserve"><value>Íslenska</value></data>
+  <data name="Help_Menu" xml:space="preserve"><value>Pomoc</value></data>
+  <data name="Help_OpenGuide" xml:space="preserve"><value>Podręcznik użytkownika</value></data>
+  <data name="Help_ShowToolTips" xml:space="preserve"><value>Pokaż wskazówki pomocy</value></data>
+  <data name="Help_Title" xml:space="preserve"><value>Podręcznik użytkownika SSW</value></data>
+  <data name="Help_Search" xml:space="preserve"><value>Szukaj</value></data>
+  <data name="Help_Close" xml:space="preserve"><value>Zamknij</value></data>
+  <data name="Help_Tip_Series" xml:space="preserve"><value>Najpierw wybierz rodzinę produktów; lista jednostek jest odpowiednio filtrowana.</value></data>
+  <data name="Help_Tip_Unit" xml:space="preserve"><value>Wybierz jednostkę wentylacyjną do obliczeń.</value></data>
+  <data name="Help_Tip_Airflow" xml:space="preserve"><value>Wprowadź projektowany przepływ powietrza w zimie. Letni przepływ powietrza jest obecnie zsynchronizowany.</value></data>
+  <data name="Help_Tip_Pressure" xml:space="preserve"><value>Dostępne zewnętrzne ciśnienie statyczne przy wybranym przepływie powietrza.</value></data>
+  <data name="Help_Tip_Conditions" xml:space="preserve"><value>Ustaw warunki zimowe po lewej stronie i letnie po prawej.</value></data>
+  <data name="Help_Tip_Summer" xml:space="preserve"><value>Włącz lub wyłącz niezależne obliczenia letnie.</value></data>
+  <data name="Help_Tip_Regulation" xml:space="preserve"><value>Przesuń poziom kontroli, a SSW przeliczy punkt pracy i wydajność.</value></data>
+  <data name="Help_Tip_Reference" xml:space="preserve"><value>Referencje klienta używane w nazwach zapisanych plików, raportach i projektach.</value></data>
+  <data name="Help_Tip_WaterCoils" xml:space="preserve"><value>Wybierz i oblicz kompatybilne nagrzewnice wodne. Ogrzewanie i dogrzewanie EHD wzajemnie się wykluczają.</value></data>
+  <data name="Help_Tip_ElectricHeaters" xml:space="preserve"><value>Wybierz kompatybilne nagrzewnice wstępne (PEHD) i nagrzewnice wtórne (EHD).</value></data>
+  <data name="Help_Tip_Accessories" xml:space="preserve"><value>Uzupełnij wybór kompatybilnymi akcesoriami i funkcjami sterującymi.</value></data>
+  <data name="Help_Tip_Report" xml:space="preserve"><value>Zarejestruj wybór techniczny i wygeneruj zlokalizowany raport w formacie PDF.</value></data>
+  <data name="Help_Topic_GettingStarted_Title" xml:space="preserve"><value>Rozpoczęcie</value></data>
+  <data name="Help_Topic_GettingStarted_Body" xml:space="preserve"><value>Rozpocznij od wyboru rodziny produktów i urządzenia wentylacyjnego. Wprowadź zimowy przepływ powietrza i dostępne zewnętrzne ciśnienie statyczne, a następnie ustaw zimowe i, jeśli to konieczne, letnie warunki temperatury i wilgotności.
+
+Przed dodaniem wężownic, nagrzewnic elektrycznych, akcesoriów lub funkcji sterujących sprawdź punkt pracy na wykresach. Wypełnij referencje klienta przed zapisaniem lub wygenerowaniem raportu; jest używany w nazwach plików, raportach i projektach selekcji.</value></data>
+  <data name="Help_Topic_Conditions_Title" xml:space="preserve"><value>Warunki zimowe i letnie</value></data>
+  <data name="Help_Topic_Conditions_Body" xml:space="preserve"><value>Wejścia zimowe są pokazane po lewej stronie, a wejścia letnie po prawej. Letni przepływ powietrza jest obecnie zsynchronizowany z zimowym przepływem powietrza. Użyj opcji Włącz lato, aby uruchomić oba obliczenia termodynamiczne; wyłącz ją, gdy wymagana jest tylko obudowa zimowa.
+
+Ustawienie wstępne Lato/Zima przywraca standardowe warunki projektowe. Ustawienia wstępne EN 308 i EN 13141-7 wpływają tylko na przypadek zimowy i nie zastępują wejść letnich.</value></data>
+  <data name="Help_Topic_Performance_Title" xml:space="preserve"><value>Wydajność czytania</value></data>
+  <data name="Help_Topic_Performance_Body" xml:space="preserve"><value>Sterowanie przesuwa wybrany punkt wzdłuż krzywej wentylatora i ponownie oblicza ciśnienie, pobór mocy i wydajność odzysku ciepła. Pomarańczowy punkt wskazuje aktywny przepływ powietrza i ciśnienie; wykresy wydajności pokazują zimowe i letnie punkty pracy, jeśli są włączone.
+
+Sprawdź, czy żądany przepływ powietrza mieści się w użytecznej krzywej wentylatora. Każda włączona wężownica wodna lub elektryczna zwiększa stratę ciśnienia po stronie powietrza i może zmniejszyć maksymalny dopuszczalny przepływ powietrza.</value></data>
+  <data name="Help_Topic_WaterCoils_Title" xml:space="preserve"><value>Wężownice wodne</value></data>
+  <data name="Help_Topic_WaterCoils_Body" xml:space="preserve"><value>Zakładka Wężownice dostępna jest tylko wtedy, gdy wybrane urządzenie posiada w bazie zgodne relacje. Wybierz tryb obliczeń CWD, HWD lub HCD, instalację wewnętrzną lub zewnętrzną, płyn i jego temperaturę.
+
+Standard wykorzystuje geometrię katalogową. Dostosowanie pozwala na dozwolone zmiany geometryczne i wymaga zastrzeżenia projektowego. Sprawdź wydajność, maksymalną temperaturę wylotu powietrza, spadek ciśnienia powietrza, spadek ciśnienia wody, przepływ i prędkość płynu. HCD wykonuje obliczenia ogrzewania i chłodzenia na tej samej stałej geometrii. Ogrzewania wody i elektrycznego ogrzewania wtórnego EHD nie można włączyć jednocześnie.</value></data>
+  <data name="Help_Topic_ElectricHeaters_Title" xml:space="preserve"><value>Grzejniki elektryczne</value></data>
+  <data name="Help_Topic_ElectricHeaters_Body" xml:space="preserve"><value>PEHD to elektryczny nagrzewnica wstępna: podgrzewa zimowe świeże powietrze przed wymiennikiem ciepła i w ten sposób zmienia temperaturę na wlocie i wylocie wymiennika. EHD to elektryczna nagrzewnica wtórna: podgrzewa powietrze nawiewane po odzyskaniu ciepła.
+
+Dostępne są tylko grzejniki powiązane z wybraną jednostką. Ich strata ciśnienia po stronie powietrza jest uwzględniona w krzywej wentylatora. PEHD można łączyć z trybami wężownicy wodnej; EHD nie można łączyć z HWD ani częścią grzewczą HCD.</value></data>
+  <data name="Help_Topic_Accessories_Title" xml:space="preserve"><value>Akcesoria i funkcje</value></data>
+  <data name="Help_Topic_Accessories_Body" xml:space="preserve"><value>Użyj filtrów wyszukiwania i kategorii, aby znaleźć kompatybilne akcesoria i funkcje sterujące. Elementy standardowe są wybierane automatycznie i nie można ich usunąć. Opcjonalne elementy można wybrać lub wyczyścić; niedostępne opcje pozostają wyłączone, a ich podpowiedź wyjaśnia warunek wstępny.
+
+Niektóre funkcje wymagają określonego poziomu akcesoriów lub kontrolera. Zestawienie wybranych akcesoriów pozostaje widoczne poza zakładką, dzięki czemu w każdej chwili można sprawdzić aktualną konfigurację.</value></data>
+  <data name="Help_Topic_Save_Title" xml:space="preserve"><value>Nowe, zapisz i otwórz ponownie selekcje</value></data>
+  <data name="Help_Topic_Save_Body" xml:space="preserve"><value>Nowy wybór rozpoczyna pusty wybór techniczny po zaoferowaniu zapisania niezapisanej pracy. Otwarty wybór przywraca plik .sswsel, w tym jego konfigurację, akcesoria, lokalne odniesienie do wersji roboczej i zarejestrowaną historię wyboru.
+
+Zapisz aktualizuje bieżący plik. Zapisz jako zapisuje ten sam wybór techniczny w innej ścieżce: zmienia lokalizację pliku, a nie tożsamość wyboru. Referencja klienta jest oczyszczana i używana jako przedrostek w proponowanej nazwie pliku. Gwiazdka w tytule okna oznacza niezapisane zmiany.</value></data>
+  <data name="Help_Topic_Duplicate_Title" xml:space="preserve"><value>Duplikuj i twórz alternatywy</value></data>
+  <data name="Help_Topic_Duplicate_Body" xml:space="preserve"><value>Duplikuj, ponieważ nowy wybór kopiuje bieżącą konfigurację, ale przypisuje nową niezależną tożsamość wyboru i lokalne odniesienie do wersji roboczej. Użyj go, gdy skopiowana jednostka nie może już udostępniać oryginalnej historii wersji.
+
+Utwórz alternatywę tworzy również niezależną tożsamość, ale dodaje Alt. 01 do referencji klienta. Utworzenie kolejnej alternatywy na podstawie istniejącej zwiększa liczbę. Użyj alternatyw dla porównywalnych pod względem technicznym propozycji należących do tego samego żądania klienta.</value></data>
+  <data name="Help_Topic_Report_Title" xml:space="preserve"><value>Raporty i poprawki</value></data>
+  <data name="Help_Topic_Report_Body" xml:space="preserve"><value>Generowanie raportu sprawdza bieżącą konfigurację, rejestruje wybór techniczny, gdy usługa jest dostępna, tworzy zlokalizowany plik PDF i otwiera przeglądarkę raportów. Z poziomu przeglądarki możesz sprawdzić wynik, wysłać PDF e-mailem lub dodać go do projektu selekcji.
+
+Ponowne wygenerowanie raportu po zmianie już zarejestrowanego wyboru powoduje utworzenie kolejnej wersji tej samej tożsamości. Powielanie lub tworzenie alternatywy tworzy najpierw inną tożsamość. Jeśli rejestracja online jest niedostępna, SSW może wygenerować lokalny projekt bez przerywania prac technicznych.</value></data>
+  <data name="Help_Topic_Project_Title" xml:space="preserve"><value>Projekty wielokrotnego wyboru</value></data>
+  <data name="Help_Topic_Project_Body" xml:space="preserve"><value>Projekt wyboru (.sswproj) grupuje raporty dla kilku urządzeń wentylacyjnych w ramach jednego numeru referencyjnego projektu i języka. Nie zastępuje pojedynczych plików .sswsel: każdy wiersz zachowuje serializowany wybór i jego bieżący PDF.
+
+Utwórz lub otwórz projekt w menu Plik &gt; Projekt wyboru. Wygeneruj raport każdej jednostki i użyj opcji Dodaj do projektu w przeglądarce raportów. W oknie projektu możesz ponownie otworzyć wybór, usunąć przestarzałe wiersze, zaktualizować PDF i przygotować jedną zlokalizowaną wiadomość e-mail zawierającą wszystkie bieżące raporty i tabelę podsumowującą.</value></data>
+  <data name="Help_Topic_Tips_Title" xml:space="preserve"><value>Wskazówki dotyczące pomocy</value></data>
+  <data name="Help_Topic_Tips_Body" xml:space="preserve"><value>Kontekstowe wskazówki pomocy wyjaśniają elementy sterujące i polecenia menu operacyjnego bez otwierania przewodnika. Są one domyślnie włączone w przypadku nowej instalacji. Wyłącz lub włącz je w Opcjach lub Pomocy; preferencje są przechowywane w profilu użytkownika systemu Windows i zachowywane po aktualizacji SSW.
+
+Nazwy języków w menu języków są celowo zawsze wyświetlane jako autonimy, dzięki czemu każdy użytkownik może rozpoznać swój własny język, nawet jeśli bieżący interfejs używa innego języka.</value></data>
+  <data name="Help_MenuTip_New" xml:space="preserve"><value>Rozpocznij pusty wybór techniczny. Przed kontynuowaniem możesz zapisać bieżące zmiany.</value></data>
+  <data name="Help_MenuTip_Open" xml:space="preserve"><value>Otwórz plik .sswsel i przywróć jego zapisaną tożsamość konfiguracji i wyboru.</value></data>
+  <data name="Help_MenuTip_Save" xml:space="preserve"><value>Zapisz zmiany w bieżącym pliku .sswsel lub wybierz nazwę pliku, jeśli nie został on wcześniej zapisany.</value></data>
+  <data name="Help_MenuTip_SaveAs" xml:space="preserve"><value>Zapisz bieżący wybór w innym pliku .sswsel, zachowując tę samą techniczną tożsamość wyboru.</value></data>
+  <data name="Help_MenuTip_Duplicate" xml:space="preserve"><value>Utwórz niezależny wybór z nową tożsamością, zachowując bieżącą konfigurację jako punkt wyjścia.</value></data>
+  <data name="Help_MenuTip_Alternative" xml:space="preserve"><value>Utwórz niezależną alternatywę i dodaj lub zwiększ prefiks Alt. XX w referencji klienta.</value></data>
+  <data name="Help_MenuTip_Recent" xml:space="preserve"><value>Otwórz jeden z ostatnio używanych plików .sswsel.</value></data>
+  <data name="Help_MenuTip_Project" xml:space="preserve"><value>Utwórz projekt lub zarządzaj nim, który grupuje kilka selekcji i ich raporty PDF.</value></data>
+  <data name="Help_MenuTip_Report" xml:space="preserve"><value>Zarejestruj bieżący wybór techniczny i wygeneruj jego zlokalizowany raport PDF.</value></data>
+  <data name="Help_MenuTip_CommercialSheet" xml:space="preserve"><value>Wygeneruj komercyjną kartę produktu, jeśli jest ona dostępna dla wybranej jednostki i języka.</value></data>
+  <data name="Help_MenuTip_Iom" xml:space="preserve"><value>Wygeneruj dokument instalacji, obsługi i konserwacji, jeśli jest dostępny.</value></data>
+  <data name="Help_MenuTip_Exit" xml:space="preserve"><value>Zamknij SSW. Zostaniesz zapytany, czy zapisać niezapisane zmiany wyboru.</value></data>
+  <data name="Help_MenuTip_Language" xml:space="preserve"><value>Zmień interfejs, język raportów i komunikacji. Nazwy języków pozostają zapisane w ich własnym języku.</value></data>
+  <data name="Help_MenuTip_Units" xml:space="preserve"><value>Wybierz system miar używany przez interfejs i generowane dokumenty.</value></data>
+  <data name="Help_MenuTip_CommercialSync" xml:space="preserve"><value>Automatycznie synchronizuj arkusz reklamowy z aktywnym wyborem, jeśli ta opcja jest dostępna.</value></data>
+  <data name="Help_MenuTip_Updates" xml:space="preserve"><value>Sprawdź ręcznie, czy dostępna jest nowsza wersja SSW.</value></data>
+  <data name="Help_MenuTip_OpenGuide" xml:space="preserve"><value>Otwórz podręcznik użytkownika z możliwością przeszukiwania, aby zapoznać się z wyborami, raportami i projektami.</value></data>
+  <data name="Help_MenuTip_ToggleTips" xml:space="preserve"><value>Włącz lub wyłącz wskazówki pomocy kontekstowej w całym SSW.</value></data>
+  <data name="Help_Topic_Workflow_Title" xml:space="preserve"><value>Zalecany proces selekcji</value></data>
+  <data name="Help_Topic_Workflow_Body" xml:space="preserve"><value>1. Wybierz rodzinę i jednostkę.
+2. Wprowadź przepływ powietrza, ciśnienie i warunki projektowe.
+3. Dostosuj poziom regulacji i sprawdź punkt pracy.
+4. Dodaj kompatybilne nagrzewnice wodne, grzejniki elektryczne, akcesoria i funkcje.
+5. Wprowadź numer referencyjny klienta i zapisz plik .sswsel.
+6. Wygeneruj i przejrzyj zlokalizowany plik PDF.
+7. Jeżeli zlecenie zawiera kilka jednostek, dodaj każdy raport do projektu selekcji.</value></data>
+  <data name="Help_Topic_Exports_Title" xml:space="preserve"><value>Arkusz handlowy i IOM</value></data>
+  <data name="Help_Topic_Exports_Body" xml:space="preserve"><value>Arkusz handlowy i IOM są dokumentami uzupełniającymi i są dostępne tylko wtedy, gdy istnieje treść dla wybranej jednostki, branży i języka. Nie zapisują wyboru technicznego i nie zastępują raportu obliczeniowego.
+
+Jeśli chcesz zachować edytowalne dane wejściowe obliczeń, najpierw zapisz plik .sswsel. Generuj raport, jeśli potrzebujesz identyfikowalnego wyniku technicznego i numeru rewizji.</value></data>
 </root>

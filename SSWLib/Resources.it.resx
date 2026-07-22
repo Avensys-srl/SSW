@@ -741,4 +741,98 @@ Cordiali saluti</value></data>
   <data name="ReportViewer_AddToProjectTooltip" xml:space="preserve">
     <value>Aggiunge o aggiorna questo report in un progetto multi-selezione</value>
   </data>
+  <data name="MainForm_Menu_Option_Language_Norwegian" xml:space="preserve"><value>Norsk</value></data>
+  <data name="MainForm_Menu_Option_Language_Icelandic" xml:space="preserve"><value>Íslenska</value></data>
+  <data name="Help_Menu" xml:space="preserve"><value>Aiuto</value></data>
+  <data name="Help_OpenGuide" xml:space="preserve"><value>Guida per l&apos;utente</value></data>
+  <data name="Help_ShowToolTips" xml:space="preserve"><value>Mostra suggerimenti di aiuto</value></data>
+  <data name="Help_Title" xml:space="preserve"><value>Guida per l&apos;utente SSW</value></data>
+  <data name="Help_Search" xml:space="preserve"><value>Cerca</value></data>
+  <data name="Help_Close" xml:space="preserve"><value>Chiudi</value></data>
+  <data name="Help_Tip_Series" xml:space="preserve"><value>Scegli prima la famiglia di prodotti; l&apos;elenco delle unità viene filtrato di conseguenza.</value></data>
+  <data name="Help_Tip_Unit" xml:space="preserve"><value>Scegli l&apos;unità di ventilazione da calcolare.</value></data>
+  <data name="Help_Tip_Airflow" xml:space="preserve"><value>Inserisci il flusso d&apos;aria di progettazione invernale. Il flusso d&apos;aria estivo è attualmente mantenuto sincronizzato.</value></data>
+  <data name="Help_Tip_Pressure" xml:space="preserve"><value>Pressione statica esterna disponibile alla portata d&apos;aria selezionata.</value></data>
+  <data name="Help_Tip_Conditions" xml:space="preserve"><value>Imposta le condizioni invernali a sinistra e quelle estive a destra.</value></data>
+  <data name="Help_Tip_Summer" xml:space="preserve"><value>Abilita o disabilita il calcolo estivo indipendente.</value></data>
+  <data name="Help_Tip_Regulation" xml:space="preserve"><value>Sposta il livello di controllo e SSW ricalcola il punto operativo e le prestazioni.</value></data>
+  <data name="Help_Tip_Reference" xml:space="preserve"><value>Riferimento del cliente utilizzato nei nomi di file, report e progetti salvati.</value></data>
+  <data name="Help_Tip_WaterCoils" xml:space="preserve"><value>Seleziona e calcola le batterie ad acqua compatibili. Il riscaldamento e il post-riscaldamento EHD si escludono a vicenda.</value></data>
+  <data name="Help_Tip_ElectricHeaters" xml:space="preserve"><value>Seleziona preriscaldatori (PEHD) e post-riscaldatori (EHD) compatibili.</value></data>
+  <data name="Help_Tip_Accessories" xml:space="preserve"><value>Completa la scelta con accessori e funzioni di controllo compatibili.</value></data>
+  <data name="Help_Tip_Report" xml:space="preserve"><value>Registra la selezione tecnica e genera il relativo report PDF localizzato.</value></data>
+  <data name="Help_Topic_GettingStarted_Title" xml:space="preserve"><value>Per iniziare</value></data>
+  <data name="Help_Topic_GettingStarted_Body" xml:space="preserve"><value>Inizia scegliendo la famiglia di prodotti e l&apos;unità di ventilazione. Inserisci la portata d&apos;aria invernale e la pressione statica esterna disponibile, quindi imposta le condizioni di temperatura e umidità invernali e, quando richiesto, estive.
+
+Controlla il punto di lavoro sui grafici prima di aggiungere batterie ad acqua, batterie elettriche, accessori o funzioni di controllo. Compila il riferimento del cliente prima di salvare o generare un report: viene utilizzato nei nomi dei file, nei report e nei progetti di selezione.</value></data>
+  <data name="Help_Topic_Conditions_Title" xml:space="preserve"><value>Condizioni invernali ed estive</value></data>
+  <data name="Help_Topic_Conditions_Body" xml:space="preserve"><value>A sinistra sono visualizzati i dati invernali e a destra quelli estivi. La portata d&apos;aria estiva rimane attualmente sincronizzata con quella invernale. Usa Abilita estate per eseguire entrambi i calcoli termodinamici; disabilitalo quando è richiesto soltanto il caso invernale.
+
+Il comando Estate/Inverno ripristina le condizioni standard di progetto. Le preimpostazioni EN 308 e EN 13141-7 agiscono soltanto sul caso invernale e non sovrascrivono i dati estivi.</value></data>
+  <data name="Help_Topic_Performance_Title" xml:space="preserve"><value>Lettura delle prestazioni</value></data>
+  <data name="Help_Topic_Performance_Body" xml:space="preserve"><value>Il controllo di regolazione sposta il punto selezionato lungo la curva del ventilatore e ricalcola pressione, potenza assorbita e prestazioni di recupero di calore. Il punto arancione identifica il flusso d&apos;aria e la pressione attivi; i grafici di efficienza mostrano i punti di lavoro invernale e, quando abilitato, estivo.
+
+Verificare che la portata d&apos;aria richiesta si trovi all&apos;interno della curva utilizzabile del ventilatore. Qualsiasi batteria ad acqua o elettrica abilitata aggiunge la perdita di pressione lato aria e può ridurre il flusso d&apos;aria massimo ammissibile.</value></data>
+  <data name="Help_Topic_WaterCoils_Title" xml:space="preserve"><value>Batterie ad acqua</value></data>
+  <data name="Help_Topic_WaterCoils_Body" xml:space="preserve"><value>Il tab Batterie ad acqua è disponibile soltanto quando nel database esistono batterie compatibili con l&apos;unità selezionata. Scegli la modalità di calcolo CWD, HWD o HCD, l&apos;installazione interna o esterna, il fluido e le relative temperature.
+
+Standard utilizza la geometria di catalogo. Personalizzata permette le modifiche geometriche consentite e richiede l&apos;accettazione del disclaimer di progettazione. Controlla potenza, temperatura massima dell&apos;aria in uscita, perdite di carico lato aria e lato acqua, portata e velocità del fluido. HCD esegue i calcoli di riscaldamento e raffreddamento mantenendo la stessa geometria. Il post-riscaldamento ad acqua e il post-riscaldamento elettrico EHD non possono essere abilitati insieme.</value></data>
+  <data name="Help_Topic_ElectricHeaters_Title" xml:space="preserve"><value>Batterie elettriche</value></data>
+  <data name="Help_Topic_ElectricHeaters_Body" xml:space="preserve"><value>PEHD è un preriscaldatore elettrico: riscalda l&apos;aria esterna invernale prima dello scambiatore di calore e quindi modifica le temperature di ingresso e uscita dallo scambiatore. EHD è un post-riscaldatore elettrico: riscalda l&apos;aria di mandata dopo il recupero di calore.
+
+Sono disponibili solo i riscaldatori relativi all&apos;unità selezionata. La loro perdita di pressione lato aria è inclusa nella curva del ventilatore. PEHD può essere combinato con modalità con batteria ad acqua; EHD non può essere combinato con HWD o con la parte riscaldante di HCD.</value></data>
+  <data name="Help_Topic_Accessories_Title" xml:space="preserve"><value>Accessori e funzioni</value></data>
+  <data name="Help_Topic_Accessories_Body" xml:space="preserve"><value>Utilizza i filtri di ricerca e di categoria per trovare accessori compatibili e funzioni di controllo. Gli elementi standard vengono selezionati automaticamente e non possono essere rimossi. È possibile selezionare o deselezionare elementi opzionali; le scelte non disponibili rimangono disabilitate e la relativa descrizione comando spiega il prerequisito.
+
+Alcune funzioni richiedono un accessorio o un livello di controller specifico. Il riepilogo degli accessori selezionati rimane visibile all&apos;esterno della scheda in modo che la configurazione corrente possa essere verificata in qualsiasi momento.</value></data>
+  <data name="Help_Topic_Save_Title" xml:space="preserve"><value>Nuovo, salva e riapri le selezioni</value></data>
+  <data name="Help_Topic_Save_Body" xml:space="preserve"><value>La nuova selezione avvia una selezione tecnica vuota dopo aver offerto di salvare il lavoro non salvato. La selezione aperta ripristina un file .sswsel, inclusa la configurazione, gli accessori, il riferimento alla bozza locale e la cronologia delle selezioni registrate.
+
+Salva aggiorna il file corrente. Salva con nome scrive la stessa selezione tecnica in un altro percorso: cambia la posizione del file, non l&apos;identità della selezione. Il riferimento del cliente viene ripulito e utilizzato come prefisso nel nome del file proposto. Un asterisco nel titolo della finestra indica modifiche non salvate.</value></data>
+  <data name="Help_Topic_Duplicate_Title" xml:space="preserve"><value>Duplicare e creare alternative</value></data>
+  <data name="Help_Topic_Duplicate_Body" xml:space="preserve"><value>Duplica come nuova selezione copia la configurazione corrente ma assegna una nuova identità di selezione indipendente e un riferimento alla bozza locale. Usalo quando l&apos;unità copiata non deve più condividere la cronologia delle revisioni originale.
+
+Crea un&apos;alternativa crea anche un&apos;identità indipendente, ma aggiunge Alt. 01 al riferimento del cliente. La creazione di un&apos;altra alternativa da una esistente incrementa il numero. Utilizzare alternative per proposte tecnicamente comparabili appartenenti alla stessa richiesta del cliente.</value></data>
+  <data name="Help_Topic_Report_Title" xml:space="preserve"><value>Rapporti e revisioni</value></data>
+  <data name="Help_Topic_Report_Body" xml:space="preserve"><value>Genera report convalida la configurazione corrente, registra la selezione tecnica quando il servizio è disponibile, crea un PDF localizzato e apre il visualizzatore del report. Dal visualizzatore puoi controllare il risultato, inviare il PDF tramite e-mail o aggiungerlo a un progetto di selezione.
+
+Generare nuovamente un report dopo aver modificato una selezione già registrata crea la revisione successiva della stessa identità. La duplicazione o la creazione di un&apos;alternativa crea prima invece un&apos;identità diversa. Se la registrazione online non è disponibile, SSW può generare una bozza locale senza interrompere il lavoro tecnico.</value></data>
+  <data name="Help_Topic_Project_Title" xml:space="preserve"><value>Progetti multiselezione</value></data>
+  <data name="Help_Topic_Project_Body" xml:space="preserve"><value>Un progetto di selezione (.sswproj) raggruppa i report per diverse unità di ventilazione sotto un unico riferimento di progetto e lingua. Non sostituisce i singoli file .sswsel: ogni riga mantiene la selezione serializzata e il suo PDF corrente.
+
+Crea o apri il progetto da File &gt; Selezione progetto. Genera ciascun report dell&apos;unità e utilizza Aggiungi al progetto nel visualizzatore report. Nella finestra del progetto puoi riaprire una selezione, rimuovere righe obsolete, aggiornare PDF e preparare un&apos;e-mail localizzata contenente ogni report corrente e una tabella riepilogativa.</value></data>
+  <data name="Help_Topic_Tips_Title" xml:space="preserve"><value>Suggerimenti di aiuto</value></data>
+  <data name="Help_Topic_Tips_Body" xml:space="preserve"><value>I suggerimenti di aiuto contestuali spiegano i controlli e i comandi operativi dei menu senza aprire la guida. Sono abilitati per impostazione predefinita su una nuova installazione. Puoi disabilitarli o riabilitarli da Opzioni o Help; la preferenza viene memorizzata nel profilo utente di Windows e mantenuta dopo gli aggiornamenti di SSW.
+
+I nomi delle lingue vengono sempre visualizzati come autonimi, così ogni utente può riconoscere la propria lingua anche quando l&apos;interfaccia utilizza una lingua diversa.</value></data>
+  <data name="Help_MenuTip_New" xml:space="preserve"><value>Avvia una selezione tecnica vuota. È possibile salvare le modifiche attuali prima di continuare.</value></data>
+  <data name="Help_MenuTip_Open" xml:space="preserve"><value>Apri un file .sswsel e ripristina la configurazione salvata e l&apos;identità di selezione.</value></data>
+  <data name="Help_MenuTip_Save" xml:space="preserve"><value>Salva le modifiche al file .sswsel corrente o scegli un nome file se non è stato salvato prima.</value></data>
+  <data name="Help_MenuTip_SaveAs" xml:space="preserve"><value>Salva la selezione corrente in un altro file .sswsel mantenendo la stessa identità di selezione tecnica.</value></data>
+  <data name="Help_MenuTip_Duplicate" xml:space="preserve"><value>Crea una selezione indipendente con una nuova identità, mantenendo la configurazione corrente come punto di partenza.</value></data>
+  <data name="Help_MenuTip_Alternative" xml:space="preserve"><value>Crea un&apos;alternativa indipendente e aggiungi o incrementa il prefisso Alt. XX nel riferimento del cliente.</value></data>
+  <data name="Help_MenuTip_Recent" xml:space="preserve"><value>Apri uno dei file .sswsel utilizzati più di recente.</value></data>
+  <data name="Help_MenuTip_Project" xml:space="preserve"><value>Crea o gestisci un progetto che raggruppa diverse selezioni e i relativi report PDF.</value></data>
+  <data name="Help_MenuTip_Report" xml:space="preserve"><value>Registra la selezione tecnica corrente e genera il relativo rapporto PDF localizzato.</value></data>
+  <data name="Help_MenuTip_CommercialSheet" xml:space="preserve"><value>Genera la scheda prodotto commerciale quando è disponibile per l&apos;unità e la lingua selezionate.</value></data>
+  <data name="Help_MenuTip_Iom" xml:space="preserve"><value>Generare il documento di installazione, funzionamento e manutenzione quando disponibile.</value></data>
+  <data name="Help_MenuTip_Exit" xml:space="preserve"><value>Chiudi SSW. Ti verrà chiesto se salvare le modifiche alla selezione non salvate.</value></data>
+  <data name="Help_MenuTip_Language" xml:space="preserve"><value>Cambia l&apos;interfaccia, il report e la lingua di comunicazione. I nomi delle lingue rimangono scritti nella propria lingua.</value></data>
+  <data name="Help_MenuTip_Units" xml:space="preserve"><value>Scegli il sistema di misurazione utilizzato dall&apos;interfaccia e dai documenti generati.</value></data>
+  <data name="Help_MenuTip_CommercialSync" xml:space="preserve"><value>Sincronizza automaticamente la scheda commerciale con la selezione attiva quando questa opzione è disponibile.</value></data>
+  <data name="Help_MenuTip_Updates" xml:space="preserve"><value>Controlla manualmente se è disponibile una versione SSW più recente.</value></data>
+  <data name="Help_MenuTip_OpenGuide" xml:space="preserve"><value>Apri la guida utente ricercabile per selezioni, report e progetti.</value></data>
+  <data name="Help_MenuTip_ToggleTips" xml:space="preserve"><value>Abilita o disabilita i suggerimenti di aiuto contestuali in SSW.</value></data>
+  <data name="Help_Topic_Workflow_Title" xml:space="preserve"><value>Flusso di lavoro di selezione consigliato</value></data>
+  <data name="Help_Topic_Workflow_Body" xml:space="preserve"><value>1. Scegli la famiglia e l&apos;unità.
+2. Inserisci la portata d&apos;aria, la pressione e le condizioni di progetto.
+3. Regolare il livello di regolazione e verificare il punto di funzionamento.
+4. Aggiungi batterie ad acqua, batterie elettriche, accessori e funzioni compatibili.
+5. Inserisci il riferimento del cliente e salva il file .sswsel.
+6. Genera e rivedi il PDF localizzato.
+7. Se il lavoro contiene più unità, aggiungere ciascun report a un progetto di selezione.</value></data>
+  <data name="Help_Topic_Exports_Title" xml:space="preserve"><value>Foglio commerciale e IOM</value></data>
+  <data name="Help_Topic_Exports_Body" xml:space="preserve"><value>Foglio commerciale e IOM sono documenti supplementari e sono abilitati solo quando esiste contenuto per l&apos;unità, il ramo e la lingua selezionati. Non salvano la scelta tecnica e non sostituiscono la relazione di calcolo.
+
+Salvare prima il file .sswsel quando è necessario preservare gli input di calcolo modificabili. Genera report quando hai bisogno del risultato tecnico tracciabile e del suo riferimento di revisione.</value></data>
 </root>

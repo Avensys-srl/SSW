@@ -856,4 +856,98 @@ Med venlig hilsen</value></data>
   <data name="ReportViewer_AddToProjectTooltip" xml:space="preserve">
     <value>Tilføj eller opdater denne rapport i et projekt med flere valg</value>
   </data>
+  <data name="MainForm_Menu_Option_Language_Norwegian" xml:space="preserve"><value>Norsk</value></data>
+  <data name="MainForm_Menu_Option_Language_Icelandic" xml:space="preserve"><value>Íslenska</value></data>
+  <data name="Help_Menu" xml:space="preserve"><value>Hjælp</value></data>
+  <data name="Help_OpenGuide" xml:space="preserve"><value>Brugervejledning</value></data>
+  <data name="Help_ShowToolTips" xml:space="preserve"><value>Vis hjælpetip</value></data>
+  <data name="Help_Title" xml:space="preserve"><value>SSW brugervejledning</value></data>
+  <data name="Help_Search" xml:space="preserve"><value>Søg</value></data>
+  <data name="Help_Close" xml:space="preserve"><value>Luk</value></data>
+  <data name="Help_Tip_Series" xml:space="preserve"><value>Vælg produktfamilien først; enhedslisten filtreres i overensstemmelse hermed.</value></data>
+  <data name="Help_Tip_Unit" xml:space="preserve"><value>Vælg den ventilationsenhed, der skal beregnes.</value></data>
+  <data name="Help_Tip_Airflow" xml:space="preserve"><value>Indtast vinterdesignluftstrømmen. Sommerluftstrømmen holdes i øjeblikket synkroniseret.</value></data>
+  <data name="Help_Tip_Pressure" xml:space="preserve"><value>Tilgængeligt eksternt statisk tryk ved den valgte luftstrøm.</value></data>
+  <data name="Help_Tip_Conditions" xml:space="preserve"><value>Indstil vinterforhold til venstre og sommerforhold til højre.</value></data>
+  <data name="Help_Tip_Summer" xml:space="preserve"><value>Aktiver eller deaktiver den uafhængige sommerberegning.</value></data>
+  <data name="Help_Tip_Regulation" xml:space="preserve"><value>Flyt kontrolniveauet, og SSW genberegner driftspunktet og ydeevnen.</value></data>
+  <data name="Help_Tip_Reference" xml:space="preserve"><value>Kundereference brugt i gemte filnavne, rapporter og projekter.</value></data>
+  <data name="Help_Tip_WaterCoils" xml:space="preserve"><value>Vælg og beregn kompatible vandspiraler. Opvarmning og EHD-eftervarme udelukker hinanden.</value></data>
+  <data name="Help_Tip_ElectricHeaters" xml:space="preserve"><value>Vælg kompatible forvarmere (PEHD) og eftervarmere (EHD).</value></data>
+  <data name="Help_Tip_Accessories" xml:space="preserve"><value>Fuldend udvalget med kompatibelt tilbehør og kontrolfunktioner.</value></data>
+  <data name="Help_Tip_Report" xml:space="preserve"><value>Registrer det tekniske valg og generer dets lokaliserede PDF-rapport.</value></data>
+  <data name="Help_Topic_GettingStarted_Title" xml:space="preserve"><value>Kom godt i gang</value></data>
+  <data name="Help_Topic_GettingStarted_Body" xml:space="preserve"><value>Begynd med at vælge produktfamilie og ventilationsenhed. Indtast vinterluftstrømmen og tilgængeligt eksternt statisk tryk, og indstil derefter vinter- og, når det er nødvendigt, sommertemperatur og luftfugtighed.
+
+Gennemgå driftspunktet på graferne, før du tilføjer spoler, elektriske varmelegemer, tilbehør eller kontrolfunktioner. Udfyld kundereferencen, før du gemmer eller genererer en rapport; det bruges i filnavne, rapporter og udvælgelsesprojekter.</value></data>
+  <data name="Help_Topic_Conditions_Title" xml:space="preserve"><value>Vinter og sommerforhold</value></data>
+  <data name="Help_Topic_Conditions_Body" xml:space="preserve"><value>Vinterindgange vises til venstre og sommerindgange til højre. Sommerluftstrømmen forbliver i øjeblikket synkroniseret med vinterluftstrømmen. Brug Aktiver sommer til at køre begge termodynamiske beregninger; deaktiver det, når kun vinterkabinettet er påkrævet.
+
+Sommer/vinter-forudindstillingen genopretter standarddesignbetingelserne. EN 308 og EN 13141-7 forudindstillinger påvirker kun vinter-tilfældet og overskriver ikke sommerindgangene.</value></data>
+  <data name="Help_Topic_Performance_Title" xml:space="preserve"><value>Læsepræstation</value></data>
+  <data name="Help_Topic_Performance_Body" xml:space="preserve"><value>Reguleringskontrollen flytter det valgte punkt langs ventilatorkurven og genberegner tryk, absorberet effekt og varmegenvindingsydelse. Det orange punkt identificerer den aktive luftstrøm og tryk; effektivitetsgraferne viser vinter- og, når de er aktiveret, sommerarbejdspunkter.
+
+Kontroller, at den ønskede luftstrøm ligger inden for den anvendelige ventilatorkurve. Enhver aktiveret vand- eller elektrisk spole tilføjer sit tryktab på luftsiden og kan reducere den maksimalt tilladte luftstrøm.</value></data>
+  <data name="Help_Topic_WaterCoils_Title" xml:space="preserve"><value>Vandspiraler</value></data>
+  <data name="Help_Topic_WaterCoils_Body" xml:space="preserve"><value>Fanen Vandspiraler er kun tilgængelig, når den valgte enhed har kompatible relationer i databasen. Vælg beregningstilstanden CWD, HWD eller HCD, den interne eller eksterne installation, væsken og dens temperaturer.
+
+Standard bruger kataloggeometrien. Customized tillader de tilladte geometriske ændringer og kræver designfraskrivelsen. Tjek kapacitet, maksimal luftudgangstemperatur, lufttrykfald, vandtryksfald, væskeflow og hastighed. HCD udfører varme- og køleberegninger på samme faste geometri. Vandopvarmning og EHD elektrisk eftervarme kan ikke aktiveres sammen.</value></data>
+  <data name="Help_Topic_ElectricHeaters_Title" xml:space="preserve"><value>Elektriske varmelegemer</value></data>
+  <data name="Help_Topic_ElectricHeaters_Body" xml:space="preserve"><value>PEHD er en elektrisk forvarmer: den opvarmer vinterfrisk luft før varmeveksleren og ændrer derfor vekslerens indløbs- og udgangstemperaturer. EHD er en elektrisk eftervarmer: den opvarmer tilluften efter varmegenvinding.
+
+Kun varmeapparater relateret til den valgte enhed er tilgængelige. Deres tryktab på luftsiden er inkluderet i ventilatorkurven. PEHD kan kombineres med vandspiraltilstande; EHD kan ikke kombineres med HWD eller varmedelen af ​​HCD.</value></data>
+  <data name="Help_Topic_Accessories_Title" xml:space="preserve"><value>Tilbehør og funktioner</value></data>
+  <data name="Help_Topic_Accessories_Body" xml:space="preserve"><value>Brug søge- og kategorifiltre til at finde kompatibelt tilbehør og kontrolfunktioner. Standardelementer vælges automatisk og kan ikke fjernes. Valgfrie elementer kan vælges eller slettes; utilgængelige valg forbliver deaktiverede, og deres værktøjstip forklarer forudsætningen.
+
+Nogle funktioner kræver et specifikt tilbehør eller kontrolniveau. Opsummeringen af ​​det valgte tilbehør forbliver synlig uden for fanen, så den aktuelle konfiguration kan kontrolleres til enhver tid.</value></data>
+  <data name="Help_Topic_Save_Title" xml:space="preserve"><value>Ny, gem og genåbn valg</value></data>
+  <data name="Help_Topic_Save_Body" xml:space="preserve"><value>Nyt valg starter et tomt teknisk valg efter tilbud om at gemme ikke-gemt arbejde. Åbent valg gendanner en .sswsel-fil, inklusive dens konfiguration, tilbehør, lokal udkastreference og registreret valghistorik.
+
+Gem opdaterer den aktuelle fil. Gem som skriver det samme tekniske valg til en anden sti: det ændrer filplaceringen, ikke valgets identitet. Kundereferencen renses og bruges som præfiks i det foreslåede filnavn. En stjerne i vinduets titel angiver ikke-gemte ændringer.</value></data>
+  <data name="Help_Topic_Duplicate_Title" xml:space="preserve"><value>Dupliker og skab alternativer</value></data>
+  <data name="Help_Topic_Duplicate_Body" xml:space="preserve"><value>Dupliker som nyt valg kopierer den aktuelle konfiguration, men tildeler en ny uafhængig valgidentitet og lokal kladdereference. Brug den, når den kopierede enhed ikke længere må dele den originale revisionshistorik.
+
+Opret et alternativ skaber også en selvstændig identitet, men tilføjer Alt. 01 til kundereferencen. Oprettelse af et andet alternativ fra et eksisterende øger antallet. Brug alternativer til teknisk sammenlignelige forslag, der tilhører samme kundeønske.</value></data>
+  <data name="Help_Topic_Report_Title" xml:space="preserve"><value>Rapporter og revisioner</value></data>
+  <data name="Help_Topic_Report_Body" xml:space="preserve"><value>Generer rapport validerer den aktuelle konfiguration, registrerer det tekniske valg, når tjenesten er tilgængelig, opretter en lokaliseret PDF og åbner rapportfremviseren. Fra fremviseren kan du inspicere resultatet, sende PDF via e-mail eller tilføje det til et udvalgsprojekt.
+
+Generering af en rapport igen efter ændring af et allerede registreret valg skaber den næste revision af den samme identitet. Duplikere eller skabe et alternativ skaber først en anden identitet i stedet for. Hvis onlineregistrering ikke er tilgængelig, kan SSW generere et lokalt udkast uden at afbryde teknisk arbejde.</value></data>
+  <data name="Help_Topic_Project_Title" xml:space="preserve"><value>Flervalgsprojekter</value></data>
+  <data name="Help_Topic_Project_Body" xml:space="preserve"><value>Et udvælgelsesprojekt (.sswproj) samler rapporter for flere ventilationsaggregater under én projektreference og et sprog. Den erstatter ikke de individuelle .sswsel-filer: hver række bevarer det serialiserede udvalg og dets nuværende PDF.
+
+Opret eller åbn projektet fra Fil &gt; Udvælgelsesprojekt. Generer hver enhedsrapport, og brug Tilføj til projekt i rapportfremviseren. I projektvinduet kan du genåbne et udvalg, fjerne forældede rækker, opdatere PDF&apos;er og forberede en lokaliseret e-mail indeholdende hver aktuelle rapport og en oversigtstabel.</value></data>
+  <data name="Help_Topic_Tips_Title" xml:space="preserve"><value>Hjælpetips</value></data>
+  <data name="Help_Topic_Tips_Body" xml:space="preserve"><value>Kontekstuelle hjælpetip forklarer kontroller og operationelle menukommandoer uden at åbne vejledningen. De er aktiveret som standard på en ny installation. Deaktiver eller aktiver dem fra Indstillinger eller Hjælp; præferencen gemmes i Windows-brugerprofilen og bevares efter en SSW-opdatering.
+
+Sprognavne i sprogmenuen vises med vilje altid som autonym, så hver bruger kan genkende deres eget sprog, selv når den aktuelle grænseflade bruger et andet sprog.</value></data>
+  <data name="Help_MenuTip_New" xml:space="preserve"><value>Start et tomt teknisk valg. Du kan gemme de aktuelle ændringer, før du fortsætter.</value></data>
+  <data name="Help_MenuTip_Open" xml:space="preserve"><value>Åbn en .sswsel-fil og gendan dens gemte konfigurations- og valgidentitet.</value></data>
+  <data name="Help_MenuTip_Save" xml:space="preserve"><value>Gem ændringer til den aktuelle .sswsel-fil, eller vælg et filnavn, hvis det ikke er blevet gemt før.</value></data>
+  <data name="Help_MenuTip_SaveAs" xml:space="preserve"><value>Gem det aktuelle valg i en anden .sswsel-fil, mens du beholder den samme tekniske valgidentitet.</value></data>
+  <data name="Help_MenuTip_Duplicate" xml:space="preserve"><value>Opret en uafhængig markering med en ny identitet, og bevar den nuværende konfiguration som udgangspunkt.</value></data>
+  <data name="Help_MenuTip_Alternative" xml:space="preserve"><value>Opret et uafhængigt alternativ og tilføj eller forøg Alt. XX-præfikset i kundereferencen.</value></data>
+  <data name="Help_MenuTip_Recent" xml:space="preserve"><value>Åbn en af de senest brugte .sswsel filer.</value></data>
+  <data name="Help_MenuTip_Project" xml:space="preserve"><value>Opret eller administrer et projekt, der grupperer flere valg og deres PDF-rapporter.</value></data>
+  <data name="Help_MenuTip_Report" xml:space="preserve"><value>Registrer det aktuelle tekniske udvalg og generer dets lokaliserede PDF-rapport.</value></data>
+  <data name="Help_MenuTip_CommercialSheet" xml:space="preserve"><value>Generer det kommercielle produktark, når det er tilgængeligt for den valgte enhed og det valgte sprog.</value></data>
+  <data name="Help_MenuTip_Iom" xml:space="preserve"><value>Generer installations-, drifts- og vedligeholdelsesdokumentet, når det er tilgængeligt.</value></data>
+  <data name="Help_MenuTip_Exit" xml:space="preserve"><value>Luk SSW. Du bliver spurgt, om du vil gemme ikke-gemte valgændringer.</value></data>
+  <data name="Help_MenuTip_Language" xml:space="preserve"><value>Skift interface, rapport og kommunikationssprog. Sprognavne forbliver skrevet på deres eget sprog.</value></data>
+  <data name="Help_MenuTip_Units" xml:space="preserve"><value>Vælg det målesystem, der bruges af grænsefladen og de genererede dokumenter.</value></data>
+  <data name="Help_MenuTip_CommercialSync" xml:space="preserve"><value>Synkroniser automatisk reklamearket med det aktive valg, når denne mulighed er tilgængelig.</value></data>
+  <data name="Help_MenuTip_Updates" xml:space="preserve"><value>Kontroller manuelt, om en nyere SSW-version er tilgængelig.</value></data>
+  <data name="Help_MenuTip_OpenGuide" xml:space="preserve"><value>Åbn den søgbare brugervejledning for valg, rapporter og projekter.</value></data>
+  <data name="Help_MenuTip_ToggleTips" xml:space="preserve"><value>Aktiver eller deaktiver kontekstuelle hjælpetip i hele SSW.</value></data>
+  <data name="Help_Topic_Workflow_Title" xml:space="preserve"><value>Anbefalet valg arbejdsgang</value></data>
+  <data name="Help_Topic_Workflow_Body" xml:space="preserve"><value>1. Vælg familie og enhed.
+2. Indtast luftstrøm, tryk og designbetingelser.
+3. Juster reguleringsniveauet og bekræft driftspunktet.
+4. Tilføj kompatible vandspiraler, elektriske varmelegemer, tilbehør og funktioner.
+5. Indtast kundereferencen, og gem .sswsel-filen.
+6. Generer og gennemgå den lokaliserede PDF.
+7. Hvis jobbet indeholder flere enheder, skal du tilføje hver rapport til et udvælgelsesprojekt.</value></data>
+  <data name="Help_Topic_Exports_Title" xml:space="preserve"><value>Handelsblad og IOM</value></data>
+  <data name="Help_Topic_Exports_Body" xml:space="preserve"><value>Kommercielt ark og IOM er supplerende dokumenter og er kun aktiveret, når der findes indhold for den valgte enhed, gren og sprog. De gemmer ikke det tekniske udvalg og erstatter ikke beregningsrapporten.
+
+Gem først .sswsel-filen, når du skal bevare redigerbare beregningsinput. Generer rapport, når du har brug for det sporbare tekniske resultat og dets revisionsreference.</value></data>
 </root>

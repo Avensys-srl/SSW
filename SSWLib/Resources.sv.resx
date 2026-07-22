@@ -953,4 +953,98 @@ Med vänliga hälsningar</value></data>
   <data name="ReportViewer_AddToProjectTooltip" xml:space="preserve">
     <value>Lägg till eller uppdatera rapporten i ett projekt med flera urval</value>
   </data>
+  <data name="MainForm_Menu_Option_Language_Norwegian" xml:space="preserve"><value>Norsk</value></data>
+  <data name="MainForm_Menu_Option_Language_Icelandic" xml:space="preserve"><value>Íslenska</value></data>
+  <data name="Help_Menu" xml:space="preserve"><value>Hjälp</value></data>
+  <data name="Help_OpenGuide" xml:space="preserve"><value>Användarhandbok</value></data>
+  <data name="Help_ShowToolTips" xml:space="preserve"><value>Visa hjälptips</value></data>
+  <data name="Help_Title" xml:space="preserve"><value>SSW användarhandbok</value></data>
+  <data name="Help_Search" xml:space="preserve"><value>Sök</value></data>
+  <data name="Help_Close" xml:space="preserve"><value>Stäng</value></data>
+  <data name="Help_Tip_Series" xml:space="preserve"><value>Välj produktfamiljen först; enhetslistan filtreras därefter.</value></data>
+  <data name="Help_Tip_Unit" xml:space="preserve"><value>Välj ventilationsaggregatet att beräkna.</value></data>
+  <data name="Help_Tip_Airflow" xml:space="preserve"><value>Ange vinterns designluftflöde. Sommarluftflödet hålls för närvarande synkroniserat.</value></data>
+  <data name="Help_Tip_Pressure" xml:space="preserve"><value>Tillgängligt externt statiskt tryck vid valt luftflöde.</value></data>
+  <data name="Help_Tip_Conditions" xml:space="preserve"><value>Ställ in vinterförhållanden till vänster och sommarförhållanden till höger.</value></data>
+  <data name="Help_Tip_Summer" xml:space="preserve"><value>Aktivera eller inaktivera den oberoende sommarberäkningen.</value></data>
+  <data name="Help_Tip_Regulation" xml:space="preserve"><value>Flytta kontrollnivån och SSW beräknar om driftspunkten och prestanda.</value></data>
+  <data name="Help_Tip_Reference" xml:space="preserve"><value>Kundreferens som används i sparade filnamn, rapporter och projekt.</value></data>
+  <data name="Help_Tip_WaterCoils" xml:space="preserve"><value>Välj och beräkna kompatibla vattenslingor. Värme och EHD eftervärme utesluter varandra.</value></data>
+  <data name="Help_Tip_ElectricHeaters" xml:space="preserve"><value>Välj kompatibla förvärmare (PEHD) och eftervärmare (EHD).</value></data>
+  <data name="Help_Tip_Accessories" xml:space="preserve"><value>Komplettera urvalet med kompatibla tillbehör och kontrollfunktioner.</value></data>
+  <data name="Help_Tip_Report" xml:space="preserve"><value>Registrera det tekniska urvalet och generera dess lokaliserade PDF-rapport.</value></data>
+  <data name="Help_Topic_GettingStarted_Title" xml:space="preserve"><value>Komma igång</value></data>
+  <data name="Help_Topic_GettingStarted_Body" xml:space="preserve"><value>Börja med att välja produktfamilj och ventilationsaggregat. Ange vinterluftflödet och tillgängligt externt statiskt tryck, ställ sedan in vinter och, vid behov, sommartemperatur och luftfuktighet.
+
+Granska driftpunkten på graferna innan du lägger till spolar, elvärmare, tillbehör eller styrfunktioner. Fyll i kundreferensen innan du sparar eller genererar en rapport; den används i filnamn, rapporter och urvalsprojekt.</value></data>
+  <data name="Help_Topic_Conditions_Title" xml:space="preserve"><value>Vinter- och sommarförhållanden</value></data>
+  <data name="Help_Topic_Conditions_Body" xml:space="preserve"><value>Vinteringångar visas till vänster och sommaringångar till höger. Sommarluftflödet förblir för närvarande synkroniserat med vinterluftflödet. Använd Aktivera sommar för att köra båda termodynamiska beräkningar; inaktivera den när endast vinterväskan krävs.
+
+Sommar/vinter-förinställningen återställer standarddesignförhållandena. EN 308 och EN 13141-7 förinställningar påverkar endast vinterfallet och skriver inte över sommaringångarna.</value></data>
+  <data name="Help_Topic_Performance_Title" xml:space="preserve"><value>Läsprestanda</value></data>
+  <data name="Help_Topic_Performance_Body" xml:space="preserve"><value>Regleringen flyttar den valda punkten längs fläktkurvan och räknar om tryck, absorberad effekt och värmeåtervinningsprestanda. Den orangea punkten identifierar det aktiva luftflödet och trycket; effektivitetsdiagrammen visar vinter- och, när de är aktiverade, sommararbetspunkter.
+
+Verifiera att det begärda luftflödet ligger innanför den användbara fläktkurvan. Alla aktiverade vatten- eller elektriska batterier ökar tryckförlusten på luftsidan och kan minska det maximalt tillåtna luftflödet.</value></data>
+  <data name="Help_Topic_WaterCoils_Title" xml:space="preserve"><value>Vattenslingor</value></data>
+  <data name="Help_Topic_WaterCoils_Body" xml:space="preserve"><value>Fliken Vattenslingor är endast tillgänglig när den valda enheten har kompatibla relationer i databasen. Välj beräkningsläge CWD, HWD eller HCD, den interna eller externa installationen, vätskan och dess temperaturer.
+
+Standard använder kataloggeometrin. Customized tillåter de tillåtna geometriska förändringarna och kräver designfriskrivning. Kontrollera kapacitet, maximal luftutloppstemperatur, lufttrycksfall, vattentrycksfall, vätskeflöde och hastighet. HCD utför värme- och kylberäkningar på samma fasta geometri. Vattenuppvärmning och EHD elektrisk eftervärme kan inte aktiveras tillsammans.</value></data>
+  <data name="Help_Topic_ElectricHeaters_Title" xml:space="preserve"><value>Elektriska värmare</value></data>
+  <data name="Help_Topic_ElectricHeaters_Body" xml:space="preserve"><value>PEHD är en elektrisk förvärmare: den värmer vinterfrisk luft före värmeväxlaren och ändrar därför växlarens in- och utloppstemperaturer. EHD är en elektrisk eftervärmare: den värmer tilluften efter värmeåtervinning.
+
+Endast värmare relaterade till den valda enheten är tillgängliga. Deras tryckförlust på luftsidan ingår i fläktkurvan. PEHD kan kombineras med vattenbatterilägen; EHD kan inte kombineras med HWD eller värmedelen av HCD.</value></data>
+  <data name="Help_Topic_Accessories_Title" xml:space="preserve"><value>Tillbehör och funktioner</value></data>
+  <data name="Help_Topic_Accessories_Body" xml:space="preserve"><value>Använd sök- och kategorifilter för att hitta kompatibla tillbehör och kontrollfunktioner. Standardobjekt väljs automatiskt och kan inte tas bort. Valfria objekt kan väljas eller raderas; otillgängliga val förblir inaktiverade och deras verktygstips förklarar förutsättningen.
+
+Vissa funktioner kräver ett specifikt tillbehör eller kontrollnivå. Sammanfattningen av valda tillbehör förblir synlig utanför fliken så att den aktuella konfigurationen kan kontrolleras när som helst.</value></data>
+  <data name="Help_Topic_Save_Title" xml:space="preserve"><value>Nya, spara och öppna val</value></data>
+  <data name="Help_Topic_Save_Body" xml:space="preserve"><value>Nytt urval startar ett tomt tekniskt urval efter erbjudande om att spara osparat arbete. Öppna urval återställer en .sswsel-fil, inklusive dess konfiguration, tillbehör, lokal utkastreferens och registrerad urvalshistorik.
+
+Spara uppdaterar den aktuella filen. Spara som skriver samma tekniska urval till en annan sökväg: det ändrar filens plats, inte identiteten för urvalet. Kundreferensen saneras och används som ett prefix i det föreslagna filnamnet. En asterisk i fönstrets titel indikerar osparade ändringar.</value></data>
+  <data name="Help_Topic_Duplicate_Title" xml:space="preserve"><value>Duplicera och skapa alternativ</value></data>
+  <data name="Help_Topic_Duplicate_Body" xml:space="preserve"><value>Duplicera som nytt urval kopierar den aktuella konfigurationen men tilldelar en ny oberoende urvalsidentitet och lokal utkastreferens. Använd den när den kopierade enheten inte längre får dela den ursprungliga versionshistoriken.
+
+Skapa ett alternativ skapar också en oberoende identitet, men lägger till Alt. 01 till kundreferensen. Att skapa ett annat alternativ från ett befintligt ökar antalet. Använd alternativ för tekniskt jämförbara förslag som hör till samma kundförfrågan.</value></data>
+  <data name="Help_Topic_Report_Title" xml:space="preserve"><value>Rapporter och revisioner</value></data>
+  <data name="Help_Topic_Report_Body" xml:space="preserve"><value>Generera rapport validerar den aktuella konfigurationen, registrerar det tekniska urvalet när tjänsten är tillgänglig, skapar en lokaliserad PDF och öppnar rapportvisaren. Från tittaren kan du inspektera resultatet, skicka PDF via e-post eller lägga till det i ett urvalsprojekt.
+
+Att generera en rapport igen efter att ha ändrat ett redan registrerat urval skapar nästa revision av samma identitet. Att duplicera eller skapa ett alternativ skapar först en annan identitet istället. Om onlineregistrering inte är tillgänglig kan SSW generera ett lokalt utkast utan att avbryta det tekniska arbetet.</value></data>
+  <data name="Help_Topic_Project_Title" xml:space="preserve"><value>Flervalsprojekt</value></data>
+  <data name="Help_Topic_Project_Body" xml:space="preserve"><value>Ett urvalsprojekt (.sswproj) samlar rapporter för flera ventilationsaggregat under en projektreferens och ett språk. Den ersätter inte de individuella .sswsel-filerna: varje rad behåller det serialiserade urvalet och dess nuvarande PDF.
+
+Skapa eller öppna projektet från Arkiv &gt; Urvalsprojekt. Generera varje enhetsrapport och använd Lägg till i projekt i rapportvisaren. I projektfönstret kan du öppna ett urval igen, ta bort föråldrade rader, uppdatera PDFs och förbereda ett lokaliserat e-postmeddelande som innehåller varje aktuell rapport och en sammanfattningstabell.</value></data>
+  <data name="Help_Topic_Tips_Title" xml:space="preserve"><value>Hjälptips</value></data>
+  <data name="Help_Topic_Tips_Body" xml:space="preserve"><value>Kontextuella hjälptips förklarar kontroller och funktionsmenykommandon utan att öppna guiden. De är aktiverade som standard på en ny installation. Inaktivera eller aktivera dem från Alternativ eller Hjälp; inställningen lagras i Windows-användarprofilen och behålls efter en SSW-uppdatering.
+
+Språknamn i språkmenyn visas avsiktligt alltid som autonym, så varje användare kan känna igen sitt eget språk även när det aktuella gränssnittet använder ett annat språk.</value></data>
+  <data name="Help_MenuTip_New" xml:space="preserve"><value>Starta ett tomt tekniskt urval. Du kan spara de aktuella ändringarna innan du fortsätter.</value></data>
+  <data name="Help_MenuTip_Open" xml:space="preserve"><value>Öppna en .sswsel-fil och återställ dess sparade konfigurations- och urvalsidentitet.</value></data>
+  <data name="Help_MenuTip_Save" xml:space="preserve"><value>Spara ändringar i den aktuella .sswsel-filen eller välj ett filnamn om det inte har sparats tidigare.</value></data>
+  <data name="Help_MenuTip_SaveAs" xml:space="preserve"><value>Spara det aktuella valet till en annan .sswsel-fil samtidigt som du behåller samma tekniska urvalsidentitet.</value></data>
+  <data name="Help_MenuTip_Duplicate" xml:space="preserve"><value>Skapa ett oberoende urval med en ny identitet och bevara den nuvarande konfigurationen som dess utgångspunkt.</value></data>
+  <data name="Help_MenuTip_Alternative" xml:space="preserve"><value>Skapa ett oberoende alternativ och lägg till eller öka prefixet Alt. XX i kundreferensen.</value></data>
+  <data name="Help_MenuTip_Recent" xml:space="preserve"><value>Öppna en av de senast använda .sswsel-filerna.</value></data>
+  <data name="Help_MenuTip_Project" xml:space="preserve"><value>Skapa eller hantera ett projekt som grupperar flera urval och deras PDF-rapporter.</value></data>
+  <data name="Help_MenuTip_Report" xml:space="preserve"><value>Registrera det aktuella tekniska urvalet och generera dess lokaliserade PDF-rapport.</value></data>
+  <data name="Help_MenuTip_CommercialSheet" xml:space="preserve"><value>Skapa det kommersiella produktbladet när det är tillgängligt för den valda enheten och språket.</value></data>
+  <data name="Help_MenuTip_Iom" xml:space="preserve"><value>Generera installations-, drift- och underhållsdokumentet när det finns tillgängligt.</value></data>
+  <data name="Help_MenuTip_Exit" xml:space="preserve"><value>Stäng SSW. Du kommer att tillfrågas om du vill spara osparade urvalsändringar.</value></data>
+  <data name="Help_MenuTip_Language" xml:space="preserve"><value>Ändra gränssnitt, rapport och kommunikationsspråk. Språknamn förblir skrivna på deras eget språk.</value></data>
+  <data name="Help_MenuTip_Units" xml:space="preserve"><value>Välj det mätsystem som används av gränssnittet och genererade dokument.</value></data>
+  <data name="Help_MenuTip_CommercialSync" xml:space="preserve"><value>Synkronisera automatiskt reklambladet med det aktiva urvalet när detta alternativ är tillgängligt.</value></data>
+  <data name="Help_MenuTip_Updates" xml:space="preserve"><value>Kontrollera manuellt om en nyare SSW-version är tillgänglig.</value></data>
+  <data name="Help_MenuTip_OpenGuide" xml:space="preserve"><value>Öppna den sökbara användarhandboken för urval, rapporter och projekt.</value></data>
+  <data name="Help_MenuTip_ToggleTips" xml:space="preserve"><value>Aktivera eller inaktivera kontextuella hjälptips i hela SSW.</value></data>
+  <data name="Help_Topic_Workflow_Title" xml:space="preserve"><value>Rekommenderat urvalsarbetsflöde</value></data>
+  <data name="Help_Topic_Workflow_Body" xml:space="preserve"><value>1. Välj familj och enhet.
+2. Ange luftflöde, tryck och designförhållanden.
+3. Justera regleringsnivån och verifiera driftpunkten.
+4. Lägg till kompatibla vattenslingor, elvärmare, tillbehör och funktioner.
+5. Ange kundreferensen och spara filen .sswsel.
+6. Generera och granska den lokaliserade PDF.
+7. Om jobbet innehåller flera enheter, lägg till varje rapport i ett urvalsprojekt.</value></data>
+  <data name="Help_Topic_Exports_Title" xml:space="preserve"><value>Kommersiellt blad och IOM</value></data>
+  <data name="Help_Topic_Exports_Body" xml:space="preserve"><value>Reklamblad och IOM är kompletterande dokument och är endast aktiverade när innehåll finns för den valda enheten, grenen och språket. De sparar inte det tekniska urvalet och ersätter inte beräkningsrapporten.
+
+Spara .sswsel-filen först när du behöver bevara redigerbara beräkningsindata. Skapa rapport när du behöver det spårbara tekniska resultatet och dess revisionsreferens.</value></data>
 </root>

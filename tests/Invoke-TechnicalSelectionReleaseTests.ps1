@@ -44,7 +44,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Alternative reference smoke test failed.' }
 if ($LASTEXITCODE -ne 0) { throw 'Published release retention smoke test failed.' }
 
 $resourceFiles = Get-ChildItem (Join-Path $repo 'SSWLib') -Filter 'Resources.*.resx'
-if ($resourceFiles.Count -ne 12) { throw "Expected 12 localized RESX files, found $($resourceFiles.Count)." }
+if ($resourceFiles.Count -ne 14) { throw "Expected 14 localized RESX files, found $($resourceFiles.Count)." }
 $requiredKeys = @('Update_Title','Update_CheckFailed','Update_PackageIntegrityFailed',
     'MainForm_SelectionRegistration_Title','Water',
     'MainForm_CoilPerformance_ResultAirOut',
