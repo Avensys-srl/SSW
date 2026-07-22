@@ -28,7 +28,9 @@ registrazione centralizzata delle selezioni SSW.
   corrente derivata, relazioni modello con quantita', editor Explorer ed export
   SDF schema 2 con feature `ElectricHeaters`. Le relazioni distinguono
   installazione interna/esterna e modo EHD (post-riscaldo) / PEHD
-  (pre-riscaldo). Il calcolo SSW resta un passo successivo.
+  (pre-riscaldo). Il calcolo SSW e' stato successivamente implementato con
+  risultati applicativi e dataset report; la personalizzazione della batteria
+  elettrica resta volutamente bloccata in attesa delle regole definitive.
 - [x] Messa in sicurezza la pubblicazione di `CLDataCentralLib` verso
   `CLDCExplorer`: build unica, copia della DLL, manifest con versione, commit e
   SHA-256, verifica bloccante durante la build Explorer e test negativo su
@@ -270,6 +272,9 @@ registrazione centralizzata delle selezioni SSW.
 
 - Stato: **completato e distribuito** il 15/07/2026 con database GeoIP locale,
   senza conservazione dell'indirizzo IP.
+- Aggiornamento automatico completato il 22/07/2026: download mensile DB-IP
+  City Lite tramite attivita' pianificata giornaliera idempotente, validazione
+  strutturale MMDB, rollback, log operativo e health check con soglia 45 giorni.
 - Ambiente: API server.
 - Usare un database GeoIP locale aggiornabile.
 - Salvare codice nazione, citta', sorgente e livello di accuratezza.
@@ -515,6 +520,12 @@ da `/usage` nel Codex CLI.
 - GeoIP dietro reverse proxy: `192.168.1.16` e' configurato come proxy fidato;
   gli header IPv4/IPv6 con porta vengono normalizzati e l'IP cliente effettivo
   alimenta sia la localizzazione sia il rate limit di enrollment.
+- Catalogo accessori: struttura, precedenze, SDF, selezione SSW, report e
+  portale sono completi. Le relazioni commerciali modello/serie continuano a
+  essere validate; le traduzioni nelle 12 lingue richiedono revisione tecnica
+  umana e i prezzi restano intenzionalmente null.
+- Debito non prioritario conservato: batteria elettrica personalizzata e
+  recupero/codifica opaca del codice fornitore HEDes.
 
 ## Sviluppi tecnici successivi
 

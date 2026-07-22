@@ -340,6 +340,10 @@ commerciale e funzionale registrata.
 
 Stima: 45-75 mila token.
 
+Stato: **completata e pubblicata** il 22/07/2026 con release `1.3.0.53`.
+Build AV x86, installer, manifest, ripristino `.sswsel`, report, portale e
+repository coinvolti sono stati verificati e allineati.
+
 1. Testare matrici, dipendenze, quantita', KTS e migrazioni storiche.
 2. Testare SDF schema 2/3 e progetto V1/V2.
    - Verificato il ripristino del livello di regolazione dai file `.sswsel`:
