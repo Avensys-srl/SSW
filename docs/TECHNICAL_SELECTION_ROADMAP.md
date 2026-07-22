@@ -275,6 +275,10 @@ registrazione centralizzata delle selezioni SSW.
 - Aggiornamento automatico completato il 22/07/2026: download mensile DB-IP
   City Lite tramite attivita' pianificata giornaliera idempotente, validazione
   strutturale MMDB, rollback, log operativo e health check con soglia 45 giorni.
+- Attivita' `SSW GeoIP Database Update` installata sul server come `SYSTEM` e
+  verificata il 22/07/2026; prima esecuzione e comandi di controllo completati
+  con esito positivo. L'endpoint pubblico espone release, sorgente ed eta' del
+  database geografico.
 - Ambiente: API server.
 - Usare un database GeoIP locale aggiornabile.
 - Salvare codice nazione, citta', sorgente e livello di accuratezza.
