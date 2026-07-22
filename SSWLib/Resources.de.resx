@@ -722,4 +722,43 @@ Sprachnamen im Sprachmenü werden bewusst immer als Autonyme angezeigt, sodass j
   <data name="Help_Topic_Exports_Body" xml:space="preserve"><value>Handelsblatt und IOM sind ergänzende Dokumente und werden nur aktiviert, wenn Inhalte für die ausgewählte Einheit, Branche und Sprache vorhanden sind. Sie speichern nicht die technische Auswahl und ersetzen nicht den Berechnungsbericht.
 
 Speichern Sie zuerst die Datei .sswsel, wenn Sie bearbeitbare Berechnungseingaben beibehalten müssen. Erstellen Sie einen Bericht, wenn Sie das nachvollziehbare technische Ergebnis und dessen Revisionsreferenz benötigen.</value></data>
+  <data name="FollowUp_ScheduleTitle" xml:space="preserve"><value>E-Mail-Nachverfolgung</value></data>
+  <data name="FollowUp_ScheduleEnabled" xml:space="preserve"><value>Nachverfolgung planen</value></data>
+  <data name="FollowUp_ScheduleDays" xml:space="preserve"><value>Nachfassen nach [Tagen]</value></data>
+  <data name="FollowUp_ScheduleExplanation" xml:space="preserve"><value>Die Erinnerungsfrist beginnt, sobald der Outlook-E-Mail-Entwurf erstellt wurde.</value></data>
+  <data name="FollowUp_Cancel" xml:space="preserve"><value>Abbrechen</value></data>
+  <data name="FollowUp_PrepareEmail" xml:space="preserve"><value>E-Mail vorbereiten</value></data>
+  <data name="FollowUp_CancelReminder" xml:space="preserve"><value>Erinnerung abbrechen</value></data>
+  <data name="FollowUp_CenterTitle" xml:space="preserve"><value>Nachverfolgungserinnerungen</value></data>
+  <data name="FollowUp_CloseSuccessful" xml:space="preserve"><value>Als erfolgreich abschließen</value></data>
+  <data name="FollowUp_CloseUnsuccessful" xml:space="preserve"><value>Als erfolglos abschließen</value></data>
+  <data name="FollowUp_CloseWindow" xml:space="preserve"><value>Schließen</value></data>
+  <data name="FollowUp_ColumnDue" xml:space="preserve"><value>Nachverfolgungsdatum</value></data>
+  <data name="FollowUp_ColumnReference" xml:space="preserve"><value>Referenz</value></data>
+  <data name="FollowUp_ColumnReschedules" xml:space="preserve"><value>Neuplanungen</value></data>
+  <data name="FollowUp_ColumnStatus" xml:space="preserve"><value>Status</value></data>
+  <data name="FollowUp_ColumnType" xml:space="preserve"><value>Typ</value></data>
+  <data name="FollowUp_Confirm" xml:space="preserve"><value>OK</value></data>
+  <data name="FollowUp_FilterClosed" xml:space="preserve"><value>Abgeschlossen</value></data>
+  <data name="FollowUp_FilterDue" xml:space="preserve"><value>Fällig / überfällig</value></data>
+  <data name="FollowUp_FilterUpcoming" xml:space="preserve"><value>Bevorstehend</value></data>
+  <data name="FollowUp_Open" xml:space="preserve"><value>Öffnen</value></data>
+  <data name="FollowUp_Refresh" xml:space="preserve"><value>Aktualisieren</value></data>
+  <data name="FollowUp_Reschedule" xml:space="preserve"><value>Neu planen</value></data>
+  <data name="FollowUp_StatusCancelled" xml:space="preserve"><value>Abgebrochen</value></data>
+  <data name="FollowUp_StatusPending" xml:space="preserve"><value>Ausstehend</value></data>
+  <data name="FollowUp_StatusSucceeded" xml:space="preserve"><value>Erfolgreich</value></data>
+  <data name="FollowUp_StatusUnsuccessful" xml:space="preserve"><value>Erfolglos</value></data>
+  <data name="FollowUp_TargetProject" xml:space="preserve"><value>Projekt</value></data>
+  <data name="FollowUp_TargetSelection" xml:space="preserve"><value>Auswahl</value></data>
+  <data name="FollowUp_BellNone" xml:space="preserve"><value>Keine Nachverfolgungen fällig</value></data>
+  <data name="FollowUp_BellDue" xml:space="preserve"><value>Fällige Nachverfolgungen: {0}</value></data>
+  <data name="FollowUp_SyncOffline" xml:space="preserve"><value>Offline - lokale Daten</value></data>
+  <data name="FollowUp_SyncCurrent" xml:space="preserve"><value>Synchronisiert</value></data>
+  <data name="FollowUp_MissingFile" xml:space="preserve"><value>Die lokale Datei ist nicht mehr verfügbar: {0}</value></data>
+  <data name="FollowUp_OpenError" xml:space="preserve"><value>Die referenzierte Datei kann nicht geöffnet werden: {0}</value></data>
+  <data name="FollowUp_NoItems" xml:space="preserve"><value>Keine Nachverfolgungserinnerungen vorhanden.</value></data>
+  <data name="Help_MenuTip_FollowUps" xml:space="preserve"><value>Öffnen Sie die Wiedervorlagen, um Erinnerungen für technische Auswahlen und Projekte zu prüfen, neu zu terminieren oder abzuschließen.</value></data>
+  <data name="Help_Topic_FollowUps_Title" xml:space="preserve"><value>Erinnerungen zur Kundennachverfolgung</value></data>
+  <data name="Help_Topic_FollowUps_Body" xml:space="preserve"><value>Planen Sie eine Kundennachverfolgung in 1 bis 90 Tagen; der Standardwert beträgt 7 Tage. Die Frist beginnt erst, nachdem der Outlook-Entwurf erfolgreich erstellt wurde. Über die Glocke öffnen Sie die Wiedervorlagen mit fälligen, anstehenden und abgeschlossenen Einträgen. Doppelklicken Sie auf einen Eintrag, um die lokale Auswahl oder das lokale Projekt erneut zu öffnen. Eine Erinnerung kann als erfolgreich oder erfolglos abgeschlossen, neu terminiert oder abgebrochen werden. Die Daten bleiben auf die aktuelle Windows-Installation beschränkt; offline werden Änderungen lokal gespeichert und später synchronisiert.</value></data>
 </root>

@@ -26,11 +26,20 @@ internal sealed class TokenHandler : HttpMessageHandler
     public int SelectionCreateCount { get; private set; }
     public int SelectionRevisionCount { get; private set; }
     public int ProjectSyncCount { get; private set; }
+    public int FollowUpCreateCount { get; private set; }
+    public int FollowUpRescheduleCount { get; private set; }
+    public int FollowUpCloseCount { get; private set; }
+    public int FollowUpListCount { get; private set; }
+    public bool FailNextFollowUpCreate { get; set; }
+    public List<string> FollowUpOperations { get; } = new List<string>();
+    public List<string> FollowUpIdempotencyKeys { get; } = new List<string>();
     public bool LastRegistrationHadBootstrap { get; private set; }
     public List<string> IdempotencyKeys { get; } = new List<string>();
     private string latestSnapshotHash;
     private string latestResumeToken;
     private int latestRevision;
+    private string followUpJson;
+    private int followUpRescheduleCount;
 
     protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
@@ -86,6 +95,59 @@ internal sealed class TokenHandler : HttpMessageHandler
                 + ",\"snapshot_hash\":\"" + snapshotHash + "\",\"change_kind\":\""
                 + (reprint ? "Reprint" : "TechnicalChange") + "\"}");
         }
+        else if (request.RequestUri.AbsolutePath.EndsWith("/follow-ups", StringComparison.Ordinal) &&
+            request.Method == HttpMethod.Post)
+        {
+            FollowUpCreateCount++;
+            VerifyFollowUpHeaders(request, "Create");
+            string body = request.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            if (body.IndexOf("localPath", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                body.IndexOf("local_path", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                !body.Contains("\"target_type\"") || !body.Contains("\"due_at_utc\"") ||
+                !body.Contains("\"follow_up_days\""))
+                throw new InvalidOperationException("Follow-up create leaked a local path or omitted required fields.");
+            if (FailNextFollowUpCreate)
+            {
+                FailNextFollowUpCreate = false;
+                return JsonResponse(HttpStatusCode.ServiceUnavailable,
+                    "{\"error\":\"offline\",\"message\":\"Temporary offline test.\"}");
+            }
+            followUpRescheduleCount = 0;
+            followUpJson = BuildFollowUpJson(body, "Pending", 0, null);
+            return JsonResponse(HttpStatusCode.Created, "{\"reminder\":" + followUpJson + "}");
+        }
+        else if (request.RequestUri.AbsolutePath.EndsWith("/reschedule", StringComparison.Ordinal))
+        {
+            FollowUpRescheduleCount++;
+            VerifyFollowUpHeaders(request, "Reschedule");
+            string body = request.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            followUpRescheduleCount++;
+            followUpJson = ReplaceJsonValue(followUpJson, "due_at_utc", JsonString(body, "due_at_utc"));
+            followUpJson = ReplaceJsonNumber(followUpJson, "reschedule_count", followUpRescheduleCount);
+            followUpJson = ReplaceJsonValue(followUpJson, "updated_at_utc", DateTime.UtcNow.ToString("O"));
+            return JsonResponse(HttpStatusCode.OK, "{\"reminder\":" + followUpJson + "}");
+        }
+        else if (request.RequestUri.AbsolutePath.EndsWith("/close", StringComparison.Ordinal))
+        {
+            FollowUpCloseCount++;
+            VerifyFollowUpHeaders(request, "Close");
+            string body = request.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            string status = JsonString(body, "status");
+            followUpJson = ReplaceJsonValue(followUpJson, "status", status);
+            followUpJson = ReplaceJsonValue(followUpJson, "closed_at_utc", DateTime.UtcNow.ToString("O"));
+            followUpJson = ReplaceJsonValue(followUpJson, "updated_at_utc", DateTime.UtcNow.ToString("O"));
+            return JsonResponse(HttpStatusCode.OK, "{\"reminder\":" + followUpJson + "}");
+        }
+        else if (request.RequestUri.AbsolutePath.EndsWith("/follow-ups", StringComparison.Ordinal) &&
+            request.Method == HttpMethod.Get)
+        {
+            FollowUpListCount++;
+            if (request.Headers.Authorization == null || request.Headers.Authorization.Scheme != "Bearer")
+                throw new InvalidOperationException("Follow-up bearer token missing.");
+            string items = String.IsNullOrWhiteSpace(followUpJson) ? String.Empty : followUpJson;
+            return JsonResponse(HttpStatusCode.OK,
+                "{\"reminders\":[" + items + "],\"has_more\":false,\"server_time_utc\":\"" + DateTime.UtcNow.ToString("O") + "\"}");
+        }
         else if (request.RequestUri.AbsolutePath.Contains("/projects/"))
         {
             ProjectSyncCount++;
@@ -115,6 +177,42 @@ internal sealed class TokenHandler : HttpMessageHandler
         if (!request.Headers.Contains("Idempotency-Key"))
             throw new InvalidOperationException("Selection idempotency key missing.");
         IdempotencyKeys.Add(String.Join("", request.Headers.GetValues("Idempotency-Key")));
+    }
+
+    private void VerifyFollowUpHeaders(HttpRequestMessage request, string operation)
+    {
+        if (request.Headers.Authorization == null || request.Headers.Authorization.Scheme != "Bearer")
+            throw new InvalidOperationException("Follow-up bearer token missing.");
+        if (!request.Headers.Contains("Idempotency-Key"))
+            throw new InvalidOperationException("Follow-up idempotency key missing.");
+        FollowUpOperations.Add(operation);
+        FollowUpIdempotencyKeys.Add(String.Join("", request.Headers.GetValues("Idempotency-Key")));
+    }
+
+    private static string BuildFollowUpJson(string requestBody, string status, int reschedules, string closedAt)
+    {
+        string now = DateTime.UtcNow.ToString("O");
+        return "{\"reminder_id\":\"" + JsonString(requestBody, "reminder_id") +
+            "\",\"target_type\":\"" + JsonString(requestBody, "target_type") +
+            "\",\"target_id\":\"" + JsonString(requestBody, "target_id") +
+            "\",\"display_reference\":\"" + JsonString(requestBody, "display_reference") +
+            "\",\"email_prepared_at_utc\":\"" + JsonString(requestBody, "email_prepared_at_utc") +
+            "\",\"due_at_utc\":\"" + JsonString(requestBody, "due_at_utc") +
+            "\",\"status\":\"" + status + "\",\"reschedule_count\":" + reschedules +
+            ",\"closed_at_utc\":" + (closedAt == null ? "null" : "\"" + closedAt + "\"") +
+            ",\"created_at_utc\":\"" + now + "\",\"updated_at_utc\":\"" + now + "\"}";
+    }
+
+    private static string ReplaceJsonValue(string json, string propertyName, string value)
+    {
+        string pattern = "(\\\"" + Regex.Escape(propertyName) + "\\\"\\s*:\\s*)(null|\\\"[^\\\"]*\\\")";
+        return Regex.Replace(json, pattern, match => match.Groups[1].Value + "\"" + value + "\"");
+    }
+
+    private static string ReplaceJsonNumber(string json, string propertyName, int value)
+    {
+        string pattern = "(\\\"" + Regex.Escape(propertyName) + "\\\"\\s*:\\s*)\\d+";
+        return Regex.Replace(json, pattern, match => match.Groups[1].Value + value);
     }
 
     private static Task<HttpResponseMessage> JsonResponse(HttpStatusCode status, string json)
@@ -173,6 +271,8 @@ internal static class Program
             if (File.ReadAllText(CLSelectionCredentialStore.StateFilePath).Contains(renewed)) throw new InvalidOperationException("Renewed token was stored in plaintext.");
 
             TestSelectionRegistrationClient(client, handler, context);
+            TestFollowUpReminderStore(root);
+            TestFollowUpSynchronization(root, client, handler, context);
             TestSnapshotFingerprints(root);
             TestMultiSelectionProject(root);
             TestMultiSelectionEmailAndDialog(root);
@@ -927,6 +1027,138 @@ internal static class Program
         }
         if (!File.Exists(imagePath) || new FileInfo(imagePath).Length < 5000)
             throw new InvalidOperationException("Multi-selection project dialog did not render correctly.");
+    }
+
+    private static void TestFollowUpReminderStore(string root)
+    {
+        DateTime preparedUtc = new DateTime(2026, 1, 15, 10, 30, 0, DateTimeKind.Utc);
+        TimeZoneInfo testZone = TimeZoneInfo.CreateCustomTimeZone(
+            "SSW-Test-UTC+1", TimeSpan.FromHours(1), "SSW Test", "SSW Test");
+        DateTime dueUtc = CLFollowUpReminderRules.CalculateDueUtc(preparedUtc, 7, testZone);
+        if (dueUtc.Kind != DateTimeKind.Utc || dueUtc != preparedUtc.AddDays(7))
+            throw new InvalidOperationException("Follow-up UTC/local due-date conversion is not deterministic.");
+        foreach (int invalidDelay in new[] { 0, 91 })
+        {
+            bool rejected = false;
+            try { CLFollowUpReminderRules.CalculateDueUtc(preparedUtc, invalidDelay, testZone); }
+            catch (ArgumentOutOfRangeException) { rejected = true; }
+            if (!rejected) throw new InvalidOperationException("Invalid follow-up delay was accepted: " + invalidDelay);
+        }
+
+        string statePath = Path.Combine(root, "follow-up-restart.json");
+        string localPath = Path.Combine(root, "restart-selection.sswsel");
+        File.WriteAllText(localPath, "test");
+        var store = new CLFollowUpReminderStore(statePath);
+        CLFollowUpReminder reminder = store.CreateLocal(
+            CLFollowUpTargetType.Selection,
+            Guid.NewGuid(),
+            "Selection 01",
+            localPath,
+            preparedUtc,
+            dueUtc);
+        CLFollowUpReminderSnapshot first = store.LoadSnapshot();
+        if (first.Reminders.Count != 1 || first.PendingMutations.Count != 1 ||
+            first.PendingMutations[0].MutationType != CLFollowUpMutationType.Create ||
+            first.PendingMutations[0].DueAtUtc != dueUtc)
+            throw new InvalidOperationException("Local follow-up creation was not persisted atomically.");
+
+        var restartedStore = new CLFollowUpReminderStore(statePath);
+        CLFollowUpReminderSnapshot restarted = restartedStore.LoadSnapshot();
+        if (restarted.Reminders.Single().ReminderUuid != reminder.ReminderUuid ||
+            restarted.Reminders.Single().LocalPath != Path.GetFullPath(localPath))
+            throw new InvalidOperationException("Follow-up restart continuity failed.");
+
+        DateTime rescheduledUtc = CLFollowUpReminderRules.CalculateDueUtc(DateTime.UtcNow, 10, testZone);
+        restartedStore.RescheduleLocal(reminder.ReminderUuid, rescheduledUtc);
+        restartedStore.CloseLocal(reminder.ReminderUuid, CLFollowUpReminderStatus.Unsuccessful);
+        CLFollowUpReminderSnapshot ordered = restartedStore.LoadSnapshot();
+        string mutationOrder = String.Join(",", ordered.PendingMutations.OrderBy(item => item.Sequence)
+            .Select(item => item.MutationType.ToString()));
+        if (mutationOrder != "Create,Reschedule,Close" ||
+            ordered.Reminders.Single().Status != CLFollowUpReminderStatus.Unsuccessful)
+            throw new InvalidOperationException("Follow-up mutation ordering failed: " + mutationOrder);
+
+        string concurrentPath = Path.Combine(root, "follow-up-concurrent.json");
+        string concurrentTargetPath = Path.Combine(root, "concurrent.sswsel");
+        File.WriteAllText(concurrentTargetPath, "test");
+        Parallel.For(0, 12, index =>
+        {
+            var concurrentStore = new CLFollowUpReminderStore(concurrentPath);
+            DateTime concurrentPrepared = DateTime.UtcNow;
+            concurrentStore.CreateLocal(
+                CLFollowUpTargetType.Selection,
+                Guid.NewGuid(),
+                "Concurrent " + index,
+                concurrentTargetPath,
+                concurrentPrepared,
+                CLFollowUpReminderRules.CalculateDueUtc(concurrentPrepared, 7, testZone));
+        });
+        CLFollowUpReminderSnapshot concurrentSnapshot = new CLFollowUpReminderStore(concurrentPath).LoadSnapshot();
+        if (concurrentSnapshot.Reminders.Count != 12 || concurrentSnapshot.PendingMutations.Count != 12 ||
+            concurrentSnapshot.PendingMutations.Select(item => item.Sequence).Distinct().Count() != 12)
+            throw new InvalidOperationException("Named-mutex follow-up persistence lost concurrent writes.");
+
+        string corruptPath = Path.Combine(root, "follow-up-corrupt.json");
+        var corruptStore = new CLFollowUpReminderStore(corruptPath);
+        DateTime corruptPrepared = DateTime.UtcNow;
+        CLFollowUpReminder corruptReminder = corruptStore.CreateLocal(
+            CLFollowUpTargetType.Project,
+            Guid.NewGuid(),
+            "Project 01",
+            Path.Combine(root, "project.sswproj"),
+            corruptPrepared,
+            CLFollowUpReminderRules.CalculateDueUtc(corruptPrepared, 7, testZone));
+        corruptStore.RescheduleLocal(
+            corruptReminder.ReminderUuid,
+            CLFollowUpReminderRules.CalculateDueUtc(DateTime.UtcNow, 14, testZone));
+        File.WriteAllText(corruptPath, "{not-json");
+        CLFollowUpReminderSnapshot recovered = new CLFollowUpReminderStore(corruptPath).LoadSnapshot();
+        if (recovered.Reminders.Count != 1 || recovered.Reminders[0].ReminderUuid != corruptReminder.ReminderUuid ||
+            Directory.GetFiles(root, "follow-up-corrupt.json.corrupt-*").Length != 1)
+            throw new InvalidOperationException("Follow-up corruption fallback did not recover the atomic backup.");
+    }
+
+    private static void TestFollowUpSynchronization(string root,
+        CLSelectionApiClient client,
+        TokenHandler handler,
+        CLSelectionRegistrationContext context)
+    {
+        string statePath = Path.Combine(root, "follow-up-sync.json");
+        string localPath = Path.Combine(root, "sync-selection.sswsel");
+        File.WriteAllText(localPath, "test");
+        var store = new CLFollowUpReminderStore(statePath);
+        DateTime preparedUtc = DateTime.UtcNow;
+        CLFollowUpReminder reminder = store.CreateLocal(
+            CLFollowUpTargetType.Selection,
+            Guid.NewGuid(),
+            "Customer reference",
+            localPath,
+            preparedUtc,
+            CLFollowUpReminderRules.CalculateDueUtc(preparedUtc, 7));
+        store.RescheduleLocal(
+            reminder.ReminderUuid,
+            CLFollowUpReminderRules.CalculateDueUtc(DateTime.UtcNow, 12));
+        store.CloseLocal(reminder.ReminderUuid, CLFollowUpReminderStatus.Succeeded);
+
+        handler.FailNextFollowUpCreate = true;
+        var synchronization = new CLFollowUpSynchronizationService(store, client);
+        CLFollowUpSynchronizationResult offline = synchronization.SyncBestEffortAsync(context).GetAwaiter().GetResult();
+        CLFollowUpReminderSnapshot queued = store.LoadSnapshot();
+        if (offline.Succeeded || queued.PendingMutations.Count != 3 ||
+            queued.PendingMutations[0].RetryCount != 1 || handler.FollowUpIdempotencyKeys.Count != 1)
+            throw new InvalidOperationException("Offline follow-up retry state was not retained.");
+
+        string firstKey = handler.FollowUpIdempotencyKeys[0];
+        CLFollowUpSynchronizationResult online = synchronization.SyncBestEffortAsync(context).GetAwaiter().GetResult();
+        CLFollowUpReminderSnapshot synchronized = store.LoadSnapshot();
+        if (!online.Succeeded || online.UploadedMutationCount != 3 || synchronized.PendingMutations.Count != 0 ||
+            synchronized.Reminders.Single().Status != CLFollowUpReminderStatus.Succeeded ||
+            synchronized.Reminders.Single().LocalPath != Path.GetFullPath(localPath) ||
+            handler.FollowUpIdempotencyKeys.Count != 4 || handler.FollowUpIdempotencyKeys[1] != firstKey ||
+            String.Join(",", handler.FollowUpOperations) != "Create,Create,Reschedule,Close" ||
+            handler.FollowUpListCount != 1)
+            throw new InvalidOperationException("Ordered/idempotent follow-up synchronization failed.");
+
     }
 
     private static void AssertChange(CLSelectionProjectDocument document, CLSelectionChangeKind expected)

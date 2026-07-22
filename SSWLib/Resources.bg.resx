@@ -791,4 +791,43 @@
   <data name="Help_Topic_Exports_Body" xml:space="preserve"><value>Търговски лист и IOM са допълнителни документи и се активират само когато съществува съдържание за избраната единица, клон и език. Те не запазват техническия избор и не заместват отчета за изчисление.
 
 Първо запазете файла .sswsel, когато трябва да запазите редактируеми изчисления. Генерирайте отчет, когато имате нужда от проследим технически резултат и референтната му ревизия.</value></data>
+  <data name="FollowUp_ScheduleTitle" xml:space="preserve"><value>Проследяване по имейл</value></data>
+  <data name="FollowUp_ScheduleEnabled" xml:space="preserve"><value>Планиране на проследяване</value></data>
+  <data name="FollowUp_ScheduleDays" xml:space="preserve"><value>Проследяване след [дни]</value></data>
+  <data name="FollowUp_ScheduleExplanation" xml:space="preserve"><value>Напомнянето започва да тече, когато черновата на имейла в Outlook е подготвена.</value></data>
+  <data name="FollowUp_Cancel" xml:space="preserve"><value>Отказ</value></data>
+  <data name="FollowUp_PrepareEmail" xml:space="preserve"><value>Подготви имейл</value></data>
+  <data name="FollowUp_CancelReminder" xml:space="preserve"><value>Отмени напомнянето</value></data>
+  <data name="FollowUp_CenterTitle" xml:space="preserve"><value>Напомняния за проследяване</value></data>
+  <data name="FollowUp_CloseSuccessful" xml:space="preserve"><value>Затвори като успешно</value></data>
+  <data name="FollowUp_CloseUnsuccessful" xml:space="preserve"><value>Затвори като неуспешно</value></data>
+  <data name="FollowUp_CloseWindow" xml:space="preserve"><value>Затвори</value></data>
+  <data name="FollowUp_ColumnDue" xml:space="preserve"><value>Дата за проследяване</value></data>
+  <data name="FollowUp_ColumnReference" xml:space="preserve"><value>Референция</value></data>
+  <data name="FollowUp_ColumnReschedules" xml:space="preserve"><value>Пренасрочвания</value></data>
+  <data name="FollowUp_ColumnStatus" xml:space="preserve"><value>Състояние</value></data>
+  <data name="FollowUp_ColumnType" xml:space="preserve"><value>Тип</value></data>
+  <data name="FollowUp_Confirm" xml:space="preserve"><value>ОК</value></data>
+  <data name="FollowUp_FilterClosed" xml:space="preserve"><value>Затворени</value></data>
+  <data name="FollowUp_FilterDue" xml:space="preserve"><value>С падеж / просрочени</value></data>
+  <data name="FollowUp_FilterUpcoming" xml:space="preserve"><value>Предстоящи</value></data>
+  <data name="FollowUp_Open" xml:space="preserve"><value>Отвори</value></data>
+  <data name="FollowUp_Refresh" xml:space="preserve"><value>Обнови</value></data>
+  <data name="FollowUp_Reschedule" xml:space="preserve"><value>Пренасрочи</value></data>
+  <data name="FollowUp_StatusCancelled" xml:space="preserve"><value>Отменено</value></data>
+  <data name="FollowUp_StatusPending" xml:space="preserve"><value>В изчакване</value></data>
+  <data name="FollowUp_StatusSucceeded" xml:space="preserve"><value>Успешно</value></data>
+  <data name="FollowUp_StatusUnsuccessful" xml:space="preserve"><value>Неуспешно</value></data>
+  <data name="FollowUp_TargetProject" xml:space="preserve"><value>Проект</value></data>
+  <data name="FollowUp_TargetSelection" xml:space="preserve"><value>Селекция</value></data>
+  <data name="FollowUp_BellNone" xml:space="preserve"><value>Няма просрочени проследявания</value></data>
+  <data name="FollowUp_BellDue" xml:space="preserve"><value>Просрочени проследявания: {0}</value></data>
+  <data name="FollowUp_SyncOffline" xml:space="preserve"><value>Офлайн - локални данни</value></data>
+  <data name="FollowUp_SyncCurrent" xml:space="preserve"><value>Синхронизирано</value></data>
+  <data name="FollowUp_MissingFile" xml:space="preserve"><value>Локалният файл вече не е наличен: {0}</value></data>
+  <data name="FollowUp_OpenError" xml:space="preserve"><value>Не може да се отвори посоченият файл: {0}</value></data>
+  <data name="FollowUp_NoItems" xml:space="preserve"><value>Няма напомняния за проследяване.</value></data>
+  <data name="Help_MenuTip_FollowUps" xml:space="preserve"><value>Отворете центъра за напомняния, за да преглеждате, пренасрочвате или приключвате напомняния за технически селекции и проекти.</value></data>
+  <data name="Help_Topic_FollowUps_Title" xml:space="preserve"><value>Напомняния за последващ контакт с клиента</value></data>
+  <data name="Help_Topic_FollowUps_Body" xml:space="preserve"><value>Планирайте последващ контакт с клиента след 1 до 90 дни; стойността по подразбиране е 7 дни. Срокът започва да тече само след успешно създаване на черновата в Outlook. Камбанката отваря центъра за напомняния, където се показват просрочените, предстоящите и приключените записи. Щракнете двукратно върху запис, за да отворите отново локалната селекция или проект. Напомнянето може да бъде приключено като успешно или неуспешно, пренасрочено или отменено. Данните остават поверителни само за текущата инсталация на Windows; при работа офлайн промените се записват локално и се синхронизират по-късно.</value></data>
 </root>

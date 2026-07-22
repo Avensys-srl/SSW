@@ -352,6 +352,15 @@
     <Compile Include="CLSelectionInstallationState.vb" />
     <Compile Include="CLSelectionCredentialStore.vb" />
     <Compile Include="CLSelectionApiClient.vb" />
+    <Compile Include="CLSelectionApiClient.FollowUps.vb" />
+    <Compile Include="CLFollowUpReminderModel.vb" />
+    <Compile Include="CLFollowUpReminderStore.vb" />
+    <Compile Include="CLFollowUpSynchronizationService.vb" />
+    <Compile Include="CLFollowUpScheduleDialog.vb" />
+    <Compile Include="CLFollowUpNotificationCenterForm.vb" />
+    <Compile Include="CLMainForm.FollowUps.vb">
+      <DependentUpon>CLMainForm.vb</DependentUpon>
+    </Compile>
     <Compile Include="CLSelectionRegistrationFailureForm.vb">
       <SubType>Form</SubType>
     </Compile>

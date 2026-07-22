@@ -1047,4 +1047,43 @@ Språknamn i språkmenyn visas avsiktligt alltid som autonym, så varje använda
   <data name="Help_Topic_Exports_Body" xml:space="preserve"><value>Reklamblad och IOM är kompletterande dokument och är endast aktiverade när innehåll finns för den valda enheten, grenen och språket. De sparar inte det tekniska urvalet och ersätter inte beräkningsrapporten.
 
 Spara .sswsel-filen först när du behöver bevara redigerbara beräkningsindata. Skapa rapport när du behöver det spårbara tekniska resultatet och dess revisionsreferens.</value></data>
+  <data name="FollowUp_ScheduleTitle" xml:space="preserve"><value>E-postuppföljning</value></data>
+  <data name="FollowUp_ScheduleEnabled" xml:space="preserve"><value>Schemalägg uppföljning</value></data>
+  <data name="FollowUp_ScheduleDays" xml:space="preserve"><value>Följ upp efter [dagar]</value></data>
+  <data name="FollowUp_ScheduleExplanation" xml:space="preserve"><value>Påminnelsetiden börjar när Outlook-utkastet har förberetts.</value></data>
+  <data name="FollowUp_Cancel" xml:space="preserve"><value>Avbryt</value></data>
+  <data name="FollowUp_PrepareEmail" xml:space="preserve"><value>Förbered e-post</value></data>
+  <data name="FollowUp_CancelReminder" xml:space="preserve"><value>Avbryt påminnelse</value></data>
+  <data name="FollowUp_CenterTitle" xml:space="preserve"><value>Uppföljningspåminnelser</value></data>
+  <data name="FollowUp_CloseSuccessful" xml:space="preserve"><value>Avsluta som lyckad</value></data>
+  <data name="FollowUp_CloseUnsuccessful" xml:space="preserve"><value>Avsluta som misslyckad</value></data>
+  <data name="FollowUp_CloseWindow" xml:space="preserve"><value>Stäng</value></data>
+  <data name="FollowUp_ColumnDue" xml:space="preserve"><value>Uppföljningsdatum</value></data>
+  <data name="FollowUp_ColumnReference" xml:space="preserve"><value>Referens</value></data>
+  <data name="FollowUp_ColumnReschedules" xml:space="preserve"><value>Omschemaläggningar</value></data>
+  <data name="FollowUp_ColumnStatus" xml:space="preserve"><value>Status</value></data>
+  <data name="FollowUp_ColumnType" xml:space="preserve"><value>Typ</value></data>
+  <data name="FollowUp_Confirm" xml:space="preserve"><value>OK</value></data>
+  <data name="FollowUp_FilterClosed" xml:space="preserve"><value>Stängda</value></data>
+  <data name="FollowUp_FilterDue" xml:space="preserve"><value>Förfallna / försenade</value></data>
+  <data name="FollowUp_FilterUpcoming" xml:space="preserve"><value>Kommande</value></data>
+  <data name="FollowUp_Open" xml:space="preserve"><value>Öppna</value></data>
+  <data name="FollowUp_Refresh" xml:space="preserve"><value>Uppdatera</value></data>
+  <data name="FollowUp_Reschedule" xml:space="preserve"><value>Schemalägg om</value></data>
+  <data name="FollowUp_StatusCancelled" xml:space="preserve"><value>Avbruten</value></data>
+  <data name="FollowUp_StatusPending" xml:space="preserve"><value>Väntande</value></data>
+  <data name="FollowUp_StatusSucceeded" xml:space="preserve"><value>Lyckad</value></data>
+  <data name="FollowUp_StatusUnsuccessful" xml:space="preserve"><value>Misslyckad</value></data>
+  <data name="FollowUp_TargetProject" xml:space="preserve"><value>Projekt</value></data>
+  <data name="FollowUp_TargetSelection" xml:space="preserve"><value>Val</value></data>
+  <data name="FollowUp_BellNone" xml:space="preserve"><value>Inga uppföljningar har förfallit</value></data>
+  <data name="FollowUp_BellDue" xml:space="preserve"><value>Förfallna uppföljningar: {0}</value></data>
+  <data name="FollowUp_SyncOffline" xml:space="preserve"><value>Offline - lokala data</value></data>
+  <data name="FollowUp_SyncCurrent" xml:space="preserve"><value>Synkroniserad</value></data>
+  <data name="FollowUp_MissingFile" xml:space="preserve"><value>Den lokala filen är inte längre tillgänglig: {0}</value></data>
+  <data name="FollowUp_OpenError" xml:space="preserve"><value>Det går inte att öppna den refererade filen: {0}</value></data>
+  <data name="FollowUp_NoItems" xml:space="preserve"><value>Det finns inga uppföljningspåminnelser att visa.</value></data>
+  <data name="Help_MenuTip_FollowUps" xml:space="preserve"><value>Öppna uppföljningscentret för att granska, boka om eller avsluta påminnelser för tekniska val och projekt.</value></data>
+  <data name="Help_Topic_FollowUps_Title" xml:space="preserve"><value>Påminnelser om kunduppföljning</value></data>
+  <data name="Help_Topic_FollowUps_Body" xml:space="preserve"><value>Planera en kunduppföljning inom 1 till 90 dagar; standardvärdet är 7 dagar. Tidsfristen börjar först när Outlook-utkastet har skapats. Klockan öppnar påminnelsecentret, där förfallna, kommande och avslutade poster visas. Dubbelklicka på en post för att öppna det lokala valet eller projektet igen. En påminnelse kan avslutas som lyckad eller misslyckad, bokas om eller avbrytas. Uppgifterna förblir privata för den aktuella Windows-installationen; offline sparas ändringar lokalt och synkroniseras senare.</value></data>
 </root>

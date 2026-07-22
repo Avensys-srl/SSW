@@ -707,4 +707,43 @@ Imena jezikov v jezikovnem meniju so namerno vedno prikazana kot avtonimi, tako 
   <data name="Help_Topic_Exports_Body" xml:space="preserve"><value>Komercialni list in IOM sta dopolnilna dokumenta in sta omogočena le, če obstaja vsebina za izbrano enoto, vejo in jezik. Tehničnega izbora ne shranjujejo in ne nadomeščajo obračunskega poročila.
 
 Ko morate ohraniti vnose izračuna, ki jih je mogoče urejati, najprej shranite datoteko .sswsel. Ustvarite poročilo, ko potrebujete sledljiv tehnični rezultat in referenco njegove revizije.</value></data>
+  <data name="FollowUp_ScheduleTitle" xml:space="preserve"><value>E-poštno spremljanje</value></data>
+  <data name="FollowUp_ScheduleEnabled" xml:space="preserve"><value>Načrtuj spremljanje</value></data>
+  <data name="FollowUp_ScheduleDays" xml:space="preserve"><value>Spremljanje po [dneh]</value></data>
+  <data name="FollowUp_ScheduleExplanation" xml:space="preserve"><value>Čas opomnika začne teči, ko je pripravljen osnutek e-pošte v Outlooku.</value></data>
+  <data name="FollowUp_Cancel" xml:space="preserve"><value>Prekliči</value></data>
+  <data name="FollowUp_PrepareEmail" xml:space="preserve"><value>Pripravi e-pošto</value></data>
+  <data name="FollowUp_CancelReminder" xml:space="preserve"><value>Prekliči opomnik</value></data>
+  <data name="FollowUp_CenterTitle" xml:space="preserve"><value>Opomniki za spremljanje</value></data>
+  <data name="FollowUp_CloseSuccessful" xml:space="preserve"><value>Zaključi kot uspešno</value></data>
+  <data name="FollowUp_CloseUnsuccessful" xml:space="preserve"><value>Zaključi kot neuspešno</value></data>
+  <data name="FollowUp_CloseWindow" xml:space="preserve"><value>Zapri</value></data>
+  <data name="FollowUp_ColumnDue" xml:space="preserve"><value>Datum spremljanja</value></data>
+  <data name="FollowUp_ColumnReference" xml:space="preserve"><value>Referenca</value></data>
+  <data name="FollowUp_ColumnReschedules" xml:space="preserve"><value>Prestavitve</value></data>
+  <data name="FollowUp_ColumnStatus" xml:space="preserve"><value>Stanje</value></data>
+  <data name="FollowUp_ColumnType" xml:space="preserve"><value>Vrsta</value></data>
+  <data name="FollowUp_Confirm" xml:space="preserve"><value>V redu</value></data>
+  <data name="FollowUp_FilterClosed" xml:space="preserve"><value>Zaprto</value></data>
+  <data name="FollowUp_FilterDue" xml:space="preserve"><value>Zapadlo / prekoračeno</value></data>
+  <data name="FollowUp_FilterUpcoming" xml:space="preserve"><value>Prihajajoče</value></data>
+  <data name="FollowUp_Open" xml:space="preserve"><value>Odpri</value></data>
+  <data name="FollowUp_Refresh" xml:space="preserve"><value>Osveži</value></data>
+  <data name="FollowUp_Reschedule" xml:space="preserve"><value>Prestavi</value></data>
+  <data name="FollowUp_StatusCancelled" xml:space="preserve"><value>Preklicano</value></data>
+  <data name="FollowUp_StatusPending" xml:space="preserve"><value>V čakanju</value></data>
+  <data name="FollowUp_StatusSucceeded" xml:space="preserve"><value>Uspešno</value></data>
+  <data name="FollowUp_StatusUnsuccessful" xml:space="preserve"><value>Neuspešno</value></data>
+  <data name="FollowUp_TargetProject" xml:space="preserve"><value>Projekt</value></data>
+  <data name="FollowUp_TargetSelection" xml:space="preserve"><value>Izbira</value></data>
+  <data name="FollowUp_BellNone" xml:space="preserve"><value>Ni zapadlih spremljanj</value></data>
+  <data name="FollowUp_BellDue" xml:space="preserve"><value>Zapadla spremljanja: {0}</value></data>
+  <data name="FollowUp_SyncOffline" xml:space="preserve"><value>Brez povezave - lokalni podatki</value></data>
+  <data name="FollowUp_SyncCurrent" xml:space="preserve"><value>Sinhronizirano</value></data>
+  <data name="FollowUp_MissingFile" xml:space="preserve"><value>Lokalna datoteka ni več na voljo: {0}</value></data>
+  <data name="FollowUp_OpenError" xml:space="preserve"><value>Navedene datoteke ni mogoče odpreti: {0}</value></data>
+  <data name="FollowUp_NoItems" xml:space="preserve"><value>Ni opomnikov za spremljanje.</value></data>
+  <data name="Help_MenuTip_FollowUps" xml:space="preserve"><value>Odprite središče opomnikov za pregled, prestavitev ali zaključitev opomnikov za tehnične izbore in projekte.</value></data>
+  <data name="Help_Topic_FollowUps_Title" xml:space="preserve"><value>Opomniki za nadaljnji stik s stranko</value></data>
+  <data name="Help_Topic_FollowUps_Body" xml:space="preserve"><value>Načrtujte nadaljnji stik s stranko v obdobju od 1 do 90 dni; privzeta vrednost je 7 dni. Rok začne teči šele po uspešni pripravi Outlookovega osnutka. Zvonec odpre središče opomnikov, kjer so prikazani zapadli, prihodnji in zaključeni elementi. Dvokliknite element, da znova odprete lokalni izbor ali projekt. Opomnik lahko zaključite kot uspešen ali neuspešen, ga prestavite ali prekličete. Podatki ostanejo zasebni za trenutno namestitev sistema Windows; brez povezave se spremembe shranijo lokalno in sinhronizirajo pozneje.</value></data>
 </root>

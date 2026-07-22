@@ -233,61 +233,61 @@ technical language review.
 
 ### Wave A - Contract, migration and tests
 
-- [ ] Assign the next numbered API database migration.
-- [ ] Add reminder and event tables, indexes and constraints.
-- [ ] Extend PHP test fixtures with the new tables.
-- [ ] Implement service methods and authenticated/idempotent routes.
-- [ ] Test installation isolation explicitly with two active installations.
-- [ ] Test create replay, reschedule, all closure outcomes and invalid access.
-- [ ] Update API/database documentation and deployment migration checklist.
+- [x] Assign the next numbered API database migration.
+- [x] Add reminder and event tables, indexes and constraints.
+- [x] Extend PHP test fixtures with the new tables.
+- [x] Implement service methods and authenticated/idempotent routes.
+- [x] Test installation isolation explicitly with two active installations.
+- [x] Test create replay, reschedule, all closure outcomes and invalid access.
+- [x] Update API/database documentation and deployment migration checklist.
 
 Completion evidence: PHP test suite passes on SQLite fixtures and migration is
 reviewed for production MariaDB 10.1 compatibility.
 
 ### Wave B - Local repository and API client
 
-- [ ] Add reminder DTOs, statuses and versioned local envelope.
-- [ ] Implement atomic local persistence, named mutex and corruption fallback.
-- [ ] Add ordered offline mutation queue and idempotency keys.
-- [ ] Extend the existing authenticated technical-selection API client.
-- [ ] Implement merge and incremental refresh behaviour.
-- [ ] Add deterministic tests for UTC/local conversion and 1-90 day limits.
+- [x] Add reminder DTOs, statuses and versioned local envelope.
+- [x] Implement atomic local persistence, named mutex and corruption fallback.
+- [x] Add ordered offline mutation queue and idempotency keys.
+- [x] Extend the existing authenticated technical-selection API client.
+- [x] Implement merge and incremental refresh behaviour.
+- [x] Add deterministic tests for UTC/local conversion and 1-90 day limits.
 
 Completion evidence: tests cover restart, concurrent instances, offline create,
 retry, duplicate retry and close-after-reschedule.
 
 ### Wave C - Email scheduling
 
-- [ ] Add the localized scheduling UI shared by single and project email.
-- [ ] Pass stable target UUID/reference and current local path to both flows.
-- [ ] Create reminders only after Outlook draft creation succeeds.
-- [ ] Ensure Outlook/PDF failures do not create reminders.
-- [ ] Keep email preparation usable when API synchronization is offline.
+- [x] Add the localized scheduling UI shared by single and project email.
+- [x] Pass stable target UUID/reference and current local path to both flows.
+- [x] Create reminders only after Outlook draft creation succeeds.
+- [x] Ensure Outlook/PDF failures do not create reminders.
+- [x] Keep email preparation usable when API synchronization is offline.
 
 Completion evidence: single and project smoke tests prove one successful draft
 creates exactly one local reminder and failed drafts create none.
 
 ### Wave D - Notification centre
 
-- [ ] Add bell indicator, bounded badge and localized tooltip.
-- [ ] Implement notification list, filters, actions and refresh state.
-- [ ] Implement non-modal startup/periodic refresh.
-- [ ] Open `.sswsel`/`.sswproj` by double-click through existing lifecycle
+- [x] Add bell indicator, bounded badge and localized tooltip.
+- [x] Implement notification list, filters, actions and refresh state.
+- [x] Implement non-modal startup/periodic refresh.
+- [x] Open `.sswsel`/`.sswproj` by double-click through existing lifecycle
   guards.
-- [ ] Handle missing files and moved paths without deleting server history.
-- [ ] Persist local read/unread state.
+- [x] Handle missing files and moved paths without deleting server history.
+- [x] Persist local read/unread state.
 
 Completion evidence: graphical checks on large and reduced form sizes, all
 actions verified, no modal startup warning and no UI-thread network blocking.
 
 ### Wave E - Localization and regression
 
-- [ ] Complete and validate all supported language resources.
-- [ ] Run resource-key completeness and no-empty-value checks.
-- [ ] Verify reminder privacy with two installations belonging to AV.
-- [ ] Verify existing selection registration, report viewer, project email and
+- [x] Complete and validate all supported language resources.
+- [x] Run resource-key completeness and no-empty-value checks.
+- [x] Verify reminder privacy with two installations belonging to AV.
+- [x] Verify existing selection registration, report viewer, project email and
   offline report generation remain unchanged.
-- [ ] Build `AV|x86` and test the exact executable under
+- [x] Build `AV|x86` and test the exact executable under
   `D:\mdev\SSW\SSW\bin\x86\AV\SSW.exe`.
 
 Completion evidence: API tests, SSW automated tests, AV/x86 build and manual
@@ -295,12 +295,20 @@ workflow matrix pass.
 
 ### Wave F - Deployment and operational close-out
 
-- [ ] Back up the production selection database.
-- [ ] Apply and verify the reminder migration.
-- [ ] Deploy API files and run health/smoke checks.
-- [ ] Update changelog, versions, installer and update manifest.
-- [ ] Commit and push each affected repository with narrow scope.
-- [ ] Mark this roadmap complete with migration, build and release evidence.
+- [x] Back up the production selection database.
+- [x] Apply and verify the reminder migration.
+- [x] Deploy API files and run health/smoke checks.
+- [x] Update changelog, versions, installer and update manifest.
+- [x] Commit and push each affected repository with narrow scope.
+- [x] Mark this roadmap complete with migration, build and release evidence.
+
+Completion evidence (2026-07-22): API schema 6 is deployed and healthy; the
+API service tests and the complete SSW release matrix pass; the exact AV/x86
+runtime is responsive; the 14-language Help/UX and SDF catalog gates pass; and
+the signed `SSW_Setup_1_3_0_55.exe` is published with verified manifest and
+SHA-256 `CE6AE088CB9D48274404A085DD40FD18431878D662D6CF66557C8038F69BC575`.
+The packaged SDF is schema 3/exporter 1.2.0 and its SHA-256 is
+`044D444C8C75082618E356CC2BE71B4D21FA735CF4F6E316886C2E935766688F`.
 
 ## Acceptance matrix
 

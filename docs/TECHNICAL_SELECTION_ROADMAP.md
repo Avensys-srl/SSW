@@ -511,6 +511,12 @@ da `/usage` nel Codex CLI.
   elettriche SG/PRIME aggiornate e le roadmap approvate per layout installativo
   e promemoria commerciali locali.
 
+- `1.3.0.55`: completato il centro promemoria commerciale privato per
+  installazione, con pianificazione email, cache offline, sincronizzazione API
+  idempotente, riapertura di selezioni/progetti e guida in 14 lingue. Il gate
+  di rilascio include ora un audit Help/UX dedicato e il controllo di parita'
+  linguistica dei cataloghi contenuti nell'SDF.
+
 - UX selezioni: aggiunto il comando per creare alternative progressive (`Alt. XX`),
   disclaimer persistito per le batterie personalizzate e relativo campo nel
   dataset report; completate le indicazioni su ingombri e dimensioni batteria.
@@ -531,7 +537,7 @@ da `/usage` nel Codex CLI.
   alimenta sia la localizzazione sia il rate limit di enrollment.
 - Catalogo accessori: struttura, precedenze, SDF, selezione SSW, report e
   portale sono completi. Le relazioni commerciali modello/serie continuano a
-  essere validate; le traduzioni nelle 12 lingue richiedono revisione tecnica
+  essere validate; le traduzioni nelle 14 lingue richiedono revisione tecnica
   umana e i prezzi restano intenzionalmente null.
 - Debito non prioritario conservato: batteria elettrica personalizzata e
   recupero/codifica opaca del codice fornitore HEDes.

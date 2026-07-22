@@ -20,6 +20,8 @@ Partial Public Class CLMainForm
             MultiSelection_Text("MultiProject_DefaultReference", "Project 01"),
             Environment.PrimaryLanguageCode)
 
+            AddHandler form.FollowUpPrepared, AddressOf FollowUp_EmailPrepared
+
             Dim result As DialogResult = form.ShowDialog(Me)
             m_MultiSelectionDocument = form.Document
             m_MultiSelectionPath = form.ProjectPath

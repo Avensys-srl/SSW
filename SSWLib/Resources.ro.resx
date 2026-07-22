@@ -782,4 +782,43 @@ Numele limbilor din meniul de limbă sunt întotdeauna afișate în mod intenți
   <data name="Help_Topic_Exports_Body" xml:space="preserve"><value>Fișa comercială și IOM sunt documente suplimentare și sunt activate numai atunci când există conținut pentru unitatea, ramura și limba selectate. Ele nu salvează selecția tehnică și nu înlocuiesc raportul de calcul.
 
 Salvați mai întâi fișierul .sswsel când trebuie să păstrați intrările de calcul editabile. Generați raport atunci când aveți nevoie de rezultatul tehnic urmăribil și referința de revizuire a acestuia.</value></data>
+  <data name="FollowUp_ScheduleTitle" xml:space="preserve"><value>Revenire prin e-mail</value></data>
+  <data name="FollowUp_ScheduleEnabled" xml:space="preserve"><value>Planifică revenirea</value></data>
+  <data name="FollowUp_ScheduleDays" xml:space="preserve"><value>Revino după [zile]</value></data>
+  <data name="FollowUp_ScheduleExplanation" xml:space="preserve"><value>Perioada de reamintire începe când ciorna e-mailului Outlook a fost pregătită.</value></data>
+  <data name="FollowUp_Cancel" xml:space="preserve"><value>Anulare</value></data>
+  <data name="FollowUp_PrepareEmail" xml:space="preserve"><value>Pregătește e-mailul</value></data>
+  <data name="FollowUp_CancelReminder" xml:space="preserve"><value>Anulează reamintirea</value></data>
+  <data name="FollowUp_CenterTitle" xml:space="preserve"><value>Reamintiri de revenire</value></data>
+  <data name="FollowUp_CloseSuccessful" xml:space="preserve"><value>Închide cu succes</value></data>
+  <data name="FollowUp_CloseUnsuccessful" xml:space="preserve"><value>Închide fără succes</value></data>
+  <data name="FollowUp_CloseWindow" xml:space="preserve"><value>Închidere</value></data>
+  <data name="FollowUp_ColumnDue" xml:space="preserve"><value>Data revenirii</value></data>
+  <data name="FollowUp_ColumnReference" xml:space="preserve"><value>Referință</value></data>
+  <data name="FollowUp_ColumnReschedules" xml:space="preserve"><value>Reprogramări</value></data>
+  <data name="FollowUp_ColumnStatus" xml:space="preserve"><value>Stare</value></data>
+  <data name="FollowUp_ColumnType" xml:space="preserve"><value>Tip</value></data>
+  <data name="FollowUp_Confirm" xml:space="preserve"><value>OK</value></data>
+  <data name="FollowUp_FilterClosed" xml:space="preserve"><value>Închise</value></data>
+  <data name="FollowUp_FilterDue" xml:space="preserve"><value>Scadente / restante</value></data>
+  <data name="FollowUp_FilterUpcoming" xml:space="preserve"><value>Viitoare</value></data>
+  <data name="FollowUp_Open" xml:space="preserve"><value>Deschide</value></data>
+  <data name="FollowUp_Refresh" xml:space="preserve"><value>Reîmprospătează</value></data>
+  <data name="FollowUp_Reschedule" xml:space="preserve"><value>Reprogramează</value></data>
+  <data name="FollowUp_StatusCancelled" xml:space="preserve"><value>Anulată</value></data>
+  <data name="FollowUp_StatusPending" xml:space="preserve"><value>În așteptare</value></data>
+  <data name="FollowUp_StatusSucceeded" xml:space="preserve"><value>Cu succes</value></data>
+  <data name="FollowUp_StatusUnsuccessful" xml:space="preserve"><value>Fără succes</value></data>
+  <data name="FollowUp_TargetProject" xml:space="preserve"><value>Proiect</value></data>
+  <data name="FollowUp_TargetSelection" xml:space="preserve"><value>Selecție</value></data>
+  <data name="FollowUp_BellNone" xml:space="preserve"><value>Nicio revenire scadentă</value></data>
+  <data name="FollowUp_BellDue" xml:space="preserve"><value>Reveniri scadente: {0}</value></data>
+  <data name="FollowUp_SyncOffline" xml:space="preserve"><value>Offline - date locale</value></data>
+  <data name="FollowUp_SyncCurrent" xml:space="preserve"><value>Sincronizat</value></data>
+  <data name="FollowUp_MissingFile" xml:space="preserve"><value>Fișierul local nu mai este disponibil: {0}</value></data>
+  <data name="FollowUp_OpenError" xml:space="preserve"><value>Fișierul indicat nu poate fi deschis: {0}</value></data>
+  <data name="FollowUp_NoItems" xml:space="preserve"><value>Nu există reamintiri de revenire de afișat.</value></data>
+  <data name="Help_MenuTip_FollowUps" xml:space="preserve"><value>Deschideți centrul de mementouri pentru a verifica, reprograma sau închide mementourile aferente selecțiilor tehnice și proiectelor.</value></data>
+  <data name="Help_Topic_FollowUps_Title" xml:space="preserve"><value>Mementouri pentru revenirea la client</value></data>
+  <data name="Help_Topic_FollowUps_Body" xml:space="preserve"><value>Programați revenirea la client într-un interval de 1 până la 90 de zile; valoarea implicită este de 7 zile. Termenul începe numai după pregătirea cu succes a ciornei Outlook. Clopoțelul deschide centrul de mementouri, unde sunt afișate elementele scadente, viitoare și închise. Faceți dublu clic pe un element pentru a redeschide selecția sau proiectul local. Un memento poate fi închis cu succes sau fără succes, reprogramat ori anulat. Datele rămân private numai pentru instalarea Windows curentă; offline, modificările sunt salvate local și sincronizate ulterior.</value></data>
 </root>

@@ -914,4 +914,43 @@ Save the .sswsel file first when you need to preserve editable calculation input
   <data name="Help_Topic_Tips_Body" xml:space="preserve"><value>Contextual help tips explain controls and operational menu commands without opening the guide. They are enabled by default on a new installation. Disable or enable them from Options or Help; the preference is stored in the Windows user profile and is retained after an SSW update.
 
 Language names in the language menu are intentionally always displayed as autonyms, so every user can recognize their own language even when the current interface uses another language.</value></data>
+  <data name="FollowUp_ScheduleTitle" xml:space="preserve"><value>Email follow-up</value></data>
+  <data name="FollowUp_ScheduleEnabled" xml:space="preserve"><value>Schedule follow-up</value></data>
+  <data name="FollowUp_ScheduleDays" xml:space="preserve"><value>Follow up after [days]</value></data>
+  <data name="FollowUp_ScheduleExplanation" xml:space="preserve"><value>The reminder starts when the Outlook email draft has been prepared.</value></data>
+  <data name="FollowUp_Cancel" xml:space="preserve"><value>Cancel</value></data>
+  <data name="FollowUp_PrepareEmail" xml:space="preserve"><value>Prepare email</value></data>
+  <data name="FollowUp_CancelReminder" xml:space="preserve"><value>Cancel reminder</value></data>
+  <data name="FollowUp_CenterTitle" xml:space="preserve"><value>Follow-up reminders</value></data>
+  <data name="FollowUp_CloseSuccessful" xml:space="preserve"><value>Close successful</value></data>
+  <data name="FollowUp_CloseUnsuccessful" xml:space="preserve"><value>Close unsuccessful</value></data>
+  <data name="FollowUp_CloseWindow" xml:space="preserve"><value>Close</value></data>
+  <data name="FollowUp_ColumnDue" xml:space="preserve"><value>Follow-up date</value></data>
+  <data name="FollowUp_ColumnReference" xml:space="preserve"><value>Reference</value></data>
+  <data name="FollowUp_ColumnReschedules" xml:space="preserve"><value>Reschedules</value></data>
+  <data name="FollowUp_ColumnStatus" xml:space="preserve"><value>Status</value></data>
+  <data name="FollowUp_ColumnType" xml:space="preserve"><value>Type</value></data>
+  <data name="FollowUp_Confirm" xml:space="preserve"><value>OK</value></data>
+  <data name="FollowUp_FilterClosed" xml:space="preserve"><value>Closed</value></data>
+  <data name="FollowUp_FilterDue" xml:space="preserve"><value>Due / overdue</value></data>
+  <data name="FollowUp_FilterUpcoming" xml:space="preserve"><value>Upcoming</value></data>
+  <data name="FollowUp_Open" xml:space="preserve"><value>Open</value></data>
+  <data name="FollowUp_Refresh" xml:space="preserve"><value>Refresh</value></data>
+  <data name="FollowUp_Reschedule" xml:space="preserve"><value>Reschedule</value></data>
+  <data name="FollowUp_StatusCancelled" xml:space="preserve"><value>Cancelled</value></data>
+  <data name="FollowUp_StatusPending" xml:space="preserve"><value>Pending</value></data>
+  <data name="FollowUp_StatusSucceeded" xml:space="preserve"><value>Successful</value></data>
+  <data name="FollowUp_StatusUnsuccessful" xml:space="preserve"><value>Unsuccessful</value></data>
+  <data name="FollowUp_TargetProject" xml:space="preserve"><value>Project</value></data>
+  <data name="FollowUp_TargetSelection" xml:space="preserve"><value>Selection</value></data>
+  <data name="FollowUp_BellNone" xml:space="preserve"><value>No follow-ups due</value></data>
+  <data name="FollowUp_BellDue" xml:space="preserve"><value>Follow-ups due: {0}</value></data>
+  <data name="FollowUp_SyncOffline" xml:space="preserve"><value>Offline - local data</value></data>
+  <data name="FollowUp_SyncCurrent" xml:space="preserve"><value>Synchronized</value></data>
+  <data name="FollowUp_MissingFile" xml:space="preserve"><value>The local file is no longer available: {0}</value></data>
+  <data name="FollowUp_OpenError" xml:space="preserve"><value>Unable to open the referenced file: {0}</value></data>
+  <data name="FollowUp_NoItems" xml:space="preserve"><value>No follow-up reminders to display.</value></data>
+  <data name="Help_MenuTip_FollowUps" xml:space="preserve"><value>Open the follow-up center to review, reschedule or close reminders for technical selections and projects.</value></data>
+  <data name="Help_Topic_FollowUps_Title" xml:space="preserve"><value>Customer follow-up reminders</value></data>
+  <data name="Help_Topic_FollowUps_Body" xml:space="preserve"><value>Schedule a customer follow-up from 1 to 90 days; the default is 7 days. The countdown starts only after the Outlook draft has been prepared successfully. The bell opens the reminder center, where due, upcoming and closed items are shown. Double-click an item to reopen its local selection or project. A reminder can be closed as successful or unsuccessful, rescheduled or cancelled. Reminder data remains private to the current Windows installation; when offline, changes are stored locally and synchronized later.</value></data>
 </root>

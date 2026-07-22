@@ -13,18 +13,23 @@ resta disponibile soltanto la bozza locale esplicitamente scelta dall'utente.
 ## Gate prima della pubblicazione
 
 1. Eseguire `tests\Invoke-TechnicalSelectionReleaseTests.ps1`.
-2. Verificare che l'SDF distribuito sia lo schema atteso e contenga le feature
-   dichiarate dal manifest.
-3. Generare installer e sidecar con `installer\build-installer.ps1`.
-4. Eseguire `installer\Test-ReleaseReadiness.ps1` su installer e manifest.
-5. Installare sul PC pilota, aprire una fixture storica, produrre R01, ristampa
+2. Eseguire il gate Help/UX con un agente dedicato: confrontare le modifiche
+   dalla release precedente con guida, tooltip, menu e tutte le localizzazioni;
+   validare chiavi XML, valori non vuoti e coerenza tecnica prima della build.
+3. Verificare che l'SDF distribuito sia lo schema atteso, contenga le feature
+   dichiarate dal manifest e abbia la stessa copertura linguistica di SSW per
+   ogni catalogo localizzato. Rigenerarlo dalla sorgente centrale quando i dati
+   o le lingue cambiano, senza correggere soltanto la copia nella build.
+4. Generare installer e sidecar con `installer\build-installer.ps1`.
+5. Eseguire `installer\Test-ReleaseReadiness.ps1` su installer e manifest.
+6. Installare sul PC pilota, aprire una fixture storica, produrre R01, ristampa
    R01 e modifica R02.
-6. Cercare R01/R02 nel pannello interno e scaricare lo snapshot JSON.
-7. Pubblicare insieme `.exe` e `.manifest.json`; mai uno solo dei due.
+7. Cercare R01/R02 nel pannello interno e scaricare lo snapshot JSON.
+8. Pubblicare insieme `.exe` e `.manifest.json`; mai uno solo dei due.
 
 ## Osservabilita'
 
-- `/api/health.php` controlla database, migrazione 004 e MMDB locale senza
+- `/api/health.php` controlla database, schema minimo corrente e MMDB locale senza
   esporre DSN, credenziali o dati cliente.
 - `/api/ssw_check_update.php` dichiara `verified_manifest`, componenti,
   compatibilita' e rollback.

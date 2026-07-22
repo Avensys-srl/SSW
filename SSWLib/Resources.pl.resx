@@ -791,4 +791,43 @@ Nazwy języków w menu języków są celowo zawsze wyświetlane jako autonimy, d
   <data name="Help_Topic_Exports_Body" xml:space="preserve"><value>Arkusz handlowy i IOM są dokumentami uzupełniającymi i są dostępne tylko wtedy, gdy istnieje treść dla wybranej jednostki, branży i języka. Nie zapisują wyboru technicznego i nie zastępują raportu obliczeniowego.
 
 Jeśli chcesz zachować edytowalne dane wejściowe obliczeń, najpierw zapisz plik .sswsel. Generuj raport, jeśli potrzebujesz identyfikowalnego wyniku technicznego i numeru rewizji.</value></data>
+  <data name="FollowUp_ScheduleTitle" xml:space="preserve"><value>Monit e-mailowy</value></data>
+  <data name="FollowUp_ScheduleEnabled" xml:space="preserve"><value>Zaplanuj monit</value></data>
+  <data name="FollowUp_ScheduleDays" xml:space="preserve"><value>Monit po [dniach]</value></data>
+  <data name="FollowUp_ScheduleExplanation" xml:space="preserve"><value>Czas przypomnienia zaczyna biec po przygotowaniu wersji roboczej wiadomości w Outlooku.</value></data>
+  <data name="FollowUp_Cancel" xml:space="preserve"><value>Anuluj</value></data>
+  <data name="FollowUp_PrepareEmail" xml:space="preserve"><value>Przygotuj e-mail</value></data>
+  <data name="FollowUp_CancelReminder" xml:space="preserve"><value>Anuluj przypomnienie</value></data>
+  <data name="FollowUp_CenterTitle" xml:space="preserve"><value>Przypomnienia o monitach</value></data>
+  <data name="FollowUp_CloseSuccessful" xml:space="preserve"><value>Zamknij jako zakończone pomyślnie</value></data>
+  <data name="FollowUp_CloseUnsuccessful" xml:space="preserve"><value>Zamknij jako zakończone niepomyślnie</value></data>
+  <data name="FollowUp_CloseWindow" xml:space="preserve"><value>Zamknij</value></data>
+  <data name="FollowUp_ColumnDue" xml:space="preserve"><value>Data monitu</value></data>
+  <data name="FollowUp_ColumnReference" xml:space="preserve"><value>Odnośnik</value></data>
+  <data name="FollowUp_ColumnReschedules" xml:space="preserve"><value>Zmiany terminu</value></data>
+  <data name="FollowUp_ColumnStatus" xml:space="preserve"><value>Stan</value></data>
+  <data name="FollowUp_ColumnType" xml:space="preserve"><value>Typ</value></data>
+  <data name="FollowUp_Confirm" xml:space="preserve"><value>OK</value></data>
+  <data name="FollowUp_FilterClosed" xml:space="preserve"><value>Zamknięte</value></data>
+  <data name="FollowUp_FilterDue" xml:space="preserve"><value>Terminowe / zaległe</value></data>
+  <data name="FollowUp_FilterUpcoming" xml:space="preserve"><value>Nadchodzące</value></data>
+  <data name="FollowUp_Open" xml:space="preserve"><value>Otwórz</value></data>
+  <data name="FollowUp_Refresh" xml:space="preserve"><value>Odśwież</value></data>
+  <data name="FollowUp_Reschedule" xml:space="preserve"><value>Zmień termin</value></data>
+  <data name="FollowUp_StatusCancelled" xml:space="preserve"><value>Anulowane</value></data>
+  <data name="FollowUp_StatusPending" xml:space="preserve"><value>Oczekujące</value></data>
+  <data name="FollowUp_StatusSucceeded" xml:space="preserve"><value>Zakończone pomyślnie</value></data>
+  <data name="FollowUp_StatusUnsuccessful" xml:space="preserve"><value>Zakończone niepomyślnie</value></data>
+  <data name="FollowUp_TargetProject" xml:space="preserve"><value>Projekt</value></data>
+  <data name="FollowUp_TargetSelection" xml:space="preserve"><value>Dobór</value></data>
+  <data name="FollowUp_BellNone" xml:space="preserve"><value>Brak zaległych monitów</value></data>
+  <data name="FollowUp_BellDue" xml:space="preserve"><value>Zaległe monity: {0}</value></data>
+  <data name="FollowUp_SyncOffline" xml:space="preserve"><value>Offline - dane lokalne</value></data>
+  <data name="FollowUp_SyncCurrent" xml:space="preserve"><value>Zsynchronizowano</value></data>
+  <data name="FollowUp_MissingFile" xml:space="preserve"><value>Plik lokalny nie jest już dostępny: {0}</value></data>
+  <data name="FollowUp_OpenError" xml:space="preserve"><value>Nie można otworzyć wskazanego pliku: {0}</value></data>
+  <data name="FollowUp_NoItems" xml:space="preserve"><value>Brak przypomnień o monitach do wyświetlenia.</value></data>
+  <data name="Help_MenuTip_FollowUps" xml:space="preserve"><value>Otwórz centrum przypomnień, aby przeglądać, przeplanowywać lub zamykać przypomnienia dotyczące doborów technicznych i projektów.</value></data>
+  <data name="Help_Topic_FollowUps_Title" xml:space="preserve"><value>Przypomnienia o kontakcie z klientem</value></data>
+  <data name="Help_Topic_FollowUps_Body" xml:space="preserve"><value>Zaplanuj kontakt z klientem za 1–90 dni; wartość domyślna to 7 dni. Termin zaczyna biec dopiero po pomyślnym przygotowaniu wersji roboczej w programie Outlook. Ikona dzwonka otwiera centrum przypomnień, w którym są widoczne pozycje zaległe, nadchodzące i zamknięte. Kliknij pozycję dwukrotnie, aby ponownie otworzyć lokalny dobór lub projekt. Przypomnienie można zamknąć jako zakończone sukcesem lub bez sukcesu, przeplanować albo anulować. Dane pozostają prywatne dla bieżącej instalacji systemu Windows; w trybie offline zmiany są zapisywane lokalnie i synchronizowane później.</value></data>
 </root>

@@ -12,7 +12,13 @@ if ([Environment]::Is64BitProcess) {
     exit $LASTEXITCODE
 }
 
-$database = (Resolve-Path -LiteralPath $DatabasePath).Path
+$sourceDatabase = (Resolve-Path -LiteralPath $DatabasePath).Path
+$database = Join-Path $env:TEMP ('ssw-accessory-catalog-smoke-' + [Guid]::NewGuid().ToString('N') + '.sdf')
+Copy-Item -LiteralPath $sourceDatabase -Destination $database
+trap {
+    Remove-Item -LiteralPath $database -Force -ErrorAction SilentlyContinue
+    throw
+}
 $binaryDirectory = (Resolve-Path -LiteralPath $BinaryDirectory).Path
 $sqlCeAssembly = Join-Path $binaryDirectory 'System.Data.SqlServerCe.dll'
 $sswAssembly = Join-Path $binaryDirectory 'SSWLib.dll'
@@ -35,6 +41,16 @@ GROUP BY IdHeatRecoveryModel
     $modelId = [int]$reader['IdHeatRecoveryModel']
     $expectedCount = [int]$reader['RelationCount']
     $reader.Close()
+
+    foreach ($languageCode in @('no', 'is')) {
+        $command.CommandText = "SELECT COUNT(*) FROM CLSelectionCategoryTranslations WHERE LanguageCode = '$languageCode'"
+        $categoryTranslationCount = [int]$command.ExecuteScalar()
+        $command.CommandText = "SELECT COUNT(*) FROM CLSelectionItemTranslations WHERE LanguageCode = '$languageCode'"
+        $itemTranslationCount = [int]$command.ExecuteScalar()
+        if ($categoryTranslationCount -ne 12 -or $itemTranslationCount -ne 62) {
+            throw "Incomplete $languageCode catalog translations: categories=$categoryTranslationCount items=$itemTranslationCount."
+        }
+    }
 }
 finally {
     $connection.Dispose()
@@ -60,4 +76,5 @@ $basicKts = @($ktsItems | Where-Object { $_.Code -eq 'KTS BASIC' })
 if ($basicKts.Count -ne 1 -or $basicKts[0].ControllerLevel -ne 0) {
     throw 'KTS Basic controller level was not exported correctly.'
 }
-Write-Host "Accessory catalog smoke passed: model=$modelId items=$($items.Count) linkedAccessories=$functionCount dependencies=$dependencyCount kts=$($ktsItems.Count)"
+Write-Host "Accessory catalog smoke passed: model=$modelId items=$($items.Count) linkedAccessories=$functionCount dependencies=$dependencyCount kts=$($ktsItems.Count) languages=no,is"
+Remove-Item -LiteralPath $database -Force -ErrorAction SilentlyContinue

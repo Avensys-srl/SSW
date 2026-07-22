@@ -58,7 +58,7 @@ Each profile maps to an `SSWInfo` class (`SSW/CLSSWInfo_*.cs`) that provides cus
 
 ## Current Version
 
-- Application version: `1.3.0.54` (single source: `SSWVersion.props`)
+- Application version: `1.3.0.55` (single source: `SSWVersion.props`)
 
 ## Prerequisites
 

@@ -265,6 +265,7 @@ Public Class CLMainForm
         CO2LevelFill()
 
         Project_CompleteFormLoad()
+        FollowUp_Initialize()
 
         'CLModule.Environment.ExportModelsToCsv("d:\temp\environment.txt")
 
@@ -1854,7 +1855,11 @@ Public Class CLMainForm
             customerReference,
             workingPointDataRow.AirFlow_Value,
             workingPointDataRow.MaxPressure_Value,
-            registrationReference)
+            registrationReference,
+            If(m_ProjectDocument Is Nothing, Guid.Empty, m_ProjectDocument.ProjectId),
+            m_ProjectFilePath)
+        AddHandler reportViewForm.FollowUpPrepared, AddressOf FollowUp_EmailPrepared
+        AddHandler reportViewForm.FollowUpLocalPathRequested, AddressOf FollowUp_LocalPathRequested
 
         Dim nomeFileSuffisso As String
 
@@ -2633,6 +2638,7 @@ Public Class CLMainForm
         ElectricHeater_UpdateLocalizedTexts()
         Accessories_UpdateLocalizedTexts()
         Help_UpdateLocalizedTexts()
+        FollowUp_UpdateLocalizedTexts()
 
         UpdateLocalization_MeasureUnit()
     End Sub

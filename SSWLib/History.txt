@@ -1,6 +1,14 @@
 SSW Changelog
 =============
 
+1.3.0.55 - 2026-07-22
+---------------------
+- Added private per-installation follow-up reminders for emailed selections and multi-selection projects.
+- Added configurable 1-90 day scheduling, a localized notification centre, due badge, reopen, reschedule, success, unsuccessful and cancel actions.
+- Added offline-first atomic reminder storage, ordered idempotent synchronization and authenticated paginated API refresh.
+- Added localized follow-up guidance and bell help in all 14 supported languages, with the pre-release Help/UX audit added to the release gate.
+- Added Norwegian and Icelandic accessory-catalog translations to the central database and regenerated the AV product database.
+
 1.3.0.54 - 2026-07-22
 ---------------------
 - Added Norwegian and Icelandic as fully supported application languages while keeping language names readable in their native form.

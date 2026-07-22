@@ -40,6 +40,9 @@ $x86PowerShell = Join-Path $env:WINDIR 'SysWOW64\WindowsPowerShell\v1.0\powershe
 & $x86PowerShell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $PSScriptRoot 'Invoke-AlternativeReferenceSmoke.ps1')
 if ($LASTEXITCODE -ne 0) { throw 'Alternative reference smoke test failed.' }
 
+& $x86PowerShell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $PSScriptRoot 'Invoke-AccessoryCatalogSmoke.ps1')
+if ($LASTEXITCODE -ne 0) { throw 'Accessory catalog smoke test failed.' }
+
 & (Join-Path $PSScriptRoot 'Invoke-PublishedReleaseRetentionSmoke.ps1')
 if ($LASTEXITCODE -ne 0) { throw 'Published release retention smoke test failed.' }
 
@@ -74,7 +77,20 @@ $requiredKeys = @('Update_Title','Update_CheckFailed','Update_PackageIntegrityFa
     'MainForm_ElectricHeater_FrostStatus',
     'MainForm_ElectricHeater_FrostTargetReached',
     'MainForm_ElectricHeater_FrostTargetNotReached',
-    'MainForm_ElectricHeater_CustomDisclaimerAccepted')
+    'MainForm_ElectricHeater_CustomDisclaimerAccepted',
+    'FollowUp_ScheduleTitle','FollowUp_ScheduleEnabled','FollowUp_ScheduleDays',
+    'FollowUp_ScheduleExplanation','FollowUp_Cancel','FollowUp_PrepareEmail',
+    'FollowUp_CancelReminder','FollowUp_CenterTitle','FollowUp_CloseSuccessful',
+    'FollowUp_CloseUnsuccessful','FollowUp_CloseWindow','FollowUp_ColumnDue',
+    'FollowUp_ColumnReference','FollowUp_ColumnReschedules','FollowUp_ColumnStatus',
+    'FollowUp_ColumnType','FollowUp_Confirm','FollowUp_FilterClosed',
+    'FollowUp_FilterDue','FollowUp_FilterUpcoming','FollowUp_Open','FollowUp_Refresh',
+    'FollowUp_Reschedule','FollowUp_StatusCancelled','FollowUp_StatusPending',
+    'FollowUp_StatusSucceeded','FollowUp_StatusUnsuccessful','FollowUp_TargetProject',
+    'FollowUp_TargetSelection','FollowUp_BellNone','FollowUp_BellDue',
+    'FollowUp_SyncOffline','FollowUp_SyncCurrent','FollowUp_MissingFile',
+    'FollowUp_OpenError','FollowUp_NoItems','Help_MenuTip_FollowUps',
+    'Help_Topic_FollowUps_Title','Help_Topic_FollowUps_Body')
 foreach ($file in $resourceFiles) {
     [xml]$document = Get-Content -LiteralPath $file.FullName -Raw
     $names = @($document.root.data | ForEach-Object { $_.name })

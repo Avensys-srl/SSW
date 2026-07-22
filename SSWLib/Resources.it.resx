@@ -835,4 +835,43 @@ I nomi delle lingue vengono sempre visualizzati come autonimi, così ogni utente
   <data name="Help_Topic_Exports_Body" xml:space="preserve"><value>Foglio commerciale e IOM sono documenti supplementari e sono abilitati solo quando esiste contenuto per l&apos;unità, il ramo e la lingua selezionati. Non salvano la scelta tecnica e non sostituiscono la relazione di calcolo.
 
 Salvare prima il file .sswsel quando è necessario preservare gli input di calcolo modificabili. Genera report quando hai bisogno del risultato tecnico tracciabile e del suo riferimento di revisione.</value></data>
+  <data name="FollowUp_ScheduleTitle" xml:space="preserve"><value>Follow-up via e-mail</value></data>
+  <data name="FollowUp_ScheduleEnabled" xml:space="preserve"><value>Programma follow-up</value></data>
+  <data name="FollowUp_ScheduleDays" xml:space="preserve"><value>Follow-up dopo [giorni]</value></data>
+  <data name="FollowUp_ScheduleExplanation" xml:space="preserve"><value>Il promemoria decorre dalla preparazione della bozza e-mail in Outlook.</value></data>
+  <data name="FollowUp_Cancel" xml:space="preserve"><value>Annulla</value></data>
+  <data name="FollowUp_PrepareEmail" xml:space="preserve"><value>Prepara e-mail</value></data>
+  <data name="FollowUp_CancelReminder" xml:space="preserve"><value>Annulla promemoria</value></data>
+  <data name="FollowUp_CenterTitle" xml:space="preserve"><value>Promemoria di follow-up</value></data>
+  <data name="FollowUp_CloseSuccessful" xml:space="preserve"><value>Chiudi con successo</value></data>
+  <data name="FollowUp_CloseUnsuccessful" xml:space="preserve"><value>Chiudi senza successo</value></data>
+  <data name="FollowUp_CloseWindow" xml:space="preserve"><value>Chiudi</value></data>
+  <data name="FollowUp_ColumnDue" xml:space="preserve"><value>Data follow-up</value></data>
+  <data name="FollowUp_ColumnReference" xml:space="preserve"><value>Riferimento</value></data>
+  <data name="FollowUp_ColumnReschedules" xml:space="preserve"><value>Riprogrammazioni</value></data>
+  <data name="FollowUp_ColumnStatus" xml:space="preserve"><value>Stato</value></data>
+  <data name="FollowUp_ColumnType" xml:space="preserve"><value>Tipo</value></data>
+  <data name="FollowUp_Confirm" xml:space="preserve"><value>OK</value></data>
+  <data name="FollowUp_FilterClosed" xml:space="preserve"><value>Chiusi</value></data>
+  <data name="FollowUp_FilterDue" xml:space="preserve"><value>In scadenza / scaduti</value></data>
+  <data name="FollowUp_FilterUpcoming" xml:space="preserve"><value>Prossimi</value></data>
+  <data name="FollowUp_Open" xml:space="preserve"><value>Apri</value></data>
+  <data name="FollowUp_Refresh" xml:space="preserve"><value>Aggiorna</value></data>
+  <data name="FollowUp_Reschedule" xml:space="preserve"><value>Riprogramma</value></data>
+  <data name="FollowUp_StatusCancelled" xml:space="preserve"><value>Annullato</value></data>
+  <data name="FollowUp_StatusPending" xml:space="preserve"><value>In attesa</value></data>
+  <data name="FollowUp_StatusSucceeded" xml:space="preserve"><value>Concluso con successo</value></data>
+  <data name="FollowUp_StatusUnsuccessful" xml:space="preserve"><value>Concluso senza successo</value></data>
+  <data name="FollowUp_TargetProject" xml:space="preserve"><value>Progetto</value></data>
+  <data name="FollowUp_TargetSelection" xml:space="preserve"><value>Selezione</value></data>
+  <data name="FollowUp_BellNone" xml:space="preserve"><value>Nessun follow-up scaduto</value></data>
+  <data name="FollowUp_BellDue" xml:space="preserve"><value>Follow-up scaduti: {0}</value></data>
+  <data name="FollowUp_SyncOffline" xml:space="preserve"><value>Offline - dati locali</value></data>
+  <data name="FollowUp_SyncCurrent" xml:space="preserve"><value>Sincronizzato</value></data>
+  <data name="FollowUp_MissingFile" xml:space="preserve"><value>Il file locale non è più disponibile: {0}</value></data>
+  <data name="FollowUp_OpenError" xml:space="preserve"><value>Impossibile aprire il file di riferimento: {0}</value></data>
+  <data name="FollowUp_NoItems" xml:space="preserve"><value>Nessun promemoria di follow-up da visualizzare.</value></data>
+  <data name="Help_MenuTip_FollowUps" xml:space="preserve"><value>Apri il centro promemoria per controllare, riprogrammare o chiudere i solleciti relativi a selezioni tecniche e progetti.</value></data>
+  <data name="Help_Topic_FollowUps_Title" xml:space="preserve"><value>Promemoria di ricontatto del cliente</value></data>
+  <data name="Help_Topic_FollowUps_Body" xml:space="preserve"><value>Pianifica un ricontatto del cliente da 1 a 90 giorni; il valore predefinito è 7 giorni. Il conteggio decorre solo dopo la corretta preparazione della bozza in Outlook. La campanella apre il centro promemoria, che mostra gli elementi scaduti, futuri e chiusi. Fai doppio clic su un elemento per riaprire la selezione o il progetto locale. Puoi chiudere un promemoria con successo o senza successo, riprogrammarlo oppure annullarlo. I dati restano privati alla sola installazione Windows corrente; offline, le modifiche vengono salvate localmente e sincronizzate in seguito.</value></data>
 </root>

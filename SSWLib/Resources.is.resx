@@ -1267,4 +1267,43 @@ Tungumálsnöfn í tungumálavalmyndinni eru viljandi alltaf sýnd sem sjálfhei
   <data name="Help_Topic_Exports_Body" xml:space="preserve"><value>Viðskiptablað og IOM eru viðbótarskjöl og eru aðeins virkjuð þegar efni er til fyrir valda einingu, útibú og tungumál. Þau vista ekki tæknivalið og koma ekki í stað útreikningsskýrslunnar.
 
 Vistaðu .sswsel skrána fyrst þegar þú þarft að varðveita breytanleg útreikningsinntak. Búðu til skýrslu þegar þú þarft rekjanlega tæknilega niðurstöðu og endurskoðunartilvísun hennar.</value></data>
+  <data name="FollowUp_ScheduleTitle" xml:space="preserve"><value>Eftirfylgni með tölvupósti</value></data>
+  <data name="FollowUp_ScheduleEnabled" xml:space="preserve"><value>Tímasetja eftirfylgni</value></data>
+  <data name="FollowUp_ScheduleDays" xml:space="preserve"><value>Fylgja eftir eftir [daga]</value></data>
+  <data name="FollowUp_ScheduleExplanation" xml:space="preserve"><value>Tími áminningar hefst þegar Outlook-tölvupóstsdrögin hafa verið útbúin.</value></data>
+  <data name="FollowUp_Cancel" xml:space="preserve"><value>Hætta við</value></data>
+  <data name="FollowUp_PrepareEmail" xml:space="preserve"><value>Undirbúa tölvupóst</value></data>
+  <data name="FollowUp_CancelReminder" xml:space="preserve"><value>Hætta við áminningu</value></data>
+  <data name="FollowUp_CenterTitle" xml:space="preserve"><value>Eftirfylgniáminningar</value></data>
+  <data name="FollowUp_CloseSuccessful" xml:space="preserve"><value>Loka sem árangursríku</value></data>
+  <data name="FollowUp_CloseUnsuccessful" xml:space="preserve"><value>Loka sem árangurslausu</value></data>
+  <data name="FollowUp_CloseWindow" xml:space="preserve"><value>Loka</value></data>
+  <data name="FollowUp_ColumnDue" xml:space="preserve"><value>Dagsetning eftirfylgni</value></data>
+  <data name="FollowUp_ColumnReference" xml:space="preserve"><value>Tilvísun</value></data>
+  <data name="FollowUp_ColumnReschedules" xml:space="preserve"><value>Endurtímasetningar</value></data>
+  <data name="FollowUp_ColumnStatus" xml:space="preserve"><value>Staða</value></data>
+  <data name="FollowUp_ColumnType" xml:space="preserve"><value>Tegund</value></data>
+  <data name="FollowUp_Confirm" xml:space="preserve"><value>Í lagi</value></data>
+  <data name="FollowUp_FilterClosed" xml:space="preserve"><value>Lokað</value></data>
+  <data name="FollowUp_FilterDue" xml:space="preserve"><value>Á gjalddaga / komið fram yfir</value></data>
+  <data name="FollowUp_FilterUpcoming" xml:space="preserve"><value>Framundan</value></data>
+  <data name="FollowUp_Open" xml:space="preserve"><value>Opna</value></data>
+  <data name="FollowUp_Refresh" xml:space="preserve"><value>Endurnýja</value></data>
+  <data name="FollowUp_Reschedule" xml:space="preserve"><value>Endurtímasetja</value></data>
+  <data name="FollowUp_StatusCancelled" xml:space="preserve"><value>Hætt við</value></data>
+  <data name="FollowUp_StatusPending" xml:space="preserve"><value>Í bið</value></data>
+  <data name="FollowUp_StatusSucceeded" xml:space="preserve"><value>Árangursríkt</value></data>
+  <data name="FollowUp_StatusUnsuccessful" xml:space="preserve"><value>Árangurslaust</value></data>
+  <data name="FollowUp_TargetProject" xml:space="preserve"><value>Verkefni</value></data>
+  <data name="FollowUp_TargetSelection" xml:space="preserve"><value>Val</value></data>
+  <data name="FollowUp_BellNone" xml:space="preserve"><value>Engin eftirfylgni er komin á gjalddaga</value></data>
+  <data name="FollowUp_BellDue" xml:space="preserve"><value>Eftirfylgni komin á gjalddaga: {0}</value></data>
+  <data name="FollowUp_SyncOffline" xml:space="preserve"><value>Ótengt - staðbundin gögn</value></data>
+  <data name="FollowUp_SyncCurrent" xml:space="preserve"><value>Samstillt</value></data>
+  <data name="FollowUp_MissingFile" xml:space="preserve"><value>Staðbundna skráin er ekki lengur tiltæk: {0}</value></data>
+  <data name="FollowUp_OpenError" xml:space="preserve"><value>Ekki tókst að opna tilgreinda skrá: {0}</value></data>
+  <data name="FollowUp_NoItems" xml:space="preserve"><value>Engar eftirfylgniáminningar til að birta.</value></data>
+  <data name="Help_MenuTip_FollowUps" xml:space="preserve"><value>Opnaðu eftirfylgnimiðstöðina til að skoða, endurtímasetja eða loka áminningum fyrir tæknival og verkefni.</value></data>
+  <data name="Help_Topic_FollowUps_Title" xml:space="preserve"><value>Áminningar um eftirfylgni við viðskiptavini</value></data>
+  <data name="Help_Topic_FollowUps_Body" xml:space="preserve"><value>Tímasettu eftirfylgni við viðskiptavin eftir 1 til 90 daga; sjálfgefið gildi er 7 dagar. Tíminn byrjar aðeins að líða eftir að Outlook-drög hafa verið útbúin með góðum árangri. Bjallan opnar áminningamiðstöðina, þar sem sjá má gjaldfallin, væntanleg og lokuð atriði. Tvísmelltu á atriði til að opna staðbundið val eða verkefni aftur. Hægt er að loka áminningu sem árangursríkri eða árangurslausri, endurtímasetja hana eða hætta við hana. Gögnin eru aðeins aðgengileg í núverandi Windows-uppsetningu; án nettengingar eru breytingar vistaðar staðbundið og samstilltar síðar.</value></data>
 </root>

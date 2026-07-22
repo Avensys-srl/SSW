@@ -884,4 +884,43 @@ A nyelvmenüben a nyelvnevek szándékosan mindig autonimként jelennek meg, íg
   <data name="Help_Topic_Exports_Body" xml:space="preserve"><value>A kereskedelmi lap és a IOM kiegészítő dokumentumok, és csak akkor engedélyezettek, ha a kiválasztott egységhez, ágazathoz és nyelvhez létezik tartalom. Nem mentik el a műszaki válogatást és nem helyettesítik a számítási jegyzőkönyvet.
 
 Először mentse a .sswsel fájlt, ha meg kell őriznie a szerkeszthető számítási bemeneteket. Készítsen jelentést, amikor szüksége van a nyomon követhető műszaki eredményre és annak felülvizsgálati hivatkozására.</value></data>
+  <data name="FollowUp_ScheduleTitle" xml:space="preserve"><value>E-mailes utánkövetés</value></data>
+  <data name="FollowUp_ScheduleEnabled" xml:space="preserve"><value>Utánkövetés ütemezése</value></data>
+  <data name="FollowUp_ScheduleDays" xml:space="preserve"><value>Utánkövetés [nap] múlva</value></data>
+  <data name="FollowUp_ScheduleExplanation" xml:space="preserve"><value>Az emlékeztető időzítése az Outlook e-mail-piszkozat elkészítésekor indul.</value></data>
+  <data name="FollowUp_Cancel" xml:space="preserve"><value>Mégse</value></data>
+  <data name="FollowUp_PrepareEmail" xml:space="preserve"><value>E-mail előkészítése</value></data>
+  <data name="FollowUp_CancelReminder" xml:space="preserve"><value>Emlékeztető törlése</value></data>
+  <data name="FollowUp_CenterTitle" xml:space="preserve"><value>Utánkövetési emlékeztetők</value></data>
+  <data name="FollowUp_CloseSuccessful" xml:space="preserve"><value>Lezárás sikeresként</value></data>
+  <data name="FollowUp_CloseUnsuccessful" xml:space="preserve"><value>Lezárás sikertelenként</value></data>
+  <data name="FollowUp_CloseWindow" xml:space="preserve"><value>Bezárás</value></data>
+  <data name="FollowUp_ColumnDue" xml:space="preserve"><value>Utánkövetés dátuma</value></data>
+  <data name="FollowUp_ColumnReference" xml:space="preserve"><value>Hivatkozás</value></data>
+  <data name="FollowUp_ColumnReschedules" xml:space="preserve"><value>Átütemezések</value></data>
+  <data name="FollowUp_ColumnStatus" xml:space="preserve"><value>Állapot</value></data>
+  <data name="FollowUp_ColumnType" xml:space="preserve"><value>Típus</value></data>
+  <data name="FollowUp_Confirm" xml:space="preserve"><value>OK</value></data>
+  <data name="FollowUp_FilterClosed" xml:space="preserve"><value>Lezárt</value></data>
+  <data name="FollowUp_FilterDue" xml:space="preserve"><value>Esedékes / lejárt</value></data>
+  <data name="FollowUp_FilterUpcoming" xml:space="preserve"><value>Közelgő</value></data>
+  <data name="FollowUp_Open" xml:space="preserve"><value>Megnyitás</value></data>
+  <data name="FollowUp_Refresh" xml:space="preserve"><value>Frissítés</value></data>
+  <data name="FollowUp_Reschedule" xml:space="preserve"><value>Átütemezés</value></data>
+  <data name="FollowUp_StatusCancelled" xml:space="preserve"><value>Törölve</value></data>
+  <data name="FollowUp_StatusPending" xml:space="preserve"><value>Függőben</value></data>
+  <data name="FollowUp_StatusSucceeded" xml:space="preserve"><value>Sikeres</value></data>
+  <data name="FollowUp_StatusUnsuccessful" xml:space="preserve"><value>Sikertelen</value></data>
+  <data name="FollowUp_TargetProject" xml:space="preserve"><value>Projekt</value></data>
+  <data name="FollowUp_TargetSelection" xml:space="preserve"><value>Kiválasztás</value></data>
+  <data name="FollowUp_BellNone" xml:space="preserve"><value>Nincs esedékes utánkövetés</value></data>
+  <data name="FollowUp_BellDue" xml:space="preserve"><value>Esedékes utánkövetések: {0}</value></data>
+  <data name="FollowUp_SyncOffline" xml:space="preserve"><value>Offline - helyi adatok</value></data>
+  <data name="FollowUp_SyncCurrent" xml:space="preserve"><value>Szinkronizálva</value></data>
+  <data name="FollowUp_MissingFile" xml:space="preserve"><value>A helyi fájl már nem érhető el: {0}</value></data>
+  <data name="FollowUp_OpenError" xml:space="preserve"><value>A hivatkozott fájl nem nyitható meg: {0}</value></data>
+  <data name="FollowUp_NoItems" xml:space="preserve"><value>Nincs megjeleníthető utánkövetési emlékeztető.</value></data>
+  <data name="Help_MenuTip_FollowUps" xml:space="preserve"><value>Nyissa meg az utánkövetési központot a műszaki kiválasztásokhoz és projektekhez tartozó emlékeztetők áttekintéséhez, átütemezéséhez vagy lezárásához.</value></data>
+  <data name="Help_Topic_FollowUps_Title" xml:space="preserve"><value>Ügyfél-utánkövetési emlékeztetők</value></data>
+  <data name="Help_Topic_FollowUps_Body" xml:space="preserve"><value>Az ügyfél utánkövetése 1 és 90 nap közötti időtartamra ütemezhető; az alapértelmezett érték 7 nap. A határidő csak az Outlook-piszkozat sikeres elkészítése után indul. A harang nyitja meg az emlékeztetőközpontot, ahol a lejárt, közelgő és lezárt tételek láthatók. Kattintson duplán egy tételre a helyi kiválasztás vagy projekt újbóli megnyitásához. Az emlékeztető sikeresként vagy sikertelenként lezárható, átütemezhető vagy törölhető. Az adatok kizárólag az aktuális Windows-telepítésen maradnak bizalmasak; kapcsolat nélkül a módosítások helyben tárolódnak, majd később szinkronizálódnak.</value></data>
 </root>

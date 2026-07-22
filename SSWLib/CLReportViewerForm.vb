@@ -2,6 +2,8 @@ Public Class CLReportViewerForm
 
     Public Event PdfExported As EventHandler(Of CLPdfExportedEventArgs)
     Public Event AddToProjectRequested As EventHandler(Of CLPdfExportedEventArgs)
+    Public Event FollowUpPrepared As EventHandler(Of CLFollowUpPreparedEventArgs)
+    Public Event FollowUpLocalPathRequested As EventHandler(Of CLFollowUpLocalPathRequestedEventArgs)
 
     Private m_PdfExportButton As ToolStripButton
     Private m_EmailButton As ToolStripButton
@@ -11,18 +13,24 @@ Public Class CLReportViewerForm
     Private m_EmailAirFlow As String = String.Empty
     Private m_EmailPressure As String = String.Empty
     Private m_EmailRegistrationReference As String = String.Empty
+    Private m_EmailTargetUuid As Guid
+    Private m_EmailLocalPath As String = String.Empty
 
     Public Sub SetEmailContext(modelName As String,
         customerReference As String,
         airFlow As String,
         pressure As String,
-        registrationReference As String)
+        registrationReference As String,
+        Optional targetUuid As Guid = Nothing,
+        Optional localPath As String = Nothing)
 
         m_EmailModelName = If(modelName, String.Empty).Trim()
         m_EmailCustomerReference = If(customerReference, String.Empty).Trim()
         m_EmailAirFlow = If(airFlow, String.Empty).Trim()
         m_EmailPressure = If(pressure, String.Empty).Trim()
         m_EmailRegistrationReference = If(registrationReference, String.Empty).Trim()
+        m_EmailTargetUuid = targetUuid
+        m_EmailLocalPath = If(localPath, String.Empty).Trim()
         UpdateEmailButtonState()
     End Sub
 
@@ -132,6 +140,15 @@ Public Class CLReportViewerForm
     Private Sub EmailButton_Click(sender As Object, eventArgs As EventArgs)
         If String.IsNullOrWhiteSpace(m_EmailModelName) Then Return
 
+        Dim scheduleChoice As CLFollowUpScheduleChoice = CLFollowUpScheduleDialog.Prompt(Me)
+        If Not scheduleChoice.Proceed Then Return
+        If scheduleChoice.Schedule AndAlso String.IsNullOrWhiteSpace(m_EmailLocalPath) Then
+            Dim localPathRequest As New CLFollowUpLocalPathRequestedEventArgs()
+            RaiseEvent FollowUpLocalPathRequested(Me, localPathRequest)
+            m_EmailLocalPath = If(localPathRequest.LocalPath, String.Empty).Trim()
+            If String.IsNullOrWhiteSpace(m_EmailLocalPath) Then Return
+        End If
+
         Dim pdfPath As String
         Try
             Cursor = Cursors.WaitCursor
@@ -169,6 +186,19 @@ Public Class CLReportViewerForm
                 m_EmailPressure,
                 m_EmailCustomerReference)
             CLOutlookEmailService.DisplayMessage(subject, body, pdfPath)
+            If scheduleChoice.Schedule Then
+                Dim preparedAtUtc As DateTime = DateTime.UtcNow
+                RaiseEvent FollowUpPrepared(Me, New CLFollowUpPreparedEventArgs With {
+                    .TargetType = "Selection",
+                    .TargetUuid = m_EmailTargetUuid,
+                    .DisplayReference = If(String.IsNullOrWhiteSpace(m_EmailCustomerReference),
+                        m_EmailRegistrationReference,
+                        m_EmailCustomerReference),
+                    .LocalPath = m_EmailLocalPath,
+                    .PreparedAtUtc = preparedAtUtc,
+                    .DueAtUtc = DateTime.Now.AddDays(scheduleChoice.Days).ToUniversalTime()
+                })
+            End If
         Catch ex As CLOutlookEmailException
             Diagnostics.Trace.WriteLine(ex.ToString())
             Select Case ex.Failure
@@ -304,6 +334,13 @@ Public Class CLReportViewerForm
     Private Sub CLReportViewerForm_Load(sender As Object, e As EventArgs) Handles Me.Load
         ReportControl_AddExportHandler(rpvReport)
     End Sub
+
+End Class
+
+Public NotInheritable Class CLFollowUpLocalPathRequestedEventArgs
+    Inherits EventArgs
+
+    Public Property LocalPath As String
 
 End Class
 

@@ -109,6 +109,7 @@ Partial Public Class CLMainForm
         Help_SetMenuToolTip(tsmiHelp_OpenGuide, "Help_MenuTip_OpenGuide", "Open the searchable user guide for selections, reports and projects.")
         Help_SetMenuToolTip(tsmiHelp_ShowToolTips, "Help_MenuTip_ToggleTips", "Enable or disable contextual help tips throughout SSW.")
         Help_SetMenuToolTip(tsmiOption_ShowHelpToolTips, "Help_MenuTip_ToggleTips", "Enable or disable contextual help tips throughout SSW.")
+        If m_FollowUpStore IsNot Nothing Then FollowUp_UpdateBell()
     End Sub
 
     Private Sub Help_EnableMenuToolTips(items As ToolStripItemCollection)

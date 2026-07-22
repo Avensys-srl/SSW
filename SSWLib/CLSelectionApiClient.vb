@@ -62,7 +62,7 @@ Public NotInheritable Class CLSelectionRegistrationResult
     Public Property ChangeKind As String
 End Class
 
-Public NotInheritable Class CLSelectionApiClient
+Public NotInheritable Partial Class CLSelectionApiClient
 
     Private Const DefaultBaseUrl As String = "https://www.avensys-srl.com/api/v1/"
     Private Const BootstrapRegistryPath As String = "Software\Avensys\SSW\TechnicalSelection"

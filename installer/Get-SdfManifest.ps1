@@ -4,14 +4,11 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
-$database = (Resolve-Path $DatabasePath).ProviderPath
-$temporaryDatabase = ''
-if ($database.StartsWith('\\')) {
-    $temporaryDatabase = Join-Path ([IO.Path]::GetTempPath()) ('ssw-sdf-probe-' + [Guid]::NewGuid().ToString('N') + '.sdf')
-    Copy-Item -LiteralPath $database -Destination $temporaryDatabase
-    $database = $temporaryDatabase
-}
-$buildDirectory = Split-Path (Split-Path $database -Parent) -Parent
+$sourceDatabase = (Resolve-Path $DatabasePath).ProviderPath
+$temporaryDatabase = Join-Path ([IO.Path]::GetTempPath()) ('ssw-sdf-probe-' + [Guid]::NewGuid().ToString('N') + '.sdf')
+Copy-Item -LiteralPath $sourceDatabase -Destination $temporaryDatabase
+$database = $temporaryDatabase
+$buildDirectory = Split-Path (Split-Path $sourceDatabase -Parent) -Parent
 $assemblyCandidates = @(
     $SqlCeAssemblyPath,
     (Join-Path $buildDirectory 'System.Data.SqlServerCe.dll'),

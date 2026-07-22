@@ -4,6 +4,8 @@ Imports System.IO
 Public NotInheritable Class CLMultiSelectionProjectForm
     Inherits Form
 
+    Public Event FollowUpPrepared As EventHandler(Of CLFollowUpPreparedEventArgs)
+
     Private ReadOnly m_ReferenceText As New TextBox()
     Private ReadOnly m_LanguageText As New TextBox()
     Private ReadOnly m_Grid As New DataGridView()
@@ -214,6 +216,9 @@ Public NotInheritable Class CLMultiSelectionProjectForm
             ShowError(T("MultiProject_Empty", "The project does not contain any reports."))
             Return
         End If
+        If Not SaveProject(False) Then Return
+        Dim scheduleChoice As CLFollowUpScheduleChoice = CLFollowUpScheduleDialog.Prompt(Me)
+        If Not scheduleChoice.Proceed Then Return
         Try
             Cursor = Cursors.WaitCursor
             Dim directoryPath As String = Path.Combine(Path.GetTempPath(), "Avensys", "SSW", "Projects", Guid.NewGuid().ToString("N"))
@@ -225,6 +230,17 @@ Public NotInheritable Class CLMultiSelectionProjectForm
                 CLMultiSelectionEmailComposer.BuildSubject(m_Document),
                 CLMultiSelectionEmailComposer.BuildHtml(m_Document),
                 attachments)
+            If scheduleChoice.Schedule Then
+                Dim preparedAtUtc As DateTime = DateTime.UtcNow
+                RaiseEvent FollowUpPrepared(Me, New CLFollowUpPreparedEventArgs With {
+                    .TargetType = "Project",
+                    .TargetUuid = m_Document.ProjectId,
+                    .DisplayReference = m_Document.Reference,
+                    .LocalPath = m_ProjectPath,
+                    .PreparedAtUtc = preparedAtUtc,
+                    .DueAtUtc = DateTime.Now.AddDays(scheduleChoice.Days).ToUniversalTime()
+                })
+            End If
         Catch ex As Exception
             ShowError(ex.Message)
         Finally

@@ -770,4 +770,43 @@ Les noms de langue dans le menu des langues sont intentionnellement toujours aff
   <data name="Help_Topic_Exports_Body" xml:space="preserve"><value>La fiche commerciale et IOM sont des documents complémentaires et ne sont activés que lorsque le contenu existe pour l&apos;unité, la branche et la langue sélectionnées. Ils ne sauvegardent pas la sélection technique et ne remplacent pas le rapport de calcul.
 
 Enregistrez d&apos;abord le fichier .sswsel lorsque vous devez conserver les entrées de calcul modifiables. Générez un rapport lorsque vous avez besoin du résultat technique traçable et de sa référence de révision.</value></data>
+  <data name="FollowUp_ScheduleTitle" xml:space="preserve"><value>Relance par e-mail</value></data>
+  <data name="FollowUp_ScheduleEnabled" xml:space="preserve"><value>Planifier une relance</value></data>
+  <data name="FollowUp_ScheduleDays" xml:space="preserve"><value>Relancer après [jours]</value></data>
+  <data name="FollowUp_ScheduleExplanation" xml:space="preserve"><value>Le délai de rappel démarre lorsque le brouillon d’e-mail Outlook a été préparé.</value></data>
+  <data name="FollowUp_Cancel" xml:space="preserve"><value>Annuler</value></data>
+  <data name="FollowUp_PrepareEmail" xml:space="preserve"><value>Préparer l’e-mail</value></data>
+  <data name="FollowUp_CancelReminder" xml:space="preserve"><value>Annuler le rappel</value></data>
+  <data name="FollowUp_CenterTitle" xml:space="preserve"><value>Rappels de relance</value></data>
+  <data name="FollowUp_CloseSuccessful" xml:space="preserve"><value>Clore avec succès</value></data>
+  <data name="FollowUp_CloseUnsuccessful" xml:space="preserve"><value>Clore sans succès</value></data>
+  <data name="FollowUp_CloseWindow" xml:space="preserve"><value>Fermer</value></data>
+  <data name="FollowUp_ColumnDue" xml:space="preserve"><value>Date de relance</value></data>
+  <data name="FollowUp_ColumnReference" xml:space="preserve"><value>Référence</value></data>
+  <data name="FollowUp_ColumnReschedules" xml:space="preserve"><value>Replanifications</value></data>
+  <data name="FollowUp_ColumnStatus" xml:space="preserve"><value>État</value></data>
+  <data name="FollowUp_ColumnType" xml:space="preserve"><value>Type</value></data>
+  <data name="FollowUp_Confirm" xml:space="preserve"><value>OK</value></data>
+  <data name="FollowUp_FilterClosed" xml:space="preserve"><value>Clos</value></data>
+  <data name="FollowUp_FilterDue" xml:space="preserve"><value>À traiter / en retard</value></data>
+  <data name="FollowUp_FilterUpcoming" xml:space="preserve"><value>À venir</value></data>
+  <data name="FollowUp_Open" xml:space="preserve"><value>Ouvrir</value></data>
+  <data name="FollowUp_Refresh" xml:space="preserve"><value>Actualiser</value></data>
+  <data name="FollowUp_Reschedule" xml:space="preserve"><value>Replanifier</value></data>
+  <data name="FollowUp_StatusCancelled" xml:space="preserve"><value>Annulé</value></data>
+  <data name="FollowUp_StatusPending" xml:space="preserve"><value>En attente</value></data>
+  <data name="FollowUp_StatusSucceeded" xml:space="preserve"><value>Avec succès</value></data>
+  <data name="FollowUp_StatusUnsuccessful" xml:space="preserve"><value>Sans succès</value></data>
+  <data name="FollowUp_TargetProject" xml:space="preserve"><value>Projet</value></data>
+  <data name="FollowUp_TargetSelection" xml:space="preserve"><value>Sélection</value></data>
+  <data name="FollowUp_BellNone" xml:space="preserve"><value>Aucune relance arrivée à échéance</value></data>
+  <data name="FollowUp_BellDue" xml:space="preserve"><value>Relances arrivées à échéance : {0}</value></data>
+  <data name="FollowUp_SyncOffline" xml:space="preserve"><value>Hors ligne - données locales</value></data>
+  <data name="FollowUp_SyncCurrent" xml:space="preserve"><value>Synchronisé</value></data>
+  <data name="FollowUp_MissingFile" xml:space="preserve"><value>Le fichier local n’est plus disponible : {0}</value></data>
+  <data name="FollowUp_OpenError" xml:space="preserve"><value>Impossible d’ouvrir le fichier référencé : {0}</value></data>
+  <data name="FollowUp_NoItems" xml:space="preserve"><value>Aucun rappel de relance à afficher.</value></data>
+  <data name="Help_MenuTip_FollowUps" xml:space="preserve"><value>Ouvrez le centre de rappels pour consulter, reprogrammer ou clôturer les relances liées aux sélections techniques et aux projets.</value></data>
+  <data name="Help_Topic_FollowUps_Title" xml:space="preserve"><value>Rappels de suivi client</value></data>
+  <data name="Help_Topic_FollowUps_Body" xml:space="preserve"><value>Planifiez un suivi client de 1 à 90 jours ; la valeur par défaut est de 7 jours. Le délai commence uniquement après la préparation réussie du brouillon Outlook. La cloche ouvre le centre de rappels, qui affiche les éléments échus, à venir et clôturés. Double-cliquez sur un élément pour rouvrir sa sélection ou son projet local. Un rappel peut être clôturé avec succès ou sans succès, reprogrammé ou annulé. Les données restent privées à l'installation Windows actuelle ; hors connexion, les modifications sont enregistrées localement puis synchronisées ultérieurement.</value></data>
 </root>
