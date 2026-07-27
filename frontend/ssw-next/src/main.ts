@@ -39,7 +39,7 @@ import {
   Zap,
 } from "lucide";
 import "./styles.css";
-import { createBridge, runtimeName } from "./bridge";
+import { createBridge, logClientError, runtimeName } from "./bridge";
 import { getHelpContent } from "./help";
 import {
   getMessages,
@@ -180,6 +180,39 @@ const renderLoading = (): void => {
       <div class="loading-line"><span></span></div>
     </main>
   `;
+};
+
+const renderStartupError = (error: unknown): void => {
+  const detail = error instanceof Error ? error.message : String(error);
+  app.innerHTML = `
+    <main class="loading-screen startup-error" role="alert">
+      <div class="brand-mark" aria-hidden="true">
+        <span></span><span></span><span></span>
+      </div>
+      <div class="loading-copy">
+        <strong>SSW Next</strong>
+        <span>Impossibile completare l'inizializzazione dell'interfaccia.</span>
+      </div>
+      <p class="startup-error-detail">${escapeHtml(detail)}</p>
+      <div class="startup-error-actions">
+        <button class="button button-primary" id="startup-retry" type="button">Riprova</button>
+        <button class="button" id="startup-legacy" type="button">Apri interfaccia attuale</button>
+      </div>
+    </main>
+  `;
+  document.querySelector<HTMLButtonElement>("#startup-retry")?.addEventListener(
+    "click",
+    () => void bootstrap(),
+  );
+  document.querySelector<HTMLButtonElement>("#startup-legacy")?.addEventListener(
+    "click",
+    () =>
+      window.chrome?.webview?.postMessage({
+        requestId: crypto.randomUUID(),
+        command: "legacy.open",
+        payload: {},
+      }),
+  );
 };
 
 const renderShell = (): void => {
@@ -1152,10 +1185,15 @@ window.addEventListener("hashchange", renderShell);
 
 const bootstrap = async (): Promise<void> => {
   renderLoading();
-  data = await bridge.bootstrap();
-  draft = structuredClone(data.draft);
-  result = structuredClone(data.result);
-  renderShell();
+  try {
+    data = await bridge.bootstrap();
+    draft = structuredClone(data.draft);
+    result = structuredClone(data.result);
+    renderShell();
+  } catch (error) {
+    logClientError(error);
+    renderStartupError(error);
+  }
 };
 
 void bootstrap();

@@ -81,14 +81,30 @@ const nativeInvoke = <T>(
 
   const requestId = crypto.randomUUID();
   return new Promise<T>((resolve, reject) => {
+    const timeout = window.setTimeout(() => {
+      webview.removeEventListener("message", listener);
+      reject(new Error(`Desktop bridge timeout while executing ${command}.`));
+    }, 30000);
     const listener = (event: MessageEvent<NativeResponse>) => {
       if (event.data?.requestId !== requestId) return;
+      window.clearTimeout(timeout);
       webview.removeEventListener("message", listener);
       if (event.data.success) resolve(event.data.payload as T);
       else reject(new Error(event.data.error || "Desktop bridge request failed."));
     };
     webview.addEventListener("message", listener);
     webview.postMessage({ requestId, command, payload });
+  });
+};
+
+export const logClientError = (error: unknown): void => {
+  const webview = window.chrome?.webview;
+  if (!webview) return;
+  const message = error instanceof Error ? error.stack || error.message : String(error);
+  webview.postMessage({
+    requestId: crypto.randomUUID(),
+    command: "app.clientError",
+    payload: { message },
   });
 };
 

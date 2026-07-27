@@ -1,11 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Microsoft.Web.WebView2.Core;
 using Microsoft.Web.WebView2.WinForms;
@@ -94,7 +96,19 @@ namespace SSW
             if (restoredDocument.Selection.Unit.Code != model.Code ||
                 restoredDocument.Selection.CustomerReference != "NEXT-UI") return 18;
             string json = new JavaScriptSerializer().Serialize(result);
-            return String.IsNullOrWhiteSpace(json) || json.Length < 100 ? 14 : 0;
+            int invalidNumberCount;
+            string normalizedJson = CLNextHostForm.NormalizeJsonNumbers(
+                json, out invalidNumberCount);
+            try
+            {
+                new JavaScriptSerializer().DeserializeObject(normalizedJson);
+            }
+            catch
+            {
+                return 20;
+            }
+            return String.IsNullOrWhiteSpace(normalizedJson) ||
+                normalizedJson.Length < 100 ? 14 : 0;
         }
     }
 
@@ -106,6 +120,8 @@ namespace SSW
 
         public CLNextHostForm()
         {
+            serializer.MaxJsonLength = Int32.MaxValue;
+            serializer.RecursionLimit = 128;
             Text = CLSSWProfile.AssemblyTitle + " - UI Preview";
             StartPosition = FormStartPosition.CenterScreen;
             MinimumSize = new Size(1180, 720);
@@ -133,6 +149,14 @@ namespace SSW
                 webView.CoreWebView2.Settings.AreDevToolsEnabled = false;
 #endif
                 webView.CoreWebView2.WebMessageReceived += WebMessageReceived;
+                webView.CoreWebView2.NavigationCompleted += delegate(
+                    object navigationSender,
+                    CoreWebView2NavigationCompletedEventArgs navigationArgs)
+                {
+                    WriteDiagnostic(
+                        "Navigation completed. Success=" + navigationArgs.IsSuccess +
+                        ", status=" + navigationArgs.WebErrorStatus);
+                };
 
                 string developmentUrl = Environment.GetEnvironmentVariable("SSW_NEXT_UI_DEV_URL");
                 if (!String.IsNullOrWhiteSpace(developmentUrl))
@@ -173,11 +197,13 @@ namespace SSW
         private void WebMessageReceived(object sender, CoreWebView2WebMessageReceivedEventArgs eventArgs)
         {
             BridgeRequest request = null;
+            Stopwatch stopwatch = Stopwatch.StartNew();
             try
             {
                 request = serializer.Deserialize<BridgeRequest>(eventArgs.WebMessageAsJson);
                 if (request == null || String.IsNullOrWhiteSpace(request.Command))
                     throw new InvalidOperationException("Bridge command is missing.");
+                WriteDiagnostic("Bridge request started: " + request.Command);
 
                 object payload;
                 switch (request.Command)
@@ -214,13 +240,26 @@ namespace SSW
                         BeginInvoke(new Action(Close));
                         payload = new { closed = true };
                         break;
+                    case "app.clientError":
+                        WriteDiagnostic(
+                            "Frontend error: " + TextValue(request.Payload, "message"));
+                        payload = new { logged = true };
+                        break;
                     default:
                         throw new InvalidOperationException("Unsupported bridge command: " + request.Command);
                 }
                 PostResponse(request.RequestId, true, payload, null);
+                WriteDiagnostic(
+                    "Bridge request completed: " + request.Command +
+                    " (" + stopwatch.ElapsedMilliseconds + " ms)");
             }
             catch (Exception exception)
             {
+                WriteDiagnostic(
+                    "Bridge request failed: " +
+                    (request == null ? "(unknown)" : request.Command) +
+                    " (" + stopwatch.ElapsedMilliseconds + " ms)\r\n" +
+                    exception);
                 PostResponse(request == null ? null : request.RequestId, false, null, exception.Message);
             }
         }
@@ -332,7 +371,51 @@ namespace SSW
                 payload,
                 error
             });
+            int invalidNumberCount;
+            json = NormalizeJsonNumbers(json, out invalidNumberCount);
+            if (invalidNumberCount > 0)
+            {
+                WriteDiagnostic(
+                    "Bridge response normalized " + invalidNumberCount +
+                    " non-finite numeric value(s).");
+            }
             webView.CoreWebView2.PostWebMessageAsJson(json);
+        }
+
+        internal static string NormalizeJsonNumbers(
+            string json,
+            out int invalidNumberCount)
+        {
+            int count = 0;
+            string normalized = Regex.Replace(
+                json ?? String.Empty,
+                @"(?<=[:\[,])(?:NaN|-?Infinity)(?=[,\]}])",
+                delegate
+                {
+                    count++;
+                    return "null";
+                });
+            invalidNumberCount = count;
+            return normalized;
+        }
+
+        private static void WriteDiagnostic(string message)
+        {
+            try
+            {
+                string logDirectory = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                    "Avensys", "SSW", "Logs");
+                Directory.CreateDirectory(logDirectory);
+                File.AppendAllText(
+                    Path.Combine(logDirectory, "next-ui.log"),
+                    DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) +
+                    " " + message + Environment.NewLine);
+            }
+            catch
+            {
+                // Diagnostics must never prevent the selector from starting.
+            }
         }
 
         private static string TextValue(IDictionary<string, object> payload, string key)
