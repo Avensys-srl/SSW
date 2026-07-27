@@ -186,6 +186,9 @@ una seconda implementazione dell'algoritmo aeraulico/termico.
 
 ## Onda 3 - Dati layout indipendenti dalla UI
 
+Stato: compatibilita' legacy UI-neutral completata il 27/07/2026; migrazione
+normalizzata centrale/SDF e immagini offline ancora aperte.
+
 Eseguire le onde A-C di `INSTALLATION_LAYOUT_ROADMAP.md`:
 
 1. censimento;
@@ -197,28 +200,72 @@ Non realizzare il tab WinForms previsto dalla vecchia Onda D.
 Checkpoint: layout, immagini e quote sono disponibili offline attraverso
 repository UI-neutral.
 
+Implementazione intermedia:
+
+- `CLLegacySdfInstallationLayoutRepository` espone configurazioni orizzontali
+  e verticali, default B6/A4, quote A-D e quattro porte senza tipi UI;
+- il repository non risolve percorsi storici di rete e segnala esplicitamente
+  immagini offline mancanti e dati incompleti;
+- il WebView2 preview usa questo repository senza introdurre un nuovo tab
+  WinForms;
+- il checkpoint completo resta aperto finche' Explorer ed exporter non
+  materializzano tabelle normalizzate e immagini binarie autorevoli nell'SDF.
+
 ## Onda 4 - Prototipo WebView2
 
-1. Creare il nuovo host desktop affiancato.
-2. Configurare frontend locale e hot reload Debug.
-3. Creare design system e component demo route.
-4. Implementare progetto, preselezione e selezione dettagliata.
-5. Collegare un calcolo reale tramite il servizio applicativo.
-6. Aprire salvataggio e report legacy dal nuovo host.
+Stato: completata il 27/07/2026 come preview affiancata.
+
+1. [x] Creare il nuovo host desktop affiancato.
+2. [x] Configurare frontend locale e hot reload Debug.
+3. [x] Creare design system e component demo route.
+4. [x] Implementare progetto, preselezione e selezione dettagliata.
+5. [x] Collegare un calcolo reale tramite il servizio applicativo.
+6. [x] Aprire salvataggio e report legacy dal nuovo host.
 
 Checkpoint: una selezione reale puo' essere calcolata, salvata, riaperta e
 stampata senza dipendere dalla UI WinForms per l'inserimento dati.
 
+Risultato:
+
+- `SSW.exe --next-ui` avvia WebView2 senza cambiare lo startup produttivo;
+- bundle TypeScript/Vite locale costruito e copiato da MSBuild;
+- route guidata a nove step e component showcase;
+- `NativeSelectionBridge` usa `CLNextUiApplicationService`, non fixture;
+- catalogo modelli, calcolo inverno/estate, layout e accessori arrivano
+  realmente dall'SDF;
+- browser mock limitato allo sviluppo frontend;
+- salvataggio e report aprono il percorso produttivo legacy.
+
+Il checkpoint finale sulla completa indipendenza da WinForms per
+salvataggio/report confluisce nell'Onda 5 e non e' ancora chiuso.
+
 ## Onda 5 - Parita' tecnica
 
-1. Migrare layout installativo e dimensionale.
-2. Migrare water coils.
-3. Migrare electric heaters.
-4. Migrare accessori.
-5. Migrare documenti tecnici, email e follow-up.
-6. Completare help, tooltip e 14 localizzazioni.
+Stato: vertical slice bilanciata disponibile; parita' completa non ancora
+raggiunta.
+
+1. [~] Migrare layout installativo e dimensionale.
+2. [ ] Migrare water coils.
+3. [ ] Migrare electric heaters.
+4. [~] Migrare accessori.
+5. [ ] Migrare documenti tecnici, email e follow-up.
+6. [ ] Completare help, tooltip e 14 localizzazioni.
 
 Checkpoint: il nuovo percorso copre l'attuale selezione tecnica bilanciata.
+
+Disponibile nel primo prototipo:
+
+- catalogo reale e ricalcolo tecnico bilanciato inverno/estate;
+- layout legacy e accessori modello-specifici tramite DTO UI-neutral;
+- workflow visivo completo per valutazione UX;
+- fallback intenzionale al prodotto corrente per funzioni non migrate;
+- smoke nativo integrato nel gate di release;
+- verifica responsive di tutti gli step a 1440x900 e 1024x768.
+
+Il prototipo non deve essere pubblicato come `2.0.0.0` e non sostituisce la UI
+corrente. Water coil, electric heater, persistenza, report, email, follow-up,
+help e localizzazioni devono essere collegati ai servizi applicativi prima di
+marcare l'Onda 5 completata.
 
 ## Onda 6 - Portate sbilanciate
 

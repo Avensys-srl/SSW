@@ -321,6 +321,23 @@ un progetto separato dopo almeno una release di compatibilita'.
 
 ## Compatibilita' con dati legacy
 
+### Adapter preview 27/07/2026
+
+E' disponibile `CLLegacySdfInstallationLayoutRepository`, usato dalla preview
+WebView2 per leggere senza dipendenze UI:
+
+- `HorVariants` e `VerVariants`, ripuliti e deduplicati;
+- default B6, poi A4, poi prima configurazione orizzontale disponibile;
+- quote A-D orizzontali e verticali;
+- posizioni e coordinate dei quattro flussi;
+- codice del layout aeraulico.
+
+L'adapter aggiunge codici di anomalia per configurazioni assenti, porte
+incomplete e immagini offline mancanti. Non interpreta percorsi storici `M:\`
+e non inventa associazioni CAD. Questo consente il prototipo grafico ma non
+chiude le onde A-C: schema normalizzato, editor Explorer, immagini binarie,
+hash, manifest ed export SDF restano necessari.
+
 - Interpretare `HorVariants` e `VerVariants` solamente nella migrazione e nei
   controlli di confronto.
 - Generare relazioni normalizzate senza perdere le stringhe originali.
@@ -602,4 +619,3 @@ attesa per validazione commerciale e disponibilita' delle immagini CAD.
 Se le immagini devono essere ridisegnate o ricostruite, aggiungere 30-70 mila
 token e 1-3 giorni. Conservare un margine del 20-30% per dati legacy,
 impaginazione RDLC e anomalie nella relazione tra sigle e layout aeraulici.
-

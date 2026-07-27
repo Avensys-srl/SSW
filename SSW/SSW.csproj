@@ -374,6 +374,14 @@
     <Reference Include="Microsoft.SqlServer.Types, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.SqlServer.Types.160.1000.6\lib\net462\Microsoft.SqlServer.Types.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Web.WebView2.Core, Version=1.0.4078.44, Culture=neutral, PublicKeyToken=2a8ab48044d2601e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.WebView2.1.0.4078.44\lib\net462\Microsoft.Web.WebView2.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Web.WebView2.WinForms, Version=1.0.4078.44, Culture=neutral, PublicKeyToken=2a8ab48044d2601e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.WebView2.1.0.4078.44\lib\net462\Microsoft.Web.WebView2.WinForms.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -388,6 +396,7 @@
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <Choose>
@@ -931,6 +940,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="CLProgram.cs" />
+    <Compile Include="CLNextHostForm.cs" />
     <Compile Include="CLSSWInfo_AC.cs" />
     <Compile Include="CLSSWInfo_AL.cs" />
     <Compile Include="CLSSWInfo_IN.cs" />
@@ -1073,6 +1083,22 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Microsoft.Web.WebView2.1.0.4078.44\build\Microsoft.Web.WebView2.targets" Condition="Exists('..\packages\Microsoft.Web.WebView2.1.0.4078.44\build\Microsoft.Web.WebView2.targets')" />
+  <Target Name="BuildNextUiAssets" BeforeTargets="Build"
+          Condition="'$(DesignTimeBuild)' != 'true' And Exists('..\frontend\ssw-next\package.json')">
+    <Exec WorkingDirectory="..\frontend\ssw-next"
+          Command="npm ci"
+          Condition="!Exists('..\frontend\ssw-next\node_modules\.package-lock.json')" />
+    <Exec WorkingDirectory="..\frontend\ssw-next" Command="npm run build" />
+  </Target>
+  <Target Name="CopyNextUiAssets" AfterTargets="Build"
+          Condition="Exists('..\frontend\ssw-next\dist\index.html')">
+    <ItemGroup>
+      <_NextUiAsset Include="..\frontend\ssw-next\dist\**\*.*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(_NextUiAsset)"
+          DestinationFiles="@(_NextUiAsset->'$(TargetDir)frontend\ssw-next\%(RecursiveDir)%(Filename)%(Extension)')" />
+  </Target>
   <Target Name="GenerateSSWVersionAssemblyInfo" BeforeTargets="CoreCompile">
     <PropertyGroup>
       <_SSWVersionAssemblyInfo>$(IntermediateOutputPath)SSWVersion.g.cs</_SSWVersionAssemblyInfo>

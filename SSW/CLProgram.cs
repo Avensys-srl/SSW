@@ -179,12 +179,34 @@ namespace SSW
 					return CLTechnicalBaselineCommand.Run(args.Skip(1).ToArray());
 				}
 
+				if (args != null && args.Length > 0 &&
+					String.Equals(args[0], "--next-ui-smoke", StringComparison.OrdinalIgnoreCase))
+				{
+					return CLNextUiSmokeCommand.Run();
+				}
+
+				if (args != null && args.Any(argument =>
+					String.Equals(argument, "--next-ui", StringComparison.OrdinalIgnoreCase)))
+				{
+					Application.Run(new CLNextHostForm());
+					return 0;
+				}
+
 				Application.Run( new CLMainForm() );
 				
 				return 0;
 			}
 			catch (Exception exception)
 			{
+				if (args != null && args.Length > 0 &&
+					String.Equals(args[0], "--next-ui-smoke", StringComparison.OrdinalIgnoreCase))
+				{
+					File.WriteAllText(
+						Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "next-ui-smoke-error.log"),
+						exception.ToString());
+					return -1;
+				}
+
 				StringBuilder	message				= new StringBuilder();
 				Exception		currentException	= exception;
 
