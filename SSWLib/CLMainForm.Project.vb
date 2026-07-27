@@ -6,6 +6,23 @@ Imports Climalombarda.Common.UI
 
 Partial Public Class CLMainForm
 
+    Public Sub Project_ApplyNextUiDocument(document As CLSelectionProjectDocument)
+        If document Is Nothing Then Throw New ArgumentNullException(NameOf(document))
+        Project_ApplyDocument(document)
+    End Sub
+
+    Public Sub Project_SaveNextUiDocument(document As CLSelectionProjectDocument)
+        Project_ApplyNextUiDocument(document)
+        Project_Save(True)
+    End Sub
+
+    Public Async Sub Project_GenerateNextUiReport(document As CLSelectionProjectDocument)
+        Project_ApplyNextUiDocument(document)
+        If Await Project_RegisterBeforeReportAsync() Then
+            Report_Generate()
+        End If
+    End Sub
+
     Private ReadOnly m_ProjectMenuNew As New ToolStripMenuItem()
     Private ReadOnly m_ProjectMenuOpen As New ToolStripMenuItem()
     Private ReadOnly m_ProjectMenuSave As New ToolStripMenuItem()

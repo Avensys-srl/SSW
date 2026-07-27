@@ -1,4 +1,4 @@
-import type { SelectionBridge } from "./contracts";
+import type { SelectionBridge, SelectionDraft } from "./contracts";
 import { MockSelectionBridge } from "./mockBridge";
 
 type NativeResponse = {
@@ -24,6 +24,32 @@ type NativeAccessory = {
   Installation: string;
   Included: boolean;
   Locked: boolean;
+};
+
+type NativeWaterCoil = {
+  Id: number;
+  Name: string;
+  Mode: "CWD" | "HWD" | "HCD";
+  Installation: string;
+  LengthMm: number;
+  HeightMm: number;
+  Rows: number;
+  Circuits: number;
+  FinSpacingMm: number;
+};
+
+type NativeElectricHeater = {
+  Id: number;
+  Code: string;
+  Name: string;
+  Mode: "PEHD" | "EHD";
+  Installation: string;
+  PowerW: number;
+  VoltageV: number;
+  CurrentA: number;
+  PhaseCount: number;
+  Quantity: number;
+  IsDefault: boolean;
 };
 
 declare global {
@@ -87,24 +113,49 @@ class NativeSelectionBridge implements SelectionBridge {
       this.models.find((model) => model.Code === "CLRC 038 OSC") ??
       this.models[0];
     const airflow = Math.max(1, Math.min(100, preferred.NominalAirflowM3h));
-    const draft = {
+    const draft: SelectionDraft = {
       project: {
         name: "Progetto 01",
         customerReference: "",
-        language: "Italiano",
+        language: "it",
       },
       operatingPoint: {
         supplyAirflow: airflow,
         extractAirflow: airflow,
         pressure: Math.max(0, Math.min(100, preferred.StaticPressurePa)),
       },
+      regulationPercent: 100,
+      summerEnabled: true,
+      winterOutdoorTemperature: -10,
+      winterOutdoorRh: 80,
+      winterReturnTemperature: 20,
+      winterReturnRh: 60,
+      summerOutdoorTemperature: 32,
+      summerOutdoorRh: 80,
+      summerReturnTemperature: 26,
+      summerReturnRh: 50,
       selectedUnitId: preferred.Code,
       installationMode: "ceiling" as const,
       layoutCode: "B6",
       waterCoilEnabled: false,
       waterCoilMode: "HCD" as const,
+      waterCoilId: 0,
+      waterCoilCustomized: false,
+      waterCoilLengthMm: 0,
+      waterCoilHeightMm: 0,
+      waterCoilRows: 0,
+      waterCoilCircuits: 0,
+      waterCoilFinSpacingMm: 0,
+      fluidCode: "Water" as const,
+      glycolPercent: 10,
+      coolingWaterInletTemperature: 7,
+      coolingWaterOutletTemperature: 12,
+      heatingWaterInletTemperature: 80,
+      heatingWaterOutletTemperature: 70,
       electricPreheaterEnabled: false,
+      electricPreheaterId: 0,
       electricPostheaterEnabled: false,
+      electricPostheaterId: 0,
       accessoryCodes: [] as string[],
     };
     const native = await this.calculateNative(draft);
@@ -120,6 +171,25 @@ class NativeSelectionBridge implements SelectionBridge {
     draft.accessoryCodes = (native.Accessories as NativeAccessory[] ?? [])
       .filter((item) => item.Included)
       .map((item) => item.Code);
+    const defaultCoil = (native.AvailableWaterCoils as NativeWaterCoil[] ?? [])[0];
+    if (defaultCoil) {
+      draft.waterCoilId = defaultCoil.Id;
+      draft.waterCoilMode = defaultCoil.Mode;
+      draft.waterCoilLengthMm = defaultCoil.LengthMm;
+      draft.waterCoilHeightMm = defaultCoil.HeightMm;
+      draft.waterCoilRows = defaultCoil.Rows;
+      draft.waterCoilCircuits = defaultCoil.Circuits;
+      draft.waterCoilFinSpacingMm = defaultCoil.FinSpacingMm;
+    }
+    const heaters = native.AvailableElectricHeaters as NativeElectricHeater[] ?? [];
+    draft.electricPreheaterId =
+      heaters.find((item) => item.Mode === "PEHD" && item.IsDefault)?.Id ??
+      heaters.find((item) => item.Mode === "PEHD")?.Id ??
+      0;
+    draft.electricPostheaterId =
+      heaters.find((item) => item.Mode === "EHD" && item.IsDefault)?.Id ??
+      heaters.find((item) => item.Mode === "EHD")?.Id ??
+      0;
 
     return {
       draft,
@@ -158,13 +228,13 @@ class NativeSelectionBridge implements SelectionBridge {
     );
   }
 
-  async saveDraft() {
-    await nativeInvoke("legacy.open");
+  async saveDraft(draft: Parameters<SelectionBridge["saveDraft"]>[0]) {
+    await nativeInvoke("project.edit", this.draftPayload(draft));
     return { savedAt: new Date().toISOString(), delegated: true };
   }
 
   async generateReport(draft: Parameters<SelectionBridge["generateReport"]>[0]) {
-    await nativeInvoke("legacy.open");
+    await nativeInvoke("report.generate", this.draftPayload(draft));
     const model =
       this.models.find((item) => item.Code === draft.selectedUnitId)?.Name ??
       draft.selectedUnitId;
@@ -177,13 +247,51 @@ class NativeSelectionBridge implements SelectionBridge {
   private calculateNative(
     draft: Parameters<SelectionBridge["calculate"]>[0],
   ): Promise<any> {
-    return nativeInvoke("selection.calculate", {
+    return nativeInvoke("selection.calculate", this.draftPayload(draft));
+  }
+
+  private draftPayload(
+    draft: Parameters<SelectionBridge["calculate"]>[0],
+  ): Record<string, unknown> {
+    return {
+      projectName: draft.project.name,
+      customerReference: draft.project.customerReference,
+      languageCode: draft.project.language,
       modelCode: draft.selectedUnitId,
       supplyAirflow: draft.operatingPoint.supplyAirflow,
       extractAirflow: draft.operatingPoint.extractAirflow,
       pressure: draft.operatingPoint.pressure,
-      regulation: 100,
-    });
+      regulation: draft.regulationPercent,
+      summerEnabled: draft.summerEnabled,
+      winterOutdoorTemperature: draft.winterOutdoorTemperature,
+      winterOutdoorRh: draft.winterOutdoorRh,
+      winterReturnTemperature: draft.winterReturnTemperature,
+      winterReturnRh: draft.winterReturnRh,
+      summerOutdoorTemperature: draft.summerOutdoorTemperature,
+      summerOutdoorRh: draft.summerOutdoorRh,
+      summerReturnTemperature: draft.summerReturnTemperature,
+      summerReturnRh: draft.summerReturnRh,
+      waterCoilEnabled: draft.waterCoilEnabled,
+      waterCoilId: draft.waterCoilId,
+      waterCoilMode: draft.waterCoilMode,
+      waterCoilCustomized: draft.waterCoilCustomized,
+      waterCoilLengthMm: draft.waterCoilLengthMm,
+      waterCoilHeightMm: draft.waterCoilHeightMm,
+      waterCoilRows: draft.waterCoilRows,
+      waterCoilCircuits: draft.waterCoilCircuits,
+      waterCoilFinSpacingMm: draft.waterCoilFinSpacingMm,
+      fluidCode: draft.fluidCode,
+      glycolPercent: draft.glycolPercent,
+      coolingWaterInletTemperature: draft.coolingWaterInletTemperature,
+      coolingWaterOutletTemperature: draft.coolingWaterOutletTemperature,
+      heatingWaterInletTemperature: draft.heatingWaterInletTemperature,
+      heatingWaterOutletTemperature: draft.heatingWaterOutletTemperature,
+      electricPreheaterEnabled: draft.electricPreheaterEnabled,
+      electricPreheaterId: draft.electricPreheaterId,
+      electricPostheaterEnabled: draft.electricPostheaterEnabled,
+      electricPostheaterId: draft.electricPostheaterId,
+      accessoryCodes: draft.accessoryCodes,
+    };
   }
 
   private mapResult(native: any, requiredPressure: number) {
@@ -195,6 +303,11 @@ class NativeSelectionBridge implements SelectionBridge {
     );
     const winterThermo = winter?.Result?.Thermodynamics;
     const summerThermo = summer?.Result?.Thermodynamics;
+    const validationMessages = (native.Validation?.Issues ?? []).map(
+      (issue: { MessageKey?: string; Code?: string }) =>
+        issue.MessageKey || issue.Code || "Configurazione da verificare.",
+    );
+    const invalid = pressure <= 0;
     return {
       supplyTemperature: numberValue(
         winterThermo?.SupplyOutletTemperatureC,
@@ -213,11 +326,17 @@ class NativeSelectionBridge implements SelectionBridge {
       sfp: numberValue(
         winter?.Result?.CombinedSpecificFanPowerWPerM3hPerSecond,
       ),
-      status: pressure <= 0 ? ("invalid" as const) : ("valid" as const),
-      messages:
-        pressure <= 0
+      status: invalid
+        ? ("invalid" as const)
+        : validationMessages.length > 0
+          ? ("warning" as const)
+          : ("valid" as const),
+      messages: [
+        ...(invalid
           ? ["La pressione richiesta supera quella disponibile."]
-          : [],
+          : []),
+        ...validationMessages,
+      ],
       accessories: (native.Accessories as NativeAccessory[] ?? []).map((item) => ({
         code: item.Code,
         name: item.Name,
@@ -232,6 +351,69 @@ class NativeSelectionBridge implements SelectionBridge {
       layoutCodes: (native.Layout?.Configurations ?? []).map(
         (configuration: { Code: string }) => configuration.Code,
       ),
+      waterCoils: (native.AvailableWaterCoils as NativeWaterCoil[] ?? []).map(
+        (item) => ({
+          id: item.Id,
+          name: item.Name,
+          mode: item.Mode,
+          installation: item.Installation,
+          lengthMm: numberValue(item.LengthMm),
+          heightMm: numberValue(item.HeightMm),
+          rows: numberValue(item.Rows),
+          circuits: numberValue(item.Circuits),
+          finSpacingMm: numberValue(item.FinSpacingMm),
+        }),
+      ),
+      electricHeaters: (
+        native.AvailableElectricHeaters as NativeElectricHeater[] ?? []
+      ).map((item) => ({
+        id: item.Id,
+        code: item.Code,
+        name: item.Name,
+        mode: item.Mode,
+        installation: item.Installation,
+        powerW: numberValue(item.PowerW),
+        voltageV: numberValue(item.VoltageV),
+        currentA: numberValue(item.CurrentA),
+        phaseCount: numberValue(item.PhaseCount),
+        quantity: numberValue(item.Quantity),
+        isDefault: Boolean(item.IsDefault),
+      })),
+      waterCoilResults: (native.WaterCoilResults ?? []).map((item: any) => ({
+        mode: item.Mode,
+        status: item.StatusCode,
+        capacityW: numberValue(item.CapacityW),
+        sensibleCapacityW: numberValue(item.SensibleCapacityW),
+        airOutletTemperatureC: numberValue(item.AirOutletTemperatureC),
+        airOutletRelativeHumidityPercent: numberValue(
+          item.AirOutletRelativeHumidityPercent,
+        ),
+        condensateLitersPerHour: numberValue(item.CondensateLitersPerHour),
+        airPressureDropPa: numberValue(item.AirPressureDropPa),
+        fluidPressureDropKPa: numberValue(item.FluidPressureDropKPa),
+        fluidFlowLitersPerHour: numberValue(item.FluidFlowLitersPerHour),
+        fluidVelocityMetersPerSecond: numberValue(
+          item.FluidVelocityMetersPerSecond,
+        ),
+        faceVelocityMetersPerSecond: numberValue(
+          item.FaceVelocityMetersPerSecond,
+        ),
+      })),
+      electricHeaterResults: (native.ElectricHeaterResults ?? []).map(
+        (item: any) => ({
+          mode: item.Mode,
+          heaterCode: item.HeaterCode,
+          powerW: numberValue(item.PowerW),
+          currentA: numberValue(item.CurrentA),
+          airInletTemperatureC: numberValue(item.AirInletTemperatureC),
+          airOutletTemperatureC: numberValue(item.AirOutletTemperatureC),
+          airOutletRelativeHumidityPercent: numberValue(
+            item.AirOutletRelativeHumidityPercent,
+          ),
+          airPressureDropPa: numberValue(item.AirPressureDropPa),
+        }),
+      ),
+      additionalPressureDropPa: numberValue(native.AdditionalPressureDropPa),
     };
   }
 }

@@ -14,20 +14,30 @@ Implemented with real local data:
 - current balanced winter and summer calculation through
   `CLSelectionApplicationService`;
 - pressure, power, efficiency, SFP and thermodynamic results;
+- HEDes water-coil catalog and calculation, including the second calculation
+  pass at the airflow actually available after the additional pressure loss;
+- PEHD/EHD catalog, temperature calculation, compatibility rules and
+  additional quadratic air-pressure loss;
 - legacy layout variants, dimensions and four flow-port records through a
   UI-neutral repository;
 - localized accessory catalog and model relations;
+- canonical `.sswsel` document creation and serializer round-trip;
+- production save/project/report workflow reached with the complete selection
+  document, preserving RDLC, email and follow-up behavior;
+- contextual help, optional tooltips and the 14 SSW language choices;
 - local bundled frontend assets.
 
-Still delegated to the production interface:
+Intentionally delegated to the production workflow:
 
-- `.sswsel` save, reopen, alternatives and project orchestration;
-- HEDes water-coil selection and calculation;
-- complete PEHD/EHD orchestration;
-- RDLC reports, email and follow-up.
+- the final Windows save dialogs and project editor;
+- RDLC rendering, technical-selection registration, email composition and
+  follow-up scheduling;
+- reopening historical projects and creating alternatives.
 
-The relevant buttons open `CLMainForm`; no calculation or persistence formula
-is copied into TypeScript.
+The new host transfers a canonical `CLSelectionProjectDocument` to
+`CLMainForm`; it does not copy formulas, serializers or report logic into
+TypeScript. This adapter is the deliberate compatibility boundary for the
+first parity prototype and can be removed in Onda 7 after parallel validation.
 
 ## Build and run
 
@@ -54,7 +64,8 @@ D:\mdev\SSW\SSW\bin\x86\AV\SSW.exe --next-ui
 
 `tests\Invoke-NextUiSmoke.ps1` verifies the exact AV executable, packaged
 frontend, x86 WebView2 loader, model catalog, real winter/summer calculation,
-layout repository and JSON serialization. The smoke is part of
+layout repository, water-coil calculation and canonical project serializer
+round-trip. The smoke is part of
 `Invoke-TechnicalSelectionReleaseTests.ps1`.
 
 The browser prototype has been checked at `1440x900` and `1024x768` across all

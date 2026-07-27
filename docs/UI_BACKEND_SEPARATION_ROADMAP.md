@@ -241,31 +241,36 @@ salvataggio/report confluisce nell'Onda 5 e non e' ancora chiuso.
 
 ## Onda 5 - Parita' tecnica
 
-Stato: vertical slice bilanciata disponibile; parita' completa non ancora
-raggiunta.
+Stato: **completata il 27/07/2026 per il prototipo tecnico bilanciato**.
 
-1. [~] Migrare layout installativo e dimensionale.
-2. [ ] Migrare water coils.
-3. [ ] Migrare electric heaters.
-4. [~] Migrare accessori.
-5. [ ] Migrare documenti tecnici, email e follow-up.
-6. [ ] Completare help, tooltip e 14 localizzazioni.
+1. [x] Migrare layout installativo e dimensionale tramite adapter SDF legacy.
+2. [x] Migrare water coils.
+3. [x] Migrare electric heaters.
+4. [x] Migrare accessori.
+5. [x] Collegare documenti tecnici, email e follow-up al workflow produttivo.
+6. [x] Completare help, tooltip e 14 localizzazioni del prototipo.
 
 Checkpoint: il nuovo percorso copre l'attuale selezione tecnica bilanciata.
 
-Disponibile nel primo prototipo:
+Risultato:
 
 - catalogo reale e ricalcolo tecnico bilanciato inverno/estate;
-- layout legacy e accessori modello-specifici tramite DTO UI-neutral;
-- workflow visivo completo per valutazione UX;
-- fallback intenzionale al prodotto corrente per funzioni non migrate;
-- smoke nativo integrato nel gate di release;
+- layout legacy, quote e accessori modello-specifici tramite DTO UI-neutral;
+- water coil HEDes con secondo passaggio alla portata realmente disponibile;
+- PEHD/EHD con compatibilita', temperature e perdite aerauliche aggiuntive;
+- creazione del documento progetto canonico e round-trip del serializer;
+- salvataggio, progetti, RDLC, email e follow-up conservati tramite adapter al
+  workflow produttivo, senza duplicarne le regole nel frontend;
+- help contestuale, tooltip disattivabili e shell localizzata nelle 14 lingue;
+- smoke nativo e serializzazione progetto integrati nel gate di release;
 - verifica responsive di tutti gli step a 1440x900 e 1024x768.
 
-Il prototipo non deve essere pubblicato come `2.0.0.0` e non sostituisce la UI
-corrente. Water coil, electric heater, persistenza, report, email, follow-up,
-help e localizzazioni devono essere collegati ai servizi applicativi prima di
-marcare l'Onda 5 completata.
+Il prototipo non deve essere pubblicato come `2.0.0.0` e non sostituisce ancora
+la UI corrente. La normalizzazione centrale dei layout e delle immagini CAD
+resta un'attivita' dati dell'Onda 3: l'adapter corrente garantisce la parita'
+tecnica usando le configurazioni gia' presenti nell'SDF. La rimozione del
+passaggio WinForms per dialoghi, RDLC, email e follow-up appartiene all'Onda 7
+e avverra' solo dopo il confronto parallelo approvato.
 
 ## Onda 6 - Portate sbilanciate
 

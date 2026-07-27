@@ -57,6 +57,54 @@ export class MockSelectionBridge implements SelectionBridge {
           : status === "warning"
             ? ["Margine di pressione ridotto. Verificare gli accessori selezionati."]
             : [],
+      waterCoilResults: draft.waterCoilEnabled
+        ? [
+            {
+              mode: draft.waterCoilMode === "HWD" ? "HWD" : "CWD",
+              status: "OK",
+              capacityW: draft.waterCoilMode === "HWD" ? 1690 : 1340,
+              sensibleCapacityW: draft.waterCoilMode === "HWD" ? 1690 : 362,
+              airOutletTemperatureC:
+                draft.waterCoilMode === "HWD" ? 68.9 : 17.1,
+              airOutletRelativeHumidityPercent:
+                draft.waterCoilMode === "HWD" ? 1 : 100,
+              condensateLitersPerHour:
+                draft.waterCoilMode === "HWD" ? 0 : 1.4,
+              airPressureDropPa: 6,
+              fluidPressureDropKPa: 32.4,
+              fluidFlowLitersPerHour: 84.9,
+              fluidVelocityMetersPerSecond: 0.29,
+              faceVelocityMetersPerSecond: 0.56,
+            },
+          ]
+        : [],
+      electricHeaterResults: [
+        ...(draft.electricPreheaterEnabled
+          ? [{
+              mode: "PEHD" as const,
+              heaterCode: "EH-0.9-230",
+              powerW: 900,
+              currentA: 3.91,
+              airInletTemperatureC: -10,
+              airOutletTemperatureC: 16.9,
+              airOutletRelativeHumidityPercent: 11,
+              airPressureDropPa: 10,
+            }]
+          : []),
+        ...(draft.electricPostheaterEnabled
+          ? [{
+              mode: "EHD" as const,
+              heaterCode: "EH-0.75-230",
+              powerW: 750,
+              currentA: 3.26,
+              airInletTemperatureC: 18.6,
+              airOutletTemperatureC: 24.5,
+              airOutletRelativeHumidityPercent: 7,
+              airPressureDropPa: 10,
+            }]
+          : []),
+      ],
+      additionalPressureDropPa: coilLoss + heaterLoss,
     };
   }
 
