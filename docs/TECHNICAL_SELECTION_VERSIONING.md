@@ -19,6 +19,31 @@ alterare artificialmente la versione degli altri.
 | `ReportTemplateVersion` | intero positivo | SSW/RDLC | Quando cambia struttura, contenuto o logica condizionale del report. Correzioni puramente cosmetiche senza impatto informativo possono mantenere la versione. |
 | `ApiContractVersion` | intero positivo nel path API | API | Quando cambia in modo incompatibile il contratto HTTP. Le estensioni opzionali compatibili non richiedono un nuovo major. |
 
+## Transizione software 1.3 -> 2.0
+
+La linea desktop WinForms corrente mantiene la numerazione `1.3.0.xx`.
+
+La prima release pubblica che usa come esperienza predefinita la nuova UI
+guidata WebView2 e l'application layer separato e' `2.0.0.0`. Il cambio di
+major rappresenta quindi un cambiamento concettuale del prodotto e non una
+semplice modifica cosmetica.
+
+Le build preview della modernizzazione devono usare un canale e un manifest
+separati. Non devono sostituire automaticamente una release stabile
+`1.3.0.xx`.
+
+Il valore `SoftwareVersion = 2.0.0.0` non forza l'incremento degli altri
+contratti. In particolare:
+
+- un file `.sswsel` mantiene la propria `SelectionFormatVersion`;
+- un SDF mantiene `DatabaseSchemaVersion` e `DatabaseDataVersion`;
+- il motore mantiene una propria `CalculationEngineVersion`;
+- report e API mantengono versioni indipendenti.
+
+Questi valori cambiano solamente quando cambia il rispettivo contratto. Una
+release 2.0 deve continuare ad aprire i file storici supportati e applicare le
+migrazioni previste.
+
 Le versioni correnti introdotte dall'Onda A sono:
 
 ```text
