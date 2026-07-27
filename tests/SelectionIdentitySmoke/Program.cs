@@ -286,10 +286,11 @@ internal static class Program
             TestRegistrationFailureDialog();
             TestUpdateIntegrity(root);
             TestPracticalSelectionRules();
+            TestUiNeutralSelectionContracts();
             TestRegistryBootstrapProvisioning();
             TestBootstraplessRegistration(root);
 
-            Console.WriteLine("Selection identity/snapshot smoke test passed: token=ok create=R01 reprint=R01 revise=R02 fingerprints=stable dialog=rendered update_integrity=ok practical_rules=ok registry_bootstrap=ok public_enrollment=ok");
+            Console.WriteLine("Selection identity/snapshot smoke test passed: token=ok create=R01 reprint=R01 revise=R02 fingerprints=stable dialog=rendered update_integrity=ok practical_rules=ok ui_neutral_contracts=ok registry_bootstrap=ok public_enrollment=ok");
             return 0;
         }
         finally
@@ -1159,6 +1160,140 @@ internal static class Program
             handler.FollowUpListCount != 1)
             throw new InvalidOperationException("Ordered/idempotent follow-up synchronization failed.");
 
+    }
+
+    private static void TestUiNeutralSelectionContracts()
+    {
+        Type[] contractTypes =
+        {
+            typeof(CLAirflowPair),
+            typeof(CLBranchValuePair),
+            typeof(CLSelectionCalculationInput),
+            typeof(CLSeasonCalculationInput),
+            typeof(CLSelectionCalculationResult),
+            typeof(CLSeasonCalculationResult),
+            typeof(CLBranchCalculationResult),
+            typeof(CLThermodynamicCalculationResult),
+            typeof(CLChartDefinition),
+            typeof(CLChartSeries),
+            typeof(CLChartPoint),
+            typeof(CLValidationIssue),
+            typeof(CLValidationResult)
+        };
+        foreach (Type contractType in contractTypes)
+        {
+            foreach (PropertyInfo property in contractType.GetProperties(BindingFlags.Instance | BindingFlags.Public))
+            {
+                string propertyNamespace = property.PropertyType.Namespace ?? String.Empty;
+                if (propertyNamespace.StartsWith("System.Windows.Forms", StringComparison.Ordinal) ||
+                    propertyNamespace.StartsWith("System.Drawing", StringComparison.Ordinal) ||
+                    propertyNamespace.StartsWith("Microsoft.Reporting", StringComparison.Ordinal))
+                    throw new InvalidOperationException("UI type leaked into contract: " + contractType.Name + "." + property.Name);
+            }
+        }
+
+        CLSelectionProjectDocument document = CreateCalculatedDocument();
+        document.Selection.Winter.ExtractAirflowM3h = 85;
+        document.Selection.Winter.RegulationPercent = 88;
+        document.Selection.WaterCoil.CalculationMode = "HCD";
+        document.Selection.WaterCoil.InstallationType = "External";
+        document.Selection.WaterCoil.Coil = new CLSelectionEntityReference
+        {
+            Id = 12,
+            Code = "CWD-TEST",
+            ManagementCode = "ERP-12",
+            Name = "Test coil"
+        };
+        document.Selection.WaterCoil.Fluid = new CLFluidSelection { Code = "PropyleneGlycol", GlycolPercent = 20 };
+        document.Selection.WaterCoil.Geometry = new CLCoilGeometrySelection
+        {
+            GeometryCode = "2510",
+            LengthMm = 350,
+            HeightMm = 250,
+            Tubes = 10,
+            NumberOfRows = 3,
+            FinSpacingMm = 2.1,
+            NumberOfCircuits = 4,
+            HeaderTypeCode = "3/4"
+        };
+        document.Selection.WaterCoil.CoolingWaterInletTemperatureC = 7;
+        document.Selection.WaterCoil.CoolingWaterOutletTemperatureC = 9;
+        document.Selection.WaterCoil.HeatingWaterInletTemperatureC = 80;
+        document.Selection.WaterCoil.HeatingWaterOutletTemperatureC = 70;
+        document.Selection.ElectricHeater.Enabled = true;
+        document.Selection.ElectricHeater.PEHD.Enabled = true;
+        document.Selection.ElectricHeater.PEHD.Heater = new CLSelectionEntityReference { Code = "EH-0.9-230" };
+        document.Snapshot.WaterCoils.Add(new CLWaterCoilCalculationSnapshot
+        {
+            ScenarioCode = "Winter",
+            Mode = "HWD",
+            Status = "OK",
+            CapacityW = 1690,
+            FluidPressureDropKPa = 32.4,
+            FluidFlowLitersPerHour = 140
+        });
+        document.Snapshot.ElectricHeaters.Add(new CLElectricHeaterCalculationSnapshot
+        {
+            ScenarioCode = "Winter",
+            Mode = "PEHD",
+            HeaterCode = "EH-0.9-230",
+            PowerW = 900,
+            AirOutletTemperatureC = 16.9
+        });
+
+        CLSelectionCalculationInput independent = CLSelectionContractMapper.FromProject(document, false);
+        if (independent.Winter.Airflows.SupplyM3h != 100 || independent.Winter.Airflows.ExtractM3h != 85 ||
+            independent.Winter.Airflows.IsBalanced())
+            throw new InvalidOperationException("Independent airflow mapping lost branch values.");
+        if (independent.WaterCoil.Coil.ManagementCode != "ERP-12" ||
+            independent.WaterCoil.NumberOfCircuits != 4 ||
+            independent.WaterCoil.FluidCode != "PropyleneGlycol" ||
+            independent.ElectricHeater.PEHD.Heater.Code != "EH-0.9-230" ||
+            independent.Accessories.Count != 1)
+            throw new InvalidOperationException("Selection contract mapping is incomplete.");
+
+        CLSelectionCalculationInput legacy = CLSelectionContractMapper.FromProject(document);
+        if (!legacy.Winter.Airflows.IsBalanced() || legacy.Winter.Airflows.ExtractM3h != 100)
+            throw new InvalidOperationException("Legacy adapter did not preserve balanced operation.");
+
+        CLSelectionCalculationResult calculation = CLSelectionContractMapper.FromSnapshot(document.Snapshot);
+        if (calculation.Winter.SupplyBranch.AirflowM3h != 100 ||
+            calculation.Winter.ExtractBranch.AirflowM3h != 100 ||
+            calculation.Winter.Thermodynamics.HeatTransferredW != 967 ||
+            calculation.WaterCoils.Count != 1 ||
+            calculation.WaterCoils[0].FluidPressureDropKPa != 32.4 ||
+            calculation.ElectricHeaters.Count != 1)
+            throw new InvalidOperationException("Calculation snapshot mapping is incomplete.");
+
+        CLValidationResult validation = CLSelectionContractValidator.Validate(independent);
+        if (!validation.HasWarnings ||
+            !validation.Issues.Any(issue => issue.Code == "water.delta.critical" &&
+                issue.MessageKey == "Validation.WaterDeltaCritical"))
+            throw new InvalidOperationException("Structured water delta validation is missing.");
+
+        independent.ElectricHeater.EHD.Enabled = true;
+        validation = CLSelectionContractValidator.Validate(independent);
+        if (!validation.HasErrors ||
+            !validation.Issues.Any(issue => issue.Code == "heater.ehd.hot_water_conflict"))
+            throw new InvalidOperationException("Structured EHD/hot-water validation is missing.");
+
+        var chart = new CLChartDefinition
+        {
+            ChartCode = "efficiency",
+            Kind = CLChartKind.Efficiency,
+            XAxisUnit = "m3/h",
+            YAxisUnit = "%"
+        };
+        chart.Series.Add(new CLChartSeries
+        {
+            SeriesCode = "winter-supply",
+            Role = CLChartSeriesRole.Winter,
+            BranchCode = "Supply",
+            ScenarioCode = "Winter",
+            Points = new List<CLChartPoint> { new CLChartPoint { X = 100, Y = 95 } }
+        });
+        if (chart.Series[0].Points[0].Y != 95)
+            throw new InvalidOperationException("Numeric chart contract failed.");
     }
 
     private static void AssertChange(CLSelectionProjectDocument document, CLSelectionChangeKind expected)

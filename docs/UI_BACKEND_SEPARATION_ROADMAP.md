@@ -117,15 +117,37 @@ del motore, del database SDF o della libreria HEDes.
 
 ## Onda 1 - Contratti applicativi UI-neutral
 
-1. Definire input di selezione e `AirflowPair`.
-2. Definire risultati stagionali, aeraulici e di ramo.
-3. Definire serie numeriche per i grafici.
-4. Separare formattazione/localizzazione dai valori.
-5. Definire errori, warning e validazioni strutturate.
-6. Mantenere mandata e ripresa uguali in modalita' legacy.
+Stato: **completata il 27/07/2026**.
+
+1. [x] Definire input di selezione e `AirflowPair`.
+2. [x] Definire risultati stagionali, aeraulici e di ramo.
+3. [x] Definire serie numeriche per i grafici.
+4. [x] Separare formattazione/localizzazione dai valori.
+5. [x] Definire errori, warning e validazioni strutturate.
+6. [x] Mantenere mandata e ripresa uguali in modalita' legacy.
 
 Checkpoint: i contratti non contengono tipi WinForms e possono descrivere
 l'attuale selezione senza perdita di informazione.
+
+Implementazione:
+
+- contratti numerici e UI-neutral in `SSWLib/CLSelectionContracts.vb`;
+- coppie distinte per portata e valori di ramo, con factory bilanciata;
+- input completi per stagioni, water coil, electric heater e accessori;
+- risultati distinti supply/extract e campo SFP complessivo;
+- serie grafiche numeriche indipendenti da WinForms Chart e GDI+;
+- errori e warning strutturati tramite codice, severita', percorso e
+  `MessageKey`, senza testo localizzato nel motore;
+- mapper in `SSWLib/CLSelectionContractMapper.vb` dal modello `.sswsel` e
+  dagli snapshot correnti;
+- adapter legacy bilanciato per mantenere extract uguale a supply fino
+  all'Onda 6;
+- validatore puro in `SSWLib/CLSelectionContractValidator.vb`;
+- test contrattuali integrati in `SelectionIdentitySmoke`, inclusa una
+  verifica riflessiva contro dipendenze WinForms, Drawing e ReportViewer.
+
+Non sono stati modificati il formato `.sswsel`, gli algoritmi, il motore di
+calcolo, i template report o le versioni dei contratti pubblici.
 
 ## Onda 2 - Estrazione del motore applicativo
 
