@@ -155,7 +155,7 @@ namespace SSW
 		/// Punto di ingresso principale dell'applicazione.
 		/// </summary>
 		[STAThread]
-		static int Main()
+		static int Main(string[] args)
 		{
 			try
 			{
@@ -172,6 +172,12 @@ namespace SSW
 				CLEnvironment.Current	= new CLEnvironment(
 					sswDCLitePath,
 					Activator.CreateInstance( CLSSWProfile.SSWInfoClassType ) as CLSSWInfo );
+
+				if (args != null && args.Length > 0 &&
+					String.Equals(args[0], "--technical-baseline", StringComparison.OrdinalIgnoreCase))
+				{
+					return CLTechnicalBaselineCommand.Run(args.Skip(1).ToArray());
+				}
 
 				Application.Run( new CLMainForm() );
 				

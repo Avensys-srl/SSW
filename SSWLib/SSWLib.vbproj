@@ -377,6 +377,7 @@
       <DependentUpon>CLMainForm.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="CLTechnicalBaseline.vb" />
     <Compile Include="CLPleaseWaitForm.Designer.vb">
       <DependentUpon>CLPleaseWaitForm.vb</DependentUpon>
     </Compile>

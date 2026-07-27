@@ -46,6 +46,9 @@ if ($LASTEXITCODE -ne 0) { throw 'Accessory catalog smoke test failed.' }
 & (Join-Path $PSScriptRoot 'Invoke-PublishedReleaseRetentionSmoke.ps1')
 if ($LASTEXITCODE -ne 0) { throw 'Published release retention smoke test failed.' }
 
+& (Join-Path $PSScriptRoot 'Invoke-TechnicalBaselines.ps1') -Configuration $Configuration
+if ($LASTEXITCODE -ne 0) { throw 'Technical calculation baselines failed.' }
+
 $resourceFiles = Get-ChildItem (Join-Path $repo 'SSWLib') -Filter 'Resources.*.resx'
 if ($resourceFiles.Count -ne 14) { throw "Expected 14 localized RESX files, found $($resourceFiles.Count)." }
 $requiredKeys = @('Update_Title','Update_CheckFailed','Update_PackageIntegrityFailed',

@@ -269,7 +269,10 @@ Public Class CLMainForm
 
         'CLModule.Environment.ExportModelsToCsv("d:\temp\environment.txt")
 
-        m_AutomaticUpdateCheckTask = UpdateManager.CheckForSoftwareUpdate(False)
+        If Not String.Equals(System.Environment.GetEnvironmentVariable("SSW_TECHNICAL_BASELINE_MODE"),
+            "1", StringComparison.Ordinal) Then
+            m_AutomaticUpdateCheckTask = UpdateManager.CheckForSoftwareUpdate(False)
+        End If
     End Sub
 
     Private Sub tsmiFile_Exit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsmiFile_Exit.Click
@@ -1839,6 +1842,13 @@ Public Class CLMainForm
             reportFileName = If(hasAirTreatmentAccessoryReport, "CLMainReportWithCO2_Coil.rdlc", "CLMainReportWithCO2.rdlc")
         Else
             reportFileName = If(hasAirTreatmentAccessoryReport, "CLMainReport_Coil.rdlc", "CLMainReport.rdlc")
+        End If
+
+        If m_TechnicalBaselineReportSink IsNot Nothing Then
+            m_TechnicalBaselineReportSink(reportDataSources, reportFileName)
+            reportViewForm.Dispose()
+            waitForm.Dispose()
+            Return
         End If
 
         reportViewForm.SetReport(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), reportFileName),

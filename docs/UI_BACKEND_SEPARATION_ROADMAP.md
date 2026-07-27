@@ -78,13 +78,42 @@ incrementato solamente quando cambia il proprio contenuto.
 
 ## Onda 0 - Baseline e protezione regressioni
 
-1. Selezionare fixture `.sswsel` rappresentative.
-2. Acquisire risultati numerici, serie dei grafici e dataset report correnti.
-3. Coprire inverno, estate, coil, heater, accessori ed entalpici.
-4. Definire tolleranze numeriche campo per campo.
-5. Automatizzare il confronto dove possibile.
+Stato: **completata il 27/07/2026**.
+
+1. [x] Selezionare fixture `.sswsel` rappresentative.
+2. [x] Acquisire risultati numerici, serie dei grafici e dataset report correnti.
+3. [x] Coprire inverno, estate, coil, heater, accessori ed entalpici.
+4. [x] Definire tolleranze numeriche campo per campo.
+5. [x] Automatizzare il confronto dove possibile.
 
 Checkpoint: esiste una baseline ripetibile prima di spostare codice.
+
+Implementazione:
+
+- fixture sintetiche e anonime in
+  `tests/fixtures/technical-baselines/inputs`;
+- output approvati in `tests/fixtures/technical-baselines/expected`;
+- comando diagnostico non interattivo
+  `SSW.exe --technical-baseline <fixture> <output>`;
+- confronto semantico di snapshot, serie/assi dei grafici e 24 dataset RDLC;
+- tolleranze numeriche versionate per grandezza fisica;
+- hash logico del manifest SDF e hash della libreria HEDes;
+- esecuzione seriale integrata nella matrice
+  `tests/Invoke-TechnicalSelectionReleaseTests.ps1`.
+
+Le immagini binarie dei grafici non vengono confrontate pixel per pixel:
+dimensioni e presenza restano nei dataset, mentre curve, punti e assi sono
+confrontati numericamente per evitare falsi positivi dovuti a GDI+, font o
+antialiasing di Windows.
+
+Per approvare deliberatamente una variazione tecnica:
+
+```powershell
+tests\Invoke-TechnicalBaselines.ps1 -Update
+```
+
+L'aggiornamento delle baseline deve essere revisionato insieme alla modifica
+del motore, del database SDF o della libreria HEDes.
 
 ## Onda 1 - Contratti applicativi UI-neutral
 
