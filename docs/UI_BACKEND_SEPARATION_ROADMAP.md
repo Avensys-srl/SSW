@@ -151,14 +151,38 @@ calcolo, i template report o le versioni dei contratti pubblici.
 
 ## Onda 2 - Estrazione del motore applicativo
 
-1. Estrarre da `CLMainForm` il coordinamento del calcolo.
-2. Conservare invariati `curva`, `termo_calc`, HEDes e gli altri algoritmi.
-3. Restituire risultati e chart data invece di scrivere nei controlli.
-4. Creare un adapter WinForms che aggiorna i controlli correnti.
-5. Confrontare adapter e baseline dopo ogni estrazione.
+Stato: completata il 27/07/2026 per il percorso termodinamico e aeraulico
+bilanciato attuale.
+
+1. [x] Estrarre da `CLMainForm` il coordinamento del calcolo stagionale.
+2. [x] Conservare invariati `termo_calc`, HEDes e gli altri algoritmi.
+3. [x] Restituire risultati e chart data invece di scrivere nei controlli.
+4. [x] Convertire `curva` nell'adapter WinForms che aggiorna i controlli
+   correnti.
+5. [x] Confrontare adapter e baseline dopo ogni estrazione.
 
 Checkpoint: la UI legacy usa il servizio estratto e non una copia degli
 algoritmi.
+
+Implementazione:
+
+- `CLSelectionApplicationService` e DTO UI-neutral per calcolo stagionale,
+  punto di lavoro, curve pressione/potenza/rendimento e aree di conformita';
+- clonazione preventiva degli array del modello, per evitare mutazioni del
+  catalogo durante calcoli ripetuti;
+- `curva` conserva esclusivamente il rendering WinForms ed usa il risultato
+  numerico del servizio;
+- la curva estiva usa direttamente le serie numeriche restituite dal servizio
+  e non rilegge piu' i punti dal controllo `Chart`;
+- il form costruisce l'input stagionale e formatta i risultati senza
+  duplicare le formule;
+- matrice `Invoke-TechnicalSelectionReleaseTests.ps1 -Configuration AV`
+  completata, incluse le quattro baseline tecniche e la build AV/x86.
+
+Restano volutamente nel form, fino alla migrazione dei rispettivi sottosistemi,
+il coordinamento a due passaggi delle batterie, rumore, CO2, report ed email.
+Tali flussi consumano gia' il calcolo stagionale estratto e non costituiscono
+una seconda implementazione dell'algoritmo aeraulico/termico.
 
 ## Onda 3 - Dati layout indipendenti dalla UI
 

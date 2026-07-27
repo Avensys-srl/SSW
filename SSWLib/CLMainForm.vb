@@ -74,6 +74,7 @@ Public Class CLMainForm
         Public Property Thermo As termo
         Public Property WorkPoint As Double()
         Public Property AirFlow As Double
+        Public Property Curves As CLPerformanceCurveCalculation
     End Class
 
     Private ReadOnly Property Environment As CLEnvironment
@@ -4539,30 +4540,15 @@ Public Class CLMainForm
         Optional preheatPowerW As Double = 0) As CLThermalCalculationResult
 
         Dim dcHeatRecoveryModel As CLDCHeatRecoveryModel = SelectedHeatRecoveryModel
-        Dim rec As String = dcHeatRecoveryModel.ModRec
-        Dim pl As Double = CDbl(dcHeatRecoveryModel.LenRec)
         Dim ritm As Double = ParseUIDouble(returnTemperatureTextBox.Text)
-        Dim rhritm As Double = ParseUIDouble(returnRHTextBox.Text) / 100
+        Dim rhritmPercent As Double = ParseUIDouble(returnRHTextBox.Text)
         Dim fitm As Double = ParseUIDouble(freshTemperatureTextBox.Text)
-        Dim rhfitm As Double = ParseUIDouble(freshRHTextBox.Text) / 100
+        Dim rhfitmPercent As Double = ParseUIDouble(freshRHTextBox.Text)
         Dim afm As Double = ParseUIDouble(airflowTextBox.Text)
         Dim maxPressure As Double = ParseUIDouble(maxPressureTextBox.Text, maxPressureFallback)
         Dim chart1 As Chart = If(drawCharts, crtPerformance_Chart1, New Chart())
         Dim chart2 As Chart = If(drawCharts, crtPerformance_Chart2, New Chart())
         Dim chart3 As Chart = If(drawCharts, crtPerformance_Chart3, New Chart())
-
-        If afm = 0 Then
-            afm = 1
-        ElseIf m_MeasureUnit = CLMeasureUnit.IP Then
-            afm *= 3.6
-        End If
-
-        Dim originalFreshTemperature As Double = fitm
-        Dim originalFreshHumidity As psychro = PsychroCalc(fitm, rhfitm)
-        If preheatPowerW > 0 Then
-            fitm = originalFreshTemperature + CLElectricHeaterCalculator.TemperatureRise(preheatPowerW, afm)
-            rhfitm = PsychroCalcW(fitm, originalFreshHumidity.w).rh
-        End If
 
         If Not drawCharts Then
             chart1.ChartAreas.Add(New ChartArea())
@@ -4570,13 +4556,38 @@ Public Class CLMainForm
             chart3.ChartAreas.Add(New ChartArea())
         End If
 
+        Dim scenario As New CLSeasonCalculationInput With {
+            .Enabled = True,
+            .ScenarioCode = If(drawCharts, "Winter", "Summer"),
+            .Airflows = CLAirflowPair.Balanced(afm),
+            .MaximumPressurePa = CLBranchValuePair.Balanced(maxPressure),
+            .OutdoorTemperatureC = fitm,
+            .OutdoorRelativeHumidityPercent = rhfitmPercent,
+            .ReturnTemperatureC = ritm,
+            .ReturnRelativeHumidityPercent = rhritmPercent,
+            .RegulationPercent = prbPerformance_RegulationLevel.Value
+        }
+        Dim applicationCalculation As CLBalancedScenarioCalculation =
+            CLSelectionApplicationService.CalculateBalancedScenario(New CLBalancedScenarioCalculationRequest With {
+                .Scenario = scenario,
+                .Model = dcHeatRecoveryModel,
+                .MeasureUnit = MeasureUnit,
+                .AdditionalPressureDropPa = additionalPressureDrop,
+                .PreheatPowerW = preheatPowerW,
+                .ShowSfpArea = drawCharts AndAlso (chbPerformance_SFP_ShowArea.Checked OrElse chbPerformance_SEL_ShowArea.Checked),
+                .ShowErpArea = drawCharts AndAlso chbPerformance_ERP2018_ShowArea.Checked,
+                .SfpLimit = nudPerformance_SFP_Limit.Value,
+                .ShowPassiveHouseArea = drawCharts AndAlso chbPerformance_PassiveHaus_ShowArea.Checked,
+                .PassiveHouseLimit = ParseUIDouble(txbPerformance_PassiveHaus_Limit.Text)
+            })
+
         Dim workpoint As Double() = curva(MeasureUnit,
-           afm,
+           If(afm = 0, 1, afm),
            dcHeatRecoveryModel,
            ritm,
-           rhritm,
+           rhritmPercent / 100,
            fitm,
-           rhfitm,
+           rhfitmPercent / 100,
            prbPerformance_RegulationLevel.Value,
            chart1,
            chart2,
@@ -4588,19 +4599,14 @@ Public Class CLMainForm
            drawCharts AndAlso chbPerformance_PassiveHaus_ShowArea.Checked,
            ParseUIDouble(txbPerformance_PassiveHaus_Limit.Text),
            additionalPressureDrop,
-           afm)
-
-        If preheatPowerW > 0 Then
-            fitm = originalFreshTemperature + CLElectricHeaterCalculator.TemperatureRise(preheatPowerW, workpoint(1))
-            rhfitm = PsychroCalcW(fitm, originalFreshHumidity.w).rh
-        End If
-
-        Dim thermoWork As termo = termo_calc(ritm, rhritm, fitm, rhfitm, workpoint(1), rec, pl, 0)
+           If(m_MeasureUnit = CLMeasureUnit.IP, afm * 3.6, afm),
+           applicationCalculation.Curves)
 
         Return New CLThermalCalculationResult With {
-            .Thermo = thermoWork,
+            .Thermo = applicationCalculation.LegacyThermodynamics,
             .WorkPoint = workpoint,
-            .AirFlow = afm
+            .AirFlow = afm,
+            .Curves = applicationCalculation.Curves
         }
     End Function
 
@@ -4633,8 +4639,9 @@ Public Class CLMainForm
             Return
         End If
 
-        Dim originalSeries As Series = crtPerformance_Chart3.Series.FindByName(ChartSeries_OriginalCurve_Name)
-        If originalSeries Is Nothing OrElse originalSeries.Points.Count = 0 Then
+        If summerResult Is Nothing OrElse summerResult.Curves Is Nothing OrElse
+           summerResult.Curves.OriginalAirflows Is Nothing OrElse
+           summerResult.Curves.EfficienciesPercent Is Nothing Then
             Return
         End If
 
@@ -4648,24 +4655,8 @@ Public Class CLMainForm
             crtPerformance_Chart3.Series.Remove(crtPerformance_Chart3.Series(pointName))
         End If
 
-        Dim dcHeatRecoveryModel As CLDCHeatRecoveryModel = SelectedHeatRecoveryModel
-        Dim ritm As Double = ParseUIDouble(TextBox5.Text)
-        Dim rhritm As Double = ParseUIDouble(TextBox6.Text) / 100
-        Dim fitm As Double = ParseUIDouble(TextBox3.Text)
-        Dim rhfitm As Double = ParseUIDouble(TextBox4.Text) / 100
-        Dim rec As String = dcHeatRecoveryModel.ModRec
-        Dim pl As Double = CDbl(dcHeatRecoveryModel.LenRec)
-        Dim xValues As New List(Of Double)
-        Dim yValues As New List(Of Double)
-
-        For Each point As DataPoint In originalSeries.Points
-            Dim displayAirflow As Double = point.XValue
-            Dim calculationAirflow As Double = If(m_MeasureUnit = CLMeasureUnit.IP, displayAirflow * 3.6, displayAirflow)
-            Dim summerThermo As termo = termo_calc(ritm, rhritm, fitm, rhfitm, calculationAirflow, rec, pl, 0)
-
-            xValues.Add(displayAirflow)
-            yValues.Add(100 * summerThermo.efficiency)
-        Next
+        Dim xValues As New List(Of Double)(summerResult.Curves.OriginalAirflows)
+        Dim yValues As New List(Of Double)(summerResult.Curves.EfficienciesPercent)
 
         Chart_ExtrapolateEfficiencyAtZero(xValues, yValues)
 

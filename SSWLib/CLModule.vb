@@ -795,246 +795,44 @@ Public Module CLModule
     ByVal showPassiveHausArea As Boolean,
     ByVal passiveHausLimit As Double,
     Optional ByVal coilPressureDrop As Double = 0,
-    Optional ByVal coilPressureDropAirflow As Double = 0) As Double()
+    Optional ByVal coilPressureDropAirflow As Double = 0,
+    Optional ByVal precomputedCalculation As CLPerformanceCurveCalculation = Nothing) As Double()
 
-        Dim j As Integer = 0
-        Dim x(5), y(5), z(5), workpoint(3) As Double
-        Dim x_new() As Double = New Double() {}
-        Dim y_new() As Double = New Double() {}
-        Dim z_new() As Double = New Double() {}
-        Dim e() As Double = New Double() {}
-        Dim af_ref As Double
-
-        Dim tempin, humrin, tempout, humrout, recup As Double
-        Dim tipo As String
+        Dim calculation As CLPerformanceCurveCalculation = precomputedCalculation
+        If calculation Is Nothing Then
+            calculation = CLSelectionApplicationService.CalculatePerformanceCurve(New CLPerformanceCurveRequest With {
+                .MeasureUnit = measureUnit,
+                .RequestedAirflow = af,
+                .Model = dcHeatRecoveryModel,
+                .ReturnTemperatureC = tin,
+                .ReturnRelativeHumidity = hrin,
+                .FreshTemperatureC = tout,
+                .FreshRelativeHumidity = hrout,
+                .RegulationPercent = reg,
+                .ShowSfpArea = showSFPArea,
+                .ShowErpArea = showERPArea,
+                .SfpLimit = sfpLimit,
+                .ShowPassiveHouseArea = showPassiveHausArea,
+                .PassiveHouseLimit = passiveHausLimit,
+                .AdditionalPressureDropPa = coilPressureDrop,
+                .PressureDropReferenceAirflowM3h = coilPressureDropAirflow
+            })
+        End If
+        Dim x_new As Double() = calculation.RegulatedAirflows
+        Dim y_new As Double() = calculation.RegulatedPressures
+        Dim z_new As Double() = calculation.RegulatedPowers
+        Dim x_new_ori As Double() = calculation.OriginalAirflows
+        Dim y_new_ori As Double() = calculation.OriginalPressures
+        Dim z_new_ori As Double() = calculation.OriginalPowers
+        Dim e As Double() = calculation.EfficienciesPercent
+        Dim workpoint As Double() = calculation.ToLegacyWorkPoint()
+        Dim xArea1 As New List(Of Double)(calculation.WorkingAreaAirflows)
+        Dim yArea1 As New List(Of Double)(calculation.WorkingAreaPressures)
         Dim currentSeries As Series
 
-        If measureUnit = CLMeasureUnit.IP Then
-            af_ref = af * 3.6
-        Else
-            af_ref = af
-        End If
+' Numeric curve calculation is owned by CLSelectionApplicationService.
 
-
-        tempin = tin
-        humrin = hrin
-        tempout = tout
-        humrout = hrout
-        recup = 1
-        tipo = "MODEL 1"
-
-        'Matching dati scelti  - database
-        x = dcHeatRecoveryModel.AirflowsItems
-        y = dcHeatRecoveryModel.PressuresItems
-        z = dcHeatRecoveryModel.PowersItems
-        recup = dcHeatRecoveryModel.LenRec
-        tipo = dcHeatRecoveryModel.ModRec
-
-        For i As Integer = 0 To z.Length - 1
-            z(i) = z(i) - 3.5
-        Next
-
-        'Calcolo livello di interpolazione per discretizzare meglio il calcolo
-        If Math.Floor(x.Max) >= 5000 Then
-            ReDim x_new(Math.Floor(x.Max / 50) + 1)
-            For i As Integer = 0 To (x_new.Length - 1)
-                x_new(i) = 50 * i
-            Next i
-        ElseIf Math.Floor(x.Max) >= 2000 And Math.Floor(x.Max) < 5000 Then
-            ReDim x_new(Math.Floor(x.Max / 25) + 1)
-            For i As Integer = 0 To (x_new.Length - 1)
-                x_new(i) = 25 * i
-            Next i
-        ElseIf Math.Floor(x.Max) >= 1000 And Math.Floor(x.Max) < 2000 Then
-            ReDim x_new(Math.Floor(x.Max / 15) + 1)
-            For i As Integer = 0 To (x_new.Length - 1)
-                x_new(i) = 15 * i
-            Next i
-        ElseIf Math.Floor(x.Max) >= 500 And Math.Floor(x.Max) < 1000 Then
-            ReDim x_new(Math.Floor(x.Max / 10) + 1)
-            For i As Integer = 0 To (x_new.Length - 1)
-                x_new(i) = 10 * i
-            Next i
-        Else
-            ReDim x_new(Math.Floor(x.Max / 1) + 1)
-            For i As Integer = 0 To (x_new.Length - 1)
-                x_new(i) = 1 * i
-            Next i
-        End If
-
-        alglib.spline1dconvcubic(x, y, x_new, y_new)
-        alglib.spline1dconvcubic(x, z, x_new, z_new)
-
-
-
-        Dim x_new_ori As Double()
-        Dim y_new_ori As Double()
-        Dim z_new_ori As Double()
-
-        x_new_ori = x_new.Clone()
-        y_new_ori = y_new.Clone()
-        z_new_ori = z_new.Clone()
-
-        'mainForm.regbar.Visible = True
-        'mainForm.HScrollBar1.Visible = True
-
-        'Calcolo curve con regolazione
-
-        ' And mainForm.regbar.Visible = True
-        If (reg <> 100) Then
-
-            'Dim dpreg, powerfact As Double
-            'Dim index As Integer
-
-            'index = -1
-
-            ''Calcolo i coefficienti di regolazione
-            'If dcHeatRecoveryModel.Code = CLEnvironment.ModelCode_CLRC_13_OSC _
-            '    OrElse dcHeatRecoveryModel.Code.StartsWith(CLEnvironment.ModelCode_CLRC_23) _
-            '    OrElse dcHeatRecoveryModel.Code.StartsWith(CLEnvironment.ModelCode_CLRC_33) _
-            '    OrElse dcHeatRecoveryModel.Code = CLEnvironment.ModelCode_QUANTUM_25 _
-            '    OrElse dcHeatRecoveryModel.Code = CLEnvironment.ModelCode_QUANTUM_35 _
-            '    OrElse dcHeatRecoveryModel.Code.StartsWith(CLEnvironment.ModelCode_SG_77_TSC) _
-            '    OrElse dcHeatRecoveryModel.Code.StartsWith(CLEnvironment.ModelCode_SG_77_HOC) _
-            '    OrElse dcHeatRecoveryModel.Code.StartsWith(CLEnvironment.ModelCode_SG_127_TSC) _
-            '    OrElse dcHeatRecoveryModel.Code.StartsWith(CLEnvironment.ModelCode_SG_127_HOC) _
-            '    OrElse dcHeatRecoveryModel.Code.StartsWith(CLEnvironment.ModelCode_SG_127_FS) _
-            '    OrElse dcHeatRecoveryModel.Code.StartsWith(CLEnvironment.ModelCode_SG_47_CDR) _
-            '    OrElse dcHeatRecoveryModel.Code.StartsWith(CLEnvironment.ModelCode_SG_47_CFD) _
-            '    OrElse dcHeatRecoveryModel.Code.StartsWith(CLEnvironment.ModelCode_SG_47_TSC) _
-            '    OrElse dcHeatRecoveryModel.Code.StartsWith(CLEnvironment.ModelCode_SG_47_HOC) Then
-
-            '    dpreg = 0.9 * (-0.0006 * reg ^ 3 + 0.0736 * reg ^ 2 - 4.3473 * reg + 287.27)
-            '    If dpreg < 0 Then
-            '        dpreg = Math.Abs(dpreg / 2)
-            '    End If
-            '    powerfact = 0.0429 * Math.Exp(0.0316 * reg)
-            'ElseIf dcHeatRecoveryModel.Code = CLEnvironment.ModelCode_CLRC_13_SSC Then
-
-            '    dpreg = 0.7 * (-0.0006 * reg ^ 3 + 0.0736 * reg ^ 2 - 4.3473 * reg + 287.27)
-            '    If dpreg < 0 Then
-            '        dpreg = Math.Abs(dpreg / 2)
-            '    End If
-            '    powerfact = 0.0429 * Math.Exp(0.0316 * reg)
-            'ElseIf dcHeatRecoveryModel.Code.StartsWith(CLEnvironment.ModelCode_CLRC_43) _
-            '    OrElse dcHeatRecoveryModel.Code.StartsWith(CLEnvironment.ModelCode_CLRC_53) _
-            '    OrElse dcHeatRecoveryModel.Code = CLEnvironment.ModelCode_QUANTUM_45 _
-            '    OrElse dcHeatRecoveryModel.Code.StartsWith(CLEnvironment.ModelCode_SG_77_CDR) _
-            '    OrElse dcHeatRecoveryModel.Code.StartsWith(CLEnvironment.ModelCode_SG_77_CFD) _
-            'Then
-
-            '    dpreg = 0.9 * (-0.0012 * reg ^ 3 + 0.1213 * reg ^ 2 - 5.1555 * reg + 498.53)
-            '    powerfact = 0.0429 * Math.Exp(0.0316 * reg)
-            'Else
-            '    dpreg = 0.9 * (-0.0013 * reg ^ 3 + 0.1673 * reg ^ 2 - 9.8802 * reg + 835.88) '652.88 originale
-            '    powerfact = 0.0429 * Math.Exp(0.0316 * reg)
-            'End If
-
-            'For i As Integer = 0 To (x_new.Length - 1)
-            '    y_new(i) = y_new(i) - dpreg
-            '    If (y_new(i) <= 0 And index = -1) Then
-            '        index = i - 1
-            '    End If
-            '    z_new(i) = z_new(i) * powerfact
-            'Next i
-
-            ''Riadatto le dimensioni dei vettori da disegnare per rendere il grafico più leggibile
-            '' e copio i valori ricalcolati.
-            'If index > -1 Then
-            '    ReDim Preserve x_new(index)
-            '    ReDim Preserve y_new(index)
-            '    ReDim Preserve z_new(index)
-            'End If
-
-            For i As Integer = 0 To (x_new.Length - 1)
-                x_new(i) = x_new(i) * (reg / 100)
-                y_new(i) = y_new(i) * (reg / 100) ^ 2
-                z_new(i) = z_new(i) * (reg / 100) ^ 3
-            Next i
-
-        End If
-
-        If coilPressureDrop > 0 Then
-            Dim coilReferenceAirflow As Double = If(coilPressureDropAirflow > 0, coilPressureDropAirflow, af_ref)
-
-            If coilReferenceAirflow > 0 Then
-                ApplyQuadraticPressureDrop(x_new, y_new, coilPressureDrop, coilReferenceAirflow)
-                ApplyQuadraticPressureDrop(x_new_ori, y_new_ori, coilPressureDrop, coilReferenceAirflow)
-            End If
-        End If
-
-        TrimPressureCurveAtZero(x_new, y_new, z_new)
-        TrimPressureCurveAtZero(x_new_ori, y_new_ori, z_new_ori)
-
-        'Ricalcolo curva di efficienza
-        ReDim e(x_new_ori.Length - 1)
-        For i As Integer = 0 To x_new_ori.Length - 1
-            Dim temp_termo As termo
-            temp_termo = termo_calc(tempin, humrin, tempout, humrout, x_new_ori(i), tipo, recup, 0)
-            e(i) = 100 * temp_termo.efficiency
-        Next i
-
-        'Calcolo il punto di lavoro richiesto, se non fattibile mi metto a AF_max
-
-        Dim idmax As Integer
-        Dim xcalc As Double
-
-        xcalc = Math.Min(af_ref, x_new(x_new.Length - 1))
-        idmax = GetUpperIndex(x_new, xcalc)
-
-        workpoint(1) = xcalc
-        workpoint(2) = Math.Max(0, InterpolateCurveValue(x_new, y_new, xcalc, idmax))
-        workpoint(3) = InterpolateCurveValue(x_new, z_new, xcalc, idmax)
-
-
-
-
-        'Ridisegno i Grafici
         Try
-            Dim xArea1 As New List(Of Double)
-            Dim yArea1 As New List(Of Double)
-
-            If measureUnit = CLMeasureUnit.IP Then
-                For counter As Integer = 0 To (x_new_ori.Length - 1)
-                    x_new_ori(counter) = x_new_ori(counter) / 3.6
-                Next
-                For i As Integer = 0 To (x_new.Length - 1)
-                    x_new(i) = x_new(i) / 3.6
-                Next i
-            End If
-
-            If showSFPArea Then
-                Dim sfp As Double
-
-                For counter As Integer = 1 To (x_new.Length - 1)
-                    sfp = ((2 * z_new(counter)) * 3.6) / x_new(counter)
-                    If sfp <= sfpLimit Then
-                        xArea1.Add(x_new(counter))
-                        yArea1.Add(y_new(counter))
-                    End If
-                Next
-            ElseIf showPassiveHausArea Then
-                Dim passiveHaus As Double
-
-                For counter As Integer = 1 To (x_new.Length - 1)
-                    passiveHaus = (z_new(counter) * 2) / x_new(counter)
-                    If passiveHaus <= passiveHausLimit Then
-                        xArea1.Add(x_new(counter))
-                        yArea1.Add(y_new(counter))
-                    End If
-                Next
-            ElseIf showERPArea Then
-                Dim erpfan As FanERP2018
-                For counter As Integer = 1 To (x_new.Length - 1)
-                    erpfan = ERP2018_calculation(x_new(counter) / 3600, e(counter), y_new(counter), z_new(counter), dcHeatRecoveryModel)
-                    If erpfan.Delta > 0 Then
-                        xArea1.Add(x_new(counter))
-                        yArea1.Add(y_new(counter))
-                    End If
-                Next
-
-            End If
-
             chart1.Series.Clear()
 
             ' Serie - curva originale
@@ -1172,11 +970,6 @@ Public Module CLModule
         Chart_ApplyHighQualityScreenRendering(chart1)
         Chart_ApplyHighQualityScreenRendering(chart2)
         Chart_ApplyHighQualityScreenRendering(chart3)
-
-        If measureUnit = CLMeasureUnit.IP Then
-            workpoint(1) = workpoint(1) / 3.6
-        End If
-
 
         Return workpoint
 
