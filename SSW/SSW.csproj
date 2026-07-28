@@ -1093,6 +1093,7 @@
   </Target>
   <Target Name="CopyNextUiAssets" AfterTargets="Build"
           Condition="Exists('..\frontend\ssw-next\dist\index.html')">
+    <RemoveDir Directories="$(TargetDir)frontend\ssw-next" />
     <ItemGroup>
       <_NextUiAsset Include="..\frontend\ssw-next\dist\**\*.*" />
     </ItemGroup>

@@ -261,7 +261,7 @@ Risultato:
 - creazione del documento progetto canonico e round-trip del serializer;
 - salvataggio, progetti, RDLC, email e follow-up conservati tramite adapter al
   workflow produttivo, senza duplicarne le regole nel frontend;
-- help contestuale, tooltip disattivabili e shell localizzata nelle 14 lingue;
+- help contestuale, tooltip disattivabili e shell localizzata nelle 15 lingue;
 - smoke nativo e serializzazione progetto integrati nel gate di release;
 - verifica responsive di tutti gli step a 1440x900 e 1024x768.
 

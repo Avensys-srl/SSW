@@ -127,6 +127,7 @@ Public Class CLMainForm
         tsmiOption_Language_SV.Visible = Environment.FindLanguage(CLEnvironment.LanguageCode_SV).Enabled
         tsmiOption_Language_NO.Visible = Environment.FindLanguage(CLEnvironment.LanguageCode_NO).Enabled
         tsmiOption_Language_IS.Visible = Environment.FindLanguage(CLEnvironment.LanguageCode_IS).Enabled
+        tsmiOption_Language_CS.Visible = Environment.FindLanguage(CLEnvironment.LanguageCode_CS).Enabled
 
         txbPerformance_PassiveHaus_Limit.Text = (0.45D).ToString()
         If Not Environment.HasBranchs Then
@@ -2382,6 +2383,7 @@ Public Class CLMainForm
         tsmiOption_Language_SV.Checked = IIf(Environment.PrimaryLanguageCode = CLEnvironment.LanguageCode_SV, True, False)
         tsmiOption_Language_NO.Checked = IIf(Environment.PrimaryLanguageCode = CLEnvironment.LanguageCode_NO, True, False)
         tsmiOption_Language_IS.Checked = IIf(Environment.PrimaryLanguageCode = CLEnvironment.LanguageCode_IS, True, False)
+        tsmiOption_Language_CS.Checked = IIf(Environment.PrimaryLanguageCode = CLEnvironment.LanguageCode_CS, True, False)
 
         UpdateLocalization()
         Calculate()
@@ -2540,6 +2542,7 @@ Public Class CLMainForm
         tsmiOption_Language_SV.Text = "Svenska"
         tsmiOption_Language_NO.Text = "Norsk"
         tsmiOption_Language_IS.Text = "Íslenska"
+        tsmiOption_Language_CS.Text = "Čeština"
 
         tsmiOption_Unit.Text = Environment.Localization.GetString(CLMessageResources.MainForm_Menu_Option_Unit.ToString())
         tsmiOption_Unit_IP.Text = Environment.Localization.GetString(CLMessageResources.MainForm_Menu_Option_Unit_IP.ToString())
@@ -2735,6 +2738,10 @@ Public Class CLMainForm
 
     Private Sub tsmiOption_Language_IS_Click(sender As Object, e As EventArgs) Handles tsmiOption_Language_IS.Click
         Environment.SetLanguage(Environment.FindLanguage(CLEnvironment.LanguageCode_IS))
+    End Sub
+
+    Private Sub tsmiOption_Language_CS_Click(sender As Object, e As EventArgs) Handles tsmiOption_Language_CS.Click
+        Environment.SetLanguage(Environment.FindLanguage(CLEnvironment.LanguageCode_CS))
     End Sub
 #End Region
 

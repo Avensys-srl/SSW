@@ -53,7 +53,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Technical calculation baselines failed.' }
 if ($LASTEXITCODE -ne 0) { throw 'SSW Next UI smoke failed.' }
 
 $resourceFiles = Get-ChildItem (Join-Path $repo 'SSWLib') -Filter 'Resources.*.resx'
-if ($resourceFiles.Count -ne 14) { throw "Expected 14 localized RESX files, found $($resourceFiles.Count)." }
+if ($resourceFiles.Count -ne 15) { throw "Expected 15 localized RESX files, found $($resourceFiles.Count)." }
 $requiredKeys = @('Update_Title','Update_CheckFailed','Update_PackageIntegrityFailed',
     'MainForm_SelectionRegistration_Title','Water',
     'MainForm_CoilPerformance_ResultAirOut',

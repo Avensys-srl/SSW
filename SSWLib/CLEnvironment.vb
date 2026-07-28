@@ -109,6 +109,7 @@ Public Class CLEnvironment
     Public Const LanguageCode_SV As String = "sv"
     Public Const LanguageCode_NO As String = "no"
     Public Const LanguageCode_IS As String = "is"
+    Public Const LanguageCode_CS As String = "cs"
 
     Public Const ModelCode_CLRC_13_SSC As String = "CLRC 013 SSC"
     Public Const ModelCode_CLRC_13_OSC As String = "CLRC 013 OSC"
@@ -200,6 +201,7 @@ Public Class CLEnvironment
         AddLanguage(New CLLanguage(LanguageCode_SV, "SVENSKA"))
         AddLanguage(New CLLanguage(LanguageCode_NO, "NORSK"))
         AddLanguage(New CLLanguage(LanguageCode_IS, "ÍSLENSKA"))
+        AddLanguage(New CLLanguage(LanguageCode_CS, "ČEŠTINA"))
 
         ModelDimensions_Initialize()
 

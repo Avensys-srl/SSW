@@ -1,0 +1,1431 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root xmlns:ns1="urn:schemas-microsoft-com:xml-msdata" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:schema id="root">
+    <xs:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xs:element name="root" ns1:IsDataSet="true">
+      <xs:complexType>
+        <xs:choice maxOccurs="unbounded">
+          <xs:element name="metadata">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="value" type="xsd:string" minOccurs="0" />
+              </xs:sequence>
+              <xs:attribute name="name" use="required" type="xsd:string" />
+              <xs:attribute name="type" type="xsd:string" />
+              <xs:attribute name="mimetype" type="xsd:string" />
+              <xs:attribute ref="xml:space" />
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="assembly">
+            <xs:complexType>
+              <xs:attribute name="alias" type="xsd:string" />
+              <xs:attribute name="name" type="xsd:string" />
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="data">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="value" type="xsd:string" minOccurs="0" ns1:Ordinal="1" />
+                <xs:element name="comment" type="xsd:string" minOccurs="0" ns1:Ordinal="2" />
+              </xs:sequence>
+              <xs:attribute name="name" type="xsd:string" use="required" ns1:Ordinal="1" />
+              <xs:attribute name="type" type="xsd:string" ns1:Ordinal="3" />
+              <xs:attribute name="mimetype" type="xsd:string" ns1:Ordinal="4" />
+              <xs:attribute ref="xml:space" />
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="resheader">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="value" type="xsd:string" minOccurs="0" ns1:Ordinal="1" />
+              </xs:sequence>
+              <xs:attribute name="name" type="xsd:string" use="required" />
+            </xs:complexType>
+          </xs:element>
+        </xs:choice>
+      </xs:complexType>
+    </xs:element>
+  </xs:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="About" xml:space="preserve">
+    <value>O</value>
+  </data>
+  <data name="AboutBoxForm_AirflowPressure" xml:space="preserve">
+    <value>@@AirflowPressure</value>
+  </data>
+  <data name="AboutBoxForm_ElectricPowerInput" xml:space="preserve">
+    <value>@@ElectricPowerInput</value>
+  </data>
+  <data name="AboutBoxForm_ExternalLeakage" xml:space="preserve">
+    <value>@@ExternalLeakage</value>
+  </data>
+  <data name="AboutBoxForm_InternalLeakage" xml:space="preserve">
+    <value>@@InternalLeakage</value>
+  </data>
+  <data name="AboutBoxForm_NoiseLevel" xml:space="preserve">
+    <value>@@NoiseLevel</value>
+  </data>
+  <data name="AboutBoxForm_Title" xml:space="preserve">
+    <value>@@PerformancesAccordanceWith</value>
+  </data>
+  <data name="AirflowPressure" xml:space="preserve">
+    <value>Proud vzduchu / tlak</value>
+  </data>
+  <data name="CO2Level" xml:space="preserve">
+    <value>Úroveň CO2</value>
+  </data>
+  <data name="CO2Level_AddToReport" xml:space="preserve">
+    <value>Přidat do přehledu</value>
+  </data>
+  <data name="CO2Level_Parameters" xml:space="preserve">
+    <value>Parametry</value>
+  </data>
+  <data name="CO2Level_Parameters_Af_area" xml:space="preserve">
+    <value>Průtok vzduchu na plochu</value>
+  </data>
+  <data name="CO2Level_Parameters_Af_demand" xml:space="preserve">
+    <value>Požadované proudění vzduchu</value>
+  </data>
+  <data name="CO2Level_Parameters_Af_person" xml:space="preserve">
+    <value>Průtok vzduchu na osobu</value>
+  </data>
+  <data name="CO2Level_Parameters_Af_set" xml:space="preserve">
+    <value>Nastavte proudění vzduchu</value>
+  </data>
+  <data name="CO2Level_Parameters_CalcMet" xml:space="preserve">
+    <value>Metoda výpočtu</value>
+  </data>
+  <data name="CO2Level_Parameters_CalcMet_Fixed_Af" xml:space="preserve">
+    <value>Pevný průtok</value>
+  </data>
+  <data name="CO2Level_Parameters_CalcMet_MaxCO2" xml:space="preserve">
+    <value>Max. Úroveň CO2</value>
+  </data>
+  <data name="CO2Level_Parameters_CalcMet_PersonRelated" xml:space="preserve">
+    <value>Spřízněná osoba</value>
+  </data>
+  <data name="CO2Level_Parameters_checkwp" xml:space="preserve">
+    <value>Zkontrolujte pracovní bod</value>
+  </data>
+  <data name="CO2Level_Parameters_ExtCO2" xml:space="preserve">
+    <value>Venkovní hladina CO2</value>
+  </data>
+  <data name="CO2Level_Parameters_MaxCO2" xml:space="preserve">
+    <value>Max. Úroveň CO2</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset" xml:space="preserve">
+    <value>Standardní předvolba</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_01" xml:space="preserve">
+    <value>žádný</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_02" xml:space="preserve">
+    <value>Stavební bulletin 101: Max. 1000 ppm CO2</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_03" xml:space="preserve">
+    <value>EN15251 kat. I,B1: 10 l/s na osobu a 0,5 l/s m2</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_04" xml:space="preserve">
+    <value>EN15251 kat. I,B2: 10 l/s na osobu a 1,0 l/s m2</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_05" xml:space="preserve">
+    <value>EN15251 kat. I,B3: 10 l/s na osobu a 2,0 l/s m2</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_06" xml:space="preserve">
+    <value>EN15251 kat II,B1: 7 l/s na osobu &amp; 0,35 l/s m2</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_07" xml:space="preserve">
+    <value>EN15251 kat II,B2: 7 l/s na osobu &amp; 0,7 l/s m2</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_08" xml:space="preserve">
+    <value>EN15251 kat II,B3: 7 l/s na osobu &amp; 1,4 l/s m2</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_09" xml:space="preserve">
+    <value>EN15251 kat III,B1: 4 l/s na osobu &amp; 0,2 l/s m2</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_10" xml:space="preserve">
+    <value>EN15251 kat III,B2: 4 l/s na osobu &amp; 0,4 l/s m2</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_11" xml:space="preserve">
+    <value>EN15251 kat III,B3: 4 l/s na osobu &amp; 0,8 l/s m2</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_12" xml:space="preserve">
+    <value>EN15251 kat. I: C02 max 700 ppm</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_13" xml:space="preserve">
+    <value>EN15251 kat. II: C02 max 850 ppm</value>
+  </data>
+  <data name="CO2Level_Parameters_StandardPreset_14" xml:space="preserve">
+    <value>EN15251 kat III: C02 max 1150 ppm</value>
+  </data>
+  <data name="CO2Level_PeriodOfTime" xml:space="preserve">
+    <value>Časové období</value>
+  </data>
+  <data name="CO2Level_Room" xml:space="preserve">
+    <value>Místnost</value>
+  </data>
+  <data name="CO2Level_Room_Height" xml:space="preserve">
+    <value>Výška</value>
+  </data>
+  <data name="CO2Level_Room_Length" xml:space="preserve">
+    <value>Délka</value>
+  </data>
+  <data name="CO2Level_Room_Witdh" xml:space="preserve">
+    <value>Šířka</value>
+  </data>
+  <data name="CO2Level_Usage" xml:space="preserve">
+    <value>Využití</value>
+  </data>
+  <data name="CO2Level_Usage_Break" xml:space="preserve">
+    <value>Přestávka</value>
+  </data>
+  <data name="CO2Level_Usage_CO2prod" xml:space="preserve">
+    <value>Produkce CO2</value>
+  </data>
+  <data name="CO2Level_Usage_LevelAct" xml:space="preserve">
+    <value>Úroveň aktivity</value>
+  </data>
+  <data name="CO2Level_Usage_People" xml:space="preserve">
+    <value>Lidé</value>
+  </data>
+  <data name="CO2Level_Usage_Period" xml:space="preserve">
+    <value>Období</value>
+  </data>
+  <data name="CO2Level_Usage_Presence" xml:space="preserve">
+    <value>Přítomnost</value>
+  </data>
+  <data name="CommercialSheet" xml:space="preserve">
+    <value>Obchodní list</value>
+  </data>
+  <data name="ElectricPowerInput" xml:space="preserve">
+    <value>Příkon elektrické energie</value>
+  </data>
+  <data name="ExternalLeakage" xml:space="preserve">
+    <value>Externí únik</value>
+  </data>
+  <data name="InternalLeakage" xml:space="preserve">
+    <value>Vnitřní netěsnost</value>
+  </data>
+  <data name="IOM" xml:space="preserve">
+    <value>IOM</value>
+  </data>
+  <data name="MainForm" xml:space="preserve">
+    <value>Představení</value>
+  </data>
+  <data name="MainForm_AirFlow" xml:space="preserve">
+    <value>Průtok vzduchu</value>
+  </data>
+  <data name="MainForm_CantSaveFile" xml:space="preserve">
+    <value>Soubor nelze uložit</value>
+  </data>
+  <data name="MainForm_Certification" xml:space="preserve">
+    <value>Certifikace</value>
+  </data>
+  <data name="MainForm_Close" xml:space="preserve">
+    <value>Zavřít</value>
+  </data>
+  <data name="MainForm_Date" xml:space="preserve">
+    <value>Datum</value>
+  </data>
+  <data name="MainForm_Efficiency" xml:space="preserve">
+    <value>Účinnost</value>
+  </data>
+  <data name="MainForm_ElectricalPerformances" xml:space="preserve">
+    <value>Elektrické výkony</value>
+  </data>
+  <data name="MainForm_ExhaustOutletTemperature" xml:space="preserve">
+    <value>Teplota odpadního vzduchu</value>
+  </data>
+  <data name="MainForm_FileSaved" xml:space="preserve">
+    <value>Soubor uložen</value>
+  </data>
+  <data name="MainForm_FreshInletTemperature" xml:space="preserve">
+    <value>Teplota čerstvého vzduchu</value>
+  </data>
+  <data name="MainForm_GridSAP_Date" xml:space="preserve">
+    <value>Datum</value>
+  </data>
+  <data name="MainForm_GridSAP_EnergySavingTrustBestPracticePerformanceCompliant" xml:space="preserve">
+    <value>Vyhovuje osvědčeným postupům Energy Saving Trust</value>
+  </data>
+  <data name="MainForm_GridSAP_EstimatedSAPTestTable" xml:space="preserve">
+    <value>Odhadovaná testovací tabulka SAP</value>
+  </data>
+  <data name="MainForm_GridSAP_ExhaustTerminalConfiguration" xml:space="preserve">
+    <value>Konfigurace koncovky výfuku</value>
+  </data>
+  <data name="MainForm_GridSAP_HeatExchangeEffiency" xml:space="preserve">
+    <value>Účinnost výměny tepla</value>
+  </data>
+  <data name="MainForm_GridSAP_RegulationLevel" xml:space="preserve">
+    <value>Regulační úroveň</value>
+  </data>
+  <data name="MainForm_GridSAP_SpecificFanPower" xml:space="preserve">
+    <value>Specifický výkon ventilátoru</value>
+  </data>
+  <data name="MainForm_GridSAP_TotalExhaustFlowRate" xml:space="preserve">
+    <value>Celkový průtok odváděného vzduchu</value>
+  </data>
+  <data name="MainForm_GridSAP_TotalSupplyFlowRate" xml:space="preserve">
+    <value>Celkový průtok přiváděného vzduchu</value>
+  </data>
+  <data name="MainForm_GridSAP_UnitSelected" xml:space="preserve">
+    <value>Jednotka vybrána</value>
+  </data>
+  <data name="MainForm_HeatExchangerPerformances" xml:space="preserve">
+    <value>Výkony rekuperačního výměníku</value>
+  </data>
+  <data name="MainForm_HeatTransferred" xml:space="preserve">
+    <value>Přenesené teplo</value>
+  </data>
+  <data name="MainForm_InputData" xml:space="preserve">
+    <value>Vstupní data</value>
+  </data>
+  <data name="MainForm_LatentHeat" xml:space="preserve">
+    <value>Latentní teplo</value>
+  </data>
+  <data name="MainForm_MaxPressure" xml:space="preserve">
+    <value>Maximální tlak</value>
+  </data>
+  <data name="MainForm_Menu_About" xml:space="preserve">
+    <value>O</value>
+  </data>
+  <data name="MainForm_Menu_File" xml:space="preserve">
+    <value>Soubor</value>
+  </data>
+  <data name="MainForm_Menu_File_Exit" xml:space="preserve">
+    <value>Konec</value>
+  </data>
+  <data name="MainForm_Menu_File_GenerateReport" xml:space="preserve">
+    <value>Vygenerovat zprávu</value>
+  </data>
+  <data name="MainForm_Menu_File_Open" xml:space="preserve">
+    <value>Otevřít</value>
+  </data>
+  <data name="MainForm_Menu_Option" xml:space="preserve">
+    <value>Možnost</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language" xml:space="preserve">
+    <value>Jazyk</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Bulgarian" xml:space="preserve">
+    <value>Български</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Deutsch" xml:space="preserve">
+    <value>Deutsch</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Dutch" xml:space="preserve">
+    <value>Nederlands</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_English" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Français" xml:space="preserve">
+    <value>Français</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Italian" xml:space="preserve">
+    <value>Italiano</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Polish" xml:space="preserve">
+    <value>Polski</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Romanian" xml:space="preserve">
+    <value>Română</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Slovenian" xml:space="preserve">
+    <value>Slovenščina</value>
+  </data>
+  <data name="MainForm_Menu_Option_SelectMode" xml:space="preserve">
+    <value>Vyberte režim</value>
+  </data>
+  <data name="MainForm_Menu_Option_SelectMode_Checking" xml:space="preserve">
+    <value>Kontrola</value>
+  </data>
+  <data name="MainForm_Menu_Option_SelectMode_Design" xml:space="preserve">
+    <value>Návrh</value>
+  </data>
+  <data name="MainForm_Menu_Option_Unit" xml:space="preserve">
+    <value>Jednotka</value>
+  </data>
+  <data name="MainForm_Menu_Option_Unit_IP" xml:space="preserve">
+    <value>I.P.</value>
+  </data>
+  <data name="MainForm_Menu_Option_Unit_SI" xml:space="preserve">
+    <value>S.I.</value>
+  </data>
+  <data name="MainForm_PassiveHouse" xml:space="preserve">
+    <value>Pasivní dům</value>
+  </data>
+  <data name="MainForm_PassiveHouseElectricalEfficienty" xml:space="preserve">
+    <value>Pasivní dům Elektr. Eff.</value>
+  </data>
+  <data name="MainForm_Performance" xml:space="preserve">
+    <value>Výkon</value>
+  </data>
+  <data name="MainForm_Performances" xml:space="preserve">
+    <value>Představení</value>
+  </data>
+  <data name="MainForm_PowerInput" xml:space="preserve">
+    <value>Vstup napájení</value>
+  </data>
+  <data name="MainForm_PowerSupply" xml:space="preserve">
+    <value>Napájení</value>
+  </data>
+  <data name="MainForm_Pressure" xml:space="preserve">
+    <value>Tlak</value>
+  </data>
+  <data name="MainForm_RegulationLevel" xml:space="preserve">
+    <value>Regulační úroveň</value>
+  </data>
+  <data name="MainForm_ReturnInletTemperature" xml:space="preserve">
+    <value>Teplota odváděného vzduchu na vstupu</value>
+  </data>
+  <data name="MainForm_RHExhaustOutletTemperature" xml:space="preserve">
+    <value>R.H.</value>
+  </data>
+  <data name="MainForm_RHFreshInletTemperature" xml:space="preserve">
+    <value>R.H.</value>
+  </data>
+  <data name="MainForm_RHReturnInletTemperature" xml:space="preserve">
+    <value>R.H.</value>
+  </data>
+  <data name="MainForm_RHSupplyOutletTemperature" xml:space="preserve">
+    <value>R.H.</value>
+  </data>
+  <data name="MainForm_SEL" xml:space="preserve">
+    <value>SPI</value>
+  </data>
+  <data name="MainForm_SelectPdfFile" xml:space="preserve">
+    <value>Vyberte soubor pdf</value>
+  </data>
+  <data name="MainForm_SensibleHeat" xml:space="preserve">
+    <value>Citelné teplo</value>
+  </data>
+  <data name="MainForm_SFP" xml:space="preserve">
+    <value>SFP</value>
+  </data>
+  <data name="MainForm_ShowPassiveHouseArea" xml:space="preserve">
+    <value>Zobrazit oblast pasivního domu</value>
+  </data>
+  <data name="MainForm_ShowSELArea" xml:space="preserve">
+    <value>Zobrazit oblast SEL</value>
+  </data>
+  <data name="MainForm_ShowSFPArea" xml:space="preserve">
+    <value>Zobrazit oblast SFP</value>
+  </data>
+  <data name="MainForm_SingleBranch" xml:space="preserve">
+    <value>jediná větev</value>
+  </data>
+  <data name="MainForm_SupplyOutletTemperature" xml:space="preserve">
+    <value>Teplota přiváděného vzduchu</value>
+  </data>
+  <data name="MainForm_TemperatureConditionsAndUmidity" xml:space="preserve">
+    <value>Teplotní a vlhkostní podmínky</value>
+  </data>
+  <data name="MainForm_Unit" xml:space="preserve">
+    <value>Jednotka</value>
+  </data>
+  <data name="MainForm_UnitSelected" xml:space="preserve">
+    <value>Jednotka vybrána</value>
+  </data>
+  <data name="MainForm_UnitSelection" xml:space="preserve">
+    <value>Výběr jednotky</value>
+  </data>
+  <data name="MainForm_UpdateSAPTable" xml:space="preserve">
+    <value>Aktualizujte tabulku SAP</value>
+  </data>
+  <data name="MainForm_WaterProduced" xml:space="preserve">
+    <value>Vzniklý kondenzát</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Ne</value>
+  </data>
+  <data name="NoiseLevel" xml:space="preserve">
+    <value>Úroveň hluku</value>
+  </data>
+  <data name="Page" xml:space="preserve">
+    <value>stránku</value>
+  </data>
+  <data name="PDF_HeatExchangerPerformances" xml:space="preserve">
+    <value>Výkon výměníku tepla</value>
+  </data>
+  <data name="PDF_RegLev" xml:space="preserve">
+    <value>Úroveň regulace</value>
+  </data>
+  <data name="PDF_TemperatureConditions" xml:space="preserve">
+    <value>Teplotní podmínky</value>
+  </data>
+  <data name="PDF_WorkingArea" xml:space="preserve">
+    <value>Pracovní oblast</value>
+  </data>
+  <data name="PDF_WorkingPoint" xml:space="preserve">
+    <value>Pracovní bod</value>
+  </data>
+  <data name="PerformancesAccordanceWith" xml:space="preserve">
+    <value>Všechna představení byla provedena v souladu s:</value>
+  </data>
+  <data name="PleaseWaitForm_Message" xml:space="preserve">
+    <value>Počkejte prosím několik sekund...</value>
+  </data>
+  <data name="Release" xml:space="preserve">
+    <value>Vydání softwaru</value>
+  </data>
+  <data name="SaveCommercialSheet" xml:space="preserve">
+    <value>Uložit obchodní list</value>
+  </data>
+  <data name="SaveIOM" xml:space="preserve">
+    <value>Uložit IOM</value>
+  </data>
+  <data name="Series" xml:space="preserve">
+    <value>série</value>
+  </data>
+  <data name="SoundInlet" xml:space="preserve">
+    <value>Vstup</value>
+  </data>
+  <data name="SoundOutlet" xml:space="preserve">
+    <value>Výstup</value>
+  </data>
+  <data name="SoundPower" xml:space="preserve">
+    <value>Zvukový výkon</value>
+  </data>
+  <data name="Sound_Breakout" xml:space="preserve">
+    <value>Vyzařování pláště</value>
+  </data>
+  <data name="Sound_Exhaust" xml:space="preserve">
+    <value>Výfuk</value>
+  </data>
+  <data name="Sound_Fresh" xml:space="preserve">
+    <value>Čerstvé</value>
+  </data>
+  <data name="Sound_Return" xml:space="preserve">
+    <value>Návrat</value>
+  </data>
+  <data name="Sound_Supply" xml:space="preserve">
+    <value>Zásobování</value>
+  </data>
+  <data name="Sound_Total" xml:space="preserve">
+    <value>Celkem</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Ano</value>
+  </data>
+  <data name="Legal_Notice" xml:space="preserve">
+    <value>Právní upozornění: Údaje byly testovány na konkrétních provozních bodech v souladu s výše uvedenými normami. Skutečný případ se může lišit od případu normativního. Zbývající údaje byly extrapolovány. Pokud je instalace zvláště citlivá na údaje o hluku, kontaktujte nás (software není certifikovaný). Výpočet průrazu se provádí podle normy ASHRAE Handbook - HVAC Applications, kapitola 47.</value>
+  </data>
+  <data name="Item_Code" xml:space="preserve">
+    <value>Kódování položky</value>
+  </data>
+  <data name="RegLev_Note" xml:space="preserve">
+    <value>V některých případech nemusí existovat lineární vztah mezi úrovní regulace a úrovní na jednotce</value>
+  </data>
+  <data name="MainForm_ShowERPArea" xml:space="preserve">
+    <value>Zobrazit oblast ERP 2018</value>
+  </data>
+  <data name="MainForm_MoistureRecovery" xml:space="preserve">
+    <value>Rekuperace vlhkosti</value>
+  </data>
+  <data name="MainForm_Summer" xml:space="preserve">
+    <value>Léto</value>
+  </data>
+  <data name="MainForm_Winter" xml:space="preserve">
+    <value>zimní</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Hungarian" xml:space="preserve">
+    <value>Magyar</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Danish" xml:space="preserve">
+    <value>Dansk</value>
+  </data>
+  <data name="MainForm_Menu_Option_CommercialSheetAutoSync" xml:space="preserve">
+    <value>Automatická synchronizace komerčních listů</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Tab" xml:space="preserve">
+    <value>Vodní baterie</value>
+  </data>
+  <data name="MainForm_CoilPerformance_EnableGroup" xml:space="preserve">
+    <value>Výpočet vodní baterie</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Enable" xml:space="preserve">
+    <value>Povolit výpočet baterie</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Selection" xml:space="preserve">
+    <value>Výběr baterie</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Case" xml:space="preserve">
+    <value>Varianta</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Standard" xml:space="preserve">
+    <value>Standardní</value>
+  </data>
+  <data name="MainForm_CoilPerformance_StandardCustomized" xml:space="preserve">
+    <value>Upravená</value>
+  </data>
+  <data name="MainForm_CoilPerformance_External" xml:space="preserve">
+    <value>Externí</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Type" xml:space="preserve">
+    <value>Typ</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Coil" xml:space="preserve">
+    <value>Baterie</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Fluid" xml:space="preserve">
+    <value>Kapalina a teploty vody</value>
+  </data>
+  <data name="MainForm_CoilPerformance_FluidType" xml:space="preserve">
+    <value>Kapalina</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Glycol" xml:space="preserve">
+    <value>Glykol [%]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_CoolingIn" xml:space="preserve">
+    <value>Vstup chladicí vody [C]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_CoolingOut" xml:space="preserve">
+    <value>Výstup chladicí vody [C]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_HeatingIn" xml:space="preserve">
+    <value>Vstup topné vody [C]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_HeatingOut" xml:space="preserve">
+    <value>Výstup topné vody [C]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Geometry" xml:space="preserve">
+    <value>Geometrie</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Length" xml:space="preserve">
+    <value>Délka [mm]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Height" xml:space="preserve">
+    <value>Výška [mm/trubek]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_HeightMm" xml:space="preserve">
+    <value>mm</value>
+  </data>
+  <data name="MainForm_CoilPerformance_HeightTubes" xml:space="preserve">
+    <value>trubky</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Rows" xml:space="preserve">
+    <value>Řady</value>
+  </data>
+  <data name="MainForm_CoilPerformance_FinSpacing" xml:space="preserve">
+    <value>Rozteč lamel [mm]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Circuits" xml:space="preserve">
+    <value>Obvody</value>
+  </data>
+  <data name="MainForm_CoilPerformance_ResultMode" xml:space="preserve">
+    <value>Režim</value>
+  </data>
+  <data name="MainForm_CoilPerformance_ResultStatus" xml:space="preserve">
+    <value>Stav</value>
+  </data>
+  <data name="MainForm_CoilPerformance_ResultCapacity" xml:space="preserve">
+    <value>Výkon [W]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_ResultSensible" xml:space="preserve">
+    <value>Citelný výkon [W]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_ResultAirOut" xml:space="preserve">
+    <value>Max. teplota výstupního vzduchu [C]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_ResultRHOut" xml:space="preserve">
+    <value>Rel. vlhkost výstupu [%]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_ResultCond" xml:space="preserve">
+    <value>Kondenzát [l/h]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_ResultDP" xml:space="preserve">
+    <value>DP [Pa]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_ResultFace" xml:space="preserve">
+    <value>Čelní rychlost [m/s]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="MainForm_CoilPerformance_AirPressureApplied" xml:space="preserve">
+    <value>Použitá tlaková ztráta vzduchu na baterii</value>
+  </data>
+  <data name="MainForm_CoilPerformance_ResultWaterDP" xml:space="preserve">
+    <value>Tlaková ztráta vody [kPa]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_ResultFluidFlow" xml:space="preserve">
+    <value>Průtok kapaliny [l/h]</value>
+  </data>
+  <data name="MainForm_CoilPerformance_ResultFluidSpeed" xml:space="preserve">
+    <value>Rychlost kapaliny [m/s]</value>
+  </data>
+  <data name="Water" xml:space="preserve">
+    <value>Voda</value>
+  </data>
+  <data name="Glic_Etil" xml:space="preserve">
+    <value>Ethylenglykol</value>
+  </data>
+  <data name="Glic_Prop" xml:space="preserve">
+    <value>Propylenglykol</value>
+  </data>
+  <data name="MainForm_WinterSummer" xml:space="preserve">
+    <value>Léto / Zima</value>
+  </data>
+  <data name="MainForm_SummerEnable" xml:space="preserve">
+    <value>Povolit léto</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Swedish" xml:space="preserve">
+    <value>Svenska</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Installation" xml:space="preserve">
+    <value>Instalace</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Internal" xml:space="preserve">
+    <value>Interní</value>
+  </data>
+  <data name="MainForm_CoilPerformance_ExternalInstallation" xml:space="preserve">
+    <value>Externí</value>
+  </data>
+  <data name="MainForm_CoilPerformance_RequestInternal" xml:space="preserve">
+    <value>Vyžádat interní</value>
+  </data>
+  <data name="MainForm_CoilPerformance_CustomWarning" xml:space="preserve">
+    <value>Vyžádejte si celkové rozměry, dodací lhůtu a cenovou nabídku</value>
+  </data>
+  <data name="MainForm_Menu_Option_CheckUpdates" xml:space="preserve">
+    <value>Zkontrolujte aktualizace</value>
+  </data>
+  <data name="Update_Title" xml:space="preserve">
+    <value>Aktualizace softwaru</value>
+  </data>
+  <data name="Update_ErrorTitle" xml:space="preserve">
+    <value>Chyba aktualizace</value>
+  </data>
+  <data name="Update_UpToDate" xml:space="preserve">
+    <value>Software je aktuální.</value>
+  </data>
+  <data name="Update_NewAvailable" xml:space="preserve">
+    <value>K dispozici je nová aktualizace softwaru!</value>
+  </data>
+  <data name="Update_CurrentVersion" xml:space="preserve">
+    <value>Aktuální verze</value>
+  </data>
+  <data name="Update_NewVersion" xml:space="preserve">
+    <value>Nová verze</value>
+  </data>
+  <data name="Update_DownloadQuestion" xml:space="preserve">
+    <value>Stáhnout a spustit instalační program nyní?</value>
+  </data>
+  <data name="Update_CheckFailed" xml:space="preserve">
+    <value>Nelze zkontrolovat aktualizace: {0}</value>
+  </data>
+  <data name="Update_PackageIntegrityFailed" xml:space="preserve">
+    <value>Ověření integrity aktualizačního balíčku se nezdařilo.</value>
+  </data>
+  <data name="MainForm_CoilPerformance_Calculating" xml:space="preserve">
+    <value>Počítám, čekejte prosím...</value>
+  </data>
+  <data name="MainForm_Project_New" xml:space="preserve">
+    <value>Nový výběr</value>
+  </data>
+  <data name="MainForm_Project_Open" xml:space="preserve">
+    <value>Otevřít výběr...</value>
+  </data>
+  <data name="MainForm_Project_Save" xml:space="preserve">
+    <value>Uložit výběr</value>
+  </data>
+  <data name="MainForm_Project_SaveAs" xml:space="preserve">
+    <value>Uložit výběr jako...</value>
+  </data>
+  <data name="MainForm_Project_Duplicate" xml:space="preserve">
+    <value>Duplikovat jako nový výběr...</value>
+  </data>
+  <data name="MainForm_Project_Recent" xml:space="preserve">
+    <value>Nedávné výběry</value>
+  </data>
+  <data name="MainForm_Project_Title" xml:space="preserve">
+    <value>Technický výběr</value>
+  </data>
+  <data name="MainForm_Project_Filter" xml:space="preserve">
+    <value>Technický výběr SSW</value>
+  </data>
+  <data name="MainForm_Project_Unsaved" xml:space="preserve">
+    <value>Aktuální výběr obsahuje neuložené změny. Uložit je teď?</value>
+  </data>
+  <data name="MainForm_Project_OpenError" xml:space="preserve">
+    <value>Nelze otevřít projekt výběru: {0}</value>
+  </data>
+  <data name="MainForm_Project_SaveError" xml:space="preserve">
+    <value>Nelze uložit projekt výběru: {0}</value>
+  </data>
+  <data name="MainForm_SelectionRegistration_Title" xml:space="preserve">
+    <value>Technický výběr</value>
+  </data>
+  <data name="MainForm_SelectionRegistration_Wait" xml:space="preserve">
+    <value>Registrace technického výběru. Čekejte prosím...</value>
+  </data>
+  <data name="MainForm_SelectionRegistration_Failed" xml:space="preserve">
+    <value>Technický výběr se nepodařilo zaregistrovat: {0}</value>
+  </data>
+  <data name="MainForm_SelectionRegistration_Retry" xml:space="preserve">
+    <value>Zkuste to znovu</value>
+  </data>
+  <data name="MainForm_SelectionRegistration_Draft" xml:space="preserve">
+    <value>Vygenerovat koncept</value>
+  </data>
+  <data name="MainForm_SelectionRegistration_Cancel" xml:space="preserve">
+    <value>Zrušit</value>
+  </data>
+  <data name="MainForm_TechnicalSelectionRevision" xml:space="preserve">
+    <value>Revize</value>
+  </data>
+  <data name="MainForm_TechnicalSelectionStatus" xml:space="preserve">
+    <value>Stav</value>
+  </data>
+  <data name="MainForm_TechnicalSelectionStatus_Registered" xml:space="preserve">
+    <value>Registrováno</value>
+  </data>
+  <data name="MainForm_TechnicalSelectionStatus_Draft" xml:space="preserve">
+    <value>Koncept</value>
+  </data>
+  <data name="MainForm_CoilPerformance_InvalidCoolingTemperatures" xml:space="preserve">
+    <value>Výstupní teplota chladicí vody musí být alespoň o 1 K vyšší než vstupní teplota.</value>
+  </data>
+  <data name="MainForm_CoilPerformance_InvalidHeatingTemperatures" xml:space="preserve">
+    <value>Vstupní teplota topné vody musí být minimálně o 1 K vyšší než výstupní teplota.</value>
+  </data>
+  <data name="MainForm_CoilPerformance_LowWaterDeltaT" xml:space="preserve">
+    <value>Nízké ΔT vody (3 K ≤ ΔT &lt; 5 K). Průtok vody je vyšší než obvyklý.</value>
+  </data>
+  <data name="MainForm_CoilPerformance_CriticalWaterDeltaT" xml:space="preserve">
+    <value>Velmi nízké ΔT vody (méně než 3 K). Nadměrný průtok vody a tlaková ztráta. Ověřte hydraulický návrh.</value>
+  </data>
+  <data name="MainForm_CoilPerformance_WaterPressureDropWarning" xml:space="preserve">
+    <value>Tlaková ztráta vody překračuje doporučený limit (40 kPa). Spotřeba hydraulické energie a náklady na čerpání mohou být nadměrné. Zvažte větší baterii nebo nižší rychlost vody.</value>
+  </data>
+  <data name="MainForm_Project_CreateAlternative" xml:space="preserve">
+    <value>Vytvořte alternativní...</value>
+  </data>
+  <data name="MainForm_CoilPerformance_DimensionsNote" xml:space="preserve">
+    <value>Výše uvedené rozměry se vztahují pouze na vodní baterii.</value>
+  </data>
+  <data name="MainForm_CoilPerformance_CustomDisclaimerTitle" xml:space="preserve">
+    <value>Návrh upravené baterie</value>
+  </data>
+  <data name="MainForm_CoilPerformance_CustomDisclaimer" xml:space="preserve">
+    <value>Ověřte správnou funkci upravené baterie ve všech předpokládaných pracovních bodech. Stisknutím tlačítka OK potvrďte tento požadavek.</value>
+  </data>
+  <data name="MainForm_CoilPerformance_CustomDisclaimerAccepted" xml:space="preserve">
+    <value>Potvrzeno upozornění k návrhu upravené baterie</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Tab" xml:space="preserve">
+    <value>Elektrické ohřívače</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Enable" xml:space="preserve">
+    <value>Povolit výpočet</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Heater" xml:space="preserve">
+    <value>Elektrický ohřívač</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Power" xml:space="preserve">
+    <value>Výkon [W]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Voltage" xml:space="preserve">
+    <value>Napětí [V]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Phases" xml:space="preserve">
+    <value>Počet fází</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Current" xml:space="preserve">
+    <value>Proud [A]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_AirIn" xml:space="preserve">
+    <value>Teplota vstupního vzduchu [C]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_AirOut" xml:space="preserve">
+    <value>Max. teplota výstupního vzduchu [°C]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_PressureDrop" xml:space="preserve">
+    <value>Tlaková ztráta vzduchu [Pa]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_ExhaustOut" xml:space="preserve">
+    <value>Teplota odpadního vzduchu [C]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_WaterConflict" xml:space="preserve">
+    <value>Chcete-li aktivovat elektrický dohřívač, zrušte výběr topné vodní baterie.</value>
+  </data>
+  <data name="MainForm_ElectricHeater_CustomPending" xml:space="preserve">
+    <value>Vlastní parametry elektrického ohřívače budou definovány v pozdějším kroku.</value>
+  </data>
+  <data name="MainForm_ElectricHeater_CustomDisclaimer" xml:space="preserve">
+    <value>Vlastní výběr elektrického ohřívače musí být ověřen pro každý zamýšlený provozní bod. Pokračovat?</value>
+  </data>
+  <data name="MainForm_ElectricHeater_FrostWarning" xml:space="preserve">
+    <value>Teplota odpadního vzduchu nepřekračuje cílovou protimrazovou teplotu 3 °C.</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Code" xml:space="preserve">
+    <value>Kód</value>
+  </data>
+  <data name="MainForm_ElectricHeater_ManagementCode" xml:space="preserve">
+    <value>Kód pro správu</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Frequency" xml:space="preserve">
+    <value>Frekvence [Hz]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Stages" xml:space="preserve">
+    <value>Stupně</value>
+  </data>
+  <data name="MainForm_ElectricHeater_Quantity" xml:space="preserve">
+    <value>Množství</value>
+  </data>
+  <data name="MainForm_ElectricHeater_NominalPressureDrop" xml:space="preserve">
+    <value>Jmenovitá tlaková ztráta vzduchu [Pa]</value>
+  </data>
+  <data name="MainForm_ElectricHeater_FrostStatus" xml:space="preserve">
+    <value>Cíl ochrany proti mrazu</value>
+  </data>
+  <data name="MainForm_ElectricHeater_FrostTargetReached" xml:space="preserve">
+    <value>Cíl dosažen</value>
+  </data>
+  <data name="MainForm_ElectricHeater_FrostTargetNotReached" xml:space="preserve">
+    <value>Cíl nebyl dosažen</value>
+  </data>
+  <data name="MainForm_ElectricHeater_CustomDisclaimerAccepted" xml:space="preserve">
+    <value>Potvrzeno upozornění k elektrickému ohřívači</value>
+  </data>
+  <data name="MainForm_CoilPerformance_ElectricPostHeaterConflict" xml:space="preserve">
+    <value>Deaktivujte elektrický dohřívač (EHD), chcete-li povolit vodní dohřev.</value>
+  </data>
+  <data name="MainForm_Accessories_Tab" xml:space="preserve">
+    <value>Příslušenství a funkce</value>
+  </data>
+  <data name="MainForm_Accessories_AllCategories" xml:space="preserve">
+    <value>Všechny kategorie</value>
+  </data>
+  <data name="MainForm_Accessories_RequiresExtraController" xml:space="preserve">
+    <value>Vyžaduje KTS Extra nebo vyšší.</value>
+  </data>
+  <data name="MainForm_Accessories_EnableFirst" xml:space="preserve">
+    <value>Nejprve vyberte {0}.</value>
+  </data>
+  <data name="MainForm_Accessories_ConflictsWith" xml:space="preserve">
+    <value>Není kompatibilní s {0}.</value>
+  </data>
+  <data name="MainForm_Accessories_ControllerLevel" xml:space="preserve">
+    <value>Vyžaduje vyšší úroveň ovladače kvůli: {0}.</value>
+  </data>
+  <data name="MainForm_Accessories_RequiredBy" xml:space="preserve">
+    <value>Vyžaduje: {0}.</value>
+  </data>
+  <data name="MainForm_Accessories_Selected" xml:space="preserve">
+    <value>Vybráno</value>
+  </data>
+  <data name="MainForm_Accessories_Summary" xml:space="preserve">
+    <value>Vybrané doplňky</value>
+  </data>
+  <data name="MainForm_Accessories_Search" xml:space="preserve">
+    <value>Hledat</value>
+  </data>
+  <data name="MainForm_Accessories_Category" xml:space="preserve">
+    <value>Kategorie</value>
+  </data>
+  <data name="MainForm_Accessories_Code" xml:space="preserve">
+    <value>kód</value>
+  </data>
+  <data name="MainForm_Accessories_Description" xml:space="preserve">
+    <value>Popis</value>
+  </data>
+  <data name="MainForm_Accessories_Functions" xml:space="preserve">
+    <value>Funkce</value>
+  </data>
+  <data name="MainForm_Accessories_Status" xml:space="preserve">
+    <value>Stav</value>
+  </data>
+  <data name="MainForm_Accessories_Standard" xml:space="preserve">
+    <value>Standardní</value>
+  </data>
+  <data name="MainForm_Accessories_Optional" xml:space="preserve">
+    <value>Volitelné</value>
+  </data>
+  <data name="MainForm_Accessories_CWDDescription" xml:space="preserve">
+    <value>Chladicí spirála na chlazenou vodu</value>
+  </data>
+  <data name="MainForm_Accessories_HWDDescription" xml:space="preserve">
+    <value>Teplovodní topná spirála</value>
+  </data>
+  <data name="MainForm_Accessories_HCDDescription" xml:space="preserve">
+    <value>Dvoutrubkový vodní výměník pro vytápění a chlazení</value>
+  </data>
+  <data name="MainForm_Accessories_EHDDescription" xml:space="preserve">
+    <value>Elektrický dohřívač</value>
+  </data>
+  <data name="MainForm_Accessories_PEHDDescription" xml:space="preserve">
+    <value>Elektrický předehřívač</value>
+  </data>
+  <data name="ReportViewer_Email" xml:space="preserve">
+    <value>Odeslat emailem</value>
+  </data>
+  <data name="ReportViewer_EmailTooltip" xml:space="preserve">
+    <value>Pošlete PDF e-mailem</value>
+  </data>
+  <data name="ReportViewer_EmailSubject" xml:space="preserve">
+    <value>Výběr - {0}</value>
+  </data>
+  <data name="ReportViewer_EmailBody" xml:space="preserve">
+    <value>dobré ráno,
+
+děkujeme za Váš dotaz.
+
+V příloze naleznete PDF týkající se výběru ventilační jednotky {0} při průtoku vzduchu {1} m³/h a tlaku {2} Pa.{3}
+
+V případě potřeby vysvětlení nebo dalších technických informací nás prosím kontaktujte.
+
+S pozdravem</value>
+  </data>
+  <data name="ReportViewer_EmailCustomerReference" xml:space="preserve">
+    <value>Vaše reference: {0}</value>
+  </data>
+  <data name="ReportViewer_EmailPdfError" xml:space="preserve">
+    <value>Nelze vygenerovat výběrové PDF.</value>
+  </data>
+  <data name="ReportViewer_EmailOutlookUnavailable" xml:space="preserve">
+    <value>Microsoft Outlook není k dispozici nebo jej nelze spustit.</value>
+  </data>
+  <data name="ReportViewer_EmailAttachmentError" xml:space="preserve">
+    <value>Nelze připojit PDF k novému e-mailu.</value>
+  </data>
+  <data name="ReportViewer_EmailError" xml:space="preserve">
+    <value>Nelze vytvořit nový e-mail.</value>
+  </data>
+  <data name="MultiProject_Title" xml:space="preserve">
+    <value>Výběrový projekt</value>
+  </data>
+  <data name="MultiProject_Menu" xml:space="preserve">
+    <value>Výběr projektu...</value>
+  </data>
+  <data name="MultiProject_DefaultReference" xml:space="preserve">
+    <value>Projekt 01</value>
+  </data>
+  <data name="MultiProject_Filter" xml:space="preserve">
+    <value>Projekt výběru SSW</value>
+  </data>
+  <data name="MultiProject_Reference" xml:space="preserve">
+    <value>Reference projektu</value>
+  </data>
+  <data name="MultiProject_Language" xml:space="preserve">
+    <value>Jazyk</value>
+  </data>
+  <data name="MultiProject_New" xml:space="preserve">
+    <value>Nové</value>
+  </data>
+  <data name="MultiProject_Open" xml:space="preserve">
+    <value>Otevřít...</value>
+  </data>
+  <data name="MultiProject_Save" xml:space="preserve">
+    <value>Uložit</value>
+  </data>
+  <data name="MultiProject_SaveAs" xml:space="preserve">
+    <value>Uložit jako...</value>
+  </data>
+  <data name="MultiProject_Remove" xml:space="preserve">
+    <value>Odebrat</value>
+  </data>
+  <data name="MultiProject_OpenSelection" xml:space="preserve">
+    <value>Otevřete výběr</value>
+  </data>
+  <data name="MultiProject_Email" xml:space="preserve">
+    <value>Projekt e-mailu</value>
+  </data>
+  <data name="MultiProject_Close" xml:space="preserve">
+    <value>Zavřít</value>
+  </data>
+  <data name="MultiProject_ColumnReference" xml:space="preserve">
+    <value>Reference</value>
+  </data>
+  <data name="MultiProject_ColumnUnit" xml:space="preserve">
+    <value>Vybraná jednotka</value>
+  </data>
+  <data name="MultiProject_ColumnAirflow" xml:space="preserve">
+    <value>Průtok vzduchu [m³/h]</value>
+  </data>
+  <data name="MultiProject_ColumnPressure" xml:space="preserve">
+    <value>Tlak [Pa]</value>
+  </data>
+  <data name="MultiProject_ColumnPdf" xml:space="preserve">
+    <value>PDF soubor</value>
+  </data>
+  <data name="MultiProject_ColumnStatus" xml:space="preserve">
+    <value>Stav</value>
+  </data>
+  <data name="MultiProject_Ready" xml:space="preserve">
+    <value>Připraveno</value>
+  </data>
+  <data name="MultiProject_Incomplete" xml:space="preserve">
+    <value>Nekompletní</value>
+  </data>
+  <data name="MultiProject_ReferenceRequired" xml:space="preserve">
+    <value>Je vyžadována reference projektu.</value>
+  </data>
+  <data name="MultiProject_RemoveConfirm" xml:space="preserve">
+    <value>Odebrat vybranou sestavu z projektu?</value>
+  </data>
+  <data name="MultiProject_Empty" xml:space="preserve">
+    <value>Projekt neobsahuje žádné zprávy.</value>
+  </data>
+  <data name="MultiProject_Added" xml:space="preserve">
+    <value>Zpráva byla přidána do výběrového projektu.</value>
+  </data>
+  <data name="ReportViewer_AddToProject" xml:space="preserve">
+    <value>Přidat do projektu</value>
+  </data>
+  <data name="ReportViewer_AddToProjectTooltip" xml:space="preserve">
+    <value>Přidejte nebo aktualizujte tuto sestavu v projektu s vícenásobným výběrem</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Norwegian" xml:space="preserve">
+    <value>Norsk</value>
+  </data>
+  <data name="MainForm_Menu_Option_Language_Icelandic" xml:space="preserve">
+    <value>Íslenska</value>
+  </data>
+  <data name="Help_Menu" xml:space="preserve">
+    <value>Pomoc</value>
+  </data>
+  <data name="Help_OpenGuide" xml:space="preserve">
+    <value>Uživatelská příručka</value>
+  </data>
+  <data name="Help_ShowToolTips" xml:space="preserve">
+    <value>Zobrazit tipy nápovědy</value>
+  </data>
+  <data name="Help_Title" xml:space="preserve">
+    <value>Uživatelská příručka SSW</value>
+  </data>
+  <data name="Help_Search" xml:space="preserve">
+    <value>Hledat</value>
+  </data>
+  <data name="Help_Close" xml:space="preserve">
+    <value>Zavřít</value>
+  </data>
+  <data name="Help_Tip_Series" xml:space="preserve">
+    <value>Nejprve vyberte produktovou řadu; seznam jednotek je podle toho filtrován.</value>
+  </data>
+  <data name="Help_Tip_Unit" xml:space="preserve">
+    <value>Vyberte ventilační jednotku pro výpočet.</value>
+  </data>
+  <data name="Help_Tip_Airflow" xml:space="preserve">
+    <value>Vstupte do zimního designového proudění vzduchu. Letní proudění vzduchu je aktuálně synchronizováno.</value>
+  </data>
+  <data name="Help_Tip_Pressure" xml:space="preserve">
+    <value>Dostupný externí statický tlak při zvoleném průtoku vzduchu.</value>
+  </data>
+  <data name="Help_Tip_Conditions" xml:space="preserve">
+    <value>Vlevo nastavte zimní podmínky a vpravo letní podmínky.</value>
+  </data>
+  <data name="Help_Tip_Summer" xml:space="preserve">
+    <value>Povolit nebo zakázat nezávislý výpočet léta.</value>
+  </data>
+  <data name="Help_Tip_Regulation" xml:space="preserve">
+    <value>Posuňte ovládací úroveň a SSW přepočítá pracovní bod a výkon.</value>
+  </data>
+  <data name="Help_Tip_Reference" xml:space="preserve">
+    <value>Zákaznické reference používané v názvech uložených souborů, zprávách a projektech.</value>
+  </data>
+  <data name="Help_Tip_WaterCoils" xml:space="preserve">
+    <value>Vyberte a vypočítejte kompatibilní vodní baterie. Vodní ohřev a elektrický dohřev EHD se vzájemně vylučují.</value>
+  </data>
+  <data name="Help_Tip_ElectricHeaters" xml:space="preserve">
+    <value>Vyberte kompatibilní předehřívače (PEHD) a dohřívače (EHD).</value>
+  </data>
+  <data name="Help_Tip_Accessories" xml:space="preserve">
+    <value>Doplňte výběr o kompatibilní příslušenství a ovládací funkce.</value>
+  </data>
+  <data name="Help_Tip_Report" xml:space="preserve">
+    <value>Zaregistrujte technický výběr a vygenerujte jeho lokalizovanou zprávu ve formátu PDF.</value>
+  </data>
+  <data name="Help_MenuTip_New" xml:space="preserve">
+    <value>Spusťte prázdný technický výběr. Než budete pokračovat, můžete aktuální změny uložit.</value>
+  </data>
+  <data name="Help_MenuTip_Open" xml:space="preserve">
+    <value>Otevřete soubor .sswsel a obnovte jeho uloženou konfiguraci a identitu výběru.</value>
+  </data>
+  <data name="Help_MenuTip_Save" xml:space="preserve">
+    <value>Uložte změny do aktuálního souboru .sswsel nebo zvolte název souboru, pokud ještě nebyl uložen.</value>
+  </data>
+  <data name="Help_MenuTip_SaveAs" xml:space="preserve">
+    <value>Uložte aktuální výběr do jiného souboru .sswsel při zachování stejné technické identity výběru.</value>
+  </data>
+  <data name="Help_MenuTip_Duplicate" xml:space="preserve">
+    <value>Vytvořte nezávislý výběr s novou identitou a zachovejte současnou konfiguraci jako výchozí bod.</value>
+  </data>
+  <data name="Help_MenuTip_Alternative" xml:space="preserve">
+    <value>Vytvořte nezávislou alternativu a přidejte nebo zvyšte Alt. prefix XX v zákaznické referenci.</value>
+  </data>
+  <data name="Help_MenuTip_Recent" xml:space="preserve">
+    <value>Otevřete jeden z naposledy použitých souborů .sswsel.</value>
+  </data>
+  <data name="Help_MenuTip_Project" xml:space="preserve">
+    <value>Vytvořte nebo spravujte projekt, který seskupuje několik výběrů a jejich zprávy ve formátu PDF.</value>
+  </data>
+  <data name="Help_MenuTip_Report" xml:space="preserve">
+    <value>Zaregistrujte aktuální technický výběr a vygenerujte jeho lokalizovanou zprávu ve formátu PDF.</value>
+  </data>
+  <data name="Help_MenuTip_CommercialSheet" xml:space="preserve">
+    <value>Vygenerujte komerční produktový list, jakmile je k dispozici pro vybranou jednotku a jazyk.</value>
+  </data>
+  <data name="Help_MenuTip_Iom" xml:space="preserve">
+    <value>Vygenerujte dokument o instalaci, provozu a údržbě, jakmile bude k dispozici.</value>
+  </data>
+  <data name="Help_MenuTip_Exit" xml:space="preserve">
+    <value>Zavřete SSW. Budete dotázáni, zda uložit neuložené změny výběru.</value>
+  </data>
+  <data name="Help_MenuTip_Language" xml:space="preserve">
+    <value>Změňte rozhraní, zprávy a komunikační jazyk. Jména jazyků zůstávají napsána ve svém vlastním jazyce.</value>
+  </data>
+  <data name="Help_MenuTip_Units" xml:space="preserve">
+    <value>Vyberte systém měření používaný rozhraním a generovanými dokumenty.</value>
+  </data>
+  <data name="Help_MenuTip_CommercialSync" xml:space="preserve">
+    <value>Automaticky synchronizovat obchodní list s aktivním výběrem, když je tato možnost k dispozici.</value>
+  </data>
+  <data name="Help_MenuTip_Updates" xml:space="preserve">
+    <value>Ručně zkontrolujte, zda je k dispozici novější verze SSW.</value>
+  </data>
+  <data name="Help_MenuTip_OpenGuide" xml:space="preserve">
+    <value>Otevřete uživatelskou příručku s možností vyhledávání pro výběry, zprávy a projekty.</value>
+  </data>
+  <data name="Help_MenuTip_ToggleTips" xml:space="preserve">
+    <value>Povolte nebo zakažte kontextové tipy nápovědy v celém SSW.</value>
+  </data>
+  <data name="Help_Topic_GettingStarted_Title" xml:space="preserve">
+    <value>Začínáme</value>
+  </data>
+  <data name="Help_Topic_GettingStarted_Body" xml:space="preserve">
+    <value>Začněte výběrem produktové řady a ventilační jednotky. Zadejte zimní průtok vzduchu a dostupný externí statický tlak, poté nastavte zimní a případně letní teplotní a vlhkostní podmínky.
+
+Před přidáním vodních baterií, elektrických ohřívačů, příslušenství nebo řídicích funkcí zkontrolujte pracovní bod v grafech. Před uložením nebo vytvořením zprávy vyplňte referenci zákazníka; používá se v názvech souborů, zprávách a projektech výběru.</value>
+  </data>
+  <data name="Help_Topic_Workflow_Title" xml:space="preserve">
+    <value>Doporučený pracovní postup výběru</value>
+  </data>
+  <data name="Help_Topic_Workflow_Body" xml:space="preserve">
+    <value>1. Vyberte produktovou řadu a jednotku.
+2. Zadejte průtok vzduchu, tlak a návrhové podmínky.
+3. Nastavte úroveň regulace a ověřte pracovní bod.
+4. Přidejte kompatibilní vodní baterie, elektrické ohřívače, příslušenství a funkce.
+5. Zadejte referenci zákazníka a uložte soubor .sswsel.
+6. Vytvořte a zkontrolujte lokalizovaný dokument PDF.
+7. Pokud projekt obsahuje více jednotek, přidejte každou zprávu do projektu výběru.</value>
+  </data>
+  <data name="Help_Topic_Conditions_Title" xml:space="preserve">
+    <value>Zimní a letní podmínky</value>
+  </data>
+  <data name="Help_Topic_Conditions_Body" xml:space="preserve">
+    <value>Zimní vstupy jsou zobrazeny vlevo a letní vstupy vpravo. Letní proudění vzduchu v současnosti zůstává synchronizováno se zimním prouděním vzduchu. Pro spuštění obou termodynamických výpočtů použijte možnost Povolit léto; deaktivujte jej, pokud potřebujete pouze zimní pouzdro.
+
+Přednastavení Léto/Zima obnoví standardní podmínky návrhu. Předvolby EN 308 a EN 13141-7 ovlivňují pouze zimní případ a nepřepisují letní vstupy.</value>
+  </data>
+  <data name="Help_Topic_Performance_Title" xml:space="preserve">
+    <value>Výkon při čtení</value>
+  </data>
+  <data name="Help_Topic_Performance_Body" xml:space="preserve">
+    <value>Posuvník regulace přesouvá zvolený bod po křivce ventilátoru a přepočítává tlak, příkon a výkon rekuperace tepla. Oranžový bod označuje aktivní průtok vzduchu a tlak; grafy účinnosti zobrazují zimní a při povoleném letním výpočtu také letní pracovní bod.
+
+Ověřte, že požadovaný průtok vzduchu leží uvnitř použitelné křivky ventilátoru. Každá aktivovaná vodní baterie nebo elektrický ohřívač zvyšuje tlakovou ztrátu na straně vzduchu a může snížit maximální přípustný průtok.</value>
+  </data>
+  <data name="Help_Topic_WaterCoils_Title" xml:space="preserve">
+    <value>Vodní baterie</value>
+  </data>
+  <data name="Help_Topic_WaterCoils_Body" xml:space="preserve">
+    <value>Karta Vodní baterie je dostupná pouze tehdy, když jsou pro vybranou jednotku v databázi definovány kompatibilní vazby. Zvolte režim výpočtu CWD, HWD nebo HCD, interní či externí instalaci, kapalinu a její teploty.
+
+Standardní varianta používá katalogovou geometrii. Upravená varianta umožňuje povolené změny geometrie a vyžaduje potvrzení upozornění k návrhu. Zkontrolujte výkon, maximální teplotu výstupního vzduchu, tlakovou ztrátu vzduchu a vody, průtok kapaliny a její rychlost. HCD provádí výpočet vytápění i chlazení se stejnou pevnou geometrií. Vodní ohřev a elektrický dohřev EHD nelze aktivovat současně.</value>
+  </data>
+  <data name="Help_Topic_ElectricHeaters_Title" xml:space="preserve">
+    <value>Elektrické ohřívače</value>
+  </data>
+  <data name="Help_Topic_ElectricHeaters_Body" xml:space="preserve">
+    <value>PEHD je elektrický předehřívač: ohřívá zimní čerstvý vzduch před rekuperačním výměníkem, a proto mění jeho vstupní a výstupní teploty. EHD je elektrický dohřívač: ohřívá přiváděný vzduch za rekuperačním výměníkem.
+
+K dispozici jsou pouze ohřívače přiřazené k vybrané jednotce. Jejich tlaková ztráta na straně vzduchu je zahrnuta do křivky ventilátoru. PEHD lze kombinovat s režimy vodní baterie; EHD nelze kombinovat s HWD ani s topnou částí HCD.</value>
+  </data>
+  <data name="Help_Topic_Accessories_Title" xml:space="preserve">
+    <value>Příslušenství a funkce</value>
+  </data>
+  <data name="Help_Topic_Accessories_Body" xml:space="preserve">
+    <value>Pomocí filtrů vyhledávání a kategorií vyhledejte kompatibilní příslušenství a ovládací funkce. Standardní položky se vybírají automaticky a nelze je odstranit. Volitelné položky lze vybrat nebo vymazat; nedostupné volby zůstávají deaktivovány a jejich popis vysvětluje předpoklad.
+
+Některé funkce vyžadují specifické příslušenství nebo úroveň ovladače. Souhrn vybraného příslušenství zůstává viditelný mimo kartu, takže aktuální konfiguraci lze kdykoli zkontrolovat.</value>
+  </data>
+  <data name="Help_Topic_Save_Title" xml:space="preserve">
+    <value>Nové, uložit a znovu otevřít výběr</value>
+  </data>
+  <data name="Help_Topic_Save_Body" xml:space="preserve">
+    <value>Nový výběr spustí prázdný technický výběr poté, co nabídne uložení neuložené práce. Otevřený výběr obnoví soubor .sswsel, včetně jeho konfigurace, příslušenství, místní reference konceptu a registrované historie výběru.
+
+Uložit aktualizuje aktuální soubor. Uložit jako zapíše stejný technický výběr do jiné cesty: změní umístění souboru, nikoli identitu výběru. Zákaznická reference je vyčištěna a použita jako předpona v navrhovaném názvu souboru. Hvězdička v názvu okna označuje neuložené změny.</value>
+  </data>
+  <data name="Help_Topic_Duplicate_Title" xml:space="preserve">
+    <value>Duplikujte a vytvářejte alternativy</value>
+  </data>
+  <data name="Help_Topic_Duplicate_Body" xml:space="preserve">
+    <value>Duplikovat jako nový výběr zkopíruje aktuální konfiguraci, ale přiřadí novou nezávislou identitu výběru a místní referenci konceptu. Použijte jej, když zkopírovaná jednotka již nesmí sdílet původní historii revizí.
+
+Vytvořit alternativu také vytvoří nezávislou identitu, ale přidá Alt. 01 na zákaznickou referenci. Vytvořením další alternativy z existující alternativy se číslo zvýší. Použijte alternativy pro technicky srovnatelné návrhy patřící ke stejnému požadavku zákazníka.</value>
+  </data>
+  <data name="Help_Topic_Report_Title" xml:space="preserve">
+    <value>Zprávy a revize</value>
+  </data>
+  <data name="Help_Topic_Report_Body" xml:space="preserve">
+    <value>Generovat zprávu ověří aktuální konfiguraci, zaregistruje technický výběr, když je služba dostupná, vytvoří lokalizované PDF a otevře prohlížeč zpráv. Z prohlížeče si můžete výsledek prohlédnout, odeslat PDF e-mailem nebo jej přidat do výběrového projektu.
+
+Opětovné generování zprávy po změně již registrovaného výběru vytvoří další revizi stejné identity. Duplikování nebo vytvoření alternativy nejprve vytvoří jinou identitu. Pokud online registrace není k dispozici, SSW může vygenerovat místní návrh bez přerušení technické práce.</value>
+  </data>
+  <data name="Help_Topic_Project_Title" xml:space="preserve">
+    <value>Projekty s vícenásobným výběrem</value>
+  </data>
+  <data name="Help_Topic_Project_Body" xml:space="preserve">
+    <value>Výběrový projekt (.sswproj) seskupuje zprávy pro několik větracích jednotek pod jednou projektovou referencí a jazykem. Nenahrazuje jednotlivé soubory .sswsel: každý řádek uchovává serializovaný výběr a jeho aktuální PDF.
+
+Vytvořte nebo otevřete projekt z nabídky Soubor &gt; Výběr projektu. Vygenerujte každou sestavu jednotky a použijte Přidat do projektu v prohlížeči sestav. V okně projektu můžete znovu otevřít výběr, odstranit zastaralé řádky, aktualizovat soubory PDF a připravit jeden lokalizovaný e-mail obsahující každou aktuální zprávu a souhrnnou tabulku.</value>
+  </data>
+  <data name="Help_Topic_Exports_Title" xml:space="preserve">
+    <value>Obchodní list a IOM</value>
+  </data>
+  <data name="Help_Topic_Exports_Body" xml:space="preserve">
+    <value>Obchodní list a IOM jsou doplňkové dokumenty a jsou povoleny pouze v případě, že existuje obsah pro vybranou jednotku, obor a jazyk. Neukládají technický výběr a nenahrazují protokol o výpočtu.
+
+Pokud potřebujete zachovat upravitelné výpočetní vstupy, nejprve uložte soubor .sswsel. Vygenerujte zprávu, když potřebujete sledovatelný technický výsledek a odkaz na jeho revizi.</value>
+  </data>
+  <data name="Help_Topic_Tips_Title" xml:space="preserve">
+    <value>Nápověda tipy</value>
+  </data>
+  <data name="Help_Topic_Tips_Body" xml:space="preserve">
+    <value>Tipy kontextové nápovědy vysvětlují ovládací prvky a příkazy provozní nabídky bez otevření průvodce. Při nové instalaci jsou standardně povoleny. Zakázat nebo povolit je z Možnosti nebo Nápověda; předvolba je uložena v uživatelském profilu Windows a je zachována po aktualizaci SSW.
+
+Názvy jazyků v nabídce jazyků jsou záměrně vždy zobrazeny jako autonyma, takže každý uživatel může rozpoznat svůj vlastní jazyk, i když aktuální rozhraní používá jiný jazyk.</value>
+  </data>
+  <data name="FollowUp_ScheduleTitle" xml:space="preserve">
+    <value>E-mailové sledování</value>
+  </data>
+  <data name="FollowUp_ScheduleEnabled" xml:space="preserve">
+    <value>Naplánujte sledování</value>
+  </data>
+  <data name="FollowUp_ScheduleDays" xml:space="preserve">
+    <value>Sledování po [dnech]</value>
+  </data>
+  <data name="FollowUp_ScheduleExplanation" xml:space="preserve">
+    <value>Připomenutí se spustí, když je připraven koncept e-mailu aplikace Outlook.</value>
+  </data>
+  <data name="FollowUp_Cancel" xml:space="preserve">
+    <value>Zrušit</value>
+  </data>
+  <data name="FollowUp_PrepareEmail" xml:space="preserve">
+    <value>Připravte si e-mail</value>
+  </data>
+  <data name="FollowUp_CancelReminder" xml:space="preserve">
+    <value>Zrušit připomenutí</value>
+  </data>
+  <data name="FollowUp_CenterTitle" xml:space="preserve">
+    <value>Následná připomenutí</value>
+  </data>
+  <data name="FollowUp_CloseSuccessful" xml:space="preserve">
+    <value>Zavřít úspěšně</value>
+  </data>
+  <data name="FollowUp_CloseUnsuccessful" xml:space="preserve">
+    <value>Zavřít neúspěšné</value>
+  </data>
+  <data name="FollowUp_CloseWindow" xml:space="preserve">
+    <value>Zavřít</value>
+  </data>
+  <data name="FollowUp_ColumnDue" xml:space="preserve">
+    <value>Termín sledování</value>
+  </data>
+  <data name="FollowUp_ColumnReference" xml:space="preserve">
+    <value>Reference</value>
+  </data>
+  <data name="FollowUp_ColumnReschedules" xml:space="preserve">
+    <value>Přeplánování</value>
+  </data>
+  <data name="FollowUp_ColumnStatus" xml:space="preserve">
+    <value>Stav</value>
+  </data>
+  <data name="FollowUp_ColumnType" xml:space="preserve">
+    <value>Typ</value>
+  </data>
+  <data name="FollowUp_Confirm" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="FollowUp_FilterClosed" xml:space="preserve">
+    <value>Zavřeno</value>
+  </data>
+  <data name="FollowUp_FilterDue" xml:space="preserve">
+    <value>Splatný / po splatnosti</value>
+  </data>
+  <data name="FollowUp_FilterUpcoming" xml:space="preserve">
+    <value>Nadcházející</value>
+  </data>
+  <data name="FollowUp_Open" xml:space="preserve">
+    <value>Otevřít</value>
+  </data>
+  <data name="FollowUp_Refresh" xml:space="preserve">
+    <value>Obnovit</value>
+  </data>
+  <data name="FollowUp_Reschedule" xml:space="preserve">
+    <value>Přeplánovat</value>
+  </data>
+  <data name="FollowUp_StatusCancelled" xml:space="preserve">
+    <value>Zrušeno</value>
+  </data>
+  <data name="FollowUp_StatusPending" xml:space="preserve">
+    <value>Čeká na vyřízení</value>
+  </data>
+  <data name="FollowUp_StatusSucceeded" xml:space="preserve">
+    <value>Úspěšné</value>
+  </data>
+  <data name="FollowUp_StatusUnsuccessful" xml:space="preserve">
+    <value>Neúspěšné</value>
+  </data>
+  <data name="FollowUp_TargetProject" xml:space="preserve">
+    <value>Projekt</value>
+  </data>
+  <data name="FollowUp_TargetSelection" xml:space="preserve">
+    <value>Výběr</value>
+  </data>
+  <data name="FollowUp_BellNone" xml:space="preserve">
+    <value>Žádná následná opatření</value>
+  </data>
+  <data name="FollowUp_BellDue" xml:space="preserve">
+    <value>Následná opatření: {0}</value>
+  </data>
+  <data name="FollowUp_SyncOffline" xml:space="preserve">
+    <value>Offline – místní data</value>
+  </data>
+  <data name="FollowUp_SyncCurrent" xml:space="preserve">
+    <value>Synchronizováno</value>
+  </data>
+  <data name="FollowUp_MissingFile" xml:space="preserve">
+    <value>Místní soubor již není dostupný: {0}</value>
+  </data>
+  <data name="FollowUp_OpenError" xml:space="preserve">
+    <value>Nelze otevřít odkazovaný soubor: {0}</value>
+  </data>
+  <data name="FollowUp_NoItems" xml:space="preserve">
+    <value>Žádná následná připomenutí k zobrazení.</value>
+  </data>
+  <data name="Help_MenuTip_FollowUps" xml:space="preserve">
+    <value>Otevřete centrum pro následné kontroly, abyste mohli zkontrolovat, přeplánovat nebo zavřít připomenutí technických výběrů a projektů.</value>
+  </data>
+  <data name="Help_Topic_FollowUps_Title" xml:space="preserve">
+    <value>Připomenutí následných zákazníků</value>
+  </data>
+  <data name="Help_Topic_FollowUps_Body" xml:space="preserve">
+    <value>Naplánujte sledování zákazníka od 1 do 90 dnů; výchozí hodnota je 7 dní. Odpočítávání začne až poté, co byl návrh Outlooku úspěšně připraven. Zvonek otevře centrum připomenutí, kde jsou zobrazeny splatné, nadcházející a uzavřené položky. Poklepáním na položku znovu otevřete její místní výběr nebo projekt. Upomínku lze uzavřít jako úspěšnou nebo neúspěšnou, přeplánovat nebo zrušit. Data připomenutí zůstávají soukromá pro aktuální instalaci systému Windows; v režimu offline se změny ukládají lokálně a synchronizují se později.</value>
+  </data>
+</root>

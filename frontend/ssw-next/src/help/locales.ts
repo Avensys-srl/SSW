@@ -17,6 +17,19 @@ export const localizedHelp: Record<TranslatedLanguageCode, HelpContent> = {
       summary: { title: "8. Обобщение", summary: "Проверете работната точка, опциите и валидността.", tip: "Запишете .sswsel и после генерирайте проследимия PDF." },
     },
   },
+  cs: {
+    language: "cs", title: "Průvodce technickým výběrem SSW", introduction: "Projděte postupně všech osm kroků. K dokončenému kroku se můžete vrátit, aniž byste ztratili aktuální výběr.", workflowNote: "Před vytvořením registrované technické zprávy uložte upravitelný výběr. Zkontrolujte upozornění a opravte neplatné podmínky.",
+    topics: {
+      project: { title: "1. Projekt", summary: "Zadejte reference projektu, zákazníka a výběru používané k identifikaci zakázky.", tip: "Pro související jednotky použijte jeden projekt a pro každý výběr samostatnou referenci." },
+      preselection: { title: "2. Předvýběr", summary: "Zadejte průtok vzduchu a tlak a zobrazte první seznam kompatibilních vzduchotechnických jednotek.", tip: "Použijte skutečný návrhový pracovní bod; rezervy zkontrolujte po výběru jednotky." },
+      installation: { title: "3. Instalace", summary: "Vyberte montážní polohu a konfiguraci proudění a poté zkontrolujte rozměrové uspořádání.", tip: "Před vydáním zprávy ověřte orientaci servisního přístupu a připojení vzduchovodů." },
+      "water-coil": { title: "4. Vodní výměníky", summary: "Vyberte chlazení, ohřev nebo kombinovaný provoz a nakonfigurujte kompatibilní vodní výměník.", tip: "Zkontrolujte tlakovou ztrátu vody a maximální podmínky výstupního vzduchu." },
+      "electric-heaters": { title: "5. Elektrické ohřívače", summary: "Podle potřeby vyberte kompatibilní zařízení pro předehřev a dohřev.", tip: "PEHD mění vstupní podmínky rekuperátoru; EHD ohřívá přívodní vzduch za rekuperátorem." },
+      accessories: { title: "6. Příslušenství", summary: "Vyberte regulaci, snímače, komunikační moduly a mechanické příslušenství.", tip: "Položky ve standardní výbavě zůstávají vybrané; u zakázaných voleb je uvedena jejich závislost." },
+      documents: { title: "7. Dokumenty", summary: "Otevřete dostupný technický list výrobku a dokumenty k instalaci nebo údržbě.", tip: "Dostupnost dokumentů závisí na vybraném modelu a jazyce." },
+      summary: { title: "8. Souhrn", summary: "Před výstupem zkontrolujte pracovní bod, konfiguraci, možnosti a stav ověření.", tip: "Uložte soubor .sswsel pro pozdější úpravy a poté vytvořte dohledatelnou zprávu PDF." },
+    },
+  },
   da: {
     language: "da", title: "SSW guidet valg", introduction: "Gennemfør de otte trin i rækkefølge. Du kan vende tilbage til et afsluttet trin uden at miste valget.", workflowNote: "Gem det redigerbare valg før den registrerede tekniske rapport. Gennemgå advarsler og ret ugyldige forhold.",
     topics: {

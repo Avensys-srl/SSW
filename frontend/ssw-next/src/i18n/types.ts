@@ -1,5 +1,6 @@
 export const supportedLanguageCodes = [
   "bg",
+  "cs",
   "da",
   "de",
   "en",

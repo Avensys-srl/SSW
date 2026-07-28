@@ -42,7 +42,7 @@ GROUP BY IdHeatRecoveryModel
     $expectedCount = [int]$reader['RelationCount']
     $reader.Close()
 
-    foreach ($languageCode in @('no', 'is')) {
+    foreach ($languageCode in @('no', 'is', 'cs')) {
         $command.CommandText = "SELECT COUNT(*) FROM CLSelectionCategoryTranslations WHERE LanguageCode = '$languageCode'"
         $categoryTranslationCount = [int]$command.ExecuteScalar()
         $command.CommandText = "SELECT COUNT(*) FROM CLSelectionItemTranslations WHERE LanguageCode = '$languageCode'"
@@ -76,5 +76,5 @@ $basicKts = @($ktsItems | Where-Object { $_.Code -eq 'KTS BASIC' })
 if ($basicKts.Count -ne 1 -or $basicKts[0].ControllerLevel -ne 0) {
     throw 'KTS Basic controller level was not exported correctly.'
 }
-Write-Host "Accessory catalog smoke passed: model=$modelId items=$($items.Count) linkedAccessories=$functionCount dependencies=$dependencyCount kts=$($ktsItems.Count) languages=no,is"
+Write-Host "Accessory catalog smoke passed: model=$modelId items=$($items.Count) linkedAccessories=$functionCount dependencies=$dependencyCount kts=$($ktsItems.Count) languages=no,is,cs"
 Remove-Item -LiteralPath $database -Force -ErrorAction SilentlyContinue
