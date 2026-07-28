@@ -50,6 +50,7 @@ import {
 import type {
   AccessoryOption,
   BootstrapData,
+  PerformanceCurveData,
   SelectionDraft,
   SelectionResult,
   StepId,
@@ -164,6 +165,191 @@ const stateTone = (): string => result?.status ?? "valid";
 
 const formatNumber = (value: number, maximumFractionDigits = 1): string =>
   new Intl.NumberFormat(messages().locale, { maximumFractionDigits }).format(value);
+
+type ChartSeries = {
+  x: number[];
+  y: number[];
+  className: string;
+  label: string;
+};
+
+const finiteMaximum = (values: number[], fallback: number): number => {
+  const finite = values.filter((value) => Number.isFinite(value) && value >= 0);
+  return finite.length > 0 ? Math.max(...finite) : fallback;
+};
+
+const roundedAxisMaximum = (value: number): number => {
+  const positive = Math.max(1, value);
+  const magnitude = 10 ** Math.floor(Math.log10(positive));
+  return Math.ceil(positive / magnitude) * magnitude;
+};
+
+const chartPath = (
+  series: ChartSeries,
+  xMaximum: number,
+  yMinimum: number,
+  yMaximum: number,
+): string => {
+  const points = series.x
+    .map((x, index) => ({ x, y: series.y[index] }))
+    .filter(
+      (point) =>
+        Number.isFinite(point.x) &&
+        Number.isFinite(point.y) &&
+        point.x >= 0,
+    );
+  if (points.length === 0) return "";
+  const left = 42;
+  const top = 10;
+  const width = 544;
+  const height = 145;
+  const scaleX = (value: number) => left + (Math.max(0, value) / xMaximum) * width;
+  const scaleY = (value: number) =>
+    top +
+    (1 - (Math.max(yMinimum, Math.min(yMaximum, value)) - yMinimum) /
+      Math.max(1, yMaximum - yMinimum)) *
+      height;
+  return points
+    .map(
+      (point, index) =>
+        `${index === 0 ? "M" : "L"} ${scaleX(point.x).toFixed(2)} ${scaleY(point.y).toFixed(2)}`,
+    )
+    .join(" ");
+};
+
+const renderPerformanceChart = (
+  title: string,
+  series: ChartSeries[],
+  workingPoints: Array<{ x: number; y: number; className: string }>,
+  xMaximum: number,
+  yMinimum: number,
+  yMaximum: number,
+): string => {
+  const left = 42;
+  const top = 10;
+  const width = 544;
+  const height = 145;
+  const scaleX = (value: number) => left + (Math.max(0, value) / xMaximum) * width;
+  const scaleY = (value: number) =>
+    top +
+    (1 - (Math.max(yMinimum, Math.min(yMaximum, value)) - yMinimum) /
+      Math.max(1, yMaximum - yMinimum)) *
+      height;
+  const ticks = [0, 0.25, 0.5, 0.75, 1];
+  return `
+    <figure class="performance-chart">
+      <figcaption>
+        <strong>${escapeHtml(title)}</strong>
+        <span>${series.map((item) => `<i class="${item.className}"></i>${escapeHtml(item.label)}`).join("")}</span>
+      </figcaption>
+      <svg viewBox="0 0 600 190" role="img" aria-label="${escapeHtml(title)}">
+        ${ticks
+          .map((tick) => {
+            const x = left + width * tick;
+            const y = top + height * (1 - tick);
+            return `
+              <line class="performance-grid" x1="${x}" y1="${top}" x2="${x}" y2="${top + height}"></line>
+              <line class="performance-grid" x1="${left}" y1="${y}" x2="${left + width}" y2="${y}"></line>
+              <text class="performance-tick" x="${x}" y="174" text-anchor="middle">${escapeHtml(formatNumber(xMaximum * tick, 0))}</text>
+              <text class="performance-tick" x="35" y="${y + 3}" text-anchor="end">${escapeHtml(formatNumber(yMinimum + (yMaximum - yMinimum) * tick, 0))}</text>`;
+          })
+          .join("")}
+        <line class="performance-axis" x1="${left}" y1="${top}" x2="${left}" y2="${top + height}"></line>
+        <line class="performance-axis" x1="${left}" y1="${top + height}" x2="${left + width}" y2="${top + height}"></line>
+        ${series
+          .map((item) => {
+            const path = chartPath(item, xMaximum, yMinimum, yMaximum);
+            return path
+              ? `<path class="performance-line ${item.className}" d="${path}"></path>`
+              : "";
+          })
+          .join("")}
+        ${workingPoints
+          .filter(
+            (point) =>
+              Number.isFinite(point.x) &&
+              Number.isFinite(point.y) &&
+              point.x >= 0,
+          )
+          .map(
+            (point) =>
+              `<circle class="performance-point ${point.className}" cx="${scaleX(point.x)}" cy="${scaleY(point.y)}" r="4.5"></circle>`,
+          )
+          .join("")}
+        <text class="performance-axis-title" x="${left + width / 2}" y="188" text-anchor="middle">${escapeHtml(messages().ui.preselection.supplyAirflow)} [m³/h]</text>
+      </svg>
+    </figure>`;
+};
+
+const renderPerformanceStrip = (): string => {
+  if (!draft || !result || !selectedUnit()) return "";
+  const winter: PerformanceCurveData | undefined = result.winterCurve;
+  if (!winter || winter.regulatedAirflows.length === 0) return "";
+  const summer = result.summerCurve;
+  const airflowValues = [
+    ...winter.originalAirflows,
+    ...winter.regulatedAirflows,
+    ...(summer?.regulatedAirflows ?? []),
+    winter.workingPointAirflow,
+    summer?.workingPointAirflow ?? 0,
+  ];
+  const xMaximum = roundedAxisMaximum(finiteMaximum(airflowValues, 100));
+  const pressureMaximum = roundedAxisMaximum(
+    finiteMaximum(
+      [...winter.originalPressures, ...winter.regulatedPressures],
+      winter.workingPointPressurePa,
+    ),
+  );
+  const powerMaximum = roundedAxisMaximum(
+    finiteMaximum(
+      [...winter.originalPowers, ...winter.regulatedPowers],
+      winter.workingPointPowerW,
+    ),
+  );
+  const regulationLabel = `${formatNumber(draft.regulationPercent, 0)}%`;
+  const text = messages();
+  return `<section class="performance-strip">
+    ${renderPerformanceChart(
+      `${text.ui.context.pressure} [Pa]`,
+      [
+        { x: winter.originalAirflows, y: winter.originalPressures, className: "original", label: "100%" },
+        { x: winter.regulatedAirflows, y: winter.regulatedPressures, className: "regulated", label: regulationLabel },
+      ],
+      [{ x: winter.workingPointAirflow, y: winter.workingPointPressurePa, className: "winter" }],
+      xMaximum,
+      0,
+      pressureMaximum,
+    )}
+    ${renderPerformanceChart(
+      `${text.ui.context.power} [W]`,
+      [
+        { x: winter.regulatedAirflows, y: winter.regulatedPowers, className: "regulated", label: regulationLabel },
+      ],
+      [{ x: winter.workingPointAirflow, y: winter.workingPointPowerW, className: "winter" }],
+      xMaximum,
+      0,
+      powerMaximum,
+    )}
+    ${renderPerformanceChart(
+      `${text.ui.context.efficiency} [%]`,
+      [
+        { x: winter.regulatedAirflows, y: winter.efficienciesPercent, className: "winter", label: text.ui.preselection.winter },
+        ...(draft.summerEnabled && summer
+          ? [{ x: summer.regulatedAirflows, y: summer.efficienciesPercent, className: "summer", label: text.ui.preselection.summer }]
+          : []),
+      ],
+      [
+        { x: winter.workingPointAirflow, y: winter.workingPointEfficiencyPercent, className: "winter" },
+        ...(draft.summerEnabled && summer
+          ? [{ x: summer.workingPointAirflow, y: summer.workingPointEfficiencyPercent, className: "summer" }]
+          : []),
+      ],
+      xMaximum,
+      60,
+      100,
+    )}
+  </section>`;
+};
 
 const renderLoading = (): void => {
   const text = messages();
@@ -308,6 +494,12 @@ const renderShell = (): void => {
           <section class="step-content" aria-live="polite">
             ${renderStep(currentStep)}
           </section>
+
+          ${
+            currentStep !== "project" && currentStep !== "preselection"
+              ? renderPerformanceStrip()
+              : ""
+          }
 
           <footer class="step-footer">
             <button class="button secondary" data-action="previous" type="button" ${
@@ -468,6 +660,10 @@ const renderPreselectionStep = (): string => {
         ${numberField(text.ui.preselection.supplyAirflow, "operatingPoint.supplyAirflow", draft!.operatingPoint.supplyAirflow, "m³/h")}
         ${numberField(text.ui.preselection.extractAirflow, "operatingPoint.extractAirflow", draft!.operatingPoint.extractAirflow, "m³/h")}
         ${numberField(text.ui.preselection.staticPressure, "operatingPoint.pressure", draft!.operatingPoint.pressure, "Pa")}
+        <label class="toggle imbalance-toggle" title="${escapeHtml(text.ui.preselection.balancedNotice)}">
+          <input type="checkbox" data-field="imbalanceEnabled" ${draft!.imbalanceEnabled ? "checked" : ""} disabled />
+          <span></span><b>${escapeHtml(text.ui.preselection.imbalance)}</b>
+        </label>
       </div>
       <div class="preselection-technical">
         <div class="technical-controls">
@@ -958,6 +1154,30 @@ const bindShellEvents = (): void => {
   });
 
   document.querySelectorAll<HTMLInputElement | HTMLSelectElement>("[data-field]").forEach((element) => {
+    element.addEventListener("input", () => {
+      const field = element.dataset.field ?? "";
+      if (
+        field !== "operatingPoint.supplyAirflow" &&
+        field !== "operatingPoint.extractAirflow"
+      ) {
+        return;
+      }
+      applyFieldValue(field, element);
+      const pairedField =
+        field === "operatingPoint.supplyAirflow"
+          ? "operatingPoint.extractAirflow"
+          : "operatingPoint.supplyAirflow";
+      const pairedInput = document.querySelector<HTMLInputElement>(
+        `[data-field="${pairedField}"]`,
+      );
+      if (pairedInput) {
+        pairedInput.value = String(
+          field === "operatingPoint.supplyAirflow"
+            ? draft!.operatingPoint.extractAirflow
+            : draft!.operatingPoint.supplyAirflow,
+        );
+      }
+    });
     element.addEventListener("change", async () => {
       applyFieldValue(element.dataset.field ?? "", element);
       if (currentStep === "preselection") {
@@ -1044,9 +1264,20 @@ const applyFieldValue = (
     "project.name": () => { draft!.project.name = String(value); },
     "project.customerReference": () => { draft!.project.customerReference = String(value); },
     "project.language": () => { draft!.project.language = String(value); },
-    "operatingPoint.supplyAirflow": () => { draft!.operatingPoint.supplyAirflow = Number(value); },
-    "operatingPoint.extractAirflow": () => { draft!.operatingPoint.extractAirflow = Number(value); },
+    "operatingPoint.supplyAirflow": () => {
+      draft!.operatingPoint.supplyAirflow = Number(value);
+      if (!draft!.imbalanceEnabled) {
+        draft!.operatingPoint.extractAirflow = Number(value);
+      }
+    },
+    "operatingPoint.extractAirflow": () => {
+      draft!.operatingPoint.extractAirflow = Number(value);
+      if (!draft!.imbalanceEnabled) {
+        draft!.operatingPoint.supplyAirflow = Number(value);
+      }
+    },
     "operatingPoint.pressure": () => { draft!.operatingPoint.pressure = Number(value); },
+    imbalanceEnabled: () => { draft!.imbalanceEnabled = Boolean(value); },
     regulationPercent: () => { draft!.regulationPercent = Number(value); },
     summerEnabled: () => { draft!.summerEnabled = Boolean(value); },
     winterOutdoorTemperature: () => { draft!.winterOutdoorTemperature = Number(value); },

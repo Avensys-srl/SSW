@@ -272,6 +272,18 @@ tecnica usando le configurazioni gia' presenti nell'SDF. La rimozione del
 passaggio WinForms per dialoghi, RDLC, email e follow-up appartiene all'Onda 7
 e avverra' solo dopo il confronto parallelo approvato.
 
+Aggiornamenti del prototipo del 28/07/2026:
+
+- la preselezione filtra esclusivamente modelli con un punto di lavoro fisico,
+  con pressione, potenza e SFP positivi calcolati dal servizio esistente;
+- la scelta del modello porta direttamente alla configurazione installativa;
+- le portate di mandata e ripresa restano sincronizzate in entrambe le
+  direzioni finche' lo sbilanciamento non viene implementato;
+- il controllo `Sbilanciamento` e' visibile ma disabilitato e non selezionato;
+- dopo la scelta del modello la nuova UI mantiene in basso i grafici reali di
+  pressione, potenza assorbita e rendimento, usando le serie numeriche del
+  servizio applicativo e una scala di portata comune.
+
 ## Onda 6 - Portate sbilanciate
 
 Applicare `UNBALANCED_AIRFLOW_CONTRACT.md`:

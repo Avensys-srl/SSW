@@ -23,6 +23,20 @@ export interface OperatingPoint {
   pressure: number;
 }
 
+export interface PerformanceCurveData {
+  originalAirflows: number[];
+  originalPressures: number[];
+  originalPowers: number[];
+  regulatedAirflows: number[];
+  regulatedPressures: number[];
+  regulatedPowers: number[];
+  efficienciesPercent: number[];
+  workingPointAirflow: number;
+  workingPointPressurePa: number;
+  workingPointPowerW: number;
+  workingPointEfficiencyPercent: number;
+}
+
 export interface UnitOption {
   id: string;
   family: string;
@@ -101,6 +115,7 @@ export interface ElectricHeaterPerformance {
 export interface SelectionDraft {
   project: ProjectInfo;
   operatingPoint: OperatingPoint;
+  imbalanceEnabled: boolean;
   regulationPercent: number;
   summerEnabled: boolean;
   winterOutdoorTemperature: number;
@@ -153,6 +168,8 @@ export interface SelectionResult {
   waterCoilResults?: WaterCoilPerformance[];
   electricHeaterResults?: ElectricHeaterPerformance[];
   additionalPressureDropPa?: number;
+  winterCurve?: PerformanceCurveData;
+  summerCurve?: PerformanceCurveData;
 }
 
 export interface BootstrapData {

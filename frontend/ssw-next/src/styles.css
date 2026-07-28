@@ -198,6 +198,8 @@ input:focus, select:focus { border-color: var(--action); box-shadow: 0 0 0 2px r
 .button.full { width: 100%; }
 .button:disabled { opacity: .45; cursor: not-allowed; }
 .operating-point { display: grid; gap: 16px; }
+.imbalance-toggle { width: fit-content; min-height: 30px; opacity: .55; cursor: not-allowed; }
+.imbalance-toggle > span { background: #c6cdd5; }
 .preselection-technical { display: grid; gap: 12px; margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line); }
 .preselection-technical > h3 { font-size: 12px; }
 .technical-controls { display: grid; grid-template-columns: minmax(130px, 1fr) auto; align-items: end; gap: 14px; }
@@ -274,6 +276,42 @@ input:focus, select:focus { border-color: var(--action); box-shadow: 0 0 0 2px r
 .chart-line { fill: none; stroke-width: 2; }
 .chart-line.orange { stroke: #e38b12; }
 .chart-dot { fill: var(--brand-red); stroke: white; stroke-width: 2; }
+.performance-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 20px;
+  padding: 10px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+.performance-chart { min-width: 0; margin: 0; }
+.performance-chart figcaption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 25px;
+  padding: 0 7px;
+  color: var(--muted);
+  font-size: 9px;
+}
+.performance-chart figcaption strong { color: var(--ink); font-size: 10px; }
+.performance-chart figcaption span { display: flex; align-items: center; gap: 5px; white-space: nowrap; }
+.performance-chart figcaption i { width: 13px; height: 2px; }
+.performance-chart figcaption i.original, .performance-line.original { stroke: #3b82f6; background: #3b82f6; }
+.performance-chart figcaption i.regulated, .performance-line.regulated { stroke: #ed8b00; background: #ed8b00; }
+.performance-chart figcaption i.winter, .performance-line.winter { stroke: #3b82f6; background: #3b82f6; }
+.performance-chart figcaption i.summer, .performance-line.summer { stroke: #278b57; background: #278b57; }
+.performance-chart svg { display: block; width: 100%; height: auto; min-height: 150px; }
+.performance-grid { stroke: #e1e6ec; stroke-width: 1; }
+.performance-axis { stroke: #8c99a8; stroke-width: 1; }
+.performance-line { fill: none; stroke-width: 2; vector-effect: non-scaling-stroke; }
+.performance-point { fill: var(--brand-red); stroke: white; stroke-width: 2; vector-effect: non-scaling-stroke; }
+.performance-point.summer { fill: #278b57; }
+.performance-tick, .performance-axis-title { fill: #5f6e82; font-family: inherit; font-size: 16px; }
+.performance-axis-title { font-size: 13px; }
 .table-panel { padding: 0; overflow: hidden; }
 .table-toolbar { display: grid; grid-template-columns: minmax(240px, 1fr) 210px auto; align-items: center; gap: 12px; padding: 14px; border-bottom: 1px solid var(--line); }
 .table-toolbar > span { color: var(--muted); font-size: 10px; text-align: right; }

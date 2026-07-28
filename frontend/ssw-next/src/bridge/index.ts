@@ -148,6 +148,7 @@ class NativeSelectionBridge implements SelectionBridge {
         extractAirflow: airflow,
         pressure: Math.max(0, Math.min(100, preferred.StaticPressurePa)),
       },
+      imbalanceEnabled: false,
       regulationPercent: 100,
       summerEnabled: true,
       winterOutdoorTemperature: -10,
@@ -317,6 +318,7 @@ class NativeSelectionBridge implements SelectionBridge {
       modelCode: draft.selectedUnitId,
       supplyAirflow: draft.operatingPoint.supplyAirflow,
       extractAirflow: draft.operatingPoint.extractAirflow,
+      imbalanceEnabled: draft.imbalanceEnabled,
       pressure: draft.operatingPoint.pressure,
       regulation: draft.regulationPercent,
       summerEnabled: draft.summerEnabled,
@@ -471,6 +473,29 @@ class NativeSelectionBridge implements SelectionBridge {
         }),
       ),
       additionalPressureDropPa: numberValue(native.AdditionalPressureDropPa),
+      winterCurve: this.mapCurve(winter?.Curves),
+      summerCurve: this.mapCurve(summer?.Curves),
+    };
+  }
+
+  private mapCurve(native: any) {
+    if (!native) return undefined;
+    const values = (items: unknown): number[] =>
+      Array.isArray(items) ? items.map((item) => numberValue(item)) : [];
+    return {
+      originalAirflows: values(native?.OriginalAirflows),
+      originalPressures: values(native?.OriginalPressures),
+      originalPowers: values(native?.OriginalPowers),
+      regulatedAirflows: values(native?.RegulatedAirflows),
+      regulatedPressures: values(native?.RegulatedPressures),
+      regulatedPowers: values(native?.RegulatedPowers),
+      efficienciesPercent: values(native?.EfficienciesPercent),
+      workingPointAirflow: numberValue(native?.WorkingPointAirflow),
+      workingPointPressurePa: numberValue(native?.WorkingPointPressurePa),
+      workingPointPowerW: numberValue(native?.WorkingPointPowerW),
+      workingPointEfficiencyPercent: numberValue(
+        native?.WorkingPointEfficiencyPercent,
+      ),
     };
   }
 }

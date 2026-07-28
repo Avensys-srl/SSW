@@ -168,6 +168,7 @@ export interface UiMessages {
     dutyPointDescription: string;
     supplyAirflow: string;
     extractAirflow: string;
+    imbalance: string;
     staticPressure: string;
     balancedNotice: string;
     regulationPercent: string;
