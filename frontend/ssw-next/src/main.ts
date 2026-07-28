@@ -64,7 +64,6 @@ type StepDefinition = {
 const steps: StepDefinition[] = [
   { id: "project" },
   { id: "preselection" },
-  { id: "unit" },
   { id: "installation" },
   { id: "water-coil", optional: true },
   { id: "electric-heaters", optional: true },
@@ -410,8 +409,6 @@ const renderStep = (step: StepId): string => {
       return renderProjectStep();
     case "preselection":
       return renderPreselectionStep();
-    case "unit":
-      return renderUnitStep();
     case "installation":
       return renderInstallationStep();
     case "water-coil":
@@ -513,40 +510,11 @@ const renderPreselectionStep = (): string => {
         <span class="score-badge">${escapeHtml(text.ui.preselection.technicalFit)}</span>
       </div>
       <div class="ranked-list">
-        ${data!.units.map((unit, index) => unitCard(unit, index === 0)).join("")}
+        ${data!.units.length > 0
+          ? data!.units.map((unit, index) => unitCard(unit, index === 0)).join("")
+          : `<div class="empty-state">${escapeHtml(text.status.unavailable)}</div>`}
       </div>
     </section>
-  </div>`;
-};
-
-const renderUnitStep = (): string => {
-  const text = messages();
-  return `<div class="unit-comparison">
-    ${data!.units
-      .map((unit) => {
-        const selected = unit.id === draft!.selectedUnitId;
-        return `
-          <article class="comparison-card ${selected ? "selected" : ""}" data-select-unit="${unit.id}">
-            <div class="comparison-top">
-              <span>${unit.family}</span>
-              ${selected ? `<b>${icon("check")} ${escapeHtml(text.ui.unit.selected)}</b>` : `<b>${unit.fitScore >= 0 ? `${unit.fitScore}% fit` : escapeHtml(text.ui.unit.catalogue)}</b>`}
-            </div>
-            <div class="product-silhouette">
-              <span></span><span></span><span></span>
-            </div>
-            <h2>${unit.model}</h2>
-            ${renderKeyValues([
-              [text.ui.unit.maximumAirflow, `${formatNumber(unit.maxAirflow, 0)} m³/h`],
-              [text.ui.unit.availablePressure, `${formatNumber(unit.availablePressure, 0)} Pa`],
-              [text.ui.unit.nominalEfficiency, unit.efficiency > 0 ? `${formatNumber(unit.efficiency)}%` : text.ui.preselection.calculateAfterSelection],
-              [text.ui.unit.soundPower, unit.soundPower > 0 ? `${formatNumber(unit.soundPower, 0)} dB(A)` : text.ui.preselection.calculateAfterSelection],
-            ])}
-            <button class="button ${selected ? "secondary" : "primary"} full" type="button">
-              ${escapeHtml(selected ? text.ui.unit.currentUnit : text.ui.unit.chooseUnit)}
-            </button>
-          </article>`;
-      })
-      .join("")}
   </div>`;
 };
 
@@ -695,7 +663,7 @@ const renderSummaryStep = (): string => {
           <div><strong>${statusLabel(result!.status)}</strong><p>${escapeHtml(result!.messages[0] ?? text.ui.summary.readyForReport)}</p></div>
         </div>
         <div class="summary-section">
-          <div class="summary-section-heading"><h2>${escapeHtml(text.ui.summary.configuration)}</h2><button data-step="unit">${escapeHtml(text.actions.edit)}</button></div>
+          <div class="summary-section-heading"><h2>${escapeHtml(text.ui.summary.configuration)}</h2><button data-step="preselection">${escapeHtml(text.actions.edit)}</button></div>
           ${renderKeyValues([
             [text.ui.summary.project, draft!.project.name],
             [text.ui.summary.reference, draft!.project.customerReference || "-"],
@@ -874,9 +842,9 @@ const unitCard = (unit: UnitOption, recommended: boolean): string => {
   const text = messages();
   return `
   <article class="ranked-unit ${unit.id === draft!.selectedUnitId ? "selected" : ""}" data-select-unit="${unit.id}">
-    <div class="ranked-unit-score"><strong>${unit.fitScore >= 0 ? unit.fitScore : "—"}</strong><span>${unit.fitScore >= 0 ? "%" : ""}</span></div>
+    <div class="ranked-unit-score"><strong>${formatNumber(unit.requiredRegulation, 0)}</strong><span>%</span></div>
     <div><small>${unit.family}</small><strong>${unit.model}</strong></div>
-    <div class="ranked-spec"><span>${unit.maxAirflow} m³/h</span><span>${unit.efficiency > 0 ? `${unit.efficiency}%` : escapeHtml(text.ui.preselection.calculateAfterSelection)}</span><span>${unit.soundPower > 0 ? `${unit.soundPower} dB(A)` : escapeHtml(text.ui.preselection.calculateAfterSelection)}</span></div>
+    <div class="ranked-spec"><span>${formatNumber(unit.availablePressure, 0)} Pa</span><span>${formatNumber(unit.absorbedPower, 0)} W</span><span>SFP ${formatNumber(unit.sfp, 2)}</span></div>
     ${recommended ? `<b class="recommended">${icon("sparkles", 14)} ${escapeHtml(text.ui.preselection.recommended)}</b>` : ""}
     ${unit.id === draft!.selectedUnitId ? icon("circle-check", 20) : icon("chevron-right", 20)}
   </article>`;
@@ -974,7 +942,11 @@ const bindShellEvents = (): void => {
   document.querySelectorAll<HTMLElement>("[data-select-unit]").forEach((element) => {
     element.addEventListener("click", async () => {
       draft!.selectedUnitId = element.dataset.selectUnit ?? draft!.selectedUnitId;
+      const unit = selectedUnit();
+      if (unit) draft!.regulationPercent = unit.requiredRegulation;
       await recalculate();
+      currentStep = "installation";
+      renderShell();
     });
   });
 
@@ -988,7 +960,11 @@ const bindShellEvents = (): void => {
   document.querySelectorAll<HTMLInputElement | HTMLSelectElement>("[data-field]").forEach((element) => {
     element.addEventListener("change", async () => {
       applyFieldValue(element.dataset.field ?? "", element);
-      await recalculate();
+      if (currentStep === "preselection") {
+        await refreshPreselection();
+      } else {
+        await recalculate();
+      }
     });
   });
 
@@ -1104,6 +1080,24 @@ const navigate = (offset: number): void => {
   const next = steps[Math.max(0, Math.min(steps.length - 1, currentIndex + offset))];
   currentStep = next.id;
   renderShell();
+};
+
+const refreshPreselection = async (): Promise<void> => {
+  calculating = true;
+  renderShell();
+  data!.units = await bridge.preselect(structuredClone(draft!));
+  const current =
+    data!.units.find((unit) => unit.id === draft!.selectedUnitId) ??
+    data!.units[0];
+  if (!current) {
+    draft!.selectedUnitId = "";
+    calculating = false;
+    renderShell();
+    return;
+  }
+  draft!.selectedUnitId = current.id;
+  draft!.regulationPercent = current.requiredRegulation;
+  await recalculate();
 };
 
 const recalculate = async (): Promise<void> => {

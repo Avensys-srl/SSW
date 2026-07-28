@@ -74,6 +74,12 @@ Public NotInheritable Class CLBalancedScenarioCalculation
 
 End Class
 
+Friend NotInheritable Class CLCompatibleFanOperatingPoint
+    Public Property RegulationPercent As Integer
+    Public Property PressurePa As Double
+    Public Property PowerW As Double
+End Class
+
 Public NotInheritable Class CLSelectionApplicationService
 
     Private Sub New()
@@ -275,6 +281,75 @@ Public NotInheritable Class CLSelectionApplicationService
             .WorkingPointPressurePa = workingPressure,
             .WorkingPointPowerW = workingPower,
             .WorkingPointEfficiencyPercent = workingEfficiency
+        }
+    End Function
+
+    Friend Shared Function FindCompatibleFanOperatingPoint(
+        model As CLDCHeatRecoveryModel,
+        requestedAirflow As Double,
+        requestedPressure As Double,
+        minimumRegulationPercent As Integer) As CLCompatibleFanOperatingPoint
+
+        If model Is Nothing OrElse requestedAirflow <= 0 OrElse requestedPressure < 0 Then Return Nothing
+        If model.AirflowsItems Is Nothing OrElse model.PressuresItems Is Nothing OrElse
+            model.PowersItems Is Nothing OrElse model.AirflowsItems.Length < 2 OrElse
+            model.PressuresItems.Length <> model.AirflowsItems.Length OrElse
+            model.PowersItems.Length <> model.AirflowsItems.Length Then Return Nothing
+
+        Dim airflows As Double() = DirectCast(model.AirflowsItems.Clone(), Double())
+        Dim pressures As Double() = DirectCast(model.PressuresItems.Clone(), Double())
+        Dim powers As Double() = DirectCast(model.PowersItems.Clone(), Double())
+        For index As Integer = 0 To powers.Length - 1
+            powers(index) -= 3.5R
+        Next
+
+        Dim interpolatedAirflows As Double() = BuildInterpolationAirflows(airflows.Max())
+        Dim interpolatedPressures As Double() = Nothing
+        Dim interpolatedPowers As Double() = Nothing
+        alglib.spline1dconvcubic(airflows, pressures, interpolatedAirflows, interpolatedPressures)
+        alglib.spline1dconvcubic(airflows, powers, interpolatedAirflows, interpolatedPowers)
+        TrimPressureCurveAtZero(interpolatedAirflows, interpolatedPressures, interpolatedPowers)
+
+        Dim maximumPoint = EvaluateFanOperatingPoint(
+            interpolatedAirflows, interpolatedPressures, interpolatedPowers,
+            requestedAirflow, 100)
+        If maximumPoint Is Nothing OrElse maximumPoint.PressurePa < requestedPressure Then Return Nothing
+        If maximumPoint.PressurePa - requestedPressure <= 5 Then Return maximumPoint
+
+        Dim acceptedPoint As CLCompatibleFanOperatingPoint = maximumPoint
+        For regulation = 99 To Math.Max(1, minimumRegulationPercent) Step -1
+            Dim candidate = EvaluateFanOperatingPoint(
+                interpolatedAirflows, interpolatedPressures, interpolatedPowers,
+                requestedAirflow, regulation)
+            If candidate Is Nothing OrElse candidate.PressurePa < requestedPressure Then Exit For
+            acceptedPoint = candidate
+        Next
+        Return acceptedPoint
+    End Function
+
+    Private Shared Function EvaluateFanOperatingPoint(
+        airflows As Double(),
+        pressures As Double(),
+        powers As Double(),
+        requestedAirflow As Double,
+        regulationPercent As Integer) As CLCompatibleFanOperatingPoint
+
+        Dim factor = regulationPercent / 100.0R
+        Dim sourceAirflow = requestedAirflow / factor
+        If sourceAirflow < airflows(0) OrElse sourceAirflow > airflows(airflows.Length - 1) Then Return Nothing
+
+        Dim upperIndex = GetUpperIndex(airflows, sourceAirflow)
+        Dim pressure = InterpolateCurveValue(
+            airflows, pressures, sourceAirflow, upperIndex) * factor ^ 2
+        Dim power = InterpolateCurveValue(
+            airflows, powers, sourceAirflow, upperIndex) * factor ^ 3
+        If Double.IsNaN(pressure) OrElse Double.IsInfinity(pressure) OrElse pressure <= 0 OrElse
+            Double.IsNaN(power) OrElse Double.IsInfinity(power) OrElse power <= 0 Then Return Nothing
+
+        Return New CLCompatibleFanOperatingPoint With {
+            .RegulationPercent = regulationPercent,
+            .PressurePa = Math.Round(pressure, 1),
+            .PowerW = Math.Round(power, 1)
         }
     End Function
 

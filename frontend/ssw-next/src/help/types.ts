@@ -1,5 +1,7 @@
 import type { LanguageCode, StepId } from "../i18n";
 
+type HelpStepId = Exclude<StepId, "unit">;
+
 export interface HelpTopic {
   title: string;
   summary: string;
@@ -10,5 +12,5 @@ export interface HelpContent {
   title: string;
   introduction: string;
   workflowNote: string;
-  topics: Record<StepId, HelpTopic>;
+  topics: Record<HelpStepId, HelpTopic>;
 }

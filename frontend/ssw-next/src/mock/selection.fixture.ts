@@ -16,6 +16,9 @@ export const mockUnits: UnitOption[] = [
     efficiency: 95,
     soundPower: 43,
     fitScore: 98,
+    requiredRegulation: 82,
+    absorbedPower: 180,
+    sfp: 1.3,
   },
   {
     id: "clrc-048-osc",
@@ -26,6 +29,9 @@ export const mockUnits: UnitOption[] = [
     efficiency: 94,
     soundPower: 45,
     fitScore: 91,
+    requiredRegulation: 88,
+    absorbedPower: 220,
+    sfp: 1.55,
   },
   {
     id: "clrc-06a-osc",
@@ -36,6 +42,9 @@ export const mockUnits: UnitOption[] = [
     efficiency: 93,
     soundPower: 44,
     fitScore: 87,
+    requiredRegulation: 94,
+    absorbedPower: 260,
+    sfp: 1.8,
   },
 ];
 

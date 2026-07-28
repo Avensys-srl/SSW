@@ -19,6 +19,19 @@ export class MockSelectionBridge implements SelectionBridge {
     return structuredClone(mockBootstrapData);
   }
 
+  async preselect(draft: SelectionDraft) {
+    await wait(160);
+    return structuredClone(
+      mockUnits
+        .filter(
+          (unit) =>
+            draft.operatingPoint.supplyAirflow <= unit.maxAirflow &&
+            draft.operatingPoint.pressure <= unit.availablePressure,
+        )
+        .sort((left, right) => left.sfp - right.sfp),
+    );
+  }
+
   async calculate(draft: SelectionDraft): Promise<SelectionResult> {
     await wait(240);
     const unit = mockUnits.find((candidate) => candidate.id === draft.selectedUnitId);

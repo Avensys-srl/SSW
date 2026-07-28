@@ -17,6 +17,14 @@ type NativeModel = {
   StaticPressurePa: number;
 };
 
+type NativePreselection = {
+  Model: NativeModel;
+  RequiredRegulationPercent: number;
+  AvailablePressurePa: number;
+  AbsorbedPowerW: number;
+  CombinedSfp: number;
+};
+
 type NativeAccessory = {
   Code: string;
   Name: string;
@@ -174,6 +182,15 @@ class NativeSelectionBridge implements SelectionBridge {
       electricPostheaterId: 0,
       accessoryCodes: [] as string[],
     };
+    const compatibleUnits = await this.preselectNative(draft);
+    if (compatibleUnits.length === 0) {
+      throw new Error("No unit satisfies the initial operating point.");
+    }
+    draft.selectedUnitId = compatibleUnits[0].Model.Code;
+    draft.regulationPercent = numberValue(
+      compatibleUnits[0].RequiredRegulationPercent,
+      100,
+    );
     const native = await this.calculateNative(draft);
     const defaultLayout = (
       native.Layout?.Configurations as Array<{
@@ -209,19 +226,9 @@ class NativeSelectionBridge implements SelectionBridge {
 
     return {
       draft,
-      units: this.models.map((model) => ({
-        id: model.Code,
-        family: model.SeriesCode,
-        model: model.Name || model.Code,
-        maxAirflow: numberValue(model.NominalAirflowM3h),
-        availablePressure: numberValue(model.StaticPressurePa),
-        efficiency:
-          model.Code === preferred.Code
-            ? numberValue(native.Winter?.Curves?.WorkingPointEfficiencyPercent)
-            : 0,
-        soundPower: 0,
-        fitScore: -1,
-      })),
+      units: compatibleUnits.map((item) =>
+        this.mapPreselection(item, native, draft.selectedUnitId),
+      ),
       accessories: (native.Accessories as NativeAccessory[] ?? []).map((item) => ({
         code: item.Code,
         name: item.Name,
@@ -241,6 +248,12 @@ class NativeSelectionBridge implements SelectionBridge {
     return this.mapResult(
       await this.calculateNative(draft),
       draft.operatingPoint.pressure,
+    );
+  }
+
+  async preselect(draft: Parameters<SelectionBridge["preselect"]>[0]) {
+    return (await this.preselectNative(draft)).map((item) =>
+      this.mapPreselection(item),
     );
   }
 
@@ -264,6 +277,34 @@ class NativeSelectionBridge implements SelectionBridge {
     draft: Parameters<SelectionBridge["calculate"]>[0],
   ): Promise<any> {
     return nativeInvoke("selection.calculate", this.draftPayload(draft));
+  }
+
+  private preselectNative(draft: SelectionDraft): Promise<NativePreselection[]> {
+    return nativeInvoke("selection.preselect", this.draftPayload(draft));
+  }
+
+  private mapPreselection(
+    item: NativePreselection,
+    calculated?: any,
+    calculatedModelCode?: string,
+  ) {
+    const model = item.Model;
+    const isCalculated = model.Code === calculatedModelCode;
+    return {
+      id: model.Code,
+      family: model.SeriesCode,
+      model: model.Name || model.Code,
+      maxAirflow: numberValue(model.NominalAirflowM3h),
+      availablePressure: numberValue(item.AvailablePressurePa),
+      efficiency: isCalculated
+        ? numberValue(calculated?.Winter?.Curves?.WorkingPointEfficiencyPercent)
+        : 0,
+      soundPower: 0,
+      fitScore: numberValue(item.RequiredRegulationPercent),
+      requiredRegulation: numberValue(item.RequiredRegulationPercent),
+      absorbedPower: numberValue(item.AbsorbedPowerW),
+      sfp: numberValue(item.CombinedSfp),
+    };
   }
 
   private draftPayload(

@@ -1,7 +1,6 @@
 export type StepId =
   | "project"
   | "preselection"
-  | "unit"
   | "installation"
   | "water-coil"
   | "electric-heaters"
@@ -33,6 +32,9 @@ export interface UnitOption {
   efficiency: number;
   soundPower: number;
   fitScore: number;
+  requiredRegulation: number;
+  absorbedPower: number;
+  sfp: number;
 }
 
 export interface AccessoryOption {
@@ -162,6 +164,7 @@ export interface BootstrapData {
 
 export interface SelectionBridge {
   bootstrap(): Promise<BootstrapData>;
+  preselect(draft: SelectionDraft): Promise<UnitOption[]>;
   calculate(draft: SelectionDraft): Promise<SelectionResult>;
   saveDraft(
     draft: SelectionDraft,

@@ -21,6 +21,47 @@ namespace SSW
             var models = CLNextUiApplicationService.GetModels();
             if (models == null || models.Count == 0) return 10;
             var model = models.Find(item => item.Code == "CLRC 038 OSC") ?? models[0];
+            var preselectionInput = new CLNextUiCalculationInput
+            {
+                SupplyAirflowM3h = Math.Max(1, model.NominalAirflowM3h),
+                ExtractAirflowM3h = Math.Max(1, model.NominalAirflowM3h),
+                PressurePa = Math.Max(0, model.StaticPressurePa)
+            };
+            var compatibleModels = CLNextUiApplicationService.Preselect(preselectionInput);
+            if (compatibleModels == null || compatibleModels.Count == 0) return 21;
+            if (compatibleModels.Count >= models.Count)
+            {
+                Console.Error.WriteLine(
+                    "Preselection did not reduce the catalogue at {0} m3/h and {1} Pa: {2}/{3}.",
+                    preselectionInput.SupplyAirflowM3h,
+                    preselectionInput.PressurePa,
+                    compatibleModels.Count,
+                    models.Count);
+                return 24;
+            }
+            if (compatibleModels.Exists(item =>
+                item.RequiredRegulationPercent < 70 ||
+                item.AvailablePressurePa <= 0 ||
+                item.AvailablePressurePa < preselectionInput.PressurePa ||
+                item.AbsorbedPowerW <= 0 ||
+                item.CombinedSfp <= 0 ||
+                double.IsNaN(item.CombinedSfp) ||
+                double.IsInfinity(item.CombinedSfp))) return 22;
+            var lowDutyPoint = new CLNextUiCalculationInput
+            {
+                SupplyAirflowM3h = 100,
+                ExtractAirflowM3h = 100,
+                PressurePa = 100
+            };
+            if (CLNextUiApplicationService.Preselect(lowDutyPoint).Exists(item =>
+                item.AvailablePressurePa <= 0 ||
+                item.AbsorbedPowerW <= 0 ||
+                item.CombinedSfp <= 0 ||
+                double.IsNaN(item.CombinedSfp) ||
+                double.IsInfinity(item.CombinedSfp))) return 25;
+            preselectionInput.SupplyAirflowM3h = 1000000000000;
+            preselectionInput.ExtractAirflowM3h = 1000000000000;
+            if (CLNextUiApplicationService.Preselect(preselectionInput).Count != 0) return 23;
             CLNextUiCalculationResult result = CLNextUiApplicationService.Calculate(
                 new CLNextUiCalculationInput
                 {
@@ -218,6 +259,9 @@ namespace SSW
                     case "selection.calculate":
                         payload = CalculateSelection(request.Payload);
                         break;
+                    case "selection.preselect":
+                        payload = PreselectModels(request.Payload);
+                        break;
                     case "legacy.open":
                         BeginInvoke(new Action(OpenLegacy));
                         payload = new { opened = true };
@@ -281,6 +325,12 @@ namespace SSW
         {
             if (payload == null) throw new ArgumentNullException("payload");
             return CLNextUiApplicationService.Calculate(CreateInput(payload));
+        }
+
+        private static object PreselectModels(Dictionary<string, object> payload)
+        {
+            if (payload == null) throw new ArgumentNullException("payload");
+            return CLNextUiApplicationService.Preselect(CreateInput(payload));
         }
 
         private static CLNextUiCalculationInput CreateInput(

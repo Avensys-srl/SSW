@@ -229,7 +229,7 @@ Risultato:
 
 - `SSW.exe --next-ui` avvia WebView2 senza cambiare lo startup produttivo;
 - bundle TypeScript/Vite locale costruito e copiato da MSBuild;
-- route guidata a nove step e component showcase;
+- route guidata a otto step e component showcase;
 - `NativeSelectionBridge` usa `CLNextUiApplicationService`, non fixture;
 - catalogo modelli, calcolo inverno/estate, layout e accessori arrivano
   realmente dall'SDF;

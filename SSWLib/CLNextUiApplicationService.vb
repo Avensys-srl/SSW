@@ -12,6 +12,14 @@ Public NotInheritable Class CLNextUiModelSummary
     Public Property AeraulicConnectionCode As String
 End Class
 
+Public NotInheritable Class CLNextUiPreselectionSummary
+    Public Property Model As CLNextUiModelSummary
+    Public Property RequiredRegulationPercent As Double
+    Public Property AvailablePressurePa As Double
+    Public Property AbsorbedPowerW As Double
+    Public Property CombinedSfp As Double
+End Class
+
 Public NotInheritable Class CLNextUiAccessorySummary
     Public Property Code As String
     Public Property Name As String
@@ -111,6 +119,29 @@ Public NotInheritable Class CLNextUiApplicationService
             ThenBy(Function(model) model.Code).
             ToList().
             Select(Function(model) MapModel(model)).
+            ToList()
+    End Function
+
+    Public Shared Function Preselect(
+        input As CLNextUiCalculationInput) As List(Of CLNextUiPreselectionSummary)
+
+        If input Is Nothing Then Throw New ArgumentNullException(NameOf(input))
+        If input.SupplyAirflowM3h <= 0 Then
+            Return New List(Of CLNextUiPreselectionSummary)()
+        End If
+
+        Dim requestedPressure = Math.Max(0, input.PressurePa)
+        Return CLEnvironment.Current.DCContext.CLDCHeatRecoveryModels.
+            ToList().
+            Where(Function(model) Not String.Equals(model.Code, "ACC", StringComparison.OrdinalIgnoreCase) AndAlso
+                                  Not String.Equals(model.Code, "IOM3", StringComparison.OrdinalIgnoreCase)).
+            Select(Function(model) CalculatePreselectionCandidate(
+                model, input.SupplyAirflowM3h, requestedPressure)).
+            Where(Function(candidate) candidate IsNot Nothing).
+            OrderBy(Function(candidate) candidate.CombinedSfp).
+            ThenBy(Function(candidate) candidate.RequiredRegulationPercent).
+            ThenBy(Function(candidate) candidate.Model.NominalAirflowM3h).
+            ThenBy(Function(candidate) candidate.Model.Code).
             ToList()
     End Function
 
@@ -613,5 +644,31 @@ Public NotInheritable Class CLNextUiApplicationService
                 String.Empty,
                 model.CLEnumItem_AeraulicConnection.TextCode)
         }
+    End Function
+
+    Private Shared Function CalculatePreselectionCandidate(
+        model As CLDCHeatRecoveryModel,
+        requestedAirflow As Double,
+        requestedPressure As Double) As CLNextUiPreselectionSummary
+
+        Try
+            Dim operatingPoint = CLSelectionApplicationService.FindCompatibleFanOperatingPoint(
+                model, requestedAirflow, requestedPressure, 70)
+            If operatingPoint Is Nothing Then Return Nothing
+            Dim combinedSfp = If(requestedAirflow > 0,
+                2 * operatingPoint.PowerW * 3.6R / requestedAirflow, Double.MaxValue)
+            If Double.IsNaN(combinedSfp) OrElse Double.IsInfinity(combinedSfp) OrElse
+                combinedSfp <= 0 Then Return Nothing
+
+            Return New CLNextUiPreselectionSummary With {
+                .Model = MapModel(model),
+                .RequiredRegulationPercent = operatingPoint.RegulationPercent,
+                .AvailablePressurePa = operatingPoint.PressurePa,
+                .AbsorbedPowerW = operatingPoint.PowerW,
+                .CombinedSfp = combinedSfp
+            }
+        Catch
+            Return Nothing
+        End Try
     End Function
 End Class
