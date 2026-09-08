@@ -42,7 +42,8 @@
       "exhaustOutletRelativeHumidityPercent": 65
     },
     "waterCoils": [],
-    "electricHeaters": []
+    "electricHeaters": [],
+    "soundRows": []
   },
   "charts": [
     {
@@ -4401,7 +4402,7 @@
       "rows": [
         {
           "Type": "_Fresh",
-          "Caption": "Fresh",
+          "Caption": "Aria esterna",
           "LwA_Value": "49,1",
           "Hz63_Value": 44.5,
           "Hz125_Value": 42.700000000000003,
@@ -4416,7 +4417,7 @@
         },
         {
           "Type": "_Supply",
-          "Caption": "Supply",
+          "Caption": "Mandata",
           "LwA_Value": "65,1",
           "Hz63_Value": 50.5,
           "Hz125_Value": 54.200000000000003,
@@ -4431,7 +4432,7 @@
         },
         {
           "Type": "_Exhaust",
-          "Caption": "Exhaust",
+          "Caption": "Espulsione",
           "LwA_Value": "65,7",
           "Hz63_Value": 51,
           "Hz125_Value": 54.700000000000003,
@@ -4446,7 +4447,7 @@
         },
         {
           "Type": "_Return",
-          "Caption": "Return",
+          "Caption": "Ripresa",
           "LwA_Value": "48,3",
           "Hz63_Value": 43.700000000000003,
           "Hz125_Value": 41.899999999999999,
@@ -4461,7 +4462,7 @@
         },
         {
           "Type": "_Breakout",
-          "Caption": "Breakout",
+          "Caption": "Rumore irradiato",
           "LwA_Value": "44,4",
           "Hz63_Value": 37.5,
           "Hz125_Value": 38.200000000000003,
@@ -4601,7 +4602,13 @@
         "PowerImage",
         "AirFlowImage",
         "LegendImage",
-        "CO2Image"
+        "CO2Image",
+        "InstallationImage",
+        "InstallationTitle",
+        "InstallationConfigurationCaption",
+        "InstallationConfigurationValue",
+        "InstallationModeCaption",
+        "InstallationModeValue"
       ],
       "rows": [
         {
@@ -4609,7 +4616,13 @@
           "PowerImage": "binary:24256",
           "AirFlowImage": "binary:37181",
           "LegendImage": "binary:15890",
-          "CO2Image": "binary:61645"
+          "CO2Image": "binary:61645",
+          "InstallationImage": "binary:20867",
+          "InstallationTitle": "Configurazione installativa",
+          "InstallationConfigurationCaption": "Configurazione",
+          "InstallationConfigurationValue": "B6",
+          "InstallationModeCaption": "Installazione",
+          "InstallationModeValue": "Soffitto"
         }
       ]
     },
@@ -5299,9 +5312,9 @@
     }
   ],
   "runtime": {
-    "databaseSchema": "3",
-    "databaseData": "2026.07.28.085843-19E14BFB",
-    "databaseContent": "19E14BFBD31F61238680A6865337C14FD3E5E227BC7A2F1BE33B70FA9443277D",
+    "databaseSchema": "4",
+    "databaseData": "2026.09.08.140203-9CEB751B",
+    "databaseContent": "9CEB751BBB931E93E329356434B5E5AF9D32DEC85825328A85AA7DF01E97D8AB",
     "coilLibrary": "3C55C15F0998E2D627A1708B04F3D21CB54DDC662553A4BAAADE028B3AC05E95"
   }
 }

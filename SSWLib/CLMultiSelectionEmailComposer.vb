@@ -59,6 +59,7 @@ Public NotInheritable Class CLMultiSelectionEmailComposer
         Dim cultureName As String
         Select Case If(languageCode, "en").Trim().ToLowerInvariant()
             Case "bg" : cultureName = "bg-BG"
+            Case "cs" : cultureName = "cs-CZ"
             Case "da" : cultureName = "da-DK"
             Case "de" : cultureName = "de-DE"
             Case "fr" : cultureName = "fr-FR"
@@ -93,6 +94,8 @@ Friend NotInheritable Class CLMultiSelectionEmailText
 
     Public Shared Function ForLanguage(languageCode As String) As CLMultiSelectionEmailText
         Select Case If(languageCode, "en").Trim().ToLowerInvariant()
+            Case "cs"
+                Return T("Projekt - {0}", "Dobrý den,", "Děkujeme za vaši poptávku.", "Reference projektu", "V příloze zasíláme soubory PDF pro výběry uvedené v následující tabulce.", "Reference", "Vybraná jednotka", "Průtok vzduchu", "Tlak", "Soubor PDF", "Jsme vám k dispozici pro případné dotazy nebo další technické informace.", "S pozdravem")
             Case "it"
                 Return T("Progetto - {0}", "Buongiorno,", "Grazie per la vostra richiesta.", "Progetto di riferimento", "In allegato trasmettiamo i PDF relativi alle selezioni riportate nella tabella seguente.", "Riferimento", "Unità selezionata", "Portata", "Pressione", "File PDF", "Rimaniamo a disposizione per eventuali chiarimenti o approfondimenti tecnici.", "Cordiali saluti")
             Case "fr"

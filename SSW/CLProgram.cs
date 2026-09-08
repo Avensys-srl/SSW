@@ -185,14 +185,17 @@ namespace SSW
 					return CLNextUiSmokeCommand.Run();
 				}
 
-				if (args != null && args.Any(argument =>
-					String.Equals(argument, "--next-ui", StringComparison.OrdinalIgnoreCase)))
+				if (args != null && args.Length > 0 &&
+					String.Equals(args[0], "--next-ui-screenshot", StringComparison.OrdinalIgnoreCase))
 				{
-					Application.Run(new CLNextHostForm());
-					return 0;
+					if (args.Length < 2 || String.IsNullOrWhiteSpace(args[1]))
+						return 2;
+					return CLNextUiScreenshotCommand.Run(
+						args[1],
+						args.Length > 2 ? args[2] : null);
 				}
 
-				Application.Run( new CLMainForm() );
+				Application.Run(new CLNextHostForm());
 				
 				return 0;
 			}
@@ -205,6 +208,17 @@ namespace SSW
 						Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "next-ui-smoke-error.log"),
 						exception.ToString());
 					return -1;
+				}
+				if (args != null && args.Length > 0 &&
+					String.Equals(args[0], "--next-ui-screenshot", StringComparison.OrdinalIgnoreCase))
+				{
+					string errorPath = args.Length > 1 && !String.IsNullOrWhiteSpace(args[1])
+						? Path.GetFullPath(args[1]) + ".error.log"
+						: Path.Combine(
+							Path.GetDirectoryName(Application.ExecutablePath),
+							"next-ui-screenshot-error.log");
+					File.WriteAllText(errorPath, exception.ToString());
+					return 3;
 				}
 
 				StringBuilder	message				= new StringBuilder();

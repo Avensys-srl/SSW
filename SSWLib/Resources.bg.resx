@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root xmlns:ns1="urn:schemas-microsoft-com:xml-msdata" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   
   <xs:schema id="root">
@@ -351,7 +351,7 @@
     <value>Звукова мощност</value>
   </data>
   <data name="Sound_Breakout" xml:space="preserve">
-    <value>Breakout</value>
+    <value>Излъчен шум</value>
   </data>
   <data name="Sound_Exhaust" xml:space="preserve">
     <value>Отработен</value>
@@ -830,4 +830,26 @@
   <data name="Help_MenuTip_FollowUps" xml:space="preserve"><value>Отворете центъра за напомняния, за да преглеждате, пренасрочвате или приключвате напомняния за технически селекции и проекти.</value></data>
   <data name="Help_Topic_FollowUps_Title" xml:space="preserve"><value>Напомняния за последващ контакт с клиента</value></data>
   <data name="Help_Topic_FollowUps_Body" xml:space="preserve"><value>Планирайте последващ контакт с клиента след 1 до 90 дни; стойността по подразбиране е 7 дни. Срокът започва да тече само след успешно създаване на черновата в Outlook. Камбанката отваря центъра за напомняния, където се показват просрочените, предстоящите и приключените записи. Щракнете двукратно върху запис, за да отворите отново локалната селекция или проект. Напомнянето може да бъде приключено като успешно или неуспешно, пренасрочено или отменено. Данните остават поверителни само за текущата инсталация на Windows; при работа офлайн промените се записват локално и се синхронизират по-късно.</value></data>
+  <data name="Report_InstallationLayout_Title" xml:space="preserve"><value>Конфигурация на монтажа</value></data>
+  <data name="Report_InstallationLayout_Configuration" xml:space="preserve"><value>Конфигурация</value></data>
+  <data name="Report_InstallationLayout_Installation" xml:space="preserve"><value>Монтаж</value></data>
+  <data name="Report_InstallationLayout_Ceiling" xml:space="preserve"><value>Таван</value></data>
+  <data name="Report_InstallationLayout_Floor" xml:space="preserve"><value>Под</value></data>
+  <data name="Report_InstallationLayout_Wall" xml:space="preserve"><value>Стена</value></data>
+  <data name="Report_InstallationLayout_AccessPanel" xml:space="preserve"><value>Сервизен панел</value></data>
+  <data name="Report_InstallationLayout_UpperAccess" xml:space="preserve"><value>Горен достъп</value></data>
+  <data name="Report_InstallationLayout_LowerAccess" xml:space="preserve"><value>Долен достъп</value></data>
+  <data name="Report_InstallationLayout_FrontAccess" xml:space="preserve"><value>Преден достъп</value></data>
+  <data name="Report_InstallationLayout_Fresh" xml:space="preserve">
+    <value>Външен въздух</value>
+  </data>
+  <data name="Report_InstallationLayout_Return" xml:space="preserve">
+    <value>Възвратен въздух</value>
+  </data>
+  <data name="Report_InstallationLayout_Supply" xml:space="preserve">
+    <value>Подаван въздух</value>
+  </data>
+  <data name="Report_InstallationLayout_Exhaust" xml:space="preserve">
+    <value>Изхвърлян въздух</value>
+  </data>
 </root>

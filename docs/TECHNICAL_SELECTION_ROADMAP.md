@@ -558,7 +558,7 @@ affrontati dopo il completamento della selezione accessori e funzioni:
   test sono definiti nella roadmap dedicata
   `docs/INSTALLATION_LAYOUT_ROADMAP.md` (approvata il 22/07/2026).
 
-### Preselezione guidata - in cantiere, non avviata
+### Preselezione guidata - implementata in SSW Next
 
 La preselezione sara' una premessa al selettore corrente e aiutera' chi non
 conosce nel dettaglio tutte le famiglie e i modelli Avensys. Non modifica ne'
@@ -579,6 +579,10 @@ limita il flusso esistente una volta aperta la selezione completa.
   futura versione web completa di SSW, destinata a utenti non Windows o che
   preferiscono l'uso da browser.
 
-Prima dell'implementazione dovranno essere definiti il parametro di ranking,
-i filtri minimi, i dati del riepilogo rapido e i criteri di esclusione dei
-modelli. La feature resta deliberatamente fuori dalla release `1.3.0.54`.
+La prima implementazione ordina per SFP crescente dopo avere individuato il
+punto di lavoro fisico e la regolazione necessaria. Dal 02/09/2026 supporta
+anche criteri opzionali e indipendenti su SFP massimo, rumore di mandata e
+rumore irradiato. I due filtri acustici scelgono separatamente `LwA` oppure
+`LpA`; nel secondo caso hanno distanza e fattore di direttivita' propri. I
+valori vengono calcolati con il servizio acustico condiviso alla regolazione
+del candidato e i criteri sono persistiti nel `.sswsel`.

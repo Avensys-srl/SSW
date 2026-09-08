@@ -2,12 +2,13 @@
 
 Data: 2026-09-08
 
-Stato: **proposta da implementare**. Questo documento non attesta la presenza
-di un visualizzatore dimensionale completo ne' la disponibilita' dei disegni.
+Stato: **prima integrazione implementata e verificata**. Catalogo, associazioni,
+export SDF e visualizzazione SSW sono disponibili; la stampa nel report resta
+un'attivita' separata e non e' inclusa in questo checkpoint.
 
 ## Richiesta e obiettivo
 
-Il drawing non e' un PDF da scaricare: e' una sezione della selezione che mostra
+Il drawing e' una sezione della selezione che mostra
 il disegno tecnico specifico del modello, con tre viste e lettere sulle quote.
 Accanto al disegno si mostrano i valori effettivi della configurazione scelta:
 
@@ -22,7 +23,7 @@ Il database contiene i valori distinti `Dimension_A_Hor` ... `Dimension_D_Hor`
 e `Dimension_A_Ver` ... `Dimension_D_Ver`. Non ricavare A/B/C ruotando o
 scambiando arbitrariamente i valori. Anche D va letto dal gruppo appropriato.
 
-## Decisione proposta
+## Decisione adottata
 
 Separare tre responsabilita': asset del disegno, geometria della configurazione
 e quote numeriche del modello. La UI e il report devono consumare lo stesso
@@ -41,10 +42,11 @@ presentato come se fosse quello reale del prodotto.
 
 ## Asset e gestione in Explorer
 
-Preferire un SVG tecnico statico verificato, con tre viste, linee di quota e
-lettere A/B/C/D, senza valori numerici incorporati. Questo evita varianti per
-lingua o taglia. Un PNG ad alta risoluzione e' un'alternativa per asset legacy.
-Non generare un disegno costruttivo attendibile dal solo schema dei flussi.
+Il formato autorevole adottato e' il PDF vettoriale esportato dal CAD: una
+pagina A4 con vista landscape ottenuta tramite rotazione di 90 gradi, tre viste,
+linee di quota e lettere A/B/C/D. Il PDF non contiene nome o taglia del modello,
+perche' lo stesso asset puo' essere associato deliberatamente a piu' modelli.
+Non generare un disegno costruttivo dal solo schema dei flussi.
 
 Explorer dovrebbe permettere importazione, anteprima, revisione e associazione
 esplicita del disegno al modello e all'orientamento H/V. Consentire il riuso
@@ -52,14 +54,15 @@ dello stesso asset da piu' modelli solo tramite associazione deliberata.
 Quando serve, aggiungere una variante per configurazione: non moltiplicare
 le immagini quando il disegno e' identico e cambiano solamente le quote.
 
-Metadati minimi proposti: identificativo stabile asset, revisione, MIME type,
-dimensioni/viewBox, hash, contenuto, modello, orientamento e configurazione
-opzionale. I nomi delle future tabelle sono da definire in Explorer, non sono
-uno schema gia' approvato o implementato.
+I metadati sono persistiti in `CLDimensionalDrawings`; le relazioni riusabili
+modello/disegno sono in `CLHeatRecoveryModelDimensionalDrawings`. Lo scope `B`
+vale per entrambi gli orientamenti, mentre `H` e `V` permettono override mirati.
+Il catalogo memorizza revisione, MIME type, dimensioni pagina, rotazione, hash
+SHA-256, contenuto PDF e stato attivo.
 
-Validare SVG senza script, eventi, riferimenti esterni, font remoti o risorse
-di rete; imporre limiti dimensionali. Il disegno deve funzionare offline.
-Conservare il rapporto d'aspetto, evitando stiramenti e ritagli delle quote.
+Explorer valida intestazione PDF, pagina A4 landscape e limite di 20 MB. Il
+disegno e' incluso nell'SDF e funziona offline. Il visualizzatore conserva il
+rapporto d'aspetto, evitando stiramenti e ritagli delle quote.
 
 ## Risoluzione dei dati
 
@@ -83,7 +86,7 @@ Tre viste leggibili, tabella quote accanto su schermi ampi e sotto su quelli
 stretti; zoom adatto all'ispezione del disegno. Localizzare titoli, stato,
 nomi delle quote e unita', mantenendo A/B/C/D coerenti con l'asset.
 
-Nel report usare il disegno proporzionato e una vera tabella delle quote,
+Quando verra' introdotto nel report, usare il disegno proporzionato e una vera tabella delle quote,
 non una cattura della UI con numeri e testi incollati. Riutilizzare il medesimo
 DTO per prevenire le divergenze gia' osservate nello schema di installazione.
 
@@ -103,17 +106,31 @@ definire la migrazione dei file storici senza alterarli silenziosamente.
 - Explorer ed esportatore SDF: gestione e pubblicazione offline degli asset;
   lavorare sui relativi repository sorgente, non sui programmi compilati.
 
-## Sequenza e accettazione
+## Checkpoint 08/09/2026
+
+- Explorer 2.1.20.0 gestisce catalogo PDF, anteprima, matrice modello/disegno,
+  associazioni H/V e applicazione in blocco per serie.
+- `PRIME-3V-V7.2-BD` rev. `V7.2-BD` e' associato con scope `B` a tutti i
+  modelli della serie PRIME presenti nel database centrale.
+- CLDataCentralLib exporter 1.4.0 pubblica schema SDF 5 e feature
+  `DimensionalDrawings`, includendo solo asset attivi raggiungibili.
+- SSW 1.3.0.57 risolve l'override H/V prima del fallback B, carica il PDF solo
+  su richiesta e mostra A/L, B/W, C/H e D senza inventare valori mancanti.
+- Il PDF campione e' versionato in
+  `documents/assets/dimensional/CLRC_Prime_30_V7.2_BD.pdf` nel repository
+  Explorer; nell'SDF viene memorizzato una sola volta e riusato per relazione.
+
+## Sequenza residua e accettazione
 
 1. Censire asset disponibili, corrispondenza A/B/C/D e modelli/orientamenti.
-2. Concordare schema e associazioni in Explorer, poi export SDF e migrazione.
-3. Implementare resolver backend, DTO e test con dati mancanti/invalidi.
-4. Aggiungere visualizzazione UI e tabella report sullo stesso DTO.
+2. Estendere il catalogo quando arrivano altri PDF e associare gli scope H/V.
+3. Ampliare i test con dati mancanti, hash non valido e relazioni conflittuali.
+4. Aggiungere la tabella al report usando lo stesso DTO, quando richiesta.
 5. Verificare SSC verticale e sdraiata, OSC parete nelle due viste, soffitto,
    modelli senza asset, assenza quote, nuova configurazione E2 e file storici.
 6. Verificare offline, lingue, rapporto d'aspetto, stampa senza pagine vuote
    e assenza di regressioni nei calcoli e nelle selezioni salvate.
 
-Non iniziare dal solo riquadro grafico: servono prima asset corretti e
-associazioni autorevoli. Restano da approvare formato finale, disponibilita'
-degli asset e regole di obbligatorieta' commerciale.
+Il formato e il percorso dati sono ora definiti. Restano da decidere le regole
+di obbligatorieta' commerciale e il momento in cui includere il drawing nei
+report tecnici.

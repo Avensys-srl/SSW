@@ -1,15 +1,48 @@
 Imports System.Globalization
 Imports System.IO
 Imports System.Text.RegularExpressions
+Imports System.Threading.Tasks
 Imports Climalombarda.Common
 Imports Climalombarda.Common.UI
+Imports Microsoft.Reporting.WinForms
 
 Partial Public Class CLMainForm
+    Private m_NextUiReportSink As Action(Of List(Of ReportDataSource), String)
+    Private m_NextUiPreparingReport As Boolean
+    Private m_NextUiReportHost As Boolean
+    Private m_ProjectSuppressClosePrompt As Boolean
+
+    Public Sub Project_EnableNextUiReportHost()
+        m_NextUiReportHost = True
+        m_ProjectSuppressClosePrompt = True
+    End Sub
 
     Public Sub Project_ApplyNextUiDocument(document As CLSelectionProjectDocument)
         If document Is Nothing Then Throw New ArgumentNullException(NameOf(document))
+        m_ProjectDocument = document
+        m_ProjectFilePath = Nothing
         Project_ApplyDocument(document)
     End Sub
+
+    Public Function Project_ResolveNextUiProductDocuments(
+        document As CLSelectionProjectDocument,
+        languageCode As String) As CLNextUiProductDocuments
+
+        Return Project_ResolveNextUiProductDocumentsDirect(
+            document, languageCode, Environment.Branch.ShortName)
+    End Function
+
+    Public Shared Function Project_ResolveNextUiProductDocumentsDirect(
+        document As CLSelectionProjectDocument,
+        languageCode As String,
+        shortname As String) As CLNextUiProductDocuments
+
+        Return CLProductDocumentService.Resolve(
+            document,
+            languageCode,
+            shortname,
+            My.Settings.CommercialSheetAutoSyncEnabled)
+    End Function
 
     Public Sub Project_SaveNextUiDocument(document As CLSelectionProjectDocument)
         Project_ApplyNextUiDocument(document)
@@ -17,11 +50,44 @@ Partial Public Class CLMainForm
     End Sub
 
     Public Async Sub Project_GenerateNextUiReport(document As CLSelectionProjectDocument)
+        Await Project_GenerateNextUiReportAsync(document)
+    End Sub
+
+    Public Async Function Project_GenerateNextUiReportAsync(
+        document As CLSelectionProjectDocument) As Task
+
         Project_ApplyNextUiDocument(document)
         If Await Project_RegisterBeforeReportAsync() Then
             Report_Generate()
         End If
-    End Sub
+    End Function
+
+    Public Async Function Project_PrepareNextUiReportAsync(
+        document As CLSelectionProjectDocument,
+        Optional registerSelection As Boolean = True) As Task(Of CLPreparedNextUiReport)
+
+        Dim prepared As CLPreparedNextUiReport = Nothing
+        m_ProjectSuppressClosePrompt = True
+        m_NextUiPreparingReport = True
+        Try
+            Project_ApplyNextUiDocument(document)
+            If registerSelection AndAlso
+                Not Await Project_RegisterBeforeReportAsync() Then Return Nothing
+
+            m_NextUiReportSink =
+                Sub(sources As List(Of ReportDataSource), reportTemplate As String)
+                    prepared = New CLPreparedNextUiReport With {
+                        .DataSources = sources,
+                        .ReportTemplate = reportTemplate
+                    }
+                End Sub
+            Report_Generate()
+        Finally
+            m_NextUiReportSink = Nothing
+            m_NextUiPreparingReport = False
+        End Try
+        Return prepared
+    End Function
 
     Private ReadOnly m_ProjectMenuNew As New ToolStripMenuItem()
     Private ReadOnly m_ProjectMenuOpen As New ToolStripMenuItem()
@@ -448,6 +514,7 @@ Partial Public Class CLMainForm
     End Function
 
     Private Sub Project_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+        If m_ProjectSuppressClosePrompt Then Return
         If Not Project_ConfirmDiscardChanges() Then e.Cancel = True
     End Sub
 
@@ -636,6 +703,38 @@ Partial Public Class CLMainForm
     End Sub
 
     Private Function Project_SelectModel(reference As CLSelectionEntityReference) As Boolean
+        If Project_SelectModelFromCurrentSeries(reference) Then Return True
+
+        Dim resolvedModel = Environment.DCContext.CLDCHeatRecoveryModels.
+            FirstOrDefault(Function(model) _
+                (reference.Id.HasValue AndAlso model.Id = reference.Id.Value) OrElse
+                    (Not String.IsNullOrWhiteSpace(reference.Code) AndAlso
+                     (String.Equals(model.Code, reference.Code, StringComparison.OrdinalIgnoreCase) OrElse
+                      String.Equals(model.Name, reference.Code, StringComparison.OrdinalIgnoreCase))))
+        If resolvedModel Is Nothing OrElse resolvedModel.CLSerie Is Nothing Then Return False
+
+        Dim customerSeriesName = Environment.GetCustomerSerieName(resolvedModel.CLSerie)
+        Project_SelectComboText(cmbPerformance_Series, customerSeriesName)
+        If Project_SelectModelFromCurrentSeries(reference) Then Return True
+
+        ' A canonical project may reference a technically valid SDF model that is
+        ' not exposed by the current legacy customer-name filter. Keep project
+        ' loading and the SSW Next report adapter bound to the resolved SDF row.
+        Dim customerModelName = Environment.GetCustomerHeatRecoveryModelName(resolvedModel)
+        If String.IsNullOrWhiteSpace(customerModelName) Then
+            customerModelName = resolvedModel.Code
+        End If
+        cmbPerformance_HeatRecoveryModels.Items.Add(
+            New CLComboBoxItemWrapper(Of Climalombarda.DataCentral.LTModel.CLDCHeatRecoveryModel)(
+                customerModelName, resolvedModel))
+        cmbPerformance_HeatRecoveryModels.SelectedIndex =
+            cmbPerformance_HeatRecoveryModels.Items.Count - 1
+        Return True
+    End Function
+
+    Private Function Project_SelectModelFromCurrentSeries(
+        reference As CLSelectionEntityReference) As Boolean
+
         For index As Integer = 0 To cmbPerformance_HeatRecoveryModels.Items.Count - 1
             Dim wrapper = TryCast(cmbPerformance_HeatRecoveryModels.Items(index), CLComboBoxItemWrapper(Of Climalombarda.DataCentral.LTModel.CLDCHeatRecoveryModel))
             If wrapper Is Nothing Then Continue For

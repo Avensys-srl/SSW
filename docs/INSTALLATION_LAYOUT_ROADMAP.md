@@ -2,6 +2,11 @@
 
 Data di approvazione del contratto: 22/07/2026
 
+Checkpoint 08/09/2026: catalogo normalizzato autorevole senza fallback su dati
+vuoti/corrotti; metadati geometrici condivisi tra UI e report e quote Hor/Ver
+esposte nel bridge. Vedere [audit e limiti](AUDIT_CORREZIONI_2026-09-08.md) e
+[proposta drawing dimensionale](DRAWING_DIMENSIONALE_PROPOSTA.md).
+
 ## Obiettivo
 
 Integrare nella selezione tecnica SSW una scelta guidata della configurazione
@@ -83,6 +88,88 @@ Audit iniziale sul database SDF AV:
 Le immagini esistenti devono essere censite e ricondotte a una sorgente
 gestita. Non assumere che file numerati presenti nelle cartelle `bin` siano
 la sorgente definitiva o siano tutti ancora validi.
+
+### Stato prototipo SSW Next al 03/08/2026
+
+Il prototipo Next usa ora un adattatore di compatibilita' sui dati SDF legacy:
+
+- i codici documentati nel PDF sono classificati per soffitto, pavimento e
+  parete;
+- SSC ammette le sole installazioni a soffitto o pavimento e mostra i quattro
+  raccordi sullo stesso lato;
+- OSC mostra due raccordi per ciascuno dei due lati opposti;
+- i pulsanti senza configurazioni compatibili sono disabilitati e la tendina
+  viene filtrata prima del ricalcolo;
+- le famiglie non riconosciute esplicitamente, incluse VS e FS, adottano il
+  comportamento OSC come fallback approvato;
+- l'anteprima normalizza sempre i quattro raccordi Fresh, Return, Supply ed
+  Exhaust, senza produrre rappresentazioni parziali;
+- la posizione del pannello di accesso segue l'installazione: superiore a
+  pavimento, inferiore a soffitto e frontale a parete;
+- per OSC a parete, `B1`, `B2`, `C1` e `D1` dispongono i raccordi sui lati
+  est-ovest, mentre `B3`, `B4`, `C2` e `D2` li dispongono sui lati nord-sud;
+- a soffitto e pavimento l'anteprima OSC rappresenta i raccordi posteriori
+  come semicerchi e quelli frontali come cerchi; nella vista a parete i
+  raccordi sono manicotti rettangolari, disposti a sinistra/destra per
+  est-ovest oppure due sopra e due sotto per nord-sud;
+- nelle due viste OSC a parete il corpo macchina e' rappresentato frontalmente
+  e il pannello di accesso resta centrato sulla faccia anteriore;
+- per SSC a pavimento A1/B1 rappresenta l'unita' verticale con raccordi verso
+  il soffitto e accesso frontale, mentre A3/B3 rappresenta l'unita' sdraiata
+  con raccordi frontali e accesso superiore.
+- per SSC l'unita' a soffitto e quella sdraiata a pavimento mostrano quattro
+  bocche circolari sulla faccia dei flussi; l'unita' verticale A1/B1 mostra
+  invece quattro manicotti rettangolari superiori e l'accesso frontale.
+
+Questa tabella applicativa e' un ponte temporaneo e non sostituisce le Onde
+A-C: la relazione definitiva deve provenire dal database centrale, essere
+editabile in Explorer ed essere esportata nell'SDF senza richiedere una nuova
+compilazione di SSW.
+
+### Stato normalizzazione configurazioni al 03/08/2026
+
+La parte relativa a configurazioni, disposizione dei quattro flussi e relazioni
+con i modelli e' stata normalizzata e resa operativa:
+
+- nel database centrale sono presenti `CLFlowConfigurations`,
+  `CLFlowConfigurationPorts` e `CLHeatRecoveryModelFlowConfigurations`;
+- sono state importate 31 configurazioni note, 124 porte e 485 relazioni per 63
+  modelli, senza configurazioni con un numero di porte diverso da quattro;
+- Explorer dispone di un editor guidato `Configurazioni e flussi`: le quattro
+  posizioni sono sulla stessa riga, un ruolo gia' scelto non e' riproposto
+  nelle posizioni successive e il quarto ruolo viene completato
+  automaticamente;
+- Explorer espone una matrice a doppia entrata con modelli sulle righe,
+  configurazioni sulle colonne e caselle di selezione solamente per le
+  combinazioni compatibili con il layout aeraulico del modello;
+- dalla matrice si possono attivare o disattivare in blocco le relazioni per
+  tutti i modelli compatibili di una serie oppure per il perimetro piu'
+  restrittivo `serie AND layout aeraulico`; le modifiche restano in anteprima
+  fino al comando `Salva`;
+- l'editor `Relazioni avanzate` resta disponibile per gestire default,
+  ordinamento e note delle singole relazioni, mentre `Compatibilita' legacy`
+  permette di controllare la parita' con i campi storici;
+- `CLDataCentralLib` esporta lo schema SDF 4 con feature
+  `InstallationLayoutsNormalized`; la DLL pubblicata in Explorer e' allineata;
+- l'SDF AV reale contiene 29 configurazioni effettivamente usate, 116 porte e
+  273 relazioni modello/configurazione;
+- SSW legge prima le tabelle normalizzate e mantiene il repository legacy come
+  fallback per SDF schema 3 o dati incompleti;
+- la parita' tra le relazioni normalizzate e `HorVariants`/`VerVariants` e'
+  stata verificata su tutti i 111 modelli AV, senza differenze;
+- gli smoke test Next con SDF schema 4 e il test di avvio con SDF schema 3 sono
+  entrambi superati.
+
+Le tabelle normalizzate sono la sorgente autorevole. I campi legacy
+`HorVariants` e `VerVariants` restano disponibili per csv-exporter e per gli
+altri consumer storici, ma vengono rigenerati automaticamente dalla stored
+procedure `CLSyncHeatRecoveryModelFlowVariants`, richiamata dai trigger sulle
+configurazioni e sulle relazioni. Non devono quindi essere rimossi ne'
+aggiornati manualmente in modo indipendente.
+
+Questa chiusura riguarda il catalogo dei layout aeraulici. Immagini CAD, quote
+dimensionali, persistenza completa e collaudo finale di report/portale restano
+nei checkpoint successivi della roadmap.
 
 ## Contratto funzionale approvato
 

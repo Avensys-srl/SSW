@@ -53,6 +53,12 @@ ReportTemplateVersion = 1
 ApiContractVersion = 1
 ```
 
+Dal checkpoint 08/09/2026 l'exporter CLDataCentralLib 1.4.0 produce
+`DatabaseSchemaVersion = 5`. La feature opzionale `DimensionalDrawings`
+pubblica catalogo PDF e associazioni modello/disegno; la versione minima del
+consumer e' SSW 1.3.0.57. Gli SDF precedenti restano apribili e mostrano il
+drawing come non disponibile.
+
 Dal 21/07/2026 il formato progetto corrente e' `SelectionFormatVersion = 2`.
 La relativa estensione e la migrazione da V1 sono descritte in
 `TECHNICAL_SELECTION_FORMAT_V2.md`.

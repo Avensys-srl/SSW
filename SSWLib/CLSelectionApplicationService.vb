@@ -1,5 +1,6 @@
 Imports Climalombarda.DataCentral.LTModel
 Imports System.Collections.Generic
+Imports System.Globalization
 Imports System.Linq
 
 Public NotInheritable Class CLPerformanceCurveRequest
@@ -186,9 +187,17 @@ Public NotInheritable Class CLSelectionApplicationService
         If request Is Nothing Then Throw New ArgumentNullException("request")
         If request.Model Is Nothing Then Throw New ArgumentNullException("request.Model")
 
-        Dim airflows As Double() = DirectCast(request.Model.AirflowsItems.Clone(), Double())
-        Dim pressures As Double() = DirectCast(request.Model.PressuresItems.Clone(), Double())
-        Dim powers As Double() = DirectCast(request.Model.PowersItems.Clone(), Double())
+        Dim airflows As Double() = ParseCurveItems(request.Model.Airflows)
+        Dim pressures As Double() = ParseCurveItems(request.Model.Pressures)
+        Dim powers As Double() = ParseCurveItems(request.Model.Powers)
+        If airflows.Length < 2 OrElse pressures.Length <> airflows.Length OrElse
+            powers.Length <> airflows.Length Then
+            Throw New InvalidOperationException(
+                String.Format(
+                    CultureInfo.InvariantCulture,
+                    "Invalid aeraulic curve data for model '{0}'.",
+                    request.Model.Code))
+        End If
         For index As Integer = 0 To powers.Length - 1
             powers(index) -= 3.5R
         Next
@@ -241,6 +250,7 @@ Public NotInheritable Class CLSelectionApplicationService
                 False)
             efficiencies(index) = 100 * thermal.efficiency
         Next
+        ExtrapolateEfficiencyAtZero(originalAirflows, efficiencies)
 
         Dim calculatedAirflow As Double = Math.Min(requestedAirflowSi, interpolatedAirflows(interpolatedAirflows.Length - 1))
         Dim upperIndex As Integer = GetUpperIndex(interpolatedAirflows, calculatedAirflow)
@@ -284,6 +294,46 @@ Public NotInheritable Class CLSelectionApplicationService
         }
     End Function
 
+    Private Shared Sub ExtrapolateEfficiencyAtZero(
+        airflows As IList(Of Double),
+        efficiencies As IList(Of Double))
+
+        If airflows Is Nothing OrElse efficiencies Is Nothing OrElse
+           airflows.Count < 3 OrElse airflows.Count <> efficiencies.Count OrElse
+           airflows(0) <> 0 Then Return
+
+        Dim stableStartIndex As Integer = -1
+        For index As Integer = 1 To airflows.Count - 3
+            If airflows(index) <= 0 OrElse
+               Double.IsNaN(efficiencies(index)) OrElse Double.IsInfinity(efficiencies(index)) OrElse
+               Double.IsNaN(efficiencies(index + 1)) OrElse Double.IsInfinity(efficiencies(index + 1)) OrElse
+               Double.IsNaN(efficiencies(index + 2)) OrElse Double.IsInfinity(efficiencies(index + 2)) Then Continue For
+
+            If efficiencies(index + 1) <= efficiencies(index) AndAlso
+               efficiencies(index + 2) <= efficiencies(index + 1) Then
+                stableStartIndex = index
+                Exit For
+            End If
+        Next
+
+        If stableStartIndex < 0 Then Return
+
+        Dim firstAirflow As Double = airflows(stableStartIndex)
+        Dim secondAirflow As Double = airflows(stableStartIndex + 1)
+        If secondAirflow <= firstAirflow Then Return
+
+        Dim firstEfficiency As Double = efficiencies(stableStartIndex)
+        Dim slope As Double =
+            (efficiencies(stableStartIndex + 1) - firstEfficiency) /
+            (secondAirflow - firstAirflow)
+
+        For index As Integer = 0 To stableStartIndex - 1
+            Dim extrapolated As Double =
+                firstEfficiency + (airflows(index) - firstAirflow) * slope
+            efficiencies(index) = Math.Max(0, Math.Min(100, extrapolated))
+        Next
+    End Sub
+
     Friend Shared Function FindCompatibleFanOperatingPoint(
         model As CLDCHeatRecoveryModel,
         requestedAirflow As Double,
@@ -291,14 +341,14 @@ Public NotInheritable Class CLSelectionApplicationService
         minimumRegulationPercent As Integer) As CLCompatibleFanOperatingPoint
 
         If model Is Nothing OrElse requestedAirflow <= 0 OrElse requestedPressure < 0 Then Return Nothing
-        If model.AirflowsItems Is Nothing OrElse model.PressuresItems Is Nothing OrElse
-            model.PowersItems Is Nothing OrElse model.AirflowsItems.Length < 2 OrElse
-            model.PressuresItems.Length <> model.AirflowsItems.Length OrElse
-            model.PowersItems.Length <> model.AirflowsItems.Length Then Return Nothing
+        Dim airflows As Double() = ParseCurveItems(model.Airflows)
+        Dim pressures As Double() = ParseCurveItems(model.Pressures)
+        Dim powers As Double() = ParseCurveItems(model.Powers)
+        If airflows.Length < 2 OrElse pressures.Length <> airflows.Length OrElse
+            powers.Length <> airflows.Length Then Return Nothing
 
-        Dim airflows As Double() = DirectCast(model.AirflowsItems.Clone(), Double())
-        Dim pressures As Double() = DirectCast(model.PressuresItems.Clone(), Double())
-        Dim powers As Double() = DirectCast(model.PowersItems.Clone(), Double())
+        Dim maximumOriginalAirflow As Double = airflows.Max()
+        If requestedAirflow > maximumOriginalAirflow Then Return Nothing
         For index As Integer = 0 To powers.Length - 1
             powers(index) -= 3.5R
         Next
@@ -312,7 +362,7 @@ Public NotInheritable Class CLSelectionApplicationService
 
         Dim maximumPoint = EvaluateFanOperatingPoint(
             interpolatedAirflows, interpolatedPressures, interpolatedPowers,
-            requestedAirflow, 100)
+            requestedAirflow, 100, maximumOriginalAirflow)
         If maximumPoint Is Nothing OrElse maximumPoint.PressurePa < requestedPressure Then Return Nothing
         If maximumPoint.PressurePa - requestedPressure <= 5 Then Return maximumPoint
 
@@ -320,7 +370,7 @@ Public NotInheritable Class CLSelectionApplicationService
         For regulation = 99 To Math.Max(1, minimumRegulationPercent) Step -1
             Dim candidate = EvaluateFanOperatingPoint(
                 interpolatedAirflows, interpolatedPressures, interpolatedPowers,
-                requestedAirflow, regulation)
+                requestedAirflow, regulation, maximumOriginalAirflow)
             If candidate Is Nothing OrElse candidate.PressurePa < requestedPressure Then Exit For
             acceptedPoint = candidate
         Next
@@ -332,11 +382,12 @@ Public NotInheritable Class CLSelectionApplicationService
         pressures As Double(),
         powers As Double(),
         requestedAirflow As Double,
-        regulationPercent As Integer) As CLCompatibleFanOperatingPoint
+        regulationPercent As Integer,
+        maximumOriginalAirflow As Double) As CLCompatibleFanOperatingPoint
 
         Dim factor = regulationPercent / 100.0R
         Dim sourceAirflow = requestedAirflow / factor
-        If sourceAirflow < airflows(0) OrElse sourceAirflow > airflows(airflows.Length - 1) Then Return Nothing
+        If sourceAirflow < airflows(0) OrElse sourceAirflow > maximumOriginalAirflow Then Return Nothing
 
         Dim upperIndex = GetUpperIndex(airflows, sourceAirflow)
         Dim pressure = InterpolateCurveValue(
@@ -351,6 +402,27 @@ Public NotInheritable Class CLSelectionApplicationService
             .PressurePa = Math.Round(pressure, 1),
             .PowerW = Math.Round(power, 1)
         }
+    End Function
+
+    Private Shared Function ParseCurveItems(serializedValues As String) As Double()
+        If String.IsNullOrWhiteSpace(serializedValues) Then Return New Double() {}
+
+        Dim values As New List(Of Double)()
+        For Each rawValue In serializedValues.Split("|"c)
+            Dim normalized = rawValue.Trim()
+            If normalized.Length = 0 Then Continue For
+
+            Dim value As Double
+            If Not Double.TryParse(
+                normalized.Replace(","c, "."c),
+                NumberStyles.Float,
+                CultureInfo.InvariantCulture,
+                value) Then
+                Return New Double() {}
+            End If
+            values.Add(value)
+        Next
+        Return values.ToArray()
     End Function
 
     Private Shared Function MapThermodynamics(source As termo) As CLThermodynamicCalculationResult

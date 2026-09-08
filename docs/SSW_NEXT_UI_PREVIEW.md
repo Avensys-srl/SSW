@@ -22,22 +22,34 @@ Implemented with real local data:
   UI-neutral repository;
 - localized accessory catalog and model relations;
 - canonical `.sswsel` document creation and serializer round-trip;
-- production save/project/report workflow reached with the complete selection
-  document, preserving RDLC, email and follow-up behavior;
-- contextual help, optional tooltips and the 14 SSW language choices;
+- production save/project workflow reached with the complete selection
+  document, with a persistent project workspace in the right sidebar;
+- direct report preview from SSW Next, using the existing authoritative RDLC
+  templates and datasets without displaying or navigating to the legacy UI;
+- dedicated CO2 step with the three established calculation methods,
+  300-minute concentration curve and RDLC output;
+- dedicated sound step with octave-band calculation, LwA, two sound-pressure
+  distances and optional EN ISO 16032 row, with RDLC output;
+- contextual help, optional tooltips and the 15 SSW language choices;
 - local bundled frontend assets.
 
 Intentionally delegated to the production workflow:
 
-- the final Windows save dialogs and project editor;
-- RDLC rendering, technical-selection registration, email composition and
-  follow-up scheduling;
+- the final Windows file dialogs;
+- technical-selection registration and follow-up scheduling;
 - reopening historical projects and creating alternatives.
 
-The new host transfers a canonical `CLSelectionProjectDocument` to
-`CLMainForm`; it does not copy formulas, serializers or report logic into
-TypeScript. This adapter is the deliberate compatibility boundary for the
-first parity prototype and can be removed in Onda 7 after parallel validation.
+Project documents remain mono-language. The document language selector in the
+right sidebar is deliberately independent from the interface language: changing it
+regenerates every embedded project PDF transactionally, while opening a project
+selection leaves the current UI language unchanged. Project email composition uses
+the selected document language.
+
+The new host creates a canonical `CLSelectionProjectDocument`; it does not copy
+formulas, serializers or report logic into TypeScript. UI-neutral services
+calculate the selection, CO2 and sound results, then prepare the authoritative
+RDLC datasets before SSW Next opens `CLReportViewerForm` directly. The legacy
+selection form is never instantiated.
 
 ## Build and run
 
@@ -65,8 +77,28 @@ D:\mdev\SSW\SSW\bin\x86\AV\SSW.exe --next-ui
 `tests\Invoke-NextUiSmoke.ps1` verifies the exact AV executable, packaged
 frontend, x86 WebView2 loader, model catalog, real winter/summer calculation,
 layout repository, water-coil calculation and canonical project serializer
-round-trip. The smoke is part of
+round-trip. It also starts the WinForms WebView2 host, waits for the local SDF
+bridge and frontend rendering, opens the Layout step and captures a full-page
+PNG through the Chromium DevTools protocol. The smoke is part of
 `Invoke-TechnicalSelectionReleaseTests.ps1`.
 
+The layout smoke also verifies that selecting two compatible configuration
+codes changes the flow-port assignment. The frontend always renders Fresh and
+Return as incoming flows and Supply and Exhaust as outgoing flows, regardless
+of the side occupied by each port.
+
+The same rendering check can be run directly without desktop capture:
+
+```powershell
+D:\mdev\SSW\SSW\bin\x86\AV\SSW.exe `
+  --next-ui-screenshot C:\Temp\ssw-next.png layout
+```
+
+The optional final argument selects the step prepared before capture. `layout`
+waits until all four performance charts are present. Omitting it captures the
+initial SSW Next screen. The command returns `0` on success, writes diagnostic
+details beside the requested image as `<output>.error.log` on failure, and
+never depends on window visibility or Windows Graphics Capture permissions.
+
 The browser prototype has been checked at `1440x900` and `1024x768` across all
-nine steps with no horizontal overflow.
+ten steps with no horizontal overflow.

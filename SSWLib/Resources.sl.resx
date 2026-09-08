@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root xmlns:ns1="urn:schemas-microsoft-com:xml-msdata" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   
   <xs:schema id="root">
@@ -746,4 +746,26 @@ Ko morate ohraniti vnose izračuna, ki jih je mogoče urejati, najprej shranite 
   <data name="Help_MenuTip_FollowUps" xml:space="preserve"><value>Odprite središče opomnikov za pregled, prestavitev ali zaključitev opomnikov za tehnične izbore in projekte.</value></data>
   <data name="Help_Topic_FollowUps_Title" xml:space="preserve"><value>Opomniki za nadaljnji stik s stranko</value></data>
   <data name="Help_Topic_FollowUps_Body" xml:space="preserve"><value>Načrtujte nadaljnji stik s stranko v obdobju od 1 do 90 dni; privzeta vrednost je 7 dni. Rok začne teči šele po uspešni pripravi Outlookovega osnutka. Zvonec odpre središče opomnikov, kjer so prikazani zapadli, prihodnji in zaključeni elementi. Dvokliknite element, da znova odprete lokalni izbor ali projekt. Opomnik lahko zaključite kot uspešen ali neuspešen, ga prestavite ali prekličete. Podatki ostanejo zasebni za trenutno namestitev sistema Windows; brez povezave se spremembe shranijo lokalno in sinhronizirajo pozneje.</value></data>
+  <data name="Report_InstallationLayout_Title" xml:space="preserve"><value>Konfiguracija namestitve</value></data>
+  <data name="Report_InstallationLayout_Configuration" xml:space="preserve"><value>Konfiguracija</value></data>
+  <data name="Report_InstallationLayout_Installation" xml:space="preserve"><value>Namestitev</value></data>
+  <data name="Report_InstallationLayout_Ceiling" xml:space="preserve"><value>Strop</value></data>
+  <data name="Report_InstallationLayout_Floor" xml:space="preserve"><value>Tla</value></data>
+  <data name="Report_InstallationLayout_Wall" xml:space="preserve"><value>Stena</value></data>
+  <data name="Report_InstallationLayout_AccessPanel" xml:space="preserve"><value>Dostopni panel</value></data>
+  <data name="Report_InstallationLayout_UpperAccess" xml:space="preserve"><value>Dostop zgoraj</value></data>
+  <data name="Report_InstallationLayout_LowerAccess" xml:space="preserve"><value>Dostop spodaj</value></data>
+  <data name="Report_InstallationLayout_FrontAccess" xml:space="preserve"><value>Dostop spredaj</value></data>
+  <data name="Report_InstallationLayout_Fresh" xml:space="preserve">
+    <value>Zunanji zrak</value>
+  </data>
+  <data name="Report_InstallationLayout_Return" xml:space="preserve">
+    <value>Odvodni zrak</value>
+  </data>
+  <data name="Report_InstallationLayout_Supply" xml:space="preserve">
+    <value>Dovodni zrak</value>
+  </data>
+  <data name="Report_InstallationLayout_Exhaust" xml:space="preserve">
+    <value>Izpušni zrak</value>
+  </data>
 </root>

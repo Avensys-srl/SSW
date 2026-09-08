@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root xmlns:ns1="urn:schemas-microsoft-com:xml-msdata" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:schema id="root">
     <xs:import namespace="http://www.w3.org/XML/1998/namespace" />
@@ -1427,5 +1427,27 @@ Názvy jazyků v nabídce jazyků jsou záměrně vždy zobrazeny jako autonyma,
   </data>
   <data name="Help_Topic_FollowUps_Body" xml:space="preserve">
     <value>Naplánujte sledování zákazníka od 1 do 90 dnů; výchozí hodnota je 7 dní. Odpočítávání začne až poté, co byl návrh Outlooku úspěšně připraven. Zvonek otevře centrum připomenutí, kde jsou zobrazeny splatné, nadcházející a uzavřené položky. Poklepáním na položku znovu otevřete její místní výběr nebo projekt. Upomínku lze uzavřít jako úspěšnou nebo neúspěšnou, přeplánovat nebo zrušit. Data připomenutí zůstávají soukromá pro aktuální instalaci systému Windows; v režimu offline se změny ukládají lokálně a synchronizují se později.</value>
+  </data>
+  <data name="Report_InstallationLayout_Title" xml:space="preserve"><value>Konfigurace instalace</value></data>
+  <data name="Report_InstallationLayout_Configuration" xml:space="preserve"><value>Konfigurace</value></data>
+  <data name="Report_InstallationLayout_Installation" xml:space="preserve"><value>Instalace</value></data>
+  <data name="Report_InstallationLayout_Ceiling" xml:space="preserve"><value>Strop</value></data>
+  <data name="Report_InstallationLayout_Floor" xml:space="preserve"><value>Podlaha</value></data>
+  <data name="Report_InstallationLayout_Wall" xml:space="preserve"><value>Stěna</value></data>
+  <data name="Report_InstallationLayout_AccessPanel" xml:space="preserve"><value>Servisní panel</value></data>
+  <data name="Report_InstallationLayout_UpperAccess" xml:space="preserve"><value>Přístup shora</value></data>
+  <data name="Report_InstallationLayout_LowerAccess" xml:space="preserve"><value>Přístup zespodu</value></data>
+  <data name="Report_InstallationLayout_FrontAccess" xml:space="preserve"><value>Přístup zepředu</value></data>
+  <data name="Report_InstallationLayout_Fresh" xml:space="preserve">
+    <value>Venkovní vzduch</value>
+  </data>
+  <data name="Report_InstallationLayout_Return" xml:space="preserve">
+    <value>Odváděný vzduch</value>
+  </data>
+  <data name="Report_InstallationLayout_Supply" xml:space="preserve">
+    <value>Přívodní vzduch</value>
+  </data>
+  <data name="Report_InstallationLayout_Exhaust" xml:space="preserve">
+    <value>Výfukový vzduch</value>
   </data>
 </root>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root xmlns:ns1="urn:schemas-microsoft-com:xml-msdata" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:schema id="root">
     <xs:import namespace="http://www.w3.org/XML/1998/namespace" />
@@ -500,7 +500,7 @@
     <value>Lydkraft</value>
   </data>
   <data name="Sound_Breakout" xml:space="preserve">
-    <value>Breakout</value>
+    <value>Utstrålt lyd</value>
   </data>
   <data name="Sound_Exhaust" xml:space="preserve">
     <value>Eksos</value>
@@ -1306,4 +1306,26 @@ Lagre .sswsel-filen først når du trenger å bevare redigerbare beregningsinnda
   <data name="Help_MenuTip_FollowUps" xml:space="preserve"><value>Åpne oppfølgingssenteret for å kontrollere, planlegge på nytt eller avslutte påminnelser for tekniske valg og prosjekter.</value></data>
   <data name="Help_Topic_FollowUps_Title" xml:space="preserve"><value>Påminnelser om kundeoppfølging</value></data>
   <data name="Help_Topic_FollowUps_Body" xml:space="preserve"><value>Planlegg en kundeoppfølging fra 1 til 90 dager; standardverdien er 7 dager. Fristen begynner først etter at Outlook-utkastet er opprettet. Klokken åpner påminnelsessenteret, der forfalte, kommende og avsluttede elementer vises. Dobbeltklikk på et element for å åpne det lokale valget eller prosjektet på nytt. En påminnelse kan avsluttes som vellykket eller mislykket, planlegges på nytt eller avbrytes. Dataene forblir private for den gjeldende Windows-installasjonen; frakoblet lagres endringer lokalt og synkroniseres senere.</value></data>
+  <data name="Report_InstallationLayout_Title" xml:space="preserve"><value>Installasjonskonfigurasjon</value></data>
+  <data name="Report_InstallationLayout_Configuration" xml:space="preserve"><value>Konfigurasjon</value></data>
+  <data name="Report_InstallationLayout_Installation" xml:space="preserve"><value>Installasjon</value></data>
+  <data name="Report_InstallationLayout_Ceiling" xml:space="preserve"><value>Tak</value></data>
+  <data name="Report_InstallationLayout_Floor" xml:space="preserve"><value>Gulv</value></data>
+  <data name="Report_InstallationLayout_Wall" xml:space="preserve"><value>Vegg</value></data>
+  <data name="Report_InstallationLayout_AccessPanel" xml:space="preserve"><value>Tilgangspanel</value></data>
+  <data name="Report_InstallationLayout_UpperAccess" xml:space="preserve"><value>Tilgang ovenfra</value></data>
+  <data name="Report_InstallationLayout_LowerAccess" xml:space="preserve"><value>Tilgang nedenfra</value></data>
+  <data name="Report_InstallationLayout_FrontAccess" xml:space="preserve"><value>Tilgang forfra</value></data>
+  <data name="Report_InstallationLayout_Fresh" xml:space="preserve">
+    <value>Uteluft</value>
+  </data>
+  <data name="Report_InstallationLayout_Return" xml:space="preserve">
+    <value>Avtrekksluft</value>
+  </data>
+  <data name="Report_InstallationLayout_Supply" xml:space="preserve">
+    <value>Tilluft</value>
+  </data>
+  <data name="Report_InstallationLayout_Exhaust" xml:space="preserve">
+    <value>Avkastluft</value>
+  </data>
 </root>

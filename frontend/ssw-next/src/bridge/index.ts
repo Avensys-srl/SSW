@@ -1,4 +1,12 @@
-import type { SelectionBridge, SelectionDraft } from "./contracts";
+import type {
+  FollowUpCenterState,
+  DimensionalDrawingState,
+  MultiProjectState,
+  ProductDocumentState,
+  ProjectSaveState,
+  SelectionBridge,
+  SelectionDraft,
+} from "./contracts";
 import { MockSelectionBridge } from "./mockBridge";
 
 type NativeResponse = {
@@ -23,6 +31,10 @@ type NativePreselection = {
   AvailablePressurePa: number;
   AbsorbedPowerW: number;
   CombinedSfp: number;
+  SupplySoundPowerDbA?: number;
+  SupplySoundPressureDbA?: number;
+  BreakoutSoundPowerDbA?: number;
+  BreakoutSoundPressureDbA?: number;
 };
 
 type NativeAccessory = {
@@ -32,6 +44,8 @@ type NativeAccessory = {
   Installation: string;
   Included: boolean;
   Locked: boolean;
+  Enabled: boolean;
+  DisabledReason: string;
 };
 
 type NativeWaterCoil = {
@@ -39,6 +53,7 @@ type NativeWaterCoil = {
   Name: string;
   Mode: "CWD" | "HWD" | "HCD";
   Installation: string;
+  InstallationLabel: string;
   LengthMm: number;
   HeightMm: number;
   Rows: number;
@@ -166,6 +181,7 @@ class NativeSelectionBridge implements SelectionBridge {
       waterCoilMode: "HCD" as const,
       waterCoilId: 0,
       waterCoilCustomized: false,
+      waterCoilCustomDisclaimerAccepted: false,
       waterCoilLengthMm: 0,
       waterCoilHeightMm: 0,
       waterCoilRows: 0,
@@ -182,6 +198,43 @@ class NativeSelectionBridge implements SelectionBridge {
       electricPostheaterEnabled: false,
       electricPostheaterId: 0,
       accessoryCodes: [] as string[],
+      co2: {
+        includeInReport: false,
+        roomWidthMeters: 7,
+        roomLengthMeters: 8,
+        roomHeightMeters: 3,
+        activityMet: 1.2,
+        occupiedPeople: 20,
+        occupiedMinutes: 45,
+        breakPeople: 0,
+        breakMinutes: 15,
+        calculationMethod: "maximum-concentration" as const,
+        outdoorConcentrationPpm: 380,
+        maximumConcentrationPpm: 1000,
+        airflowPerAreaLitersPerSecondPerSquareMeter: 0.35,
+        airflowPerPersonLitersPerSecond: 10,
+      },
+      sound: {
+        includeInReport: false,
+        directivityFactor: 2 as const,
+        distance1Meters: 1,
+        distance2Meters: 3,
+        iso16032Enabled: false,
+      },
+      preselectionFilters: {
+        maximumSfpEnabled: false,
+        maximumSfp: 2,
+        supplyNoiseEnabled: false,
+        supplyNoiseMetric: "LWA" as const,
+        maximumSupplyNoiseDbA: 50,
+        supplyNoiseDirectivityFactor: 2 as const,
+        supplyNoiseDistanceMeters: 1,
+        breakoutNoiseEnabled: false,
+        breakoutNoiseMetric: "LWA" as const,
+        maximumBreakoutNoiseDbA: 50,
+        breakoutNoiseDirectivityFactor: 2 as const,
+        breakoutNoiseDistanceMeters: 1,
+      },
     };
     const compatibleUnits = await this.preselectNative(draft);
     if (compatibleUnits.length === 0) {
@@ -240,6 +293,8 @@ class NativeSelectionBridge implements SelectionBridge {
             : ("External" as const),
         included: item.Included,
         locked: item.Locked,
+        enabled: item.Enabled,
+        disabledReason: item.DisabledReason,
       })),
       result: this.mapResult(native, draft.operatingPoint.pressure),
     };
@@ -258,9 +313,23 @@ class NativeSelectionBridge implements SelectionBridge {
     );
   }
 
-  async saveDraft(draft: Parameters<SelectionBridge["saveDraft"]>[0]) {
-    await nativeInvoke("project.edit", this.draftPayload(draft));
-    return { savedAt: new Date().toISOString(), delegated: true };
+  async saveDraft(
+    draft: Parameters<SelectionBridge["saveDraft"]>[0],
+    saveAs = false,
+  ) {
+    return nativeInvoke<ProjectSaveState>(
+      saveAs ? "project.saveAs" : "project.edit",
+      this.draftPayload(draft),
+    );
+  }
+
+  async openDraft(currentDraft: SelectionDraft) {
+    const response = await nativeInvoke<any>("project.open");
+    if (!response.opened || !response.input) return response;
+    return {
+      ...response,
+      draft: this.mapOpenedDraft(response.input, currentDraft),
+    };
   }
 
   async generateReport(draft: Parameters<SelectionBridge["generateReport"]>[0]) {
@@ -272,6 +341,282 @@ class NativeSelectionBridge implements SelectionBridge {
       fileName: `${model.replaceAll(" ", "_")}_Report.pdf`,
       delegated: true,
     };
+  }
+
+  async getProductDocuments(draft: SelectionDraft) {
+    return nativeInvoke<ProductDocumentState>(
+      "documents.list",
+      this.draftPayload(draft),
+    );
+  }
+
+  async openProductDocument(
+    documentType: "commercial-sheet" | "installation-manual",
+    draft: SelectionDraft,
+  ) {
+    return nativeInvoke<ProductDocumentState>("documents.open", {
+      ...this.draftPayload(draft),
+      documentType,
+    });
+  }
+
+  async getDimensionalDrawing(draft: SelectionDraft) {
+    const native = await nativeInvoke<any>("drawing.get", {
+      modelCode: draft.selectedUnitId,
+      layoutCode: draft.layoutCode,
+    });
+    return {
+      available: native.Available === true,
+      code: native.Code,
+      revision: native.Revision,
+      fileName: native.FileName,
+      mimeType: native.MimeType,
+      sha256: native.Sha256,
+      pageWidthPoints: numberValue(native.PageWidthPoints),
+      pageHeightPoints: numberValue(native.PageHeightPoints),
+      pageRotation: numberValue(native.PageRotation),
+      contentBase64: native.ContentBase64,
+      orientation: native.Orientation,
+      dimensions: (native.Dimensions ?? []).map((item: any) => ({
+        code: item.Code,
+        valueMillimeters:
+          item.ValueMillimeters == null ? null : numberValue(item.ValueMillimeters),
+      })),
+    } as DimensionalDrawingState;
+  }
+
+  async listNotifications() {
+    return nativeInvoke<FollowUpCenterState>("notifications.list");
+  }
+
+  async getNotificationSummary() {
+    return nativeInvoke<FollowUpCenterState>("notifications.peek");
+  }
+
+  async updateNotification(
+    id: string,
+    action: "reschedule" | "succeeded" | "unsuccessful",
+    days?: number,
+  ) {
+    return nativeInvoke<FollowUpCenterState>("notifications.action", {
+      id,
+      action,
+      days,
+    });
+  }
+
+  async openNotificationTarget(id: string, currentDraft: SelectionDraft) {
+    const response = await nativeInvoke<any>("notifications.openTarget", { id });
+    if (response.openedProject) {
+      return {
+        ...response,
+        multiProject: response.project as MultiProjectState,
+      };
+    }
+    if (!response.opened || !response.input) return response;
+    return {
+      ...response,
+      draft: this.mapOpenedDraft(response.input, currentDraft),
+    };
+  }
+
+  async getMultiProject(reference: string, languageCode: string) {
+    return nativeInvoke<MultiProjectState>("project.workspace", {
+      reference,
+      languageCode,
+    });
+  }
+
+  async newMultiProject(reference: string, languageCode: string) {
+    return nativeInvoke<MultiProjectState>("project.workspaceNew", {
+      reference,
+      languageCode,
+    });
+  }
+
+  async openMultiProject() {
+    return nativeInvoke<{
+      opened: boolean;
+      cancelled?: boolean;
+      project?: MultiProjectState;
+    }>("project.workspaceOpen");
+  }
+
+  async saveMultiProject(
+    reference: string,
+    languageCode: string,
+    saveAs = false,
+  ) {
+    return nativeInvoke<{
+      saved: boolean;
+      cancelled?: boolean;
+      project: MultiProjectState;
+    }>(
+      saveAs ? "project.workspaceSaveAs" : "project.workspaceSave",
+      { reference, languageCode },
+    );
+  }
+
+  async addCurrentToMultiProject(draft: SelectionDraft) {
+    return nativeInvoke<MultiProjectState>(
+      "project.workspaceAddCurrent",
+      this.draftPayload(draft),
+    );
+  }
+
+  async removeMultiProjectItem(itemId: string) {
+    return nativeInvoke<MultiProjectState>("project.workspaceRemove", { itemId });
+  }
+
+  async openMultiProjectItem(itemId: string, currentDraft: SelectionDraft) {
+    const response = await nativeInvoke<any>("project.workspaceOpenItem", { itemId });
+    if (!response.opened || !response.input) return response;
+    const openedDraft = this.mapOpenedDraft(response.input, currentDraft);
+    openedDraft.project.language = currentDraft.project.language;
+    return {
+      ...response,
+      draft: openedDraft,
+    };
+  }
+
+  async changeMultiProjectLanguage(
+    reference: string,
+    languageCode: string,
+  ) {
+    return nativeInvoke<MultiProjectState>("project.workspaceLanguage", {
+      reference,
+      languageCode,
+    });
+  }
+
+  async emailMultiProject(
+    reference: string,
+    languageCode: string,
+    schedule: boolean,
+    days: number,
+  ) {
+    return nativeInvoke<{
+      prepared: boolean;
+      cancelled?: boolean;
+      project?: MultiProjectState;
+    }>("project.workspaceEmail", {
+      reference,
+      languageCode,
+      schedule,
+      days,
+    });
+  }
+
+  private mapOpenedDraft(native: any, current: SelectionDraft): SelectionDraft {
+    const result = structuredClone(current);
+    result.project.name = native.ProjectName || result.project.name;
+    result.project.customerReference = native.CustomerReference || "";
+    result.project.language = native.LanguageCode || result.project.language;
+    result.selectedUnitId = native.ModelCode || result.selectedUnitId;
+    result.operatingPoint.supplyAirflow = numberValue(native.SupplyAirflowM3h);
+    result.operatingPoint.extractAirflow = numberValue(native.ExtractAirflowM3h);
+    result.operatingPoint.pressure = numberValue(native.PressurePa);
+    result.imbalanceEnabled = Boolean(native.ImbalanceEnabled);
+    result.regulationPercent = numberValue(native.RegulationPercent);
+    result.summerEnabled = Boolean(native.SummerEnabled);
+    result.winterOutdoorTemperature = numberValue(native.WinterOutdoorTemperatureC);
+    result.winterOutdoorRh = numberValue(native.WinterOutdoorRhPercent);
+    result.winterReturnTemperature = numberValue(native.WinterReturnTemperatureC);
+    result.winterReturnRh = numberValue(native.WinterReturnRhPercent);
+    result.summerOutdoorTemperature = numberValue(native.SummerOutdoorTemperatureC);
+    result.summerOutdoorRh = numberValue(native.SummerOutdoorRhPercent);
+    result.summerReturnTemperature = numberValue(native.SummerReturnTemperatureC);
+    result.summerReturnRh = numberValue(native.SummerReturnRhPercent);
+    result.installationMode = native.InstallationMode || "Ceiling";
+    result.layoutCode = native.LayoutCode || result.layoutCode;
+    result.waterCoilEnabled = Boolean(native.WaterCoilEnabled);
+    result.waterCoilId = numberValue(native.WaterCoilId);
+    result.waterCoilMode = native.WaterCoilMode || "HCD";
+    result.waterCoilCustomized = Boolean(native.WaterCoilCustomized);
+    result.waterCoilCustomDisclaimerAccepted =
+      Boolean(native.WaterCoilCustomDisclaimerAccepted);
+    result.waterCoilLengthMm = numberValue(native.WaterCoilLengthMm);
+    result.waterCoilHeightMm = numberValue(native.WaterCoilHeightMm);
+    result.waterCoilRows = numberValue(native.WaterCoilRows);
+    result.waterCoilCircuits = numberValue(native.WaterCoilCircuits);
+    result.waterCoilFinSpacingMm = numberValue(native.WaterCoilFinSpacingMm);
+    result.fluidCode = native.FluidCode || "Water";
+    result.glycolPercent = numberValue(native.GlycolPercent);
+    result.coolingWaterInletTemperature =
+      numberValue(native.CoolingWaterInletTemperatureC);
+    result.coolingWaterOutletTemperature =
+      numberValue(native.CoolingWaterOutletTemperatureC);
+    result.heatingWaterInletTemperature =
+      numberValue(native.HeatingWaterInletTemperatureC);
+    result.heatingWaterOutletTemperature =
+      numberValue(native.HeatingWaterOutletTemperatureC);
+    result.electricPreheaterEnabled = Boolean(native.ElectricPreheaterEnabled);
+    result.electricPreheaterId = numberValue(native.ElectricPreheaterId);
+    result.electricPostheaterEnabled = Boolean(native.ElectricPostheaterEnabled);
+    result.electricPostheaterId = numberValue(native.ElectricPostheaterId);
+    result.accessoryCodes = Array.isArray(native.AccessoryCodes)
+      ? native.AccessoryCodes
+      : [];
+    const nativeCo2 = native.Co2 ?? {};
+    result.co2 = {
+      includeInReport: Boolean(nativeCo2.IncludeInReport),
+      roomWidthMeters: numberValue(nativeCo2.RoomWidthMeters, 7),
+      roomLengthMeters: numberValue(nativeCo2.RoomLengthMeters, 8),
+      roomHeightMeters: numberValue(nativeCo2.RoomHeightMeters, 3),
+      activityMet: numberValue(nativeCo2.ActivityMet, 1.2),
+      occupiedPeople: numberValue(nativeCo2.OccupiedPeople, 20),
+      occupiedMinutes: numberValue(nativeCo2.OccupiedMinutes, 45),
+      breakPeople: numberValue(nativeCo2.BreakPeople, 0),
+      breakMinutes: numberValue(nativeCo2.BreakMinutes, 15),
+      calculationMethod:
+        nativeCo2.CalculationMethod || "maximum-concentration",
+      outdoorConcentrationPpm: numberValue(
+        nativeCo2.OutdoorConcentrationPpm,
+        380,
+      ),
+      maximumConcentrationPpm: numberValue(
+        nativeCo2.MaximumConcentrationPpm,
+        1000,
+      ),
+      airflowPerAreaLitersPerSecondPerSquareMeter: numberValue(
+        nativeCo2.AirflowPerAreaLitersPerSecondPerSquareMeter,
+        0.35,
+      ),
+      airflowPerPersonLitersPerSecond: numberValue(
+        nativeCo2.AirflowPerPersonLitersPerSecond,
+        10,
+      ),
+    };
+    const nativeSound = native.Sound ?? {};
+    const directivity = numberValue(nativeSound.DirectivityFactor, 2);
+    result.sound = {
+      includeInReport: Boolean(nativeSound.IncludeInReport),
+      directivityFactor:
+        directivity === 4 || directivity === 8 ? directivity : 2,
+      distance1Meters: numberValue(nativeSound.Distance1Meters, 1),
+      distance2Meters: numberValue(nativeSound.Distance2Meters, 3),
+      iso16032Enabled: Boolean(nativeSound.Iso16032Enabled),
+    };
+    const nativeFilters = native.PreselectionFilters ?? {};
+    const supplyDirectivity = numberValue(nativeFilters.SupplyNoiseDirectivity, 2);
+    const breakoutDirectivity = numberValue(nativeFilters.BreakoutNoiseDirectivity, 2);
+    result.preselectionFilters = {
+      maximumSfpEnabled: Boolean(nativeFilters.MaximumSfpEnabled),
+      maximumSfp: numberValue(nativeFilters.MaximumSfp, 2),
+      supplyNoiseEnabled: Boolean(nativeFilters.SupplyNoiseEnabled),
+      supplyNoiseMetric: nativeFilters.SupplyNoiseMetric === "LPA" ? "LPA" : "LWA",
+      maximumSupplyNoiseDbA: numberValue(nativeFilters.MaximumSupplyNoiseDbA, 50),
+      supplyNoiseDirectivityFactor:
+        supplyDirectivity === 4 || supplyDirectivity === 8 ? supplyDirectivity : 2,
+      supplyNoiseDistanceMeters: numberValue(nativeFilters.SupplyNoiseDistanceMeters, 1),
+      breakoutNoiseEnabled: Boolean(nativeFilters.BreakoutNoiseEnabled),
+      breakoutNoiseMetric: nativeFilters.BreakoutNoiseMetric === "LPA" ? "LPA" : "LWA",
+      maximumBreakoutNoiseDbA: numberValue(nativeFilters.MaximumBreakoutNoiseDbA, 50),
+      breakoutNoiseDirectivityFactor:
+        breakoutDirectivity === 4 || breakoutDirectivity === 8 ? breakoutDirectivity : 2,
+      breakoutNoiseDistanceMeters: numberValue(nativeFilters.BreakoutNoiseDistanceMeters, 1),
+    };
+    return result;
   }
 
   private calculateNative(
@@ -305,6 +650,10 @@ class NativeSelectionBridge implements SelectionBridge {
       requiredRegulation: numberValue(item.RequiredRegulationPercent),
       absorbedPower: numberValue(item.AbsorbedPowerW),
       sfp: numberValue(item.CombinedSfp),
+      supplySoundPowerDbA: item.SupplySoundPowerDbA == null ? undefined : numberValue(item.SupplySoundPowerDbA),
+      supplySoundPressureDbA: item.SupplySoundPressureDbA == null ? undefined : numberValue(item.SupplySoundPressureDbA),
+      breakoutSoundPowerDbA: item.BreakoutSoundPowerDbA == null ? undefined : numberValue(item.BreakoutSoundPowerDbA),
+      breakoutSoundPressureDbA: item.BreakoutSoundPressureDbA == null ? undefined : numberValue(item.BreakoutSoundPressureDbA),
     };
   }
 
@@ -334,6 +683,8 @@ class NativeSelectionBridge implements SelectionBridge {
       waterCoilId: draft.waterCoilId,
       waterCoilMode: draft.waterCoilMode,
       waterCoilCustomized: draft.waterCoilCustomized,
+      waterCoilCustomDisclaimerAccepted:
+        draft.waterCoilCustomDisclaimerAccepted,
       waterCoilLengthMm: draft.waterCoilLengthMm,
       waterCoilHeightMm: draft.waterCoilHeightMm,
       waterCoilRows: draft.waterCoilRows,
@@ -350,23 +701,77 @@ class NativeSelectionBridge implements SelectionBridge {
       electricPostheaterEnabled: draft.electricPostheaterEnabled,
       electricPostheaterId: draft.electricPostheaterId,
       accessoryCodes: draft.accessoryCodes,
+      installationMode: draft.installationMode,
+      layoutCode: draft.layoutCode,
+      co2: {
+        includeInReport: draft.co2.includeInReport,
+        roomWidthMeters: draft.co2.roomWidthMeters,
+        roomLengthMeters: draft.co2.roomLengthMeters,
+        roomHeightMeters: draft.co2.roomHeightMeters,
+        activityMet: draft.co2.activityMet,
+        occupiedPeople: draft.co2.occupiedPeople,
+        occupiedMinutes: draft.co2.occupiedMinutes,
+        breakPeople: draft.co2.breakPeople,
+        breakMinutes: draft.co2.breakMinutes,
+        calculationMethod: draft.co2.calculationMethod,
+        outdoorConcentrationPpm: draft.co2.outdoorConcentrationPpm,
+        maximumConcentrationPpm: draft.co2.maximumConcentrationPpm,
+        airflowPerAreaLitersPerSecondPerSquareMeter:
+          draft.co2.airflowPerAreaLitersPerSecondPerSquareMeter,
+        airflowPerPersonLitersPerSecond:
+          draft.co2.airflowPerPersonLitersPerSecond,
+      },
+      sound: {
+        includeInReport: draft.sound.includeInReport,
+        directivityFactor: draft.sound.directivityFactor,
+        distance1Meters: draft.sound.distance1Meters,
+        distance2Meters: draft.sound.distance2Meters,
+        iso16032Enabled: draft.sound.iso16032Enabled,
+      },
+      preselectionFilters: { ...draft.preselectionFilters },
     };
   }
 
   private mapResult(native: any, requiredPressure: number) {
     const winter = native.Winter;
     const summer = native.Summer;
-    const pressure = Math.max(
-      0,
-      numberValue(winter?.Curves?.WorkingPointPressurePa) - requiredPressure,
-    );
+    const pressureMargin =
+      numberValue(winter?.Curves?.WorkingPointPressurePa) - requiredPressure;
+    const pressure = Math.max(0, pressureMargin);
     const winterThermo = winter?.Result?.Thermodynamics;
     const summerThermo = summer?.Result?.Thermodynamics;
-    const validationMessages = (native.Validation?.Issues ?? []).map(
-      (issue: { MessageKey?: string; Code?: string }) =>
-        issue.MessageKey || issue.Code || "Configurazione da verificare.",
+    const validationNotices = (native.Validation?.Issues ?? []).map(
+      (issue: { MessageKey?: string; Code?: string; Severity?: number | string }) => {
+        const severityValue = String(issue.Severity ?? "").toLowerCase();
+        const severity =
+          severityValue === "2" || severityValue === "error"
+            ? ("danger" as const)
+            : severityValue === "0" || severityValue === "information"
+              ? ("information" as const)
+              : ("warning" as const);
+        return {
+          message:
+            issue.MessageKey ||
+            issue.Code ||
+            "Configuration requires verification.",
+          severity,
+        };
+      },
     );
-    const invalid = pressure <= 0;
+    const pressureExceeded =
+      Boolean(native.PressureCapacityExceeded) || pressureMargin < -0.5;
+    const pressureMessage =
+      native.PressureCapacityExceededMessage ||
+      "The required airflow and pressure cannot be reached even at 100% regulation.";
+    const notices = [
+      ...(pressureExceeded
+        ? [{ message: pressureMessage, severity: "danger" as const }]
+        : []),
+      ...validationNotices,
+    ];
+    const invalid =
+      pressureExceeded ||
+      notices.some((notice) => notice.severity === "danger");
     return {
       supplyTemperature: numberValue(
         winterThermo?.SupplyOutletTemperatureC,
@@ -387,15 +792,14 @@ class NativeSelectionBridge implements SelectionBridge {
       ),
       status: invalid
         ? ("invalid" as const)
-        : validationMessages.length > 0
+        : notices.length > 0
           ? ("warning" as const)
           : ("valid" as const),
-      messages: [
-        ...(invalid
-          ? ["La pressione richiesta supera quella disponibile."]
-          : []),
-        ...validationMessages,
-      ],
+      messages: notices.map((notice) => notice.message),
+      notices,
+      effectiveRegulationPercent: numberValue(
+        native.EffectiveRegulationPercent,
+      ),
       accessories: (native.Accessories as NativeAccessory[] ?? []).map((item) => ({
         code: item.Code,
         name: item.Name,
@@ -406,9 +810,51 @@ class NativeSelectionBridge implements SelectionBridge {
             : ("External" as const),
         included: item.Included,
         locked: item.Locked,
+        enabled: item.Enabled,
+        disabledReason: item.DisabledReason,
       })),
+      aeraulicConnectionCode: native.Layout?.AeraulicConnectionCode ?? "",
+      layoutConfigurations: (native.Layout?.Configurations ?? []).map(
+        (configuration: {
+          Code: string;
+          InstallationMode?: string;
+          Orientation?: number;
+          AccessSide?: "upper" | "lower" | "front";
+          ReferenceView?: string;
+          IsDefault?: boolean;
+        }) => {
+          const installationMode = String(configuration.InstallationMode ?? "")
+            .trim()
+            .toLowerCase();
+          return {
+            code: configuration.Code,
+            orientation: configuration.Orientation === 1 ? "vertical" as const : "horizontal" as const,
+            accessSide: configuration.AccessSide,
+            referenceView: configuration.ReferenceView,
+            installationMode:
+              installationMode === "ceiling" ||
+              installationMode === "floor" ||
+              installationMode === "wall"
+                ? installationMode
+                : undefined,
+            isDefault: Boolean(configuration.IsDefault),
+          };
+        },
+      ),
+      horizontalDimensions: (native.Layout?.HorizontalDimensions ?? []).map(
+        (item: { Code: string; ValueMillimeters: number | null }) =>
+          ({ code: item.Code, valueMillimeters: item.ValueMillimeters })),
+      verticalDimensions: (native.Layout?.VerticalDimensions ?? []).map(
+        (item: { Code: string; ValueMillimeters: number | null }) =>
+          ({ code: item.Code, valueMillimeters: item.ValueMillimeters })),
       layoutCodes: (native.Layout?.Configurations ?? []).map(
         (configuration: { Code: string }) => configuration.Code,
+      ),
+      flowPorts: (native.Layout?.FlowPorts ?? []).map(
+        (port: { FlowCode: "Fresh" | "Return" | "Supply" | "Exhaust"; Position: number }) => ({
+          flowCode: port.FlowCode,
+          position: numberValue(port.Position),
+        }),
       ),
       waterCoils: (native.AvailableWaterCoils as NativeWaterCoil[] ?? []).map(
         (item) => ({
@@ -416,6 +862,7 @@ class NativeSelectionBridge implements SelectionBridge {
           name: item.Name,
           mode: item.Mode,
           installation: item.Installation,
+          installationLabel: item.InstallationLabel,
           lengthMm: numberValue(item.LengthMm),
           heightMm: numberValue(item.HeightMm),
           rows: numberValue(item.Rows),
@@ -473,8 +920,73 @@ class NativeSelectionBridge implements SelectionBridge {
         }),
       ),
       additionalPressureDropPa: numberValue(native.AdditionalPressureDropPa),
+      waterHeatingEnabled: Boolean(native.WaterHeatingEnabled),
+      waterHeatingDisabledReason: native.WaterHeatingDisabledReason || "",
+      electricPostheaterEnabled: Boolean(native.ElectricPostheaterEnabled),
+      electricPostheaterDisabledReason:
+        native.ElectricPostheaterDisabledReason || "",
+      waterCoilStandardLabel: native.WaterCoilStandardLabel || "Standard",
+      waterCoilCustomizedLabel:
+        native.WaterCoilCustomizedLabel || "Customized",
+      waterCoilCustomDisclaimer: native.WaterCoilCustomDisclaimer || "",
+      waterCoilDimensionsNotice: native.WaterCoilDimensionsNotice || "",
+      waterCoilQuotationNotice: native.WaterCoilQuotationNotice || "",
       winterCurve: this.mapCurve(winter?.Curves),
       summerCurve: this.mapCurve(summer?.Curves),
+      co2Result: native.Co2
+        ? {
+            roomAreaSquareMeters: numberValue(
+              native.Co2.RoomAreaSquareMeters,
+            ),
+            roomVolumeCubicMeters: numberValue(
+              native.Co2.RoomVolumeLiters,
+            ) / 1000,
+            carbonDioxideGenerationLitersPerSecondPerPerson: numberValue(
+              native.Co2.Co2ProductionPerPersonLitersPerHour,
+            ) / 3600,
+            requiredOutdoorAirflowLitersPerSecond: numberValue(
+              native.Co2.RequiredAirflowLitersPerSecond,
+            ),
+            requiredOutdoorAirflowCubicMetersPerHour: numberValue(
+              native.Co2.RequiredAirflowM3h,
+            ),
+            calculatedMaximumConcentrationPpm: numberValue(
+              native.Co2.MaximumCo2Ppm,
+            ),
+            points: (native.Co2.Points ?? []).map((point: any) => ({
+              hours: numberValue(point.Hours),
+              ppm: numberValue(point.Ppm),
+            })),
+          }
+        : undefined,
+      soundResult: native.Sound
+        ? {
+            iso16032Available: Boolean(native.Sound.Iso16032Available),
+            spectrumRows: (native.Sound.Rows ?? []).map(
+              (row: any) => ({
+                airPathCode: String(row.Type ?? ""),
+                airPathLabel: String(row.Caption ?? row.Type ?? ""),
+                octaveBand63HzDb: numberValue(row.Bands?.[0]),
+                octaveBand125HzDb: numberValue(row.Bands?.[1]),
+                octaveBand250HzDb: numberValue(row.Bands?.[2]),
+                octaveBand500HzDb: numberValue(row.Bands?.[3]),
+                octaveBand1000HzDb: numberValue(row.Bands?.[4]),
+                octaveBand2000HzDb: numberValue(row.Bands?.[5]),
+                octaveBand4000HzDb: numberValue(row.Bands?.[6]),
+                octaveBand8000HzDb: numberValue(row.Bands?.[7]),
+                weightedSoundPowerDbA: numberValue(row.LwA),
+                soundPressureAtDistance1DbA:
+                  row.Lp1 === null || row.Lp1 === undefined
+                    ? null
+                    : numberValue(row.Lp1),
+                soundPressureAtDistance2DbA:
+                  row.Lp2 === null || row.Lp2 === undefined
+                    ? null
+                    : numberValue(row.Lp2),
+              }),
+            ),
+          }
+        : undefined,
     };
   }
 

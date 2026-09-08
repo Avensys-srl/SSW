@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root xmlns:ns1="urn:schemas-microsoft-com:xml-msdata" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   
   <xs:schema id="root">
@@ -923,4 +923,26 @@ Először mentse a .sswsel fájlt, ha meg kell őriznie a szerkeszthető számí
   <data name="Help_MenuTip_FollowUps" xml:space="preserve"><value>Nyissa meg az utánkövetési központot a műszaki kiválasztásokhoz és projektekhez tartozó emlékeztetők áttekintéséhez, átütemezéséhez vagy lezárásához.</value></data>
   <data name="Help_Topic_FollowUps_Title" xml:space="preserve"><value>Ügyfél-utánkövetési emlékeztetők</value></data>
   <data name="Help_Topic_FollowUps_Body" xml:space="preserve"><value>Az ügyfél utánkövetése 1 és 90 nap közötti időtartamra ütemezhető; az alapértelmezett érték 7 nap. A határidő csak az Outlook-piszkozat sikeres elkészítése után indul. A harang nyitja meg az emlékeztetőközpontot, ahol a lejárt, közelgő és lezárt tételek láthatók. Kattintson duplán egy tételre a helyi kiválasztás vagy projekt újbóli megnyitásához. Az emlékeztető sikeresként vagy sikertelenként lezárható, átütemezhető vagy törölhető. Az adatok kizárólag az aktuális Windows-telepítésen maradnak bizalmasak; kapcsolat nélkül a módosítások helyben tárolódnak, majd később szinkronizálódnak.</value></data>
+  <data name="Report_InstallationLayout_Title" xml:space="preserve"><value>Telepítési konfiguráció</value></data>
+  <data name="Report_InstallationLayout_Configuration" xml:space="preserve"><value>Konfiguráció</value></data>
+  <data name="Report_InstallationLayout_Installation" xml:space="preserve"><value>Telepítés</value></data>
+  <data name="Report_InstallationLayout_Ceiling" xml:space="preserve"><value>Mennyezet</value></data>
+  <data name="Report_InstallationLayout_Floor" xml:space="preserve"><value>Padló</value></data>
+  <data name="Report_InstallationLayout_Wall" xml:space="preserve"><value>Fal</value></data>
+  <data name="Report_InstallationLayout_AccessPanel" xml:space="preserve"><value>Hozzáférési panel</value></data>
+  <data name="Report_InstallationLayout_UpperAccess" xml:space="preserve"><value>Felső hozzáférés</value></data>
+  <data name="Report_InstallationLayout_LowerAccess" xml:space="preserve"><value>Alsó hozzáférés</value></data>
+  <data name="Report_InstallationLayout_FrontAccess" xml:space="preserve"><value>Elülső hozzáférés</value></data>
+  <data name="Report_InstallationLayout_Fresh" xml:space="preserve">
+    <value>Külső levegő</value>
+  </data>
+  <data name="Report_InstallationLayout_Return" xml:space="preserve">
+    <value>Elszívott levegő</value>
+  </data>
+  <data name="Report_InstallationLayout_Supply" xml:space="preserve">
+    <value>Befújt levegő</value>
+  </data>
+  <data name="Report_InstallationLayout_Exhaust" xml:space="preserve">
+    <value>Kidobott levegő</value>
+  </data>
 </root>

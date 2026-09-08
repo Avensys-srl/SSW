@@ -143,6 +143,10 @@ Partial Public Class CLMainForm
         End If
     End Sub
 
+    Public Sub FollowUp_ShowNextUiCenter()
+        FollowUp_ShowCenter()
+    End Sub
+
     Private Async Sub FollowUp_ActionRequested(sender As Object, e As CLFollowUpActionEventArgs)
         If e Is Nothing OrElse m_FollowUpStore Is Nothing Then Return
         Try

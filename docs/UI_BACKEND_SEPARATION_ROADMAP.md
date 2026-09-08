@@ -2,6 +2,11 @@
 
 Data decisione architetturale: 27/07/2026
 
+Checkpoint 08/09/2026: normalizzazione atomica selezione/risultati, protezioni
+contro risposte asincrone obsolete e controlli backend per accessori e
+trattamenti incompatibili. Evidenze e limiti in
+[AUDIT_CORREZIONI_2026-09-08.md](AUDIT_CORREZIONI_2026-09-08.md).
+
 ## Obiettivo
 
 Separare progressivamente l'orchestrazione tecnica di SSW dalla UI WinForms,
@@ -18,7 +23,8 @@ desktop Windows x86.
 - Non si crea una copia del prodotto priva della storia Git.
 - `master` resta pubblicabile; la modernizzazione procede su un branch
   dedicato.
-- L'interfaccia WinForms corrente resta riferimento funzionale e fallback.
+- L'interfaccia WinForms corrente resta riferimento funzionale della linea
+  `1.3.0.xx`, ma non e' piu' un fallback runtime di SSW Next.
 - Non vengono riscritti gli algoritmi durante la separazione.
 - La nuova UI non introduce inizialmente prezzi, valuta, preventivi, CRM,
   login cliente o gestione commerciale.
@@ -220,7 +226,7 @@ Stato: completata il 27/07/2026 come preview affiancata.
 3. [x] Creare design system e component demo route.
 4. [x] Implementare progetto, preselezione e selezione dettagliata.
 5. [x] Collegare un calcolo reale tramite il servizio applicativo.
-6. [x] Aprire salvataggio e report legacy dal nuovo host.
+6. [x] Collegare salvataggio e report al nuovo host.
 
 Checkpoint: una selezione reale puo' essere calcolata, salvata, riaperta e
 stampata senza dipendere dalla UI WinForms per l'inserimento dati.
@@ -234,10 +240,12 @@ Risultato:
 - catalogo modelli, calcolo inverno/estate, layout e accessori arrivano
   realmente dall'SDF;
 - browser mock limitato allo sviluppo frontend;
-- salvataggio e report aprono il percorso produttivo legacy.
+- salvataggio e report usano servizi applicativi e dataset RDLC senza aprire
+  `CLMainForm`.
 
-Il checkpoint finale sulla completa indipendenza da WinForms per
-salvataggio/report confluisce nell'Onda 5 e non e' ancora chiuso.
+Il checkpoint sulla completa indipendenza da `CLMainForm` per
+salvataggio/report e' stato chiuso il 29/07/2026. Il viewer RDLC generico resta
+WinForms perche' e' un contenitore documentale, non la vecchia UI tecnica.
 
 ## Onda 5 - Parita' tecnica
 
@@ -249,6 +257,13 @@ Stato: **completata il 27/07/2026 per il prototipo tecnico bilanciato**.
 4. [x] Migrare accessori.
 5. [x] Collegare documenti tecnici, email e follow-up al workflow produttivo.
 6. [x] Completare help, tooltip e 14 localizzazioni del prototipo.
+7. [x] Migrare calcolo CO2 e rumore, persistenza e dataset RDLC.
+
+Nota UX del 29/07/2026: CO2 e rumore condividono il payload tecnico e il
+ricalcolo UI-neutral, ma sono esposti in SSW Next come due passaggi distinti
+del workflow (`CO2` e `Calcolo acustico`). In questo modo configurazione,
+risultati e inclusione nel report restano indipendenti e immediatamente
+leggibili.
 
 Checkpoint: il nuovo percorso copre l'attuale selezione tecnica bilanciata.
 
@@ -259,18 +274,25 @@ Risultato:
 - water coil HEDes con secondo passaggio alla portata realmente disponibile;
 - PEHD/EHD con compatibilita', temperature e perdite aerauliche aggiuntive;
 - creazione del documento progetto canonico e round-trip del serializer;
-- salvataggio, progetti, RDLC, email e follow-up conservati tramite adapter al
-  workflow produttivo, senza duplicarne le regole nel frontend;
+- salvataggio, progetti, RDLC, email e follow-up conservati tramite servizi
+  applicativi, senza duplicarne le regole nel frontend;
 - help contestuale, tooltip disattivabili e shell localizzata nelle 15 lingue;
+- calcolo CO2 con i tre metodi legacy, curva a 300 minuti e parametri ambiente;
+- calcolo acustico sulle otto bande, LwA, pressioni alle due distanze e
+  opzione EN ISO 16032;
+- persistenza di entrambe le sezioni nel `.sswsel` e popolamento reale dei
+  dataset `SoundPower`, `SoundPowerHeader`, `CO2LevelRoom`, `CO2LevelUse` e
+  `CO2LevelParameters`;
 - smoke nativo e serializzazione progetto integrati nel gate di release;
 - verifica responsive di tutti gli step a 1440x900 e 1024x768.
 
 Il prototipo non deve essere pubblicato come `2.0.0.0` e non sostituisce ancora
 la UI corrente. La normalizzazione centrale dei layout e delle immagini CAD
 resta un'attivita' dati dell'Onda 3: l'adapter corrente garantisce la parita'
-tecnica usando le configurazioni gia' presenti nell'SDF. La rimozione del
-passaggio WinForms per dialoghi, RDLC, email e follow-up appartiene all'Onda 7
-e avverra' solo dopo il confronto parallelo approvato.
+tecnica usando le configurazioni gia' presenti nell'SDF. La dipendenza runtime
+da `CLMainForm` e' stata rimossa il 29/07/2026. Restano consentiti dialoghi host
+e il viewer RDLC generico; non contengono ne' istanziano la vecchia schermata
+di selezione.
 
 Aggiornamenti del prototipo del 28/07/2026:
 
@@ -283,6 +305,36 @@ Aggiornamenti del prototipo del 28/07/2026:
 - dopo la scelta del modello la nuova UI mantiene in basso i grafici reali di
   pressione, potenza assorbita e rendimento, usando le serie numeriche del
   servizio applicativo e una scala di portata comune.
+- la configurazione layout selezionata modifica realmente l'assegnazione dei
+  quattro flussi; Fresh e Return sono sempre entranti, Supply ed Exhaust sempre
+  uscenti;
+- `Genera report` prepara direttamente dataset, grafici e template RDLC tramite
+  `CLNextUiReportService`, quindi apre il viewer da SSW Next. Non viene creato
+  alcun builder o form legacy invisibile.
+- la gestione del progetto e' persistente nella barra laterale destra, insieme
+  alla selezione corrente: elenco, apertura, rimozione, salvataggio e invio email
+  non richiedono il ritorno alla UI legacy;
+- lingua dell'interfaccia e lingua documentale del progetto sono indipendenti:
+  un progetto resta mono-lingua, ma puo' essere preparato in una delle 15 lingue
+  senza modificare la lingua con cui l'operatore usa SSW;
+- il cambio della lingua documentale rigenera in staging tutti i PDF incorporati
+  nel progetto e sostituisce il progetto corrente solo se l'intera operazione
+  termina con successo. Apertura selezioni ed email mantengono tale lingua.
+
+Checkpoint preselezione del 02/09/2026:
+
+- dopo la verifica del punto di lavoro e il calcolo della regolazione minima,
+  la preselezione puo' applicare in modo indipendente un limite SFP, un limite
+  acustico sulla mandata e un limite acustico sul rumore irradiato;
+- per ciascun limite acustico la grandezza e' mutuamente esclusiva (`LwA` o
+  `LpA`); distanza e fattore di direttivita' sono indipendenti tra mandata e
+  rumore irradiato e vengono richiesti solo per `LpA`;
+- i valori `Supply` e `Breakout` provengono dallo stesso servizio acustico del
+  calcolo dettagliato e del report, valutato alla regolazione del candidato;
+- i criteri sono tutti opzionali, localizzati nelle 15 lingue e persistiti nel
+  `.sswsel`; i file precedenti vengono normalizzati con i filtri disattivati;
+- lo smoke nativo verifica esclusione SFP, valori acustici dei candidati e
+  soglie `LwA`/`LpA` senza introdurre formule alternative nel frontend.
 
 ## Onda 6 - Portate sbilanciate
 
@@ -299,12 +351,46 @@ completo in ogni output.
 
 ## Onda 7 - Consolidamento e sostituzione
 
-1. Eseguire confronto parallelo legacy/nuova UI.
-2. Collaudare ridimensionamento, DPI e tutte le lingue.
-3. Collaudare funzionamento offline.
-4. Aggiornare installer e runtime WebView2.
-5. Conservare un rollback verso la UI legacy per il periodo concordato.
-6. Rimuovere il fallback solo dopo la parita' approvata.
+Stato: **in corso**. Separazione runtime completata il 29/07/2026; collaudo e
+packaging della release candidate ancora da chiudere.
+
+1. [ ] Eseguire confronto parallelo legacy/nuova UI sull'intera matrice.
+2. [ ] Collaudare ridimensionamento, DPI e tutte le lingue.
+3. [ ] Collaudare funzionamento offline.
+4. [ ] Aggiornare installer e runtime WebView2.
+5. [x] Conservare il rollback installando l'ultima release `1.3.0.xx`, senza
+   mantenere un fallback interno nel runtime Next.
+6. [x] Rimuovere il fallback e l'avvio della UI legacy dal percorso Next.
+7. [x] Estrarre risoluzione documenti in `CLProductDocumentService`.
+8. [x] Estrarre snapshot calcolato e registrazione tecnica in servizi
+   UI-neutral.
+9. [x] Estrarre dataset, grafici e scelta template in
+   `CLNextUiReportService`.
+10. [x] Impostare SSW Next come startup ordinario del branch di
+    modernizzazione.
+
+Gate automatici aggiunti:
+
+- nessun riferimento a `CLMainForm`, `OpenLegacy` o `legacy.open` nel programma
+  host e nel frontend Next;
+- rendering PDF reale del report base, del report con batteria elettrica e del
+  report con batteria ad acqua;
+- rendering del template CO2 e verifica che dataset CO2 e rumore contengano
+  risultati reali;
+- rendering localizzato almeno in italiano, bulgaro e norvegese;
+- round-trip di `.sswsel` e `.sswproj`;
+- screenshot WebView2 nativo dall'eseguibile AV.
+
+Confine conservato intenzionalmente:
+
+- `CLMainForm` resta compilato nella libreria per la manutenzione della linea
+  storica e per il comando tecnico di baseline comparativa; non e' referenziato
+  o istanziato dal runtime SSW Next;
+- rumore e CO2 sono gestiti direttamente da servizi UI-neutral; se non
+  selezionati per il report, i flag RDLC li nascondono senza dipendere dalla
+  schermata WinForms storica;
+- la rimozione fisica dei sorgenti WinForms legacy avverra' solo quando non
+  sara' piu' necessario mantenere la linea `1.3.0.xx` dalla stessa soluzione.
 
 Checkpoint: release candidate `2.0.0.0` installabile su un sistema con
 `1.3.0.xx`, con rollback e confronto numerico approvati.

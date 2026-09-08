@@ -22,6 +22,7 @@ import {
   HardDriveDownload,
   Info,
   LoaderCircle,
+  Mail,
   Minus,
   PanelsTopLeft,
   PanelBottom,
@@ -40,6 +41,7 @@ import {
 } from "lucide";
 import "./styles.css";
 import { createBridge, logClientError, runtimeName } from "./bridge";
+import { normalizeSelection } from "./bridge/normalizeSelection";
 import { getHelpContent } from "./help";
 import {
   getMessages,
@@ -50,11 +52,20 @@ import {
 import type {
   AccessoryOption,
   BootstrapData,
+  DimensionalDrawingState,
+  FollowUpCenterState,
+  FollowUpReminder,
+  InstallationMode,
+  LayoutConfigurationOption,
+  MultiProjectState,
   PerformanceCurveData,
+  ProductDocumentState,
+  ProjectSaveState,
   SelectionDraft,
   SelectionResult,
   StepId,
   UnitOption,
+  WaterCoilPerformance,
 } from "./bridge/contracts";
 
 type StepDefinition = {
@@ -69,6 +80,8 @@ const steps: StepDefinition[] = [
   { id: "water-coil", optional: true },
   { id: "electric-heaters", optional: true },
   { id: "accessories", optional: true },
+  { id: "co2", optional: true },
+  { id: "sound", optional: true },
   { id: "documents", optional: true },
   { id: "summary" },
 ];
@@ -98,6 +111,7 @@ const iconSet = {
   HardDriveDownload,
   Info,
   LoaderCircle,
+  Mail,
   Minus,
   PanelsTopLeft,
   PanelBottom,
@@ -123,9 +137,33 @@ let data: BootstrapData | null = null;
 let draft: SelectionDraft | null = null;
 let result: SelectionResult | null = null;
 let currentStep: StepId = "project";
+let maximumReachableStepIndex = 1;
+let confirmedUnitId: string | null = null;
+let installationReviewRequired = false;
 let calculating = false;
+let busyMessage: string | null = null;
+let pendingProjectLanguage: string | null = null;
+let activeProjectDocumentLanguage: string | null = null;
 let toastMessage = "";
 let helpOpen = false;
+let notificationCenterOpen = false;
+let notificationState: FollowUpCenterState = {
+  unreadDueCount: 0,
+  reminders: [],
+};
+let projectState: ProjectSaveState | null = null;
+let projectDirty = false;
+let multiProjectState: MultiProjectState | null = null;
+let projectEmailOpen = false;
+let projectEmailSchedule = true;
+let projectEmailDays = 7;
+let preselectionRequestVersion = 0;
+let calculationRequestVersion = 0;
+let calculationFailed = false;
+let productDocuments: ProductDocumentState | null = null;
+let productDocumentsLoading = false;
+let dimensionalDrawing: DimensionalDrawingState | null = null;
+let dimensionalDrawingOpen = false;
 let tooltipsEnabled =
   window.localStorage.getItem("ssw-next.help-tooltips") !== "false";
 
@@ -139,10 +177,180 @@ const languageCode = () => {
 
 const messages = (): Readonly<LocalizedFrontendMessages> =>
   getMessages(languageCode());
+
+const localizedSoundPath = (rawCode: string, rawLabel: string): string => {
+  const code = rawCode.trim().replace(/^_+/, "").toLowerCase();
+  const text = messages();
+  const labels: Record<string, string> = {
+    fresh: text.domain.airflow.fresh,
+    supply: text.domain.airflow.supply,
+    exhaust: text.domain.airflow.exhaust,
+    return: text.domain.airflow.return,
+    breakout: text.ui.co2Sound.breakoutNoise,
+  };
+  return labels[code] ?? (rawLabel || rawCode);
+};
 const helpContent = () => getHelpContent(languageCode());
 const helpTitle = (key: keyof LocalizedFrontendMessages["tooltips"]): string =>
   tooltipsEnabled ? messages().tooltips[key] : "";
 
+type WorkflowText = {
+  openSelection: string;
+  saveAs: string;
+  notSaved: string;
+  savedFile: string;
+  selectionSummary: string;
+  notifications: string;
+  noNotifications: string;
+  due: string;
+  upcoming: string;
+  closed: string;
+  reschedule: string;
+  successful: string;
+  unsuccessful: string;
+  days: string;
+  fileMissing: string;
+  modified: string;
+};
+
+const workflowTexts: Record<string, WorkflowText> = {
+  it: { openSelection: "Apri selezione", saveAs: "Salva con nome", notSaved: "Non ancora salvata", savedFile: "File salvato", selectionSummary: "Riepilogo selezione", notifications: "Promemoria", noNotifications: "Nessun promemoria presente.", due: "Scaduto", upcoming: "In programma", closed: "Chiuso", reschedule: "Riprogramma", successful: "Chiudi con successo", unsuccessful: "Chiudi senza successo", days: "giorni", fileMissing: "File locale non disponibile", modified: "Modificata" },
+  en: { openSelection: "Open selection", saveAs: "Save as", notSaved: "Not saved yet", savedFile: "Saved file", selectionSummary: "Selection summary", notifications: "Reminders", noNotifications: "No reminders.", due: "Due", upcoming: "Upcoming", closed: "Closed", reschedule: "Reschedule", successful: "Close successful", unsuccessful: "Close unsuccessful", days: "days", fileMissing: "Local file unavailable", modified: "Modified" },
+  cs: { openSelection: "Otevřít výběr", saveAs: "Uložit jako", notSaved: "Dosud neuloženo", savedFile: "Uložený soubor", selectionSummary: "Souhrn výběru", notifications: "Připomínky", noNotifications: "Žádné připomínky.", due: "Po termínu", upcoming: "Naplánováno", closed: "Uzavřeno", reschedule: "Přeplánovat", successful: "Uzavřít úspěšně", unsuccessful: "Uzavřít neúspěšně", days: "dnů", fileMissing: "Místní soubor není dostupný", modified: "Změněno" },
+  de: { openSelection: "Auswahl öffnen", saveAs: "Speichern unter", notSaved: "Noch nicht gespeichert", savedFile: "Gespeicherte Datei", selectionSummary: "Auswahlübersicht", notifications: "Erinnerungen", noNotifications: "Keine Erinnerungen.", due: "Fällig", upcoming: "Geplant", closed: "Geschlossen", reschedule: "Neu planen", successful: "Erfolgreich schließen", unsuccessful: "Erfolglos schließen", days: "Tage", fileMissing: "Lokale Datei nicht verfügbar", modified: "Geändert" },
+  fr: { openSelection: "Ouvrir la sélection", saveAs: "Enregistrer sous", notSaved: "Pas encore enregistrée", savedFile: "Fichier enregistré", selectionSummary: "Résumé de la sélection", notifications: "Rappels", noNotifications: "Aucun rappel.", due: "Échu", upcoming: "Planifié", closed: "Fermé", reschedule: "Replanifier", successful: "Clôturer avec succès", unsuccessful: "Clôturer sans succès", days: "jours", fileMissing: "Fichier local indisponible", modified: "Modifiée" },
+};
+
+const workflowText = (): WorkflowText =>
+  workflowTexts[languageCode()] ?? workflowTexts.en;
+
+type DocumentBusyText = {
+  checking: string;
+  opening: string;
+};
+
+const documentBusyTexts: Record<string, DocumentBusyText> = {
+  bg: { checking: "Проверка на наличните документи", opening: "Подготовка и изтегляне на документа" },
+  cs: { checking: "Kontrola dostupných dokumentů", opening: "Příprava a stahování dokumentu" },
+  da: { checking: "Kontrollerer tilgængelige dokumenter", opening: "Forbereder og downloader dokumentet" },
+  de: { checking: "Verfügbare Dokumente werden geprüft", opening: "Dokument wird vorbereitet und heruntergeladen" },
+  en: { checking: "Checking available documents", opening: "Preparing and downloading the document" },
+  fr: { checking: "Vérification des documents disponibles", opening: "Préparation et téléchargement du document" },
+  hu: { checking: "Elérhető dokumentumok ellenőrzése", opening: "A dokumentum előkészítése és letöltése" },
+  is: { checking: "Athuga tiltæk skjöl", opening: "Undirbý og sæki skjalið" },
+  it: { checking: "Verifica dei documenti disponibili", opening: "Preparazione e download del documento" },
+  nl: { checking: "Beschikbare documenten controleren", opening: "Document voorbereiden en downloaden" },
+  no: { checking: "Kontrollerer tilgjengelige dokumenter", opening: "Forbereder og laster ned dokumentet" },
+  pl: { checking: "Sprawdzanie dostępnych dokumentów", opening: "Przygotowywanie i pobieranie dokumentu" },
+  ro: { checking: "Verificarea documentelor disponibile", opening: "Pregătirea și descărcarea documentului" },
+  sl: { checking: "Preverjanje razpoložljivih dokumentov", opening: "Priprava in prenos dokumenta" },
+  sv: { checking: "Kontrollerar tillgängliga dokument", opening: "Förbereder och hämtar dokumentet" },
+};
+
+const documentBusyText = (): DocumentBusyText =>
+  documentBusyTexts[languageCode()] ?? documentBusyTexts.en;
+
+const renderDimensionalDrawing = (): string => {
+  if (!dimensionalDrawingOpen || !dimensionalDrawing) return "";
+  const text = messages();
+  const labels: Record<string, string> = { A: "L", B: "W", C: "H", D: "D" };
+  const drawing = dimensionalDrawing;
+  return `<div class="modal-backdrop" data-action="close-dimensional-drawing">
+    <section class="dimensional-drawing-dialog" role="dialog" aria-modal="true" aria-labelledby="dimensional-drawing-title">
+      <header class="panel-heading compact">
+        <div>
+          <h2 id="dimensional-drawing-title">${escapeHtml(text.ui.documents.dimensionalDrawing)}</h2>
+          <p>${escapeHtml(text.ui.documents.dimensionalDrawingDescription)}</p>
+        </div>
+        <button class="icon-button bordered" data-action="close-dimensional-drawing" aria-label="${escapeHtml(text.actions.close)}">${icon("circle-x")}</button>
+      </header>
+      <div class="dimensional-drawing-content">
+        <div class="dimensional-pdf-frame">
+          ${drawing.available && drawing.contentBase64
+            ? `<object type="application/pdf" data="data:${escapeHtml(drawing.mimeType ?? "application/pdf")};base64,${drawing.contentBase64}" aria-label="${escapeHtml(text.ui.documents.dimensionalDrawing)}"></object>`
+            : `<div class="empty-state">${escapeHtml(text.status.unavailable)}</div>`}
+        </div>
+        <aside class="dimensional-values">
+          <strong>${escapeHtml(drawing.code ?? text.ui.documents.dimensionalDrawing)}</strong>
+          <small>${drawing.revision ? `rev. ${escapeHtml(drawing.revision)}` : ""}</small>
+          <table><tbody>${drawing.dimensions.map((item) => `<tr><th>${escapeHtml(item.code)} (${labels[item.code] ?? item.code})</th><td>${item.valueMillimeters == null ? "-" : `${formatNumber(item.valueMillimeters, 0)} mm`}</td></tr>`).join("")}</tbody></table>
+        </aside>
+      </div>
+    </section>
+  </div>`;
+};
+
+type MultiProjectText = {
+  workspace: string;
+  description: string;
+  newProject: string;
+  openProject: string;
+  saveProject: string;
+  saveProjectAs: string;
+  addCurrent: string;
+  emailProject: string;
+  empty: string;
+  reference: string;
+  unit: string;
+  airflow: string;
+  pressure: string;
+  pdf: string;
+  status: string;
+  ready: string;
+  stale: string;
+  open: string;
+  remove: string;
+  unsaved: string;
+  emailTitle: string;
+  emailDescription: string;
+  schedule: string;
+  followUpDays: string;
+  prepareEmail: string;
+  cancel: string;
+  removeConfirm: string;
+};
+
+const multiProjectTexts: Record<string, MultiProjectText> = {
+  en: { workspace: "Project selections", description: "Collect, update and send all technical selections in one project.", newProject: "New", openProject: "Open", saveProject: "Save project", saveProjectAs: "Save as", addCurrent: "Add or update current selection", emailProject: "Prepare project email", empty: "No selections have been added to this project.", reference: "Reference", unit: "Selected unit", airflow: "Airflow", pressure: "Pressure", pdf: "PDF", status: "Status", ready: "Ready", stale: "Update required", open: "Open", remove: "Remove", unsaved: "Unsaved changes", emailTitle: "Project email", emailDescription: "All project PDFs will be attached to the localized message.", schedule: "Schedule customer follow-up", followUpDays: "Follow-up after", prepareEmail: "Open email", cancel: "Cancel", removeConfirm: "Remove this selection from the project?" },
+  it: { workspace: "Selezioni del progetto", description: "Raccogli, aggiorna e invia tutte le selezioni tecniche in un unico progetto.", newProject: "Nuovo", openProject: "Apri", saveProject: "Salva progetto", saveProjectAs: "Salva con nome", addCurrent: "Aggiungi o aggiorna la selezione corrente", emailProject: "Prepara email progetto", empty: "Nessuna selezione è stata aggiunta al progetto.", reference: "Riferimento", unit: "Unità selezionata", airflow: "Portata", pressure: "Pressione", pdf: "PDF", status: "Stato", ready: "Pronto", stale: "Da aggiornare", open: "Apri", remove: "Rimuovi", unsaved: "Modifiche non salvate", emailTitle: "Email progetto", emailDescription: "Tutti i PDF del progetto saranno allegati al testo localizzato.", schedule: "Programma il sollecito cliente", followUpDays: "Sollecito dopo", prepareEmail: "Apri email", cancel: "Annulla", removeConfirm: "Rimuovere questa selezione dal progetto?" },
+  cs: { workspace: "Výběry projektu", description: "Shromažďujte, aktualizujte a odesílejte technické výběry v jednom projektu.", newProject: "Nový", openProject: "Otevřít", saveProject: "Uložit projekt", saveProjectAs: "Uložit jako", addCurrent: "Přidat nebo aktualizovat aktuální výběr", emailProject: "Připravit e-mail projektu", empty: "Do projektu nebyl přidán žádný výběr.", reference: "Reference", unit: "Vybraná jednotka", airflow: "Průtok vzduchu", pressure: "Tlak", pdf: "PDF", status: "Stav", ready: "Připraveno", stale: "Vyžaduje aktualizaci", open: "Otevřít", remove: "Odebrat", unsaved: "Neuložené změny", emailTitle: "E-mail projektu", emailDescription: "Všechny PDF projektu budou přiloženy k lokalizované zprávě.", schedule: "Naplánovat připomenutí zákazníka", followUpDays: "Připomenout za", prepareEmail: "Otevřít e-mail", cancel: "Zrušit", removeConfirm: "Odebrat tento výběr z projektu?" },
+  de: { workspace: "Projektauswahlen", description: "Technische Auswahlen in einem Projekt sammeln, aktualisieren und senden.", newProject: "Neu", openProject: "Öffnen", saveProject: "Projekt speichern", saveProjectAs: "Speichern unter", addCurrent: "Aktuelle Auswahl hinzufügen oder aktualisieren", emailProject: "Projekt-E-Mail vorbereiten", empty: "Diesem Projekt wurden keine Auswahlen hinzugefügt.", reference: "Referenz", unit: "Ausgewähltes Gerät", airflow: "Luftmenge", pressure: "Druck", pdf: "PDF", status: "Status", ready: "Bereit", stale: "Aktualisierung erforderlich", open: "Öffnen", remove: "Entfernen", unsaved: "Nicht gespeicherte Änderungen", emailTitle: "Projekt-E-Mail", emailDescription: "Alle Projekt-PDFs werden an die lokalisierte Nachricht angehängt.", schedule: "Kundennachverfolgung planen", followUpDays: "Nachverfolgung nach", prepareEmail: "E-Mail öffnen", cancel: "Abbrechen", removeConfirm: "Diese Auswahl aus dem Projekt entfernen?" },
+  fr: { workspace: "Sélections du projet", description: "Regroupez, mettez à jour et envoyez les sélections techniques dans un seul projet.", newProject: "Nouveau", openProject: "Ouvrir", saveProject: "Enregistrer le projet", saveProjectAs: "Enregistrer sous", addCurrent: "Ajouter ou mettre à jour la sélection courante", emailProject: "Préparer l’e-mail du projet", empty: "Aucune sélection n’a été ajoutée à ce projet.", reference: "Référence", unit: "Unité sélectionnée", airflow: "Débit", pressure: "Pression", pdf: "PDF", status: "État", ready: "Prêt", stale: "Mise à jour requise", open: "Ouvrir", remove: "Supprimer", unsaved: "Modifications non enregistrées", emailTitle: "E-mail du projet", emailDescription: "Tous les PDF du projet seront joints au message localisé.", schedule: "Planifier le suivi client", followUpDays: "Suivi après", prepareEmail: "Ouvrir l’e-mail", cancel: "Annuler", removeConfirm: "Supprimer cette sélection du projet ?" },
+  bg: { workspace: "Избори в проекта", description: "Събирайте, актуализирайте и изпращайте техническите избори в един проект.", newProject: "Нов", openProject: "Отвори", saveProject: "Запази проекта", saveProjectAs: "Запази като", addCurrent: "Добави или актуализирай текущия избор", emailProject: "Подготви имейл за проекта", empty: "Към проекта няма добавени избори.", reference: "Референция", unit: "Избран модул", airflow: "Въздушен дебит", pressure: "Налягане", pdf: "PDF", status: "Състояние", ready: "Готово", stale: "Нужно е обновяване", open: "Отвори", remove: "Премахни", unsaved: "Незапазени промени", emailTitle: "Имейл за проекта", emailDescription: "Всички PDF файлове ще бъдат приложени към локализираното съобщение.", schedule: "Планирай проследяване с клиента", followUpDays: "Проследяване след", prepareEmail: "Отвори имейла", cancel: "Отказ", removeConfirm: "Да се премахне ли този избор от проекта?" },
+  da: { workspace: "Projektvalg", description: "Saml, opdater og send tekniske valg i ét projekt.", newProject: "Nyt", openProject: "Åbn", saveProject: "Gem projekt", saveProjectAs: "Gem som", addCurrent: "Tilføj eller opdater aktuelt valg", emailProject: "Forbered projektmail", empty: "Der er ikke tilføjet valg til projektet.", reference: "Reference", unit: "Valgt aggregat", airflow: "Luftmængde", pressure: "Tryk", pdf: "PDF", status: "Status", ready: "Klar", stale: "Opdatering kræves", open: "Åbn", remove: "Fjern", unsaved: "Ikke-gemte ændringer", emailTitle: "Projektmail", emailDescription: "Alle projektets PDF-filer vedhæftes den lokaliserede besked.", schedule: "Planlæg kundeopfølgning", followUpDays: "Opfølgning efter", prepareEmail: "Åbn mail", cancel: "Annuller", removeConfirm: "Fjern dette valg fra projektet?" },
+  hu: { workspace: "Projekt kiválasztásai", description: "A műszaki kiválasztások gyűjtése, frissítése és küldése egy projektben.", newProject: "Új", openProject: "Megnyitás", saveProject: "Projekt mentése", saveProjectAs: "Mentés másként", addCurrent: "Aktuális kiválasztás hozzáadása vagy frissítése", emailProject: "Projekt e-mail előkészítése", empty: "A projekthez még nincs kiválasztás hozzáadva.", reference: "Hivatkozás", unit: "Kiválasztott egység", airflow: "Légszállítás", pressure: "Nyomás", pdf: "PDF", status: "Állapot", ready: "Kész", stale: "Frissítés szükséges", open: "Megnyitás", remove: "Eltávolítás", unsaved: "Nem mentett módosítások", emailTitle: "Projekt e-mail", emailDescription: "A projekt összes PDF-fájlja csatolva lesz a lokalizált üzenethez.", schedule: "Ügyfélkövetés ütemezése", followUpDays: "Követés ennyi nap múlva", prepareEmail: "E-mail megnyitása", cancel: "Mégse", removeConfirm: "Eltávolítja ezt a kiválasztást a projektből?" },
+  is: { workspace: "Valkostir verkefnis", description: "Safnaðu, uppfærðu og sendu tæknilegt val í einu verkefni.", newProject: "Nýtt", openProject: "Opna", saveProject: "Vista verkefni", saveProjectAs: "Vista sem", addCurrent: "Bæta við eða uppfæra núverandi val", emailProject: "Undirbúa verkefnispóst", empty: "Engu vali hefur verið bætt við verkefnið.", reference: "Tilvísun", unit: "Valin eining", airflow: "Loftflæði", pressure: "Þrýstingur", pdf: "PDF", status: "Staða", ready: "Tilbúið", stale: "Uppfærsla nauðsynleg", open: "Opna", remove: "Fjarlægja", unsaved: "Óvistaðar breytingar", emailTitle: "Verkefnispóstur", emailDescription: "Öll PDF-skjöl verkefnisins verða hengd við staðfærða skilaboðið.", schedule: "Skipuleggja eftirfylgni við viðskiptavin", followUpDays: "Eftirfylgni eftir", prepareEmail: "Opna tölvupóst", cancel: "Hætta við", removeConfirm: "Fjarlægja þetta val úr verkefninu?" },
+  nl: { workspace: "Projectselecties", description: "Verzamel, actualiseer en verzend technische selecties in één project.", newProject: "Nieuw", openProject: "Openen", saveProject: "Project opslaan", saveProjectAs: "Opslaan als", addCurrent: "Huidige selectie toevoegen of bijwerken", emailProject: "Projectmail voorbereiden", empty: "Er zijn geen selecties aan dit project toegevoegd.", reference: "Referentie", unit: "Geselecteerde unit", airflow: "Luchtdebiet", pressure: "Druk", pdf: "PDF", status: "Status", ready: "Gereed", stale: "Bijwerken vereist", open: "Openen", remove: "Verwijderen", unsaved: "Niet-opgeslagen wijzigingen", emailTitle: "Projectmail", emailDescription: "Alle PDF-bestanden van het project worden aan het gelokaliseerde bericht toegevoegd.", schedule: "Klantopvolging plannen", followUpDays: "Opvolging na", prepareEmail: "E-mail openen", cancel: "Annuleren", removeConfirm: "Deze selectie uit het project verwijderen?" },
+  no: { workspace: "Prosjektvalg", description: "Samle, oppdater og send tekniske valg i ett prosjekt.", newProject: "Nytt", openProject: "Åpne", saveProject: "Lagre prosjekt", saveProjectAs: "Lagre som", addCurrent: "Legg til eller oppdater gjeldende valg", emailProject: "Forbered prosjekt-e-post", empty: "Ingen valg er lagt til i prosjektet.", reference: "Referanse", unit: "Valgt aggregat", airflow: "Luftmengde", pressure: "Trykk", pdf: "PDF", status: "Status", ready: "Klar", stale: "Oppdatering kreves", open: "Åpne", remove: "Fjern", unsaved: "Ulagrede endringer", emailTitle: "Prosjekt-e-post", emailDescription: "Alle PDF-filer i prosjektet legges ved den lokaliserte meldingen.", schedule: "Planlegg kundeoppfølging", followUpDays: "Oppfølging etter", prepareEmail: "Åpne e-post", cancel: "Avbryt", removeConfirm: "Fjerne dette valget fra prosjektet?" },
+  pl: { workspace: "Dobory projektu", description: "Zbieraj, aktualizuj i wysyłaj dobory techniczne w jednym projekcie.", newProject: "Nowy", openProject: "Otwórz", saveProject: "Zapisz projekt", saveProjectAs: "Zapisz jako", addCurrent: "Dodaj lub zaktualizuj bieżący dobór", emailProject: "Przygotuj e-mail projektu", empty: "Do projektu nie dodano żadnego doboru.", reference: "Referencja", unit: "Wybrana jednostka", airflow: "Przepływ powietrza", pressure: "Ciśnienie", pdf: "PDF", status: "Stan", ready: "Gotowe", stale: "Wymaga aktualizacji", open: "Otwórz", remove: "Usuń", unsaved: "Niezapisane zmiany", emailTitle: "E-mail projektu", emailDescription: "Wszystkie pliki PDF projektu zostaną dołączone do zlokalizowanej wiadomości.", schedule: "Zaplanuj kontakt z klientem", followUpDays: "Kontakt po", prepareEmail: "Otwórz e-mail", cancel: "Anuluj", removeConfirm: "Usunąć ten dobór z projektu?" },
+  ro: { workspace: "Selecțiile proiectului", description: "Colectați, actualizați și trimiteți selecțiile tehnice într-un singur proiect.", newProject: "Nou", openProject: "Deschide", saveProject: "Salvează proiectul", saveProjectAs: "Salvează ca", addCurrent: "Adaugă sau actualizează selecția curentă", emailProject: "Pregătește e-mailul proiectului", empty: "Nu a fost adăugată nicio selecție în proiect.", reference: "Referință", unit: "Unitate selectată", airflow: "Debit de aer", pressure: "Presiune", pdf: "PDF", status: "Stare", ready: "Pregătit", stale: "Necesită actualizare", open: "Deschide", remove: "Elimină", unsaved: "Modificări nesalvate", emailTitle: "E-mail proiect", emailDescription: "Toate PDF-urile proiectului vor fi atașate mesajului localizat.", schedule: "Programează revenirea la client", followUpDays: "Revenire după", prepareEmail: "Deschide e-mailul", cancel: "Anulează", removeConfirm: "Eliminați această selecție din proiect?" },
+  sl: { workspace: "Izbire projekta", description: "Zbirajte, posodabljajte in pošiljajte tehnične izbire v enem projektu.", newProject: "Novo", openProject: "Odpri", saveProject: "Shrani projekt", saveProjectAs: "Shrani kot", addCurrent: "Dodaj ali posodobi trenutno izbiro", emailProject: "Pripravi e-pošto projekta", empty: "V projekt ni bila dodana nobena izbira.", reference: "Referenca", unit: "Izbrana enota", airflow: "Pretok zraka", pressure: "Tlak", pdf: "PDF", status: "Stanje", ready: "Pripravljeno", stale: "Potrebna posodobitev", open: "Odpri", remove: "Odstrani", unsaved: "Neshranjene spremembe", emailTitle: "E-pošta projekta", emailDescription: "Vse datoteke PDF projekta bodo priložene lokaliziranemu sporočilu.", schedule: "Načrtuj stik s stranko", followUpDays: "Stik po", prepareEmail: "Odpri e-pošto", cancel: "Prekliči", removeConfirm: "Odstranim to izbiro iz projekta?" },
+  sv: { workspace: "Projektval", description: "Samla, uppdatera och skicka tekniska val i ett projekt.", newProject: "Nytt", openProject: "Öppna", saveProject: "Spara projekt", saveProjectAs: "Spara som", addCurrent: "Lägg till eller uppdatera aktuellt val", emailProject: "Förbered projektmeddelande", empty: "Inga val har lagts till i projektet.", reference: "Referens", unit: "Valt aggregat", airflow: "Luftflöde", pressure: "Tryck", pdf: "PDF", status: "Status", ready: "Klar", stale: "Uppdatering krävs", open: "Öppna", remove: "Ta bort", unsaved: "Osparade ändringar", emailTitle: "Projektmeddelande", emailDescription: "Alla projektets PDF-filer bifogas det lokaliserade meddelandet.", schedule: "Planera kunduppföljning", followUpDays: "Uppföljning efter", prepareEmail: "Öppna e-post", cancel: "Avbryt", removeConfirm: "Ta bort detta val från projektet?" },
+};
+
+const multiProjectText = (): MultiProjectText =>
+  multiProjectTexts[languageCode()] ?? multiProjectTexts.en;
+
+const interfaceLanguageLabels: Record<string, string> = {
+  bg: "Език на интерфейса",
+  cs: "Jazyk rozhraní",
+  da: "Grænsefladesprog",
+  de: "Sprache der Benutzeroberfläche",
+  en: "Interface language",
+  fr: "Langue de l’interface",
+  hu: "Felület nyelve",
+  is: "Tungumál viðmóts",
+  it: "Lingua interfaccia",
+  nl: "Interfacetaal",
+  no: "Grensesnittspråk",
+  pl: "Język interfejsu",
+  ro: "Limba interfeței",
+  sl: "Jezik vmesnika",
+  sv: "Gränssnittsspråk",
+};
+
+const interfaceLanguageLabel = (): string =>
+  interfaceLanguageLabels[languageCode()] ?? interfaceLanguageLabels.en;
 const escapeHtml = (value: unknown): string =>
   String(value ?? "")
     .replaceAll("&", "&amp;")
@@ -158,8 +366,109 @@ const renderIcons = (): void => {
   createIcons({ icons: iconSet });
 };
 
+const renderNotificationCenter = (): string => {
+  if (!notificationCenterOpen) return "";
+  const copy = workflowText();
+  const pending = notificationState.reminders
+    .filter((item) => item.status === "Pending")
+    .sort((left, right) => left.dueAt.localeCompare(right.dueAt));
+  const closed = notificationState.reminders
+    .filter((item) => item.status !== "Pending")
+    .sort((left, right) => right.dueAt.localeCompare(left.dueAt));
+  const rows = [...pending, ...closed]
+    .map((item) => renderNotificationRow(item, copy))
+    .join("");
+  return `<div class="modal-backdrop" data-action="close-notifications">
+    <section class="notification-dialog" role="dialog" aria-modal="true">
+      <header>
+        <div><h2>${escapeHtml(copy.notifications)}</h2><p>${escapeHtml(messages().tooltips.notifications)}</p></div>
+        <button class="icon-button bordered" data-action="close-notifications" aria-label="${escapeHtml(messages().actions.close)}">${icon("circle-x")}</button>
+      </header>
+      <div class="notification-list">
+        ${rows || `<div class="empty-state">${icon("bell")}<p>${escapeHtml(copy.noNotifications)}</p></div>`}
+      </div>
+    </section>
+  </div>`;
+};
+
+const renderNotificationRow = (
+  item: FollowUpReminder,
+  copy: WorkflowText,
+): string => {
+  const closed = item.status !== "Pending";
+  const state = closed ? copy.closed : item.due ? copy.due : copy.upcoming;
+  const due = new Date(item.dueAt).toLocaleDateString(messages().locale);
+  return `<article class="notification-row ${item.due && !closed ? "due" : ""}" data-reminder-open="${item.id}" title="${escapeHtml(item.fileAvailable ? copy.openSelection : copy.fileMissing)}">
+    <div class="notification-status">${icon(closed ? "circle-check" : item.due ? "triangle-alert" : "bell")}<span>${escapeHtml(state)}</span></div>
+    <div class="notification-copy">
+      <strong>${escapeHtml(item.reference || item.targetType)}</strong>
+      <small>${escapeHtml(due)}${item.fileAvailable ? "" : ` · ${escapeHtml(copy.fileMissing)}`}</small>
+    </div>
+    ${closed ? "" : `<div class="notification-actions">
+      <label><input type="number" min="1" max="90" value="7" data-reminder-days="${item.id}" aria-label="${escapeHtml(copy.days)}"><span>${escapeHtml(copy.days)}</span></label>
+      <button class="button secondary compact-button" data-reminder-action="reschedule" data-reminder-id="${item.id}">${escapeHtml(copy.reschedule)}</button>
+      <button class="button secondary compact-button" data-reminder-action="succeeded" data-reminder-id="${item.id}">${escapeHtml(copy.successful)}</button>
+      <button class="button secondary compact-button" data-reminder-action="unsuccessful" data-reminder-id="${item.id}">${escapeHtml(copy.unsuccessful)}</button>
+    </div>`}
+  </article>`;
+};
+
+const renderProjectEmailDialog = (): string => {
+  if (!projectEmailOpen) return "";
+  const copy = multiProjectText();
+  return `<div class="modal-backdrop" data-action="close-project-email">
+    <section class="project-email-dialog" role="dialog" aria-modal="true">
+      <header>
+        <div><h2>${escapeHtml(copy.emailTitle)}</h2><p>${escapeHtml(copy.emailDescription)}</p></div>
+        <button class="icon-button bordered" data-action="close-project-email" aria-label="${escapeHtml(copy.cancel)}">${icon("circle-x")}</button>
+      </header>
+      <div class="project-email-options">
+        <label class="toggle">
+          <input type="checkbox" data-project-email-schedule ${projectEmailSchedule ? "checked" : ""}>
+          <span></span><b>${escapeHtml(copy.schedule)}</b>
+        </label>
+        <label class="field ${projectEmailSchedule ? "" : "is-disabled"}">
+          <span>${escapeHtml(copy.followUpDays)}</span>
+          <span class="input-with-unit">
+            <input type="number" min="1" max="90" value="${projectEmailDays}" data-project-email-days ${projectEmailSchedule ? "" : "disabled"}>
+            <span>${escapeHtml(workflowText().days)}</span>
+          </span>
+        </label>
+      </div>
+      <footer>
+        <button class="button secondary" data-action="close-project-email">${escapeHtml(copy.cancel)}</button>
+        <button class="button primary" data-action="send-project-email">${icon("mail")} ${escapeHtml(copy.prepareEmail)}</button>
+      </footer>
+    </section>
+  </div>`;
+};
+
 const selectedUnit = (): UnitOption | undefined =>
   data?.units.find((unit) => unit.id === draft?.selectedUnitId);
+
+const stepIndex = (step: StepId): number =>
+  steps.findIndex((candidate) => candidate.id === step);
+
+const canNavigateToStep = (step: StepId): boolean =>
+  stepIndex(step) <= maximumReachableStepIndex;
+
+const unlockConfiguredWorkflow = (): void => {
+  maximumReachableStepIndex = steps.length - 1;
+};
+
+const lockWorkflowAtPreselection = (): void => {
+  maximumReachableStepIndex = 1;
+};
+
+const confirmInstallationReview = (): void => {
+  installationReviewRequired = false;
+};
+
+const restoreConfiguredWorkflow = (): void => {
+  confirmedUnitId = draft?.selectedUnitId || null;
+  confirmInstallationReview();
+  unlockConfiguredWorkflow();
+};
 
 const stateTone = (): string => result?.status ?? "valid";
 
@@ -331,24 +640,93 @@ const renderPerformanceStrip = (): string => {
       powerMaximum,
     )}
     ${renderPerformanceChart(
-      `${text.ui.context.efficiency} [%]`,
+      `${text.ui.context.efficiency} - ${text.ui.preselection.winter} [%]`,
       [
-        { x: winter.regulatedAirflows, y: winter.efficienciesPercent, className: "winter", label: text.ui.preselection.winter },
-        ...(draft.summerEnabled && summer
-          ? [{ x: summer.regulatedAirflows, y: summer.efficienciesPercent, className: "summer", label: text.ui.preselection.summer }]
-          : []),
+        { x: winter.originalAirflows, y: winter.efficienciesPercent, className: "winter", label: text.ui.preselection.winter },
       ],
       [
         { x: winter.workingPointAirflow, y: winter.workingPointEfficiencyPercent, className: "winter" },
-        ...(draft.summerEnabled && summer
-          ? [{ x: summer.workingPointAirflow, y: summer.workingPointEfficiencyPercent, className: "summer" }]
-          : []),
       ],
       xMaximum,
       60,
       100,
     )}
+    ${draft.summerEnabled && summer
+      ? renderPerformanceChart(
+          `${text.ui.context.efficiency} - ${text.ui.preselection.summer} [%]`,
+          [
+            { x: summer.originalAirflows, y: summer.efficienciesPercent, className: "summer", label: text.ui.preselection.summer },
+          ],
+          [
+            { x: summer.workingPointAirflow, y: summer.workingPointEfficiencyPercent, className: "summer" },
+          ],
+          xMaximum,
+          60,
+          100,
+        )
+      : ""}
   </section>`;
+};
+
+const renderCo2Chart = (
+  points: Array<{ hours: number; ppm: number }>,
+): string => {
+  const finitePoints = points.filter(
+    (point) =>
+      Number.isFinite(point.hours) &&
+      Number.isFinite(point.ppm) &&
+      point.hours >= 0 &&
+      point.hours <= 5 &&
+      point.ppm >= 0,
+  );
+  if (finitePoints.length === 0) return "";
+
+  const left = 62;
+  const top = 18;
+  const width = 510;
+  const height = 190;
+  const xMaximum = 5;
+  const pointMaximum = finiteMaximum(
+    finitePoints.map((point) => point.ppm),
+    2000,
+  );
+  const yMaximum = Math.max(2000, Math.ceil(pointMaximum / 100) * 100);
+  const scaleX = (value: number) => left + (value / xMaximum) * width;
+  const scaleY = (value: number) =>
+    top + (1 - Math.min(yMaximum, value) / yMaximum) * height;
+  const path = finitePoints
+    .map(
+      (point, index) =>
+        `${index === 0 ? "M" : "L"} ${scaleX(point.hours).toFixed(2)} ${scaleY(point.ppm).toFixed(2)}`,
+    )
+    .join(" ");
+  const xTicks = [0, 1, 2, 3, 4, 5];
+  const yTicks = [0, 0.25, 0.5, 0.75, 1];
+
+  return `<figure class="co2-chart">
+    <figcaption><strong>CO₂ [ppm]</strong><span>t [h]</span></figcaption>
+    <svg viewBox="0 0 600 250" role="img" aria-label="CO₂ [ppm]">
+      ${xTicks
+        .map((tick) => {
+          const x = scaleX(tick);
+          return `<line class="co2-chart-grid" x1="${x}" y1="${top}" x2="${x}" y2="${top + height}"></line>
+            <text class="co2-chart-tick" x="${x}" y="226" text-anchor="middle">${tick}</text>`;
+        })
+        .join("")}
+      ${yTicks
+        .map((tick) => {
+          const y = top + height * (1 - tick);
+          return `<line class="co2-chart-grid" x1="${left}" y1="${y}" x2="${left + width}" y2="${y}"></line>
+            <text class="co2-chart-tick" x="54" y="${y + 4}" text-anchor="end">${escapeHtml(formatNumber(yMaximum * tick, 0))}</text>`;
+        })
+        .join("")}
+      <line class="co2-chart-axis" x1="${left}" y1="${top}" x2="${left}" y2="${top + height}"></line>
+      <line class="co2-chart-axis" x1="${left}" y1="${top + height}" x2="${left + width}" y2="${top + height}"></line>
+      <path class="co2-chart-line" d="${path}"></path>
+      <text class="co2-chart-axis-title" x="${left + width / 2}" y="246" text-anchor="middle">t [h]</text>
+      <text class="co2-chart-axis-title" transform="translate(15 ${top + height / 2}) rotate(-90)" text-anchor="middle">CO₂ [ppm]</text>
+    </svg>
+  </figure>`;
 };
 
 const renderLoading = (): void => {
@@ -367,6 +745,16 @@ const renderLoading = (): void => {
   `;
 };
 
+const renderBusyOverlay = (message: string): string => `
+  <div class="busy-overlay" role="status" aria-live="assertive" aria-busy="true">
+    <div class="busy-dialog">
+      <span class="busy-icon">${icon("loader-circle", 34)}</span>
+      <strong>${escapeHtml(message)}</strong>
+      <span>${escapeHtml(messages().status.calculating)}</span>
+      <div class="loading-line"><span></span></div>
+    </div>
+  </div>`;
+
 const renderStartupError = (error: unknown): void => {
   const detail = error instanceof Error ? error.message : String(error);
   app.innerHTML = `
@@ -381,22 +769,12 @@ const renderStartupError = (error: unknown): void => {
       <p class="startup-error-detail">${escapeHtml(detail)}</p>
       <div class="startup-error-actions">
         <button class="button button-primary" id="startup-retry" type="button">Riprova</button>
-        <button class="button" id="startup-legacy" type="button">Apri interfaccia attuale</button>
       </div>
     </main>
   `;
   document.querySelector<HTMLButtonElement>("#startup-retry")?.addEventListener(
     "click",
     () => void bootstrap(),
-  );
-  document.querySelector<HTMLButtonElement>("#startup-legacy")?.addEventListener(
-    "click",
-    () =>
-      window.chrome?.webview?.postMessage({
-        requestId: crypto.randomUUID(),
-        command: "legacy.open",
-        payload: {},
-      }),
   );
 };
 
@@ -414,8 +792,14 @@ const renderShell = (): void => {
   const unit = selectedUnit();
   const text = messages();
   const help = helpContent();
+  const activeStepMessage = stepMessage(currentStep);
+  const activeHelpTopic = currentHelpTopic();
+  const currentStepIndex = stepIndex(currentStep);
+  const followingStep = steps[Math.min(steps.length - 1, currentStepIndex + 1)];
+  const canGoForward = !calculating && !calculationFailed && canNavigateToStep(followingStep.id);
   app.innerHTML = `
     <div class="app-shell">
+      ${busyMessage ? renderBusyOverlay(busyMessage) : ""}
       <header class="topbar">
         <a class="brand" href="#/selection" aria-label="SSW Next">
           <span class="brand-mark small" aria-hidden="true">
@@ -429,9 +813,9 @@ const renderShell = (): void => {
         </div>
         <div class="topbar-actions">
           <span class="runtime-badge">${icon("hard-drive", 15)} ${escapeHtml(runtimeName())}</span>
-          <button class="icon-button" type="button" title="${escapeHtml(helpTitle("notifications"))}" aria-label="${escapeHtml(text.ui.aria.notifications)}">
+          <button class="icon-button" type="button" data-action="notifications" title="${escapeHtml(helpTitle("notifications"))}" aria-label="${escapeHtml(text.ui.aria.notifications)}">
             ${icon("bell")}
-            <span class="notification-dot"></span>
+            ${notificationState.unreadDueCount > 0 ? `<span class="notification-dot"></span>` : ""}
           </button>
           <button class="icon-button" type="button" title="${escapeHtml(helpTitle("help"))}" aria-label="${escapeHtml(text.actions.openHelp)}" data-action="help">
             ${icon("circle-help")}
@@ -448,45 +832,45 @@ const renderShell = (): void => {
           <nav>
             ${steps
               .map((step, index) => {
-                const currentIndex = steps.findIndex(
-                  (candidate) => candidate.id === currentStep,
-                );
+                const currentIndex = stepIndex(currentStep);
+                const enabled = canNavigateToStep(step.id);
                 const status =
                   step.id === currentStep
                     ? "active"
                     : index < currentIndex
                       ? "complete"
                       : "";
+                const attention =
+                  step.id === "installation" && installationReviewRequired
+                    ? "attention"
+                    : "";
                 return `
-                  <button class="step-button ${status}" data-step="${step.id}" type="button">
+                  <button class="step-button ${status} ${attention}" data-step="${step.id}" type="button" ${enabled ? "" : "disabled aria-disabled=\"true\""}>
                     <span class="step-index">${
                       status === "complete" ? icon("check", 14) : index + 1
                     }</span>
                     <span>
-                      <strong>${escapeHtml(text.steps[step.id].shortTitle)}</strong>
+                      <strong>${escapeHtml(stepMessage(step.id).shortTitle)}</strong>
                       ${step.optional ? `<small>${escapeHtml(text.common.optional)}</small>` : ""}
                     </span>
                   </button>`;
               })
               .join("")}
           </nav>
-          <a class="showcase-link" href="#/showcase">
-            ${icon("panels-top-left")} ${escapeHtml(text.ui.navigation.componentShowcase)}
-          </a>
         </aside>
 
         <main class="main-stage">
           <div class="page-heading">
             <div>
               <span class="eyebrow">${escapeHtml(text.common.technicalSelection)}</span>
-              <h1>${escapeHtml(text.steps[currentStep].title)}</h1>
-              <p>${escapeHtml(text.steps[currentStep].description)}</p>
+              <h1>${escapeHtml(activeStepMessage.title)}</h1>
+              <p>${escapeHtml(activeStepMessage.description)}</p>
             </div>
             <div class="calculation-state ${stateTone()}">
               <span>${icon(result.status === "valid" ? "circle-check" : "triangle-alert")}</span>
               <div>
                 <small>${escapeHtml(text.common.technicalSelection)}</small>
-                <strong>${statusLabel(result.status)}</strong>
+                <strong>${calculating ? escapeHtml(text.status.calculating) : statusLabel(calculationFailed ? "invalid" : result.status)}</strong>
               </div>
             </div>
           </div>
@@ -515,7 +899,7 @@ const renderShell = (): void => {
                 ? `<button class="button primary" data-action="report" type="button">
                     ${icon("file-down")} ${escapeHtml(text.actions.generateReport)}
                   </button>`
-                : `<button class="button primary" data-action="next" type="button">
+                : `<button class="button primary" data-action="next" type="button" ${canGoForward ? "" : "disabled"}>
                     ${escapeHtml(text.actions.next)} ${icon("arrow-right")}
                   </button>`
             }
@@ -556,12 +940,13 @@ const renderShell = (): void => {
           <div class="selection-tags">
             <span>${escapeHtml(text.ui.context.configuration)}</span>
             <div>
-              ${draft.waterCoilEnabled ? `<b>H₂O ${draft.waterCoilMode}</b>` : ""}
+              ${draft.waterCoilEnabled ? `<b>${draft.waterCoilMode}</b>` : ""}
               ${draft.electricPreheaterEnabled ? "<b>PEHD</b>" : ""}
               ${draft.electricPostheaterEnabled ? "<b>EHD</b>" : ""}
               ${draft.accessoryCodes.map((code) => `<b>${escapeHtml(code)}</b>`).join("")}
             </div>
           </div>
+          ${renderMultiProjectSidebar()}
         </aside>
       </div>
       ${toastMessage ? `<div class="toast">${icon("circle-check")} ${escapeHtml(toastMessage)}</div>` : ""}
@@ -574,14 +959,17 @@ const renderShell = (): void => {
               <button class="icon-button bordered" data-action="close-help" aria-label="${escapeHtml(text.actions.close)}">${icon("circle-x")}</button>
             </div>
             <div class="help-topic">
-              <h3>${escapeHtml(help.topics[currentStep].title)}</h3>
-              <p>${escapeHtml(help.topics[currentStep].summary)}</p>
-              <div class="inline-notice">${icon("info")}<span>${escapeHtml(help.topics[currentStep].tip)}</span></div>
+              <h3>${escapeHtml(activeHelpTopic.title)}</h3>
+              <p>${escapeHtml(activeHelpTopic.summary)}</p>
+              <div class="inline-notice">${icon("info")}<span>${escapeHtml(activeHelpTopic.tip)}</span></div>
             </div>
             <p class="help-workflow">${escapeHtml(help.workflowNote)}</p>
             <label class="toggle"><input type="checkbox" data-action="toggle-tooltips" ${tooltipsEnabled ? "checked" : ""}/><span></span><b>${escapeHtml(tooltipsEnabled ? text.actions.hideTooltips : text.actions.showTooltips)}</b></label>
           </section>
         </div>` : ""}
+      ${renderNotificationCenter()}
+      ${renderProjectEmailDialog()}
+      ${renderDimensionalDrawing()}
     </div>
   `;
   bindShellEvents();
@@ -594,6 +982,55 @@ const statusLabel = (status: SelectionResult["status"]): string =>
     : status === "warning"
       ? messages().status.warning
       : messages().status.invalid;
+
+const stepMessage = (step: StepId): {
+  title: string;
+  shortTitle: string;
+  description: string;
+} => {
+  const text = messages();
+  if (step === "co2") {
+    return {
+      title: text.ui.co2Sound.co2Title,
+      shortTitle: "CO₂",
+      description: text.ui.co2Sound.co2Description,
+    };
+  }
+  if (step === "sound") {
+    return {
+      title: text.ui.co2Sound.soundTitle,
+      shortTitle: text.ui.co2Sound.soundTitle,
+      description: text.ui.co2Sound.soundDescription,
+    };
+  }
+  return text.steps[step as keyof typeof text.steps];
+};
+
+const currentHelpTopic = (): {
+  title: string;
+  summary: string;
+  tip: string;
+} => {
+  if (currentStep === "co2") {
+    const copy = messages().ui.co2Sound;
+    return {
+      title: copy.co2Title,
+      summary: copy.co2Description,
+      tip: copy.awaitingBackendResults,
+    };
+  }
+  if (currentStep === "sound") {
+    const copy = messages().ui.co2Sound;
+    return {
+      title: copy.soundTitle,
+      summary: copy.soundDescription,
+      tip: copy.awaitingBackendResults,
+    };
+  }
+  return helpContent().topics[
+    currentStep as keyof ReturnType<typeof helpContent>["topics"]
+  ];
+};
 
 const renderStep = (step: StepId): string => {
   switch (step) {
@@ -609,6 +1046,10 @@ const renderStep = (step: StepId): string => {
       return renderElectricStep();
     case "accessories":
       return renderAccessoriesStep();
+    case "co2":
+      return renderCo2Step();
+    case "sound":
+      return renderSoundStep();
     case "documents":
       return renderDocumentsStep();
     case "summary":
@@ -618,6 +1059,19 @@ const renderStep = (step: StepId): string => {
 
 const renderProjectStep = (): string => {
   const text = messages();
+  const copy = workflowText();
+  const unit = selectedUnit();
+  const reference =
+    projectState?.publicReference ||
+    projectState?.localReference ||
+    copy.notSaved;
+  const revision =
+    projectState?.revision ? `R${String(projectState.revision).padStart(2, "0")}` : "-";
+  const savedAt = projectDirty
+    ? copy.modified
+    : projectState?.savedAt
+    ? new Date(projectState.savedAt).toLocaleString(messages().locale)
+    : copy.notSaved;
   return `<div class="content-grid two">
     <section class="panel">
       <div class="panel-heading">
@@ -628,11 +1082,15 @@ const renderProjectStep = (): string => {
         ${textField(text.ui.project.name, "project.name", draft!.project.name, text.ui.project.defaultName)}
         ${textField(text.ui.project.customerReference, "project.customerReference", draft!.project.customerReference, text.ui.project.referencePlaceholder)}
         <div class="field">
-          <label>${escapeHtml(text.ui.project.documentLanguage)}</label>
+          <label>${escapeHtml(interfaceLanguageLabel())}</label>
           <select data-field="project.language">
             ${languageOptions.map((option) => `<option value="${option.code}" ${option.code === languageCode() ? "selected" : ""}>${escapeHtml(option.name)}</option>`).join("")}
           </select>
         </div>
+      </div>
+      <div class="project-command-row">
+        <button class="button secondary" type="button" data-action="open-selection">${icon("folder-check")} ${escapeHtml(copy.openSelection)}</button>
+        <button class="button secondary" type="button" data-action="save-as">${icon("save")} ${escapeHtml(copy.saveAs)}</button>
       </div>
     </section>
     <section class="panel quiet-panel">
@@ -641,16 +1099,117 @@ const renderProjectStep = (): string => {
         <div><h2>${escapeHtml(text.ui.project.statusTitle)}</h2><p>${escapeHtml(text.ui.project.statusDescription)}</p></div>
       </div>
       <div class="project-status-list">
-        ${statusRow(text.ui.project.technicalReference, "D-B4DB-000154", text.ui.project.registered)}
-        ${statusRow(text.ui.project.revision, "R01", text.ui.project.current)}
-        ${statusRow(text.ui.project.lastSaved, `${text.ui.project.today}, 10:42`, text.ui.project.local)}
+        ${statusRow(text.ui.project.technicalReference, reference, projectState?.publicReference ? text.ui.project.registered : text.ui.project.local)}
+        ${statusRow(text.ui.project.revision, revision, text.ui.project.current)}
+        ${statusRow(text.ui.project.lastSaved, savedAt, projectState?.fileName || text.ui.project.local)}
+      </div>
+      <div class="project-selection-summary">
+        <h3>${escapeHtml(copy.selectionSummary)}</h3>
+        ${renderKeyValues([
+          [text.ui.summary.unit, `${unit?.family ?? "-"} · ${unit?.model ?? "-"}`],
+          [text.ui.preselection.supplyAirflow, `${formatNumber(draft!.operatingPoint.supplyAirflow, 0)} m³/h`],
+          [text.ui.preselection.extractAirflow, `${formatNumber(draft!.operatingPoint.extractAirflow, 0)} m³/h`],
+          [text.ui.preselection.staticPressure, `${formatNumber(draft!.operatingPoint.pressure, 0)} Pa`],
+          [text.ui.summary.installation, `${installationLabel(draft!.installationMode)} · ${draft!.layoutCode}`],
+          [copy.savedFile, projectState?.fileName || "-"],
+        ])}
       </div>
     </section>
   </div>`;
 };
 
+const renderMultiProjectSidebar = (): string => {
+  const copy = multiProjectText();
+  const state = multiProjectState;
+  const items = state?.items.map((item) => `
+    <article class="context-project-item ${item.current ? "current" : ""}" data-project-item="${escapeHtml(item.itemId)}">
+      <button class="context-project-open" type="button" data-project-open="${escapeHtml(item.itemId)}" title="${escapeHtml(copy.open)}">
+        <span>
+          <strong>${escapeHtml(item.customerReference || item.unitName)}</strong>
+          <small>${escapeHtml(item.unitName)}</small>
+        </span>
+        <span class="context-project-duty">
+          <small>${item.airflow == null ? "-" : `${formatNumber(item.airflow, 0)} m³/h`}</small>
+          <small>${item.pressure == null ? "-" : `${formatNumber(item.pressure, 0)} Pa`}</small>
+        </span>
+      </button>
+      <button class="icon-button" type="button" data-project-remove="${escapeHtml(item.itemId)}" title="${escapeHtml(copy.remove)}">${icon("trash-2", 14)}</button>
+    </article>`).join("") ?? "";
+  const modified = state?.modifiedAt
+    ? new Date(state.modifiedAt).toLocaleString(messages().locale)
+    : "";
+  const projectLanguage =
+    pendingProjectLanguage || projectDocumentLanguage();
+  return `<section class="context-project">
+    <div class="context-project-heading">
+      <div>
+        <span>${escapeHtml(copy.workspace)}</span>
+        <strong>${state?.items.length ?? 0}</strong>
+      </div>
+      <small title="${escapeHtml(state?.fileName || copy.unsaved)}">${escapeHtml(state?.fileName || copy.unsaved)}</small>
+    </div>
+    <label class="context-project-language">
+      <span>${escapeHtml(messages().ui.project.documentLanguage)}</span>
+      <select data-project-language>
+        ${languageOptions.map((option) => `<option value="${option.code}" ${option.code === projectLanguage ? "selected" : ""}>${escapeHtml(option.name)}</option>`).join("")}
+      </select>
+    </label>
+    <div class="context-project-actions">
+      <button class="icon-button bordered" type="button" data-action="project-new" title="${escapeHtml(copy.newProject)}">${icon("file-text", 15)}</button>
+      <button class="icon-button bordered" type="button" data-action="project-open" title="${escapeHtml(copy.openProject)}">${icon("folder-check", 15)}</button>
+      <button class="icon-button bordered" type="button" data-action="project-save" title="${escapeHtml(copy.saveProject)}">${icon("save", 15)}</button>
+      <button class="icon-button bordered" type="button" data-action="project-save-as" title="${escapeHtml(copy.saveProjectAs)}">${icon("hard-drive-download", 15)}</button>
+    </div>
+    <div class="context-project-list">
+      ${items || `<p class="context-project-empty">${escapeHtml(copy.empty)}</p>`}
+    </div>
+    <small class="context-project-state">${state?.dirty ? escapeHtml(copy.unsaved) : escapeHtml(modified)}</small>
+    <button class="button secondary context-project-command" type="button" data-action="project-add-current">${icon("file-down")} ${escapeHtml(copy.addCurrent)}</button>
+    <button class="button primary context-project-command" type="button" data-action="project-email" ${state?.items.length ? "" : "disabled"}>${icon("mail")} ${escapeHtml(copy.emailProject)}</button>
+  </section>`;
+};
+
 const renderPreselectionStep = (): string => {
   const text = messages();
+  const filters = draft!.preselectionFilters;
+  const noiseCriterion = (
+    title: string,
+    enabledField: string,
+    enabled: boolean,
+    metricField: string,
+    metric: "LWA" | "LPA",
+    maximumField: string,
+    maximum: number,
+    distanceField: string,
+    distance: number,
+    directivityField: string,
+    directivity: 2 | 4 | 8,
+  ): string => `<fieldset class="selection-criterion ${enabled ? "" : "criterion-disabled"}">
+    <legend>${escapeHtml(title)}</legend>
+    <label class="toggle criterion-toggle">
+      <input type="checkbox" data-field="${enabledField}" ${enabled ? "checked" : ""}/>
+      <span></span><b>${escapeHtml(text.ui.preselection.enableCriterion)}</b>
+    </label>
+    <div class="criterion-controls">
+      <div class="field compact-field">
+        <label>${escapeHtml(text.ui.preselection.soundQuantity)}</label>
+        <select data-field="${metricField}" ${enabled ? "" : "disabled"}>
+          <option value="LWA" ${metric === "LWA" ? "selected" : ""}>${escapeHtml(text.ui.preselection.soundPowerLevel)}</option>
+          <option value="LPA" ${metric === "LPA" ? "selected" : ""}>${escapeHtml(text.ui.preselection.soundPressureLevel)}</option>
+        </select>
+      </div>
+      ${technicalNumberField(text.ui.preselection.maximumLevel, maximumField, maximum, "dB(A)", !enabled, 0)}
+      ${metric === "LPA"
+        ? `${technicalNumberField(text.ui.preselection.distance, distanceField, distance, "m", !enabled, 0.1)}
+          <div class="field compact-field">
+            <label>${escapeHtml(text.ui.preselection.directivityFactor)}</label>
+            <select data-field="${directivityField}" ${enabled ? "" : "disabled"}>
+              ${[2, 4, 8].map((value) => `<option value="${value}" ${value === directivity ? "selected" : ""}>Q = ${value}</option>`).join("")}
+            </select>
+          </div>`
+        : ""}
+    </div>
+  </fieldset>`;
   return `<div class="content-grid split-main">
     <section class="panel">
       <div class="panel-heading compact">
@@ -695,6 +1254,19 @@ const renderPreselectionStep = (): string => {
           </fieldset>
         </div>
       </div>
+      <div class="additional-selection">
+        <div><h3>${escapeHtml(text.ui.preselection.additionalCriteria)}</h3><p>${escapeHtml(text.ui.preselection.additionalCriteriaDescription)}</p></div>
+        <fieldset class="selection-criterion sfp-criterion ${filters.maximumSfpEnabled ? "" : "criterion-disabled"}">
+          <legend>${escapeHtml(text.ui.preselection.maximumSfp)}</legend>
+          <label class="toggle criterion-toggle">
+            <input type="checkbox" data-field="preselectionFilters.maximumSfpEnabled" ${filters.maximumSfpEnabled ? "checked" : ""}/>
+            <span></span><b>${escapeHtml(text.ui.preselection.enableCriterion)}</b>
+          </label>
+          ${technicalNumberField(text.ui.preselection.maximumSfp, "preselectionFilters.maximumSfp", filters.maximumSfp, "kW/(m³/s)", !filters.maximumSfpEnabled, 0)}
+        </fieldset>
+        ${noiseCriterion(text.ui.preselection.supplyNoise, "preselectionFilters.supplyNoiseEnabled", filters.supplyNoiseEnabled, "preselectionFilters.supplyNoiseMetric", filters.supplyNoiseMetric, "preselectionFilters.maximumSupplyNoiseDbA", filters.maximumSupplyNoiseDbA, "preselectionFilters.supplyNoiseDistanceMeters", filters.supplyNoiseDistanceMeters, "preselectionFilters.supplyNoiseDirectivityFactor", filters.supplyNoiseDirectivityFactor)}
+        ${noiseCriterion(text.ui.preselection.breakoutNoise, "preselectionFilters.breakoutNoiseEnabled", filters.breakoutNoiseEnabled, "preselectionFilters.breakoutNoiseMetric", filters.breakoutNoiseMetric, "preselectionFilters.maximumBreakoutNoiseDbA", filters.maximumBreakoutNoiseDbA, "preselectionFilters.breakoutNoiseDistanceMeters", filters.breakoutNoiseDistanceMeters, "preselectionFilters.breakoutNoiseDirectivityFactor", filters.breakoutNoiseDirectivityFactor)}
+      </div>
       <div class="inline-notice">
         ${icon("info")}
         <span>${escapeHtml(text.ui.preselection.balancedNotice)}</span>
@@ -714,22 +1286,145 @@ const renderPreselectionStep = (): string => {
   </div>`;
 };
 
+const renderFlowPorts = (): string => {
+  const text = messages();
+  const fallback = [
+    { flowCode: "Fresh" as const, position: 1 },
+    { flowCode: "Return" as const, position: 2 },
+    { flowCode: "Exhaust" as const, position: 3 },
+    { flowCode: "Supply" as const, position: 4 },
+  ];
+  const candidatePorts = result!.flowPorts ?? [];
+  const portsAreComplete =
+    candidatePorts.length === 4 &&
+    new Set(candidatePorts.map((port) => port.position)).size === 4 &&
+    new Set(candidatePorts.map((port) => port.flowCode)).size === 4 &&
+    candidatePorts.every(
+      (port) =>
+        port.position >= 1 &&
+        port.position <= 4 &&
+        fallback.some((fallbackPort) => fallbackPort.flowCode === port.flowCode),
+    );
+  if (!portsAreComplete) return "";
+  const ports = [...candidatePorts];
+  const labels = {
+    Fresh: text.domain.airflow.fresh,
+    Return: text.domain.airflow.return,
+    Supply: text.domain.airflow.supply,
+    Exhaust: text.domain.airflow.exhaust,
+  };
+  const sameSide = isSameSideConnection();
+  const sameSideFloorFacing = isSameSideFlatFloor();
+  const oppositeSideEastWest = isOppositeSideEastWestWall();
+
+  return ports
+    .sort((left, right) => left.position - right.position)
+    .map((port) => {
+      const role = port.flowCode.toLowerCase();
+      const incoming = port.flowCode === "Fresh" || port.flowCode === "Return";
+      const side = sameSide
+        ? sameSideFloorFacing ? "south" : "north"
+        : oppositeSideEastWest
+          ? port.position <= 2 ? "west" : "east"
+          : port.position <= 2 ? "north" : "south";
+      return `<div class="flow flow-${side} flow-position-${port.position} ${role} ${incoming ? "incoming" : "outgoing"}">
+        ${icon("arrow-down")}<span>${escapeHtml(labels[port.flowCode])}</span>
+      </div>`;
+    })
+    .join("");
+};
+
+const layoutConfigurations = (): LayoutConfigurationOption[] => {
+  if (result?.layoutConfigurations) return result.layoutConfigurations;
+  return (result?.layoutCodes ?? [])
+    .map((code) => ({ code, isDefault: false }));
+};
+
+const layoutsForInstallation = (mode: InstallationMode): LayoutConfigurationOption[] =>
+  layoutConfigurations().filter(
+    (configuration) =>
+      !configuration.installationMode || configuration.installationMode === mode,
+  );
+
+const installationAvailable = (mode: InstallationMode): boolean =>
+  layoutsForInstallation(mode).length > 0;
+
+const preferredLayout = (mode: InstallationMode): LayoutConfigurationOption | undefined => {
+  const compatible = layoutsForInstallation(mode);
+  return (
+    compatible.find((configuration) => configuration.code === draft?.layoutCode) ??
+    compatible.find((configuration) => configuration.isDefault) ??
+    compatible[0]
+  );
+};
+
+const isSameSideConnection = (): boolean => {
+  const view = selectedLayoutConfiguration()?.referenceView;
+  if (view) return view.startsWith("SSC_");
+  const connection = `${result?.aeraulicConnectionCode ?? ""} ${selectedUnit()?.model ?? ""}`
+    .toUpperCase();
+  return connection.includes("SSC") || connection.includes("SAME SIDE");
+};
+
+type AccessSurface = "upper" | "lower" | "front";
+
+const selectedLayoutConfiguration = (): LayoutConfigurationOption | undefined =>
+  layoutConfigurations().find((item) => item.code === draft?.layoutCode);
+
+const isSameSideUprightFloor = (): boolean =>
+  isSameSideConnection() &&
+  draft?.installationMode === "floor" &&
+  selectedLayoutConfiguration()?.referenceView === "SSC_UPRIGHT";
+
+const isSameSideFlatFloor = (): boolean =>
+  isSameSideConnection() &&
+  draft?.installationMode === "floor" &&
+  selectedLayoutConfiguration()?.referenceView === "SSC_FLAT";
+
+const isOppositeSideEastWestWall = (): boolean =>
+  !isSameSideConnection() &&
+  draft?.installationMode === "wall" &&
+  selectedLayoutConfiguration()?.referenceView === "OSC_EAST_WEST";
+
+const accessSurface = (): AccessSurface => {
+  const configured = selectedLayoutConfiguration()?.accessSide;
+  if (configured) return configured;
+  if (isSameSideUprightFloor() || draft?.installationMode === "wall") return "front";
+  if (draft?.installationMode === "floor") return "upper";
+  return "lower";
+};
+
+const accessSurfaceLabel = (surface: AccessSurface): string => {
+  const installation = messages().ui.installation;
+  if (surface === "upper") return installation.upperAccess;
+  if (surface === "front") return installation.frontAccess;
+  return installation.lowerAccess;
+};
+
 const renderInstallationStep = (): string => {
   const text = messages();
+  const compatibleLayouts = layoutsForInstallation(draft!.installationMode);
+  const surface = accessSurface();
+  const oppositeSideWallClass = draft!.installationMode === "wall"
+    ? isOppositeSideEastWestWall() ? "wall-east-west" : "wall-north-south"
+    : "";
+  const connectionClass = isSameSideConnection()
+    ? `connection-ssc installation-${draft!.installationMode} ${isSameSideFlatFloor() ? "ssc-flat-floor" : "ssc-same-side"} ${isSameSideUprightFloor() ? "ssc-upright-floor" : ""}`
+    : `connection-osc installation-${draft!.installationMode} ${oppositeSideWallClass}`;
   return `<div class="content-grid installation-grid">
     <section class="panel">
       <div class="panel-heading compact">
         <div><h2>${escapeHtml(text.ui.installation.typeTitle)}</h2><p>${escapeHtml(text.ui.installation.typeDescription)}</p></div>
       </div>
       <div class="segmented-cards">
-        ${choiceCard("ceiling", text.domain.installation.ceiling, text.ui.installation.ceilingDescription, "panel-top")}
-        ${choiceCard("floor", text.domain.installation.floor, text.ui.installation.floorDescription, "panel-bottom")}
-        ${choiceCard("wall", text.domain.installation.wall, text.ui.installation.wallDescription, "panel-left")}
+        ${choiceCard("ceiling", text.domain.installation.ceiling, text.ui.installation.ceilingDescription, "panel-top", !installationAvailable("ceiling"))}
+        ${choiceCard("floor", text.domain.installation.floor, text.ui.installation.floorDescription, "panel-bottom", !installationAvailable("floor"))}
+        ${choiceCard("wall", text.domain.installation.wall, text.ui.installation.wallDescription, "panel-left", !installationAvailable("wall"))}
       </div>
       <div class="field">
         <label for="layoutCode">${escapeHtml(text.ui.installation.airflowConfiguration)}</label>
         <select id="layoutCode" data-field="layoutCode">
-          ${(result!.layoutCodes?.length ? result!.layoutCodes : ["B6", "A4", "T5"]).map((value) => `<option ${draft!.layoutCode === value ? "selected" : ""}>${value}</option>`).join("")}
+          ${compatibleLayouts.map((configuration) => `<option ${draft!.layoutCode === configuration.code ? "selected" : ""}>${configuration.code}</option>`).join("")}
         </select>
         <small>${escapeHtml(text.ui.installation.defaultHint)}</small>
       </div>
@@ -737,19 +1432,23 @@ const renderInstallationStep = (): string => {
     <section class="panel layout-preview">
       <div class="panel-heading compact">
         <div><h2>${escapeHtml(text.ui.installation.orientationTitle)}</h2><p>${escapeHtml(text.ui.installation.previewDescription)} ${escapeHtml(draft!.layoutCode)}.</p></div>
-        <span class="outline-badge">${escapeHtml(text.ui.installation.lowerAccess)}</span>
+        <div class="layout-heading-actions">
+          <span class="outline-badge">${escapeHtml(accessSurfaceLabel(surface))}</span>
+          <button class="icon-button bordered" type="button" data-action="open-dimensional-drawing" title="${escapeHtml(text.ui.documents.dimensionalDrawing)}">${icon("ruler")}</button>
+        </div>
       </div>
-      <div class="airflow-diagram">
-        <div class="flow flow-north fresh">${icon("arrow-down")}<span>${escapeHtml(text.domain.airflow.fresh)}</span></div>
-        <div class="flow flow-north return">${icon("arrow-down")}<span>${escapeHtml(text.domain.airflow.return)}</span></div>
-        <div class="ahu-plan">
+      ${compatibleLayouts.length > 0 ? `<div class="airflow-diagram ${connectionClass}">
+        ${renderFlowPorts()}
+        <div class="ahu-plan access-${surface}">
+          <span class="duct-marker duct-position-1" aria-hidden="true"></span>
+          <span class="duct-marker duct-position-2" aria-hidden="true"></span>
+          <span class="duct-marker duct-position-3" aria-hidden="true"></span>
+          <span class="duct-marker duct-position-4" aria-hidden="true"></span>
           <span class="core"></span>
           <strong>${selectedUnit()?.model}</strong>
-          <small>${escapeHtml(text.ui.installation.accessPanel)}</small>
+          <small>${escapeHtml(text.ui.installation.accessPanel)}: ${escapeHtml(accessSurfaceLabel(surface))}</small>
         </div>
-        <div class="flow flow-south exhaust">${icon("arrow-down")}<span>${escapeHtml(text.domain.airflow.exhaust)}</span></div>
-        <div class="flow flow-south supply">${icon("arrow-down")}<span>${escapeHtml(text.domain.airflow.supply)}</span></div>
-      </div>
+      </div>` : `<div class="empty-state">${escapeHtml(text.status.unavailable)}</div>`}
     </section>
   </div>`;
 };
@@ -759,26 +1458,56 @@ const renderWaterCoilStep = (): string => {
   const coils = result!.waterCoils ?? [];
   const selected = coils.find((item) => item.id === draft!.waterCoilId);
   const available = coils.length > 0;
+  const customized = draft!.waterCoilCustomized;
+  const externalGeometry = selected?.installation?.toLowerCase() !== "internal";
+  const coolingEnabled =
+    draft!.waterCoilMode === "CWD" || draft!.waterCoilMode === "HCD";
+  const heatingEnabled =
+    (draft!.waterCoilMode === "HWD" || draft!.waterCoilMode === "HCD") &&
+    result!.waterHeatingEnabled !== false;
+  const heatingReason = result!.waterHeatingDisabledReason ?? "";
   return `
     <div class="content-grid two">
       <section class="panel">
         ${toggleHeading(text.ui.waterCoil.treatment, "waterCoilEnabled", draft!.waterCoilEnabled && available, available ? text.ui.waterCoil.enable : text.status.unavailable)}
         <div class="${draft!.waterCoilEnabled && available ? "" : "disabled-section"}">
           <div class="form-grid">
-            ${selectField(text.ui.waterCoil.calculationMode, "waterCoilMode", draft!.waterCoilMode, ["CWD", "HWD", "HCD"])}
-            ${numberSelectField(text.ui.waterCoil.coil, "waterCoilId", draft!.waterCoilId, coils.map((item) => ({ value: item.id, label: `${item.name} · ${relationInstallationLabel(item.installation)}` })))}
+            <div class="field">
+              <label>${escapeHtml(text.ui.waterCoil.calculationMode)}</label>
+              <select data-field="waterCoilMode" ${heatingReason ? `title="${escapeHtml(heatingReason)}"` : ""}>
+                ${["CWD", "HWD", "HCD"].map((mode) =>
+                  `<option value="${mode}" ${draft!.waterCoilMode === mode ? "selected" : ""} ${mode !== "CWD" && result!.waterHeatingEnabled === false ? "disabled" : ""}>${mode}</option>`,
+                ).join("")}
+              </select>
+            </div>
+            ${numberSelectField(text.ui.waterCoil.coil, "waterCoilId", draft!.waterCoilId, coils.map((item) => ({ value: item.id, label: `${item.name} · ${item.installationLabel || relationInstallationLabel(item.installation)}` })))}
+            <div class="field">
+              <label>${escapeHtml(text.ui.waterCoil.calculationMode)}</label>
+              <select data-field="waterCoilCustomized">
+                <option value="false" ${customized ? "" : "selected"}>${escapeHtml(result!.waterCoilStandardLabel ?? "Standard")}</option>
+                <option value="true" ${customized ? "selected" : ""}>${escapeHtml(result!.waterCoilCustomizedLabel ?? "Customized")}</option>
+              </select>
+            </div>
             ${codedSelectField(text.ui.waterCoil.fluid, "fluidCode", draft!.fluidCode, [
               { value: "Water", label: text.domain.fluid.water },
               { value: "Glic_Etil", label: text.domain.fluid.ethyleneGlycol },
               { value: "Glic_Prop", label: text.domain.fluid.propyleneGlycol },
             ])}
-            ${numberField(text.ui.waterCoil.glycol, "glycolPercent", draft!.glycolPercent, "%")}
-            ${numberField(text.ui.waterCoil.coolingIn, "coolingWaterInletTemperature", draft!.coolingWaterInletTemperature, "°C")}
-            ${numberField(text.ui.waterCoil.coolingOut, "coolingWaterOutletTemperature", draft!.coolingWaterOutletTemperature, "°C")}
-            ${numberField(text.ui.waterCoil.heatingIn, "heatingWaterInletTemperature", draft!.heatingWaterInletTemperature, "°C")}
-            ${numberField(text.ui.waterCoil.heatingOut, "heatingWaterOutletTemperature", draft!.heatingWaterOutletTemperature, "°C")}
+            ${technicalNumberField(text.ui.waterCoil.glycol, "glycolPercent", draft!.glycolPercent, "%", draft!.fluidCode === "Water", 0, 60)}
+            ${technicalNumberField(text.ui.waterCoil.coolingIn, "coolingWaterInletTemperature", draft!.coolingWaterInletTemperature, "°C", !coolingEnabled)}
+            ${technicalNumberField(text.ui.waterCoil.coolingOut, "coolingWaterOutletTemperature", draft!.coolingWaterOutletTemperature, "°C", !coolingEnabled, draft!.coolingWaterInletTemperature + 1)}
+            ${technicalNumberField(text.ui.waterCoil.heatingIn, "heatingWaterInletTemperature", draft!.heatingWaterInletTemperature, "°C", !heatingEnabled)}
+            ${technicalNumberField(text.ui.waterCoil.heatingOut, "heatingWaterOutletTemperature", draft!.heatingWaterOutletTemperature, "°C", !heatingEnabled, undefined, draft!.heatingWaterInletTemperature - 1)}
           </div>
-          ${selected ? `<div class="inline-notice">${icon("ruler")}<span>${selected.lengthMm} × ${selected.heightMm} mm · ${selected.rows} ${escapeHtml(text.ui.waterCoil.rows)} · ${selected.circuits} ${escapeHtml(text.ui.waterCoil.circuits)} · ${escapeHtml(text.ui.waterCoil.finSpacing)} ${formatNumber(selected.finSpacingMm, 1)} mm</span></div>` : ""}
+          ${selected ? `<div class="coil-geometry-grid">
+            ${technicalNumberField("L [mm]", "waterCoilLengthMm", draft!.waterCoilLengthMm || selected.lengthMm, "mm", !customized || !externalGeometry, 1)}
+            ${technicalNumberField("H [mm]", "waterCoilHeightMm", draft!.waterCoilHeightMm || selected.heightMm, "mm", !customized || !externalGeometry, 1)}
+            ${technicalNumberField(text.ui.waterCoil.rows, "waterCoilRows", draft!.waterCoilRows || selected.rows, "", !customized, 1)}
+            ${technicalNumberField(text.ui.waterCoil.circuits, "waterCoilCircuits", draft!.waterCoilCircuits || selected.circuits, "", !customized, 1)}
+            ${codedSelectField(text.ui.waterCoil.finSpacing, "waterCoilFinSpacingMm", String(draft!.waterCoilFinSpacingMm || selected.finSpacingMm), [1.6, 1.8, 2, 2.1, 2.3, 2.5, 2.8, 3].map((value) => ({ value: String(value), label: `${formatNumber(value, 1)} mm` })), !customized)}
+          </div>` : ""}
+          ${customized ? `<div class="inline-notice warning">${icon("triangle-alert")}<span>${escapeHtml(result!.waterCoilDimensionsNotice ?? "")}<br/><b>${escapeHtml(result!.waterCoilQuotationNotice ?? "")}</b></span></div>` : ""}
+          ${heatingReason ? `<div class="inline-notice warning">${icon("triangle-alert")}<span>${escapeHtml(heatingReason)}</span></div>` : ""}
         </div>
       </section>
       <section class="panel">
@@ -787,16 +1516,14 @@ const renderWaterCoilStep = (): string => {
         </div>
         <div class="result-table">
           ${(result!.waterCoilResults?.length ?? 0) > 0
-            ? result!.waterCoilResults!.map((item) =>
-                resultRow(
-                  item.mode,
-                  `${formatNumber(item.capacityW, 0)} W`,
-                  `${formatNumber(item.airOutletTemperatureC, 1)} °C · ${formatNumber(item.airOutletRelativeHumidityPercent, 0)}%`,
-                  `${formatNumber(item.airPressureDropPa, 0)} Pa`,
-                ),
-              ).join("")
+            ? result!.waterCoilResults!.map((item) => resultRow(item)).join("")
             : `<div class="empty-state">${escapeHtml(available ? text.ui.waterCoil.enableToCalculate : text.ui.waterCoil.noneAssociated)}</div>`}
         </div>
+        ${(result!.notices?.length ?? 0) > 0
+          ? `<div class="coil-messages">${result!.notices!.map((notice) =>
+              `<div class="inline-notice ${notice.severity}">${icon(notice.severity === "danger" ? "circle-alert" : "triangle-alert")}<span>${escapeHtml(notice.message)}</span></div>`,
+            ).join("")}</div>`
+          : ""}
         ${result!.additionalPressureDropPa ? `<div class="inline-notice">${icon("gauge")}<span>${escapeHtml(text.ui.waterCoil.additionalPressureDrop)}: <b>${formatNumber(result!.additionalPressureDropPa, 0)} Pa</b></span></div>` : ""}
       </section>
     </div>`;
@@ -808,7 +1535,16 @@ const renderElectricStep = (): string => {
   return `
     <div class="content-grid two">
       ${heaterPanel("PEHD", text.ui.electricHeater.preheating, "electricPreheaterEnabled", draft!.electricPreheaterEnabled, "electricPreheaterId", heaters.filter((item) => item.mode === "PEHD"))}
-      ${heaterPanel("EHD", text.ui.electricHeater.postHeating, "electricPostheaterEnabled", draft!.electricPostheaterEnabled, "electricPostheaterId", heaters.filter((item) => item.mode === "EHD"))}
+      ${heaterPanel(
+        "EHD",
+        text.ui.electricHeater.postHeating,
+        "electricPostheaterEnabled",
+        draft!.electricPostheaterEnabled,
+        "electricPostheaterId",
+        heaters.filter((item) => item.mode === "EHD"),
+        result!.electricPostheaterEnabled !== false,
+        result!.electricPostheaterDisabledReason ?? "",
+      )}
     </div>`;
 };
 
@@ -834,13 +1570,196 @@ const renderAccessoriesStep = (): string => {
   </section>`;
 };
 
+const renderCo2Step = (): string => {
+  const copy = messages().ui.co2Sound;
+  const co2 = draft!.co2;
+  const co2Result = result!.co2Result;
+  const disabled = calculating;
+  const disabledAttribute = disabled ? "disabled" : "";
+  const methodOptions = [
+    {
+      value: "maximum-concentration",
+      label: copy.maximumConcentrationMethod,
+    },
+    { value: "fixed-airflow", label: copy.fixedAirflowMethod },
+    {
+      value: "airflow-per-person-and-area",
+      label: copy.personAndAreaMethod,
+    },
+  ];
+
+  return `
+    <div class="co2-step ${disabled ? "calculation-pending" : ""}" aria-busy="${disabled}">
+      <div class="co2-layout">
+        <section class="panel">
+          <div class="panel-heading toggle-heading">
+            <div>
+              <h2>${escapeHtml(copy.co2Title)}</h2>
+              <p>${escapeHtml(copy.co2Description)}</p>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" data-field="co2.includeInReport" ${co2.includeInReport ? "checked" : ""} ${disabledAttribute}/>
+              <span></span><b>${escapeHtml(copy.includeCo2InReport)}</b>
+            </label>
+          </div>
+          <fieldset class="settings-fieldset" ${disabledAttribute}>
+            <legend>${escapeHtml(copy.roomDimensions)}</legend>
+            <div class="co2-dimensions-grid">
+              ${technicalNumberField(copy.width, "co2.roomWidthMeters", co2.roomWidthMeters, "m", disabled, 0.1)}
+              ${technicalNumberField(copy.length, "co2.roomLengthMeters", co2.roomLengthMeters, "m", disabled, 0.1)}
+              ${technicalNumberField(copy.height, "co2.roomHeightMeters", co2.roomHeightMeters, "m", disabled, 0.1)}
+            </div>
+          </fieldset>
+          <fieldset class="settings-fieldset" ${disabledAttribute}>
+            <legend>${escapeHtml(copy.useProfile)}</legend>
+            <div class="co2-profile-grid">
+              ${technicalNumberField(copy.activity, "co2.activityMet", co2.activityMet, "met", disabled, 0.1)}
+              ${technicalNumberField(copy.occupiedPeople, "co2.occupiedPeople", co2.occupiedPeople, "", disabled, 0)}
+              ${technicalNumberField(copy.occupiedMinutes, "co2.occupiedMinutes", co2.occupiedMinutes, "min", disabled, 0)}
+              ${technicalNumberField(copy.breakPeople, "co2.breakPeople", co2.breakPeople, "", disabled, 0)}
+              ${technicalNumberField(copy.breakMinutes, "co2.breakMinutes", co2.breakMinutes, "min", disabled, 0)}
+            </div>
+          </fieldset>
+          <div class="co2-method-grid">
+            ${codedSelectField(copy.calculationMethod, "co2.calculationMethod", co2.calculationMethod, methodOptions, disabled)}
+            ${technicalNumberField(copy.outdoorConcentration, "co2.outdoorConcentrationPpm", co2.outdoorConcentrationPpm, "ppm", disabled, 0)}
+            ${technicalNumberField(copy.maximumConcentration, "co2.maximumConcentrationPpm", co2.maximumConcentrationPpm, "ppm", disabled, 0)}
+            ${technicalNumberField(copy.airflowPerArea, "co2.airflowPerAreaLitersPerSecondPerSquareMeter", co2.airflowPerAreaLitersPerSecondPerSquareMeter, "l/s·m²", disabled, 0)}
+            ${technicalNumberField(copy.airflowPerPerson, "co2.airflowPerPersonLitersPerSecond", co2.airflowPerPersonLitersPerSecond, "l/s", disabled, 0)}
+          </div>
+        </section>
+
+        <section class="panel co2-results-panel">
+          <div class="panel-heading">
+            <span class="panel-icon">${icon("activity")}</span>
+            <div><h2>${escapeHtml(copy.co2Results)}</h2><p>${escapeHtml(copy.co2Description)}</p></div>
+          </div>
+          ${
+            co2Result
+              ? `<div class="co2-result-grid">
+                  ${metric(copy.roomArea, `${formatNumber(co2Result.roomAreaSquareMeters, 1)} m²`, "ruler")}
+                  ${metric(copy.roomVolume, `${formatNumber(co2Result.roomVolumeCubicMeters, 1)} m³`, "panels-top-left")}
+                  ${metric(copy.co2Generation, `${formatNumber(co2Result.carbonDioxideGenerationLitersPerSecondPerPerson, 4)} l/s`, "activity")}
+                  ${metric(copy.requiredOutdoorAirflow, `${formatNumber(co2Result.requiredOutdoorAirflowLitersPerSecond, 1)} l/s`, "wind")}
+                  ${metric(copy.requiredOutdoorAirflow, `${formatNumber(co2Result.requiredOutdoorAirflowCubicMetersPerHour, 0)} m³/h`, "wind")}
+                  ${metric(copy.calculatedMaximumConcentration, `${formatNumber(co2Result.calculatedMaximumConcentrationPpm, 0)} ppm`, "gauge")}
+                </div>
+                ${renderCo2Chart(co2Result.points)}`
+              : `<div class="empty-calculation">${icon("loader-circle")}<span>${escapeHtml(copy.awaitingBackendResults)}</span></div>`
+          }
+        </section>
+      </div>
+    </div>`;
+};
+
+const renderSoundStep = (): string => {
+  const copy = messages().ui.co2Sound;
+  const sound = draft!.sound;
+  const soundResult = result!.soundResult;
+  const soundRows = soundResult?.spectrumRows ?? [];
+  const iso16032Available = soundResult?.iso16032Available ?? false;
+  const disabled = calculating;
+  const disabledAttribute = disabled ? "disabled" : "";
+  const distance1Heading = copy.soundPressureAtDistance.replace(
+    "{distance}",
+    formatNumber(sound.distance1Meters),
+  );
+  const distance2Heading = copy.soundPressureAtDistance.replace(
+    "{distance}",
+    formatNumber(sound.distance2Meters),
+  );
+
+  return `
+    <div class="sound-step ${disabled ? "calculation-pending" : ""}" aria-busy="${disabled}">
+      <section class="panel sound-panel">
+        <div class="panel-heading toggle-heading">
+          <div>
+            <h2>${escapeHtml(copy.soundTitle)}</h2>
+            <p>${escapeHtml(copy.soundDescription)}</p>
+          </div>
+          <label class="toggle">
+            <input type="checkbox" data-field="sound.includeInReport" ${sound.includeInReport ? "checked" : ""} ${disabledAttribute}/>
+            <span></span><b>${escapeHtml(copy.includeSoundInReport)}</b>
+          </label>
+        </div>
+        <div class="sound-settings-grid">
+          ${codedSelectField(
+            copy.directivityFactor,
+            "sound.directivityFactor",
+            String(sound.directivityFactor),
+            [2, 4, 8].map((value) => ({ value: String(value), label: `Q = ${value}` })),
+            disabled,
+          )}
+          ${technicalNumberField(copy.firstDistance, "sound.distance1Meters", sound.distance1Meters, "m", disabled, 0.1)}
+          ${technicalNumberField(copy.secondDistance, "sound.distance2Meters", sound.distance2Meters, "m", disabled, 0.1)}
+          ${
+            iso16032Available
+              ? `<label class="toggle iso-toggle ${disabled ? "disabled" : ""}">
+                  <input type="checkbox" data-field="sound.iso16032Enabled" ${sound.iso16032Enabled ? "checked" : ""} ${disabledAttribute}/>
+                  <span></span><b>${escapeHtml(copy.iso16032)}</b>
+                </label>`
+              : ""
+          }
+        </div>
+        <div class="spectrum-heading">
+          <h3>${escapeHtml(copy.spectralResults)}</h3>
+        </div>
+        ${
+          soundRows.length > 0
+            ? `<div class="sound-spectrum-wrap">
+                <table class="sound-spectrum-table">
+                  <thead>
+                    <tr>
+                      <th>${escapeHtml(copy.airPath)}</th>
+                      <th>63 Hz</th><th>125 Hz</th><th>250 Hz</th><th>500 Hz</th>
+                      <th>1 kHz</th><th>2 kHz</th><th>4 kHz</th><th>8 kHz</th>
+                      <th>${escapeHtml(copy.weightedSoundPower)}</th>
+                      <th>${escapeHtml(distance1Heading)}</th>
+                      <th>${escapeHtml(distance2Heading)}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${soundRows
+                      .map(
+                        (row) => `<tr>
+                          <th scope="row"><strong>${escapeHtml(localizedSoundPath(row.airPathCode, row.airPathLabel))}</strong></th>
+                          <td>${formatNumber(row.octaveBand63HzDb)}</td>
+                          <td>${formatNumber(row.octaveBand125HzDb)}</td>
+                          <td>${formatNumber(row.octaveBand250HzDb)}</td>
+                          <td>${formatNumber(row.octaveBand500HzDb)}</td>
+                          <td>${formatNumber(row.octaveBand1000HzDb)}</td>
+                          <td>${formatNumber(row.octaveBand2000HzDb)}</td>
+                          <td>${formatNumber(row.octaveBand4000HzDb)}</td>
+                          <td>${formatNumber(row.octaveBand8000HzDb)}</td>
+                          <td><strong>${formatNumber(row.weightedSoundPowerDbA)}</strong></td>
+                          <td>${row.soundPressureAtDistance1DbA === null ? "-" : formatNumber(row.soundPressureAtDistance1DbA)}</td>
+                          <td>${row.soundPressureAtDistance2DbA === null ? "-" : formatNumber(row.soundPressureAtDistance2DbA)}</td>
+                        </tr>`,
+                      )
+                      .join("")}
+                  </tbody>
+                </table>
+              </div>`
+            : `<div class="empty-calculation">${icon("loader-circle")}<span>${escapeHtml(copy.awaitingBackendResults)}</span></div>`
+        }
+      </section>
+    </div>`;
+};
+
 const renderDocumentsStep = (): string => {
   const text = messages();
   return `<div class="content-grid documents-grid">
-    ${documentCard(text.ui.documents.technicalSheet, text.ui.documents.technicalSheetDescription, "PDF", "file-text")}
-    ${documentCard(text.ui.documents.installationManual, text.ui.documents.installationManualDescription, "PDF", "book-open")}
-    ${documentCard(text.ui.documents.euDeclaration, text.ui.documents.euDeclarationDescription, "PDF", "badge-check")}
-    ${documentCard(text.ui.documents.dimensionalDrawing, text.ui.documents.dimensionalDrawingDescription, "PDF", "ruler")}
+    ${productDocumentsLoading ? `
+      <div class="documents-loading" role="status" aria-live="polite">
+        <span class="busy-icon">${icon("loader-circle", 28)}</span>
+        <div>
+          <strong>${escapeHtml(text.common.loading)}</strong>
+          <span>${escapeHtml(text.ui.documents.localPackageNotice)}</span>
+          <div class="loading-line"><span></span></div>
+        </div>
+      </div>` : ""}
+    ${documentCard(text.ui.documents.technicalSheet, text.ui.documents.technicalSheetDescription, "PDF", "file-text", "commercial-sheet", productDocuments?.commercialSheetAvailable === true)}
+    ${documentCard(text.ui.documents.installationManual, text.ui.documents.installationManualDescription, "PDF", "book-open", "installation-manual", productDocuments?.installationManualAvailable === true)}
   </div>
   <div class="inline-notice success">
     ${icon("hard-drive-download")}
@@ -852,7 +1771,7 @@ const renderSummaryStep = (): string => {
   const text = messages();
   const unit = selectedUnit();
   return `
-    <div class="summary-layout">
+    <div class="summary-layout summary-layout-single">
       <section class="summary-main">
         <div class="summary-banner ${stateTone()}">
           <span>${icon(result!.status === "valid" ? "badge-check" : "triangle-alert", 26)}</span>
@@ -886,18 +1805,6 @@ const renderSummaryStep = (): string => {
           </div>
         </div>
       </section>
-      <aside class="summary-report">
-        <div class="report-sheet">
-          <div class="report-brand"><span class="brand-mark tiny"><span></span><span></span><span></span></span><strong>Avensys</strong></div>
-          <div class="report-lines"><span></span><span></span><span></span></div>
-          <div class="report-title"></div>
-          <div class="report-table"><span></span><span></span><span></span><span></span></div>
-          <div class="report-charts"><span></span><span></span></div>
-        </div>
-        <h2>${escapeHtml(text.ui.summary.technicalReport)}</h2>
-        <p>${escapeHtml(text.ui.summary.reportDescription)}</p>
-        <div class="report-file">${icon("file-text")} <span>${escapeHtml(unit?.model?.replaceAll(" ", "_"))}_Report_${languageCode()}.pdf</span></div>
-      </aside>
     </div>`;
 };
 
@@ -981,7 +1888,7 @@ const technicalNumberField = (
   min?: number,
   max?: number,
 ): string => `
-  <div class="field compact-field">
+  <div class="field compact-field ${disabled ? "is-disabled" : ""}">
     <label>${escapeHtml(label)}</label>
     <div class="input-with-unit">
       <input type="number" data-field="${field}" value="${value}" ${disabled ? "disabled" : ""} ${min === undefined ? "" : `min="${min}"`} ${max === undefined ? "" : `max="${max}"`}/>
@@ -1002,10 +1909,11 @@ const codedSelectField = (
   field: string,
   value: string,
   options: Array<{ value: string; label: string }>,
+  disabled = false,
 ): string => `
   <div class="field">
     <label>${escapeHtml(label)}</label>
-    <select data-field="${field}">
+    <select data-field="${field}" ${disabled ? "disabled" : ""}>
       ${options.map((option) => `<option value="${escapeHtml(option.value)}" ${option.value === value ? "selected" : ""}>${escapeHtml(option.label)}</option>`).join("")}
     </select>
   </div>`;
@@ -1036,18 +1944,27 @@ const statusRow = (label: string, value: string, status: string): string => `
 
 const unitCard = (unit: UnitOption, recommended: boolean): string => {
   const text = messages();
+  const filters = draft!.preselectionFilters;
+  const acousticValues = [
+    filters.supplyNoiseEnabled
+      ? `${text.ui.preselection.supplyNoise}: ${formatNumber(filters.supplyNoiseMetric === "LPA" ? unit.supplySoundPressureDbA ?? 0 : unit.supplySoundPowerDbA ?? 0, 1)} dB(A) ${filters.supplyNoiseMetric}`
+      : "",
+    filters.breakoutNoiseEnabled
+      ? `${text.ui.preselection.breakoutNoise}: ${formatNumber(filters.breakoutNoiseMetric === "LPA" ? unit.breakoutSoundPressureDbA ?? 0 : unit.breakoutSoundPowerDbA ?? 0, 1)} dB(A) ${filters.breakoutNoiseMetric}`
+      : "",
+  ].filter(Boolean);
   return `
   <article class="ranked-unit ${unit.id === draft!.selectedUnitId ? "selected" : ""}" data-select-unit="${unit.id}">
     <div class="ranked-unit-score"><strong>${formatNumber(unit.requiredRegulation, 0)}</strong><span>%</span></div>
     <div><small>${unit.family}</small><strong>${unit.model}</strong></div>
-    <div class="ranked-spec"><span>${formatNumber(unit.availablePressure, 0)} Pa</span><span>${formatNumber(unit.absorbedPower, 0)} W</span><span>SFP ${formatNumber(unit.sfp, 2)}</span></div>
+    <div class="ranked-spec"><span>${formatNumber(unit.availablePressure, 0)} Pa</span><span>${formatNumber(unit.absorbedPower, 0)} W</span><span>SFP ${formatNumber(unit.sfp, 2)}</span>${acousticValues.map((value) => `<span>${escapeHtml(value)}</span>`).join("")}</div>
     ${recommended ? `<b class="recommended">${icon("sparkles", 14)} ${escapeHtml(text.ui.preselection.recommended)}</b>` : ""}
     ${unit.id === draft!.selectedUnitId ? icon("circle-check", 20) : icon("chevron-right", 20)}
   </article>`;
 };
 
-const choiceCard = (value: string, title: string, description: string, iconName: string): string => `
-  <button class="choice-card ${draft!.installationMode === value ? "selected" : ""}" data-installation="${value}" type="button">
+const choiceCard = (value: string, title: string, description: string, iconName: string, disabled = false): string => `
+  <button class="choice-card ${draft!.installationMode === value ? "selected" : ""}" data-installation="${value}" type="button" ${disabled ? "disabled aria-disabled=\"true\"" : ""}>
     <span>${icon(iconName, 22)}</span><strong>${title}</strong><small>${description}</small>
   </button>`;
 
@@ -1057,8 +1974,35 @@ const toggleHeading = (title: string, field: string, checked: boolean, label: st
     <label class="toggle"><input type="checkbox" data-field="${field}" ${checked ? "checked" : ""}/><span></span><b>${label}</b></label>
   </div>`;
 
-const resultRow = (mode: string, power: string, output: string, pressureDrop: string): string => `
-  <div><strong>${mode}</strong><span><small>${escapeHtml(messages().ui.waterCoil.capacity)}</small>${power}</span><span><small>${escapeHtml(messages().ui.waterCoil.airOut)}</small>${output}</span><span><small>${escapeHtml(messages().ui.waterCoil.airPressureDrop)}</small>${pressureDrop}</span></div>`;
+const constrainedToggleHeading = (
+  title: string,
+  field: string,
+  checked: boolean,
+  label: string,
+  disabled: boolean,
+  disabledReason: string,
+): string => `
+  <div class="panel-heading toggle-heading">
+    <div><h2>${escapeHtml(title)}</h2><p>${escapeHtml(messages().ui.electricHeater.optionalDescription)}</p></div>
+    <label class="toggle ${disabled ? "disabled" : ""}" title="${escapeHtml(disabledReason)}">
+      <input type="checkbox" data-field="${field}" ${checked ? "checked" : ""} ${disabled ? "disabled" : ""}/>
+      <span></span><b>${escapeHtml(disabled ? disabledReason : label)}</b>
+    </label>
+  </div>`;
+
+const resultRow = (item: WaterCoilPerformance): string => `
+  <div class="coil-result">
+    <strong>${escapeHtml(item.mode)}<small>${escapeHtml(item.status)}</small></strong>
+    <span><small>${escapeHtml(messages().ui.waterCoil.capacity)}</small>${formatNumber(item.capacityW, 0)} W</span>
+    <span><small>Sensible</small>${formatNumber(item.sensibleCapacityW, 0)} W</span>
+    <span><small>${escapeHtml(messages().ui.waterCoil.airOut)}</small>${formatNumber(item.airOutletTemperatureC, 1)} °C · ${formatNumber(item.airOutletRelativeHumidityPercent, 0)}%</span>
+    <span><small>Cond.</small>${formatNumber(item.condensateLitersPerHour, 2)} l/h</span>
+    <span><small>${escapeHtml(messages().ui.waterCoil.airPressureDrop)}</small>${formatNumber(item.airPressureDropPa, 0)} Pa</span>
+    <span><small>DP fluid</small>${formatNumber(item.fluidPressureDropKPa, 1)} kPa</span>
+    <span><small>Flow fluid</small>${formatNumber(item.fluidFlowLitersPerHour, 0)} l/h</span>
+    <span><small>Speed fluid</small>${formatNumber(item.fluidVelocityMetersPerSecond, 2)} m/s</span>
+    <span><small>Face speed</small>${formatNumber(item.faceVelocityMetersPerSecond, 2)} m/s</span>
+  </div>`;
 
 const heaterPanel = (
   code: string,
@@ -1067,6 +2011,8 @@ const heaterPanel = (
   enabled: boolean,
   idField: string,
   heaters: NonNullable<SelectionResult["electricHeaters"]>,
+  selectionEnabled = true,
+  disabledReason = "",
 ): string => {
   const text = messages();
   const selectedId = code === "PEHD" ? draft!.electricPreheaterId : draft!.electricPostheaterId;
@@ -1074,7 +2020,14 @@ const heaterPanel = (
   const performance = result!.electricHeaterResults?.find((item) => item.mode === code);
   return `
     <section class="panel">
-      ${toggleHeading(`${code} · ${title}`, field, enabled && heaters.length > 0, heaters.length > 0 ? text.ui.electricHeater.enableCalculation : text.ui.electricHeater.unavailable)}
+      ${constrainedToggleHeading(
+        `${code} · ${title}`,
+        field,
+        enabled && heaters.length > 0,
+        heaters.length > 0 ? text.ui.electricHeater.enableCalculation : text.ui.electricHeater.unavailable,
+        heaters.length === 0 || !selectionEnabled,
+        heaters.length === 0 ? text.ui.electricHeater.unavailable : disabledReason,
+      )}
       <div class="${enabled && heaters.length > 0 ? "" : "disabled-section"}">
         ${numberSelectField(text.ui.electricHeater.heater, idField, selectedId, heaters.map((item) => ({ value: item.id, label: item.name || item.code })))}
         ${renderKeyValues([
@@ -1096,8 +2049,8 @@ const renderAccessoryRows = (accessories: AccessoryOption[]): string =>
     .map((item) => {
       const selected = draft!.accessoryCodes.includes(item.code);
       return `
-        <label class="data-row ${selected ? "selected" : ""}" role="row">
-          <span><input type="checkbox" data-accessory="${escapeHtml(item.code)}" ${selected ? "checked" : ""} ${item.locked ? "disabled" : ""}/></span>
+        <label class="data-row ${selected ? "selected" : ""} ${item.enabled === false ? "disabled" : ""}" role="row" title="${escapeHtml(item.disabledReason ?? "")}">
+          <span><input type="checkbox" data-accessory="${escapeHtml(item.code)}" ${selected ? "checked" : ""} ${item.locked || item.enabled === false ? "disabled" : ""}/></span>
           <strong>${escapeHtml(item.code)}</strong>
           <span>${escapeHtml(item.name)}</span>
           <span>${escapeHtml(item.category)}</span>
@@ -1106,11 +2059,18 @@ const renderAccessoryRows = (accessories: AccessoryOption[]): string =>
     })
     .join("");
 
-const documentCard = (title: string, description: string, format: string, iconName: string): string => `
-  <article class="document-card">
+const documentCard = (
+  title: string,
+  description: string,
+  format: string,
+  iconName: string,
+  documentType: "commercial-sheet" | "installation-manual" | null,
+  available: boolean,
+): string => `
+  <article class="document-card ${available ? "" : "disabled"}">
     <span>${icon(iconName, 24)}</span>
-    <div><h2>${escapeHtml(title)}</h2><p>${escapeHtml(description)}</p><small>${format} · ${escapeHtml(messages().ui.documents.offlineAvailable)}</small></div>
-    <button class="icon-button bordered" title="${escapeHtml(messages().ui.documents.openDocument)}">${icon("external-link")}</button>
+    <div><h2>${escapeHtml(title)}</h2><p>${escapeHtml(description)}</p><small>${format}${available ? ` · ${escapeHtml(messages().ui.documents.offlineAvailable)}` : ""}</small></div>
+    <button class="icon-button bordered" ${documentType ? `data-document="${documentType}"` : ""} title="${escapeHtml(messages().ui.documents.openDocument)}" ${available ? "" : "disabled"}>${icon("external-link")}</button>
   </article>`;
 
 const summaryMetric = (label: string, value: string): string => `<div><span>${label}</span><strong>${value}</strong></div>`;
@@ -1128,28 +2088,48 @@ const relationInstallationLabel = (installation: string): string =>
 
 const bindShellEvents = (): void => {
   document.querySelectorAll<HTMLElement>("[data-step]").forEach((element) => {
-    element.addEventListener("click", () => {
+    element.addEventListener("click", async () => {
       const step = element.dataset.step as StepId;
+      if (calculating || (calculationFailed && stepIndex(step) > 1) || !canNavigateToStep(step)) return;
+      if (
+        currentStep === "installation" &&
+        stepIndex(step) > stepIndex(currentStep)
+      ) {
+        confirmInstallationReview();
+      }
       currentStep = step;
       renderShell();
+      if (step === "documents") await refreshProductDocuments();
     });
   });
 
   document.querySelectorAll<HTMLElement>("[data-select-unit]").forEach((element) => {
     element.addEventListener("click", async () => {
-      draft!.selectedUnitId = element.dataset.selectUnit ?? draft!.selectedUnitId;
+      const selectedUnitId = element.dataset.selectUnit ?? draft!.selectedUnitId;
+      const modelChanged =
+        confirmedUnitId !== null && confirmedUnitId !== selectedUnitId;
+      draft!.selectedUnitId = selectedUnitId;
       const unit = selectedUnit();
       if (unit) draft!.regulationPercent = unit.requiredRegulation;
-      await recalculate();
+      if (!await recalculate() || draft!.selectedUnitId !== selectedUnitId) return;
+      confirmedUnitId = selectedUnitId;
+      if (modelChanged) installationReviewRequired = true;
+      unlockConfiguredWorkflow();
       currentStep = "installation";
       renderShell();
     });
   });
 
   document.querySelectorAll<HTMLElement>("[data-installation]").forEach((element) => {
-    element.addEventListener("click", () => {
-      draft!.installationMode = element.dataset.installation as SelectionDraft["installationMode"];
-      renderShell();
+    element.addEventListener("click", async () => {
+      if (element.hasAttribute("disabled")) return;
+      const mode = element.dataset.installation as InstallationMode;
+      const configuration = preferredLayout(mode);
+      if (!configuration) return;
+      draft!.installationMode = mode;
+      draft!.layoutCode = configuration.code;
+      confirmInstallationReview();
+      await recalculate();
     });
   });
 
@@ -1179,7 +2159,20 @@ const bindShellEvents = (): void => {
       }
     });
     element.addEventListener("change", async () => {
-      applyFieldValue(element.dataset.field ?? "", element);
+      const field = element.dataset.field ?? "";
+      if (
+        field === "waterCoilCustomized" &&
+        element.value === "true" &&
+        !draft!.waterCoilCustomDisclaimerAccepted
+      ) {
+        if (!window.confirm(result!.waterCoilCustomDisclaimer ?? "")) {
+          element.value = "false";
+          return;
+        }
+        draft!.waterCoilCustomDisclaimerAccepted = true;
+      }
+      applyFieldValue(field, element);
+      if (field === "layoutCode") confirmInstallationReview();
       if (currentStep === "preselection") {
         await refreshPreselection();
       } else {
@@ -1224,8 +2217,179 @@ const bindShellEvents = (): void => {
 
   document.querySelector<HTMLElement>('[data-action="previous"]')?.addEventListener("click", () => navigate(-1));
   document.querySelector<HTMLElement>('[data-action="next"]')?.addEventListener("click", () => navigate(1));
-  document.querySelector<HTMLElement>('[data-action="save"]')?.addEventListener("click", saveDraft);
+  document.querySelector<HTMLElement>('[data-action="save"]')?.addEventListener("click", () => saveDraft(false));
+  document.querySelector<HTMLElement>('[data-action="save-as"]')?.addEventListener("click", () => saveDraft(true));
+  document.querySelector<HTMLElement>('[data-action="open-selection"]')?.addEventListener("click", openDraft);
   document.querySelector<HTMLElement>('[data-action="report"]')?.addEventListener("click", generateReport);
+  document.querySelector<HTMLElement>('[data-action="open-dimensional-drawing"]')?.addEventListener("click", async () => {
+    busyMessage = documentBusyText().opening;
+    renderShell();
+    try {
+      dimensionalDrawing = await bridge.getDimensionalDrawing(structuredClone(draft!));
+      dimensionalDrawingOpen = true;
+    } catch (error) {
+      logClientError(error);
+      toastMessage = error instanceof Error ? error.message : String(error);
+    } finally {
+      busyMessage = null;
+      renderShell();
+    }
+  });
+  document.querySelectorAll<HTMLElement>('[data-action="close-dimensional-drawing"]').forEach((element) => {
+    element.addEventListener("click", (event) => {
+      if (element.classList.contains("modal-backdrop") && event.target !== element) return;
+      dimensionalDrawingOpen = false;
+      renderShell();
+    });
+  });
+  document.querySelectorAll<HTMLButtonElement>("[data-document]").forEach((button) => {
+    button.addEventListener("click", async () => {
+      const documentType = button.dataset.document as
+        | "commercial-sheet"
+        | "installation-manual";
+      busyMessage = documentBusyText().opening;
+      renderShell();
+      try {
+        productDocuments = await bridge.openProductDocument(
+          documentType,
+          structuredClone(draft!),
+        );
+      } catch (error) {
+        logClientError(error);
+      } finally {
+        busyMessage = null;
+        renderShell();
+      }
+    });
+  });
+  document.querySelector<HTMLElement>('[data-action="project-new"]')?.addEventListener("click", newMultiProject);
+  document.querySelector<HTMLElement>('[data-action="project-open"]')?.addEventListener("click", openMultiProject);
+  document.querySelector<HTMLElement>('[data-action="project-save"]')?.addEventListener("click", () => saveMultiProject(false));
+  document.querySelector<HTMLElement>('[data-action="project-save-as"]')?.addEventListener("click", () => saveMultiProject(true));
+  document.querySelector<HTMLElement>('[data-action="project-add-current"]')?.addEventListener("click", addCurrentToMultiProject);
+  document.querySelector<HTMLSelectElement>("[data-project-language]")?.addEventListener("change", async (event) => {
+    const targetLanguage = (event.currentTarget as HTMLSelectElement).value;
+    const targetLanguageName =
+      languageOptions.find((option) => option.code === targetLanguage)?.name ??
+      targetLanguage;
+    pendingProjectLanguage = targetLanguage;
+    busyMessage =
+      `${messages().ui.project.documentLanguage}: ${targetLanguageName}`;
+    calculating = true;
+    renderShell();
+    try {
+      const updatedProject = await bridge.changeMultiProjectLanguage(
+        draft!.project.name,
+        targetLanguage,
+      );
+      if (
+        normalizeLanguageCode(updatedProject.languageCode) !==
+        normalizeLanguageCode(targetLanguage)
+      ) {
+        throw new Error(
+          `Project document language was not updated to ${targetLanguage}.`,
+        );
+      }
+      activeProjectDocumentLanguage = normalizeLanguageCode(targetLanguage);
+      multiProjectState = updatedProject;
+      syncDraftFromMultiProject();
+      showToast(
+        `${messages().ui.project.documentLanguage}: ${targetLanguageName}`,
+      );
+    } finally {
+      pendingProjectLanguage = null;
+      busyMessage = null;
+      calculating = false;
+      renderShell();
+    }
+  });
+  document.querySelector<HTMLElement>('[data-action="project-email"]')?.addEventListener("click", () => {
+    projectEmailOpen = true;
+    renderShell();
+  });
+  document.querySelectorAll<HTMLElement>('[data-action="close-project-email"]').forEach((element) => {
+    element.addEventListener("click", (event) => {
+      if (element.classList.contains("modal-backdrop") && event.target !== element) return;
+      projectEmailOpen = false;
+      renderShell();
+    });
+  });
+  document.querySelector<HTMLInputElement>("[data-project-email-schedule]")?.addEventListener("change", (event) => {
+    projectEmailSchedule = (event.currentTarget as HTMLInputElement).checked;
+    renderShell();
+  });
+  document.querySelector<HTMLInputElement>("[data-project-email-days]")?.addEventListener("change", (event) => {
+    projectEmailDays = Math.max(1, Math.min(90, Number((event.currentTarget as HTMLInputElement).value || 7)));
+  });
+  document.querySelector<HTMLElement>('[data-action="send-project-email"]')?.addEventListener("click", sendMultiProjectEmail);
+  document.querySelectorAll<HTMLElement>("[data-project-open]").forEach((button) => {
+    button.addEventListener("click", () => openMultiProjectItem(button.dataset.projectOpen ?? ""));
+  });
+  document.querySelectorAll<HTMLElement>("[data-project-remove]").forEach((button) => {
+    button.addEventListener("click", () => removeMultiProjectItem(button.dataset.projectRemove ?? ""));
+  });
+  document.querySelectorAll<HTMLElement>("[data-project-item]").forEach((row) => {
+    row.addEventListener("dblclick", (event) => {
+      if ((event.target as HTMLElement).closest("button")) return;
+      void openMultiProjectItem(row.dataset.projectItem ?? "");
+    });
+  });
+  document.querySelector<HTMLElement>('[data-action="notifications"]')?.addEventListener("click", async () => {
+    notificationState = await bridge.listNotifications();
+    notificationCenterOpen = true;
+    renderShell();
+  });
+  document.querySelectorAll<HTMLElement>('[data-action="close-notifications"]').forEach((element) => {
+    element.addEventListener("click", (event) => {
+      if (element.classList.contains("modal-backdrop") && event.target !== element) return;
+      notificationCenterOpen = false;
+      renderShell();
+    });
+  });
+  document.querySelectorAll<HTMLButtonElement>("[data-reminder-action]").forEach((button) => {
+    button.addEventListener("click", async () => {
+      const id = button.dataset.reminderId ?? "";
+      const action = button.dataset.reminderAction as
+        | "reschedule"
+        | "succeeded"
+        | "unsuccessful";
+      const daysInput = document.querySelector<HTMLInputElement>(
+        `[data-reminder-days="${id}"]`,
+      );
+      const days = Math.max(1, Math.min(90, Number(daysInput?.value ?? 7)));
+      notificationState = await bridge.updateNotification(id, action, days);
+      renderShell();
+    });
+  });
+  document.querySelectorAll<HTMLElement>("[data-reminder-open]").forEach((row) => {
+    row.addEventListener("dblclick", async (event) => {
+      if ((event.target as HTMLElement).closest(".notification-actions")) return;
+      const response = await bridge.openNotificationTarget(
+        row.dataset.reminderOpen ?? "",
+        structuredClone(draft!),
+      );
+      if (response.openedProject && response.multiProject) {
+        multiProjectState = response.multiProject;
+        activeProjectDocumentLanguage = normalizeLanguageCode(
+          response.multiProject.languageCode,
+        );
+        draft!.project.name = response.multiProject.reference;
+        notificationCenterOpen = false;
+        currentStep = "project";
+        renderShell();
+        return;
+      }
+      if (!response.opened || !response.draft) return;
+      draft = response.draft;
+      projectState = response.project ?? null;
+      projectDirty = false;
+      notificationCenterOpen = false;
+      if (!await recalculate()) return;
+      restoreConfiguredWorkflow();
+      currentStep = "project";
+      renderShell();
+    });
+  });
   document.querySelector<HTMLElement>('[data-action="help"]')?.addEventListener("click", () => {
     helpOpen = true;
     renderShell();
@@ -1289,106 +2453,357 @@ const applyFieldValue = (
     summerReturnTemperature: () => { draft!.summerReturnTemperature = Number(value); },
     summerReturnRh: () => { draft!.summerReturnRh = Number(value); },
     layoutCode: () => { draft!.layoutCode = String(value); },
-    waterCoilEnabled: () => { draft!.waterCoilEnabled = Boolean(value); },
+    waterCoilEnabled: () => {
+      draft!.waterCoilEnabled = Boolean(value);
+      if (draft!.waterCoilEnabled && draft!.electricPostheaterEnabled) {
+        draft!.waterCoilMode = "CWD";
+      }
+    },
     waterCoilMode: () => { draft!.waterCoilMode = String(value) as SelectionDraft["waterCoilMode"]; },
-    waterCoilId: () => { draft!.waterCoilId = Number(value); },
+    waterCoilId: () => {
+      draft!.waterCoilId = Number(value);
+      const coil = result?.waterCoils?.find((item) => item.id === draft!.waterCoilId);
+      if (coil) {
+        draft!.waterCoilLengthMm = coil.lengthMm;
+        draft!.waterCoilHeightMm = coil.heightMm;
+        draft!.waterCoilRows = coil.rows;
+        draft!.waterCoilCircuits = coil.circuits;
+        draft!.waterCoilFinSpacingMm = coil.finSpacingMm;
+      }
+    },
+    waterCoilCustomized: () => {
+      draft!.waterCoilCustomized = String(value) === "true";
+      if (!draft!.waterCoilCustomized) {
+        draft!.waterCoilCustomDisclaimerAccepted = false;
+      }
+    },
+    waterCoilLengthMm: () => { draft!.waterCoilLengthMm = Math.max(1, Number(value)); },
+    waterCoilHeightMm: () => { draft!.waterCoilHeightMm = Math.max(1, Number(value)); },
+    waterCoilRows: () => { draft!.waterCoilRows = Math.max(1, Math.round(Number(value))); },
+    waterCoilCircuits: () => { draft!.waterCoilCircuits = Math.max(1, Math.round(Number(value))); },
+    waterCoilFinSpacingMm: () => { draft!.waterCoilFinSpacingMm = Number(value); },
     fluidCode: () => { draft!.fluidCode = String(value) as SelectionDraft["fluidCode"]; },
     glycolPercent: () => { draft!.glycolPercent = Number(value); },
     coolingWaterInletTemperature: () => { draft!.coolingWaterInletTemperature = Number(value); },
-    coolingWaterOutletTemperature: () => { draft!.coolingWaterOutletTemperature = Number(value); },
+    coolingWaterOutletTemperature: () => {
+      draft!.coolingWaterOutletTemperature = Math.max(
+        draft!.coolingWaterInletTemperature + 1,
+        Number(value),
+      );
+    },
     heatingWaterInletTemperature: () => { draft!.heatingWaterInletTemperature = Number(value); },
-    heatingWaterOutletTemperature: () => { draft!.heatingWaterOutletTemperature = Number(value); },
+    heatingWaterOutletTemperature: () => {
+      draft!.heatingWaterOutletTemperature = Math.min(
+        draft!.heatingWaterInletTemperature - 1,
+        Number(value),
+      );
+    },
     electricPreheaterEnabled: () => { draft!.electricPreheaterEnabled = Boolean(value); },
     electricPreheaterId: () => { draft!.electricPreheaterId = Number(value); },
     electricPostheaterEnabled: () => { draft!.electricPostheaterEnabled = Boolean(value); },
     electricPostheaterId: () => { draft!.electricPostheaterId = Number(value); },
+    "co2.includeInReport": () => { draft!.co2.includeInReport = Boolean(value); },
+    "co2.roomWidthMeters": () => { draft!.co2.roomWidthMeters = Math.max(0.1, Number(value)); },
+    "co2.roomLengthMeters": () => { draft!.co2.roomLengthMeters = Math.max(0.1, Number(value)); },
+    "co2.roomHeightMeters": () => { draft!.co2.roomHeightMeters = Math.max(0.1, Number(value)); },
+    "co2.activityMet": () => { draft!.co2.activityMet = Math.max(0.1, Number(value)); },
+    "co2.occupiedPeople": () => { draft!.co2.occupiedPeople = Math.max(0, Math.round(Number(value))); },
+    "co2.occupiedMinutes": () => { draft!.co2.occupiedMinutes = Math.max(0, Number(value)); },
+    "co2.breakPeople": () => { draft!.co2.breakPeople = Math.max(0, Math.round(Number(value))); },
+    "co2.breakMinutes": () => { draft!.co2.breakMinutes = Math.max(0, Number(value)); },
+    "co2.calculationMethod": () => {
+      draft!.co2.calculationMethod = String(value) as SelectionDraft["co2"]["calculationMethod"];
+    },
+    "co2.outdoorConcentrationPpm": () => {
+      draft!.co2.outdoorConcentrationPpm = Math.max(0, Number(value));
+    },
+    "co2.maximumConcentrationPpm": () => {
+      draft!.co2.maximumConcentrationPpm = Math.max(0, Number(value));
+    },
+    "co2.airflowPerAreaLitersPerSecondPerSquareMeter": () => {
+      draft!.co2.airflowPerAreaLitersPerSecondPerSquareMeter = Math.max(0, Number(value));
+    },
+    "co2.airflowPerPersonLitersPerSecond": () => {
+      draft!.co2.airflowPerPersonLitersPerSecond = Math.max(0, Number(value));
+    },
+    "sound.includeInReport": () => { draft!.sound.includeInReport = Boolean(value); },
+    "preselectionFilters.maximumSfpEnabled": () => { draft!.preselectionFilters.maximumSfpEnabled = Boolean(value); },
+    "preselectionFilters.maximumSfp": () => { draft!.preselectionFilters.maximumSfp = Math.max(0, Number(value)); },
+    "preselectionFilters.supplyNoiseEnabled": () => { draft!.preselectionFilters.supplyNoiseEnabled = Boolean(value); },
+    "preselectionFilters.supplyNoiseMetric": () => { draft!.preselectionFilters.supplyNoiseMetric = String(value) === "LPA" ? "LPA" : "LWA"; },
+    "preselectionFilters.maximumSupplyNoiseDbA": () => { draft!.preselectionFilters.maximumSupplyNoiseDbA = Math.max(0, Number(value)); },
+    "preselectionFilters.supplyNoiseDistanceMeters": () => { draft!.preselectionFilters.supplyNoiseDistanceMeters = Math.max(0.1, Number(value)); },
+    "preselectionFilters.supplyNoiseDirectivityFactor": () => { draft!.preselectionFilters.supplyNoiseDirectivityFactor = Number(value) as 2 | 4 | 8; },
+    "preselectionFilters.breakoutNoiseEnabled": () => { draft!.preselectionFilters.breakoutNoiseEnabled = Boolean(value); },
+    "preselectionFilters.breakoutNoiseMetric": () => { draft!.preselectionFilters.breakoutNoiseMetric = String(value) === "LPA" ? "LPA" : "LWA"; },
+    "preselectionFilters.maximumBreakoutNoiseDbA": () => { draft!.preselectionFilters.maximumBreakoutNoiseDbA = Math.max(0, Number(value)); },
+    "preselectionFilters.breakoutNoiseDistanceMeters": () => { draft!.preselectionFilters.breakoutNoiseDistanceMeters = Math.max(0.1, Number(value)); },
+    "preselectionFilters.breakoutNoiseDirectivityFactor": () => { draft!.preselectionFilters.breakoutNoiseDirectivityFactor = Number(value) as 2 | 4 | 8; },
+    "sound.directivityFactor": () => {
+      const factor = Number(value);
+      draft!.sound.directivityFactor = factor === 4 || factor === 8 ? factor : 2;
+    },
+    "sound.distance1Meters": () => {
+      draft!.sound.distance1Meters = Math.max(0.1, Number(value));
+    },
+    "sound.distance2Meters": () => {
+      draft!.sound.distance2Meters = Math.max(0.1, Number(value));
+    },
+    "sound.iso16032Enabled": () => { draft!.sound.iso16032Enabled = Boolean(value); },
   };
-  setters[field]?.();
+  if (setters[field]) {
+    setters[field]();
+    projectDirty = true;
+  }
 };
 
-const navigate = (offset: number): void => {
-  const currentIndex = steps.findIndex((step) => step.id === currentStep);
+const navigate = async (offset: number): Promise<void> => {
+  const currentIndex = stepIndex(currentStep);
   const next = steps[Math.max(0, Math.min(steps.length - 1, currentIndex + offset))];
+  if (!canNavigateToStep(next.id)) return;
+  if (offset > 0 && currentStep === "installation") {
+    confirmInstallationReview();
+  }
   currentStep = next.id;
+  renderShell();
+  if (next.id === "documents") await refreshProductDocuments();
+};
+
+const refreshProductDocuments = async (): Promise<void> => {
+  productDocuments = null;
+  productDocumentsLoading = true;
+  busyMessage = documentBusyText().checking;
+  renderShell();
+  try {
+    productDocuments = await bridge.getProductDocuments(
+      structuredClone(draft!),
+    );
+  } catch (error) {
+    logClientError(error);
+    productDocuments = {
+      commercialSheetAvailable: false,
+      installationManualAvailable: false,
+    };
+  } finally {
+    productDocumentsLoading = false;
+    busyMessage = null;
+  }
   renderShell();
 };
 
 const refreshPreselection = async (): Promise<void> => {
+  const requestVersion = ++preselectionRequestVersion;
+  const calculationVersion = ++calculationRequestVersion;
+  const original = JSON.stringify(draft);
+  const previousConfirmedUnitId = confirmedUnitId;
+  const isCurrent = () => requestVersion === preselectionRequestVersion && JSON.stringify(draft) === original;
   calculating = true;
+  calculationFailed = false;
   renderShell();
-  data!.units = await bridge.preselect(structuredClone(draft!));
-  const current =
-    data!.units.find((unit) => unit.id === draft!.selectedUnitId) ??
-    data!.units[0];
-  if (!current) {
-    draft!.selectedUnitId = "";
-    calculating = false;
-    renderShell();
-    return;
+  try {
+    const refreshedUnits = await bridge.preselect(structuredClone(draft!));
+    if (!isCurrent()) return;
+    data!.units = refreshedUnits;
+    const current = refreshedUnits.find((unit) => unit.id === draft!.selectedUnitId) ?? refreshedUnits[0];
+    if (!current) {
+      draft!.selectedUnitId = "";
+      confirmedUnitId = null;
+      confirmInstallationReview();
+      lockWorkflowAtPreselection();
+      return;
+    }
+    draft!.selectedUnitId = current.id;
+    if (previousConfirmedUnitId !== null && previousConfirmedUnitId !== current.id) {
+      installationReviewRequired = true;
+      confirmedUnitId = current.id;
+    }
+    draft!.regulationPercent = current.requiredRegulation;
+    await recalculate();
+  } catch (error) {
+    if (isCurrent()) {
+      calculationFailed = true;
+      logClientError(error);
+      toastMessage = String(error instanceof Error ? error.message : error);
+    }
+  } finally {
+    if (requestVersion === preselectionRequestVersion && calculationVersion === calculationRequestVersion) {
+      calculating = false;
+      renderShell();
+    }
   }
-  draft!.selectedUnitId = current.id;
-  draft!.regulationPercent = current.requiredRegulation;
-  await recalculate();
 };
 
-const recalculate = async (): Promise<void> => {
+const recalculate = async (): Promise<boolean> => {
+  const version = ++calculationRequestVersion;
+  const original = JSON.stringify(draft);
+  let effective = structuredClone(draft!);
+  const isCurrent = () => version === calculationRequestVersion && JSON.stringify(draft) === original;
   calculating = true;
+  calculationFailed = false;
   renderShell();
-  result = await bridge.calculate(structuredClone(draft!));
-  if (result.accessories && data) {
-    data.accessories = result.accessories;
-    const availableCodes = new Set(result.accessories.map((item) => item.code));
-    draft!.accessoryCodes = draft!.accessoryCodes.filter((code) => availableCodes.has(code));
-    for (const item of result.accessories) {
-      if (item.included && !draft!.accessoryCodes.includes(item.code)) {
-        draft!.accessoryCodes.push(item.code);
+  try {
+    for (let attempt = 0; attempt < 6; attempt++) {
+      const calculated = await bridge.calculate(structuredClone(effective));
+      if (!isCurrent()) return false;
+      const normalized = normalizeSelection(effective, calculated);
+      if (JSON.stringify(normalized) !== JSON.stringify(effective)) {
+        effective = normalized;
+        continue;
       }
+      draft = effective;
+      result = calculated;
+      if (result.accessories && data) data.accessories = result.accessories;
+      return true;
+    }
+    throw new Error("Selection normalization did not converge.");
+  } catch (error) {
+    if (isCurrent()) {
+      calculationFailed = true;
+      logClientError(error);
+      toastMessage = String(error instanceof Error ? error.message : error);
+    }
+    return false;
+  } finally {
+    if (version === calculationRequestVersion) {
+      calculating = false;
+      renderShell();
     }
   }
-  if (result.layoutCodes?.length && !result.layoutCodes.includes(draft!.layoutCode)) {
-    draft!.layoutCode = result.layoutCodes[0];
-  }
-  const waterCoils = result.waterCoils ?? [];
-  if (!waterCoils.some((item) => item.id === draft!.waterCoilId)) {
-    const first = waterCoils[0];
-    draft!.waterCoilEnabled = false;
-    draft!.waterCoilId = first?.id ?? 0;
-    if (first) {
-      draft!.waterCoilMode = first.mode;
-      draft!.waterCoilLengthMm = first.lengthMm;
-      draft!.waterCoilHeightMm = first.heightMm;
-      draft!.waterCoilRows = first.rows;
-      draft!.waterCoilCircuits = first.circuits;
-      draft!.waterCoilFinSpacingMm = first.finSpacingMm;
-    }
-  }
-  const heaters = result.electricHeaters ?? [];
-  const preheaters = heaters.filter((item) => item.mode === "PEHD");
-  const postheaters = heaters.filter((item) => item.mode === "EHD");
-  if (!preheaters.some((item) => item.id === draft!.electricPreheaterId)) {
-    draft!.electricPreheaterEnabled = false;
-    draft!.electricPreheaterId =
-      preheaters.find((item) => item.isDefault)?.id ?? preheaters[0]?.id ?? 0;
-  }
-  if (!postheaters.some((item) => item.id === draft!.electricPostheaterId)) {
-    draft!.electricPostheaterEnabled = false;
-    draft!.electricPostheaterId =
-      postheaters.find((item) => item.isDefault)?.id ?? postheaters[0]?.id ?? 0;
-  }
-  calculating = false;
-  renderShell();
 };
 
-const saveDraft = async (): Promise<void> => {
-  const response = await bridge.saveDraft(structuredClone(draft!));
-  if (response.delegated) {
-    showToast(messages().ui.toast.completeSave);
-    return;
-  }
+const saveDraft = async (saveAs = false): Promise<void> => {
+  if (calculating || calculationFailed) return;
+  const response = await bridge.saveDraft(structuredClone(draft!), saveAs);
+  if (response.cancelled || !response.saved) return;
+  projectState = response;
+  projectDirty = false;
   showToast(`${messages().ui.toast.draftSavedAt} ${new Date(response.savedAt).toLocaleTimeString(messages().locale, { hour: "2-digit", minute: "2-digit" })}`);
 };
 
+const syncDraftFromMultiProject = (): void => {
+  if (!multiProjectState?.loaded) return;
+  draft!.project.name = multiProjectState.reference || draft!.project.name;
+};
+
+const projectDocumentLanguage = (): string =>
+  activeProjectDocumentLanguage ||
+  multiProjectState?.languageCode ||
+  languageCode();
+
+const newMultiProject = async (): Promise<void> => {
+  multiProjectState = await bridge.newMultiProject(
+    draft!.project.name,
+    languageCode(),
+  );
+  activeProjectDocumentLanguage = normalizeLanguageCode(
+    multiProjectState.languageCode || languageCode(),
+  );
+  syncDraftFromMultiProject();
+  renderShell();
+};
+
+const openMultiProject = async (): Promise<void> => {
+  const response = await bridge.openMultiProject();
+  if (!response.opened || !response.project) return;
+  multiProjectState = response.project;
+  activeProjectDocumentLanguage = normalizeLanguageCode(
+    response.project.languageCode,
+  );
+  syncDraftFromMultiProject();
+  renderShell();
+};
+
+const saveMultiProject = async (saveAs = false): Promise<void> => {
+  const response = await bridge.saveMultiProject(
+    draft!.project.name,
+    projectDocumentLanguage(),
+    saveAs,
+  );
+  if (response.cancelled || !response.saved) return;
+  multiProjectState = response.project;
+  showToast(`${multiProjectText().saveProject}: ${response.project.fileName}`);
+};
+
+const addCurrentToMultiProject = async (): Promise<void> => {
+  if (calculating || calculationFailed) return;
+  calculating = true;
+  renderShell();
+  try {
+    multiProjectState = await bridge.addCurrentToMultiProject(
+      structuredClone(draft!),
+    );
+    syncDraftFromMultiProject();
+    showToast(multiProjectText().addCurrent);
+  } finally {
+    calculating = false;
+    renderShell();
+  }
+};
+
+const openMultiProjectItem = async (itemId: string): Promise<void> => {
+  if (!itemId) return;
+  const response = await bridge.openMultiProjectItem(
+    itemId,
+    structuredClone(draft!),
+  );
+  if (!response.opened || !response.draft) return;
+  draft = response.draft;
+  projectState = response.selection ?? null;
+  if (response.project) multiProjectState = response.project;
+  projectDirty = false;
+  if (!await recalculate()) return;
+  restoreConfiguredWorkflow();
+  currentStep = "project";
+  renderShell();
+};
+
+const removeMultiProjectItem = async (itemId: string): Promise<void> => {
+  if (!itemId || !window.confirm(multiProjectText().removeConfirm)) return;
+  multiProjectState = await bridge.removeMultiProjectItem(itemId);
+  renderShell();
+};
+
+const sendMultiProjectEmail = async (): Promise<void> => {
+  const response = await bridge.emailMultiProject(
+    draft!.project.name,
+    projectDocumentLanguage(),
+    projectEmailSchedule,
+    projectEmailDays,
+  );
+  if (!response.prepared) return;
+  if (response.project) {
+    const requestedLanguage = projectDocumentLanguage();
+    if (
+      normalizeLanguageCode(response.project.languageCode) !==
+      normalizeLanguageCode(requestedLanguage)
+    ) {
+      throw new Error(
+        `Project email language was not prepared in ${requestedLanguage}.`,
+      );
+    }
+    multiProjectState = response.project;
+    activeProjectDocumentLanguage =
+      normalizeLanguageCode(requestedLanguage);
+  }
+  projectEmailOpen = false;
+  notificationState = await bridge.getNotificationSummary();
+  showToast(multiProjectText().prepareEmail);
+};
+
+const openDraft = async (): Promise<void> => {
+  const response = await bridge.openDraft(structuredClone(draft!));
+  if (!response.opened || !response.draft) return;
+  draft = response.draft;
+  projectState = response.project ?? null;
+  projectDirty = false;
+  if (!await recalculate()) return;
+  restoreConfiguredWorkflow();
+  currentStep = "project";
+  renderShell();
+};
+
 const generateReport = async (): Promise<void> => {
+  if (calculating || calculationFailed) return;
   const response = await bridge.generateReport(structuredClone(draft!));
   if (response.delegated) {
     showToast(messages().ui.toast.completeReport);
@@ -1414,6 +2829,17 @@ const bootstrap = async (): Promise<void> => {
     data = await bridge.bootstrap();
     draft = structuredClone(data.draft);
     result = structuredClone(data.result);
+    confirmedUnitId = null;
+    confirmInstallationReview();
+    lockWorkflowAtPreselection();
+    multiProjectState = await bridge.getMultiProject(
+      draft.project.name,
+      languageCode(),
+    );
+    activeProjectDocumentLanguage = normalizeLanguageCode(
+      multiProjectState.languageCode || languageCode(),
+    );
+    notificationState = await bridge.getNotificationSummary();
     renderShell();
   } catch (error) {
     logClientError(error);

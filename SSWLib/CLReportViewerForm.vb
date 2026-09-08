@@ -1,4 +1,8 @@
 Public Class CLReportViewerForm
+    Public Sub SetDisplayName(displayName As String)
+        rpvReport.LocalReport.DisplayName = displayName
+    End Sub
+
 
     Public Event PdfExported As EventHandler(Of CLPdfExportedEventArgs)
     Public Event AddToProjectRequested As EventHandler(Of CLPdfExportedEventArgs)

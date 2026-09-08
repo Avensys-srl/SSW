@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root xmlns:ns1="urn:schemas-microsoft-com:xml-msdata" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   
   <xs:schema id="root">
@@ -414,19 +414,19 @@
     <value>Potenza sonora</value>
   </data>
   <data name="Sound_Breakout" xml:space="preserve">
-    <value>Breakout</value>
+    <value>Rumore irradiato</value>
   </data>
   <data name="Sound_Exhaust" xml:space="preserve">
-    <value>Exhaust</value>
+    <value>Espulsione</value>
   </data>
   <data name="Sound_Fresh" xml:space="preserve">
-    <value>Fresh</value>
+    <value>Aria esterna</value>
   </data>
   <data name="Sound_Return" xml:space="preserve">
-    <value>Return</value>
+    <value>Ripresa</value>
   </data>
   <data name="Sound_Supply" xml:space="preserve">
-    <value>Supply</value>
+    <value>Mandata</value>
   </data>
   <data name="Sound_Total" xml:space="preserve">
     <value>Totale</value>
@@ -874,4 +874,26 @@ Salvare prima il file .sswsel quando è necessario preservare gli input di calco
   <data name="Help_MenuTip_FollowUps" xml:space="preserve"><value>Apri il centro promemoria per controllare, riprogrammare o chiudere i solleciti relativi a selezioni tecniche e progetti.</value></data>
   <data name="Help_Topic_FollowUps_Title" xml:space="preserve"><value>Promemoria di ricontatto del cliente</value></data>
   <data name="Help_Topic_FollowUps_Body" xml:space="preserve"><value>Pianifica un ricontatto del cliente da 1 a 90 giorni; il valore predefinito è 7 giorni. Il conteggio decorre solo dopo la corretta preparazione della bozza in Outlook. La campanella apre il centro promemoria, che mostra gli elementi scaduti, futuri e chiusi. Fai doppio clic su un elemento per riaprire la selezione o il progetto locale. Puoi chiudere un promemoria con successo o senza successo, riprogrammarlo oppure annullarlo. I dati restano privati alla sola installazione Windows corrente; offline, le modifiche vengono salvate localmente e sincronizzate in seguito.</value></data>
+  <data name="Report_InstallationLayout_Title" xml:space="preserve"><value>Configurazione installativa</value></data>
+  <data name="Report_InstallationLayout_Configuration" xml:space="preserve"><value>Configurazione</value></data>
+  <data name="Report_InstallationLayout_Installation" xml:space="preserve"><value>Installazione</value></data>
+  <data name="Report_InstallationLayout_Ceiling" xml:space="preserve"><value>Soffitto</value></data>
+  <data name="Report_InstallationLayout_Floor" xml:space="preserve"><value>Pavimento</value></data>
+  <data name="Report_InstallationLayout_Wall" xml:space="preserve"><value>Parete</value></data>
+  <data name="Report_InstallationLayout_AccessPanel" xml:space="preserve"><value>Pannello di accesso</value></data>
+  <data name="Report_InstallationLayout_UpperAccess" xml:space="preserve"><value>Accesso superiore</value></data>
+  <data name="Report_InstallationLayout_LowerAccess" xml:space="preserve"><value>Accesso inferiore</value></data>
+  <data name="Report_InstallationLayout_FrontAccess" xml:space="preserve"><value>Accesso frontale</value></data>
+  <data name="Report_InstallationLayout_Fresh" xml:space="preserve">
+    <value>Aria esterna</value>
+  </data>
+  <data name="Report_InstallationLayout_Return" xml:space="preserve">
+    <value>Ripresa</value>
+  </data>
+  <data name="Report_InstallationLayout_Supply" xml:space="preserve">
+    <value>Mandata</value>
+  </data>
+  <data name="Report_InstallationLayout_Exhaust" xml:space="preserve">
+    <value>Espulsione</value>
+  </data>
 </root>

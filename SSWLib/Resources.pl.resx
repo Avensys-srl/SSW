@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root xmlns:ns1="urn:schemas-microsoft-com:xml-msdata" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   
   <xs:schema id="root">
@@ -830,4 +830,26 @@ Jeśli chcesz zachować edytowalne dane wejściowe obliczeń, najpierw zapisz pl
   <data name="Help_MenuTip_FollowUps" xml:space="preserve"><value>Otwórz centrum przypomnień, aby przeglądać, przeplanowywać lub zamykać przypomnienia dotyczące doborów technicznych i projektów.</value></data>
   <data name="Help_Topic_FollowUps_Title" xml:space="preserve"><value>Przypomnienia o kontakcie z klientem</value></data>
   <data name="Help_Topic_FollowUps_Body" xml:space="preserve"><value>Zaplanuj kontakt z klientem za 1–90 dni; wartość domyślna to 7 dni. Termin zaczyna biec dopiero po pomyślnym przygotowaniu wersji roboczej w programie Outlook. Ikona dzwonka otwiera centrum przypomnień, w którym są widoczne pozycje zaległe, nadchodzące i zamknięte. Kliknij pozycję dwukrotnie, aby ponownie otworzyć lokalny dobór lub projekt. Przypomnienie można zamknąć jako zakończone sukcesem lub bez sukcesu, przeplanować albo anulować. Dane pozostają prywatne dla bieżącej instalacji systemu Windows; w trybie offline zmiany są zapisywane lokalnie i synchronizowane później.</value></data>
+  <data name="Report_InstallationLayout_Title" xml:space="preserve"><value>Konfiguracja instalacji</value></data>
+  <data name="Report_InstallationLayout_Configuration" xml:space="preserve"><value>Konfiguracja</value></data>
+  <data name="Report_InstallationLayout_Installation" xml:space="preserve"><value>Instalacja</value></data>
+  <data name="Report_InstallationLayout_Ceiling" xml:space="preserve"><value>Sufit</value></data>
+  <data name="Report_InstallationLayout_Floor" xml:space="preserve"><value>Podłoga</value></data>
+  <data name="Report_InstallationLayout_Wall" xml:space="preserve"><value>Ściana</value></data>
+  <data name="Report_InstallationLayout_AccessPanel" xml:space="preserve"><value>Panel dostępu</value></data>
+  <data name="Report_InstallationLayout_UpperAccess" xml:space="preserve"><value>Dostęp od góry</value></data>
+  <data name="Report_InstallationLayout_LowerAccess" xml:space="preserve"><value>Dostęp od dołu</value></data>
+  <data name="Report_InstallationLayout_FrontAccess" xml:space="preserve"><value>Dostęp od przodu</value></data>
+  <data name="Report_InstallationLayout_Fresh" xml:space="preserve">
+    <value>Powietrze zewnętrzne</value>
+  </data>
+  <data name="Report_InstallationLayout_Return" xml:space="preserve">
+    <value>Powietrze wywiewane</value>
+  </data>
+  <data name="Report_InstallationLayout_Supply" xml:space="preserve">
+    <value>Powietrze nawiewane</value>
+  </data>
+  <data name="Report_InstallationLayout_Exhaust" xml:space="preserve">
+    <value>Powietrze wyrzutowe</value>
+  </data>
 </root>

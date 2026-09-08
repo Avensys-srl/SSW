@@ -81,14 +81,63 @@ Public NotInheritable Class CLTechnicalSelection
 
     Public Property CustomerCode As String
     Public Property CustomerReference As String
+    Public Property ProjectName As String
+    Public Property InstallationMode As String
+    Public Property LayoutCode As String
+    Public Property ImbalanceEnabled As Boolean
     Public Property Unit As New CLSelectionEntityReference()
     Public Property Winter As New CLOperatingScenarioInput With {.Enabled = True, .ScenarioCode = "Winter"}
     Public Property Summer As New CLOperatingScenarioInput With {.Enabled = False, .ScenarioCode = "Summer"}
     Public Property WaterCoil As New CLWaterCoilSelection()
     Public Property ElectricHeater As New CLElectricHeaterSelection()
     Public Property Accessories As New List(Of CLAccessorySelection)()
+    Public Property Sound As New CLSoundSelection()
+    Public Property PreselectionFilters As New CLPreselectionFilterSelection()
+    Public Property Co2 As New CLCo2Selection()
     Public Property Report As New CLReportSelectionOptions()
 
+End Class
+
+Public NotInheritable Class CLPreselectionFilterSelection
+    Public Property MaximumSfpEnabled As Boolean
+    Public Property MaximumSfp As Double = 2
+    Public Property SupplyNoiseEnabled As Boolean
+    Public Property SupplyNoiseMetric As String = "LWA"
+    Public Property MaximumSupplyNoiseDbA As Double = 50
+    Public Property SupplyNoiseDirectivity As Integer = 2
+    Public Property SupplyNoiseDistanceMeters As Double = 1
+    Public Property BreakoutNoiseEnabled As Boolean
+    Public Property BreakoutNoiseMetric As String = "LWA"
+    Public Property MaximumBreakoutNoiseDbA As Double = 50
+    Public Property BreakoutNoiseDirectivity As Integer = 2
+    Public Property BreakoutNoiseDistanceMeters As Double = 1
+End Class
+
+Public NotInheritable Class CLSoundSelection
+    Public Property IncludeInReport As Boolean
+    Public Property Directivity As Integer = 2
+    Public Property Distance1Meters As Double = 1
+    Public Property Distance2Meters As Double = 3
+    Public Property IncludeIso16032 As Boolean
+End Class
+
+Public NotInheritable Class CLCo2Selection
+    Public Property IncludeInReport As Boolean
+    Public Property RoomHeightMeters As Double = 3
+    Public Property RoomLengthMeters As Double = 8
+    Public Property RoomWidthMeters As Double = 7
+    Public Property ActivityMet As Double = 1.2
+    Public Property PeopleDuringBreak As Double
+    Public Property PeopleDuringPresence As Double = 20
+    Public Property BreakMinutes As Double = 15
+    Public Property PresenceMinutes As Double = 45
+    Public Property CalculationMethod As String = "MaximumCO2"
+    Public Property StandardPreset As String = "None"
+    Public Property OutdoorCo2Ppm As Double = 380
+    Public Property MaximumCo2Ppm As Double = 1000
+    Public Property FixedAirflowLitersPerSecond As Double
+    Public Property AirflowPerPersonLitersPerSecond As Double = 10
+    Public Property AirflowPerAreaLitersPerSecondM2 As Double = 0.35
 End Class
 
 Public NotInheritable Class CLAccessorySelection
@@ -205,7 +254,25 @@ Public NotInheritable Class CLCalculatedSelectionSnapshot
     Public Property Summer As CLScenarioCalculationSnapshot
     Public Property WaterCoils As New List(Of CLWaterCoilCalculationSnapshot)()
     Public Property ElectricHeaters As New List(Of CLElectricHeaterCalculationSnapshot)()
+    Public Property SoundRows As New List(Of CLSoundCalculationSnapshot)()
+    Public Property Co2 As CLCo2CalculationSnapshot
 
+End Class
+
+Public NotInheritable Class CLSoundCalculationSnapshot
+    Public Property Type As String
+    Public Property Caption As String
+    Public Property Bands As Double()
+    Public Property LwA As Double?
+    Public Property Lp1 As Double?
+    Public Property Lp2 As Double?
+End Class
+
+Public NotInheritable Class CLCo2CalculationSnapshot
+    Public Property RequiredAirflowLitersPerSecond As Double?
+    Public Property RequiredAirflowM3h As Double?
+    Public Property MaximumCo2Ppm As Double?
+    Public Property Co2ProductionPerPersonLitersPerHour As Double?
 End Class
 
 Public NotInheritable Class CLElectricHeaterCalculationSnapshot

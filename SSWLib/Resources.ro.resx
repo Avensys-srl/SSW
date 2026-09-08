@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root xmlns:ns1="urn:schemas-microsoft-com:xml-msdata" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   
   <xs:schema id="root">
@@ -821,4 +821,26 @@ Salvați mai întâi fișierul .sswsel când trebuie să păstrați intrările d
   <data name="Help_MenuTip_FollowUps" xml:space="preserve"><value>Deschideți centrul de mementouri pentru a verifica, reprograma sau închide mementourile aferente selecțiilor tehnice și proiectelor.</value></data>
   <data name="Help_Topic_FollowUps_Title" xml:space="preserve"><value>Mementouri pentru revenirea la client</value></data>
   <data name="Help_Topic_FollowUps_Body" xml:space="preserve"><value>Programați revenirea la client într-un interval de 1 până la 90 de zile; valoarea implicită este de 7 zile. Termenul începe numai după pregătirea cu succes a ciornei Outlook. Clopoțelul deschide centrul de mementouri, unde sunt afișate elementele scadente, viitoare și închise. Faceți dublu clic pe un element pentru a redeschide selecția sau proiectul local. Un memento poate fi închis cu succes sau fără succes, reprogramat ori anulat. Datele rămân private numai pentru instalarea Windows curentă; offline, modificările sunt salvate local și sincronizate ulterior.</value></data>
+  <data name="Report_InstallationLayout_Title" xml:space="preserve"><value>Configurația instalării</value></data>
+  <data name="Report_InstallationLayout_Configuration" xml:space="preserve"><value>Configurație</value></data>
+  <data name="Report_InstallationLayout_Installation" xml:space="preserve"><value>Instalare</value></data>
+  <data name="Report_InstallationLayout_Ceiling" xml:space="preserve"><value>Tavan</value></data>
+  <data name="Report_InstallationLayout_Floor" xml:space="preserve"><value>Podea</value></data>
+  <data name="Report_InstallationLayout_Wall" xml:space="preserve"><value>Perete</value></data>
+  <data name="Report_InstallationLayout_AccessPanel" xml:space="preserve"><value>Panou de acces</value></data>
+  <data name="Report_InstallationLayout_UpperAccess" xml:space="preserve"><value>Acces superior</value></data>
+  <data name="Report_InstallationLayout_LowerAccess" xml:space="preserve"><value>Acces inferior</value></data>
+  <data name="Report_InstallationLayout_FrontAccess" xml:space="preserve"><value>Acces frontal</value></data>
+  <data name="Report_InstallationLayout_Fresh" xml:space="preserve">
+    <value>Aer exterior</value>
+  </data>
+  <data name="Report_InstallationLayout_Return" xml:space="preserve">
+    <value>Aer extras</value>
+  </data>
+  <data name="Report_InstallationLayout_Supply" xml:space="preserve">
+    <value>Aer introdus</value>
+  </data>
+  <data name="Report_InstallationLayout_Exhaust" xml:space="preserve">
+    <value>Aer evacuat</value>
+  </data>
 </root>

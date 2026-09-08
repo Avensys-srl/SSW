@@ -1,5 +1,9 @@
 import type {
   BootstrapData,
+  FollowUpCenterState,
+  DimensionalDrawingState,
+  MultiProjectState,
+  ProjectSaveState,
   SelectionBridge,
   SelectionDraft,
   SelectionResult,
@@ -14,6 +18,16 @@ const wait = (milliseconds: number) =>
   new Promise<void>((resolve) => window.setTimeout(resolve, milliseconds));
 
 export class MockSelectionBridge implements SelectionBridge {
+  private multiProject: MultiProjectState = {
+    loaded: true,
+    dirty: false,
+    path: "",
+    fileName: "",
+    reference: "Project 01",
+    languageCode: "en",
+    modifiedAt: new Date().toISOString(),
+    items: [],
+  };
   async bootstrap(): Promise<BootstrapData> {
     await wait(180);
     return structuredClone(mockBootstrapData);
@@ -26,7 +40,19 @@ export class MockSelectionBridge implements SelectionBridge {
         .filter(
           (unit) =>
             draft.operatingPoint.supplyAirflow <= unit.maxAirflow &&
-            draft.operatingPoint.pressure <= unit.availablePressure,
+            draft.operatingPoint.pressure <= unit.availablePressure &&
+            (!draft.preselectionFilters.maximumSfpEnabled ||
+              unit.sfp <= draft.preselectionFilters.maximumSfp) &&
+            (!draft.preselectionFilters.supplyNoiseEnabled ||
+              (draft.preselectionFilters.supplyNoiseMetric === "LPA"
+                ? (unit.supplySoundPressureDbA ?? Infinity)
+                : (unit.supplySoundPowerDbA ?? Infinity)) <=
+                draft.preselectionFilters.maximumSupplyNoiseDbA) &&
+            (!draft.preselectionFilters.breakoutNoiseEnabled ||
+              (draft.preselectionFilters.breakoutNoiseMetric === "LPA"
+                ? (unit.breakoutSoundPressureDbA ?? Infinity)
+                : (unit.breakoutSoundPowerDbA ?? Infinity)) <=
+                draft.preselectionFilters.maximumBreakoutNoiseDbA),
         )
         .sort((left, right) => left.sfp - right.sfp),
     );
@@ -121,9 +147,28 @@ export class MockSelectionBridge implements SelectionBridge {
     };
   }
 
-  async saveDraft(_draft: SelectionDraft): Promise<{ savedAt: string }> {
+  async saveDraft(
+    _draft: SelectionDraft,
+    _saveAs = false,
+  ): Promise<ProjectSaveState> {
     await wait(180);
-    return { savedAt: new Date().toISOString() };
+    return {
+      saved: true,
+      savedAt: new Date().toISOString(),
+      path: "C:\\Selections\\SSW-selection.sswsel",
+      fileName: "SSW-selection.sswsel",
+      localReference: "D-NEXT-000001",
+      publicReference: "",
+      revision: 0,
+    };
+  }
+
+  async openDraft(currentDraft: SelectionDraft) {
+    return {
+      opened: true,
+      draft: structuredClone(currentDraft),
+      project: await this.saveDraft(currentDraft),
+    };
   }
 
   async generateReport(
@@ -133,5 +178,146 @@ export class MockSelectionBridge implements SelectionBridge {
     const unit = mockUnits.find((candidate) => candidate.id === draft.selectedUnitId);
     const safeModel = (unit?.model ?? "SSW").replaceAll(" ", "_");
     return { fileName: `${safeModel}_Technical_selection.pdf` };
+  }
+
+  async listNotifications(): Promise<FollowUpCenterState> {
+    return { unreadDueCount: 0, reminders: [] };
+  }
+
+  async getNotificationSummary(): Promise<FollowUpCenterState> {
+    return { unreadDueCount: 0, reminders: [] };
+  }
+
+  async updateNotification(): Promise<FollowUpCenterState> {
+    return { unreadDueCount: 0, reminders: [] };
+  }
+
+  async openNotificationTarget(
+    _id: string,
+    currentDraft: SelectionDraft,
+  ) {
+    return {
+      opened: true,
+      draft: structuredClone(currentDraft),
+      project: await this.saveDraft(currentDraft),
+    };
+  }
+
+  async getMultiProject(reference: string, languageCode: string) {
+    this.multiProject.reference = reference;
+    this.multiProject.languageCode = languageCode;
+    return structuredClone(this.multiProject);
+  }
+
+  async newMultiProject(reference: string, languageCode: string) {
+    this.multiProject = {
+      loaded: true,
+      dirty: true,
+      path: "",
+      fileName: "",
+      reference,
+      languageCode,
+      modifiedAt: new Date().toISOString(),
+      items: [],
+    };
+    return structuredClone(this.multiProject);
+  }
+
+  async openMultiProject() {
+    return { opened: true, project: structuredClone(this.multiProject) };
+  }
+
+  async saveMultiProject(reference: string, languageCode: string) {
+    this.multiProject.reference = reference;
+    this.multiProject.languageCode = languageCode;
+    this.multiProject.path = "C:\\Selections\\Project_01.sswproj";
+    this.multiProject.fileName = "Project_01.sswproj";
+    this.multiProject.dirty = false;
+    return { saved: true, project: structuredClone(this.multiProject) };
+  }
+
+  async addCurrentToMultiProject(draft: SelectionDraft) {
+    const unit = mockUnits.find((item) => item.id === draft.selectedUnitId);
+    this.multiProject.items = [{
+      itemId: crypto.randomUUID(),
+      selectionProjectId: crypto.randomUUID(),
+      customerReference: draft.project.customerReference,
+      unitName: unit?.model ?? draft.selectedUnitId,
+      airflow: draft.operatingPoint.supplyAirflow,
+      pressure: draft.operatingPoint.pressure,
+      pdfFileName: `${(unit?.model ?? "SSW").replaceAll(" ", "_")}_Report.pdf`,
+      languageCode: this.multiProject.languageCode,
+      current: true,
+      ready: true,
+    }];
+    this.multiProject.dirty = true;
+    return structuredClone(this.multiProject);
+  }
+
+  async removeMultiProjectItem(itemId: string) {
+    this.multiProject.items = this.multiProject.items.filter((item) => item.itemId !== itemId);
+    this.multiProject.dirty = true;
+    return structuredClone(this.multiProject);
+  }
+
+  async openMultiProjectItem(_itemId: string, currentDraft: SelectionDraft) {
+    return {
+      opened: true,
+      draft: structuredClone(currentDraft),
+      project: structuredClone(this.multiProject),
+    };
+  }
+
+  async changeMultiProjectLanguage(
+    reference: string,
+    languageCode: string,
+  ) {
+    this.multiProject.reference = reference;
+    this.multiProject.languageCode = languageCode;
+    this.multiProject.items = this.multiProject.items.map((item) => ({
+      ...item,
+      languageCode,
+      pdfFileName: item.pdfFileName.replace(
+        /_Report_[a-z]{2}\.pdf$/i,
+        `_Report_${languageCode}.pdf`,
+      ),
+      ready: true,
+    }));
+    this.multiProject.dirty = true;
+    this.multiProject.modifiedAt = new Date().toISOString();
+    return structuredClone(this.multiProject);
+  }
+
+  async emailMultiProject() {
+    return { prepared: true, project: structuredClone(this.multiProject) };
+  }
+
+  async getProductDocuments() {
+    return {
+      commercialSheetAvailable: true,
+      installationManualAvailable: true,
+    };
+  }
+
+  async openProductDocument() {
+    return {
+      commercialSheetAvailable: true,
+      installationManualAvailable: true,
+      available: true,
+      opened: true,
+    };
+  }
+
+  async getDimensionalDrawing(): Promise<DimensionalDrawingState> {
+    return {
+      available: false,
+      orientation: "H",
+      dimensions: [
+        { code: "A", valueMillimeters: 1000 },
+        { code: "B", valueMillimeters: 500 },
+        { code: "C", valueMillimeters: 300 },
+        { code: "D", valueMillimeters: 200 },
+      ],
+    };
   }
 }

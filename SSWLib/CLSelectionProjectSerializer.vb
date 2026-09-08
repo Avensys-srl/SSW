@@ -251,6 +251,19 @@ Public NotInheritable Class CLSelectionProjectSerializer
             document.Selection.Accessories = New List(Of CLAccessorySelection)()
             changed = True
         End If
+        If document.Selection.Sound Is Nothing Then
+            document.Selection.Sound = New CLSoundSelection()
+            changed = True
+        End If
+        If document.Selection.PreselectionFilters Is Nothing Then
+            document.Selection.PreselectionFilters =
+                New CLPreselectionFilterSelection()
+            changed = True
+        End If
+        If document.Selection.Co2 Is Nothing Then
+            document.Selection.Co2 = New CLCo2Selection()
+            changed = True
+        End If
         If document.Selection.Report Is Nothing Then
             document.Selection.Report = New CLReportSelectionOptions()
             changed = True

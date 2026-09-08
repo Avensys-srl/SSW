@@ -73,7 +73,8 @@
         "faceVelocityMetersPerSecond": 0.32000000000000001
       }
     ],
-    "electricHeaters": []
+    "electricHeaters": [],
+    "soundRows": []
   },
   "charts": [
     {
@@ -4696,8 +4697,8 @@
           "points": [
             {
               "x": 0,
-              "y": 0,
-              "isEmpty": true
+              "y": 98.524113287687044,
+              "isEmpty": false
             },
             {
               "x": 1,
@@ -9412,7 +9413,7 @@
       "rows": [
         {
           "Type": "_Fresh",
-          "Caption": "Fresh",
+          "Caption": "Aria esterna",
           "LwA_Value": "61,2",
           "Hz63_Value": 58.399999999999999,
           "Hz125_Value": 54.600000000000001,
@@ -9427,7 +9428,7 @@
         },
         {
           "Type": "_Supply",
-          "Caption": "Supply",
+          "Caption": "Mandata",
           "LwA_Value": "77,3",
           "Hz63_Value": 65.200000000000003,
           "Hz125_Value": 65.200000000000003,
@@ -9442,7 +9443,7 @@
         },
         {
           "Type": "_Exhaust",
-          "Caption": "Exhaust",
+          "Caption": "Espulsione",
           "LwA_Value": "78",
           "Hz63_Value": 65.900000000000006,
           "Hz125_Value": 65.900000000000006,
@@ -9457,7 +9458,7 @@
         },
         {
           "Type": "_Return",
-          "Caption": "Return",
+          "Caption": "Ripresa",
           "LwA_Value": "60,1",
           "Hz63_Value": 57.200000000000003,
           "Hz125_Value": 53.600000000000001,
@@ -9472,7 +9473,7 @@
         },
         {
           "Type": "_Breakout",
-          "Caption": "Breakout",
+          "Caption": "Rumore irradiato",
           "LwA_Value": "57,2",
           "Hz63_Value": 52.200000000000003,
           "Hz125_Value": 49.200000000000003,
@@ -9612,15 +9613,27 @@
         "PowerImage",
         "AirFlowImage",
         "LegendImage",
-        "CO2Image"
+        "CO2Image",
+        "InstallationImage",
+        "InstallationTitle",
+        "InstallationConfigurationCaption",
+        "InstallationConfigurationValue",
+        "InstallationModeCaption",
+        "InstallationModeValue"
       ],
       "rows": [
         {
           "PressureImage": "binary:39641",
           "PowerImage": "binary:24590",
-          "AirFlowImage": "binary:44299",
+          "AirFlowImage": "binary:44334",
           "LegendImage": "binary:15890",
-          "CO2Image": "binary:61645"
+          "CO2Image": "binary:61645",
+          "InstallationImage": "binary:119",
+          "InstallationTitle": "Configurazione installativa",
+          "InstallationConfigurationCaption": "Configurazione",
+          "InstallationConfigurationValue": "Not available for this unit.",
+          "InstallationModeCaption": "Installazione",
+          "InstallationModeValue": ""
         }
       ]
     },
@@ -10561,9 +10574,9 @@
     }
   ],
   "runtime": {
-    "databaseSchema": "3",
-    "databaseData": "2026.07.28.085843-19E14BFB",
-    "databaseContent": "19E14BFBD31F61238680A6865337C14FD3E5E227BC7A2F1BE33B70FA9443277D",
+    "databaseSchema": "4",
+    "databaseData": "2026.09.08.140203-9CEB751B",
+    "databaseContent": "9CEB751BBB931E93E329356434B5E5AF9D32DEC85825328A85AA7DF01E97D8AB",
     "coilLibrary": "3C55C15F0998E2D627A1708B04F3D21CB54DDC662553A4BAAADE028B3AC05E95"
   }
 }

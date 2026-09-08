@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root xmlns:ns1="urn:schemas-microsoft-com:xml-msdata" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:schema id="root">
     <xs:import namespace="http://www.w3.org/XML/1998/namespace" />
@@ -1306,4 +1306,26 @@ Vistaðu .sswsel skrána fyrst þegar þú þarft að varðveita breytanleg útr
   <data name="Help_MenuTip_FollowUps" xml:space="preserve"><value>Opnaðu eftirfylgnimiðstöðina til að skoða, endurtímasetja eða loka áminningum fyrir tæknival og verkefni.</value></data>
   <data name="Help_Topic_FollowUps_Title" xml:space="preserve"><value>Áminningar um eftirfylgni við viðskiptavini</value></data>
   <data name="Help_Topic_FollowUps_Body" xml:space="preserve"><value>Tímasettu eftirfylgni við viðskiptavin eftir 1 til 90 daga; sjálfgefið gildi er 7 dagar. Tíminn byrjar aðeins að líða eftir að Outlook-drög hafa verið útbúin með góðum árangri. Bjallan opnar áminningamiðstöðina, þar sem sjá má gjaldfallin, væntanleg og lokuð atriði. Tvísmelltu á atriði til að opna staðbundið val eða verkefni aftur. Hægt er að loka áminningu sem árangursríkri eða árangurslausri, endurtímasetja hana eða hætta við hana. Gögnin eru aðeins aðgengileg í núverandi Windows-uppsetningu; án nettengingar eru breytingar vistaðar staðbundið og samstilltar síðar.</value></data>
+  <data name="Report_InstallationLayout_Title" xml:space="preserve"><value>Uppsetningarstilling</value></data>
+  <data name="Report_InstallationLayout_Configuration" xml:space="preserve"><value>Stilling</value></data>
+  <data name="Report_InstallationLayout_Installation" xml:space="preserve"><value>Uppsetning</value></data>
+  <data name="Report_InstallationLayout_Ceiling" xml:space="preserve"><value>Loft</value></data>
+  <data name="Report_InstallationLayout_Floor" xml:space="preserve"><value>Gólf</value></data>
+  <data name="Report_InstallationLayout_Wall" xml:space="preserve"><value>Veggur</value></data>
+  <data name="Report_InstallationLayout_AccessPanel" xml:space="preserve"><value>Þjónustulúga</value></data>
+  <data name="Report_InstallationLayout_UpperAccess" xml:space="preserve"><value>Aðgangur að ofan</value></data>
+  <data name="Report_InstallationLayout_LowerAccess" xml:space="preserve"><value>Aðgangur að neðan</value></data>
+  <data name="Report_InstallationLayout_FrontAccess" xml:space="preserve"><value>Aðgangur að framan</value></data>
+  <data name="Report_InstallationLayout_Fresh" xml:space="preserve">
+    <value>Útiloft</value>
+  </data>
+  <data name="Report_InstallationLayout_Return" xml:space="preserve">
+    <value>Fráloft</value>
+  </data>
+  <data name="Report_InstallationLayout_Supply" xml:space="preserve">
+    <value>Aðblástursloft</value>
+  </data>
+  <data name="Report_InstallationLayout_Exhaust" xml:space="preserve">
+    <value>Útblástursloft</value>
+  </data>
 </root>

@@ -595,7 +595,7 @@ Public Class CLEnvironment
 
     Public ReadOnly Property PrimaryLanguageCode As String
         Get
-            Return m_PrimaryLanguage.Code
+            Return If(m_PrimaryLanguage Is Nothing, String.Empty, m_PrimaryLanguage.Code)
         End Get
     End Property
 

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root xmlns:ns1="urn:schemas-microsoft-com:xml-msdata" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:schema id="root">
     <xs:import namespace="http://www.w3.org/XML/1998/namespace" />
@@ -1086,4 +1086,26 @@ Spara .sswsel-filen först när du behöver bevara redigerbara beräkningsindata
   <data name="Help_MenuTip_FollowUps" xml:space="preserve"><value>Öppna uppföljningscentret för att granska, boka om eller avsluta påminnelser för tekniska val och projekt.</value></data>
   <data name="Help_Topic_FollowUps_Title" xml:space="preserve"><value>Påminnelser om kunduppföljning</value></data>
   <data name="Help_Topic_FollowUps_Body" xml:space="preserve"><value>Planera en kunduppföljning inom 1 till 90 dagar; standardvärdet är 7 dagar. Tidsfristen börjar först när Outlook-utkastet har skapats. Klockan öppnar påminnelsecentret, där förfallna, kommande och avslutade poster visas. Dubbelklicka på en post för att öppna det lokala valet eller projektet igen. En påminnelse kan avslutas som lyckad eller misslyckad, bokas om eller avbrytas. Uppgifterna förblir privata för den aktuella Windows-installationen; offline sparas ändringar lokalt och synkroniseras senare.</value></data>
+  <data name="Report_InstallationLayout_Title" xml:space="preserve"><value>Installationskonfiguration</value></data>
+  <data name="Report_InstallationLayout_Configuration" xml:space="preserve"><value>Konfiguration</value></data>
+  <data name="Report_InstallationLayout_Installation" xml:space="preserve"><value>Installation</value></data>
+  <data name="Report_InstallationLayout_Ceiling" xml:space="preserve"><value>Tak</value></data>
+  <data name="Report_InstallationLayout_Floor" xml:space="preserve"><value>Golv</value></data>
+  <data name="Report_InstallationLayout_Wall" xml:space="preserve"><value>Vägg</value></data>
+  <data name="Report_InstallationLayout_AccessPanel" xml:space="preserve"><value>Åtkomstpanel</value></data>
+  <data name="Report_InstallationLayout_UpperAccess" xml:space="preserve"><value>Åtkomst ovanifrån</value></data>
+  <data name="Report_InstallationLayout_LowerAccess" xml:space="preserve"><value>Åtkomst underifrån</value></data>
+  <data name="Report_InstallationLayout_FrontAccess" xml:space="preserve"><value>Åtkomst framifrån</value></data>
+  <data name="Report_InstallationLayout_Fresh" xml:space="preserve">
+    <value>Uteluft</value>
+  </data>
+  <data name="Report_InstallationLayout_Return" xml:space="preserve">
+    <value>Frånluft</value>
+  </data>
+  <data name="Report_InstallationLayout_Supply" xml:space="preserve">
+    <value>Tilluft</value>
+  </data>
+  <data name="Report_InstallationLayout_Exhaust" xml:space="preserve">
+    <value>Avluft</value>
+  </data>
 </root>

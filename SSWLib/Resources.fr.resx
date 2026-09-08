@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root xmlns:ns1="urn:schemas-microsoft-com:xml-msdata" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   
   <xs:schema id="root">
@@ -809,4 +809,26 @@ Enregistrez d&apos;abord le fichier .sswsel lorsque vous devez conserver les ent
   <data name="Help_MenuTip_FollowUps" xml:space="preserve"><value>Ouvrez le centre de rappels pour consulter, reprogrammer ou clôturer les relances liées aux sélections techniques et aux projets.</value></data>
   <data name="Help_Topic_FollowUps_Title" xml:space="preserve"><value>Rappels de suivi client</value></data>
   <data name="Help_Topic_FollowUps_Body" xml:space="preserve"><value>Planifiez un suivi client de 1 à 90 jours ; la valeur par défaut est de 7 jours. Le délai commence uniquement après la préparation réussie du brouillon Outlook. La cloche ouvre le centre de rappels, qui affiche les éléments échus, à venir et clôturés. Double-cliquez sur un élément pour rouvrir sa sélection ou son projet local. Un rappel peut être clôturé avec succès ou sans succès, reprogrammé ou annulé. Les données restent privées à l'installation Windows actuelle ; hors connexion, les modifications sont enregistrées localement puis synchronisées ultérieurement.</value></data>
+  <data name="Report_InstallationLayout_Title" xml:space="preserve"><value>Configuration d'installation</value></data>
+  <data name="Report_InstallationLayout_Configuration" xml:space="preserve"><value>Configuration</value></data>
+  <data name="Report_InstallationLayout_Installation" xml:space="preserve"><value>Installation</value></data>
+  <data name="Report_InstallationLayout_Ceiling" xml:space="preserve"><value>Plafond</value></data>
+  <data name="Report_InstallationLayout_Floor" xml:space="preserve"><value>Sol</value></data>
+  <data name="Report_InstallationLayout_Wall" xml:space="preserve"><value>Mur</value></data>
+  <data name="Report_InstallationLayout_AccessPanel" xml:space="preserve"><value>Panneau d'accès</value></data>
+  <data name="Report_InstallationLayout_UpperAccess" xml:space="preserve"><value>Accès supérieur</value></data>
+  <data name="Report_InstallationLayout_LowerAccess" xml:space="preserve"><value>Accès inférieur</value></data>
+  <data name="Report_InstallationLayout_FrontAccess" xml:space="preserve"><value>Accès frontal</value></data>
+  <data name="Report_InstallationLayout_Fresh" xml:space="preserve">
+    <value>Air neuf</value>
+  </data>
+  <data name="Report_InstallationLayout_Return" xml:space="preserve">
+    <value>Air extrait</value>
+  </data>
+  <data name="Report_InstallationLayout_Supply" xml:space="preserve">
+    <value>Air soufflé</value>
+  </data>
+  <data name="Report_InstallationLayout_Exhaust" xml:space="preserve">
+    <value>Air rejeté</value>
+  </data>
 </root>

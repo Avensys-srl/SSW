@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root xmlns:ns1="urn:schemas-microsoft-com:xml-msdata" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   
   <xs:schema id="root">
@@ -953,4 +953,26 @@ Language names in the language menu are intentionally always displayed as autony
   <data name="Help_MenuTip_FollowUps" xml:space="preserve"><value>Open the follow-up center to review, reschedule or close reminders for technical selections and projects.</value></data>
   <data name="Help_Topic_FollowUps_Title" xml:space="preserve"><value>Customer follow-up reminders</value></data>
   <data name="Help_Topic_FollowUps_Body" xml:space="preserve"><value>Schedule a customer follow-up from 1 to 90 days; the default is 7 days. The countdown starts only after the Outlook draft has been prepared successfully. The bell opens the reminder center, where due, upcoming and closed items are shown. Double-click an item to reopen its local selection or project. A reminder can be closed as successful or unsuccessful, rescheduled or cancelled. Reminder data remains private to the current Windows installation; when offline, changes are stored locally and synchronized later.</value></data>
+  <data name="Report_InstallationLayout_Title" xml:space="preserve"><value>Installation configuration</value></data>
+  <data name="Report_InstallationLayout_Configuration" xml:space="preserve"><value>Configuration</value></data>
+  <data name="Report_InstallationLayout_Installation" xml:space="preserve"><value>Installation</value></data>
+  <data name="Report_InstallationLayout_Ceiling" xml:space="preserve"><value>Ceiling</value></data>
+  <data name="Report_InstallationLayout_Floor" xml:space="preserve"><value>Floor</value></data>
+  <data name="Report_InstallationLayout_Wall" xml:space="preserve"><value>Wall</value></data>
+  <data name="Report_InstallationLayout_AccessPanel" xml:space="preserve"><value>Access panel</value></data>
+  <data name="Report_InstallationLayout_UpperAccess" xml:space="preserve"><value>Upper access</value></data>
+  <data name="Report_InstallationLayout_LowerAccess" xml:space="preserve"><value>Lower access</value></data>
+  <data name="Report_InstallationLayout_FrontAccess" xml:space="preserve"><value>Front access</value></data>
+  <data name="Report_InstallationLayout_Fresh" xml:space="preserve">
+    <value>Fresh air</value>
+  </data>
+  <data name="Report_InstallationLayout_Return" xml:space="preserve">
+    <value>Return air</value>
+  </data>
+  <data name="Report_InstallationLayout_Supply" xml:space="preserve">
+    <value>Supply air</value>
+  </data>
+  <data name="Report_InstallationLayout_Exhaust" xml:space="preserve">
+    <value>Exhaust air</value>
+  </data>
 </root>

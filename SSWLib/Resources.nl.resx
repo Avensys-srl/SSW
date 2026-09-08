@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root xmlns:ns1="urn:schemas-microsoft-com:xml-msdata" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   
   <xs:schema id="root">
@@ -827,4 +827,26 @@ Sla het .sswsel-bestand eerst op als u bewerkbare berekeningsinvoer wilt behoude
   <data name="Help_MenuTip_FollowUps" xml:space="preserve"><value>Open het opvolgcentrum om herinneringen voor technische selecties en projecten te bekijken, opnieuw te plannen of af te sluiten.</value></data>
   <data name="Help_Topic_FollowUps_Title" xml:space="preserve"><value>Herinneringen voor klantopvolging</value></data>
   <data name="Help_Topic_FollowUps_Body" xml:space="preserve"><value>Plan een klantopvolging tussen 1 en 90 dagen; de standaardwaarde is 7 dagen. De termijn begint pas nadat het Outlook-concept met succes is voorbereid. De bel opent het herinneringscentrum met vervallen, toekomstige en afgesloten items. Dubbelklik op een item om de lokale selectie of het lokale project opnieuw te openen. Een herinnering kan als succesvol of niet succesvol worden afgesloten, opnieuw worden gepland of geannuleerd. De gegevens blijven privé voor de huidige Windows-installatie; offline worden wijzigingen lokaal opgeslagen en later gesynchroniseerd.</value></data>
+  <data name="Report_InstallationLayout_Title" xml:space="preserve"><value>Installatieconfiguratie</value></data>
+  <data name="Report_InstallationLayout_Configuration" xml:space="preserve"><value>Configuratie</value></data>
+  <data name="Report_InstallationLayout_Installation" xml:space="preserve"><value>Installatie</value></data>
+  <data name="Report_InstallationLayout_Ceiling" xml:space="preserve"><value>Plafond</value></data>
+  <data name="Report_InstallationLayout_Floor" xml:space="preserve"><value>Vloer</value></data>
+  <data name="Report_InstallationLayout_Wall" xml:space="preserve"><value>Wand</value></data>
+  <data name="Report_InstallationLayout_AccessPanel" xml:space="preserve"><value>Toegangspaneel</value></data>
+  <data name="Report_InstallationLayout_UpperAccess" xml:space="preserve"><value>Toegang bovenzijde</value></data>
+  <data name="Report_InstallationLayout_LowerAccess" xml:space="preserve"><value>Toegang onderzijde</value></data>
+  <data name="Report_InstallationLayout_FrontAccess" xml:space="preserve"><value>Toegang voorzijde</value></data>
+  <data name="Report_InstallationLayout_Fresh" xml:space="preserve">
+    <value>Buitenlucht</value>
+  </data>
+  <data name="Report_InstallationLayout_Return" xml:space="preserve">
+    <value>Retourlucht</value>
+  </data>
+  <data name="Report_InstallationLayout_Supply" xml:space="preserve">
+    <value>Toevoerlucht</value>
+  </data>
+  <data name="Report_InstallationLayout_Exhaust" xml:space="preserve">
+    <value>Afvoerlucht</value>
+  </data>
 </root>

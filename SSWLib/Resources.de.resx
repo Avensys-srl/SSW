@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root xmlns:ns1="urn:schemas-microsoft-com:xml-msdata" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   
   <xs:schema id="root">
@@ -761,4 +761,26 @@ Speichern Sie zuerst die Datei .sswsel, wenn Sie bearbeitbare Berechnungseingabe
   <data name="Help_MenuTip_FollowUps" xml:space="preserve"><value>Öffnen Sie die Wiedervorlagen, um Erinnerungen für technische Auswahlen und Projekte zu prüfen, neu zu terminieren oder abzuschließen.</value></data>
   <data name="Help_Topic_FollowUps_Title" xml:space="preserve"><value>Erinnerungen zur Kundennachverfolgung</value></data>
   <data name="Help_Topic_FollowUps_Body" xml:space="preserve"><value>Planen Sie eine Kundennachverfolgung in 1 bis 90 Tagen; der Standardwert beträgt 7 Tage. Die Frist beginnt erst, nachdem der Outlook-Entwurf erfolgreich erstellt wurde. Über die Glocke öffnen Sie die Wiedervorlagen mit fälligen, anstehenden und abgeschlossenen Einträgen. Doppelklicken Sie auf einen Eintrag, um die lokale Auswahl oder das lokale Projekt erneut zu öffnen. Eine Erinnerung kann als erfolgreich oder erfolglos abgeschlossen, neu terminiert oder abgebrochen werden. Die Daten bleiben auf die aktuelle Windows-Installation beschränkt; offline werden Änderungen lokal gespeichert und später synchronisiert.</value></data>
+  <data name="Report_InstallationLayout_Title" xml:space="preserve"><value>Installationskonfiguration</value></data>
+  <data name="Report_InstallationLayout_Configuration" xml:space="preserve"><value>Konfiguration</value></data>
+  <data name="Report_InstallationLayout_Installation" xml:space="preserve"><value>Installation</value></data>
+  <data name="Report_InstallationLayout_Ceiling" xml:space="preserve"><value>Decke</value></data>
+  <data name="Report_InstallationLayout_Floor" xml:space="preserve"><value>Boden</value></data>
+  <data name="Report_InstallationLayout_Wall" xml:space="preserve"><value>Wand</value></data>
+  <data name="Report_InstallationLayout_AccessPanel" xml:space="preserve"><value>Zugangspaneel</value></data>
+  <data name="Report_InstallationLayout_UpperAccess" xml:space="preserve"><value>Zugang oben</value></data>
+  <data name="Report_InstallationLayout_LowerAccess" xml:space="preserve"><value>Zugang unten</value></data>
+  <data name="Report_InstallationLayout_FrontAccess" xml:space="preserve"><value>Zugang vorne</value></data>
+  <data name="Report_InstallationLayout_Fresh" xml:space="preserve">
+    <value>Außenluft</value>
+  </data>
+  <data name="Report_InstallationLayout_Return" xml:space="preserve">
+    <value>Abluft</value>
+  </data>
+  <data name="Report_InstallationLayout_Supply" xml:space="preserve">
+    <value>Zuluft</value>
+  </data>
+  <data name="Report_InstallationLayout_Exhaust" xml:space="preserve">
+    <value>Fortluft</value>
+  </data>
 </root>
