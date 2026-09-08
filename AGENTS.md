@@ -46,6 +46,13 @@ The target architecture is:
 
 ## Authoritative documents
 
+Start every session by reading `docs/README.md` and the history for the area
+being changed. Keep proposals, implemented solutions and verified outcomes
+distinct. Record significant problems, decisions and fixes in `docs/`, with
+dated checkpoints, reproducible evidence and remaining work; add new documents
+to the index and include them in the corresponding Git change. Do not rely on
+conversation history alone, and revalidate older findings against current code.
+
 Read these documents before changing the corresponding area:
 
 - `docs/UI_BACKEND_SEPARATION_ROADMAP.md`
