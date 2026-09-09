@@ -6,6 +6,7 @@ interessata all'inizio di ogni nuova sessione, anche usando altre chat o modelli
 
 ## Proposte e decisioni
 
+- [Layout: simboli aeraulici originali e legenda, 09/09/2026](LAYOUT_AIRFLOW_SYMBOLS_2026-09-09.md)
 - [Layout: correzioni flussi e disegno, 09/09/2026](LAYOUT_FLOW_CORRECTIONS_2026-09-09.md)
 - [Audit e correzioni della selezione Next, 08/09/2026](AUDIT_CORREZIONI_2026-09-08.md)
 - [Drawing dimensionale: proposta e contratto dati](DRAWING_DIMENSIONALE_PROPOSTA.md)

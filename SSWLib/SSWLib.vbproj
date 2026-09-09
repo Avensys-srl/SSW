@@ -597,6 +597,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.sl.Designer.vb</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Airflow\exhaust.png" />
+    <EmbeddedResource Include="Resources\Airflow\fresh.png" />
+    <EmbeddedResource Include="Resources\Airflow\return.png" />
+    <EmbeddedResource Include="Resources\Airflow\supply.png" />
     <None Include="ssw.pfx" />
     <None Include="SSW_3_TemporaryKey.pfx" />
   </ItemGroup>

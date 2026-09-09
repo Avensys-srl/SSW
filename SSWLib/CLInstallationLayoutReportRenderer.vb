@@ -90,11 +90,9 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
 
         Dim unitRectangle As RectangleF
         If installationMode = "wall" OrElse uprightSameSide Then
-            unitRectangle = New RectangleF(430, 140, 740, 250)
+            unitRectangle = New RectangleF(250, 125, 620, 300)
         Else
-            ' Keep the report diagram aligned with the proportions used by the
-            ' Next UI: a wide, shallow casing with ample space for flow labels.
-            unitRectangle = New RectangleF(220, 205, 1160, 150)
+            unitRectangle = New RectangleF(140, 195, 820, 170)
         End If
 
         Using unitBrush As New SolidBrush(Color.FromArgb(240, 243, 243)),
@@ -120,6 +118,7 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
 
             DrawAccessPanel(graphics, unitRectangle, accessFont,
                 configuration.AccessSide)
+            DrawFlowLegend(graphics)
         End Using
     End Sub
 
@@ -232,65 +231,66 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
             DrawCenteredText(graphics, placement.Number.ToString(), numberFont, numberBrush,
                 New RectangleF(numberCenter.X - 15, numberCenter.Y - 15, 30, 30))
         End Using
-        DrawFlowLabel(graphics, placement)
+        DrawFlowSymbol(graphics, placement)
     End Sub
 
-    Private Shared Sub DrawFlowLabel(graphics As Graphics, placement As PortPlacement)
-        Dim incoming = String.Equals(placement.FlowCode, "Fresh",
-            StringComparison.OrdinalIgnoreCase) OrElse
-            String.Equals(placement.FlowCode, "Return", StringComparison.OrdinalIgnoreCase)
-        Dim color = FlowColor(placement.FlowCode)
-        Dim label = FlowCaption(placement.FlowCode)
-        Using font As New Font("Arial", 8.0F, FontStyle.Bold),
-              brush As New SolidBrush(color),
-              pen As New Pen(color, 3.0F)
-            pen.CustomEndCap = New AdjustableArrowCap(5, 6, True)
-            Dim p1 As PointF
-            Dim p2 As PointF
-            Dim textRectangle As RectangleF
-            Dim labelWidth = graphics.MeasureString(label, font).Width + 4.0F
-            Select Case placement.Edge
-                Case PortEdge.Top
-                    Dim topOuterY = placement.Center.Y - If(placement.FaceOn, 30.0F, 54.0F)
-                    Dim topRowY = topOuterY - 55.0F
-                    Dim topArrowX = placement.Center.X - (labelWidth + 30.0F) / 2.0F
-                    If incoming Then
-                        p1 = New PointF(topArrowX, topRowY - 13.0F)
-                        p2 = New PointF(topArrowX, topRowY + 13.0F)
-                    Else
-                        p1 = New PointF(topArrowX, topRowY + 13.0F)
-                        p2 = New PointF(topArrowX, topRowY - 13.0F)
-                    End If
-                    textRectangle = New RectangleF(topArrowX + 30.0F,
-                        topRowY - 16.0F, labelWidth, 32)
-                Case PortEdge.Bottom
-                    Dim bottomOuterY = placement.Center.Y + If(placement.FaceOn, 30.0F, 54.0F)
-                    Dim bottomRowY = bottomOuterY + 55.0F
-                    Dim bottomArrowX = placement.Center.X - (labelWidth + 30.0F) / 2.0F
-                    If incoming Then
-                        p1 = New PointF(bottomArrowX, bottomRowY + 13.0F)
-                        p2 = New PointF(bottomArrowX, bottomRowY - 13.0F)
-                    Else
-                        p1 = New PointF(bottomArrowX, bottomRowY - 13.0F)
-                        p2 = New PointF(bottomArrowX, bottomRowY + 13.0F)
-                    End If
-                    textRectangle = New RectangleF(bottomArrowX + 30.0F,
-                        bottomRowY - 16.0F, labelWidth, 32)
-                Case PortEdge.Left
-                    p1 = New PointF(placement.Center.X - 100, placement.Center.Y)
-                    p2 = New PointF(p1.X + If(incoming, 26, -26), p1.Y)
-                    textRectangle = New RectangleF(placement.Center.X - 145 - labelWidth,
-                        placement.Center.Y - 16, labelWidth, 32)
-                Case Else
-                    p1 = New PointF(placement.Center.X + 100, placement.Center.Y)
-                    p2 = New PointF(p1.X - If(incoming, 26, -26), p1.Y)
-                    textRectangle = New RectangleF(placement.Center.X + 145,
-                        placement.Center.Y - 16, labelWidth, 32)
-            End Select
-            graphics.DrawLine(pen, p1, p2)
-            graphics.DrawString(label, font, brush, textRectangle)
+    Private Shared Sub DrawFlowSymbol(graphics As Graphics, placement As PortPlacement)
+        Const width As Single = 52.0F
+        Const height As Single = 58.0F
+        Dim outerOffset = If(placement.FaceOn, 30.0F, 54.0F)
+        Dim rectangle As RectangleF
+        Select Case placement.Edge
+            Case PortEdge.Top
+                rectangle = New RectangleF(placement.Center.X - width / 2,
+                    placement.Center.Y - outerOffset - height - 8.0F, width, height)
+            Case PortEdge.Bottom
+                rectangle = New RectangleF(placement.Center.X - width / 2,
+                    placement.Center.Y + outerOffset + 8.0F, width, height)
+            Case PortEdge.Left
+                rectangle = New RectangleF(placement.Center.X - 54.0F - width - 12.0F,
+                    placement.Center.Y - height / 2, width, height)
+            Case Else
+                rectangle = New RectangleF(placement.Center.X + 54.0F + 12.0F,
+                    placement.Center.Y - height / 2, width, height)
+        End Select
+        Using symbol = LoadFlowIcon(placement.FlowCode)
+            graphics.DrawImage(symbol, rectangle)
         End Using
     End Sub
+
+    Private Shared Sub DrawFlowLegend(graphics As Graphics)
+        Const x As Single = 1115.0F
+        Const y As Single = 78.0F
+        Const width As Single = 425.0F
+        Const height As Single = 404.0F
+        Using border As New Pen(Color.FromArgb(210, 220, 218), 2.0F),
+              labelFont As New Font("Arial", 10.0F, FontStyle.Bold)
+            graphics.DrawRectangle(border, x, y, width, height)
+            Dim roles = {"Fresh", "Supply", "Return", "Exhaust"}
+            For index = 0 To roles.Length - 1
+                Dim itemY = y + 35.0F + index * 84.0F
+                Using symbol = LoadFlowIcon(roles(index))
+                    graphics.DrawImage(symbol, New RectangleF(x + 25.0F, itemY, 52.0F, 58.0F))
+                End Using
+                graphics.DrawString(FlowCaption(roles(index)), labelFont, Brushes.Black,
+                    New RectangleF(x + 97.0F, itemY + 16.0F, width - 120.0F, 34.0F))
+            Next
+        End Using
+    End Sub
+
+    Private Shared Function LoadFlowIcon(flowCode As String) As Bitmap
+        Dim suffix = "." & flowCode.ToLowerInvariant() & ".png"
+        Dim assembly = GetType(CLInstallationLayoutReportRenderer).Assembly
+        Dim resourceName = assembly.GetManifestResourceNames().FirstOrDefault(
+            Function(name) name.EndsWith(suffix, StringComparison.OrdinalIgnoreCase))
+        If String.IsNullOrEmpty(resourceName) Then
+            Throw New InvalidOperationException("Missing airflow icon resource: " & suffix)
+        End If
+        Using stream = assembly.GetManifestResourceStream(resourceName),
+              source As New Bitmap(stream)
+            Return DirectCast(source.Clone(), Bitmap)
+        End Using
+    End Function
 
     Private Shared Sub DrawAccessPanel(graphics As Graphics,
         unitRectangle As RectangleF, font As Font, position As String)

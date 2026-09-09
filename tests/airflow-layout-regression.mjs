@@ -22,4 +22,10 @@ for (const [sameSide, flatFloor, eastWest, slots, sides] of [
 const main = fs.readFileSync(new URL('../frontend/ssw-next/src/main.ts', import.meta.url), 'utf8');
 assert.ok(main.includes('compatibleLayouts.length > 0 && !calculating && !calculationFailed'));
 assert.ok(!main.includes('class="core"'));
+for (const role of ['fresh', 'supply', 'return', 'exhaust']) {
+  assert.ok(fs.existsSync(new URL(`../frontend/ssw-next/public/airflow/${role}.png`, import.meta.url)));
+}
+assert.ok(main.includes('src="/airflow/${role}.png"'));
+assert.ok(main.includes('class="airflow-legend"'));
+assert.ok(!main.includes('${icon("arrow-down")}<span>'));
 console.log('Airflow view position and stale-result guards passed.');

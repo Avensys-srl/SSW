@@ -1380,7 +1380,6 @@ const renderPreselectionStep = (): string => {
 };
 
 const renderFlowPorts = (): string => {
-  const text = messages();
   const fallback = [
     { flowCode: "Fresh" as const, position: 1 },
     { flowCode: "Return" as const, position: 2 },
@@ -1400,12 +1399,6 @@ const renderFlowPorts = (): string => {
     );
   if (!portsAreComplete) return "";
   const ports = [...candidatePorts];
-  const labels = {
-    Fresh: text.domain.airflow.fresh,
-    Return: text.domain.airflow.return,
-    Supply: text.domain.airflow.supply,
-    Exhaust: text.domain.airflow.exhaust,
-  };
   const sameSide = isSameSideConnection();
   const sameSideFloorFacing = isSameSideFlatFloor();
   const oppositeSideEastWest = isOppositeSideEastWestWall();
@@ -1418,10 +1411,24 @@ const renderFlowPorts = (): string => {
       const side = airflowSide(port.position, sameSide, sameSideFloorFacing, oppositeSideEastWest);
       const slot = airflowSlot(port.position, sameSide, oppositeSideEastWest);
       return `<div data-port="${port.position}" data-flow="${role}" class="flow flow-${side} flow-position-${slot} ${role} ${incoming ? "incoming" : "outgoing"}">
-        ${icon("arrow-down")}<span>${escapeHtml(labels[port.flowCode])}</span><sup>${port.position}</sup>
+        <img src="/airflow/${role}.png" alt="" aria-hidden="true">
       </div>`;
     })
     .join("");
+};
+
+const renderFlowLegend = (): string => {
+  const labels = messages().domain.airflow;
+  return `<aside class="airflow-legend" aria-label="${escapeHtml(messages().ui.installation.orientationTitle)}">
+    ${([
+      ["fresh", labels.fresh],
+      ["supply", labels.supply],
+      ["return", labels.return],
+      ["exhaust", labels.exhaust],
+    ] as const).map(([role, label]) => `<div class="airflow-legend-item ${role}">
+      <img src="/airflow/${role}.png" alt=""><span>${escapeHtml(label)}</span>
+    </div>`).join("")}
+  </aside>`;
 };
 
 const layoutConfigurations = (): LayoutConfigurationOption[] => {
@@ -1527,13 +1534,16 @@ const renderInstallationStep = (): string => {
           <span class="outline-badge">${escapeHtml(accessSurfaceLabel(surface))}</span>
         </div>
       </div>
-      ${compatibleLayouts.length > 0 && !calculating && !calculationFailed ? `<div class="airflow-diagram ${connectionClass}">
-        ${renderFlowPorts()}
-        <div class="ahu-plan access-${surface}">
-          ${[1, 2, 3, 4].map((position) => `<span class="duct-marker duct-position-${airflowSlot(position, isSameSideConnection(), isOppositeSideEastWestWall())} duct-${result!.flowPorts?.find((port) => port.position === position)?.flowCode.toLowerCase()}" aria-hidden="true"><b>${position}</b></span>`).join("")}
-          <strong>${escapeHtml(selectedUnit()?.model ?? "")}</strong>
-          <small>${escapeHtml(text.ui.installation.accessPanel)}: ${escapeHtml(accessSurfaceLabel(surface))}</small>
+      ${compatibleLayouts.length > 0 && !calculating && !calculationFailed ? `<div class="airflow-layout-body">
+        <div class="airflow-diagram ${connectionClass}">
+          ${renderFlowPorts()}
+          <div class="ahu-plan access-${surface}">
+            ${[1, 2, 3, 4].map((position) => `<span class="duct-marker duct-position-${airflowSlot(position, isSameSideConnection(), isOppositeSideEastWestWall())} duct-${result!.flowPorts?.find((port) => port.position === position)?.flowCode.toLowerCase()}" aria-hidden="true"><b>${position}</b></span>`).join("")}
+            <strong>${escapeHtml(selectedUnit()?.model ?? "")}</strong>
+            <small>${escapeHtml(text.ui.installation.accessPanel)}: ${escapeHtml(accessSurfaceLabel(surface))}</small>
+          </div>
         </div>
+        ${renderFlowLegend()}
       </div>` : `<div class="empty-state airflow-pending" aria-busy="${calculating}">${escapeHtml(calculating ? text.ui.installation.orientationTitle : text.status.unavailable)}</div>`}
     </section>
     ${renderInlineDimensionalDrawing()}

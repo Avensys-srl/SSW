@@ -1345,13 +1345,9 @@ namespace SSW
                 {
                     await WaitForConditionAsync(
                         "Array.from(document.querySelectorAll('.flow[data-port]')).length === 4 && " +
-                        "Array.from(document.querySelectorAll('.flow[data-port]')).every(function(f){" +
-                        "var d=Array.from(document.querySelectorAll('.duct-marker')).find(d=>d.textContent.trim()===f.dataset.port);" +
-                        "if(!d)return false;var a=f.getBoundingClientRect(),b=d.getBoundingClientRect();" +
-                        "if(f.classList.contains('flow-north'))return a.bottom<b.top && Math.abs((a.left+a.right-b.left-b.right)/2)<4;" +
-                        "if(f.classList.contains('flow-south'))return a.top>b.bottom && Math.abs((a.left+a.right-b.left-b.right)/2)<4;" +
-                        "return Math.abs((a.top+a.bottom-b.top-b.bottom)/2)<4 && (a.right<b.left || a.left>b.right);})",
-                        "Airflow labels overlap or are not aligned with their numbered ducts.");
+                        "Array.from(document.querySelectorAll('.flow[data-port] img')).every(function(i){return i.complete&&i.naturalWidth>0;}) && " +
+                        "document.querySelectorAll('.airflow-legend-item').length === 4",
+                        "Airflow symbols or the fixed legend did not become ready.");
                 }
                 await Task.Delay(250);
                 await CaptureFullPagePngAsync(screenshotOutputPath);
