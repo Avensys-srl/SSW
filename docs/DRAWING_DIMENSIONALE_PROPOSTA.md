@@ -83,8 +83,14 @@ assenze impediscono l'ordine o soltanto la stampa del drawing.
 
 La voce Disegno dimensionale apre una sezione/pannello, non un link PDF fittizio.
 Tre viste leggibili, tabella quote accanto su schermi ampi e sotto su quelli
-stretti; zoom adatto all'ispezione del disegno. Localizzare titoli, stato,
-nomi delle quote e unita', mantenendo A/B/C/D coerenti con l'asset.
+stretti; zoom adatto all'ispezione del disegno. La UI espone soltanto le sigle
+commerciali L/W/H/D, mantenendo internamente la corrispondenza A/B/C/D del
+database e dell'asset.
+
+Dal riquadro ingrandito si puo' esportare un PDF A4 landscape autonomo: il
+disegno renderizzato conserva le proporzioni e una legenda L/W/H/D viene
+posizionata in basso a destra. L'esportazione non mostra codice, revisione o
+nome del PDF sorgente, poiche' uno stesso asset puo' servire piu' modelli.
 
 Quando verra' introdotto nel report, usare il disegno proporzionato e una vera tabella delle quote,
 non una cattura della UI con numeri e testi incollati. Riutilizzare il medesimo
@@ -114,10 +120,11 @@ definire la migrazione dei file storici senza alterarli silenziosamente.
   modelli della serie PRIME presenti nel database centrale.
 - CLDataCentralLib exporter 1.4.0 pubblica schema SDF 5 e feature
   `DimensionalDrawings`, includendo solo asset attivi raggiungibili.
-- SSW 1.3.0.58 risolve l'override H/V prima del fallback B, renderizza la prima
+- SSW 1.3.0.59 risolve l'override H/V prima del fallback B, renderizza la prima
   pagina PDF come immagine integrata nella schermata Installazione e mostra
-  A/L, B/W, C/H e D senza inventare valori mancanti. Il clic sull'anteprima
-  apre la stessa immagine ingrandita, senza toolbar o nome file.
+  L/W/H/D senza inventare valori mancanti. Il clic sull'anteprima apre la
+  stessa immagine ingrandita, senza toolbar o nome file, e consente di salvare
+  il PDF autonomo con legenda in basso a destra.
 - Il formato selezione 3 conserva nello snapshot orientamento, riferimento
   tecnico dell'asset, hash e quote A/B/C/D. Non incorpora il PDF nel progetto.
 - Il PDF campione e' versionato in

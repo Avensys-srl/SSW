@@ -141,6 +141,8 @@ let currentStep: StepId = "project";
 let maximumReachableStepIndex = 1;
 let confirmedUnitId: string | null = null;
 let installationReviewRequired = false;
+const visitedSteps = new Set<StepId>(["project"]);
+const skippedOptionalSteps = new Set<StepId>();
 let calculating = false;
 let busyMessage: string | null = null;
 let pendingProjectLanguage: string | null = null;
@@ -256,9 +258,35 @@ const documentBusyTexts: Record<string, DocumentBusyText> = {
 const documentBusyText = (): DocumentBusyText =>
   documentBusyTexts[languageCode()] ?? documentBusyTexts.en;
 
+type DrawingUiText = {
+  confirmLayout: string;
+  downloadPdf: string;
+};
+
+const drawingUiTexts: Record<string, DrawingUiText> = {
+  bg: { confirmLayout: "Моля, потвърдете конфигурацията.", downloadPdf: "Изтегляне на PDF" },
+  cs: { confirmLayout: "Potvrďte prosím uspořádání.", downloadPdf: "Stáhnout PDF" },
+  da: { confirmLayout: "Bekræft venligst layoutet.", downloadPdf: "Download PDF" },
+  de: { confirmLayout: "Bitte bestätigen Sie das Layout.", downloadPdf: "PDF herunterladen" },
+  en: { confirmLayout: "Please confirm the layout.", downloadPdf: "Download PDF" },
+  fr: { confirmLayout: "Veuillez confirmer la configuration.", downloadPdf: "Télécharger le PDF" },
+  hu: { confirmLayout: "Kérjük, erősítse meg az elrendezést.", downloadPdf: "PDF letöltése" },
+  is: { confirmLayout: "Vinsamlegast staðfestið uppsetninguna.", downloadPdf: "Sækja PDF" },
+  it: { confirmLayout: "Si prega di confermare il layout.", downloadPdf: "Scarica PDF" },
+  nl: { confirmLayout: "Bevestig de lay-out.", downloadPdf: "PDF downloaden" },
+  no: { confirmLayout: "Bekreft oppsettet.", downloadPdf: "Last ned PDF" },
+  pl: { confirmLayout: "Proszę potwierdzić układ.", downloadPdf: "Pobierz PDF" },
+  ro: { confirmLayout: "Vă rugăm să confirmați configurația.", downloadPdf: "Descărcați PDF-ul" },
+  sl: { confirmLayout: "Potrdite postavitev.", downloadPdf: "Prenesi PDF" },
+  sv: { confirmLayout: "Bekräfta layouten.", downloadPdf: "Hämta PDF" },
+};
+
+const drawingUiText = (): DrawingUiText =>
+  drawingUiTexts[languageCode()] ?? drawingUiTexts.en;
+
 const renderDimensionalValues = (drawing: DimensionalDrawingState): string => {
   const labels: Record<string, string> = { A: "L", B: "W", C: "H", D: "D" };
-  return `<table><tbody>${drawing.dimensions.map((item) => `<tr><th>${escapeHtml(item.code)} (${labels[item.code] ?? item.code})</th><td>${item.valueMillimeters == null ? "-" : `${formatNumber(item.valueMillimeters, 0)} mm`}</td></tr>`).join("")}</tbody></table>`;
+  return `<table><tbody>${drawing.dimensions.map((item) => `<tr><th>${escapeHtml(labels[item.code] ?? item.code)}</th><td>${item.valueMillimeters == null ? "-" : `${formatNumber(item.valueMillimeters, 0)} mm`}</td></tr>`).join("")}</tbody></table>`;
 };
 
 const renderDimensionalSurface = (large: boolean): string => {
@@ -280,7 +308,10 @@ const renderDimensionalDrawing = (): string => {
           <h2 id="dimensional-drawing-title">${escapeHtml(text.ui.documents.dimensionalDrawing)}</h2>
           <p>${escapeHtml(text.ui.documents.dimensionalDrawingDescription)}</p>
         </div>
-        <button class="icon-button bordered" data-action="close-dimensional-drawing" aria-label="${escapeHtml(text.actions.close)}">${icon("circle-x")}</button>
+        <div class="dimensional-dialog-actions">
+          <button class="button secondary compact-button" data-action="download-dimensional-drawing" type="button">${icon("file-down", 15)} ${escapeHtml(drawingUiText().downloadPdf)}</button>
+          <button class="icon-button bordered" data-action="close-dimensional-drawing" aria-label="${escapeHtml(text.actions.close)}">${icon("circle-x")}</button>
+        </div>
       </header>
       <div class="dimensional-drawing-content">
         <div class="dimensional-image-frame large">
@@ -500,9 +531,25 @@ const confirmInstallationReview = (): void => {
   installationReviewRequired = false;
 };
 
+const resetOptionalStepVisits = (): void => {
+  steps.filter((step) => step.optional).forEach((step) => visitedSteps.delete(step.id));
+  skippedOptionalSteps.clear();
+};
+
+const markSkippedOptionalSteps = (from: StepId, to: StepId): void => {
+  const fromIndex = stepIndex(from);
+  const toIndex = stepIndex(to);
+  if (toIndex <= fromIndex) return;
+  steps.slice(fromIndex + 1, toIndex).forEach((step) => {
+    if (step.optional && !visitedSteps.has(step.id)) skippedOptionalSteps.add(step.id);
+  });
+};
+
 const restoreConfiguredWorkflow = (): void => {
   confirmedUnitId = draft?.selectedUnitId || null;
   confirmInstallationReview();
+  visitedSteps.clear();
+  visitedSteps.add("project");
   unlockConfiguredWorkflow();
 };
 
@@ -818,6 +865,8 @@ const renderShell = (): void => {
   if (!data || !draft || !result) {
     return;
   }
+  visitedSteps.add(currentStep);
+  skippedOptionalSteps.delete(currentStep);
 
   const route = window.location.hash || "#/selection";
   if (route.startsWith("#/showcase")) {
@@ -880,10 +929,15 @@ const renderShell = (): void => {
                   step.id === "installation" && installationReviewRequired
                     ? "attention"
                     : "";
+                const skipped =
+                  step.optional === true &&
+                  skippedOptionalSteps.has(step.id)
+                    ? "skipped"
+                    : "";
                 return `
-                  <button class="step-button ${status} ${attention}" data-step="${step.id}" type="button" ${enabled ? "" : "disabled aria-disabled=\"true\""}>
+                  <button class="step-button ${status} ${attention} ${skipped}" data-step="${step.id}" type="button" ${enabled ? "" : "disabled aria-disabled=\"true\""}>
                     <span class="step-index">${
-                      status === "complete" ? icon("check", 14) : index + 1
+                      status === "complete" && !skipped ? icon("check", 14) : index + 1
                     }</span>
                     <span>
                       <strong>${escapeHtml(stepMessage(step.id).shortTitle)}</strong>
@@ -1465,6 +1519,7 @@ const renderInstallationStep = (): string => {
           ${compatibleLayouts.map((configuration) => `<option ${draft!.layoutCode === configuration.code ? "selected" : ""}>${configuration.code}</option>`).join("")}
         </select>
         <small>${escapeHtml(text.ui.installation.defaultHint)}</small>
+        ${installationReviewRequired ? `<div class="layout-confirmation-warning" role="alert">${icon("triangle-alert", 15)} ${escapeHtml(drawingUiText().confirmLayout)}</div>` : ""}
       </div>
     </section>
     <section class="panel layout-preview">
@@ -2217,6 +2272,7 @@ const bindShellEvents = (): void => {
       ) {
         confirmInstallationReview();
       }
+      markSkippedOptionalSteps(currentStep, step);
       currentStep = step;
       renderShell();
       if (step === "documents") await refreshProductDocuments();
@@ -2233,7 +2289,10 @@ const bindShellEvents = (): void => {
       if (unit) draft!.regulationPercent = unit.requiredRegulation;
       if (!await recalculate() || draft!.selectedUnitId !== selectedUnitId) return;
       confirmedUnitId = selectedUnitId;
-      if (modelChanged) installationReviewRequired = true;
+      if (modelChanged) {
+        installationReviewRequired = true;
+        resetOptionalStepVisits();
+      }
       unlockConfiguredWorkflow();
       currentStep = "installation";
       renderShell();
@@ -2353,6 +2412,18 @@ const bindShellEvents = (): void => {
       dimensionalDrawingOpen = false;
       renderShell();
     });
+  });
+  document.querySelector<HTMLElement>('[data-action="download-dimensional-drawing"]')?.addEventListener("click", async () => {
+    if (!dimensionalDrawing?.available) return;
+    await renderDimensionalCanvases();
+    const canvas = document.querySelector<HTMLCanvasElement>('[data-dimensional-canvas="large"]');
+    const imageDataUrl = dimensionalLargeImage || canvas?.toDataURL("image/png") || dimensionalPreviewImage;
+    if (!imageDataUrl) return;
+    const response = await bridge.downloadDimensionalDrawing(
+      structuredClone(draft!),
+      imageDataUrl.replace(/^data:image\/png;base64,/, ""),
+    );
+    if (response.saved && response.fileName) showToast(response.fileName);
   });
   document.querySelectorAll<HTMLButtonElement>("[data-document]").forEach((button) => {
     button.addEventListener("click", async () => {
@@ -2676,6 +2747,7 @@ const navigate = async (offset: number): Promise<void> => {
   if (offset > 0 && currentStep === "installation") {
     confirmInstallationReview();
   }
+  markSkippedOptionalSteps(currentStep, next.id);
   currentStep = next.id;
   renderShell();
   if (next.id === "documents") await refreshProductDocuments();
@@ -2727,6 +2799,7 @@ const refreshPreselection = async (): Promise<void> => {
     draft!.selectedUnitId = current.id;
     if (previousConfirmedUnitId !== null && previousConfirmedUnitId !== current.id) {
       installationReviewRequired = true;
+      resetOptionalStepVisits();
       confirmedUnitId = current.id;
     }
     draft!.regulationPercent = current.requiredRegulation;
@@ -2943,6 +3016,9 @@ const bootstrap = async (): Promise<void> => {
     result = structuredClone(data.result);
     confirmedUnitId = null;
     confirmInstallationReview();
+    visitedSteps.clear();
+    visitedSteps.add("project");
+    skippedOptionalSteps.clear();
     lockWorkflowAtPreselection();
     multiProjectState = await bridge.getMultiProject(
       draft.project.name,

@@ -405,6 +405,10 @@ export interface SelectionBridge {
     draft: SelectionDraft,
   ): Promise<ProductDocumentState>;
   getDimensionalDrawing(draft: SelectionDraft): Promise<DimensionalDrawingState>;
+  downloadDimensionalDrawing(
+    draft: SelectionDraft,
+    imageBase64: string,
+  ): Promise<{ saved: boolean; cancelled?: boolean; fileName?: string }>;
   listNotifications(): Promise<FollowUpCenterState>;
   getNotificationSummary(): Promise<FollowUpCenterState>;
   updateNotification(

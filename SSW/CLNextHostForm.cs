@@ -52,6 +52,35 @@ namespace SSW
                     drawing.Dimensions == null || drawing.Dimensions.Count != 4 ||
                     drawing.PageWidthPoints <= 0 || drawing.PageHeightPoints <= 0)
                     return 71;
+                string testPdf = Path.Combine(
+                    Path.GetTempPath(),
+                    "ssw-dimensional-drawing-" + Guid.NewGuid().ToString("N") + ".pdf");
+                try
+                {
+                    byte[] testImage;
+                    using (var bitmap = new Bitmap(320, 180))
+                    using (var graphics = Graphics.FromImage(bitmap))
+                    using (var imageStream = new MemoryStream())
+                    {
+                        graphics.Clear(Color.White);
+                        graphics.DrawRectangle(Pens.Black, 35, 35, 250, 110);
+                        bitmap.Save(imageStream, System.Drawing.Imaging.ImageFormat.Png);
+                        testImage = imageStream.ToArray();
+                    }
+                    CLNextHostForm.WriteDimensionalDrawingPdf(testPdf, testImage, drawing);
+                    using (var reader = new iTextSharp.text.pdf.PdfReader(testPdf))
+                    {
+                        if (reader.NumberOfPages != 1) return 72;
+                        string pdfText = iTextSharp.text.pdf.parser.PdfTextExtractor.GetTextFromPage(reader, 1);
+                        if (!(new[] { "L", "W", "H", "D" }).All(label =>
+                            pdfText.IndexOf(label, StringComparison.Ordinal) >= 0))
+                            return 73;
+                    }
+                }
+                finally
+                {
+                    if (File.Exists(testPdf)) File.Delete(testPdf);
+                }
             }
             var model = models.Find(item => item.Code == "CLRC 023 OSC") ?? models[0];
             var preselectionInput = new CLNextUiCalculationInput
@@ -1140,6 +1169,7 @@ namespace SSW
                 bool needsConfiguredWorkflow =
                     String.Equals(screenshotStep, "layout", StringComparison.OrdinalIgnoreCase) ||
                     layoutReviewScenario ||
+                    String.Equals(screenshotStep, "dimensional-drawing", StringComparison.OrdinalIgnoreCase) ||
                     String.Equals(screenshotStep, "co2", StringComparison.OrdinalIgnoreCase) ||
                     String.Equals(screenshotStep, "sound", StringComparison.OrdinalIgnoreCase) ||
                     String.Equals(screenshotStep, "documents", StringComparison.OrdinalIgnoreCase);
@@ -1173,6 +1203,7 @@ namespace SSW
                         "document.querySelectorAll('[data-select-unit]')[1].click()");
                     await WaitForConditionAsync(
                         "document.querySelector('[data-step=\"installation\"].attention') !== null && " +
+                        "document.querySelector('.layout-confirmation-warning') !== null && " +
                         "document.querySelector('.layout-preview') !== null",
                         "The Layout review warning did not become ready.");
                     if (String.Equals(
@@ -1184,14 +1215,15 @@ namespace SSW
                             "document.querySelector('[data-step=\"summary\"]').click()");
                         await WaitForConditionAsync(
                             "document.querySelector('.summary-layout') !== null && " +
-                            "document.querySelector('[data-step=\"installation\"].attention') === null",
+                            "document.querySelector('[data-step=\"installation\"].attention') === null && " +
+                            "document.querySelectorAll('.step-button.skipped').length === 6",
                             "The accepted Layout review warning was not cleared.");
                     }
                 }
                 else if (String.Equals(
                     screenshotStep,
-                    "preselection",
-                    StringComparison.OrdinalIgnoreCase))
+                        "preselection",
+                        StringComparison.OrdinalIgnoreCase))
                 {
                     await webView.CoreWebView2.ExecuteScriptAsync(
                         "(function () {" +
@@ -1203,6 +1235,21 @@ namespace SSW
                     await WaitForConditionAsync(
                         "document.querySelector('.additional-selection') !== null",
                         "The preselection filters did not become ready.");
+                }
+                else if (String.Equals(
+                    screenshotStep,
+                    "dimensional-drawing",
+                    StringComparison.OrdinalIgnoreCase))
+                {
+                    await WaitForConditionAsync(
+                        "document.querySelector('[data-action=\"open-dimensional-drawing\"]:not([disabled])') !== null",
+                        "The dimensional drawing preview did not become ready.");
+                    await webView.CoreWebView2.ExecuteScriptAsync(
+                        "document.querySelector('[data-action=\"open-dimensional-drawing\"]').click()");
+                    await WaitForConditionAsync(
+                        "document.querySelector('.dimensional-drawing-dialog') !== null && " +
+                        "document.querySelector('[data-action=\"download-dimensional-drawing\"]') !== null",
+                        "The dimensional drawing dialog did not become ready.");
                 }
                 else if (String.Equals(
                     screenshotStep,
@@ -1344,6 +1391,121 @@ namespace SSW
             File.WriteAllBytes(outputPath, Convert.FromBase64String(encodedPng));
         }
 
+        private object DownloadDimensionalDrawing(Dictionary<string, object> payload)
+        {
+            if (payload == null) throw new ArgumentNullException("payload");
+            string modelCode = TextValue(payload, "modelCode");
+            string layoutCode = TextValue(payload, "layoutCode");
+            string encodedImage = TextValue(payload, "imageBase64");
+            if (String.IsNullOrWhiteSpace(encodedImage))
+                throw new InvalidDataException("Dimensional drawing image is missing.");
+
+            CLDimensionalDrawingResult drawing =
+                CLDimensionalDrawingService.Resolve(modelCode, layoutCode, false);
+            if (!drawing.Available)
+                throw new InvalidOperationException("Dimensional drawing is not available.");
+
+            byte[] imageBytes = Convert.FromBase64String(encodedImage);
+
+            string outputPath;
+            using (var dialog = new SaveFileDialog())
+            {
+                dialog.Title = "SSW";
+                dialog.Filter = "PDF (*.pdf)|*.pdf";
+                dialog.DefaultExt = "pdf";
+                dialog.AddExtension = true;
+                dialog.FileName = SafeFileName(
+                    modelCode + "_dimensional_drawing",
+                    "dimensional_drawing") + ".pdf";
+                if (dialog.ShowDialog(this) != DialogResult.OK)
+                    return new { saved = false, cancelled = true };
+                outputPath = dialog.FileName;
+            }
+
+            WriteDimensionalDrawingPdf(outputPath, imageBytes, drawing);
+
+            return new
+            {
+                saved = true,
+                fileName = Path.GetFileName(outputPath)
+            };
+        }
+
+        internal static void WriteDimensionalDrawingPdf(
+            string outputPath,
+            byte[] imageBytes,
+            CLDimensionalDrawingResult drawing)
+        {
+            if (String.IsNullOrWhiteSpace(outputPath))
+                throw new ArgumentException("Output path is required.", "outputPath");
+            if (imageBytes == null || imageBytes.Length == 0)
+                throw new ArgumentException("Drawing image is required.", "imageBytes");
+            if (drawing == null || drawing.Dimensions == null || drawing.Dimensions.Count != 4)
+                throw new InvalidDataException("Four dimensional values are required.");
+
+            iTextSharp.text.Image drawingImage = iTextSharp.text.Image.GetInstance(imageBytes);
+            iTextSharp.text.Rectangle pageSize = iTextSharp.text.PageSize.A4.Rotate();
+            using (var stream = new FileStream(outputPath, FileMode.Create, FileAccess.Write, FileShare.None))
+            {
+                var document = new iTextSharp.text.Document(pageSize, 28, 28, 28, 28);
+                try
+                {
+                    iTextSharp.text.pdf.PdfWriter writer =
+                        iTextSharp.text.pdf.PdfWriter.GetInstance(document, stream);
+                    document.Open();
+
+                    const float legendHeight = 82f;
+                    float drawingBottom = document.BottomMargin + legendHeight;
+                    float drawingWidth = pageSize.Width - document.LeftMargin - document.RightMargin;
+                    float drawingHeight = pageSize.Height - document.TopMargin - drawingBottom;
+                    drawingImage.ScaleToFit(drawingWidth, drawingHeight);
+                    drawingImage.SetAbsolutePosition(
+                        (pageSize.Width - drawingImage.ScaledWidth) / 2f,
+                        drawingBottom + (drawingHeight - drawingImage.ScaledHeight) / 2f);
+                    document.Add(drawingImage);
+
+                    var legend = new iTextSharp.text.pdf.PdfPTable(2);
+                    legend.TotalWidth = 170f;
+                    legend.LockedWidth = true;
+                    legend.SetWidths(new float[] { 1f, 1.65f });
+                    iTextSharp.text.Font labelFont =
+                        iTextSharp.text.FontFactory.GetFont(iTextSharp.text.FontFactory.HELVETICA_BOLD, 9f);
+                    iTextSharp.text.Font valueFont =
+                        iTextSharp.text.FontFactory.GetFont(iTextSharp.text.FontFactory.HELVETICA, 9f);
+                    foreach (CLDimensionalValue dimension in drawing.Dimensions)
+                    {
+                        string label = dimension.Code == "A" ? "L" :
+                            dimension.Code == "B" ? "W" :
+                            dimension.Code == "C" ? "H" : "D";
+                        var labelCell = new iTextSharp.text.pdf.PdfPCell(
+                            new iTextSharp.text.Phrase(label, labelFont));
+                        labelCell.BackgroundColor = new iTextSharp.text.BaseColor(237, 243, 240);
+                        labelCell.Padding = 5f;
+                        var valueCell = new iTextSharp.text.pdf.PdfPCell(
+                            new iTextSharp.text.Phrase(
+                                dimension.ValueMillimeters.HasValue
+                                    ? dimension.ValueMillimeters.Value.ToString("0", CultureInfo.InvariantCulture) + " mm"
+                                    : "-",
+                                valueFont));
+                        valueCell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
+                        valueCell.Padding = 5f;
+                        legend.AddCell(labelCell);
+                        legend.AddCell(valueCell);
+                    }
+                    legend.WriteSelectedRows(
+                        0,
+                        -1,
+                        pageSize.Width - document.RightMargin - legend.TotalWidth,
+                        document.BottomMargin + legendHeight - 4f,
+                        writer.DirectContent);
+                }
+                finally
+                {
+                    document.Close();
+                }
+            }
+        }
+
         private void CompleteScreenshotWithError(Exception exception)
         {
             ScreenshotExitCode = 3;
@@ -1443,6 +1605,9 @@ namespace SSW
                         payload = CLDimensionalDrawingService.Resolve(
                             TextValue(request.Payload, "modelCode"),
                             TextValue(request.Payload, "layoutCode"));
+                        break;
+                    case "drawing.download":
+                        payload = DownloadDimensionalDrawing(request.Payload);
                         break;
                     case "notifications.open":
                     case "notifications.list":

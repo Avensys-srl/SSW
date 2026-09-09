@@ -314,6 +314,13 @@ button { color: inherit; }
   box-shadow: inset 3px 0 0 #c9363f;
 }
 .step-button.attention:hover { background: #ffe7e7; }
+.step-button.skipped,
+.step-button.complete.skipped {
+  color: var(--warning);
+  background: var(--warning-bg);
+  box-shadow: inset 3px 0 0 var(--warning);
+}
+.step-button.skipped:hover { background: #ffefd0; }
 .step-index {
   display: inline-grid; place-items: center; width: 24px; height: 24px;
   border: 1px solid var(--line-strong); border-radius: 50%; color: var(--muted); font-size: 11px; font-weight: 700;
@@ -326,6 +333,12 @@ button { color: inherit; }
   background: #c9363f;
 }
 .step-button.complete .step-index { color: var(--success); border-color: #8cc8ae; background: var(--success-bg); }
+.step-button.skipped .step-index,
+.step-button.complete.skipped .step-index {
+  color: #fff;
+  border-color: var(--warning);
+  background: var(--warning);
+}
 .step-button strong { display: block; font-size: 13px; }
 .step-button small { display: block; margin-top: 2px; color: var(--muted); font-size: 10px; }
 .showcase-link {
@@ -971,6 +984,16 @@ input:disabled, select:disabled {
 }
 
 .layout-heading-actions { display: flex; align-items: center; gap: 8px; }
+.layout-confirmation-warning {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 9px;
+  color: var(--danger);
+  font-size: 11px;
+  font-weight: 700;
+}
+.dimensional-dialog-actions { display: flex; align-items: center; gap: 8px; }
 .dimensional-drawing-dialog {
   width: min(1180px, 100%);
   max-height: calc(100vh - 48px);

@@ -320,4 +320,8 @@ export class MockSelectionBridge implements SelectionBridge {
       ],
     };
   }
+
+  async downloadDimensionalDrawing() {
+    return { saved: true, fileName: "dimensional-drawing.pdf" };
+  }
 }

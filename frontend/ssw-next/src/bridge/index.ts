@@ -385,6 +385,17 @@ class NativeSelectionBridge implements SelectionBridge {
     } as DimensionalDrawingState;
   }
 
+  async downloadDimensionalDrawing(draft: SelectionDraft, imageBase64: string) {
+    return nativeInvoke<{ saved: boolean; cancelled?: boolean; fileName?: string }>(
+      "drawing.download",
+      {
+        modelCode: draft.selectedUnitId,
+        layoutCode: draft.layoutCode,
+        imageBase64,
+      },
+    );
+  }
+
   async listNotifications() {
     return nativeInvoke<FollowUpCenterState>("notifications.list");
   }
