@@ -45,6 +45,10 @@ Le etichette dei pannelli di accesso superiore e inferiore aderiscono al bordo m
 rimangono interamente dentro la sagoma. Nei layout SSC piani i quattro boccagli
 circolari condividono la mezzeria orizzontale della macchina.
 
+Nei soli layout SSC piani il nome dell'unita viene allontanato dall'etichetta del
+pannello: verso l'alto per l'accesso inferiore e verso il basso per l'accesso
+superiore. Entrambe le scritte restano interne senza sovrapporsi.
+
 ## Verifiche
 
 - `npm run build` nel frontend.

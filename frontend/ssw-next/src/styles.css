@@ -642,6 +642,8 @@ input:disabled, select:disabled {
 .connection-ssc.ssc-flat-floor .duct-marker { top: 50%; bottom: auto; }
 .connection-ssc:not(.ssc-upright-floor) .ahu-plan strong { top: auto; bottom: 14px; }
 .connection-ssc.ssc-flat-floor .ahu-plan strong { top: 14px; bottom: auto; }
+.connection-ssc:not(.ssc-upright-floor) .ahu-plan.access-lower strong { top: auto; bottom: 32px; }
+.connection-ssc:not(.ssc-upright-floor) .ahu-plan.access-upper strong { top: 32px; bottom: auto; }
 .connection-ssc.ssc-upright-floor .duct-marker {
   display: block;
   top: -28px;
