@@ -481,6 +481,10 @@ namespace SSW
             }
             CLSelectionProjectDocument document =
                 CLNextUiApplicationService.CreateProjectDocument(documentInput);
+            if (document.Selection.DimensionalDrawing == null ||
+                document.Selection.DimensionalDrawing.Dimensions == null ||
+                document.Selection.DimensionalDrawing.Dimensions.Count != 4)
+                return 72;
             if (!HasValidAccessoryReport(document, reportCoil != null)) return 51;
             if (document.Selection.Unit.Code != reportModel.Code ||
                 String.IsNullOrWhiteSpace(document.Selection.Unit.ManagementCode) ||
@@ -493,6 +497,9 @@ namespace SSW
                 restoredDocument.Selection.ProjectName != "Smoke" ||
                 restoredDocument.Selection.InstallationMode != documentInput.InstallationMode ||
                 restoredDocument.Selection.LayoutCode != documentInput.LayoutCode ||
+                restoredDocument.Selection.DimensionalDrawing == null ||
+                restoredDocument.Selection.DimensionalDrawing.Dimensions == null ||
+                restoredDocument.Selection.DimensionalDrawing.Dimensions.Count != 4 ||
                 restoredDocument.Selection.Sound == null ||
                 !restoredDocument.Selection.Sound.IncludeInReport ||
                 restoredDocument.Selection.Sound.Directivity != 4 ||

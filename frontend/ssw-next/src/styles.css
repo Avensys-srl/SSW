@@ -986,25 +986,74 @@ input:disabled, select:disabled {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 220px;
   gap: 18px;
-  min-height: 560px;
   margin-top: 18px;
 }
-.dimensional-pdf-frame {
-  min-height: 560px;
+.dimensional-image-frame {
+  display: grid;
+  min-height: 320px;
+  place-items: center;
   overflow: hidden;
   border: 1px solid var(--line);
   background: #fff;
 }
-.dimensional-pdf-frame object { display: block; width: 100%; height: 100%; min-height: 560px; }
+.dimensional-image-frame.large { min-height: 560px; }
+.dimensional-image-frame img,
+.dimensional-image-frame canvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
 .dimensional-values { padding: 14px; border-left: 1px solid var(--line); }
-.dimensional-values > strong, .dimensional-values > small { display: block; }
-.dimensional-values > small { margin-top: 4px; color: var(--muted); }
-.dimensional-values table { width: 100%; margin-top: 18px; border-collapse: collapse; }
+.dimensional-values table { width: 100%; border-collapse: collapse; }
 .dimensional-values th, .dimensional-values td { padding: 11px 5px; border-bottom: 1px solid var(--line); text-align: left; }
 .dimensional-values td { text-align: right; font-weight: 700; }
+.dimensional-inline-panel { grid-column: 1 / -1; }
+.dimensional-inline-content {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 18px;
+  align-items: stretch;
+}
+.dimensional-inline-preview {
+  display: grid;
+  min-height: 180px;
+  max-height: 230px;
+  padding: 0;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: #fff;
+  cursor: zoom-in;
+}
+.dimensional-inline-preview:hover { border-color: var(--action); }
+.dimensional-inline-preview img,
+.dimensional-inline-preview canvas {
+  display: block;
+  max-width: 100%;
+  max-height: 210px;
+  object-fit: contain;
+}
+.dimensional-values.compact {
+  align-self: center;
+  padding: 0 8px 0 18px;
+}
+.dimensional-values.compact th,
+.dimensional-values.compact td { padding: 8px 5px; }
+.dimensional-inline-loading {
+  display: flex;
+  min-height: 180px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--muted);
+}
+.dimensional-inline-loading .lucide-loader-circle { animation: spin 0.85s linear infinite; }
 @media (max-width: 900px) {
   .dimensional-drawing-content { grid-template-columns: 1fr; }
   .dimensional-values { border-left: 0; border-top: 1px solid var(--line); }
+  .dimensional-inline-content { grid-template-columns: 1fr; }
+  .dimensional-values.compact { border-top: 1px solid var(--line); }
 }
 
 .help-dialog .panel-heading {

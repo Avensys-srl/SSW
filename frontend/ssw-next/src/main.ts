@@ -39,6 +39,7 @@ import {
   Wind,
   Zap,
 } from "lucide";
+import pdfWorkerUrl from "pdfjs-dist/build/pdf.worker.min.mjs?url";
 import "./styles.css";
 import { createBridge, logClientError, runtimeName } from "./bridge";
 import { normalizeSelection } from "./bridge/normalizeSelection";
@@ -164,6 +165,11 @@ let productDocuments: ProductDocumentState | null = null;
 let productDocumentsLoading = false;
 let dimensionalDrawing: DimensionalDrawingState | null = null;
 let dimensionalDrawingOpen = false;
+let dimensionalDrawingLoading = false;
+let dimensionalDrawingKey = "";
+let dimensionalPreviewImage = "";
+let dimensionalLargeImage = "";
+let dimensionalRenderVersion = 0;
 let tooltipsEnabled =
   window.localStorage.getItem("ssw-next.help-tooltips") !== "false";
 
@@ -250,10 +256,22 @@ const documentBusyTexts: Record<string, DocumentBusyText> = {
 const documentBusyText = (): DocumentBusyText =>
   documentBusyTexts[languageCode()] ?? documentBusyTexts.en;
 
+const renderDimensionalValues = (drawing: DimensionalDrawingState): string => {
+  const labels: Record<string, string> = { A: "L", B: "W", C: "H", D: "D" };
+  return `<table><tbody>${drawing.dimensions.map((item) => `<tr><th>${escapeHtml(item.code)} (${labels[item.code] ?? item.code})</th><td>${item.valueMillimeters == null ? "-" : `${formatNumber(item.valueMillimeters, 0)} mm`}</td></tr>`).join("")}</tbody></table>`;
+};
+
+const renderDimensionalSurface = (large: boolean): string => {
+  const image = large ? dimensionalLargeImage : dimensionalPreviewImage;
+  if (image) {
+    return `<img src="${image}" alt="${escapeHtml(messages().ui.documents.dimensionalDrawing)}" />`;
+  }
+  return `<canvas data-dimensional-canvas="${large ? "large" : "preview"}" aria-label="${escapeHtml(messages().ui.documents.dimensionalDrawing)}"></canvas>`;
+};
+
 const renderDimensionalDrawing = (): string => {
   if (!dimensionalDrawingOpen || !dimensionalDrawing) return "";
   const text = messages();
-  const labels: Record<string, string> = { A: "L", B: "W", C: "H", D: "D" };
   const drawing = dimensionalDrawing;
   return `<div class="modal-backdrop" data-action="close-dimensional-drawing">
     <section class="dimensional-drawing-dialog" role="dialog" aria-modal="true" aria-labelledby="dimensional-drawing-title">
@@ -265,19 +283,37 @@ const renderDimensionalDrawing = (): string => {
         <button class="icon-button bordered" data-action="close-dimensional-drawing" aria-label="${escapeHtml(text.actions.close)}">${icon("circle-x")}</button>
       </header>
       <div class="dimensional-drawing-content">
-        <div class="dimensional-pdf-frame">
+        <div class="dimensional-image-frame large">
           ${drawing.available && drawing.contentBase64
-            ? `<object type="application/pdf" data="data:${escapeHtml(drawing.mimeType ?? "application/pdf")};base64,${drawing.contentBase64}" aria-label="${escapeHtml(text.ui.documents.dimensionalDrawing)}"></object>`
+            ? renderDimensionalSurface(true)
             : `<div class="empty-state">${escapeHtml(text.status.unavailable)}</div>`}
         </div>
         <aside class="dimensional-values">
-          <strong>${escapeHtml(drawing.code ?? text.ui.documents.dimensionalDrawing)}</strong>
-          <small>${drawing.revision ? `rev. ${escapeHtml(drawing.revision)}` : ""}</small>
-          <table><tbody>${drawing.dimensions.map((item) => `<tr><th>${escapeHtml(item.code)} (${labels[item.code] ?? item.code})</th><td>${item.valueMillimeters == null ? "-" : `${formatNumber(item.valueMillimeters, 0)} mm`}</td></tr>`).join("")}</tbody></table>
+          ${renderDimensionalValues(drawing)}
         </aside>
       </div>
     </section>
   </div>`;
+};
+
+const renderInlineDimensionalDrawing = (): string => {
+  const text = messages();
+  const drawing = dimensionalDrawing;
+  return `<section class="panel dimensional-inline-panel">
+    <div class="panel-heading compact">
+      <div><h2>${escapeHtml(text.ui.documents.dimensionalDrawing)}</h2><p>${escapeHtml(text.ui.documents.dimensionalDrawingDescription)}</p></div>
+    </div>
+    ${dimensionalDrawingLoading || !drawing
+      ? `<div class="dimensional-inline-loading">${icon("loader-circle")} ${escapeHtml(text.status.calculating)}</div>`
+      : `<div class="dimensional-inline-content">
+          <button class="dimensional-inline-preview" type="button" data-action="open-dimensional-drawing" ${drawing.available ? "" : "disabled"}>
+            ${drawing.available && drawing.contentBase64
+              ? renderDimensionalSurface(false)
+              : `<span class="empty-state">${escapeHtml(text.status.unavailable)}</span>`}
+          </button>
+          <div class="dimensional-values compact">${renderDimensionalValues(drawing)}</div>
+        </div>`}
+  </section>`;
 };
 
 type MultiProjectText = {
@@ -974,6 +1010,8 @@ const renderShell = (): void => {
   `;
   bindShellEvents();
   renderIcons();
+  if (currentStep === "installation") void ensureDimensionalDrawing();
+  void renderDimensionalCanvases();
 };
 
 const statusLabel = (status: SelectionResult["status"]): string =>
@@ -1434,7 +1472,6 @@ const renderInstallationStep = (): string => {
         <div><h2>${escapeHtml(text.ui.installation.orientationTitle)}</h2><p>${escapeHtml(text.ui.installation.previewDescription)} ${escapeHtml(draft!.layoutCode)}.</p></div>
         <div class="layout-heading-actions">
           <span class="outline-badge">${escapeHtml(accessSurfaceLabel(surface))}</span>
-          <button class="icon-button bordered" type="button" data-action="open-dimensional-drawing" title="${escapeHtml(text.ui.documents.dimensionalDrawing)}">${icon("ruler")}</button>
         </div>
       </div>
       ${compatibleLayouts.length > 0 ? `<div class="airflow-diagram ${connectionClass}">
@@ -1450,6 +1487,7 @@ const renderInstallationStep = (): string => {
         </div>
       </div>` : `<div class="empty-state">${escapeHtml(text.status.unavailable)}</div>`}
     </section>
+    ${renderInlineDimensionalDrawing()}
   </div>`;
 };
 
@@ -2086,6 +2124,88 @@ const relationInstallationLabel = (installation: string): string =>
     ? messages().domain.installation.internal
     : messages().domain.installation.external;
 
+const currentDimensionalDrawingKey = (): string =>
+  `${draft?.selectedUnitId ?? ""}|${draft?.layoutCode ?? ""}`;
+
+const ensureDimensionalDrawing = async (): Promise<void> => {
+  if (!draft || currentStep !== "installation") return;
+  const key = currentDimensionalDrawingKey();
+  if (!key || dimensionalDrawingKey === key) return;
+
+  dimensionalDrawingKey = key;
+  dimensionalDrawing = null;
+  dimensionalDrawingLoading = true;
+  dimensionalPreviewImage = "";
+  dimensionalLargeImage = "";
+  dimensionalRenderVersion++;
+  renderShell();
+  try {
+    const resolved = await bridge.getDimensionalDrawing(structuredClone(draft));
+    if (key !== currentDimensionalDrawingKey()) return;
+    dimensionalDrawing = resolved;
+  } catch (error) {
+    if (key === currentDimensionalDrawingKey()) {
+      logClientError(error);
+      toastMessage = error instanceof Error ? error.message : String(error);
+    }
+  } finally {
+    if (key === currentDimensionalDrawingKey()) {
+      dimensionalDrawingLoading = false;
+      renderShell();
+    }
+  }
+};
+
+const renderDimensionalCanvases = async (): Promise<void> => {
+  const drawing = dimensionalDrawing;
+  if (!drawing?.available || !drawing.contentBase64) return;
+  const canvases = Array.from(
+    document.querySelectorAll<HTMLCanvasElement>("[data-dimensional-canvas]"),
+  );
+  if (canvases.length === 0) return;
+
+  const version = ++dimensionalRenderVersion;
+  try {
+    const pdfjs = await import("pdfjs-dist");
+    pdfjs.GlobalWorkerOptions.workerSrc = pdfWorkerUrl;
+    const binary = window.atob(drawing.contentBase64);
+    const bytes = Uint8Array.from(binary, (character) => character.charCodeAt(0));
+    const pdf = await pdfjs.getDocument({ data: bytes }).promise;
+    const page = await pdf.getPage(1);
+    const baseViewport = page.getViewport({ scale: 1 });
+    for (const canvas of canvases) {
+      if (!canvas.isConnected || version !== dimensionalRenderVersion) return;
+      const large = canvas.dataset.dimensionalCanvas === "large";
+      const maximumWidth = Math.max(
+        320,
+        Math.min(large ? 1320 : 760, canvas.parentElement?.clientWidth ?? 760),
+      );
+      const maximumHeight = large ? 760 : 210;
+      const cssScale = Math.min(
+        maximumWidth / baseViewport.width,
+        maximumHeight / baseViewport.height,
+      );
+      const pixelRatio = Math.min(2, window.devicePixelRatio || 1);
+      const viewport = page.getViewport({
+        scale: cssScale * pixelRatio,
+      });
+      canvas.width = Math.ceil(viewport.width);
+      canvas.height = Math.ceil(viewport.height);
+      canvas.style.width = `${Math.round(viewport.width / pixelRatio)}px`;
+      canvas.style.height = `${Math.round(viewport.height / pixelRatio)}px`;
+      const context = canvas.getContext("2d", { alpha: false });
+      if (!context) continue;
+      await page.render({ canvas, canvasContext: context, viewport }).promise;
+      const rendered = canvas.toDataURL("image/png");
+      if (large) dimensionalLargeImage = rendered;
+      else dimensionalPreviewImage = rendered;
+    }
+    await pdf.destroy();
+  } catch (error) {
+    logClientError(error);
+  }
+};
+
 const bindShellEvents = (): void => {
   document.querySelectorAll<HTMLElement>("[data-step]").forEach((element) => {
     element.addEventListener("click", async () => {
@@ -2222,18 +2342,10 @@ const bindShellEvents = (): void => {
   document.querySelector<HTMLElement>('[data-action="open-selection"]')?.addEventListener("click", openDraft);
   document.querySelector<HTMLElement>('[data-action="report"]')?.addEventListener("click", generateReport);
   document.querySelector<HTMLElement>('[data-action="open-dimensional-drawing"]')?.addEventListener("click", async () => {
-    busyMessage = documentBusyText().opening;
+    await ensureDimensionalDrawing();
+    if (!dimensionalDrawing?.available) return;
+    dimensionalDrawingOpen = true;
     renderShell();
-    try {
-      dimensionalDrawing = await bridge.getDimensionalDrawing(structuredClone(draft!));
-      dimensionalDrawingOpen = true;
-    } catch (error) {
-      logClientError(error);
-      toastMessage = error instanceof Error ? error.message : String(error);
-    } finally {
-      busyMessage = null;
-      renderShell();
-    }
   });
   document.querySelectorAll<HTMLElement>('[data-action="close-dimensional-drawing"]').forEach((element) => {
     element.addEventListener("click", (event) => {

@@ -114,8 +114,12 @@ definire la migrazione dei file storici senza alterarli silenziosamente.
   modelli della serie PRIME presenti nel database centrale.
 - CLDataCentralLib exporter 1.4.0 pubblica schema SDF 5 e feature
   `DimensionalDrawings`, includendo solo asset attivi raggiungibili.
-- SSW 1.3.0.57 risolve l'override H/V prima del fallback B, carica il PDF solo
-  su richiesta e mostra A/L, B/W, C/H e D senza inventare valori mancanti.
+- SSW 1.3.0.58 risolve l'override H/V prima del fallback B, renderizza la prima
+  pagina PDF come immagine integrata nella schermata Installazione e mostra
+  A/L, B/W, C/H e D senza inventare valori mancanti. Il clic sull'anteprima
+  apre la stessa immagine ingrandita, senza toolbar o nome file.
+- Il formato selezione 3 conserva nello snapshot orientamento, riferimento
+  tecnico dell'asset, hash e quote A/B/C/D. Non incorpora il PDF nel progetto.
 - Il PDF campione e' versionato in
   `documents/assets/dimensional/CLRC_Prime_30_V7.2_BD.pdf` nel repository
   Explorer; nell'SDF viene memorizzato una sola volta e riusato per relazione.

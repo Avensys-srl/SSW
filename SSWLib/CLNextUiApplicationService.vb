@@ -375,6 +375,20 @@ Public NotInheritable Class CLNextUiApplicationService
                 CLEnvironment.Current.GetCustomerSerieName(model.CLSerie)),
             .Name = CLEnvironment.Current.GetCustomerHeatRecoveryModelName(model)
         }
+        Dim dimensionalDrawing = CLDimensionalDrawingService.Resolve(
+            model.Code, chosenLayout.Code, False)
+        document.Selection.DimensionalDrawing = New CLDimensionalDrawingSelection With {
+            .Available = dimensionalDrawing.Available,
+            .AssetCode = dimensionalDrawing.Code,
+            .Revision = dimensionalDrawing.Revision,
+            .ContentHash = dimensionalDrawing.Sha256,
+            .Orientation = dimensionalDrawing.Orientation,
+            .Dimensions = dimensionalDrawing.Dimensions.Select(Function(item) _
+                New CLDimensionalSelectionValue With {
+                    .Code = item.Code,
+                    .ValueMillimeters = item.ValueMillimeters
+                }).ToList()
+        }
         document.Selection.Winter = MapScenario(
             "Winter", True, input.SupplyAirflowM3h, input.ExtractAirflowM3h,
             input.PressurePa, input.RegulationPercent,
@@ -561,6 +575,11 @@ Public NotInheritable Class CLNextUiApplicationService
         If document.Selection.Accessories IsNot Nothing AndAlso
             document.Selection.Accessories.Count > 0 Then
             document.Features.Add("AccessoriesAndControlFunctions")
+        End If
+        If document.Selection.DimensionalDrawing IsNot Nothing AndAlso
+            document.Selection.DimensionalDrawing.Dimensions IsNot Nothing AndAlso
+            document.Selection.DimensionalDrawing.Dimensions.Count > 0 Then
+            document.Features.Add("DimensionalDrawing")
         End If
         CLSelectionSnapshotService.Refresh(document)
     End Sub

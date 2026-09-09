@@ -26,7 +26,8 @@ Public NotInheritable Class CLDimensionalDrawingService
     End Sub
 
     Public Shared Function Resolve(modelCode As String,
-        configurationCode As String) As CLDimensionalDrawingResult
+        configurationCode As String,
+        Optional includeContent As Boolean = True) As CLDimensionalDrawingResult
 
         Dim result As New CLDimensionalDrawingResult()
         If CLEnvironment.Current Is Nothing OrElse String.IsNullOrWhiteSpace(modelCode) Then
@@ -106,7 +107,7 @@ Public NotInheritable Class CLDimensionalDrawingService
                             "Multiple dimensional drawings are active for model " & modelCode &
                             " and orientation " & preferredScope & ".")
                     End If
-                    ApplyDrawing(result, preferred(0))
+                    ApplyDrawing(result, preferred(0), includeContent)
                 End Using
             End Using
         End Using
@@ -114,7 +115,8 @@ Public NotInheritable Class CLDimensionalDrawingService
     End Function
 
     Private Shared Sub ApplyDrawing(result As CLDimensionalDrawingResult,
-        row As DrawingRow)
+        row As DrawingRow,
+        includeContent As Boolean)
 
         If Not String.Equals(row.MimeType, "application/pdf",
             StringComparison.OrdinalIgnoreCase) OrElse row.Content Is Nothing OrElse
@@ -138,7 +140,9 @@ Public NotInheritable Class CLDimensionalDrawingService
         result.PageWidthPoints = row.PageWidthPoints
         result.PageHeightPoints = row.PageHeightPoints
         result.PageRotation = row.PageRotation
-        result.ContentBase64 = Convert.ToBase64String(row.Content)
+        If includeContent Then
+            result.ContentBase64 = Convert.ToBase64String(row.Content)
+        End If
     End Sub
 
     Private Shared Function TableExists(connection As SqlCeConnection,

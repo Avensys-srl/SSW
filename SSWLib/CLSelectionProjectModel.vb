@@ -86,6 +86,7 @@ Public NotInheritable Class CLTechnicalSelection
     Public Property LayoutCode As String
     Public Property ImbalanceEnabled As Boolean
     Public Property Unit As New CLSelectionEntityReference()
+    Public Property DimensionalDrawing As New CLDimensionalDrawingSelection()
     Public Property Winter As New CLOperatingScenarioInput With {.Enabled = True, .ScenarioCode = "Winter"}
     Public Property Summer As New CLOperatingScenarioInput With {.Enabled = False, .ScenarioCode = "Summer"}
     Public Property WaterCoil As New CLWaterCoilSelection()
@@ -96,6 +97,20 @@ Public NotInheritable Class CLTechnicalSelection
     Public Property Co2 As New CLCo2Selection()
     Public Property Report As New CLReportSelectionOptions()
 
+End Class
+
+Public NotInheritable Class CLDimensionalDrawingSelection
+    Public Property Available As Boolean
+    Public Property AssetCode As String
+    Public Property Revision As String
+    Public Property ContentHash As String
+    Public Property Orientation As String
+    Public Property Dimensions As New List(Of CLDimensionalSelectionValue)()
+End Class
+
+Public NotInheritable Class CLDimensionalSelectionValue
+    Public Property Code As String
+    Public Property ValueMillimeters As Double?
 End Class
 
 Public NotInheritable Class CLPreselectionFilterSelection

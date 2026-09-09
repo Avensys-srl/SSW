@@ -221,6 +221,15 @@ Public NotInheritable Class CLSelectionProjectSerializer
             document.Selection.Unit = New CLSelectionEntityReference()
             changed = True
         End If
+        If document.Selection.DimensionalDrawing Is Nothing Then
+            document.Selection.DimensionalDrawing = New CLDimensionalDrawingSelection()
+            changed = True
+        End If
+        If document.Selection.DimensionalDrawing.Dimensions Is Nothing Then
+            document.Selection.DimensionalDrawing.Dimensions =
+                New List(Of CLDimensionalSelectionValue)()
+            changed = True
+        End If
         If document.Selection.Winter Is Nothing Then
             document.Selection.Winter = New CLOperatingScenarioInput With {.Enabled = True, .ScenarioCode = "Winter"}
             changed = True
@@ -309,8 +318,34 @@ Public NotInheritable Class CLSelectionProjectSerializer
             Throw New InvalidDataException("The envelope and calculation version blocks are inconsistent.")
         End If
         ValidateAccessories(document.Selection.Accessories)
+        ValidateDimensionalDrawing(document.Selection.DimensionalDrawing)
         ValidateRevisionTracking(document.RevisionTracking)
 
+    End Sub
+
+    Private Shared Sub ValidateDimensionalDrawing(
+        drawing As CLDimensionalDrawingSelection)
+
+        If drawing Is Nothing OrElse drawing.Dimensions Is Nothing Then
+            Throw New InvalidDataException("The dimensional drawing block is missing.")
+        End If
+        If drawing.Dimensions.Count = 0 Then Return
+        Dim expectedCodes = New HashSet(Of String)(
+            New String() {"A", "B", "C", "D"},
+            StringComparer.OrdinalIgnoreCase)
+        If drawing.Dimensions.Count <> expectedCodes.Count OrElse
+            drawing.Dimensions.Any(Function(item) item Is Nothing OrElse
+                String.IsNullOrWhiteSpace(item.Code) OrElse
+                Not expectedCodes.Remove(item.Code.Trim()) OrElse
+                (item.ValueMillimeters.HasValue AndAlso
+                 item.ValueMillimeters.Value <= 0)) Then
+            Throw New InvalidDataException("The dimensional values are invalid.")
+        End If
+        If drawing.Available AndAlso
+            (String.IsNullOrWhiteSpace(drawing.AssetCode) OrElse
+             Not CLSelectionSnapshotService.IsValidHash(drawing.ContentHash)) Then
+            Throw New InvalidDataException("The dimensional drawing reference is invalid.")
+        End If
     End Sub
 
     Private Shared Sub ValidateAccessories(accessories As List(Of CLAccessorySelection))
@@ -391,6 +426,9 @@ Friend NotInheritable Class CLSelectionMigrationRunner
                 Case 1
                     currentJson = MigrateV1ToV2(currentJson)
                     currentVersion = 2
+                Case 2
+                    currentJson = MigrateV2ToV3(currentJson)
+                    currentVersion = 3
                 Case Else
                     Throw New NotSupportedException(String.Format(
                         "No migration is registered from selection format {0} to {1}.",
@@ -403,6 +441,17 @@ Friend NotInheritable Class CLSelectionMigrationRunner
             .Json = currentJson,
             .WasMigrated = currentVersion <> sourceVersion
         }
+    End Function
+
+    Private Shared Function MigrateV2ToV3(json As String) As String
+        Dim document = JsonSerializer.Deserialize(Of CLSelectionProjectDocument)(json, MigrationOptions)
+        If document Is Nothing OrElse document.Selection Is Nothing OrElse document.Versions Is Nothing Then
+            Throw New InvalidDataException("Selection format 2 cannot be migrated because required blocks are missing.")
+        End If
+        document.SelectionFormatVersion = 3
+        document.Versions.SelectionFormatVersion = 3
+        document.Selection.DimensionalDrawing = New CLDimensionalDrawingSelection()
+        Return JsonSerializer.Serialize(document, MigrationOptions)
     End Function
 
     Private Shared Function MigrateV1ToV2(json As String) As String
