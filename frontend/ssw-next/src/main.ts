@@ -1535,7 +1535,7 @@ const renderInstallationStep = (): string => {
         </div>
       </div>
       ${compatibleLayouts.length > 0 && !calculating && !calculationFailed ? `<div class="airflow-layout-body">
-        <div class="airflow-diagram ${connectionClass}">
+        <div class="airflow-diagram ${connectionClass}" data-layout="${escapeHtml(draft!.layoutCode)}">
           ${renderFlowPorts()}
           <div class="ahu-plan access-${surface}">
             ${[1, 2, 3, 4].map((position) => `<span data-port="${position}" class="duct-marker duct-position-${airflowSlot(position, isSameSideConnection(), isOppositeSideEastWestWall())} duct-${result!.flowPorts?.find((port) => port.position === position)?.flowCode.toLowerCase()}" aria-hidden="true"><b>${position}</b></span>`).join("")}

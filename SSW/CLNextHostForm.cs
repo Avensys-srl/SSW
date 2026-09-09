@@ -1212,13 +1212,17 @@ namespace SSW
                                 "document.querySelector('.airflow-diagram') !== null && document.querySelector('#layoutCode').value === " + new JavaScriptSerializer().Serialize(code) +
                                 " && new Set(Array.from(document.querySelectorAll('.flow')).map(p=>p.dataset.flow)).size === 4",
                                 "Configuration transition did not settle: " + code);
+                            string airflowGeometry = await webView.CoreWebView2.ExecuteScriptAsync(
+                                "JSON.stringify(Array.from(document.querySelectorAll('.flow[data-port]')).map(function(f){" +
+                                "var m=document.querySelector('.duct-marker[data-port=\"'+f.dataset.port+'\"]'),fr=f.getBoundingClientRect(),mr=m.getBoundingClientRect();" +
+                                "return {port:f.dataset.port,flowX:fr.left,flowY:fr.top,ductX:mr.left+mr.width/2,ductY:mr.top+mr.height/2};}))");
                             await WaitForConditionAsync(
                                 "(function(){var d=document.querySelector('.airflow-diagram');if(!d)return false;var horizontal=d.classList.contains('wall-east-west');" +
                                 "return Array.from(document.querySelectorAll('.flow[data-port]')).every(function(f){" +
                                 "var m=document.querySelector('.duct-marker[data-port=\"'+f.dataset.port+'\"]');if(!m)return false;" +
                                 "var fr=f.getBoundingClientRect(),mr=m.getBoundingClientRect();" +
                                 "return Math.abs((horizontal?fr.top:fr.left)-(horizontal?(mr.top+mr.height/2):(mr.left+mr.width/2)))<=1;});})()",
-                                "Airflow symbol alignment failed: " + code);
+                                "Airflow symbol alignment failed: " + code + " " + airflowGeometry);
                         }
                     }
                     WindowState = FormWindowState.Normal;
