@@ -97,20 +97,25 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
             unitRectangle = New RectangleF(220, 205, 1160, 150)
         End If
 
-        Using unitBrush As New SolidBrush(Color.FromArgb(232, 237, 243)),
-              unitPen As New Pen(Color.FromArgb(110, 130, 151), 3.0F),
+        Using unitBrush As New SolidBrush(Color.FromArgb(240, 243, 243)),
+              unitPen As New Pen(Color.FromArgb(132, 149, 146), 3.0F),
               ductPen As New Pen(Color.FromArgb(39, 53, 68), 3.0F),
               accessFont As New Font("Arial", 10.0F, FontStyle.Regular)
 
             graphics.FillRectangle(unitBrush, unitRectangle)
             graphics.DrawRectangle(unitPen, unitRectangle.X, unitRectangle.Y,
                 unitRectangle.Width, unitRectangle.Height)
-            DrawExchanger(graphics, unitRectangle)
+            Using seamPen As New Pen(Color.FromArgb(210, 220, 218), 1.5F)
+                graphics.DrawRectangle(seamPen, unitRectangle.X + 13,
+                    unitRectangle.Y + 13, unitRectangle.Width - 26, unitRectangle.Height - 26)
+            End Using
 
             Dim ports = BuildPortPlacements(snapshot, unitRectangle, sameSide,
                 uprightSameSide, flatFloorSameSide, eastWestWall, installationMode)
             For Each placement In ports
-                DrawPort(graphics, placement, ductPen)
+                Using flowPen As New Pen(FlowColor(placement.FlowCode), 3.0F)
+                    DrawPort(graphics, placement, flowPen)
+                End Using
             Next
 
             DrawAccessPanel(graphics, unitRectangle, accessFont,
@@ -153,7 +158,7 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
             For index = 0 To ordered.Count - 1
                 Dim x = unitRectangle.Left + unitRectangle.Width * sameSidePositions(index)
                 result.Add(New PortPlacement(ordered(index).FlowCode, edge,
-                    New PointF(x, centerY), faceOn))
+                    New PointF(x, centerY), faceOn, ordered(index).Position.Value))
             Next
             Return result
         End If
@@ -162,29 +167,29 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
             Dim points = {
                 New Tuple(Of PortEdge, PointF)(PortEdge.Left,
                     New PointF(unitRectangle.Left, unitRectangle.Top + unitRectangle.Height * 0.32F)),
-                New Tuple(Of PortEdge, PointF)(PortEdge.Right,
-                    New PointF(unitRectangle.Right, unitRectangle.Top + unitRectangle.Height * 0.32F)),
                 New Tuple(Of PortEdge, PointF)(PortEdge.Left,
                     New PointF(unitRectangle.Left, unitRectangle.Top + unitRectangle.Height * 0.72F)),
+                New Tuple(Of PortEdge, PointF)(PortEdge.Right,
+                    New PointF(unitRectangle.Right, unitRectangle.Top + unitRectangle.Height * 0.32F)),
                 New Tuple(Of PortEdge, PointF)(PortEdge.Right,
                     New PointF(unitRectangle.Right, unitRectangle.Top + unitRectangle.Height * 0.72F))}
             For index = 0 To Math.Min(ordered.Count, points.Length) - 1
                 result.Add(New PortPlacement(ordered(index).FlowCode,
-                    points(index).Item1, points(index).Item2, False))
+                    points(index).Item1, points(index).Item2, False, ordered(index).Position.Value))
             Next
             Return result
         End If
 
         Dim topBottom = {
-            New PointF(unitRectangle.Left + unitRectangle.Width * 0.24F, unitRectangle.Top),
-            New PointF(unitRectangle.Left + unitRectangle.Width * 0.76F, unitRectangle.Top),
             New PointF(unitRectangle.Left + unitRectangle.Width * 0.24F, unitRectangle.Bottom),
-            New PointF(unitRectangle.Left + unitRectangle.Width * 0.76F, unitRectangle.Bottom)}
+            New PointF(unitRectangle.Left + unitRectangle.Width * 0.76F, unitRectangle.Bottom),
+            New PointF(unitRectangle.Left + unitRectangle.Width * 0.24F, unitRectangle.Top),
+            New PointF(unitRectangle.Left + unitRectangle.Width * 0.76F, unitRectangle.Top)}
         For index = 0 To Math.Min(ordered.Count, topBottom.Length) - 1
-            Dim edge = If(index < 2, PortEdge.Top, PortEdge.Bottom)
+            Dim edge = If(index < 2, PortEdge.Bottom, PortEdge.Top)
             Dim faceOn = installationMode <> "wall"
             result.Add(New PortPlacement(ordered(index).FlowCode, edge,
-                topBottom(index), faceOn))
+                topBottom(index), faceOn, ordered(index).Position.Value, faceOn AndAlso index >= 2))
         Next
         Return result
     End Function
@@ -194,9 +199,18 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
 
         Const radius As Single = 30.0F
         Const ductLength As Single = 54.0F
+        Dim numberCenter = placement.Center
         If placement.FaceOn Then
-            graphics.DrawEllipse(ductPen, placement.Center.X - radius,
-                placement.Center.Y - radius, radius * 2, radius * 2)
+            If placement.Rear Then
+                graphics.DrawArc(ductPen, placement.Center.X - radius,
+                    placement.Center.Y - radius, radius * 2, radius * 2, 180, 180)
+                numberCenter.Y -= 14
+            Else
+                graphics.FillEllipse(Brushes.White, placement.Center.X - radius,
+                    placement.Center.Y - radius, radius * 2, radius * 2)
+                graphics.DrawEllipse(ductPen, placement.Center.X - radius,
+                    placement.Center.Y - radius, radius * 2, radius * 2)
+            End If
         Else
             Dim rectangle As RectangleF
             If placement.Edge = PortEdge.Left OrElse placement.Edge = PortEdge.Right Then
@@ -212,7 +226,12 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
             End If
             graphics.DrawRectangle(ductPen, rectangle.X, rectangle.Y,
                 rectangle.Width, rectangle.Height)
+            numberCenter = New PointF(rectangle.X + rectangle.Width / 2, rectangle.Y + rectangle.Height / 2)
         End If
+        Using numberFont As New Font("Arial", 8.0F), numberBrush As New SolidBrush(Color.FromArgb(82, 101, 96))
+            DrawCenteredText(graphics, placement.Number.ToString(), numberFont, numberBrush,
+                New RectangleF(numberCenter.X - 15, numberCenter.Y - 15, 30, 30))
+        End Using
         DrawFlowLabel(graphics, placement)
     End Sub
 
@@ -222,18 +241,19 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
             String.Equals(placement.FlowCode, "Return", StringComparison.OrdinalIgnoreCase)
         Dim color = FlowColor(placement.FlowCode)
         Dim label = FlowCaption(placement.FlowCode)
-        Using font As New Font("Arial", 10.0F, FontStyle.Bold),
+        Using font As New Font("Arial", 8.0F, FontStyle.Bold),
               brush As New SolidBrush(color),
               pen As New Pen(color, 3.0F)
             pen.CustomEndCap = New AdjustableArrowCap(5, 6, True)
             Dim p1 As PointF
             Dim p2 As PointF
             Dim textRectangle As RectangleF
+            Dim labelWidth = graphics.MeasureString(label, font).Width + 4.0F
             Select Case placement.Edge
                 Case PortEdge.Top
                     Dim topOuterY = placement.Center.Y - If(placement.FaceOn, 30.0F, 54.0F)
                     Dim topRowY = topOuterY - 55.0F
-                    Dim topArrowX = placement.Center.X - 92.0F
+                    Dim topArrowX = placement.Center.X - (labelWidth + 30.0F) / 2.0F
                     If incoming Then
                         p1 = New PointF(topArrowX, topRowY - 13.0F)
                         p2 = New PointF(topArrowX, topRowY + 13.0F)
@@ -241,12 +261,12 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
                         p1 = New PointF(topArrowX, topRowY + 13.0F)
                         p2 = New PointF(topArrowX, topRowY - 13.0F)
                     End If
-                    textRectangle = New RectangleF(placement.Center.X - 64,
-                        topRowY - 16.0F, 190, 32)
+                    textRectangle = New RectangleF(topArrowX + 30.0F,
+                        topRowY - 16.0F, labelWidth, 32)
                 Case PortEdge.Bottom
                     Dim bottomOuterY = placement.Center.Y + If(placement.FaceOn, 30.0F, 54.0F)
                     Dim bottomRowY = bottomOuterY + 55.0F
-                    Dim bottomArrowX = placement.Center.X - 92.0F
+                    Dim bottomArrowX = placement.Center.X - (labelWidth + 30.0F) / 2.0F
                     If incoming Then
                         p1 = New PointF(bottomArrowX, bottomRowY + 13.0F)
                         p2 = New PointF(bottomArrowX, bottomRowY - 13.0F)
@@ -254,34 +274,21 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
                         p1 = New PointF(bottomArrowX, bottomRowY - 13.0F)
                         p2 = New PointF(bottomArrowX, bottomRowY + 13.0F)
                     End If
-                    textRectangle = New RectangleF(placement.Center.X - 64,
-                        bottomRowY - 16.0F, 190, 32)
+                    textRectangle = New RectangleF(bottomArrowX + 30.0F,
+                        bottomRowY - 16.0F, labelWidth, 32)
                 Case PortEdge.Left
                     p1 = New PointF(placement.Center.X - 100, placement.Center.Y)
                     p2 = New PointF(p1.X + If(incoming, 26, -26), p1.Y)
-                    textRectangle = New RectangleF(placement.Center.X - 210,
-                        placement.Center.Y - 16, 100, 32)
+                    textRectangle = New RectangleF(placement.Center.X - 145 - labelWidth,
+                        placement.Center.Y - 16, labelWidth, 32)
                 Case Else
                     p1 = New PointF(placement.Center.X + 100, placement.Center.Y)
                     p2 = New PointF(p1.X - If(incoming, 26, -26), p1.Y)
-                    textRectangle = New RectangleF(placement.Center.X + 110,
-                        placement.Center.Y - 16, 150, 32)
+                    textRectangle = New RectangleF(placement.Center.X + 145,
+                        placement.Center.Y - 16, labelWidth, 32)
             End Select
             graphics.DrawLine(pen, p1, p2)
             graphics.DrawString(label, font, brush, textRectangle)
-        End Using
-    End Sub
-
-    Private Shared Sub DrawExchanger(graphics As Graphics, unitRectangle As RectangleF)
-        Dim centerX = unitRectangle.Left + unitRectangle.Width / 2.0F
-        Dim centerY = unitRectangle.Top + unitRectangle.Height / 2.0F
-        Dim points = {
-            New PointF(centerX, centerY - 34),
-            New PointF(centerX + 34, centerY),
-            New PointF(centerX, centerY + 34),
-            New PointF(centerX - 34, centerY)}
-        Using pen As New Pen(Color.FromArgb(110, 130, 151), 3.0F)
-            graphics.DrawPolygon(pen, points)
         End Using
     End Sub
 
@@ -402,17 +409,21 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
 
     Private NotInheritable Class PortPlacement
         Public Sub New(flowCode As String, edge As PortEdge,
-            center As PointF, faceOn As Boolean)
+            center As PointF, faceOn As Boolean, number As Integer, Optional rear As Boolean = False)
             Me.FlowCode = flowCode
             Me.Edge = edge
             Me.Center = center
             Me.FaceOn = faceOn
+            Me.Number = number
+            Me.Rear = rear
         End Sub
 
         Public ReadOnly Property FlowCode As String
         Public ReadOnly Property Edge As PortEdge
         Public ReadOnly Property Center As PointF
         Public ReadOnly Property FaceOn As Boolean
+        Public ReadOnly Property Number As Integer
+        Public ReadOnly Property Rear As Boolean
     End Class
 End Class
 

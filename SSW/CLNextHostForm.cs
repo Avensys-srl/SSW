@@ -1168,6 +1168,7 @@ namespace SSW
                     String.Equals(screenshotStep, "layout-review-accepted", StringComparison.OrdinalIgnoreCase);
                 bool needsConfiguredWorkflow =
                     String.Equals(screenshotStep, "layout", StringComparison.OrdinalIgnoreCase) ||
+                    String.Equals(screenshotStep, "layout-transitions", StringComparison.OrdinalIgnoreCase) ||
                     layoutReviewScenario ||
                     String.Equals(screenshotStep, "dimensional-drawing", StringComparison.OrdinalIgnoreCase) ||
                     String.Equals(screenshotStep, "co2", StringComparison.OrdinalIgnoreCase) ||
@@ -1190,6 +1191,32 @@ namespace SSW
                     await WaitForConditionAsync(
                         "document.querySelector('.layout-preview') !== null",
                         "The Layout view did not become ready.");
+                }
+
+                if (String.Equals(screenshotStep, "layout-transitions", StringComparison.OrdinalIgnoreCase))
+                {
+                    foreach (string mode in new[] { "ceiling", "wall", "ceiling", "wall" })
+                    {
+                        await webView.CoreWebView2.ExecuteScriptAsync(
+                            "document.querySelector('[data-installation=\"" + mode + "\"]:not([disabled])').click()");
+                        await WaitForConditionAsync(
+                            "document.querySelector('.airflow-diagram.installation-" + mode + "') !== null && document.querySelectorAll('.flow[data-port]').length === 4",
+                            "Layout transition did not settle: " + mode);
+                        string codesJson = await webView.CoreWebView2.ExecuteScriptAsync(
+                            "Array.from(document.querySelector('#layoutCode').options).map(o => o.value)");
+                        foreach (string code in new JavaScriptSerializer().Deserialize<string[]>(codesJson))
+                        {
+                            await webView.CoreWebView2.ExecuteScriptAsync(
+                                "(function(){var select=document.querySelector('#layoutCode');select.value=" + new JavaScriptSerializer().Serialize(code) + ";select.dispatchEvent(new Event('change',{bubbles:true}));})()");
+                            await WaitForConditionAsync(
+                                "document.querySelector('.airflow-diagram') !== null && document.querySelector('#layoutCode').value === " + new JavaScriptSerializer().Serialize(code) +
+                                " && new Set(Array.from(document.querySelectorAll('.flow')).map(p=>p.dataset.flow)).size === 4",
+                                "Configuration transition did not settle: " + code);
+                        }
+                    }
+                    WindowState = FormWindowState.Normal;
+                    ClientSize = new Size(1200, 1200);
+                    await Task.Delay(300);
                 }
 
                 if (layoutReviewScenario)
@@ -1314,6 +1341,18 @@ namespace SSW
                 }
                 await webView.CoreWebView2.ExecuteScriptAsync(
                     "document.fonts && document.fonts.ready ? document.fonts.ready.then(() => true) : true");
+                if (screenshotStep == "layout" || screenshotStep == "layout-transitions")
+                {
+                    await WaitForConditionAsync(
+                        "Array.from(document.querySelectorAll('.flow[data-port]')).length === 4 && " +
+                        "Array.from(document.querySelectorAll('.flow[data-port]')).every(function(f){" +
+                        "var d=Array.from(document.querySelectorAll('.duct-marker')).find(d=>d.textContent.trim()===f.dataset.port);" +
+                        "if(!d)return false;var a=f.getBoundingClientRect(),b=d.getBoundingClientRect();" +
+                        "if(f.classList.contains('flow-north'))return a.bottom<b.top && Math.abs((a.left+a.right-b.left-b.right)/2)<4;" +
+                        "if(f.classList.contains('flow-south'))return a.top>b.bottom && Math.abs((a.left+a.right-b.left-b.right)/2)<4;" +
+                        "return Math.abs((a.top+a.bottom-b.top-b.bottom)/2)<4 && (a.right<b.left || a.left>b.right);})",
+                        "Airflow labels overlap or are not aligned with their numbered ducts.");
+                }
                 await Task.Delay(250);
                 await CaptureFullPagePngAsync(screenshotOutputPath);
                 ScreenshotExitCode = 0;

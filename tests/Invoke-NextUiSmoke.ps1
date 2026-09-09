@@ -44,7 +44,7 @@ if ($process.ExitCode -ne 0) {
 
 Write-Host 'SSW Next UI application-service smoke passed.'
 
-foreach ($step in @('layout', 'layout-review', 'layout-review-accepted', 'dimensional-drawing', 'co2', 'sound', 'documents')) {
+foreach ($step in @('layout', 'layout-transitions', 'layout-review', 'layout-review-accepted', 'dimensional-drawing', 'co2', 'sound', 'documents')) {
     $screenshot = Join-Path $env:TEMP (
         "ssw-next-$step-" + [Guid]::NewGuid().ToString('N') + '.png')
     $screenshotError = $screenshot + '.error.log'

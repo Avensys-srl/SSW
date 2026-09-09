@@ -427,16 +427,16 @@ Public NotInheritable Class CLLegacySdfInstallationLayoutRepository
         End If
 
         Select Case code
-            Case "A3", "A4", "B1"
-                Return {"Exhaust", "Fresh", "Return", "Supply"}
+            Case "A4", "B1", "B5"
+                Return {"Fresh", "Exhaust", "Return", "Supply"}
             Case "B2", "B3"
-                Return {"Supply", "Return", "Fresh", "Exhaust"}
-            Case "B4", "B5", "B6"
+                Return {"Supply", "Return", "Exhaust", "Fresh"}
+            Case "A3", "B4", "B6"
                 Return {"Exhaust", "Fresh", "Supply", "Return"}
-            Case "C1", "C4"
+            Case "C1", "C4", "D3"
                 Return {"Exhaust", "Supply", "Fresh", "Return"}
-            Case "C2", "D3"
-                Return {"Fresh", "Supply", "Exhaust", "Return"}
+            Case "C2"
+                Return {"Fresh", "Return", "Exhaust", "Supply"}
             Case "C3", "D1", "D2", "D4"
                 Return {"Supply", "Exhaust", "Return", "Fresh"}
         End Select

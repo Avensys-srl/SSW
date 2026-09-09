@@ -2,6 +2,11 @@
 
 Data di approvazione del contratto: 22/07/2026
 
+Checkpoint 09/09/2026: corretti sequenze importate e posizioni OSC sulla base
+del foglio produttore 01.23. Rimosso il rombo e verificata la geometria UI/report.
+Questo checkpoint supera le precedenti assunzioni sulla disposizione dei flussi:
+[correzioni, migrazione e test](LAYOUT_FLOW_CORRECTIONS_2026-09-09.md).
+
 Checkpoint 08/09/2026: catalogo normalizzato autorevole senza fallback su dati
 vuoti/corrotti; metadati geometrici condivisi tra UI e report e quote Hor/Ver
 esposte nel bridge. Vedere [audit e limiti](AUDIT_CORREZIONI_2026-09-08.md) e

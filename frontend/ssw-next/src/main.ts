@@ -1,3 +1,4 @@
+import { airflowSlot, airflowSide } from "./airflow-layout";
 import {
   Activity,
   ArrowDown,
@@ -1414,13 +1415,10 @@ const renderFlowPorts = (): string => {
     .map((port) => {
       const role = port.flowCode.toLowerCase();
       const incoming = port.flowCode === "Fresh" || port.flowCode === "Return";
-      const side = sameSide
-        ? sameSideFloorFacing ? "south" : "north"
-        : oppositeSideEastWest
-          ? port.position <= 2 ? "west" : "east"
-          : port.position <= 2 ? "north" : "south";
-      return `<div class="flow flow-${side} flow-position-${port.position} ${role} ${incoming ? "incoming" : "outgoing"}">
-        ${icon("arrow-down")}<span>${escapeHtml(labels[port.flowCode])}</span>
+      const side = airflowSide(port.position, sameSide, sameSideFloorFacing, oppositeSideEastWest);
+      const slot = airflowSlot(port.position, sameSide, oppositeSideEastWest);
+      return `<div data-port="${port.position}" data-flow="${role}" class="flow flow-${side} flow-position-${slot} ${role} ${incoming ? "incoming" : "outgoing"}">
+        ${icon("arrow-down")}<span>${escapeHtml(labels[port.flowCode])}</span><sup>${port.position}</sup>
       </div>`;
     })
     .join("");
@@ -1529,18 +1527,14 @@ const renderInstallationStep = (): string => {
           <span class="outline-badge">${escapeHtml(accessSurfaceLabel(surface))}</span>
         </div>
       </div>
-      ${compatibleLayouts.length > 0 ? `<div class="airflow-diagram ${connectionClass}">
+      ${compatibleLayouts.length > 0 && !calculating && !calculationFailed ? `<div class="airflow-diagram ${connectionClass}">
         ${renderFlowPorts()}
         <div class="ahu-plan access-${surface}">
-          <span class="duct-marker duct-position-1" aria-hidden="true"></span>
-          <span class="duct-marker duct-position-2" aria-hidden="true"></span>
-          <span class="duct-marker duct-position-3" aria-hidden="true"></span>
-          <span class="duct-marker duct-position-4" aria-hidden="true"></span>
-          <span class="core"></span>
-          <strong>${selectedUnit()?.model}</strong>
+          ${[1, 2, 3, 4].map((position) => `<span class="duct-marker duct-position-${airflowSlot(position, isSameSideConnection(), isOppositeSideEastWestWall())} duct-${result!.flowPorts?.find((port) => port.position === position)?.flowCode.toLowerCase()}" aria-hidden="true"><b>${position}</b></span>`).join("")}
+          <strong>${escapeHtml(selectedUnit()?.model ?? "")}</strong>
           <small>${escapeHtml(text.ui.installation.accessPanel)}: ${escapeHtml(accessSurfaceLabel(surface))}</small>
         </div>
-      </div>` : `<div class="empty-state">${escapeHtml(text.status.unavailable)}</div>`}
+      </div>` : `<div class="empty-state airflow-pending" aria-busy="${calculating}">${escapeHtml(calculating ? text.ui.installation.orientationTitle : text.status.unavailable)}</div>`}
     </section>
     ${renderInlineDimensionalDrawing()}
   </div>`;
