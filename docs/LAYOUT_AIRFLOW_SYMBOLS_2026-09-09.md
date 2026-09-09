@@ -30,6 +30,11 @@ case hanno la stessa dimensione visiva; nei simboli fresh ed exhaust la freccia
 esterna può estendersi oltre tale ingombro. Lo smoke test WebView2 verifica
 l'allineamento dopo ogni cambio di configurazione supportato.
 
+I simboli sotto la macchina condividono la stessa linea di base. Nei layout OSC
+opposti i boccagli inferiori restano interamente dentro la sagoma; nella vista
+laterale la loro sezione viene ruotata scambiando larghezza e altezza. La legenda
+allinea il bordo sinistro delle case, indipendentemente dalla freccia esterna.
+
 ## Verifiche
 
 - `npm run build` nel frontend.
