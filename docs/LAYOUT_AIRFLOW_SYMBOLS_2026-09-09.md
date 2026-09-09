@@ -41,6 +41,10 @@ La fila inferiore dei layout con boccagli circolari interni e delle configurazio
 SSC inferiori e' leggermente rialzata. Le configurazioni con boccagli rettangolari
 esterni conservano invece il maggiore spazio necessario a evitare interferenze.
 
+Le etichette dei pannelli di accesso superiore e inferiore aderiscono al bordo ma
+rimangono interamente dentro la sagoma. Nei layout SSC piani i quattro boccagli
+circolari condividono la mezzeria orizzontale della macchina.
+
 ## Verifiche
 
 - `npm run build` nel frontend.
