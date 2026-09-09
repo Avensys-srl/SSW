@@ -527,13 +527,14 @@ input:disabled, select:disabled {
 .airflow-layout-body { display: grid; grid-template-columns: minmax(360px, 1fr) 155px; align-items: stretch; gap: 18px; min-height: 350px; }
 .airflow-diagram { position: relative; min-width: 0; min-height: 350px; }
 .airflow-legend { display: grid; align-content: center; gap: 10px; padding-left: 17px; border-left: 1px solid var(--line); }
-.airflow-legend-item { display: grid; grid-template-columns: 38px minmax(0, 1fr); align-items: center; gap: 8px; min-height: 48px; color: var(--ink); font-size: 10px; font-weight: 600; }
-.airflow-legend-item img { width: 36px; height: 40px; object-fit: contain; mix-blend-mode: multiply; }
+.airflow-legend-item { display: grid; grid-template-columns: 48px minmax(0, 1fr); align-items: center; gap: 8px; min-height: 52px; color: var(--ink); font-size: 10px; font-weight: 600; }
+.airflow-legend-item img { justify-self: center; width: 36px; height: auto; max-width: none; object-fit: contain; mix-blend-mode: multiply; }
+.airflow-legend-item.fresh img, .airflow-legend-item.exhaust img { width: 48px; }
 .airflow-legend-item span { min-width: 0; overflow-wrap: anywhere; }
-.ahu-plan { position: absolute; inset: 100px 16% 100px; display: grid; place-items: center; background: #f0f3f3; border: 2px solid #849592; border-radius: 4px; box-shadow: inset 0 0 0 5px #fff, 0 5px 0 #e2e8e6; }
+.ahu-plan { position: absolute; inset: 104px 23% 104px; display: grid; place-items: center; background: #f0f3f3; border: 2px solid #849592; border-radius: 4px; box-shadow: inset 0 0 0 5px #fff, 0 5px 0 #e2e8e6; }
 .ahu-plan::before { content: ""; position: absolute; inset: 13px; border: 1px solid #d2dcda; border-radius: 2px; pointer-events: none; }
 .ahu-plan strong { position: absolute; top: 42%; font-size: 11px; font-weight: 600; color: #526560; max-width: 90%; text-align: center; }
-.ahu-plan small { position: absolute; z-index: 3; padding: 5px 20px; color: white; background: #667688; font-size: 9px; white-space: nowrap; }
+.ahu-plan small { position: absolute; z-index: 3; padding: 5px 12px; color: white; background: #667688; font-size: 8px; white-space: nowrap; }
 .ahu-plan.access-lower small { bottom: -14px; }
 .ahu-plan.access-upper small { top: -14px; }
 .ahu-plan.access-front small { left: 50%; top: calc(50% + 34px); transform: translateX(-50%); }
@@ -587,8 +588,14 @@ input:disabled, select:disabled {
 .connection-osc.wall-north-south .duct-position-2 { left: 73%; top: -28px; transform: translateX(-50%); }
 .connection-osc.wall-north-south .duct-position-3 { left: 27%; bottom: -28px; transform: translateX(-50%); }
 .connection-osc.wall-north-south .duct-position-4 { left: 73%; bottom: -28px; transform: translateX(-50%); }
-.flow { z-index: 2; display: block; width: 44px; height: 49px; }
-.flow img { display: block; width: 40px; height: 44px; object-fit: contain; mix-blend-mode: multiply; }
+.flow { z-index: 2; display: block; width: 0; height: 0; overflow: visible; }
+.flow img { position: absolute; display: block; width: 40px; height: auto; max-width: none; object-fit: contain; mix-blend-mode: multiply; }
+/* Fresh/exhaust use a larger source canvas because their arrows sit outside the house. */
+.flow.fresh img, .flow.exhaust img { width: 53px; }
+.flow-north img { bottom: 0; transform: translateX(-50%); }
+.flow-south img { top: 0; transform: translateX(-50%); }
+.flow-north.fresh img, .flow-north.exhaust img,
+.flow-south.fresh img, .flow-south.exhaust img { transform: translateX(-37%); }
 .flow-north { align-self: start; }
 .flow-south { align-self: end; }
 .flow-west { justify-self: start; }
@@ -598,13 +605,13 @@ input:disabled, select:disabled {
 .flow-position-3 { grid-column: 1; grid-row: 2; }
 .flow-position-4 { grid-column: 2; grid-row: 2; }
 .connection-osc.wall-east-west { padding: 58px 35px; }
-.connection-osc.wall-east-west .ahu-plan { inset: 72px 22%; }
+.connection-osc.wall-east-west .ahu-plan { inset: 78px 28%; }
 .connection-osc.wall-east-west .flow-position-1 { grid-column: 1; grid-row: 1; }
 .connection-osc.wall-east-west .flow-position-2 { grid-column: 1; grid-row: 2; }
 .connection-osc.wall-east-west .flow-position-3 { grid-column: 2; grid-row: 1; }
 .connection-osc.wall-east-west .flow-position-4 { grid-column: 2; grid-row: 2; }
 .connection-osc.wall-east-west .flow { align-self: center; }
-.connection-osc.wall-north-south .ahu-plan { inset: 72px 22%; }
+.connection-osc.wall-north-south .ahu-plan { inset: 78px 27%; }
 .airflow-diagram.connection-ssc { padding-top: 58px; }
 .connection-ssc .flow-position-1 { grid-column: 1; grid-row: 1; }
 .connection-ssc .flow-position-2 { grid-column: 2; grid-row: 1; }
@@ -616,7 +623,7 @@ input:disabled, select:disabled {
 .connection-ssc.ssc-flat-floor .flow-position-3,
 .connection-ssc.ssc-flat-floor .flow-position-4 { grid-row: 2; }
 .connection-ssc.ssc-flat-floor .flow { align-self: end; }
-.connection-ssc.ssc-upright-floor .ahu-plan { inset: 76px 17% 56px; }
+.connection-ssc.ssc-upright-floor .ahu-plan { inset: 82px 23% 62px; }
 .connection-ssc:not(.ssc-upright-floor) .duct-marker {
   display: block;
   top: 20%;
@@ -654,30 +661,32 @@ input:disabled, select:disabled {
 .duct-supply { --duct-color: #d54a42; }
 /* Anchor airflow symbols to the same physical centres as the ducts. */
 .airflow-diagram.connection-osc .flow, .airflow-diagram.connection-ssc .flow { grid-area: auto; }
-.airflow-diagram .flow { position: absolute; transform: translateX(-50%); }
-.airflow-diagram .flow-north { top: 23px; }
-.airflow-diagram .flow-south { bottom: 18px; }
-.connection-osc .flow-position-1, .connection-osc .flow-position-3 { left: 20%; }
-.connection-osc .flow-position-2, .connection-osc .flow-position-4 { left: 80%; }
-.connection-osc.wall-north-south .flow-position-1, .connection-osc.wall-north-south .flow-position-3 { left: 27%; }
-.connection-osc.wall-north-south .flow-position-2, .connection-osc.wall-north-south .flow-position-4 { left: 73%; }
-.connection-osc.wall-north-south .flow-north { top: 8px; }
-.connection-osc.wall-north-south .flow-south { bottom: 8px; }
-.connection-osc.wall-east-west .flow { transform: translateY(-50%); }
+.airflow-diagram .flow { position: absolute; }
+.airflow-diagram .flow-north { top: 80px; }
+.airflow-diagram .flow-south { bottom: 65px; }
+.connection-osc .flow-position-1, .connection-osc .flow-position-3 { left: 33.8%; }
+.connection-osc .flow-position-2, .connection-osc .flow-position-4 { left: 66.2%; }
+.connection-osc.wall-north-south .flow-position-1, .connection-osc.wall-north-south .flow-position-3 { left: 39.4%; }
+.connection-osc.wall-north-south .flow-position-2, .connection-osc.wall-north-south .flow-position-4 { left: 60.6%; }
+.connection-osc.wall-north-south .flow-north { top: 48px; }
+.connection-osc.wall-north-south .flow-south { bottom: 43px; }
+.connection-osc.wall-east-west .flow img { left: 0; top: 0; transform: translate(-50%, -50%); }
+.connection-osc.wall-east-west .flow.fresh img,
+.connection-osc.wall-east-west .flow.exhaust img { transform: translate(-37%, -63%); }
 .connection-osc.wall-east-west .flow-position-1, .connection-osc.wall-east-west .flow-position-3 { top: 30%; }
 .connection-osc.wall-east-west .flow-position-2, .connection-osc.wall-east-west .flow-position-4 { top: 70%; }
-.connection-osc.wall-east-west .flow-west { left: 5%; right: auto; }
-.connection-osc.wall-east-west .flow-east { left: 91%; right: auto; }
-.connection-ssc .flow-position-1 { left: 13%; }
-.connection-ssc .flow-position-2 { left: 38%; }
-.connection-ssc .flow-position-3 { left: 63%; }
-.connection-ssc .flow-position-4 { left: 88%; }
-.connection-ssc.ssc-upright-floor .ahu-plan { left: 12%; right: 12%; }
-.connection-ssc.ssc-upright-floor .flow { top: 9px; }
-.connection-ssc.ssc-upright-floor .flow-position-1 { left: 13%; }
-.connection-ssc.ssc-upright-floor .flow-position-2 { left: 38%; }
-.connection-ssc.ssc-upright-floor .flow-position-3 { left: 63%; }
-.connection-ssc.ssc-upright-floor .flow-position-4 { left: 88%; }
+.connection-osc.wall-east-west .flow-west { left: 17%; right: auto; }
+.connection-osc.wall-east-west .flow-east { left: 83%; right: auto; }
+.connection-ssc .flow-position-1 { left: 30%; }
+.connection-ssc .flow-position-2 { left: 43.5%; }
+.connection-ssc .flow-position-3 { left: 57%; }
+.connection-ssc .flow-position-4 { left: 70.5%; }
+.connection-ssc.ssc-upright-floor .ahu-plan { left: 23%; right: 23%; }
+.connection-ssc.ssc-upright-floor .flow { top: 54px; }
+.connection-ssc.ssc-upright-floor .flow-position-1 { left: 30%; }
+.connection-ssc.ssc-upright-floor .flow-position-2 { left: 43.5%; }
+.connection-ssc.ssc-upright-floor .flow-position-3 { left: 57%; }
+.connection-ssc.ssc-upright-floor .flow-position-4 { left: 70.5%; }
 .toggle { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; }
 .toggle input { position: absolute; opacity: 0; width: 1px; height: 1px; }
 .toggle > span { position: relative; width: 34px; height: 19px; background: #b7c0ca; border-radius: 10px; transition: .2s; }

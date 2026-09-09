@@ -1538,7 +1538,7 @@ const renderInstallationStep = (): string => {
         <div class="airflow-diagram ${connectionClass}">
           ${renderFlowPorts()}
           <div class="ahu-plan access-${surface}">
-            ${[1, 2, 3, 4].map((position) => `<span class="duct-marker duct-position-${airflowSlot(position, isSameSideConnection(), isOppositeSideEastWestWall())} duct-${result!.flowPorts?.find((port) => port.position === position)?.flowCode.toLowerCase()}" aria-hidden="true"><b>${position}</b></span>`).join("")}
+            ${[1, 2, 3, 4].map((position) => `<span data-port="${position}" class="duct-marker duct-position-${airflowSlot(position, isSameSideConnection(), isOppositeSideEastWestWall())} duct-${result!.flowPorts?.find((port) => port.position === position)?.flowCode.toLowerCase()}" aria-hidden="true"><b>${position}</b></span>`).join("")}
             <strong>${escapeHtml(selectedUnit()?.model ?? "")}</strong>
             <small>${escapeHtml(text.ui.installation.accessPanel)}: ${escapeHtml(accessSurfaceLabel(surface))}</small>
           </div>

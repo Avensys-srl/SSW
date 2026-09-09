@@ -27,5 +27,6 @@ for (const role of ['fresh', 'supply', 'return', 'exhaust']) {
 }
 assert.ok(main.includes('src="/airflow/${role}.png"'));
 assert.ok(main.includes('class="airflow-legend"'));
+assert.ok(main.includes('data-port="${position}" class="duct-marker'));
 assert.ok(!main.includes('${icon("arrow-down")}<span>'));
 console.log('Airflow view position and stale-result guards passed.');

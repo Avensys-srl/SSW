@@ -25,6 +25,10 @@ normalizzato: questa modifica non introduce regole specifiche per configurazione
 La zona grafica e la legenda hanno colonne separate. Le sagome molto larghe sono
 state rese più compatte sia nella UI sia nel report, mantenendo gli spazi minimi
 necessari per quattro connessioni SSC e per le viste OSC nord-sud ed est-ovest.
+Le icone e i rispettivi boccagli condividono lo stesso centro fisico. Le quattro
+case hanno la stessa dimensione visiva; nei simboli fresh ed exhaust la freccia
+esterna può estendersi oltre tale ingombro. Lo smoke test WebView2 verifica
+l'allineamento dopo ogni cambio di configurazione supportato.
 
 ## Verifiche
 

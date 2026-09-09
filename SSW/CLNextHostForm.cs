@@ -1212,6 +1212,13 @@ namespace SSW
                                 "document.querySelector('.airflow-diagram') !== null && document.querySelector('#layoutCode').value === " + new JavaScriptSerializer().Serialize(code) +
                                 " && new Set(Array.from(document.querySelectorAll('.flow')).map(p=>p.dataset.flow)).size === 4",
                                 "Configuration transition did not settle: " + code);
+                            await WaitForConditionAsync(
+                                "(function(){var d=document.querySelector('.airflow-diagram');if(!d)return false;var horizontal=d.classList.contains('wall-east-west');" +
+                                "return Array.from(document.querySelectorAll('.flow[data-port]')).every(function(f){" +
+                                "var m=document.querySelector('.duct-marker[data-port=\"'+f.dataset.port+'\"]');if(!m)return false;" +
+                                "var fr=f.getBoundingClientRect(),mr=m.getBoundingClientRect();" +
+                                "return Math.abs((horizontal?fr.top:fr.left)-(horizontal?(mr.top+mr.height/2):(mr.left+mr.width/2)))<=1;});})()",
+                                "Airflow symbol alignment failed: " + code);
                         }
                     }
                     WindowState = FormWindowState.Normal;
