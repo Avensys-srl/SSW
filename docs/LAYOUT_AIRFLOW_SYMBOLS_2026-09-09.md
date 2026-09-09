@@ -37,6 +37,10 @@ entrambi i lati. Nella vista laterale la sezione `46 x 28` viene ruotata in
 `28 x 46` e resta adiacente all'unita. La legenda allinea il bordo sinistro delle
 case, indipendentemente dalla freccia esterna.
 
+La fila inferiore dei layout con boccagli circolari interni e delle configurazioni
+SSC inferiori e' leggermente rialzata. Le configurazioni con boccagli rettangolari
+esterni conservano invece il maggiore spazio necessario a evitare interferenze.
+
 ## Verifiche
 
 - `npm run build` nel frontend.

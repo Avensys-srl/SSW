@@ -664,7 +664,7 @@ input:disabled, select:disabled {
 .airflow-diagram.connection-osc .flow, .airflow-diagram.connection-ssc .flow { grid-area: auto; }
 .airflow-diagram .flow { position: absolute; }
 .airflow-diagram .flow-north { top: 80px; }
-.airflow-diagram .flow-south { bottom: -14px; }
+.airflow-diagram .flow-south { bottom: 0; }
 .connection-osc .flow-position-1, .connection-osc .flow-position-3 { left: calc(33.8% + 1.2px); }
 .connection-osc .flow-position-2, .connection-osc .flow-position-4 { left: calc(66.2% - 1.2px); }
 .connection-osc.installation-wall .flow-position-1,
