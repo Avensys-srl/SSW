@@ -74,7 +74,7 @@ Nella vista parete `OSC_EAST_WEST` ogni casetta e allineata alla riga del propri
 boccaglio; l'interasse verticale delle due righe e circa due larghezze icona.
 In tutti i layout OSC non a parete, la base delle icone inferiori si trova a una
 distanza verticale `A` dall'asse orizzontale del boccaglio, con
-`A = 1,5 x altezza dell'icona di flusso`. La regola e identica per fresh,
+`A = 2 x altezza dell'icona di flusso`. La regola e identica per fresh,
 exhaust, supply e return: non sono ammessi rialzi speciali che portino le
 casette sotto o dentro il cerchio del boccaglio.
 Ogni dicitura del pannello di accesso include una freccia nera orientata verso
@@ -107,7 +107,7 @@ schema, nel badge e nella legenda e non ammette contatto o sovrapposizione.
 Tutte le icone a forma di casa sono visualizzate al 75% della dimensione
 precedente, sia nello schema sia nella legenda e nel report. Assi e centri dei
 boccagli restano invariati; gli offset delle icone sono ricalcolati sulla nuova
-altezza per conservare tutte le proporzioni, inclusa la regola `A = 1,5 x h`.
+altezza per conservare tutte le proporzioni, inclusa la regola `A = 2 x h`.
 Nei layout SSC a soffitto, le quattro icone dei flussi sono disposte dentro la
 sagoma, immediatamente sopra i rispettivi boccagli circolari. In tutte le
 rappresentazioni la sigla dell'unita non viene ripetuta nel corpo macchina:

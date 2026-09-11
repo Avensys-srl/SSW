@@ -257,11 +257,11 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
         Dim rectangle As RectangleF
         Select Case placement.Edge
             Case PortEdge.Top
-                Dim bottomOffset = If(placement.FaceOn, height * 0.5F, outerOffset + 8.0F)
+                Dim bottomOffset = If(placement.FaceOn, height, outerOffset + 8.0F)
                 rectangle = New RectangleF(placement.Center.X - width / 2,
                     placement.Center.Y - bottomOffset - height, width, height)
             Case PortEdge.Bottom
-                Dim topOffset = If(placement.FaceOn, height * 0.5F, outerOffset + 8.0F)
+                Dim topOffset = If(placement.FaceOn, height, outerOffset + 8.0F)
                 rectangle = New RectangleF(placement.Center.X - width / 2,
                     placement.Center.Y + topOffset, width, height)
             Case PortEdge.Left

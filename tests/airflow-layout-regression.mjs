@@ -63,6 +63,6 @@ assert.ok(styles.includes('border-radius: 4px; box-shadow: none;'));
 assert.ok(styles.includes('color: #000; background: #fff; border: 1px solid #000; font-family: Arial, sans-serif;'));
 assert.ok(styles.includes('.connection-osc.wall-east-west .flow-position-1, .connection-osc.wall-east-west .flow-position-3 { top: calc(30% + 31px); }'));
 assert.ok(styles.includes('.connection-osc.wall-east-west .flow-position-2, .connection-osc.wall-east-west .flow-position-4 { top: calc(70% - 31px); }'));
-assert.ok(styles.includes('.connection-osc:not(.wall-east-west):not(.wall-north-south) .flow-south { bottom: calc(50% - 60px); }'));
+assert.ok(styles.includes('.connection-osc:not(.wall-east-west):not(.wall-north-south) .flow-south { bottom: calc(50% - 80px); }'));
 assert.ok(!styles.includes('.flow-south.exhaust { bottom: calc(50% - 50px); }'));
 console.log('Airflow view position and stale-result guards passed.');
