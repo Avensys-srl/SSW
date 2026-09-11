@@ -72,11 +72,11 @@ Nei report `OSC_EAST_WEST` l'unita mantiene la proporzione compatta della vista
 laterale UI; i boccagli restano aderenti ai bordi e le casette all'esterno.
 Nella vista parete `OSC_EAST_WEST` ogni casetta e allineata alla riga del proprio
 boccaglio; l'interasse verticale delle due righe e circa due larghezze icona.
-In tutti i layout OSC non a parete, le icone inferiori mantengono dal centro dei
-boccagli una distanza pari a due larghezze dell'icona base. Poiche fresh ed
-exhaust hanno una tela piu ampia per la freccia esterna, le due icone sono
-rialzate di ulteriori 30 px per portare il corpo della casetta a contatto con il
-boccaglio anche nelle configurazioni a soffitto.
+In tutti i layout OSC non a parete, la base delle icone inferiori si trova a una
+distanza verticale `A` dall'asse orizzontale del boccaglio, con
+`A = 1,5 x altezza dell'icona di flusso`. La regola e identica per fresh,
+exhaust, supply e return: non sono ammessi rialzi speciali che portino le
+casette sotto o dentro il cerchio del boccaglio.
 Ogni dicitura del pannello di accesso include una freccia nera orientata verso
 il lato della macchina interessato: giu per l'accesso superiore, su per quello
 inferiore e diagonale verso l'esterno per quello frontale. La legenda dei flussi
