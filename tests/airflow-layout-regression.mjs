@@ -35,11 +35,14 @@ assert.ok(main.includes('surface === "front" ? observerAccessLabel() : accessLab
 assert.ok(main.includes('surface === "lower" ? "&uarr;" : ""'));
 assert.ok(main.includes('" observer-cross"'));
 assert.ok(main.includes('class="access-indicator"'));
+assert.ok(main.includes('class="installation-view-caption"'));
+assert.ok(main.includes('installationViewLabel(draft!.installationMode, isOppositeSideEastWestWall())'));
 assert.ok(styles.includes('.ahu-plan small.access-indicator'));
 assert.ok(styles.includes('font-size: 32px;'));
 assert.ok(styles.includes('.ahu-plan.access-lower small.access-indicator { top: calc(100% + 8px); bottom: auto; }'));
 assert.ok(styles.includes('.ahu-plan.access-upper small.access-indicator { top: auto; bottom: calc(100% + 8px); }'));
 assert.ok(styles.includes('.ahu-plan.access-front small.access-indicator { top: calc(42% + 24px); }'));
+assert.ok(styles.includes('gap: 1em; padding: 0;'));
 assert.ok(styles.includes('.observer-cross::before { transform: rotate(45deg); }'));
 assert.ok(styles.includes('.observer-cross::after { transform: rotate(-45deg); }'));
 assert.ok(styles.includes('.airflow-legend-item.access-direction.observer-side b { width: 15px; height: 15px; }'));

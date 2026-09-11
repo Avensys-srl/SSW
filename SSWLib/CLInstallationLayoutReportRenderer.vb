@@ -101,7 +101,11 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
         Using unitBrush As New SolidBrush(Color.White),
               unitPen As New Pen(Color.FromArgb(17, 17, 17), 3.0F),
               ductPen As New Pen(Color.FromArgb(39, 53, 68), 3.0F),
-              accessFont As New Font("Arial", 10.0F, FontStyle.Regular)
+              accessFont As New Font("Arial", 10.0F, FontStyle.Regular),
+              installationFont As New Font("Arial", 12.0F, FontStyle.Bold)
+
+            graphics.DrawString(InstallationViewCaption(installationMode, eastWestWall),
+                installationFont, Brushes.Black, New RectangleF(20.0F, 12.0F, 320.0F, 30.0F))
 
             graphics.FillRectangle(unitBrush, unitRectangle)
             graphics.DrawRectangle(unitPen, unitRectangle.X, unitRectangle.Y,
@@ -322,19 +326,19 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
         Select Case position
             Case "upper"
                 DrawCenteredText(graphics, label, font, Brushes.Black,
-                    New RectangleF(centerX - 70.0F, unitRectangle.Top - 78.0F, 140.0F, 22.0F))
+                    New RectangleF(centerX - 70.0F, unitRectangle.Top - 88.0F, 140.0F, 22.0F))
                 DrawCenteredText(graphics, AccessArrow(position), arrowFont, Brushes.Black,
-                    New RectangleF(centerX - 30.0F, unitRectangle.Top - 55.0F, 60.0F, 48.0F))
+                    New RectangleF(centerX - 30.0F, unitRectangle.Top - 52.0F, 60.0F, 44.0F))
             Case "lower"
                 DrawCenteredText(graphics, AccessArrow(position), arrowFont, Brushes.Black,
-                    New RectangleF(centerX - 30.0F, unitRectangle.Bottom + 7.0F, 60.0F, 48.0F))
+                    New RectangleF(centerX - 30.0F, unitRectangle.Bottom + 7.0F, 60.0F, 44.0F))
                 DrawCenteredText(graphics, label, font, Brushes.Black,
-                    New RectangleF(centerX - 70.0F, unitRectangle.Bottom + 57.0F, 140.0F, 22.0F))
+                    New RectangleF(centerX - 70.0F, unitRectangle.Bottom + 63.0F, 140.0F, 22.0F))
             Case Else
                 DrawObserverCross(graphics,
                     New PointF(centerX, unitRectangle.Top + unitRectangle.Height * 0.56F), 18.0F, 2.5F)
                 DrawCenteredText(graphics, label, font, Brushes.Black,
-                    New RectangleF(centerX - 160.0F, unitRectangle.Top + unitRectangle.Height * 0.65F, 320.0F, 22.0F))
+                    New RectangleF(centerX - 160.0F, unitRectangle.Top + unitRectangle.Height * 0.67F, 320.0F, 22.0F))
         End Select
         End Using
     End Sub
@@ -421,6 +425,21 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
             Case "floor" : Return T("Report_InstallationLayout_Floor", "Floor")
             Case "wall" : Return T("Report_InstallationLayout_Wall", "Wall")
             Case Else : Return T("Report_InstallationLayout_Ceiling", "Ceiling")
+        End Select
+    End Function
+
+    Private Shared Function InstallationViewCaption(mode As String, eastWestWall As Boolean) As String
+        If mode = "ceiling" Then Return T("Report_InstallationLayout_Ceiling", "Ceiling")
+        If mode = "floor" Then Return T("Report_InstallationLayout_Floor", "Floor")
+
+        Select Case Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName
+            Case "it" : Return If(eastWestWall, "Murale Est-Ovest", "Murale Nord-Sud")
+            Case "de" : Return If(eastWestWall, "Wand Ost-West", "Wand Nord-Süd")
+            Case "fr" : Return If(eastWestWall, "Murale Est-Ouest", "Murale Nord-Sud")
+            Case "nl" : Return If(eastWestWall, "Wand oost-west", "Wand noord-zuid")
+            Case "pl" : Return If(eastWestWall, "Ściana wschód-zachód", "Ściana północ-południe")
+            Case "ro" : Return If(eastWestWall, "Perete est-vest", "Perete nord-sud")
+            Case Else : Return If(eastWestWall, "East-West wall", "North-South wall")
         End Select
     End Function
 

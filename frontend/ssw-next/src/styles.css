@@ -526,8 +526,9 @@ input:disabled, select:disabled {
 .choice-card:disabled:hover { background: #f2f4f7; border-color: var(--line); }
 .airflow-layout-body { display: grid; grid-template-columns: minmax(360px, 1fr) 155px; align-items: stretch; gap: 18px; min-height: 350px; }
 .airflow-diagram { position: relative; min-width: 0; min-height: 350px; }
+.installation-view-caption { position: absolute; z-index: 5; top: 8px; left: 16px; color: #000; font-family: Arial, sans-serif; font-size: 11px; font-weight: 700; white-space: nowrap; }
 .airflow-legend { display: grid; align-content: center; gap: 10px; padding-left: 17px; border-left: 1px solid var(--line); }
-.airflow-legend-item { display: grid; grid-template-columns: 48px minmax(0, 1fr); align-items: center; gap: 8px; min-height: 52px; color: var(--ink); font-size: 10px; font-weight: 600; }
+.airflow-legend-item { display: grid; grid-template-columns: 48px minmax(0, 1fr); align-items: center; gap: 10px; min-height: 52px; color: var(--ink); font-size: 10px; font-weight: 600; }
 .airflow-legend-item img { justify-self: start; width: 36px; height: auto; max-width: none; object-fit: contain; mix-blend-mode: multiply; }
 .airflow-legend-item.fresh img, .airflow-legend-item.exhaust img { width: 48px; }
 .airflow-legend-item span { min-width: 0; overflow-wrap: anywhere; }
@@ -547,8 +548,8 @@ input:disabled, select:disabled {
 .ahu-plan::before { content: ""; position: absolute; inset: 13px; border: 1px solid #d2dcda; border-radius: 2px; pointer-events: none; }
 .ahu-plan strong { position: absolute; top: 42%; font-family: Arial, sans-serif; font-size: 11px; font-weight: 600; color: #000; max-width: 90%; text-align: center; }
 .ahu-plan small { position: absolute; z-index: 3; padding: 4px 11px; color: #000; background: #fff; border: 1px solid #000; font-family: Arial, sans-serif; font-size: 8px; white-space: nowrap; }
-.ahu-plan small.access-indicator { left: 50%; display: flex; flex-direction: column; align-items: center; gap: 7px; padding: 0; background: transparent; border: 0; font-size: 9px; font-weight: 700; line-height: 1; transform: translateX(-50%); }
-.access-direction-arrow { display: inline-block; margin-right: 5px; color: #000; font-family: Arial, sans-serif; font-size: 1.35em; line-height: .7; vertical-align: -1px; }
+.ahu-plan small.access-indicator { left: 50%; display: flex; flex-direction: column; align-items: center; gap: 1em; padding: 0; background: transparent; border: 0; font-size: 9px; font-weight: 700; line-height: 1; transform: translateX(-50%); }
+.access-direction-arrow { display: inline-block; margin-right: 1em; color: #000; font-family: Arial, sans-serif; font-size: 1.35em; line-height: .7; vertical-align: -1px; }
 .ahu-plan .access-direction-arrow { margin: 0; font-size: 32px; line-height: .62; }
 .ahu-plan.access-front .access-direction-arrow { line-height: 1; }
 .ahu-plan.access-lower .access-indicator .access-direction-arrow,

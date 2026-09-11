@@ -96,6 +96,14 @@ tipografico: e costruita con due segmenti di uguale lunghezza, perpendicolari
 tra loro e orientati a `+45 gradi` e `-45 gradi` rispetto all'orizzontale.
 Simbolo e dicitura localizzata sono centrati dentro l'unita, sotto la sigla; la
 legenda usa la stessa geometria e la stessa riduzione.
+Ogni schema ripete nello spazio superiore il tipo di installazione effettivo,
+distinguendo esplicitamente `Soffitto`, `Pavimento`, `Murale Est-Ovest` e
+`Murale Nord-Sud`. L'indicazione e localizzata e compare sia nella UI sia nel
+renderer del report. E ancorata a sinistra nell'area libera sovrastante per non
+interferire con icone o boccagli superiori.
+Tra ogni freccia o simbolo di accesso e la relativa scritta deve rimanere un
+margine minimo pari all'altezza di un carattere (`1em`). La regola vale nello
+schema, nel badge e nella legenda e non ammette contatto o sovrapposizione.
 
 ## Verifiche
 

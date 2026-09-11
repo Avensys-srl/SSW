@@ -206,6 +206,25 @@ const observerAccessLabels: Record<string, string> = {
 };
 const observerAccessLabel = (): string => observerAccessLabels[languageCode()] ?? observerAccessLabels.en;
 
+const wallViewLabels: Record<string, readonly [string, string]> = {
+  en: ["East-West wall", "North-South wall"], it: ["Murale Est-Ovest", "Murale Nord-Sud"],
+  bg: ["Стена изток-запад", "Стена север-юг"], cs: ["Stěna východ-západ", "Stěna sever-jih"],
+  da: ["Væg øst-vest", "Væg nord-syd"], de: ["Wand Ost-West", "Wand Nord-Süd"],
+  fr: ["Murale Est-Ouest", "Murale Nord-Sud"], hu: ["Fali kelet-nyugat", "Fali észak-dél"],
+  is: ["Veggur austur-vestur", "Veggur norður-suður"], nl: ["Wand oost-west", "Wand noord-zuid"],
+  no: ["Vegg øst-vest", "Vegg nord-sør"], pl: ["Ściana wschód-zachód", "Ściana północ-południe"],
+  ro: ["Perete est-vest", "Perete nord-sud"], sl: ["Stena vzhod-zahod", "Stena sever-jug"],
+  sv: ["Vägg öst-väst", "Vägg nord-syd"],
+};
+
+const installationViewLabel = (mode: InstallationMode, eastWestWall: boolean): string => {
+  const installation = messages().domain.installation;
+  if (mode === "ceiling") return installation.ceiling;
+  if (mode === "floor") return installation.floor;
+  const wallLabels = wallViewLabels[languageCode()] ?? wallViewLabels.en;
+  return wallLabels[eastWestWall ? 0 : 1];
+};
+
 const localizedSoundPath = (rawCode: string, rawLabel: string): string => {
   const code = rawCode.trim().replace(/^_+/, "").toLowerCase();
   const text = messages();
@@ -1561,6 +1580,7 @@ const renderInstallationStep = (): string => {
       </div>
       ${compatibleLayouts.length > 0 && !calculating && !calculationFailed ? `<div class="airflow-layout-body">
         <div class="airflow-diagram ${connectionClass}" data-layout="${escapeHtml(draft!.layoutCode)}">
+          <div class="installation-view-caption">${escapeHtml(installationViewLabel(draft!.installationMode, isOppositeSideEastWestWall()))}</div>
           ${renderFlowPorts()}
           <div class="ahu-plan access-${surface}">
             ${[1, 2, 3, 4].map((position) => `<span data-port="${position}" class="duct-marker duct-position-${airflowSlot(position, isSameSideConnection(), isOppositeSideEastWestWall())} duct-${result!.flowPorts?.find((port) => port.position === position)?.flowCode.toLowerCase()}" aria-hidden="true"><b>${position}</b></span>`).join("")}
