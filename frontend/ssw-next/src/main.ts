@@ -187,6 +187,14 @@ const languageCode = () => {
 const messages = (): Readonly<LocalizedFrontendMessages> =>
   getMessages(languageCode());
 
+const accessLabels: Record<string, string> = {
+  en: "Access", it: "Accesso", bg: "Достъп", cs: "Přístup", da: "Adgang",
+  de: "Zugang", fr: "Accès", hu: "Hozzáférés", is: "Aðgangur",
+  nl: "Toegang", no: "Tilgang", pl: "Dostęp", ro: "Acces", sl: "Dostop",
+  sv: "Åtkomst",
+};
+const accessLabel = (): string => accessLabels[languageCode()] ?? accessLabels.en;
+
 const localizedSoundPath = (rawCode: string, rawLabel: string): string => {
   const code = rawCode.trim().replace(/^_+/, "").toLowerCase();
   const text = messages();
@@ -1429,7 +1437,7 @@ const renderFlowLegend = (): string => {
       <img src="/airflow/${role}.png" alt=""><span>${escapeHtml(label)}</span>
     </div>`).join("")}
     <div class="airflow-legend-item access-direction">
-      <b aria-hidden="true">&darr;</b><span>${escapeHtml(messages().ui.installation.accessPanel)}</span>
+      <b aria-hidden="true">&darr;</b><span>${escapeHtml(accessLabel())}</span>
     </div>
   </aside>`;
 };
@@ -1546,7 +1554,7 @@ const renderInstallationStep = (): string => {
           <div class="ahu-plan access-${surface}">
             ${[1, 2, 3, 4].map((position) => `<span data-port="${position}" class="duct-marker duct-position-${airflowSlot(position, isSameSideConnection(), isOppositeSideEastWestWall())} duct-${result!.flowPorts?.find((port) => port.position === position)?.flowCode.toLowerCase()}" aria-hidden="true"><b>${position}</b></span>`).join("")}
             <strong>${escapeHtml(selectedUnit()?.model ?? "")}</strong>
-            <small><b class="access-direction-arrow" aria-hidden="true">${accessDirectionArrow(surface)}</b>${escapeHtml(text.ui.installation.accessPanel)}: ${escapeHtml(accessSurfaceLabel(surface))}</small>
+            <small class="access-indicator"><span>${escapeHtml(accessLabel())}</span><b class="access-direction-arrow" aria-hidden="true">${accessDirectionArrow(surface)}</b></small>
           </div>
         </div>
         ${renderFlowLegend()}

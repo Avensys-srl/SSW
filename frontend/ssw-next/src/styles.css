@@ -542,7 +542,11 @@ input:disabled, select:disabled {
 .ahu-plan::before { content: ""; position: absolute; inset: 13px; border: 1px solid #d2dcda; border-radius: 2px; pointer-events: none; }
 .ahu-plan strong { position: absolute; top: 42%; font-family: Arial, sans-serif; font-size: 11px; font-weight: 600; color: #000; max-width: 90%; text-align: center; }
 .ahu-plan small { position: absolute; z-index: 3; padding: 4px 11px; color: #000; background: #fff; border: 1px solid #000; font-family: Arial, sans-serif; font-size: 8px; white-space: nowrap; }
+.ahu-plan small.access-indicator { display: flex; flex-direction: column; align-items: center; gap: 1px; padding: 0; background: transparent; border: 0; font-size: 9px; font-weight: 700; line-height: 1; }
 .access-direction-arrow { display: inline-block; margin-right: 5px; color: #000; font-family: Arial, sans-serif; font-size: 1.35em; line-height: .7; vertical-align: -1px; }
+.ahu-plan .access-direction-arrow { margin: 0; font-size: 32px; line-height: .62; }
+.ahu-plan.access-lower .access-indicator .access-direction-arrow { order: -1; }
+.ahu-plan.access-front .access-indicator { flex-direction: row; gap: 4px; }
 .ahu-plan.access-lower small { bottom: 0; }
 .ahu-plan.access-upper small { top: 0; }
 .ahu-plan.access-front small { left: 50%; top: calc(50% + 34px); transform: translateX(-50%); }

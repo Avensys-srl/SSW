@@ -287,7 +287,7 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
             Dim accessY = y + 25.0F + roles.Length * 82.0F
             DrawCenteredText(graphics, ChrW(&H2193), arrowFont, Brushes.Black,
                 New RectangleF(x + 25.0F, accessY, 52.0F, 58.0F))
-            graphics.DrawString(T("Report_InstallationLayout_AccessPanel", "Access panel"),
+            graphics.DrawString(LocalizedAccessLabel(),
                 labelFont, Brushes.Black,
                 New RectangleF(x + 97.0F, accessY + 16.0F, width - 120.0F, 34.0F))
         End Using
@@ -310,28 +310,49 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
     Private Shared Sub DrawAccessPanel(graphics As Graphics,
         unitRectangle As RectangleF, font As Font, position As String)
 
-        Dim caption = AccessArrow(position) & "  " &
-            T("Report_InstallationLayout_AccessPanel", "Access panel") & ": " &
-            AccessCaption(position)
-        Dim size = graphics.MeasureString(caption, font)
-        Dim width = Math.Max(280.0F, size.Width + 30.0F)
-        Dim x = unitRectangle.Left + (unitRectangle.Width - width) / 2.0F
-        Dim y As Single
+        Dim label = LocalizedAccessLabel()
+        Dim centerX = unitRectangle.Left + unitRectangle.Width / 2.0F
+        Dim centerY = unitRectangle.Top + unitRectangle.Height * 0.64F
+        Using arrowFont As New Font("Arial", 30.0F, FontStyle.Bold)
         Select Case position
             Case "upper"
-                y = unitRectangle.Top - 17.0F
+                DrawCenteredText(graphics, label, font, Brushes.Black,
+                    New RectangleF(centerX - 70.0F, unitRectangle.Top - 18.0F, 140.0F, 22.0F))
+                DrawCenteredText(graphics, AccessArrow(position), arrowFont, Brushes.Black,
+                    New RectangleF(centerX - 30.0F, unitRectangle.Top - 3.0F, 60.0F, 48.0F))
             Case "lower"
-                y = unitRectangle.Bottom - 17.0F
+                DrawCenteredText(graphics, AccessArrow(position), arrowFont, Brushes.Black,
+                    New RectangleF(centerX - 30.0F, unitRectangle.Bottom - 45.0F, 60.0F, 48.0F))
+                DrawCenteredText(graphics, label, font, Brushes.Black,
+                    New RectangleF(centerX - 70.0F, unitRectangle.Bottom - 4.0F, 140.0F, 22.0F))
             Case Else
-                y = unitRectangle.Top + unitRectangle.Height * 0.64F
+                DrawCenteredText(graphics, label, font, Brushes.Black,
+                    New RectangleF(centerX - 145.0F, centerY - 12.0F, 140.0F, 28.0F))
+                DrawCenteredText(graphics, AccessArrow(position), arrowFont, Brushes.Black,
+                    New RectangleF(centerX + 2.0F, centerY - 24.0F, 60.0F, 48.0F))
         End Select
-        Using brush As New SolidBrush(Color.White), border As New Pen(Color.Black, 2.0F)
-            graphics.FillRectangle(brush, x, y, width, 34.0F)
-            graphics.DrawRectangle(border, x, y, width, 34.0F)
         End Using
-        DrawCenteredText(graphics, caption, font, Brushes.Black,
-            New RectangleF(x, y + 4, width, 26))
     End Sub
+
+    Private Shared Function LocalizedAccessLabel() As String
+        Select Case Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName
+            Case "it" : Return "Accesso"
+            Case "bg" : Return "Достъп"
+            Case "cs" : Return "Přístup"
+            Case "da" : Return "Adgang"
+            Case "de" : Return "Zugang"
+            Case "fr" : Return "Accès"
+            Case "hu" : Return "Hozzáférés"
+            Case "is" : Return "Aðgangur"
+            Case "nl" : Return "Toegang"
+            Case "no" : Return "Tilgang"
+            Case "pl" : Return "Dostęp"
+            Case "ro" : Return "Acces"
+            Case "sl" : Return "Dostop"
+            Case "sv" : Return "Åtkomst"
+            Case Else : Return "Access"
+        End Select
+    End Function
 
     Private Shared Function AccessArrow(position As String) As String
         Select Case position

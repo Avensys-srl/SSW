@@ -82,6 +82,10 @@ il lato della macchina interessato: giu per l'accesso superiore, su per quello
 inferiore e diagonale verso l'esterno per quello frontale. La legenda dei flussi
 include una quinta voce localizzata che identifica la freccia del pannello di
 accesso. La convenzione e applicata a tutti gli schematici nella UI e nei report.
+Nel disegno l'indicatore non usa riquadro, sfondo o dicitura estesa: mostra solo
+la parola localizzata equivalente ad "Accesso" sulla coda e una freccia nera
+grande circa tre volte il simbolo precedente. Il badge informativo superiore
+conserva invece la descrizione completa del lato di accesso.
 
 ## Verifiche
 
