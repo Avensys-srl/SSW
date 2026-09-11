@@ -121,7 +121,7 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
 
             DrawAccessPanel(graphics, unitRectangle, accessFont,
                 configuration.AccessSide)
-            DrawFlowLegend(graphics)
+            DrawFlowLegend(graphics, configuration.AccessSide)
         End Using
     End Sub
 
@@ -262,13 +262,14 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
         End Using
     End Sub
 
-    Private Shared Sub DrawFlowLegend(graphics As Graphics)
+    Private Shared Sub DrawFlowLegend(graphics As Graphics, accessPosition As String)
         Const x As Single = 1115.0F
         Const y As Single = 40.0F
         Const width As Single = 425.0F
         Const height As Single = 480.0F
         Using border As New Pen(Color.FromArgb(210, 220, 218), 2.0F),
               labelFont As New Font("Arial", 10.0F, FontStyle.Bold),
+              observerLabelFont As New Font("Arial", 8.0F, FontStyle.Bold),
               arrowFont As New Font("Arial", 18.0F, FontStyle.Bold)
             graphics.DrawRectangle(border, x, y, width, height)
             Dim roles = {"Fresh", "Supply", "Return", "Exhaust"}
@@ -285,11 +286,12 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
                 End Using
             Next
             Dim accessY = y + 25.0F + roles.Length * 82.0F
-            DrawCenteredText(graphics, ChrW(&H2193), arrowFont, Brushes.Black,
+            DrawCenteredText(graphics, AccessArrow(accessPosition), arrowFont, Brushes.Black,
                 New RectangleF(x + 25.0F, accessY, 52.0F, 58.0F))
-            graphics.DrawString(LocalizedAccessLabel(),
-                labelFont, Brushes.Black,
-                New RectangleF(x + 97.0F, accessY + 16.0F, width - 120.0F, 34.0F))
+            Dim accessLabel = If(accessPosition = "front", LocalizedObserverAccessLabel(), LocalizedAccessLabel())
+            Dim accessLabelFont = If(accessPosition = "front", observerLabelFont, labelFont)
+            graphics.DrawString(accessLabel, accessLabelFont, Brushes.Black,
+                New RectangleF(x + 97.0F, accessY + 16.0F, width - 105.0F, 34.0F))
         End Using
     End Sub
 
@@ -310,9 +312,8 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
     Private Shared Sub DrawAccessPanel(graphics As Graphics,
         unitRectangle As RectangleF, font As Font, position As String)
 
-        Dim label = LocalizedAccessLabel()
+        Dim label = If(position = "front", LocalizedObserverAccessLabel(), LocalizedAccessLabel())
         Dim centerX = unitRectangle.Left + unitRectangle.Width / 2.0F
-        Dim centerY = unitRectangle.Top + unitRectangle.Height * 0.64F
         Using arrowFont As New Font("Arial", 30.0F, FontStyle.Bold)
         Select Case position
             Case "upper"
@@ -329,7 +330,7 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
                 DrawCenteredText(graphics, AccessArrow(position), arrowFont, Brushes.Black,
                     New RectangleF(centerX - 30.0F, unitRectangle.Bottom + 7.0F, 60.0F, 48.0F))
                 DrawCenteredText(graphics, label, font, Brushes.Black,
-                    New RectangleF(centerX - 70.0F, unitRectangle.Bottom + 57.0F, 140.0F, 22.0F))
+                    New RectangleF(centerX - 160.0F, unitRectangle.Bottom + 57.0F, 320.0F, 22.0F))
         End Select
         End Using
     End Sub
@@ -354,11 +355,31 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
         End Select
     End Function
 
+    Private Shared Function LocalizedObserverAccessLabel() As String
+        Select Case Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName
+            Case "it" : Return "Accesso lato osservatore"
+            Case "bg" : Return "Достъп от страната на наблюдателя"
+            Case "cs" : Return "Přístup ze strany pozorovatele"
+            Case "da" : Return "Adgang fra observatørsiden"
+            Case "de" : Return "Zugang auf Betrachterseite"
+            Case "fr" : Return "Accès côté observateur"
+            Case "hu" : Return "Hozzáférés a megfigyelő oldaláról"
+            Case "is" : Return "Aðgangur frá áhorfendahlið"
+            Case "nl" : Return "Toegang aan waarnemerszijde"
+            Case "no" : Return "Tilgang fra observatørsiden"
+            Case "pl" : Return "Dostęp od strony obserwatora"
+            Case "ro" : Return "Acces dinspre observator"
+            Case "sl" : Return "Dostop s strani opazovalca"
+            Case "sv" : Return "Åtkomst från betraktarsidan"
+            Case Else : Return "Observer-side access"
+        End Select
+    End Function
+
     Private Shared Function AccessArrow(position As String) As String
         Select Case position
             Case "upper" : Return ChrW(&H2193)
             Case "lower" : Return ChrW(&H2191)
-            Case Else : Return ChrW(&H2197)
+            Case Else : Return ChrW(&H2297)
         End Select
     End Function
 

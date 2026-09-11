@@ -195,6 +195,17 @@ const accessLabels: Record<string, string> = {
 };
 const accessLabel = (): string => accessLabels[languageCode()] ?? accessLabels.en;
 
+const observerAccessLabels: Record<string, string> = {
+  en: "Observer-side access", it: "Accesso lato osservatore", bg: "Достъп от страната на наблюдателя",
+  cs: "Přístup ze strany pozorovatele", da: "Adgang fra observatørsiden",
+  de: "Zugang auf Betrachterseite", fr: "Accès côté observateur",
+  hu: "Hozzáférés a megfigyelő oldaláról", is: "Aðgangur frá áhorfendahlið",
+  nl: "Toegang aan waarnemerszijde", no: "Tilgang fra observatørsiden",
+  pl: "Dostęp od strony obserwatora", ro: "Acces dinspre observator",
+  sl: "Dostop s strani opazovalca", sv: "Åtkomst från betraktarsidan",
+};
+const observerAccessLabel = (): string => observerAccessLabels[languageCode()] ?? observerAccessLabels.en;
+
 const localizedSoundPath = (rawCode: string, rawLabel: string): string => {
   const code = rawCode.trim().replace(/^_+/, "").toLowerCase();
   const text = messages();
@@ -1425,7 +1436,7 @@ const renderFlowPorts = (): string => {
     .join("");
 };
 
-const renderFlowLegend = (): string => {
+const renderFlowLegend = (surface: AccessSurface): string => {
   const labels = messages().domain.airflow;
   return `<aside class="airflow-legend" aria-label="${escapeHtml(messages().ui.installation.orientationTitle)}">
     ${([
@@ -1437,7 +1448,7 @@ const renderFlowLegend = (): string => {
       <img src="/airflow/${role}.png" alt=""><span>${escapeHtml(label)}</span>
     </div>`).join("")}
     <div class="airflow-legend-item access-direction">
-      <b aria-hidden="true">&darr;</b><span>${escapeHtml(accessLabel())}</span>
+      <b aria-hidden="true">${accessDirectionArrow(surface)}</b><span>${escapeHtml(surface === "front" ? observerAccessLabel() : accessLabel())}</span>
     </div>
   </aside>`;
 };
@@ -1510,7 +1521,7 @@ const accessSurfaceLabel = (surface: AccessSurface): string => {
 };
 
 const accessDirectionArrow = (surface: AccessSurface): string =>
-  surface === "upper" ? "&darr;" : surface === "lower" ? "&uarr;" : "&#8599;";
+  surface === "upper" ? "&darr;" : surface === "lower" ? "&uarr;" : "&otimes;";
 
 const renderInstallationStep = (): string => {
   const text = messages();
@@ -1554,10 +1565,10 @@ const renderInstallationStep = (): string => {
           <div class="ahu-plan access-${surface}">
             ${[1, 2, 3, 4].map((position) => `<span data-port="${position}" class="duct-marker duct-position-${airflowSlot(position, isSameSideConnection(), isOppositeSideEastWestWall())} duct-${result!.flowPorts?.find((port) => port.position === position)?.flowCode.toLowerCase()}" aria-hidden="true"><b>${position}</b></span>`).join("")}
             <strong>${escapeHtml(selectedUnit()?.model ?? "")}</strong>
-            <small class="access-indicator"><span>${escapeHtml(accessLabel())}</span><b class="access-direction-arrow" aria-hidden="true">${accessDirectionArrow(surface)}</b></small>
+            <small class="access-indicator"><span>${escapeHtml(surface === "front" ? observerAccessLabel() : accessLabel())}</span><b class="access-direction-arrow" aria-hidden="true">${accessDirectionArrow(surface)}</b></small>
           </div>
         </div>
-        ${renderFlowLegend()}
+        ${renderFlowLegend(surface)}
       </div>` : `<div class="empty-state airflow-pending" aria-busy="${calculating}">${escapeHtml(calculating ? text.ui.installation.orientationTitle : text.status.unavailable)}</div>`}
     </section>
     ${renderInlineDimensionalDrawing()}

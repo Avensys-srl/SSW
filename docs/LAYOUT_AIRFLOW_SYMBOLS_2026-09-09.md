@@ -78,8 +78,9 @@ distanza verticale `A` dall'asse orizzontale del boccaglio, con
 exhaust, supply e return: non sono ammessi rialzi speciali che portino le
 casette sotto o dentro il cerchio del boccaglio.
 Ogni dicitura del pannello di accesso include una freccia nera orientata verso
-il lato della macchina interessato: giu per l'accesso superiore, su per quello
-inferiore e diagonale verso l'esterno per quello frontale. La legenda dei flussi
+il lato della macchina interessato: giu per l'accesso superiore e su per quello
+inferiore. L'accesso frontale usa invece il simbolo tecnico `⊗`, che rappresenta
+la direzione entrante nel foglio, e la dicitura `Accesso lato osservatore`. La legenda dei flussi
 include una quinta voce localizzata che identifica la freccia del pannello di
 accesso. La convenzione e applicata a tutti gli schematici nella UI e nei report.
 Nel disegno l'indicatore non usa riquadro, sfondo o dicitura estesa: mostra solo
@@ -89,6 +90,8 @@ conserva invece la descrizione completa del lato di accesso.
 Freccia e parola breve sono sempre completamente esterne al profilo dell'unita:
 la punta e rivolta verso il lato interessato e la scritta resta distaccata dalla
 coda, senza riquadri o sovrapposizioni con il campo interno.
+Per l'accesso frontale la regola della freccia e sostituita da `⊗`; lo stesso
+simbolo e la stessa dicitura localizzata compaiono anche nella legenda.
 
 ## Verifiche
 

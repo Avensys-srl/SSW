@@ -31,6 +31,8 @@ assert.ok(main.includes('class="airflow-legend"'));
 assert.ok(main.includes('data-port="${position}" class="duct-marker'));
 assert.ok(main.includes('class="airflow-legend-item access-direction"'));
 assert.ok(main.includes('accessDirectionArrow(surface)'));
+assert.ok(main.includes('surface === "front" ? observerAccessLabel() : accessLabel()'));
+assert.ok(main.includes('"&otimes;"'));
 assert.ok(main.includes('class="access-indicator"'));
 assert.ok(styles.includes('.ahu-plan small.access-indicator'));
 assert.ok(styles.includes('font-size: 32px;'));
