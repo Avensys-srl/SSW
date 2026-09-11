@@ -32,4 +32,5 @@ assert.ok(main.includes('data-port="${position}" class="duct-marker'));
 assert.ok(!main.includes('${icon("arrow-down")}<span>'));
 assert.ok(styles.includes('.connection-ssc:not(.ssc-upright-floor) .ahu-plan.access-lower strong { top: auto; bottom: 32px; }'));
 assert.ok(styles.includes('.connection-ssc:not(.ssc-upright-floor) .ahu-plan.access-upper strong { top: 32px; bottom: auto; }'));
+for (const color of ['#168bd2', '#279b55', '#e2c600', '#a6533c']) assert.ok(styles.includes(color));
 console.log('Airflow view position and stale-result guards passed.');

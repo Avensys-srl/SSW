@@ -531,6 +531,11 @@ input:disabled, select:disabled {
 .airflow-legend-item img { justify-self: start; width: 36px; height: auto; max-width: none; object-fit: contain; mix-blend-mode: multiply; }
 .airflow-legend-item.fresh img, .airflow-legend-item.exhaust img { width: 48px; }
 .airflow-legend-item span { min-width: 0; overflow-wrap: anywhere; }
+.airflow-legend-item span::after { content: ""; display: block; width: 36px; height: 4px; margin-top: 5px; background: var(--flow-color); border-radius: 1px; }
+.airflow-legend-item.fresh { --flow-color: #279b55; }
+.airflow-legend-item.supply { --flow-color: #168bd2; }
+.airflow-legend-item.return { --flow-color: #e2c600; }
+.airflow-legend-item.exhaust { --flow-color: #a6533c; }
 .ahu-plan { position: absolute; inset: 104px 23% 104px; display: grid; place-items: center; background: #f0f3f3; border: 2px solid #849592; border-radius: 4px; box-shadow: inset 0 0 0 5px #fff, 0 5px 0 #e2e8e6; }
 .ahu-plan::before { content: ""; position: absolute; inset: 13px; border: 1px solid #d2dcda; border-radius: 2px; pointer-events: none; }
 .ahu-plan strong { position: absolute; top: 42%; font-size: 11px; font-weight: 600; color: #526560; max-width: 90%; text-align: center; }
@@ -547,7 +552,7 @@ input:disabled, select:disabled {
   top: -25px;
   width: 54px;
   height: 25px;
-  border: 2px solid var(--duct-color, #26323d);
+  border: 3px solid var(--duct-color, #26323d);
   border-bottom: 0;
   border-radius: 54px 54px 0 0;
 }
@@ -560,7 +565,7 @@ input:disabled, select:disabled {
   width: 54px;
   height: 54px;
   background: #f4f6f8;
-  border: 2px solid var(--duct-color, #26323d);
+  border: 3px solid var(--duct-color, #26323d);
   border-radius: 50%;
 }
 .connection-osc:not(.wall-east-west):not(.wall-north-south) .duct-position-3 { left: 20%; transform: translate(-50%, -50%); }
@@ -570,7 +575,7 @@ input:disabled, select:disabled {
   width: 28px;
   height: 46px;
   background: #e3e8ed;
-  border: 2px solid var(--duct-color, #26323d);
+  border: 3px solid var(--duct-color, #26323d);
   border-radius: 2px;
 }
 .connection-osc.wall-east-west .duct-position-1 { left: -28px; top: 30%; transform: translateY(-50%); }
@@ -582,7 +587,7 @@ input:disabled, select:disabled {
   width: 46px;
   height: 28px;
   background: #e3e8ed;
-  border: 2px solid var(--duct-color, #26323d);
+  border: 3px solid var(--duct-color, #26323d);
   border-radius: 2px;
 }
 .connection-osc.wall-north-south .duct-position-1 { left: 27%; top: -28px; transform: translateX(-50%); }
@@ -631,7 +636,7 @@ input:disabled, select:disabled {
   width: 38px;
   height: 38px;
   background: #f4f6f8;
-  border: 2px solid var(--duct-color, #26323d);
+  border: 3px solid var(--duct-color, #26323d);
   border-radius: 50%;
   transform: translate(-50%, -50%);
 }
@@ -650,7 +655,7 @@ input:disabled, select:disabled {
   width: 42px;
   height: 28px;
   background: #e3e8ed;
-  border: 2px solid var(--duct-color, #26323d);
+  border: 3px solid var(--duct-color, #26323d);
   border-radius: 2px;
   transform: translateX(-50%);
 }
@@ -658,10 +663,10 @@ input:disabled, select:disabled {
 .connection-ssc.ssc-upright-floor .duct-position-2 { left: 38%; }
 .connection-ssc.ssc-upright-floor .duct-position-3 { left: 63%; }
 .connection-ssc.ssc-upright-floor .duct-position-4 { left: 88%; }
-.duct-fresh { --duct-color: #3384c4; }
-.duct-return { --duct-color: #d99c22; }
-.duct-exhaust { --duct-color: #718091; }
-.duct-supply { --duct-color: #d54a42; }
+.duct-fresh { --duct-color: #279b55; }
+.duct-return { --duct-color: #e2c600; }
+.duct-exhaust { --duct-color: #a6533c; }
+.duct-supply { --duct-color: #168bd2; }
 /* Anchor airflow symbols to the same physical centres as the ducts. */
 .airflow-diagram.connection-osc .flow, .airflow-diagram.connection-ssc .flow { grid-area: auto; }
 .airflow-diagram .flow { position: absolute; }

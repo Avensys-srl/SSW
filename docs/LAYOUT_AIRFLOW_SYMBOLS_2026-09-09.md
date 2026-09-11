@@ -49,6 +49,13 @@ Nei soli layout SSC piani il nome dell'unita viene allontanato dall'etichetta de
 pannello: verso l'alto per l'accesso inferiore e verso il basso per l'accesso
 superiore. Entrambe le scritte restano interne senza sovrapporsi.
 
+La codifica cromatica comune a UI e report segue la convenzione richiesta:
+SUP/supply blu (`#168bd2`), ODA/fresh verde (`#279b55`), ETA/return giallo
+(`#e2c600`) ed EHA/exhaust rosso-bruno (`#a6533c`). La legenda mostra un tratto
+colorato sotto la dicitura localizzata e i boccagli usano lo stesso colore.
+Il contorno colorato dei boccagli usa un tratto rinforzato da 3 px nella UI e
+da 5 px nel renderer ad alta risoluzione del report.
+
 ## Verifiche
 
 - `npm run build` nel frontend.

@@ -111,7 +111,7 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
             Dim ports = BuildPortPlacements(snapshot, unitRectangle, sameSide,
                 uprightSameSide, flatFloorSameSide, eastWestWall, installationMode)
             For Each placement In ports
-                Using flowPen As New Pen(FlowColor(placement.FlowCode), 3.0F)
+                Using flowPen As New Pen(FlowColor(placement.FlowCode), 5.0F)
                     DrawPort(graphics, placement, flowPen)
                 End Using
             Next
@@ -274,6 +274,10 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
                 End Using
                 graphics.DrawString(FlowCaption(roles(index)), labelFont, Brushes.Black,
                     New RectangleF(x + 97.0F, itemY + 16.0F, width - 120.0F, 34.0F))
+                Using colorPen As New Pen(FlowColor(roles(index)), 5.0F)
+                    graphics.DrawLine(colorPen, x + 97.0F, itemY + 49.0F,
+                        x + 157.0F, itemY + 49.0F)
+                End Using
             Next
         End Using
     End Sub
@@ -360,10 +364,10 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
 
     Private Shared Function FlowColor(flowCode As String) As Color
         Select Case If(flowCode, String.Empty).Trim().ToLowerInvariant()
-            Case "fresh" : Return Color.FromArgb(33, 132, 215)
-            Case "return" : Return Color.FromArgb(219, 145, 0)
-            Case "supply" : Return Color.FromArgb(224, 67, 54)
-            Case Else : Return Color.FromArgb(104, 123, 143)
+            Case "fresh" : Return Color.FromArgb(39, 155, 85)
+            Case "return" : Return Color.FromArgb(226, 198, 0)
+            Case "supply" : Return Color.FromArgb(22, 139, 210)
+            Case Else : Return Color.FromArgb(166, 83, 60)
         End Select
     End Function
 
