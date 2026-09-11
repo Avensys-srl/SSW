@@ -35,4 +35,6 @@ assert.ok(styles.includes('.connection-ssc:not(.ssc-upright-floor) .ahu-plan.acc
 for (const color of ['#168bd2', '#279b55', '#e2c600', '#a6533c']) assert.ok(styles.includes(color));
 assert.ok(styles.includes('font-family: Arial, sans-serif; font-size: 13px; font-weight: 700;'));
 assert.ok(styles.includes('background: #fff; border: 2px solid #111;'));
+assert.ok(styles.includes('border-radius: 4px; box-shadow: none;'));
+assert.ok(styles.includes('color: #000; background: #fff; border: 1px solid #000; font-family: Arial, sans-serif;'));
 console.log('Airflow view position and stale-result guards passed.');

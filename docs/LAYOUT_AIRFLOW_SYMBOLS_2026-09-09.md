@@ -59,6 +59,8 @@ I numeri dei boccagli sono centrati in Arial grassetto, 13 px nella UI e 11 pt
 nel report, per restare leggibili anche in stampa.
 La sagoma dell'unita usa un riempimento bianco pieno e un contorno principale
 nero sia nella UI sia nel report; la linea interna resta secondaria e piu chiara.
+Tutti i testi interni sono neri e in Arial. L'etichetta del pannello ha fondo
+bianco e bordo nero; la sagoma non usa ombre inferiori.
 
 ## Verifiche
 

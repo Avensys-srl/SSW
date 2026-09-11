@@ -227,7 +227,7 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
                 rectangle.Width, rectangle.Height)
             numberCenter = New PointF(rectangle.X + rectangle.Width / 2, rectangle.Y + rectangle.Height / 2)
         End If
-        Using numberFont As New Font("Arial", 11.0F, FontStyle.Bold), numberBrush As New SolidBrush(Color.FromArgb(82, 101, 96))
+        Using numberFont As New Font("Arial", 11.0F, FontStyle.Bold), numberBrush As New SolidBrush(Color.Black)
             DrawCenteredText(graphics, placement.Number.ToString(), numberFont, numberBrush,
                 New RectangleF(numberCenter.X - 15, numberCenter.Y - 15, 30, 30))
         End Using
@@ -313,10 +313,11 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
             Case Else
                 y = unitRectangle.Top + unitRectangle.Height * 0.64F
         End Select
-        Using brush As New SolidBrush(Color.FromArgb(91, 111, 132))
+        Using brush As New SolidBrush(Color.White), border As New Pen(Color.Black, 2.0F)
             graphics.FillRectangle(brush, x, y, width, 34.0F)
+            graphics.DrawRectangle(border, x, y, width, 34.0F)
         End Using
-        DrawCenteredText(graphics, caption, font, Brushes.White,
+        DrawCenteredText(graphics, caption, font, Brushes.Black,
             New RectangleF(x, y + 4, width, 26))
     End Sub
 

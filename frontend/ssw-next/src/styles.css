@@ -536,15 +536,15 @@ input:disabled, select:disabled {
 .airflow-legend-item.supply { --flow-color: #168bd2; }
 .airflow-legend-item.return { --flow-color: #e2c600; }
 .airflow-legend-item.exhaust { --flow-color: #a6533c; }
-.ahu-plan { position: absolute; inset: 104px 23% 104px; display: grid; place-items: center; background: #fff; border: 2px solid #111; border-radius: 4px; box-shadow: inset 0 0 0 5px #fff, 0 5px 0 #e2e8e6; }
+.ahu-plan { position: absolute; inset: 104px 23% 104px; display: grid; place-items: center; background: #fff; border: 2px solid #111; border-radius: 4px; box-shadow: none; }
 .ahu-plan::before { content: ""; position: absolute; inset: 13px; border: 1px solid #d2dcda; border-radius: 2px; pointer-events: none; }
-.ahu-plan strong { position: absolute; top: 42%; font-size: 11px; font-weight: 600; color: #526560; max-width: 90%; text-align: center; }
-.ahu-plan small { position: absolute; z-index: 3; padding: 5px 12px; color: white; background: #667688; font-size: 8px; white-space: nowrap; }
+.ahu-plan strong { position: absolute; top: 42%; font-family: Arial, sans-serif; font-size: 11px; font-weight: 600; color: #000; max-width: 90%; text-align: center; }
+.ahu-plan small { position: absolute; z-index: 3; padding: 4px 11px; color: #000; background: #fff; border: 1px solid #000; font-family: Arial, sans-serif; font-size: 8px; white-space: nowrap; }
 .ahu-plan.access-lower small { bottom: 0; }
 .ahu-plan.access-upper small { top: 0; }
 .ahu-plan.access-front small { left: 50%; top: calc(50% + 34px); transform: translateX(-50%); }
 .duct-marker { display: none; position: absolute; pointer-events: none; }
-.duct-marker b { position: absolute; inset: 0; display: grid; place-items: center; font-family: Arial, sans-serif; font-size: 13px; font-weight: 700; color: #526560; }
+.duct-marker b { position: absolute; inset: 0; display: grid; place-items: center; font-family: Arial, sans-serif; font-size: 13px; font-weight: 700; color: #000; }
 .airflow-pending { min-height: 350px; }
 .connection-osc:not(.wall-east-west):not(.wall-north-south) .duct-marker { display: block; }
 .connection-osc:not(.wall-east-west):not(.wall-north-south) .duct-position-1,
