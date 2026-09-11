@@ -74,6 +74,9 @@ Nella vista parete `OSC_EAST_WEST` ogni casetta e allineata alla riga del propri
 boccaglio; l'interasse verticale delle due righe e circa due larghezze icona.
 Nei layout OSC a pavimento con accesso superiore, le icone inferiori mantengono
 dal centro dei boccagli una distanza pari a due larghezze dell'icona base.
+Poiche fresh ed exhaust hanno una tela piu ampia per la freccia esterna, nei
+medesimi layout le due icone sono rialzate di ulteriori 15 px per portare il
+corpo della casetta a contatto con il boccaglio.
 
 ## Verifiche
 
