@@ -37,4 +37,6 @@ assert.ok(styles.includes('font-family: Arial, sans-serif; font-size: 13px; font
 assert.ok(styles.includes('background: #fff; border: 2px solid #111;'));
 assert.ok(styles.includes('border-radius: 4px; box-shadow: none;'));
 assert.ok(styles.includes('color: #000; background: #fff; border: 1px solid #000; font-family: Arial, sans-serif;'));
+assert.ok(styles.includes('.connection-osc.wall-east-west .flow-position-1, .connection-osc.wall-east-west .flow-position-3 { top: calc(30% + 31px); }'));
+assert.ok(styles.includes('.connection-osc.wall-east-west .flow-position-2, .connection-osc.wall-east-west .flow-position-4 { top: calc(70% - 31px); }'));
 console.log('Airflow view position and stale-result guards passed.');

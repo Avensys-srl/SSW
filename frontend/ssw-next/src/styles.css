@@ -693,8 +693,8 @@ input:disabled, select:disabled {
 .connection-osc.wall-east-west .flow img { left: 0; top: 0; transform: translate(-50%, -50%); }
 .connection-osc.wall-east-west .flow.fresh img,
 .connection-osc.wall-east-west .flow.exhaust img { transform: translate(-37%, -63%); }
-.connection-osc.wall-east-west .flow-position-1, .connection-osc.wall-east-west .flow-position-3 { top: 30%; }
-.connection-osc.wall-east-west .flow-position-2, .connection-osc.wall-east-west .flow-position-4 { top: 70%; }
+.connection-osc.wall-east-west .flow-position-1, .connection-osc.wall-east-west .flow-position-3 { top: calc(30% + 31px); }
+.connection-osc.wall-east-west .flow-position-2, .connection-osc.wall-east-west .flow-position-4 { top: calc(70% - 31px); }
 .connection-osc.wall-east-west .flow-west { left: 14%; right: auto; }
 .connection-osc.wall-east-west .flow-east { left: 86%; right: auto; }
 .connection-ssc .flow-position-1 { left: 30%; }
