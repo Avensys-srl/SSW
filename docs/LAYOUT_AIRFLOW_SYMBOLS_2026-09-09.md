@@ -104,6 +104,10 @@ interferire con icone o boccagli superiori.
 Tra ogni freccia o simbolo di accesso e la relativa scritta deve rimanere un
 margine minimo pari all'altezza di un carattere (`1em`). La regola vale nello
 schema, nel badge e nella legenda e non ammette contatto o sovrapposizione.
+Tutte le icone a forma di casa sono visualizzate al 75% della dimensione
+precedente, sia nello schema sia nella legenda e nel report. Assi e centri dei
+boccagli restano invariati; gli offset delle icone sono ricalcolati sulla nuova
+altezza per conservare tutte le proporzioni, inclusa la regola `A = 1,5 x h`.
 
 ## Verifiche
 

@@ -243,17 +243,19 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
     End Sub
 
     Private Shared Sub DrawFlowSymbol(graphics As Graphics, placement As PortPlacement)
-        Const width As Single = 52.0F
-        Const height As Single = 58.0F
+        Const width As Single = 39.0F
+        Const height As Single = 43.5F
         Dim outerOffset = If(placement.FaceOn, 30.0F, 54.0F)
         Dim rectangle As RectangleF
         Select Case placement.Edge
             Case PortEdge.Top
+                Dim bottomOffset = If(placement.FaceOn, height * 0.5F, outerOffset + 8.0F)
                 rectangle = New RectangleF(placement.Center.X - width / 2,
-                    placement.Center.Y - outerOffset - height - 8.0F, width, height)
+                    placement.Center.Y - bottomOffset - height, width, height)
             Case PortEdge.Bottom
+                Dim topOffset = If(placement.FaceOn, height * 0.5F, outerOffset + 8.0F)
                 rectangle = New RectangleF(placement.Center.X - width / 2,
-                    placement.Center.Y + outerOffset + 8.0F, width, height)
+                    placement.Center.Y + topOffset, width, height)
             Case PortEdge.Left
                 rectangle = New RectangleF(placement.Center.X - 54.0F - width - 12.0F,
                     placement.Center.Y - height / 2, width, height)
@@ -280,7 +282,7 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
             For index = 0 To roles.Length - 1
                 Dim itemY = y + 25.0F + index * 82.0F
                 Using symbol = LoadFlowIcon(roles(index))
-                    graphics.DrawImage(symbol, New RectangleF(x + 25.0F, itemY, 52.0F, 58.0F))
+                    graphics.DrawImage(symbol, New RectangleF(x + 31.5F, itemY + 7.25F, 39.0F, 43.5F))
                 End Using
                 graphics.DrawString(FlowCaption(roles(index)), labelFont, Brushes.Black,
                     New RectangleF(x + 97.0F, itemY + 16.0F, width - 120.0F, 34.0F))
