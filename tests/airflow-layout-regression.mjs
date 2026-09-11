@@ -29,6 +29,7 @@ for (const role of ['fresh', 'supply', 'return', 'exhaust']) {
 assert.ok(main.includes('src="/airflow/${role}.png"'));
 assert.ok(main.includes('class="airflow-legend"'));
 assert.ok(main.includes('data-port="${position}" class="duct-marker'));
+assert.ok(styles.includes('.duct-marker { display: none; position: absolute; z-index: 4; pointer-events: none; }'));
 assert.ok(!main.includes('${icon("arrow-down")}<span>'));
 assert.ok(styles.includes('.connection-ssc:not(.ssc-upright-floor) .ahu-plan.access-lower strong { top: auto; bottom: 32px; }'));
 assert.ok(styles.includes('.connection-ssc:not(.ssc-upright-floor) .ahu-plan.access-upper strong { top: 32px; bottom: auto; }'));

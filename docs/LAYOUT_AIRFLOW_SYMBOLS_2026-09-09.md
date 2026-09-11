@@ -29,6 +29,8 @@ Le icone e i rispettivi boccagli condividono lo stesso asse fisico. Come regola
 generale valida per ogni orientamento, ciascuna casetta deve arrivare a contatto
 con il proprio boccaglio e sovrapporsi leggermente al suo bordo. Il sormonto non
 deve coprire il numero, il contorno colorato o il simbolo interno della casetta.
+Il boccaglio costituisce sempre il livello grafico superiore: contorno colorato,
+riempimento e numero sono disegnati davanti a casetta, freccia e sagoma dell'unita.
 La stessa regola vale nella UI e nel report e prevale sulle distanze specifiche
 dei singoli layout. Le quattro case hanno la stessa dimensione visiva; nei
 simboli fresh ed exhaust la freccia esterna può estendersi oltre tale ingombro.

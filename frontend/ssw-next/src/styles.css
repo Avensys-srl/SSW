@@ -543,7 +543,7 @@ input:disabled, select:disabled {
 .ahu-plan.access-lower small { bottom: 0; }
 .ahu-plan.access-upper small { top: 0; }
 .ahu-plan.access-front small { left: 50%; top: calc(50% + 34px); transform: translateX(-50%); }
-.duct-marker { display: none; position: absolute; pointer-events: none; }
+.duct-marker { display: none; position: absolute; z-index: 4; pointer-events: none; }
 .duct-marker b { position: absolute; inset: 0; display: grid; place-items: center; font-family: Arial, sans-serif; font-size: 13px; font-weight: 700; color: #000; }
 .airflow-pending { min-height: 350px; }
 .connection-osc:not(.wall-east-west):not(.wall-north-south) .duct-marker { display: block; }

@@ -199,6 +199,8 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
     Private Shared Sub DrawPort(graphics As Graphics, placement As PortPlacement,
         ductPen As Pen)
 
+        ' Symbols may touch the duct, but the duct is always painted on top.
+        DrawFlowSymbol(graphics, placement)
         Const radius As Single = 30.0F
         Const ductLength As Single = 54.0F
         Dim numberCenter = placement.Center
@@ -234,7 +236,6 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
             DrawCenteredText(graphics, placement.Number.ToString(), numberFont, numberBrush,
                 New RectangleF(numberCenter.X - 15, numberCenter.Y - 15, 30, 30))
         End Using
-        DrawFlowSymbol(graphics, placement)
     End Sub
 
     Private Shared Sub DrawFlowSymbol(graphics As Graphics, placement As PortPlacement)
