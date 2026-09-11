@@ -79,7 +79,7 @@ exhaust, supply e return: non sono ammessi rialzi speciali che portino le
 casette sotto o dentro il cerchio del boccaglio.
 Ogni dicitura del pannello di accesso include una freccia nera orientata verso
 il lato della macchina interessato: giu per l'accesso superiore e su per quello
-inferiore. L'accesso frontale usa invece una `X` semplice e la dicitura
+inferiore. L'accesso frontale usa invece una croce diagonale e la dicitura
 `Accesso lato osservatore`. La legenda dei flussi
 include una quinta voce localizzata che identifica la freccia del pannello di
 accesso. La convenzione e applicata a tutti gli schematici nella UI e nei report.
@@ -90,10 +90,12 @@ conserva invece la descrizione completa del lato di accesso.
 Freccia e parola breve sono sempre completamente esterne al profilo dell'unita:
 la punta e rivolta verso il lato interessato e la scritta resta distaccata dalla
 coda, senza riquadri o sovrapposizioni con il campo interno.
-Per l'accesso frontale la regola della freccia e sostituita da una `X` non
-cerchiata, ridotta del 40% rispetto alla freccia standard. Simbolo e dicitura
-localizzata sono centrati dentro l'unita, sotto la sigla; la legenda usa la
-stessa `X`, anch'essa ridotta del 40%.
+Per l'accesso frontale la regola della freccia e sostituita da una croce non
+cerchiata, ridotta del 40% rispetto alla freccia standard. Non e un carattere
+tipografico: e costruita con due segmenti di uguale lunghezza, perpendicolari
+tra loro e orientati a `+45 gradi` e `-45 gradi` rispetto all'orizzontale.
+Simbolo e dicitura localizzata sono centrati dentro l'unita, sotto la sigla; la
+legenda usa la stessa geometria e la stessa riduzione.
 
 ## Verifiche
 

@@ -1448,7 +1448,7 @@ const renderFlowLegend = (surface: AccessSurface): string => {
       <img src="/airflow/${role}.png" alt=""><span>${escapeHtml(label)}</span>
     </div>`).join("")}
     <div class="airflow-legend-item access-direction${surface === "front" ? " observer-side" : ""}">
-      <b aria-hidden="true">${accessDirectionArrow(surface)}</b><span>${escapeHtml(surface === "front" ? observerAccessLabel() : accessLabel())}</span>
+      <b class="${surface === "front" ? "observer-cross" : ""}" aria-hidden="true">${accessDirectionArrow(surface)}</b><span>${escapeHtml(surface === "front" ? observerAccessLabel() : accessLabel())}</span>
     </div>
   </aside>`;
 };
@@ -1521,7 +1521,7 @@ const accessSurfaceLabel = (surface: AccessSurface): string => {
 };
 
 const accessDirectionArrow = (surface: AccessSurface): string =>
-  surface === "upper" ? "&darr;" : surface === "lower" ? "&uarr;" : "X";
+  surface === "upper" ? "&darr;" : surface === "lower" ? "&uarr;" : "";
 
 const renderInstallationStep = (): string => {
   const text = messages();
@@ -1556,7 +1556,7 @@ const renderInstallationStep = (): string => {
       <div class="panel-heading compact">
         <div><h2>${escapeHtml(text.ui.installation.orientationTitle)}</h2><p>${escapeHtml(text.ui.installation.previewDescription)} ${escapeHtml(draft!.layoutCode)}.</p></div>
         <div class="layout-heading-actions">
-          <span class="outline-badge"><b class="access-direction-arrow" aria-hidden="true">${accessDirectionArrow(surface)}</b>${escapeHtml(accessSurfaceLabel(surface))}</span>
+          <span class="outline-badge"><b class="access-direction-arrow${surface === "front" ? " observer-cross" : ""}" aria-hidden="true">${accessDirectionArrow(surface)}</b>${escapeHtml(accessSurfaceLabel(surface))}</span>
         </div>
       </div>
       ${compatibleLayouts.length > 0 && !calculating && !calculationFailed ? `<div class="airflow-layout-body">
@@ -1565,7 +1565,7 @@ const renderInstallationStep = (): string => {
           <div class="ahu-plan access-${surface}">
             ${[1, 2, 3, 4].map((position) => `<span data-port="${position}" class="duct-marker duct-position-${airflowSlot(position, isSameSideConnection(), isOppositeSideEastWestWall())} duct-${result!.flowPorts?.find((port) => port.position === position)?.flowCode.toLowerCase()}" aria-hidden="true"><b>${position}</b></span>`).join("")}
             <strong>${escapeHtml(selectedUnit()?.model ?? "")}</strong>
-            <small class="access-indicator"><span>${escapeHtml(surface === "front" ? observerAccessLabel() : accessLabel())}</span><b class="access-direction-arrow" aria-hidden="true">${accessDirectionArrow(surface)}</b></small>
+            <small class="access-indicator"><span>${escapeHtml(surface === "front" ? observerAccessLabel() : accessLabel())}</span><b class="access-direction-arrow${surface === "front" ? " observer-cross" : ""}" aria-hidden="true">${accessDirectionArrow(surface)}</b></small>
           </div>
         </div>
         ${renderFlowLegend(surface)}
