@@ -1580,7 +1580,7 @@ const renderInstallationStep = (): string => {
       </div>
       ${compatibleLayouts.length > 0 && !calculating && !calculationFailed ? `<div class="airflow-layout-body">
         <div class="airflow-diagram ${connectionClass}" data-layout="${escapeHtml(draft!.layoutCode)}">
-          <div class="installation-view-caption">${escapeHtml(installationViewLabel(draft!.installationMode, isOppositeSideEastWestWall()))}</div>
+          <div class="installation-view-caption${isSameSideConnection() ? " same-side-caption" : ""}">${escapeHtml(`${selectedUnit()?.model ?? ""} ${installationViewLabel(draft!.installationMode, isOppositeSideEastWestWall())}`.trim())}</div>
           ${renderFlowPorts()}
           <div class="ahu-plan access-${surface}">
             ${[1, 2, 3, 4].map((position) => `<span data-port="${position}" class="duct-marker duct-position-${airflowSlot(position, isSameSideConnection(), isOppositeSideEastWestWall())} duct-${result!.flowPorts?.find((port) => port.position === position)?.flowCode.toLowerCase()}" aria-hidden="true"><b>${position}</b></span>`).join("")}

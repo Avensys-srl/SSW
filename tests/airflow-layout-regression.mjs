@@ -35,8 +35,9 @@ assert.ok(main.includes('surface === "front" ? observerAccessLabel() : accessLab
 assert.ok(main.includes('surface === "lower" ? "&uarr;" : ""'));
 assert.ok(main.includes('" observer-cross"'));
 assert.ok(main.includes('class="access-indicator"'));
-assert.ok(main.includes('class="installation-view-caption"'));
+assert.ok(main.includes('class="installation-view-caption${isSameSideConnection() ? " same-side-caption" : ""}"'));
 assert.ok(main.includes('installationViewLabel(draft!.installationMode, isOppositeSideEastWestWall())'));
+assert.ok(main.includes('" same-side-caption"'));
 assert.ok(styles.includes('.ahu-plan small.access-indicator'));
 assert.ok(styles.includes('font-size: 32px;'));
 assert.ok(styles.includes('.ahu-plan.access-lower small.access-indicator { top: calc(100% + 8px); bottom: auto; }'));
@@ -49,6 +50,8 @@ assert.ok(styles.includes('.airflow-legend-item.access-direction.observer-side b
 assert.ok(styles.includes('.flow img { position: absolute; display: block; width: 30px;'));
 assert.ok(styles.includes('.flow.fresh img, .flow.exhaust img { width: 39.75px; }'));
 assert.ok(styles.includes('.airflow-legend-item img { justify-self: start; width: 27px;'));
+assert.ok(styles.includes('.connection-ssc:not(.ssc-flat-floor):not(.ssc-upright-floor) .flow { top: calc(50% - 28px); bottom: auto; }'));
+assert.ok(styles.includes('.airflow-diagram .ahu-plan strong { display: none; }'));
 assert.ok(styles.includes('.duct-marker { display: none; position: absolute; z-index: 4; pointer-events: none; }'));
 assert.ok(!main.includes('${icon("arrow-down")}<span>'));
 assert.ok(styles.includes('.connection-ssc:not(.ssc-upright-floor) .ahu-plan.access-lower strong { top: auto; bottom: 32px; }'));

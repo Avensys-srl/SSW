@@ -104,8 +104,16 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
               accessFont As New Font("Arial", 10.0F, FontStyle.Regular),
               installationFont As New Font("Arial", 12.0F, FontStyle.Bold)
 
-            graphics.DrawString(InstallationViewCaption(installationMode, eastWestWall),
-                installationFont, Brushes.Black, New RectangleF(20.0F, 12.0F, 320.0F, 30.0F))
+            Dim viewCaption = (If(modelCode, String.Empty) & " " &
+                InstallationViewCaption(installationMode, eastWestWall)).Trim()
+            If sameSide Then
+                DrawCenteredText(graphics,
+                    viewCaption, installationFont, Brushes.Black,
+                    New RectangleF(140.0F, 12.0F, 820.0F, 30.0F))
+            Else
+                graphics.DrawString(viewCaption,
+                    installationFont, Brushes.Black, New RectangleF(20.0F, 12.0F, 320.0F, 30.0F))
+            End If
 
             graphics.FillRectangle(unitBrush, unitRectangle)
             graphics.DrawRectangle(unitPen, unitRectangle.X, unitRectangle.Y,

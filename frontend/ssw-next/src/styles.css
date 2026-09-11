@@ -527,6 +527,7 @@ input:disabled, select:disabled {
 .airflow-layout-body { display: grid; grid-template-columns: minmax(360px, 1fr) 155px; align-items: stretch; gap: 18px; min-height: 350px; }
 .airflow-diagram { position: relative; min-width: 0; min-height: 350px; }
 .installation-view-caption { position: absolute; z-index: 5; top: 8px; left: 16px; color: #000; font-family: Arial, sans-serif; font-size: 11px; font-weight: 700; white-space: nowrap; }
+.installation-view-caption.same-side-caption { left: 50%; transform: translateX(-50%); }
 .airflow-legend { display: grid; align-content: center; gap: 10px; padding-left: 17px; border-left: 1px solid var(--line); }
 .airflow-legend-item { display: grid; grid-template-columns: 48px minmax(0, 1fr); align-items: center; gap: 10px; min-height: 52px; color: var(--ink); font-size: 10px; font-weight: 600; }
 .airflow-legend-item img { justify-self: start; width: 27px; height: auto; max-width: none; object-fit: contain; mix-blend-mode: multiply; }
@@ -547,6 +548,7 @@ input:disabled, select:disabled {
 .ahu-plan { position: absolute; inset: 104px 23% 104px; display: grid; place-items: center; background: #fff; border: 2px solid #111; border-radius: 4px; box-shadow: none; }
 .ahu-plan::before { content: ""; position: absolute; inset: 13px; border: 1px solid #d2dcda; border-radius: 2px; pointer-events: none; }
 .ahu-plan strong { position: absolute; top: 42%; font-family: Arial, sans-serif; font-size: 11px; font-weight: 600; color: #000; max-width: 90%; text-align: center; }
+.airflow-diagram .ahu-plan strong { display: none; }
 .ahu-plan small { position: absolute; z-index: 3; padding: 4px 11px; color: #000; background: #fff; border: 1px solid #000; font-family: Arial, sans-serif; font-size: 8px; white-space: nowrap; }
 .ahu-plan small.access-indicator { left: 50%; display: flex; flex-direction: column; align-items: center; gap: 1em; padding: 0; background: transparent; border: 0; font-size: 9px; font-weight: 700; line-height: 1; transform: translateX(-50%); }
 .access-direction-arrow { display: inline-block; margin-right: 1em; color: #000; font-family: Arial, sans-serif; font-size: 1.35em; line-height: .7; vertical-align: -1px; }
@@ -660,6 +662,7 @@ input:disabled, select:disabled {
 .connection-ssc:not(.ssc-upright-floor) .duct-position-4 { left: 88%; }
 .connection-ssc.ssc-flat-floor .duct-marker { top: 50%; bottom: auto; }
 .connection-ssc:not(.ssc-upright-floor) .ahu-plan strong { top: auto; bottom: 14px; }
+.connection-ssc:not(.ssc-flat-floor):not(.ssc-upright-floor) .flow { top: calc(50% - 28px); bottom: auto; }
 .connection-ssc.ssc-flat-floor .ahu-plan strong { top: 14px; bottom: auto; }
 .connection-ssc:not(.ssc-upright-floor) .ahu-plan.access-lower strong { top: auto; bottom: 32px; }
 .connection-ssc:not(.ssc-upright-floor) .ahu-plan.access-upper strong { top: 32px; bottom: auto; }

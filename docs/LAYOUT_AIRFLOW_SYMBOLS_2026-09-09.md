@@ -108,6 +108,12 @@ Tutte le icone a forma di casa sono visualizzate al 75% della dimensione
 precedente, sia nello schema sia nella legenda e nel report. Assi e centri dei
 boccagli restano invariati; gli offset delle icone sono ricalcolati sulla nuova
 altezza per conservare tutte le proporzioni, inclusa la regola `A = 1,5 x h`.
+Nei layout SSC a soffitto, le quattro icone dei flussi sono disposte dentro la
+sagoma, immediatamente sopra i rispettivi boccagli circolari. In tutte le
+rappresentazioni la sigla dell'unita non viene ripetuta nel corpo macchina:
+compare una sola volta nell'intestazione sopra lo schema, seguita dal tipo di
+installazione localizzato, per esempio `CLRC 023 SSC Soffitto`. La regola vale
+per UI e report e per soffitto, pavimento e le due viste murali.
 
 ## Verifiche
 
