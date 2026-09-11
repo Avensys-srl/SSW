@@ -270,7 +270,8 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
         Using border As New Pen(Color.FromArgb(210, 220, 218), 2.0F),
               labelFont As New Font("Arial", 10.0F, FontStyle.Bold),
               observerLabelFont As New Font("Arial", 8.0F, FontStyle.Bold),
-              arrowFont As New Font("Arial", 18.0F, FontStyle.Bold)
+              arrowFont As New Font("Arial", 18.0F, FontStyle.Bold),
+              observerSymbolFont As New Font("Arial", 11.0F, FontStyle.Bold)
             graphics.DrawRectangle(border, x, y, width, height)
             Dim roles = {"Fresh", "Supply", "Return", "Exhaust"}
             For index = 0 To roles.Length - 1
@@ -286,7 +287,8 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
                 End Using
             Next
             Dim accessY = y + 25.0F + roles.Length * 82.0F
-            DrawCenteredText(graphics, AccessArrow(accessPosition), arrowFont, Brushes.Black,
+            DrawCenteredText(graphics, AccessArrow(accessPosition),
+                If(accessPosition = "front", observerSymbolFont, arrowFont), Brushes.Black,
                 New RectangleF(x + 25.0F, accessY, 52.0F, 58.0F))
             Dim accessLabel = If(accessPosition = "front", LocalizedObserverAccessLabel(), LocalizedAccessLabel())
             Dim accessLabelFont = If(accessPosition = "front", observerLabelFont, labelFont)
@@ -314,7 +316,8 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
 
         Dim label = If(position = "front", LocalizedObserverAccessLabel(), LocalizedAccessLabel())
         Dim centerX = unitRectangle.Left + unitRectangle.Width / 2.0F
-        Using arrowFont As New Font("Arial", 30.0F, FontStyle.Bold)
+        Using arrowFont As New Font("Arial", 30.0F, FontStyle.Bold),
+              observerSymbolFont As New Font("Arial", 18.0F, FontStyle.Bold)
         Select Case position
             Case "upper"
                 DrawCenteredText(graphics, label, font, Brushes.Black,
@@ -327,10 +330,10 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
                 DrawCenteredText(graphics, label, font, Brushes.Black,
                     New RectangleF(centerX - 70.0F, unitRectangle.Bottom + 57.0F, 140.0F, 22.0F))
             Case Else
-                DrawCenteredText(graphics, AccessArrow(position), arrowFont, Brushes.Black,
-                    New RectangleF(centerX - 30.0F, unitRectangle.Bottom + 7.0F, 60.0F, 48.0F))
+                DrawCenteredText(graphics, AccessArrow(position), observerSymbolFont, Brushes.Black,
+                    New RectangleF(centerX - 30.0F, unitRectangle.Top + unitRectangle.Height * 0.5F, 60.0F, 32.0F))
                 DrawCenteredText(graphics, label, font, Brushes.Black,
-                    New RectangleF(centerX - 160.0F, unitRectangle.Bottom + 57.0F, 320.0F, 22.0F))
+                    New RectangleF(centerX - 160.0F, unitRectangle.Top + unitRectangle.Height * 0.65F, 320.0F, 22.0F))
         End Select
         End Using
     End Sub
@@ -379,7 +382,7 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
         Select Case position
             Case "upper" : Return ChrW(&H2193)
             Case "lower" : Return ChrW(&H2191)
-            Case Else : Return ChrW(&H2297)
+            Case Else : Return "X"
         End Select
     End Function
 

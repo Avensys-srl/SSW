@@ -1447,7 +1447,7 @@ const renderFlowLegend = (surface: AccessSurface): string => {
     ] as const).map(([role, label]) => `<div class="airflow-legend-item ${role}">
       <img src="/airflow/${role}.png" alt=""><span>${escapeHtml(label)}</span>
     </div>`).join("")}
-    <div class="airflow-legend-item access-direction">
+    <div class="airflow-legend-item access-direction${surface === "front" ? " observer-side" : ""}">
       <b aria-hidden="true">${accessDirectionArrow(surface)}</b><span>${escapeHtml(surface === "front" ? observerAccessLabel() : accessLabel())}</span>
     </div>
   </aside>`;
@@ -1521,7 +1521,7 @@ const accessSurfaceLabel = (surface: AccessSurface): string => {
 };
 
 const accessDirectionArrow = (surface: AccessSurface): string =>
-  surface === "upper" ? "&darr;" : surface === "lower" ? "&uarr;" : "&otimes;";
+  surface === "upper" ? "&darr;" : surface === "lower" ? "&uarr;" : "X";
 
 const renderInstallationStep = (): string => {
   const text = messages();

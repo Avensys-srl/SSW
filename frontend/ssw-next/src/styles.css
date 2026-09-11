@@ -533,6 +533,7 @@ input:disabled, select:disabled {
 .airflow-legend-item span { min-width: 0; overflow-wrap: anywhere; }
 .airflow-legend-item span::after { content: ""; display: block; width: 36px; height: 4px; margin-top: 5px; background: var(--flow-color); border-radius: 1px; }
 .airflow-legend-item.access-direction b { justify-self: center; color: #000; font-family: Arial, sans-serif; font-size: 25px; line-height: 1; }
+.airflow-legend-item.access-direction.observer-side b { font-size: 15px; }
 .airflow-legend-item.access-direction span::after { display: none; }
 .airflow-legend-item.fresh { --flow-color: #279b55; }
 .airflow-legend-item.supply { --flow-color: #168bd2; }
@@ -545,11 +546,12 @@ input:disabled, select:disabled {
 .ahu-plan small.access-indicator { left: 50%; display: flex; flex-direction: column; align-items: center; gap: 7px; padding: 0; background: transparent; border: 0; font-size: 9px; font-weight: 700; line-height: 1; transform: translateX(-50%); }
 .access-direction-arrow { display: inline-block; margin-right: 5px; color: #000; font-family: Arial, sans-serif; font-size: 1.35em; line-height: .7; vertical-align: -1px; }
 .ahu-plan .access-direction-arrow { margin: 0; font-size: 32px; line-height: .62; }
+.ahu-plan.access-front .access-direction-arrow { font-size: 19px; line-height: 1; }
 .ahu-plan.access-lower .access-indicator .access-direction-arrow,
 .ahu-plan.access-front .access-indicator .access-direction-arrow { order: -1; }
 .ahu-plan.access-lower small.access-indicator { top: calc(100% + 8px); bottom: auto; }
 .ahu-plan.access-upper small.access-indicator { top: auto; bottom: calc(100% + 8px); }
-.ahu-plan.access-front small.access-indicator { top: calc(100% + 8px); }
+.ahu-plan.access-front small.access-indicator { top: calc(42% + 24px); }
 .duct-marker { display: none; position: absolute; z-index: 4; pointer-events: none; }
 .duct-marker b { position: absolute; inset: 0; display: grid; place-items: center; font-family: Arial, sans-serif; font-size: 13px; font-weight: 700; color: #000; }
 .airflow-pending { min-height: 350px; }
