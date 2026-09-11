@@ -35,9 +35,10 @@ $renderer = $assembly.GetType('SSW.CLInstallationLayoutReportRenderer')
 $placements = $renderer.GetMethod('BuildPortPlacements', $flags)
 foreach ($view in @('OSC_NORTH_SOUTH','OSC_EAST_WEST','OSC_CEILING','OSC_FLOOR','SSC_FRONT','SSC_FLAT','SSC_UPRIGHT')) {
     $snapshot = New-Object SSW.CLInstallationLayoutSnapshot
+    $referenceRoles = if ($view -eq 'OSC_EAST_WEST') { $reference.OSC.B1 } else { $reference.OSC.B6 }
     for ($i=1; $i -le 4; $i++) {
         $port = New-Object SSW.CLFlowPortDefinition
-        $port.Position=$i; $port.FlowCode=$reference.OSC.B6[$i-1]
+        $port.Position=$i; $port.FlowCode=$referenceRoles[$i-1]
         $snapshot.FlowPorts.Add($port)
     }
     $sameSide=$view.StartsWith('SSC_')
