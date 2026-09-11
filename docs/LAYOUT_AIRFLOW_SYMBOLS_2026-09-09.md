@@ -25,10 +25,15 @@ normalizzato: questa modifica non introduce regole specifiche per configurazione
 La zona grafica e la legenda hanno colonne separate. Le sagome molto larghe sono
 state rese più compatte sia nella UI sia nel report, mantenendo gli spazi minimi
 necessari per quattro connessioni SSC e per le viste OSC nord-sud ed est-ovest.
-Le icone e i rispettivi boccagli condividono lo stesso centro fisico. Le quattro
-case hanno la stessa dimensione visiva; nei simboli fresh ed exhaust la freccia
-esterna può estendersi oltre tale ingombro. Lo smoke test WebView2 verifica
-l'allineamento dopo ogni cambio di configurazione supportato.
+Le icone e i rispettivi boccagli condividono lo stesso asse fisico. Come regola
+generale valida per ogni orientamento, ciascuna casetta deve arrivare a contatto
+con il proprio boccaglio e sovrapporsi leggermente al suo bordo. Il sormonto non
+deve coprire il numero, il contorno colorato o il simbolo interno della casetta.
+La stessa regola vale nella UI e nel report e prevale sulle distanze specifiche
+dei singoli layout. Le quattro case hanno la stessa dimensione visiva; nei
+simboli fresh ed exhaust la freccia esterna può estendersi oltre tale ingombro.
+Lo smoke test WebView2 verifica l'allineamento dopo ogni cambio di configurazione
+supportato.
 
 I simboli sotto la macchina condividono la stessa linea di base. Nei layout OSC
 con connessioni circolari i boccagli inferiori sono centrati sull'asse orizzontale
