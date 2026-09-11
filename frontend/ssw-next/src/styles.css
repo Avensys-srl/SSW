@@ -532,6 +532,8 @@ input:disabled, select:disabled {
 .airflow-legend-item.fresh img, .airflow-legend-item.exhaust img { width: 48px; }
 .airflow-legend-item span { min-width: 0; overflow-wrap: anywhere; }
 .airflow-legend-item span::after { content: ""; display: block; width: 36px; height: 4px; margin-top: 5px; background: var(--flow-color); border-radius: 1px; }
+.airflow-legend-item.access-direction b { justify-self: center; color: #000; font-family: Arial, sans-serif; font-size: 25px; line-height: 1; }
+.airflow-legend-item.access-direction span::after { display: none; }
 .airflow-legend-item.fresh { --flow-color: #279b55; }
 .airflow-legend-item.supply { --flow-color: #168bd2; }
 .airflow-legend-item.return { --flow-color: #e2c600; }
@@ -540,6 +542,7 @@ input:disabled, select:disabled {
 .ahu-plan::before { content: ""; position: absolute; inset: 13px; border: 1px solid #d2dcda; border-radius: 2px; pointer-events: none; }
 .ahu-plan strong { position: absolute; top: 42%; font-family: Arial, sans-serif; font-size: 11px; font-weight: 600; color: #000; max-width: 90%; text-align: center; }
 .ahu-plan small { position: absolute; z-index: 3; padding: 4px 11px; color: #000; background: #fff; border: 1px solid #000; font-family: Arial, sans-serif; font-size: 8px; white-space: nowrap; }
+.access-direction-arrow { display: inline-block; margin-right: 5px; color: #000; font-family: Arial, sans-serif; font-size: 1.35em; line-height: .7; vertical-align: -1px; }
 .ahu-plan.access-lower small { bottom: 0; }
 .ahu-plan.access-upper small { top: 0; }
 .ahu-plan.access-front small { left: 50%; top: calc(50% + 34px); transform: translateX(-50%); }

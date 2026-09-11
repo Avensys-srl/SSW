@@ -264,15 +264,16 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
 
     Private Shared Sub DrawFlowLegend(graphics As Graphics)
         Const x As Single = 1115.0F
-        Const y As Single = 78.0F
+        Const y As Single = 40.0F
         Const width As Single = 425.0F
-        Const height As Single = 404.0F
+        Const height As Single = 480.0F
         Using border As New Pen(Color.FromArgb(210, 220, 218), 2.0F),
-              labelFont As New Font("Arial", 10.0F, FontStyle.Bold)
+              labelFont As New Font("Arial", 10.0F, FontStyle.Bold),
+              arrowFont As New Font("Arial", 18.0F, FontStyle.Bold)
             graphics.DrawRectangle(border, x, y, width, height)
             Dim roles = {"Fresh", "Supply", "Return", "Exhaust"}
             For index = 0 To roles.Length - 1
-                Dim itemY = y + 35.0F + index * 84.0F
+                Dim itemY = y + 25.0F + index * 82.0F
                 Using symbol = LoadFlowIcon(roles(index))
                     graphics.DrawImage(symbol, New RectangleF(x + 25.0F, itemY, 52.0F, 58.0F))
                 End Using
@@ -283,6 +284,12 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
                         x + 157.0F, itemY + 49.0F)
                 End Using
             Next
+            Dim accessY = y + 25.0F + roles.Length * 82.0F
+            DrawCenteredText(graphics, ChrW(&H2193), arrowFont, Brushes.Black,
+                New RectangleF(x + 25.0F, accessY, 52.0F, 58.0F))
+            graphics.DrawString(T("Report_InstallationLayout_AccessPanel", "Access panel"),
+                labelFont, Brushes.Black,
+                New RectangleF(x + 97.0F, accessY + 16.0F, width - 120.0F, 34.0F))
         End Using
     End Sub
 
@@ -303,7 +310,8 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
     Private Shared Sub DrawAccessPanel(graphics As Graphics,
         unitRectangle As RectangleF, font As Font, position As String)
 
-        Dim caption = T("Report_InstallationLayout_AccessPanel", "Access panel") & ": " &
+        Dim caption = AccessArrow(position) & "  " &
+            T("Report_InstallationLayout_AccessPanel", "Access panel") & ": " &
             AccessCaption(position)
         Dim size = graphics.MeasureString(caption, font)
         Dim width = Math.Max(280.0F, size.Width + 30.0F)
@@ -324,6 +332,14 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
         DrawCenteredText(graphics, caption, font, Brushes.Black,
             New RectangleF(x, y + 4, width, 26))
     End Sub
+
+    Private Shared Function AccessArrow(position As String) As String
+        Select Case position
+            Case "upper" : Return ChrW(&H2193)
+            Case "lower" : Return ChrW(&H2191)
+            Case Else : Return ChrW(&H2198)
+        End Select
+    End Function
 
     Private Shared Function AccessPosition(installationMode As String,
         uprightSameSide As Boolean) As String

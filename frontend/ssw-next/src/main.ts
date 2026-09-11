@@ -1428,6 +1428,9 @@ const renderFlowLegend = (): string => {
     ] as const).map(([role, label]) => `<div class="airflow-legend-item ${role}">
       <img src="/airflow/${role}.png" alt=""><span>${escapeHtml(label)}</span>
     </div>`).join("")}
+    <div class="airflow-legend-item access-direction">
+      <b aria-hidden="true">&darr;</b><span>${escapeHtml(messages().ui.installation.accessPanel)}</span>
+    </div>
   </aside>`;
 };
 
@@ -1498,6 +1501,9 @@ const accessSurfaceLabel = (surface: AccessSurface): string => {
   return installation.lowerAccess;
 };
 
+const accessDirectionArrow = (surface: AccessSurface): string =>
+  surface === "upper" ? "&darr;" : surface === "lower" ? "&uarr;" : "&#8600;";
+
 const renderInstallationStep = (): string => {
   const text = messages();
   const compatibleLayouts = layoutsForInstallation(draft!.installationMode);
@@ -1531,7 +1537,7 @@ const renderInstallationStep = (): string => {
       <div class="panel-heading compact">
         <div><h2>${escapeHtml(text.ui.installation.orientationTitle)}</h2><p>${escapeHtml(text.ui.installation.previewDescription)} ${escapeHtml(draft!.layoutCode)}.</p></div>
         <div class="layout-heading-actions">
-          <span class="outline-badge">${escapeHtml(accessSurfaceLabel(surface))}</span>
+          <span class="outline-badge"><b class="access-direction-arrow" aria-hidden="true">${accessDirectionArrow(surface)}</b>${escapeHtml(accessSurfaceLabel(surface))}</span>
         </div>
       </div>
       ${compatibleLayouts.length > 0 && !calculating && !calculationFailed ? `<div class="airflow-layout-body">
@@ -1540,7 +1546,7 @@ const renderInstallationStep = (): string => {
           <div class="ahu-plan access-${surface}">
             ${[1, 2, 3, 4].map((position) => `<span data-port="${position}" class="duct-marker duct-position-${airflowSlot(position, isSameSideConnection(), isOppositeSideEastWestWall())} duct-${result!.flowPorts?.find((port) => port.position === position)?.flowCode.toLowerCase()}" aria-hidden="true"><b>${position}</b></span>`).join("")}
             <strong>${escapeHtml(selectedUnit()?.model ?? "")}</strong>
-            <small>${escapeHtml(text.ui.installation.accessPanel)}: ${escapeHtml(accessSurfaceLabel(surface))}</small>
+            <small><b class="access-direction-arrow" aria-hidden="true">${accessDirectionArrow(surface)}</b>${escapeHtml(text.ui.installation.accessPanel)}: ${escapeHtml(accessSurfaceLabel(surface))}</small>
           </div>
         </div>
         ${renderFlowLegend()}

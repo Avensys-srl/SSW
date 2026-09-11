@@ -77,6 +77,11 @@ dal centro dei boccagli una distanza pari a due larghezze dell'icona base.
 Poiche fresh ed exhaust hanno una tela piu ampia per la freccia esterna, nei
 medesimi layout le due icone sono rialzate di ulteriori 30 px per portare il
 corpo della casetta a contatto con il boccaglio.
+Ogni dicitura del pannello di accesso include una freccia nera orientata verso
+il lato della macchina interessato: giu per l'accesso superiore, su per quello
+inferiore e diagonale verso l'esterno per quello frontale. La legenda dei flussi
+include una quinta voce localizzata che identifica la freccia del pannello di
+accesso. La convenzione e applicata a tutti gli schematici nella UI e nei report.
 
 ## Verifiche
 

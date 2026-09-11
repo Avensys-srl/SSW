@@ -1357,7 +1357,7 @@ namespace SSW
                     await WaitForConditionAsync(
                         "Array.from(document.querySelectorAll('.flow[data-port]')).length === 4 && " +
                         "Array.from(document.querySelectorAll('.flow[data-port] img')).every(function(i){return i.complete&&i.naturalWidth>0;}) && " +
-                        "document.querySelectorAll('.airflow-legend-item').length === 4",
+                        "document.querySelectorAll('.airflow-legend-item').length === 5",
                         "Airflow symbols or the fixed legend did not become ready.");
                 }
                 await Task.Delay(250);
