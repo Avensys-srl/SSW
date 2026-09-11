@@ -33,4 +33,6 @@ assert.ok(!main.includes('${icon("arrow-down")}<span>'));
 assert.ok(styles.includes('.connection-ssc:not(.ssc-upright-floor) .ahu-plan.access-lower strong { top: auto; bottom: 32px; }'));
 assert.ok(styles.includes('.connection-ssc:not(.ssc-upright-floor) .ahu-plan.access-upper strong { top: 32px; bottom: auto; }'));
 for (const color of ['#168bd2', '#279b55', '#e2c600', '#a6533c']) assert.ok(styles.includes(color));
+assert.ok(styles.includes('font-family: Arial, sans-serif; font-size: 13px; font-weight: 700;'));
+assert.ok(styles.includes('background: #fff; border: 2px solid #111;'));
 console.log('Airflow view position and stale-result guards passed.');

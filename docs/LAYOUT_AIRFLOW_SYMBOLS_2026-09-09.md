@@ -55,6 +55,10 @@ SUP/supply blu (`#168bd2`), ODA/fresh verde (`#279b55`), ETA/return giallo
 colorato sotto la dicitura localizzata e i boccagli usano lo stesso colore.
 Il contorno colorato dei boccagli usa un tratto rinforzato da 3 px nella UI e
 da 5 px nel renderer ad alta risoluzione del report.
+I numeri dei boccagli sono centrati in Arial grassetto, 13 px nella UI e 11 pt
+nel report, per restare leggibili anche in stampa.
+La sagoma dell'unita usa un riempimento bianco pieno e un contorno principale
+nero sia nella UI sia nel report; la linea interna resta secondaria e piu chiara.
 
 ## Verifiche
 

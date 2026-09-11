@@ -95,8 +95,8 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
             unitRectangle = New RectangleF(140, 195, 820, 170)
         End If
 
-        Using unitBrush As New SolidBrush(Color.FromArgb(240, 243, 243)),
-              unitPen As New Pen(Color.FromArgb(132, 149, 146), 3.0F),
+        Using unitBrush As New SolidBrush(Color.White),
+              unitPen As New Pen(Color.FromArgb(17, 17, 17), 3.0F),
               ductPen As New Pen(Color.FromArgb(39, 53, 68), 3.0F),
               accessFont As New Font("Arial", 10.0F, FontStyle.Regular)
 
@@ -227,7 +227,7 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
                 rectangle.Width, rectangle.Height)
             numberCenter = New PointF(rectangle.X + rectangle.Width / 2, rectangle.Y + rectangle.Height / 2)
         End If
-        Using numberFont As New Font("Arial", 8.0F), numberBrush As New SolidBrush(Color.FromArgb(82, 101, 96))
+        Using numberFont As New Font("Arial", 11.0F, FontStyle.Bold), numberBrush As New SolidBrush(Color.FromArgb(82, 101, 96))
             DrawCenteredText(graphics, placement.Number.ToString(), numberFont, numberBrush,
                 New RectangleF(numberCenter.X - 15, numberCenter.Y - 15, 30, 30))
         End Using
