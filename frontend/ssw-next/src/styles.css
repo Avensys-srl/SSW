@@ -542,14 +542,14 @@ input:disabled, select:disabled {
 .ahu-plan::before { content: ""; position: absolute; inset: 13px; border: 1px solid #d2dcda; border-radius: 2px; pointer-events: none; }
 .ahu-plan strong { position: absolute; top: 42%; font-family: Arial, sans-serif; font-size: 11px; font-weight: 600; color: #000; max-width: 90%; text-align: center; }
 .ahu-plan small { position: absolute; z-index: 3; padding: 4px 11px; color: #000; background: #fff; border: 1px solid #000; font-family: Arial, sans-serif; font-size: 8px; white-space: nowrap; }
-.ahu-plan small.access-indicator { display: flex; flex-direction: column; align-items: center; gap: 1px; padding: 0; background: transparent; border: 0; font-size: 9px; font-weight: 700; line-height: 1; }
+.ahu-plan small.access-indicator { left: 50%; display: flex; flex-direction: column; align-items: center; gap: 7px; padding: 0; background: transparent; border: 0; font-size: 9px; font-weight: 700; line-height: 1; transform: translateX(-50%); }
 .access-direction-arrow { display: inline-block; margin-right: 5px; color: #000; font-family: Arial, sans-serif; font-size: 1.35em; line-height: .7; vertical-align: -1px; }
 .ahu-plan .access-direction-arrow { margin: 0; font-size: 32px; line-height: .62; }
-.ahu-plan.access-lower .access-indicator .access-direction-arrow { order: -1; }
-.ahu-plan.access-front .access-indicator { flex-direction: row; gap: 4px; }
-.ahu-plan.access-lower small { bottom: 0; }
-.ahu-plan.access-upper small { top: 0; }
-.ahu-plan.access-front small { left: 50%; top: calc(50% + 34px); transform: translateX(-50%); }
+.ahu-plan.access-lower .access-indicator .access-direction-arrow,
+.ahu-plan.access-front .access-indicator .access-direction-arrow { order: -1; }
+.ahu-plan.access-lower small.access-indicator { top: calc(100% + 8px); bottom: auto; }
+.ahu-plan.access-upper small.access-indicator { top: auto; bottom: calc(100% + 8px); }
+.ahu-plan.access-front small.access-indicator { top: calc(100% + 8px); }
 .duct-marker { display: none; position: absolute; z-index: 4; pointer-events: none; }
 .duct-marker b { position: absolute; inset: 0; display: grid; place-items: center; font-family: Arial, sans-serif; font-size: 13px; font-weight: 700; color: #000; }
 .airflow-pending { min-height: 350px; }
@@ -679,9 +679,9 @@ input:disabled, select:disabled {
 .airflow-diagram .flow { position: absolute; }
 .airflow-diagram .flow-north { top: 80px; }
 .airflow-diagram .flow-south { bottom: 0; }
-.connection-osc.installation-floor:not(.wall-east-west):not(.wall-north-south) .flow-south { bottom: calc(50% - 80px); }
-.connection-osc.installation-floor:not(.wall-east-west):not(.wall-north-south) .flow-south.fresh,
-.connection-osc.installation-floor:not(.wall-east-west):not(.wall-north-south) .flow-south.exhaust { bottom: calc(50% - 50px); }
+.connection-osc:not(.wall-east-west):not(.wall-north-south) .flow-south { bottom: calc(50% - 80px); }
+.connection-osc:not(.wall-east-west):not(.wall-north-south) .flow-south.fresh,
+.connection-osc:not(.wall-east-west):not(.wall-north-south) .flow-south.exhaust { bottom: calc(50% - 50px); }
 .connection-osc .flow-position-1, .connection-osc .flow-position-3 { left: calc(33.8% + 1.2px); }
 .connection-osc .flow-position-2, .connection-osc .flow-position-4 { left: calc(66.2% - 1.2px); }
 .connection-osc.installation-wall .flow-position-1,

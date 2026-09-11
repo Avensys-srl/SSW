@@ -1510,7 +1510,7 @@ const accessSurfaceLabel = (surface: AccessSurface): string => {
 };
 
 const accessDirectionArrow = (surface: AccessSurface): string =>
-  surface === "upper" ? "&darr;" : surface === "lower" ? "&uarr;" : "&#8600;";
+  surface === "upper" ? "&darr;" : surface === "lower" ? "&uarr;" : "&#8599;";
 
 const renderInstallationStep = (): string => {
   const text = messages();

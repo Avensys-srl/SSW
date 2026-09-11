@@ -317,19 +317,19 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
         Select Case position
             Case "upper"
                 DrawCenteredText(graphics, label, font, Brushes.Black,
-                    New RectangleF(centerX - 70.0F, unitRectangle.Top - 18.0F, 140.0F, 22.0F))
+                    New RectangleF(centerX - 70.0F, unitRectangle.Top - 78.0F, 140.0F, 22.0F))
                 DrawCenteredText(graphics, AccessArrow(position), arrowFont, Brushes.Black,
-                    New RectangleF(centerX - 30.0F, unitRectangle.Top - 3.0F, 60.0F, 48.0F))
+                    New RectangleF(centerX - 30.0F, unitRectangle.Top - 55.0F, 60.0F, 48.0F))
             Case "lower"
                 DrawCenteredText(graphics, AccessArrow(position), arrowFont, Brushes.Black,
-                    New RectangleF(centerX - 30.0F, unitRectangle.Bottom - 45.0F, 60.0F, 48.0F))
+                    New RectangleF(centerX - 30.0F, unitRectangle.Bottom + 7.0F, 60.0F, 48.0F))
                 DrawCenteredText(graphics, label, font, Brushes.Black,
-                    New RectangleF(centerX - 70.0F, unitRectangle.Bottom - 4.0F, 140.0F, 22.0F))
+                    New RectangleF(centerX - 70.0F, unitRectangle.Bottom + 57.0F, 140.0F, 22.0F))
             Case Else
-                DrawCenteredText(graphics, label, font, Brushes.Black,
-                    New RectangleF(centerX - 145.0F, centerY - 12.0F, 140.0F, 28.0F))
                 DrawCenteredText(graphics, AccessArrow(position), arrowFont, Brushes.Black,
-                    New RectangleF(centerX + 2.0F, centerY - 24.0F, 60.0F, 48.0F))
+                    New RectangleF(centerX - 30.0F, unitRectangle.Bottom + 7.0F, 60.0F, 48.0F))
+                DrawCenteredText(graphics, label, font, Brushes.Black,
+                    New RectangleF(centerX - 70.0F, unitRectangle.Bottom + 57.0F, 140.0F, 22.0F))
         End Select
         End Using
     End Sub
@@ -358,7 +358,7 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
         Select Case position
             Case "upper" : Return ChrW(&H2193)
             Case "lower" : Return ChrW(&H2191)
-            Case Else : Return ChrW(&H2198)
+            Case Else : Return ChrW(&H2197)
         End Select
     End Function
 

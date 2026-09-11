@@ -72,11 +72,11 @@ Nei report `OSC_EAST_WEST` l'unita mantiene la proporzione compatta della vista
 laterale UI; i boccagli restano aderenti ai bordi e le casette all'esterno.
 Nella vista parete `OSC_EAST_WEST` ogni casetta e allineata alla riga del proprio
 boccaglio; l'interasse verticale delle due righe e circa due larghezze icona.
-Nei layout OSC a pavimento con accesso superiore, le icone inferiori mantengono
-dal centro dei boccagli una distanza pari a due larghezze dell'icona base.
-Poiche fresh ed exhaust hanno una tela piu ampia per la freccia esterna, nei
-medesimi layout le due icone sono rialzate di ulteriori 30 px per portare il
-corpo della casetta a contatto con il boccaglio.
+In tutti i layout OSC non a parete, le icone inferiori mantengono dal centro dei
+boccagli una distanza pari a due larghezze dell'icona base. Poiche fresh ed
+exhaust hanno una tela piu ampia per la freccia esterna, le due icone sono
+rialzate di ulteriori 30 px per portare il corpo della casetta a contatto con il
+boccaglio anche nelle configurazioni a soffitto.
 Ogni dicitura del pannello di accesso include una freccia nera orientata verso
 il lato della macchina interessato: giu per l'accesso superiore, su per quello
 inferiore e diagonale verso l'esterno per quello frontale. La legenda dei flussi
@@ -86,6 +86,9 @@ Nel disegno l'indicatore non usa riquadro, sfondo o dicitura estesa: mostra solo
 la parola localizzata equivalente ad "Accesso" sulla coda e una freccia nera
 grande circa tre volte il simbolo precedente. Il badge informativo superiore
 conserva invece la descrizione completa del lato di accesso.
+Freccia e parola breve sono sempre completamente esterne al profilo dell'unita:
+la punta e rivolta verso il lato interessato e la scritta resta distaccata dalla
+coda, senza riquadri o sovrapposizioni con il campo interno.
 
 ## Verifiche
 
