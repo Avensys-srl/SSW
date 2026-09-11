@@ -64,6 +64,11 @@ foreach ($view in @('OSC_NORTH_SOUTH','OSC_EAST_WEST','OSC_CEILING','OSC_FLOOR',
         $graphics.SmoothingMode=[Drawing.Drawing2D.SmoothingMode]::AntiAlias
         $renderer.GetMethod('DrawLayout',$flags).Invoke($null,@($graphics.PSObject.BaseObject,$snapshot.PSObject.BaseObject,'','TEST',$mode))
         $bitmap.Save((Join-Path $env:TEMP ('ssw-report-layout-'+$view+'.png')),[Drawing.Imaging.ImageFormat]::Png)
+        if ($view -eq 'OSC_EAST_WEST') {
+            $unitTopLeft = $bitmap.GetPixel(370,125)
+            $oldWideEdge = $bitmap.GetPixel(250,125)
+            if ($unitTopLeft.R -gt 40 -or $oldWideEdge.R -lt 240) { throw 'Report side-view unit proportion mismatch' }
+        }
     } finally {$graphics.Dispose();$bitmap.Dispose()}
 }
 Write-Host '22 reference sequences, exported catalog and seven report geometries passed.'

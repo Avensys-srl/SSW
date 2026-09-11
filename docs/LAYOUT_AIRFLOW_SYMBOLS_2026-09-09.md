@@ -61,6 +61,8 @@ La sagoma dell'unita usa un riempimento bianco pieno e un contorno principale
 nero sia nella UI sia nel report; la linea interna resta secondaria e piu chiara.
 Tutti i testi interni sono neri e in Arial. L'etichetta del pannello ha fondo
 bianco e bordo nero; la sagoma non usa ombre inferiori.
+Nei report `OSC_EAST_WEST` l'unita mantiene la proporzione compatta della vista
+laterale UI; i boccagli restano aderenti ai bordi e le casette all'esterno.
 
 ## Verifiche
 

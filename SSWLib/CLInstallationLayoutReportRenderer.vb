@@ -89,7 +89,10 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
             configuration.ReferenceView = "OSC_EAST_WEST"
 
         Dim unitRectangle As RectangleF
-        If installationMode = "wall" OrElse uprightSameSide Then
+        If eastWestWall Then
+            ' Side-connected units use the same compact proportion as the UI.
+            unitRectangle = New RectangleF(370, 125, 380, 300)
+        ElseIf installationMode = "wall" OrElse uprightSameSide Then
             unitRectangle = New RectangleF(250, 125, 620, 300)
         Else
             unitRectangle = New RectangleF(140, 195, 820, 170)
