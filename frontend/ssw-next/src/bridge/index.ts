@@ -382,6 +382,22 @@ class NativeSelectionBridge implements SelectionBridge {
         valueMillimeters:
           item.ValueMillimeters == null ? null : numberValue(item.ValueMillimeters),
       })),
+      additionalDimensions: (native.AdditionalDimensions ?? []).map((item: any) => ({
+        code: item.Code,
+        valueMillimeters:
+          item.ValueMillimeters == null ? null : numberValue(item.ValueMillimeters),
+      })),
+      packaging: native.Packaging
+        ? {
+            orientation: native.Packaging.Orientation,
+            palletLengthMillimeters: native.Packaging.PalletLengthMillimeters == null ? null : numberValue(native.Packaging.PalletLengthMillimeters),
+            palletWidthMillimeters: native.Packaging.PalletWidthMillimeters == null ? null : numberValue(native.Packaging.PalletWidthMillimeters),
+            palletHeightMillimeters: native.Packaging.PalletHeightMillimeters == null ? null : numberValue(native.Packaging.PalletHeightMillimeters),
+            maxUnits: native.Packaging.MaxUnits == null ? null : numberValue(native.Packaging.MaxUnits),
+            palletWeightKilograms: native.Packaging.PalletWeightKilograms == null ? null : numberValue(native.Packaging.PalletWeightKilograms),
+            totalWeightKilograms: native.Packaging.TotalWeightKilograms == null ? null : numberValue(native.Packaging.TotalWeightKilograms),
+          }
+        : undefined,
     } as DimensionalDrawingState;
   }
 

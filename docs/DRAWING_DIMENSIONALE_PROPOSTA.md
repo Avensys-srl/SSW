@@ -131,6 +131,20 @@ definire la migrazione dei file storici senza alterarli silenziosamente.
   `documents/assets/dimensional/CLRC_Prime_30_V7.2_BD.pdf` nel repository
   Explorer; nell'SDF viene memorizzato una sola volta e riusato per relazione.
 
+## Quote aggiuntive e schema 6
+
+Le quote storicamente conservate nella tabella MySQL `docdata.model` sono ora
+centralizzate in SQL Server. `CLHeatRecoveryModelDimensions` contiene ingombri
+base e override H/V; `CLHeatRecoveryModelPackaging` contiene dimensioni e pesi
+di imballaggio. Zero non rappresenta una quota: durante la migrazione viene
+convertito in `NULL`.
+
+L'exporter 1.5.0 pubblica le due tabelle nel database SQL Server Compact con
+schema 6 e feature `AdditionalModelDimensions`. SSW mantiene A/B/C/D come quote
+del drawing costruttivo e presenta le quote aggiuntive separatamente, scegliendo
+gli override coerenti con l'orientamento installativo. Il peso totale e' sempre
+derivato da numero unita', peso unitario centrale e peso pallet.
+
 ## Sequenza residua e accettazione
 
 1. Censire asset disponibili, corrispondenza A/B/C/D e modelli/orientamenti.

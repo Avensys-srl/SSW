@@ -17,6 +17,18 @@ Public NotInheritable Class CLDimensionalDrawingResult
     Public Property ContentBase64 As String
     Public Property Orientation As String
     Public Property Dimensions As New List(Of CLDimensionalValue)()
+    Public Property AdditionalDimensions As New List(Of CLDimensionalValue)()
+    Public Property Packaging As CLDimensionalPackaging
+End Class
+
+Public NotInheritable Class CLDimensionalPackaging
+    Public Property Orientation As String
+    Public Property PalletLengthMillimeters As Integer?
+    Public Property PalletWidthMillimeters As Integer?
+    Public Property PalletHeightMillimeters As Integer?
+    Public Property MaxUnits As Integer?
+    Public Property PalletWeightKilograms As Double?
+    Public Property TotalWeightKilograms As Double?
 End Class
 
 Public NotInheritable Class CLDimensionalDrawingService
@@ -71,6 +83,8 @@ Public NotInheritable Class CLDimensionalDrawingService
                 Return result
             End If
 
+            LoadAdditionalDimensions(connection, model.Id, orientation, result)
+
             Using command = connection.CreateCommand()
                 command.CommandText =
                     "SELECT drawing.Code,drawing.Revision,drawing.FileName,drawing.MimeType," &
@@ -112,6 +126,83 @@ Public NotInheritable Class CLDimensionalDrawingService
             End Using
         End Using
         Return result
+    End Function
+
+    Private Shared Sub LoadAdditionalDimensions(connection As SqlCeConnection,
+        modelId As Integer,
+        orientation As String,
+        result As CLDimensionalDrawingResult)
+
+        If CLEnvironment.Current.DatabaseCompatibility Is Nothing OrElse
+            Not CLEnvironment.Current.DatabaseCompatibility.HasFeature("AdditionalModelDimensions") OrElse
+            Not TableExists(connection, "CLHeatRecoveryModelDimensions") OrElse
+            Not TableExists(connection, "CLHeatRecoveryModelPackaging") Then
+            Return
+        End If
+
+        Using command = connection.CreateCommand()
+            command.CommandText =
+                "SELECT OrientationScope,Width,Length,Height,Length1,Length2,Diameter,Diameter1 " &
+                "FROM CLHeatRecoveryModelDimensions WHERE IdHeatRecoveryModel=@ModelId " &
+                "AND (OrientationScope='B' OR OrientationScope=@Orientation) " &
+                "ORDER BY CASE WHEN OrientationScope='B' THEN 0 ELSE 1 END"
+            command.Parameters.AddWithValue("@ModelId", modelId)
+            command.Parameters.AddWithValue("@Orientation", orientation)
+            Using reader = command.ExecuteReader()
+                While reader.Read()
+                    Dim suffix = If(reader.GetString(0).Trim() = "B", "", If(orientation = "H", "o", "v"))
+                    AddDimension(result.AdditionalDimensions, "W" & suffix, reader, 1)
+                    AddDimension(result.AdditionalDimensions, "L" & suffix, reader, 2)
+                    AddDimension(result.AdditionalDimensions, "H" & suffix, reader, 3)
+                    AddDimension(result.AdditionalDimensions, "L1" & suffix, reader, 4)
+                    AddDimension(result.AdditionalDimensions, "L2" & suffix, reader, 5)
+                    AddDimension(result.AdditionalDimensions, "D" & suffix, reader, 6)
+                    AddDimension(result.AdditionalDimensions, "D1" & suffix, reader, 7)
+                End While
+            End Using
+        End Using
+
+        Using command = connection.CreateCommand()
+            command.CommandText =
+                "SELECT PalletLength,PalletWidth,PalletHeight,MaxUnits,PalletWeight,TotalWeight " &
+                "FROM CLHeatRecoveryModelPackaging WHERE IdHeatRecoveryModel=@ModelId AND Orientation=@Orientation"
+            command.Parameters.AddWithValue("@ModelId", modelId)
+            command.Parameters.AddWithValue("@Orientation", orientation)
+            Using reader = command.ExecuteReader()
+                If reader.Read() Then
+                    result.Packaging = New CLDimensionalPackaging With {
+                        .Orientation = orientation,
+                        .PalletLengthMillimeters = NullableInteger(reader, 0),
+                        .PalletWidthMillimeters = NullableInteger(reader, 1),
+                        .PalletHeightMillimeters = NullableInteger(reader, 2),
+                        .MaxUnits = NullableInteger(reader, 3),
+                        .PalletWeightKilograms = NullableDouble(reader, 4),
+                        .TotalWeightKilograms = NullableDouble(reader, 5)
+                    }
+                End If
+            End Using
+        End Using
+    End Sub
+
+    Private Shared Sub AddDimension(values As List(Of CLDimensionalValue),
+        code As String,
+        reader As SqlCeDataReader,
+        ordinal As Integer)
+        If reader.IsDBNull(ordinal) Then Return
+        values.Add(New CLDimensionalValue With {
+            .Code = code,
+            .ValueMillimeters = Convert.ToDouble(reader.GetValue(ordinal))
+        })
+    End Sub
+
+    Private Shared Function NullableInteger(reader As SqlCeDataReader, ordinal As Integer) As Integer?
+        If reader.IsDBNull(ordinal) Then Return Nothing
+        Return Convert.ToInt32(reader.GetValue(ordinal))
+    End Function
+
+    Private Shared Function NullableDouble(reader As SqlCeDataReader, ordinal As Integer) As Double?
+        If reader.IsDBNull(ordinal) Then Return Nothing
+        Return Convert.ToDouble(reader.GetValue(ordinal))
     End Function
 
     Private Shared Sub ApplyDrawing(result As CLDimensionalDrawingResult,

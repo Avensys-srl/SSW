@@ -1110,6 +1110,8 @@ input:disabled, select:disabled {
 .dimensional-values table { width: 100%; border-collapse: collapse; }
 .dimensional-values th, .dimensional-values td { padding: 11px 5px; border-bottom: 1px solid var(--line); text-align: left; }
 .dimensional-values td { text-align: right; font-weight: 700; }
+.dimensional-values tbody + tbody tr:first-child th,
+.dimensional-values tbody + tbody tr:first-child td { border-top: 2px solid var(--line-strong); }
 .dimensional-inline-panel { grid-column: 1 / -1; }
 .dimensional-inline-content {
   display: grid;

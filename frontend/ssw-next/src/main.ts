@@ -325,7 +325,20 @@ const drawingUiText = (): DrawingUiText =>
 
 const renderDimensionalValues = (drawing: DimensionalDrawingState): string => {
   const labels: Record<string, string> = { A: "L", B: "W", C: "H", D: "D" };
-  return `<table><tbody>${drawing.dimensions.map((item) => `<tr><th>${escapeHtml(labels[item.code] ?? item.code)}</th><td>${item.valueMillimeters == null ? "-" : `${formatNumber(item.valueMillimeters, 0)} mm`}</td></tr>`).join("")}</tbody></table>`;
+  const primaryRows = drawing.dimensions.map((item) => `<tr><th>${escapeHtml(labels[item.code] ?? item.code)}</th><td>${item.valueMillimeters == null ? "-" : `${formatNumber(item.valueMillimeters, 0)} mm`}</td></tr>`).join("");
+  const additionalRows = (drawing.additionalDimensions ?? []).map((item) => `<tr><th>${escapeHtml(item.code)}</th><td>${item.valueMillimeters == null ? "-" : `${formatNumber(item.valueMillimeters, 0)} mm`}</td></tr>`).join("");
+  const packaging = drawing.packaging;
+  const packagingRows = packaging
+    ? [
+        ["LP", packaging.palletLengthMillimeters, "mm"],
+        ["WP", packaging.palletWidthMillimeters, "mm"],
+        ["HP", packaging.palletHeightMillimeters, "mm"],
+        ["N", packaging.maxUnits, ""],
+        ["Pallet", packaging.palletWeightKilograms, "kg"],
+        ["Total", packaging.totalWeightKilograms, "kg"],
+      ].filter((row) => row[1] != null).map((row) => `<tr><th>${escapeHtml(String(row[0]))}</th><td>${formatNumber(Number(row[1]), 0)}${row[2] ? ` ${row[2]}` : ""}</td></tr>`).join("")
+    : "";
+  return `<table><tbody>${primaryRows}</tbody>${additionalRows ? `<tbody class="additional-dimensions">${additionalRows}</tbody>` : ""}${packagingRows ? `<tbody class="packaging-dimensions">${packagingRows}</tbody>` : ""}</table>`;
 };
 
 const renderDimensionalSurface = (large: boolean): string => {

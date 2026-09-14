@@ -359,6 +359,19 @@ export interface DimensionalDrawingState {
     code: "A" | "B" | "C" | "D";
     valueMillimeters: number | null;
   }>;
+  additionalDimensions?: Array<{
+    code: string;
+    valueMillimeters: number | null;
+  }>;
+  packaging?: {
+    orientation: "H" | "V";
+    palletLengthMillimeters: number | null;
+    palletWidthMillimeters: number | null;
+    palletHeightMillimeters: number | null;
+    maxUnits: number | null;
+    palletWeightKilograms: number | null;
+    totalWeightKilograms: number | null;
+  };
 }
 
 export interface MultiProjectItem {
