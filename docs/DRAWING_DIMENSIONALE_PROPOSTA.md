@@ -74,8 +74,10 @@ rapporto d'aspetto, evitando stiramenti e ritagli delle quote.
 5. Restituire un DTO con asset/revisione, quote, orientamento, configurazione
    e anomalie. UI, report e salvataggio usano questo contratto comune.
 
-Dato assente o non valido: mostrare quota non disponibile, non `0 mm` e non
-un valore dell'altro orientamento. Asset assente: mostrare lo stato di
+Dato assente, non valido o uguale a zero: non mostrare la relativa riga nella
+schermata dimensionale e non usare un valore dell'altro orientamento. I dati
+di pallet e imballaggio restano nel database e nell'SDF, ma non sono mostrati
+in questa schermata. Asset assente: mostrare lo stato di
 indisponibilita', senza disegno inventato. Stabilire separatamente se queste
 assenze impediscono l'ordine o soltanto la stampa del drawing.
 
