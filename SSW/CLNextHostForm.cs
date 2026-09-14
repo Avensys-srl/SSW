@@ -50,6 +50,7 @@ namespace SSW
                 if (!drawing.Available ||
                     String.IsNullOrWhiteSpace(drawing.ContentBase64) ||
                     drawing.Dimensions == null || drawing.Dimensions.Count != 4 ||
+                    drawing.VisibleDimensions == null || drawing.VisibleDimensions.Count == 0 ||
                     drawing.PageWidthPoints <= 0 || drawing.PageHeightPoints <= 0)
                     return 71;
                 string testPdf = Path.Combine(
@@ -72,9 +73,22 @@ namespace SSW
                     {
                         if (reader.NumberOfPages != 1) return 72;
                         string pdfText = iTextSharp.text.pdf.parser.PdfTextExtractor.GetTextFromPage(reader, 1);
-                        if (!(new[] { "L", "W", "H", "D" }).All(label =>
-                            pdfText.IndexOf(label, StringComparison.Ordinal) >= 0))
-                            return 73;
+                        string normalizedPdfText = System.Text.RegularExpressions.Regex.Replace(pdfText, @"\s+", " ");
+                        foreach (CLDimensionalValue dimension in drawing.VisibleDimensions)
+                        {
+                            string expected = dimension.Code + " " +
+                                dimension.ValueMillimeters.Value.ToString("0", CultureInfo.InvariantCulture) + " mm";
+                            if (normalizedPdfText.IndexOf(expected, StringComparison.Ordinal) < 0) return 73;
+                        }
+                        if (drawing.UnitWeightKilograms.HasValue && drawing.UnitWeightKilograms.Value != 0)
+                        {
+                            string expectedWeight = "Peso " +
+                                drawing.UnitWeightKilograms.Value.ToString("0", CultureInfo.InvariantCulture) + " kg";
+                            if (normalizedPdfText.IndexOf(expectedWeight, StringComparison.Ordinal) < 0) return 74;
+                        }
+                        if (normalizedPdfText.IndexOf("Pallet", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                            normalizedPdfText.IndexOf("Total", StringComparison.OrdinalIgnoreCase) >= 0)
+                            return 75;
                     }
                 }
                 finally
@@ -1486,8 +1500,8 @@ namespace SSW
                 throw new ArgumentException("Output path is required.", "outputPath");
             if (imageBytes == null || imageBytes.Length == 0)
                 throw new ArgumentException("Drawing image is required.", "imageBytes");
-            if (drawing == null || drawing.Dimensions == null || drawing.Dimensions.Count != 4)
-                throw new InvalidDataException("Four dimensional values are required.");
+            if (drawing == null || drawing.VisibleDimensions == null)
+                throw new InvalidDataException("Dimensional values are required.");
 
             iTextSharp.text.Image drawingImage = iTextSharp.text.Image.GetInstance(imageBytes);
             iTextSharp.text.Rectangle pageSize = iTextSharp.text.PageSize.A4.Rotate();
@@ -1500,7 +1514,9 @@ namespace SSW
                         iTextSharp.text.pdf.PdfWriter.GetInstance(document, stream);
                     document.Open();
 
-                    const float legendHeight = 82f;
+                    int legendRows = drawing.VisibleDimensions.Count +
+                        (drawing.UnitWeightKilograms.HasValue && drawing.UnitWeightKilograms.Value != 0 ? 1 : 0);
+                    float legendHeight = Math.Max(42f, legendRows * 20f + 8f);
                     float drawingBottom = document.BottomMargin + legendHeight;
                     float drawingWidth = pageSize.Width - document.LeftMargin - document.RightMargin;
                     float drawingHeight = pageSize.Height - document.TopMargin - drawingBottom;
@@ -1518,13 +1534,10 @@ namespace SSW
                         iTextSharp.text.FontFactory.GetFont(iTextSharp.text.FontFactory.HELVETICA_BOLD, 9f);
                     iTextSharp.text.Font valueFont =
                         iTextSharp.text.FontFactory.GetFont(iTextSharp.text.FontFactory.HELVETICA, 9f);
-                    foreach (CLDimensionalValue dimension in drawing.Dimensions)
+                    foreach (CLDimensionalValue dimension in drawing.VisibleDimensions)
                     {
-                        string label = dimension.Code == "A" ? "L" :
-                            dimension.Code == "B" ? "W" :
-                            dimension.Code == "C" ? "H" : "D";
                         var labelCell = new iTextSharp.text.pdf.PdfPCell(
-                            new iTextSharp.text.Phrase(label, labelFont));
+                            new iTextSharp.text.Phrase(dimension.Code, labelFont));
                         labelCell.BackgroundColor = new iTextSharp.text.BaseColor(237, 243, 240);
                         labelCell.Padding = 5f;
                         var valueCell = new iTextSharp.text.pdf.PdfPCell(
@@ -1532,6 +1545,21 @@ namespace SSW
                                 dimension.ValueMillimeters.HasValue
                                     ? dimension.ValueMillimeters.Value.ToString("0", CultureInfo.InvariantCulture) + " mm"
                                     : "-",
+                                valueFont));
+                        valueCell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
+                        valueCell.Padding = 5f;
+                        legend.AddCell(labelCell);
+                        legend.AddCell(valueCell);
+                    }
+                    if (drawing.UnitWeightKilograms.HasValue && drawing.UnitWeightKilograms.Value != 0)
+                    {
+                        var labelCell = new iTextSharp.text.pdf.PdfPCell(
+                            new iTextSharp.text.Phrase("Peso", labelFont));
+                        labelCell.BackgroundColor = new iTextSharp.text.BaseColor(237, 243, 240);
+                        labelCell.Padding = 5f;
+                        var valueCell = new iTextSharp.text.pdf.PdfPCell(
+                            new iTextSharp.text.Phrase(
+                                drawing.UnitWeightKilograms.Value.ToString("0", CultureInfo.InvariantCulture) + " kg",
                                 valueFont));
                         valueCell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
                         valueCell.Padding = 5f;

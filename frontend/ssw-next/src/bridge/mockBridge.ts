@@ -318,6 +318,13 @@ export class MockSelectionBridge implements SelectionBridge {
         { code: "C", valueMillimeters: 300 },
         { code: "D", valueMillimeters: 200 },
       ],
+      visibleDimensions: [
+        { code: "W", valueMillimeters: 1000 },
+        { code: "L", valueMillimeters: 500 },
+        { code: "H", valueMillimeters: 300 },
+        { code: "D", valueMillimeters: 200 },
+      ],
+      unitWeightKilograms: 62,
     };
   }
 

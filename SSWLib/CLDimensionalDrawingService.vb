@@ -18,6 +18,8 @@ Public NotInheritable Class CLDimensionalDrawingResult
     Public Property Orientation As String
     Public Property Dimensions As New List(Of CLDimensionalValue)()
     Public Property AdditionalDimensions As New List(Of CLDimensionalValue)()
+    Public Property VisibleDimensions As New List(Of CLDimensionalValue)()
+    Public Property UnitWeightKilograms As Double?
     Public Property Packaging As CLDimensionalPackaging
 End Class
 
@@ -41,6 +43,15 @@ Public NotInheritable Class CLDimensionalDrawingService
         configurationCode As String,
         Optional includeContent As Boolean = True) As CLDimensionalDrawingResult
 
+        Dim result = ResolveCore(modelCode, configurationCode, includeContent)
+        result.VisibleDimensions = BuildVisibleDimensions(result)
+        Return result
+    End Function
+
+    Private Shared Function ResolveCore(modelCode As String,
+        configurationCode As String,
+        includeContent As Boolean) As CLDimensionalDrawingResult
+
         Dim result As New CLDimensionalDrawingResult()
         If CLEnvironment.Current Is Nothing OrElse String.IsNullOrWhiteSpace(modelCode) Then
             Return result
@@ -49,6 +60,7 @@ Public NotInheritable Class CLDimensionalDrawingService
         Dim model = CLEnvironment.Current.DCContext.CLDCHeatRecoveryModels.
             FirstOrDefault(Function(item) item.Code = modelCode)
         If model Is Nothing Then Return result
+        result.UnitWeightKilograms = model.Weight
 
         Dim layout = CLInstallationLayoutRepository.Create().GetForModel(
             model, configurationCode)
@@ -183,6 +195,30 @@ Public NotInheritable Class CLDimensionalDrawingService
             End Using
         End Using
     End Sub
+
+    Private Shared Function BuildVisibleDimensions(result As CLDimensionalDrawingResult) As List(Of CLDimensionalValue)
+        Dim visibleAdditional = result.AdditionalDimensions.
+            Where(Function(item) item.ValueMillimeters.HasValue AndAlso item.ValueMillimeters.Value <> 0).
+            ToList()
+        Dim additionalCodes = New HashSet(Of String)(
+            visibleAdditional.Select(Function(item) item.Code),
+            StringComparer.OrdinalIgnoreCase)
+        Dim legacyLabels As New Dictionary(Of String, String)(StringComparer.OrdinalIgnoreCase) From {
+            {"A", "W"}, {"B", "L"}, {"C", "H"}, {"D", "D"}
+        }
+        Dim visible As New List(Of CLDimensionalValue)()
+        For Each item In result.Dimensions
+            If Not item.ValueMillimeters.HasValue OrElse item.ValueMillimeters.Value = 0 Then Continue For
+            Dim label = If(legacyLabels.ContainsKey(item.Code), legacyLabels(item.Code), item.Code)
+            If additionalCodes.Contains(label) Then Continue For
+            visible.Add(New CLDimensionalValue With {
+                .Code = label,
+                .ValueMillimeters = item.ValueMillimeters
+            })
+        Next
+        visible.AddRange(visibleAdditional)
+        Return visible
+    End Function
 
     Private Shared Sub AddDimension(values As List(Of CLDimensionalValue),
         code As String,

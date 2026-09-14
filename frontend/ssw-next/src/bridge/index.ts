@@ -387,6 +387,11 @@ class NativeSelectionBridge implements SelectionBridge {
         valueMillimeters:
           item.ValueMillimeters == null ? null : numberValue(item.ValueMillimeters),
       })),
+      visibleDimensions: (native.VisibleDimensions ?? []).map((item: any) => ({
+        code: item.Code,
+        valueMillimeters: numberValue(item.ValueMillimeters),
+      })),
+      unitWeightKilograms: native.UnitWeightKilograms == null ? null : numberValue(native.UnitWeightKilograms),
       packaging: native.Packaging
         ? {
             orientation: native.Packaging.Orientation,

@@ -363,6 +363,11 @@ export interface DimensionalDrawingState {
     code: string;
     valueMillimeters: number | null;
   }>;
+  visibleDimensions?: Array<{
+    code: string;
+    valueMillimeters: number;
+  }>;
+  unitWeightKilograms?: number | null;
   packaging?: {
     orientation: "H" | "V";
     palletLengthMillimeters: number | null;

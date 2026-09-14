@@ -14,8 +14,8 @@ Accanto al disegno si mostrano i valori effettivi della configurazione scelta:
 
 | Lettera nel disegno | Quota mostrata | Unita' |
 | --- | --- | --- |
-| A | L, lunghezza | mm |
-| B | W, larghezza | mm |
+| A | W, larghezza | mm |
+| B | L, lunghezza | mm |
 | C | H, altezza | mm |
 | D | Diametro attacchi | mm |
 
@@ -77,7 +77,12 @@ rapporto d'aspetto, evitando stiramenti e ritagli delle quote.
 Dato assente, non valido o uguale a zero: non mostrare la relativa riga nella
 schermata dimensionale e non usare un valore dell'altro orientamento. I dati
 di pallet e imballaggio restano nel database e nell'SDF, ma non sono mostrati
-in questa schermata. Asset assente: mostrare lo stato di
+in questa schermata. Le quote nominali aggiuntive `W/L/H/D` prevalgono sulle
+corrispondenti quote legacy `A/B/C/D`, che restano disponibili come fallback
+senza produrre righe duplicate. Il peso netto dell'unita' viene mostrato quando
+diverso da zero. La schermata e il PDF consumano lo stesso elenco risolto, quindi
+il PDF riporta esclusivamente le quote e il peso effettivamente visualizzati.
+Asset assente: mostrare lo stato di
 indisponibilita', senza disegno inventato. Stabilire separatamente se queste
 assenze impediscono l'ordine o soltanto la stampa del drawing.
 

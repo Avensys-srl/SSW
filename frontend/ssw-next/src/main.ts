@@ -324,12 +324,13 @@ const drawingUiText = (): DrawingUiText =>
   drawingUiTexts[languageCode()] ?? drawingUiTexts.en;
 
 const renderDimensionalValues = (drawing: DimensionalDrawingState): string => {
-  const labels: Record<string, string> = { A: "L", B: "W", C: "H", D: "D" };
-  const visibleDimensions = drawing.dimensions.filter((item) => item.valueMillimeters != null && item.valueMillimeters !== 0);
-  const visibleAdditionalDimensions = (drawing.additionalDimensions ?? []).filter((item) => item.valueMillimeters != null && item.valueMillimeters !== 0);
-  const primaryRows = visibleDimensions.map((item) => `<tr><th>${escapeHtml(labels[item.code] ?? item.code)}</th><td>${formatNumber(item.valueMillimeters!, 0)} mm</td></tr>`).join("");
-  const additionalRows = visibleAdditionalDimensions.map((item) => `<tr><th>${escapeHtml(item.code)}</th><td>${formatNumber(item.valueMillimeters!, 0)} mm</td></tr>`).join("");
-  return `<table>${primaryRows ? `<tbody>${primaryRows}</tbody>` : ""}${additionalRows ? `<tbody class="additional-dimensions">${additionalRows}</tbody>` : ""}</table>`;
+  const dimensionRows = (drawing.visibleDimensions ?? [])
+    .map((item) => `<tr><th>${escapeHtml(item.code)}</th><td>${formatNumber(item.valueMillimeters, 0)} mm</td></tr>`)
+    .join("");
+  const weightRow = drawing.unitWeightKilograms != null && drawing.unitWeightKilograms !== 0
+    ? `<tr><th>Peso</th><td>${formatNumber(drawing.unitWeightKilograms, 0)} kg</td></tr>`
+    : "";
+  return `<table>${dimensionRows ? `<tbody>${dimensionRows}</tbody>` : ""}${weightRow ? `<tbody class="additional-dimensions">${weightRow}</tbody>` : ""}</table>`;
 };
 
 const renderDimensionalSurface = (large: boolean): string => {
