@@ -163,6 +163,9 @@ namespace SSW
 				Application.SetCompatibleTextRenderingDefault(false);
 
 				string	sswDCLitePath	= Path.Combine( Path.GetDirectoryName( Application.ExecutablePath ), "data", "DataCentral.sdf" );
+				CLSSWInfo sswInfo = Activator.CreateInstance(CLSSWProfile.SSWInfoClassType) as CLSSWInfo;
+				bool normalStartup = args == null || args.Length == 0;
+				if (normalStartup) CLDatabaseCatalogUpdater.CheckAndUpdate(sswDCLitePath, sswInfo);
 			
 				// Debug builds should still use the local data file next to the executable.
 				// This avoids hardcoded machine/network paths causing missing DB errors.
@@ -171,7 +174,7 @@ namespace SSW
 
 				CLEnvironment.Current	= new CLEnvironment(
 					sswDCLitePath,
-					Activator.CreateInstance( CLSSWProfile.SSWInfoClassType ) as CLSSWInfo );
+					sswInfo );
 
 				if (args != null && args.Length > 0 &&
 					String.Equals(args[0], "--technical-baseline", StringComparison.OrdinalIgnoreCase))
