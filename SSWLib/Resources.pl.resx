@@ -852,4 +852,9 @@ Jeśli chcesz zachować edytowalne dane wejściowe obliczeń, najpierw zapisz pl
   <data name="Report_InstallationLayout_Exhaust" xml:space="preserve">
     <value>Powietrze wyrzutowe</value>
   </data>
+  <data name="Report_Schematic_0" xml:space="preserve"><value>Widok przepływów od strony panelu dostępu</value></data>
+  <data name="Report_Schematic_1" xml:space="preserve"><value>Powietrze wpływające</value></data>
+  <data name="Report_Schematic_2" xml:space="preserve"><value>Powietrze wypływające</value></data>
+  <data name="Report_Schematic_3" xml:space="preserve"><value>Dostęp do panelu / kierunek widoku</value></data>
+  <data name="Report_Schematic_4" xml:space="preserve"><value>Opcjonalny zestaw wspornika SHK</value></data>
 </root>

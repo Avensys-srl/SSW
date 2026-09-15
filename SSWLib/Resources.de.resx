@@ -783,4 +783,9 @@ Speichern Sie zuerst die Datei .sswsel, wenn Sie bearbeitbare Berechnungseingabe
   <data name="Report_InstallationLayout_Exhaust" xml:space="preserve">
     <value>Fortluft</value>
   </data>
+  <data name="Report_Schematic_0" xml:space="preserve"><value>Luftstromansicht von der Zugangsseite</value></data>
+  <data name="Report_Schematic_1" xml:space="preserve"><value>In das Gerät eintretende Luft</value></data>
+  <data name="Report_Schematic_2" xml:space="preserve"><value>Aus dem Gerät austretende Luft</value></data>
+  <data name="Report_Schematic_3" xml:space="preserve"><value>Panelzugang / Blickrichtung</value></data>
+  <data name="Report_Schematic_4" xml:space="preserve"><value>Optionales SHK-Konsolenkit</value></data>
 </root>

@@ -100,7 +100,8 @@ Public Class CLReportViewerForm
             .Text = EmailText("ReportViewer_AddToProject", "Add to project"),
             .ToolTipText = EmailText("ReportViewer_AddToProjectTooltip", "Add or update this report in a multi-selection project"),
             .Image = CreateProjectIcon(),
-            .DisplayStyle = ToolStripItemDisplayStyle.Image
+            .DisplayStyle = ToolStripItemDisplayStyle.Image,
+            .Visible = False
         }
         AddHandler m_AddToProjectButton.Click, AddressOf AddToProjectButton_Click
         toolStrip.Items.Insert(toolStrip.Items.IndexOf(m_EmailButton) + 1, m_AddToProjectButton)

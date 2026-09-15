@@ -1,4 +1,6 @@
 import { airflowSlot, airflowSide } from "./airflow-layout";
+import { schematicText, flowCircle, mountingSvg } from "./mounting-schematic";
+import { projectActionLabels } from "./project-action-labels";
 import {
   Activity,
   ArrowDown,
@@ -938,7 +940,7 @@ const renderShell = (): void => {
         </a>
         <div class="topbar-project">
           <span>${escapeHtml(text.common.activeProject)}</span>
-          <strong>${escapeHtml(draft.project.name)}</strong>
+          <strong>${escapeHtml(draft.project.customerReference.trim() || draft.project.name)}</strong>
         </div>
         <div class="topbar-actions">
           <span class="runtime-badge">${icon("hard-drive", 15)} ${escapeHtml(runtimeName())}</span>
@@ -1000,6 +1002,7 @@ const renderShell = (): void => {
               <h1>${escapeHtml(activeStepMessage.title)}</h1>
               <p>${escapeHtml(activeStepMessage.description)}</p>
             </div>
+            ${steps.findIndex((step) => step.id === currentStep) >= 1 && steps.findIndex((step) => step.id === currentStep) <= 8 && selectedUnit()?.model ? `<strong class="page-selected-unit">${escapeHtml(selectedUnit()!.model.toUpperCase())}</strong>` : ""}
             <div class="calculation-state ${stateTone()}">
               <span>${icon(result.status === "valid" ? "circle-check" : "triangle-alert")}</span>
               <div>
@@ -1048,13 +1051,7 @@ const renderShell = (): void => {
             </button>
           </div>
           <div class="unit-lockup">
-            <div class="unit-visual">
-              <span class="duct supply"></span>
-              <span class="duct exhaust"></span>
-              <div class="unit-body">${icon("wind", 25)}</div>
-            </div>
             <div>
-              <small>${escapeHtml(unit?.family ?? "-")}</small>
               <strong>${escapeHtml(unit?.model ?? text.ui.context.noUnit)}</strong>
             </div>
           </div>
@@ -1300,8 +1297,9 @@ const renderMultiProjectSidebar = (): string => {
       ${items || `<p class="context-project-empty">${escapeHtml(copy.empty)}</p>`}
     </div>
     <small class="context-project-state">${state?.dirty ? escapeHtml(copy.unsaved) : escapeHtml(modified)}</small>
-    <button class="button secondary context-project-command" type="button" data-action="project-add-current">${icon("file-down")} ${escapeHtml(copy.addCurrent)}</button>
-    <button class="button primary context-project-command" type="button" data-action="project-email" ${state?.items.length ? "" : "disabled"}>${icon("mail")} ${escapeHtml(copy.emailProject)}</button>
+    <button class="button primary context-project-command" type="button" data-action="project-add-current">${icon("file-down")} ${escapeHtml(projectActionLabels(languageCode())[state?.items.some((item) => item.current) ? 1 : 0])}</button>
+    ${state?.items.some((item) => item.current) ? `<button class="button secondary context-project-command" type="button" data-action="project-add-new">${icon("plus")} ${escapeHtml(projectActionLabels(languageCode())[0])}</button>` : ""}
+    <button class="button secondary context-project-command" type="button" data-action="project-email" ${state?.items.length ? "" : "disabled"}>${icon("mail")} ${escapeHtml(projectActionLabels(languageCode())[2])}</button>
   </section>`;
 };
 
@@ -1444,7 +1442,9 @@ const renderFlowPorts = (): string => {
   const ports = [...candidatePorts];
   const sameSide = isSameSideConnection();
   const sameSideFloorFacing = isSameSideFlatFloor();
-  const oppositeSideEastWest = isOppositeSideEastWestWall();
+  const oppositeSideEastWest = !sameSide &&
+    !(draft?.installationMode === "wall" &&
+      selectedLayoutConfiguration()?.referenceView === "OSC_NORTH_SOUTH");
 
   return ports
     .sort((left, right) => left.position - right.position)
@@ -1453,27 +1453,29 @@ const renderFlowPorts = (): string => {
       const incoming = port.flowCode === "Fresh" || port.flowCode === "Return";
       const side = airflowSide(port.position, sameSide, sameSideFloorFacing, oppositeSideEastWest);
       const slot = airflowSlot(port.position, sameSide, oppositeSideEastWest);
-      return `<div data-port="${port.position}" data-flow="${role}" class="flow flow-${side} flow-position-${slot} ${role} ${incoming ? "incoming" : "outgoing"}">
-        <img src="/airflow/${role}.png" alt="" aria-hidden="true">
-      </div>`;
+      const x = sameSide ? 55 + (slot - 1) * 63 : oppositeSideEastWest ? (side === "west" ? 30 : 270) : (slot === 1 || slot === 3 ? 115 : 185);
+      const y = sameSide ? 30 : oppositeSideEastWest ? (slot === 1 || slot === 3 ? 65 : 135) : (side === "north" ? 30 : 270);
+      return `<g data-port="${port.position}" data-flow="${role}" class="${incoming ? "incoming" : "outgoing"}">${flowCircle(role, x, y, port.position)}</g>`;
     })
     .join("");
 };
 
 const renderFlowLegend = (surface: AccessSurface): string => {
   const labels = messages().domain.airflow;
-  return `<aside class="airflow-legend" aria-label="${escapeHtml(messages().ui.installation.orientationTitle)}">
+  const legend = schematicText(languageCode());
+  return `<aside class="schematic-legend" aria-label="${escapeHtml(messages().ui.installation.orientationTitle)}">
     ${([
       ["fresh", labels.fresh],
       ["supply", labels.supply],
       ["return", labels.return],
       ["exhaust", labels.exhaust],
     ] as const).map(([role, label]) => `<div class="airflow-legend-item ${role}">
-      <img src="/airflow/${role}.png" alt=""><span>${escapeHtml(label)}</span>
+      <svg viewBox="0 0 48 48" aria-hidden="true">${flowCircle(role, 24, 24)}</svg><span>${escapeHtml(label)}</span>
     </div>`).join("")}
-    <div class="airflow-legend-item access-direction${surface === "front" ? " observer-side" : ""}">
-      <b class="${surface === "front" ? "observer-cross" : ""}" aria-hidden="true">${accessDirectionArrow(surface)}</b><span>${escapeHtml(surface === "front" ? observerAccessLabel() : accessLabel())}</span>
-    </div>
+    <div class="schematic-legend-key"><i class="circle-key hollow"></i><span>${escapeHtml(legend[1])}</span></div>
+    <div class="schematic-legend-key"><i class="circle-key solid"></i><span>${escapeHtml(legend[2])}</span></div>
+    <div class="schematic-legend-key"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 5v35m-8-10 8 10 8-10" fill="none" stroke="#D62828" stroke-width="3"/></svg><span>${escapeHtml(legend[3])}</span></div>
+    <span class="visually-hidden">${escapeHtml(surface === "front" ? observerAccessLabel() : accessLabel())}</span>
   </aside>`;
 };
 
@@ -1544,13 +1546,12 @@ const accessSurfaceLabel = (surface: AccessSurface): string => {
   return installation.lowerAccess;
 };
 
-const accessDirectionArrow = (surface: AccessSurface): string =>
-  surface === "upper" ? "&darr;" : surface === "lower" ? "&uarr;" : "";
-
 const renderInstallationStep = (): string => {
   const text = messages();
   const compatibleLayouts = layoutsForInstallation(draft!.installationMode);
   const surface = accessSurface();
+  const uprightSscFloor = isSameSideUprightFloor() && ["A1", "B1"].includes(draft!.layoutCode);
+  const northSouthWall = !isSameSideConnection() && draft!.installationMode === "wall" && selectedLayoutConfiguration()?.referenceView === "OSC_NORTH_SOUTH";
   const oppositeSideWallClass = draft!.installationMode === "wall"
     ? isOppositeSideEastWestWall() ? "wall-east-west" : "wall-north-south"
     : "";
@@ -1579,18 +1580,16 @@ const renderInstallationStep = (): string => {
     <section class="panel layout-preview">
       <div class="panel-heading compact">
         <div><h2>${escapeHtml(text.ui.installation.orientationTitle)}</h2><p>${escapeHtml(text.ui.installation.previewDescription)} ${escapeHtml(draft!.layoutCode)}.</p></div>
-        <div class="layout-heading-actions">
-          <span class="outline-badge"><b class="access-direction-arrow${surface === "front" ? " observer-cross" : ""}" aria-hidden="true">${accessDirectionArrow(surface)}</b>${escapeHtml(accessSurfaceLabel(surface))}</span>
-        </div>
       </div>
       ${compatibleLayouts.length > 0 && !calculating && !calculationFailed ? `<div class="airflow-layout-body">
-        <div class="airflow-diagram ${connectionClass}" data-layout="${escapeHtml(draft!.layoutCode)}">
-          <div class="installation-view-caption${isSameSideConnection() ? " same-side-caption" : ""}">${escapeHtml(`${selectedUnit()?.model ?? ""} ${installationViewLabel(draft!.installationMode, isOppositeSideEastWestWall())}`.trim())}</div>
-          ${renderFlowPorts()}
-          <div class="ahu-plan access-${surface}">
-            ${[1, 2, 3, 4].map((position) => `<span data-port="${position}" class="duct-marker duct-position-${airflowSlot(position, isSameSideConnection(), isOppositeSideEastWestWall())} duct-${result!.flowPorts?.find((port) => port.position === position)?.flowCode.toLowerCase()}" aria-hidden="true"><b>${position}</b></span>`).join("")}
-            <strong>${escapeHtml(selectedUnit()?.model ?? "")}</strong>
-            <small class="access-indicator"><span>${escapeHtml(surface === "front" ? observerAccessLabel() : accessLabel())}</span><b class="access-direction-arrow${surface === "front" ? " observer-cross" : ""}" aria-hidden="true">${accessDirectionArrow(surface)}</b></small>
+        <div class="installation-schematics ${connectionClass}" data-layout="${escapeHtml(draft!.layoutCode)}">
+          <div class="schematic-mounting"><strong>${escapeHtml(installationViewLabel(draft!.installationMode, isOppositeSideEastWestWall()))}</strong>
+            ${mountingSvg(draft!.installationMode, surface, isOppositeSideEastWestWall(), uprightSscFloor, escapeHtml(accessSurfaceLabel(surface)))}
+            ${uprightSscFloor ? "" : `<span>${escapeHtml(accessSurfaceLabel(surface))}</span>`}
+            ${draft!.installationMode === "floor" ? `<p class="shk-note">${escapeHtml(schematicText(languageCode())[4])}</p>` : ""}
+          </div>
+          <div class="schematic-airflow"><strong>${escapeHtml(selectedUnit()?.model ?? "")} · ${escapeHtml(draft!.layoutCode)}</strong>
+            <svg viewBox="0 0 300 ${northSouthWall ? 300 : 200}" role="img" aria-label="${escapeHtml(schematicText(languageCode())[0])}"><rect x="${northSouthWall ? 80 : 30}" y="30" width="${northSouthWall ? 140 : 240}" height="${northSouthWall ? 240 : 140}" fill="white" stroke="#91A0AE" stroke-width="2"/><foreignObject x="${northSouthWall ? 105 : 60}" y="65" width="${northSouthWall ? 90 : 180}" height="${northSouthWall ? 170 : 70}"><div xmlns="http://www.w3.org/1999/xhtml" class="airflow-inner-caption">${escapeHtml(schematicText(languageCode())[0])}</div></foreignObject>${renderFlowPorts()}</svg>
           </div>
         </div>
         ${renderFlowLegend(surface)}
@@ -2503,7 +2502,8 @@ const bindShellEvents = (): void => {
   document.querySelector<HTMLElement>('[data-action="project-open"]')?.addEventListener("click", openMultiProject);
   document.querySelector<HTMLElement>('[data-action="project-save"]')?.addEventListener("click", () => saveMultiProject(false));
   document.querySelector<HTMLElement>('[data-action="project-save-as"]')?.addEventListener("click", () => saveMultiProject(true));
-  document.querySelector<HTMLElement>('[data-action="project-add-current"]')?.addEventListener("click", addCurrentToMultiProject);
+  document.querySelector<HTMLElement>('[data-action="project-add-current"]')?.addEventListener("click", () => addCurrentToMultiProject(false));
+  document.querySelector<HTMLElement>('[data-action="project-add-new"]')?.addEventListener("click", () => addCurrentToMultiProject(true));
   document.querySelector<HTMLSelectElement>("[data-project-language]")?.addEventListener("change", async (event) => {
     const targetLanguage = (event.currentTarget as HTMLSelectElement).value;
     const targetLanguageName =
@@ -2963,16 +2963,25 @@ const saveMultiProject = async (saveAs = false): Promise<void> => {
   showToast(`${multiProjectText().saveProject}: ${response.project.fileName}`);
 };
 
-const addCurrentToMultiProject = async (): Promise<void> => {
+const addCurrentToMultiProject = async (createNew = false): Promise<void> => {
   if (calculating || calculationFailed) return;
+  const previous = multiProjectState?.items.find((item) => item.current);
+  const updating = !createNew && !!previous;
+  const reference = window.prompt(multiProjectText().reference, draft!.project.customerReference);
+  if (reference === null || !reference.trim()) return;
+  const selection = structuredClone(draft!);
+  selection.project.customerReference = reference.trim();
+  if (updating && !window.confirm(`${projectActionLabels(languageCode())[1]}?\n${previous.unitName} · ${previous.customerReference}\n→ ${selectedUnit()?.model ?? ""} · ${reference.trim()}`)) return;
   calculating = true;
   renderShell();
   try {
     multiProjectState = await bridge.addCurrentToMultiProject(
-      structuredClone(draft!),
+      selection,
+      createNew,
     );
     syncDraftFromMultiProject();
-    showToast(multiProjectText().addCurrent);
+    const current = multiProjectState.items.find((item) => item.current);
+    window.alert(`${multiProjectText().ready}: ${projectActionLabels(languageCode())[updating ? 1 : 0]}\n${current?.unitName ?? ""} · ${current?.customerReference ?? reference}\n${multiProjectText().workspace}: ${multiProjectState.items.length}`);
   } finally {
     calculating = false;
     renderShell();

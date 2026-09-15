@@ -896,4 +896,9 @@ Salvare prima il file .sswsel quando è necessario preservare gli input di calco
   <data name="Report_InstallationLayout_Exhaust" xml:space="preserve">
     <value>Espulsione</value>
   </data>
+  <data name="Report_Schematic_0" xml:space="preserve"><value>Vista dei flussi dal lato del pannello di accesso</value></data>
+  <data name="Report_Schematic_1" xml:space="preserve"><value>Aria entrante nell&apos;unità</value></data>
+  <data name="Report_Schematic_2" xml:space="preserve"><value>Aria uscente dall&apos;unità</value></data>
+  <data name="Report_Schematic_3" xml:space="preserve"><value>Accesso al pannello / direzione di osservazione</value></data>
+  <data name="Report_Schematic_4" xml:space="preserve"><value>Kit mensola SHK opzionale</value></data>
 </root>

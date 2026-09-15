@@ -768,4 +768,9 @@ Ko morate ohraniti vnose izračuna, ki jih je mogoče urejati, najprej shranite 
   <data name="Report_InstallationLayout_Exhaust" xml:space="preserve">
     <value>Izpušni zrak</value>
   </data>
+  <data name="Report_Schematic_0" xml:space="preserve"><value>Pogled pretokov s strani dostopne plošče</value></data>
+  <data name="Report_Schematic_1" xml:space="preserve"><value>Zrak v enoto</value></data>
+  <data name="Report_Schematic_2" xml:space="preserve"><value>Zrak iz enote</value></data>
+  <data name="Report_Schematic_3" xml:space="preserve"><value>Dostop do plošče / smer pogleda</value></data>
+  <data name="Report_Schematic_4" xml:space="preserve"><value>Izbirni komplet police SHK</value></data>
 </root>

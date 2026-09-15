@@ -975,4 +975,9 @@ Language names in the language menu are intentionally always displayed as autony
   <data name="Report_InstallationLayout_Exhaust" xml:space="preserve">
     <value>Exhaust air</value>
   </data>
+  <data name="Report_Schematic_0" xml:space="preserve"><value>Airflow view from the access-panel side</value></data>
+  <data name="Report_Schematic_1" xml:space="preserve"><value>Air drawn towards the unit</value></data>
+  <data name="Report_Schematic_2" xml:space="preserve"><value>Air discharged from the unit</value></data>
+  <data name="Report_Schematic_3" xml:space="preserve"><value>Panel access / viewing direction</value></data>
+  <data name="Report_Schematic_4" xml:space="preserve"><value>Optional SHK shelf kit</value></data>
 </root>

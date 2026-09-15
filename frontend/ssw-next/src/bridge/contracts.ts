@@ -456,7 +456,7 @@ export interface SelectionBridge {
     languageCode: string,
     saveAs?: boolean,
   ): Promise<{ saved: boolean; cancelled?: boolean; project: MultiProjectState }>;
-  addCurrentToMultiProject(draft: SelectionDraft): Promise<MultiProjectState>;
+  addCurrentToMultiProject(draft: SelectionDraft, createNew?: boolean): Promise<MultiProjectState>;
   removeMultiProjectItem(itemId: string): Promise<MultiProjectState>;
   openMultiProjectItem(
     itemId: string,

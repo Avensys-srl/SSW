@@ -1328,4 +1328,9 @@ Vistaðu .sswsel skrána fyrst þegar þú þarft að varðveita breytanleg útr
   <data name="Report_InstallationLayout_Exhaust" xml:space="preserve">
     <value>Útblástursloft</value>
   </data>
+  <data name="Report_Schematic_0" xml:space="preserve"><value>Loftflæðissýn frá aðgangshlið</value></data>
+  <data name="Report_Schematic_1" xml:space="preserve"><value>Loft inn í einingu</value></data>
+  <data name="Report_Schematic_2" xml:space="preserve"><value>Loft út úr einingu</value></data>
+  <data name="Report_Schematic_3" xml:space="preserve"><value>Aðgangur / sjónarhorn</value></data>
+  <data name="Report_Schematic_4" xml:space="preserve"><value>SHK hillusett í boði</value></data>
 </root>

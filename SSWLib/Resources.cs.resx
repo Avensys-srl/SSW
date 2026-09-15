@@ -1450,4 +1450,9 @@ Názvy jazyků v nabídce jazyků jsou záměrně vždy zobrazeny jako autonyma,
   <data name="Report_InstallationLayout_Exhaust" xml:space="preserve">
     <value>Výfukový vzduch</value>
   </data>
+  <data name="Report_Schematic_0" xml:space="preserve"><value>Pohled na proudění ze strany přístupového panelu</value></data>
+  <data name="Report_Schematic_1" xml:space="preserve"><value>Vzduch vstupující do jednotky</value></data>
+  <data name="Report_Schematic_2" xml:space="preserve"><value>Vzduch vystupující z jednotky</value></data>
+  <data name="Report_Schematic_3" xml:space="preserve"><value>Přístup k panelu / směr pohledu</value></data>
+  <data name="Report_Schematic_4" xml:space="preserve"><value>Volitelná sada konzoly SHK</value></data>
 </root>

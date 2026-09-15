@@ -1369,9 +1369,10 @@ namespace SSW
                 if (screenshotStep == "layout" || screenshotStep == "layout-transitions")
                 {
                     await WaitForConditionAsync(
-                        "Array.from(document.querySelectorAll('.flow[data-port]')).length === 4 && " +
-                        "Array.from(document.querySelectorAll('.flow[data-port] img')).every(function(i){return i.complete&&i.naturalWidth>0;}) && " +
-                        "document.querySelectorAll('.airflow-legend-item').length === 5",
+                        "document.querySelectorAll('.schematic-airflow g[data-port] circle').length === 4 && " +
+                        "document.querySelectorAll('.schematic-mounting svg').length === 1 && " +
+                        "document.querySelectorAll('.schematic-legend .airflow-legend-item').length === 4 && " +
+                        "document.querySelectorAll('.schematic-legend-key').length === 3",
                         "Airflow symbols or the fixed legend did not become ready.");
                 }
                 await Task.Delay(250);
@@ -2106,7 +2107,10 @@ namespace SSW
             {
                 CLSelectionProjectDocument selection =
                     CLNextUiApplicationService.CreateProjectDocument(input);
-                PreserveCurrentSelectionIdentity(selection);
+                if (TextValue(payload, "createNew").Equals("True", StringComparison.OrdinalIgnoreCase))
+                    selection.ProjectId = Guid.NewGuid();
+                else
+                    PreserveCurrentSelectionIdentity(selection);
                 string pdfPath = PrepareNextReportPdf(selection, input);
                 CLMultiSelectionProjectSerializer.AddOrUpdate(
                     currentMultiSelectionDocument,

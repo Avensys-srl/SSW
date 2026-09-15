@@ -489,10 +489,10 @@ class NativeSelectionBridge implements SelectionBridge {
     );
   }
 
-  async addCurrentToMultiProject(draft: SelectionDraft) {
+  async addCurrentToMultiProject(draft: SelectionDraft, createNew = false) {
     return nativeInvoke<MultiProjectState>(
       "project.workspaceAddCurrent",
-      this.draftPayload(draft),
+      { ...this.draftPayload(draft), createNew },
     );
   }
 

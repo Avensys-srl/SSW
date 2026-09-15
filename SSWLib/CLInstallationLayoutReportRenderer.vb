@@ -65,7 +65,7 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
             canvas.SmoothingMode = SmoothingMode.AntiAlias
             canvas.TextRenderingHint = Drawing.Text.TextRenderingHint.ClearTypeGridFit
             canvas.Clear(Color.White)
-            DrawLayout(canvas, snapshot, model.Code, configurationCode, installationMode)
+            DrawSchematic(canvas, snapshot, model.Code, configurationCode, installationMode)
         End Using
         Return New CLInstallationLayoutReportContent(bitmap,
             T("Report_InstallationLayout_Title", "Installation configuration"),
@@ -73,6 +73,110 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
             configurationCode,
             T("Report_InstallationLayout_Installation", "Installation"),
             InstallationCaption(installationMode))
+    End Function
+
+    Private Shared Sub DrawSchematic(g As Graphics, snapshot As CLInstallationLayoutSnapshot,
+        modelCode As String, code As String, mode As String)
+        Dim c = snapshot.Configurations.Single(Function(item) EqualsCode(item.Code, code))
+        Dim ssc = c.ReferenceView.StartsWith("SSC_", StringComparison.OrdinalIgnoreCase)
+        Dim ns = Not ssc AndAlso mode = "wall" AndAlso c.ReferenceView = "OSC_NORTH_SOUTH"
+        Dim upright = ssc AndAlso mode = "floor" AndAlso c.ReferenceView = "SSC_UPRIGHT" AndAlso {"A1", "B1"}.Contains(code)
+        Using outline As New Pen(ColorTranslator.FromHtml("#91A0AE"), 3), red As New Pen(ColorTranslator.FromHtml("#D62828"), 5),
+            title As New Font("Arial", 15, FontStyle.Bold), label As New Font("Arial", 12), number As New Font("Arial", 15, FontStyle.Bold)
+            DrawCenteredText(g, InstallationViewCaption(mode, Not ns), title, Brushes.Black, New RectangleF(If(upright, 10, 20), 10, 480, 40))
+            DrawCenteredText(g, modelCode & " · " & code, title, Brushes.Black, New RectangleF(550, 10, 530, 40))
+            Dim state = g.Save()
+            g.TranslateTransform(40, 70)
+            g.ScaleTransform(1.4F, 1.4F)
+            If ns Then
+                g.TranslateTransform(300, 210)
+                g.RotateTransform(180)
+            End If
+            If mode = "wall" Then
+                g.DrawRectangle(outline, 100.0F, 20.0F, 53.333F, 170.0F)
+                g.DrawLine(red, 82, 35, 82, 175)
+                g.DrawLine(red, 82, 70, 100, 70)
+                g.DrawLine(red, 82, 140, 100, 140)
+                DrawRedArrow(g, red, New PointF(270, 105), New PointF(163.333F, 105))
+            ElseIf upright Then
+                g.DrawRectangle(outline, 123.3335F, 25.0F, 53.333F, 170.0F)
+                g.DrawLine(red, 95, 205, 205, 205)
+                DrawRedArrow(g, red, New PointF(25, 110), New PointF(113.3335F, 110))
+                DrawCenteredText(g, AccessCaption(c.AccessSide), label, Brushes.Black, New RectangleF(0, 65, 138.3335F, 30))
+            Else
+                g.DrawRectangle(outline, 65.0F, 65.0F, 170.0F, 53.333F)
+                Dim supportY = If(mode = "floor", 165, 45)
+                g.DrawLine(red, 45, supportY, 255, supportY)
+                If mode = "ceiling" Then
+                    g.DrawLine(red, 85, 45, 85, 65)
+                    g.DrawLine(red, 215, 45, 215, 65)
+                End If
+                If c.AccessSide = "upper" Then
+                    DrawRedArrow(g, red, New PointF(150, 15), New PointF(150, 55))
+                Else
+                    DrawRedArrow(g, red, New PointF(150, 200), New PointF(150, 128.333F))
+                End If
+            End If
+            g.Restore(state)
+            If Not upright Then DrawCenteredText(g, AccessCaption(c.AccessSide), label, Brushes.Black, New RectangleF(20, 390, 480, 40))
+            If mode = "floor" Then DrawCenteredText(g, SchematicLabel(4), label, Brushes.Black, New RectangleF(If(upright, 10, 20), 450, 480, 40))
+            Dim r = If(ns, New RectangleF(700, 85, 196, 336), New RectangleF(580, 125, 420, 245))
+            g.DrawRectangle(outline, r.X, r.Y, r.Width, r.Height)
+            For Each p In snapshot.FlowPorts.Where(Function(item) item.Position.HasValue).OrderBy(Function(item) item.Position.Value)
+                Dim n = p.Position.Value
+                Dim x As Single
+                Dim y As Single
+                If ssc Then
+                    x = r.Left + r.Width * (25 + (n - 1) * 63) / 240.0F
+                    y = r.Top
+                ElseIf ns Then
+                    x = r.Left + r.Width * If(n Mod 2 = 1, 0.25F, 0.75F)
+                    y = If(n <= 2, r.Bottom, r.Top)
+                Else
+                    x = If(n <= 2, r.Left, r.Right)
+                    y = r.Top + r.Height * If(n Mod 2 = 1, 0.25F, 0.75F)
+                End If
+                DrawCircle(g, p.FlowCode, x, y, n, number)
+            Next
+            DrawCenteredText(g, SchematicLabel(0), label, Brushes.Black,
+                New RectangleF(r.Left + 40, r.Top + 55, r.Width - 80, r.Height - 110))
+            Dim roles = {"Fresh", "Supply", "Return", "Exhaust"}
+            For i = 0 To 3
+                DrawCircle(g, roles(i), 1150, 65 + i * 65, Nothing, number)
+                g.DrawString(FlowCaption(roles(i)), label, Brushes.Black, 1200, 50 + i * 65)
+            Next
+            g.DrawEllipse(outline, 1135, 325, 30, 30)
+            g.DrawString(SchematicLabel(1), label, Brushes.Black, New RectangleF(1200, 320, 380, 55))
+            g.FillEllipse(Brushes.Gray, 1135, 390, 30, 30)
+            g.DrawString(SchematicLabel(2), label, Brushes.Black, New RectangleF(1200, 385, 380, 55))
+            DrawRedArrow(g, red, New PointF(1150, 455), New PointF(1150, 500))
+            g.DrawString(SchematicLabel(3), label, Brushes.Black, New RectangleF(1200, 455, 380, 80))
+        End Using
+    End Sub
+
+    Private Shared Sub DrawRedArrow(g As Graphics, pen As Pen, start As PointF, finish As PointF)
+        Dim dx = finish.X - start.X
+        Dim dy = finish.Y - start.Y
+        Dim length = CSng(Math.Sqrt(dx * dx + dy * dy))
+        dx /= length
+        dy /= length
+        g.DrawLine(pen, start, finish)
+        g.DrawLine(pen, finish, New PointF(finish.X - dx * 12 - dy * 10, finish.Y - dy * 12 + dx * 10))
+        g.DrawLine(pen, finish, New PointF(finish.X - dx * 12 + dy * 10, finish.Y - dy * 12 - dx * 10))
+    End Sub
+
+    Private Shared Sub DrawCircle(g As Graphics, role As String, x As Single, y As Single, n As Integer?, font As Font)
+        Dim incoming = EqualsCode(role, "Fresh") OrElse EqualsCode(role, "Return")
+        Using brush As New SolidBrush(If(incoming, Color.White, FlowColor(role))), pen As New Pen(FlowColor(role), 4)
+            g.FillEllipse(brush, x - 25, y - 25, 50, 50)
+            g.DrawEllipse(pen, x - 25, y - 25, 50, 50)
+            If n.HasValue Then DrawCenteredText(g, n.Value.ToString(), font, If(incoming, Brushes.Black, Brushes.White), New RectangleF(x - 25, y - 25, 50, 50))
+        End Using
+    End Sub
+
+    Private Shared Function SchematicLabel(index As Integer) As String
+        Dim fallback = {"Airflow view from the access-panel side", "Air drawn towards the unit", "Air discharged from the unit", "Panel access / viewing direction", "Optional SHK shelf kit"}
+        Return T("Report_Schematic_" & index.ToString(), fallback(index))
     End Function
 
     Private Shared Sub DrawLayout(graphics As Graphics,
@@ -472,10 +576,10 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
 
     Private Shared Function FlowColor(flowCode As String) As Color
         Select Case If(flowCode, String.Empty).Trim().ToLowerInvariant()
-            Case "fresh" : Return Color.FromArgb(39, 155, 85)
-            Case "return" : Return Color.FromArgb(226, 198, 0)
-            Case "supply" : Return Color.FromArgb(22, 139, 210)
-            Case Else : Return Color.FromArgb(166, 83, 60)
+            Case "fresh" : Return ColorTranslator.FromHtml("#43A047")
+            Case "return" : Return ColorTranslator.FromHtml("#F2B800")
+            Case "supply" : Return ColorTranslator.FromHtml("#008FD3")
+            Case Else : Return ColorTranslator.FromHtml("#8B5A2B")
         End Select
     End Function
 

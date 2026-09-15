@@ -236,11 +236,13 @@ export class MockSelectionBridge implements SelectionBridge {
     return { saved: true, project: structuredClone(this.multiProject) };
   }
 
-  async addCurrentToMultiProject(draft: SelectionDraft) {
+  async addCurrentToMultiProject(draft: SelectionDraft, createNew = false) {
     const unit = mockUnits.find((item) => item.id === draft.selectedUnitId);
-    this.multiProject.items = [{
-      itemId: crypto.randomUUID(),
-      selectionProjectId: crypto.randomUUID(),
+    const existing = createNew ? undefined : this.multiProject.items.find((item) => item.current);
+    this.multiProject.items = this.multiProject.items.filter((item) => item.itemId !== existing?.itemId).map((item) => ({ ...item, current: false }));
+    this.multiProject.items.push({
+      itemId: existing?.itemId ?? crypto.randomUUID(),
+      selectionProjectId: existing?.selectionProjectId ?? crypto.randomUUID(),
       customerReference: draft.project.customerReference,
       unitName: unit?.model ?? draft.selectedUnitId,
       airflow: draft.operatingPoint.supplyAirflow,
@@ -249,7 +251,7 @@ export class MockSelectionBridge implements SelectionBridge {
       languageCode: this.multiProject.languageCode,
       current: true,
       ready: true,
-    }];
+    });
     this.multiProject.dirty = true;
     return structuredClone(this.multiProject);
   }

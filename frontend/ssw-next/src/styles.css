@@ -1247,3 +1247,22 @@ input:disabled, select:disabled {
   .co2-profile-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .step-content { min-height: 420px; }
 }
+.installation-schematics { display: grid; grid-template-columns: 1fr 1fr; align-items: start; gap: 20px; min-width: 0; width: 100%; font-family: Arial, sans-serif; color: #18232d; }
+.installation-schematics svg { display: block; width: 100%; height: auto; }
+.schematic-mounting, .schematic-airflow { min-width: 0; text-align: center; }
+.installation-schematics strong { display: block; font-size: 12px; margin-bottom: 12px; }
+.installation-schematics p, .schematic-mounting > span { font-size: 11px; line-height: 1.5; margin: 12px 0 0; }
+.shk-note { color: #53616e; }
+.schematic-legend { display: grid; gap: 8px; border-left: 1px solid #d4dde5; padding-left: 16px; font-family: Arial, sans-serif; }
+.schematic-legend .airflow-legend-item, .schematic-legend-key { display: grid; grid-template-columns: 36px 1fr; align-items: center; gap: 10px; font-size: 11px; min-height: 36px; }
+.schematic-legend svg { width: 36px; height: 36px; }
+.schematic-legend .airflow-legend-item span::after { display: none; }
+.circle-key { display: block; width: 18px; height: 18px; border: 2px solid #53616e; border-radius: 50%; margin: auto; }
+.circle-key.solid { background: #53616e; }
+@media (max-width: 900px) { .installation-schematics { grid-template-columns: 1fr; } .installation-schematics svg { max-width: 320px; margin: auto; } }
+.schematic-legend > .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.page-heading:has(.page-selected-unit) { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr); align-items: center; }
+.page-heading .page-selected-unit { display: block; margin: 0; text-align: center; font-family: Arial, sans-serif; font-size: 16px; line-height: 1.4; color: var(--text); overflow-wrap: anywhere; }
+.page-heading:has(.page-selected-unit) .calculation-state { justify-self: end; }
+@media (max-width: 900px) { .page-heading:has(.page-selected-unit) { grid-template-columns: minmax(0, 1fr) auto; } .page-heading .page-selected-unit { grid-column: 1 / -1; grid-row: 2; } }
+.airflow-inner-caption { display: flex; align-items: center; justify-content: center; height: 100%; width: 100%; box-sizing: border-box; text-align: center; font-family: Arial, sans-serif; font-size: 11px; line-height: 1.45; color: #18232d; overflow-wrap: anywhere; }
