@@ -84,7 +84,7 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
         Using outline As New Pen(ColorTranslator.FromHtml("#91A0AE"), 3), red As New Pen(ColorTranslator.FromHtml("#D62828"), 5),
             title As New Font("Arial", 15, FontStyle.Bold), label As New Font("Arial", 12), number As New Font("Arial", 15, FontStyle.Bold)
             DrawCenteredText(g, InstallationViewCaption(mode, Not ns), title, Brushes.Black, New RectangleF(If(upright, 10, 20), 10, 480, 40))
-            DrawCenteredText(g, modelCode & " · " & code, title, Brushes.Black, New RectangleF(550, 10, 530, 40))
+            DrawCenteredText(g, modelCode, title, Brushes.Black, New RectangleF(550, 10, 530, 40))
             Dim state = g.Save()
             g.TranslateTransform(40, 70)
             g.ScaleTransform(1.4F, 1.4F)
@@ -118,7 +118,6 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
                 End If
             End If
             g.Restore(state)
-            If Not upright Then DrawCenteredText(g, AccessCaption(c.AccessSide), label, Brushes.Black, New RectangleF(20, 390, 480, 40))
             If mode = "floor" Then DrawCenteredText(g, SchematicLabel(4), label, Brushes.Black, New RectangleF(If(upright, 10, 20), 450, 480, 40))
             Dim r = If(ns, New RectangleF(700, 85, 196, 336), New RectangleF(580, 125, 420, 245))
             g.DrawRectangle(outline, r.X, r.Y, r.Width, r.Height)
@@ -138,19 +137,20 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
                 End If
                 DrawCircle(g, p.FlowCode, x, y, n, number)
             Next
-            DrawCenteredText(g, SchematicLabel(0), label, Brushes.Black,
-                New RectangleF(r.Left + 40, r.Top + 55, r.Width - 80, r.Height - 110))
+            Using captionFont As New Font("Arial", 11), format As New StringFormat With {
+                .Alignment = StringAlignment.Center, .LineAlignment = StringAlignment.Center,
+                .Trimming = StringTrimming.None
+            }
+                g.DrawString(SchematicLabel(0), captionFont, Brushes.Black,
+                    New RectangleF(r.Left + 20, r.Top + 45, r.Width - 40, r.Height - 90), format)
+            End Using
             Dim roles = {"Fresh", "Supply", "Return", "Exhaust"}
             For i = 0 To 3
                 DrawCircle(g, roles(i), 1150, 65 + i * 65, Nothing, number)
                 g.DrawString(FlowCaption(roles(i)), label, Brushes.Black, 1200, 50 + i * 65)
             Next
-            g.DrawEllipse(outline, 1135, 325, 30, 30)
-            g.DrawString(SchematicLabel(1), label, Brushes.Black, New RectangleF(1200, 320, 380, 55))
-            g.FillEllipse(Brushes.Gray, 1135, 390, 30, 30)
-            g.DrawString(SchematicLabel(2), label, Brushes.Black, New RectangleF(1200, 385, 380, 55))
-            DrawRedArrow(g, red, New PointF(1150, 455), New PointF(1150, 500))
-            g.DrawString(SchematicLabel(3), label, Brushes.Black, New RectangleF(1200, 455, 380, 80))
+            DrawRedArrow(g, red, New PointF(1150, 335), New PointF(1150, 380))
+            g.DrawString(AccessCaption(c.AccessSide), label, Brushes.Black, New RectangleF(1200, 340, 380, 60))
         End Using
     End Sub
 

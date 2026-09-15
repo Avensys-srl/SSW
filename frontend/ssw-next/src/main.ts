@@ -44,7 +44,7 @@ import {
 } from "lucide";
 import pdfWorkerUrl from "pdfjs-dist/build/pdf.worker.min.mjs?url";
 import "./styles.css";
-import { createBridge, logClientError, runtimeName } from "./bridge";
+import { createBridge, logClientError } from "./bridge";
 import { normalizeSelection } from "./bridge/normalizeSelection";
 import { getHelpContent } from "./help";
 import {
@@ -943,7 +943,6 @@ const renderShell = (): void => {
           <strong>${escapeHtml(draft.project.customerReference.trim() || draft.project.name)}</strong>
         </div>
         <div class="topbar-actions">
-          <span class="runtime-badge">${icon("hard-drive", 15)} ${escapeHtml(runtimeName())}</span>
           <button class="icon-button" type="button" data-action="notifications" title="${escapeHtml(helpTitle("notifications"))}" aria-label="${escapeHtml(text.ui.aria.notifications)}">
             ${icon("bell")}
             ${notificationState.unreadDueCount > 0 ? `<span class="notification-dot"></span>` : ""}
@@ -1947,7 +1946,12 @@ const renderSummaryStep = (): string => {
             ${optionSummary(text.ui.summary.waterCoil, draft!.waterCoilEnabled ? draft!.waterCoilMode : text.ui.summary.notSelectedFeminine, draft!.waterCoilEnabled)}
             ${optionSummary(text.ui.summary.electricPreheating, draft!.electricPreheaterEnabled ? "PEHD" : text.ui.summary.notSelectedMasculine, draft!.electricPreheaterEnabled)}
             ${optionSummary(text.ui.summary.electricPostHeating, draft!.electricPostheaterEnabled ? "EHD" : text.ui.summary.notSelectedMasculine, draft!.electricPostheaterEnabled)}
-            ${optionSummary(text.ui.summary.accessories, `${draft!.accessoryCodes.length} ${text.ui.accessories.selectedCount}`, true)}
+            ${optionSummary(text.ui.summary.accessories,
+              draft!.accessoryCodes.length ? `<ul class="summary-accessory-list">${draft!.accessoryCodes.map((code) => {
+                const accessory = data!.accessories.find((item) => item.code === code);
+                return `<li>${escapeHtml(code)}${accessory ? ` · ${escapeHtml(accessory.name)}` : ""}</li>`;
+              }).join("")}</ul>` : escapeHtml(text.ui.summary.notSelectedMasculine),
+              draft!.accessoryCodes.length > 0)}
           </div>
         </div>
       </section>

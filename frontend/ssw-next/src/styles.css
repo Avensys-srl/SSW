@@ -1266,3 +1266,4 @@ input:disabled, select:disabled {
 .page-heading:has(.page-selected-unit) .calculation-state { justify-self: end; }
 @media (max-width: 900px) { .page-heading:has(.page-selected-unit) { grid-template-columns: minmax(0, 1fr) auto; } .page-heading .page-selected-unit { grid-column: 1 / -1; grid-row: 2; } }
 .airflow-inner-caption { display: flex; align-items: center; justify-content: center; height: 100%; width: 100%; box-sizing: border-box; text-align: center; font-family: Arial, sans-serif; font-size: 11px; line-height: 1.45; color: #18232d; overflow-wrap: anywhere; }
+.summary-accessory-list { margin: 0; padding-left: 16px; font-weight: 600; line-height: 1.5; overflow-wrap: anywhere; }
