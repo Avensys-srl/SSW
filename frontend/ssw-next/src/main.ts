@@ -1452,6 +1452,8 @@ const renderFlowPorts = (): string => {
   const ports = [...candidatePorts];
   const sameSide = isSameSideConnection();
   const sameSideFloorFacing = isSameSideFlatFloor();
+  const splitPortFour = isFsVsHciModel() && !sameSide;
+  const stConnection = isStConnection();
   const oppositeSideEastWest = !sameSide &&
     !(draft?.installationMode === "wall" &&
       selectedLayoutConfiguration()?.referenceView === "OSC_NORTH_SOUTH");
@@ -1461,10 +1463,24 @@ const renderFlowPorts = (): string => {
     .map((port) => {
       const role = port.flowCode.toLowerCase();
       const incoming = port.flowCode === "Fresh" || port.flowCode === "Return";
+      if (stConnection) {
+        const placement = stFlowPlacement(draft?.layoutCode ?? "", port.position);
+        return `<g data-port="${port.position}" data-flow="${role}" data-rear="${placement.rear}" class="${incoming ? "incoming" : "outgoing"}">${flowCircle(role, placement.x, placement.y, port.position, placement.rear)}</g>`;
+      }
       const side = airflowSide(port.position, sameSide, sameSideFloorFacing, oppositeSideEastWest);
       const slot = airflowSlot(port.position, sameSide, oppositeSideEastWest);
-      const x = sameSide ? 55 + (slot - 1) * 63 : oppositeSideEastWest ? (side === "west" ? 30 : 270) : (slot === 1 || slot === 3 ? 115 : 185);
-      const y = sameSide ? 30 : oppositeSideEastWest ? (slot === 1 || slot === 3 ? 65 : 135) : (side === "north" ? 30 : 270);
+      let x = sameSide ? 55 + (slot - 1) * 63 : oppositeSideEastWest ? (side === "west" ? 30 : 270) : (slot === 1 || slot === 3 ? 115 : 185);
+      let y = sameSide ? 30 : oppositeSideEastWest ? (slot === 1 || slot === 3 ? 65 : 135) : (side === "north" ? 30 : 270);
+      if (splitPortFour && port.position === 3) {
+        x = 270;
+        y = oppositeSideEastWest ? 100 : 150;
+      }
+      if (splitPortFour && port.position === 4) {
+        const top = 30;
+        const bottom = oppositeSideEastWest ? 170 : 270;
+        const splitX = oppositeSideEastWest ? 235 : 185;
+        return `<g data-port="${port.position}" data-flow="${role}" data-duplicate="true" class="${incoming ? "incoming" : "outgoing"}">${flowCircle(role, splitX, top, port.position)}${flowCircle(role, splitX, bottom, port.position)}</g>`;
+      }
       return `<g data-port="${port.position}" data-flow="${role}" class="${incoming ? "incoming" : "outgoing"}">${flowCircle(role, x, y, port.position)}</g>`;
     })
     .join("");
@@ -1521,6 +1537,30 @@ const isSameSideConnection = (): boolean => {
   return connection.includes("SSC") || connection.includes("SAME SIDE");
 };
 
+const isFsVsHciModel = (): boolean =>
+  /(^|\s)(FS|VS|HCI)(\s|$)/i.test(selectedUnit()?.model ?? "");
+
+const isStConnection = (): boolean =>
+  (result?.aeraulicConnectionCode ?? "").toUpperCase() === "ST" ||
+  /(^|\s)ST(\s|$)/i.test(selectedUnit()?.model ?? "");
+
+type StFlowPlacement = { x: number; y: number; rear: boolean };
+
+const stFlowPlacement = (configurationCode: string, position: number): StFlowPlacement => {
+  const code = configurationCode.toUpperCase();
+  if (position === 3) return { x: 150, y: 100, rear: false };
+  if (position === 4) return { x: 150, y: 220, rear: false };
+  if (position === 1) {
+    const rear = ["HU", "HH", "LH"].includes(code);
+    return { x: rear ? 110 : 115, y: rear ? 60 : 30, rear };
+  }
+  const lowerRear = ["LU", "LH"].includes(code);
+  const upperRear = code === "UH";
+  if (lowerRear) return { x: 194, y: 240, rear: true };
+  if (upperRear) return { x: 185, y: 60, rear: true };
+  return { x: 185, y: code === "HH" ? 60 : 30, rear: code === "HH" };
+};
+
 type AccessSurface = "upper" | "lower" | "front";
 
 const selectedLayoutConfiguration = (): LayoutConfigurationOption | undefined =>
@@ -1561,6 +1601,9 @@ const renderInstallationStep = (): string => {
   const compatibleLayouts = layoutsForInstallation(draft!.installationMode);
   const surface = accessSurface();
   const uprightSscFloor = isSameSideUprightFloor() && ["A1", "B1"].includes(draft!.layoutCode);
+  const uprightStFloor = isStConnection() && draft!.installationMode === "floor";
+  const uprightFloor = uprightSscFloor || uprightStFloor;
+  const stFlowLayout = isStConnection();
   const northSouthWall = !isSameSideConnection() && draft!.installationMode === "wall" && selectedLayoutConfiguration()?.referenceView === "OSC_NORTH_SOUTH";
   const oppositeSideWallClass = draft!.installationMode === "wall"
     ? isOppositeSideEastWestWall() ? "wall-east-west" : "wall-north-south"
@@ -1594,12 +1637,12 @@ const renderInstallationStep = (): string => {
       ${compatibleLayouts.length > 0 && !calculating && !calculationFailed ? `<div class="airflow-layout-body">
         <div class="installation-schematics ${connectionClass}" data-layout="${escapeHtml(draft!.layoutCode)}">
           <div class="schematic-mounting"><strong>${escapeHtml(installationViewLabel(draft!.installationMode, isOppositeSideEastWestWall()))}</strong>
-            ${mountingSvg(draft!.installationMode, surface, isOppositeSideEastWestWall(), uprightSscFloor, escapeHtml(accessSurfaceLabel(surface)))}
-            ${uprightSscFloor ? "" : `<span>${escapeHtml(accessSurfaceLabel(surface))}</span>`}
+            ${mountingSvg(draft!.installationMode, surface, isOppositeSideEastWestWall(), uprightFloor, escapeHtml(accessSurfaceLabel(surface)))}
+            ${uprightFloor ? "" : `<span>${escapeHtml(accessSurfaceLabel(surface))}</span>`}
             ${draft!.installationMode === "floor" ? `<p class="shk-note">${escapeHtml(schematicText(languageCode())[4])}</p>` : ""}
           </div>
           <div class="schematic-airflow"><strong>${escapeHtml(selectedUnit()?.model ?? "")} · ${escapeHtml(draft!.layoutCode)}</strong>
-            <svg viewBox="0 0 300 ${northSouthWall ? 300 : 200}" role="img" aria-label="${escapeHtml(schematicText(languageCode())[0])}"><rect x="${northSouthWall ? 80 : 30}" y="30" width="${northSouthWall ? 140 : 240}" height="${northSouthWall ? 240 : 140}" fill="white" stroke="#91A0AE" stroke-width="2"/><foreignObject x="${northSouthWall ? 105 : 60}" y="65" width="${northSouthWall ? 90 : 180}" height="${northSouthWall ? 170 : 70}"><div xmlns="http://www.w3.org/1999/xhtml" class="airflow-inner-caption">${escapeHtml(schematicText(languageCode())[0])}</div></foreignObject>${renderFlowPorts()}</svg>
+            <svg viewBox="0 0 300 ${northSouthWall || stFlowLayout ? 300 : 200}" role="img" aria-label="${escapeHtml(schematicText(languageCode())[0])}"><rect x="${northSouthWall || stFlowLayout ? 80 : 30}" y="30" width="${northSouthWall || stFlowLayout ? 140 : 240}" height="${northSouthWall || stFlowLayout ? 240 : 140}" fill="white" stroke="#91A0AE" stroke-width="2"/><foreignObject x="${northSouthWall || stFlowLayout ? 105 : 60}" y="${stFlowLayout ? 125 : 65}" width="${northSouthWall || stFlowLayout ? 90 : 180}" height="${stFlowLayout ? 70 : northSouthWall ? 170 : 70}"><div xmlns="http://www.w3.org/1999/xhtml" class="airflow-inner-caption">${escapeHtml(schematicText(languageCode())[0])}</div></foreignObject>${renderFlowPorts()}</svg>
           </div>
         </div>
         ${renderFlowLegend(surface)}

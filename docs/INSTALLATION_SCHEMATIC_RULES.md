@@ -6,12 +6,15 @@
 - Ceiling mounting includes two thin red vertical suspension lines connecting the mounting surface to the unit, symmetrically positioned near its ends.
 - A1/B1 SSC upright floor mounting only: the mounting unit is taller than wide, with a left-to-right access arrow and localized front-access label above it.
 - In the upright SSC floor mounting view, the unit rectangle, red support line, installation title and SHK note share the same vertical centerline. The access arrow remains to the left.
+- All ST floor configurations use the same upright mounting geometry, centered lower support and left-to-right front-access arrow. Their airflow-port geometry remains independent and will be defined separately.
+- ST airflow views use a portrait unit. Ports 3 and 4 are centered in the upper and lower interior areas. Ports 1 and 2 follow the UU/UH/LU/HU/HH/LH configuration map; rear positions use a dashed circumference while preserving the standard circle diameter and flow color. Rear ports are UH:2, LU:2, HU:1, HH:1/2 and LH:1/2. In LU and LH, port 2 stays in the lower-right area, against the inner usable margin, to remain clear of port 4 without crossing the unit outline.
 - North-South wall mounting uses the East-West mounting geometry rotated by 180 degrees, including support, brackets and access arrow. Airflow geometry remains independent.
 - Airflow is viewed from the access-panel side. Configurations and numbered flow identities come from the calculation response, never from a static example.
 - The localized access-panel-side airflow caption is centered inside the airflow rectangle, wrapping across multiple lines with safe insets from the numbered circles. Portrait views use a narrower text area. UI and RDLC follow this rule.
 - Fresh and return air use hollow circles; supply and exhaust use solid circles. Colors: green #43A047, yellow #F2B800, blue #008FD3, brown #8B5A2B.
 - Same-side connections form a single row; opposite-side connections form opposing pairs. Wall reference views determine the axis.
 - For every OSC view, circle centers lie on the short left/right edges of the rectangle: ports 1/2 on the left, ports 3/4 on the right. The OSC_NORTH_SOUTH wall view is the exception and retains its upper/lower arrangement. Circle outlines are drawn after the unit outline.
+- FS, VS and HCI units are the exception to the standard OSC rule: port 3 is centered on the right edge, while port 4 is shown twice as equivalent physical connections on the upper and lower edges near the right side. Ports 1 and 2 remain on the left edge. UI and RDLC use the same geometry.
 - For every SSC view and installation mode, all four airflow circles form a single row centered on the upper long edge, in numbered order 1/2/3/4. This rule does not alter the mounting/support/access-arrow drawings.
 - OSC_NORTH_SOUTH wall airflow uses a portrait rectangle (140 wide by 240 high), with circles centered on its upper/lower short edges. Number identities and flow associations remain unchanged; the mounting drawing is not modified.
 - House icons are not used in the installation UI. Legend entries show circles and a red access/viewing arrow.

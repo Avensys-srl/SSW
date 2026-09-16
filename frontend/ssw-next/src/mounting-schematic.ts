@@ -18,9 +18,13 @@ const translations: Record<string, readonly string[]> = {
 };
 export const schematicText = (language: string) => translations[language] ?? translations.en;
 export const flowColors: Record<string, string> = { fresh: "#43A047", supply: "#008FD3", return: "#F2B800", exhaust: "#8B5A2B" };
-export const flowCircle = (role: string, x: number, y: number, number?: number): string => {
+export const flowCircle = (role: string, x: number, y: number, number?: number, rear = false): string => {
   const incoming = role === "fresh" || role === "return";
-  return `<circle cx="${x}" cy="${y}" r="18" fill="${incoming ? "white" : flowColors[role]}" stroke="${flowColors[role]}" stroke-width="3"/>${number === undefined ? "" : `<text x="${x}" y="${y + 5}" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="${incoming ? "#18232D" : "white"}">${number}</text>`}`;
+  const fill = incoming ? "white" : flowColors[role];
+  const outline = rear
+    ? `<circle cx="${x}" cy="${y}" r="18" fill="${fill}" stroke="white" stroke-width="5"/><circle cx="${x}" cy="${y}" r="18" fill="none" stroke="${flowColors[role]}" stroke-width="3" stroke-dasharray="7 5"/>`
+    : `<circle cx="${x}" cy="${y}" r="18" fill="${fill}" stroke="${flowColors[role]}" stroke-width="3"/>`;
+  return `${outline}${number === undefined ? "" : `<text x="${x}" y="${y + 5}" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="${incoming ? "#18232D" : "white"}">${number}</text>`}`;
 };
 // Geometry and palette recovered from download.svg; labels are rendered separately.
 export const mountingSvg = (mode: string, surface: string, eastWest: boolean, upright = false, accessText = ""): string => {

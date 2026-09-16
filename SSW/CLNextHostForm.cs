@@ -1229,7 +1229,8 @@ namespace SSW
                             await WaitForConditionAsync(
                                 "(function(){var svg=document.querySelector('.schematic-airflow svg'),r=svg&&svg.querySelector('rect');if(!r)return false;" +
                                 "var x=+r.getAttribute('x'),y=+r.getAttribute('y'),w=+r.getAttribute('width'),h=+r.getAttribute('height');" +
-                                "return Array.from(svg.querySelectorAll('g[data-port] circle')).length===4&&Array.from(svg.querySelectorAll('g[data-port] circle')).every(function(c){" +
+                                "var circles=Array.from(svg.querySelectorAll('g[data-port] circle'));" +
+                                "return svg.querySelectorAll('g[data-port]').length===4&&circles.length>=4&&circles.length<=5&&circles.every(function(c){" +
                                 "var cx=+c.getAttribute('cx'),cy=+c.getAttribute('cy'),onX=Math.abs(cx-x)<=1||Math.abs(cx-(x+w))<=1,onY=Math.abs(cy-y)<=1||Math.abs(cy-(y+h))<=1;" +
                                 "return (onX&&cy>=y&&cy<=y+h)||(onY&&cx>=x&&cx<=x+w);});})()",
                                 "Airflow symbol alignment failed: " + code);
@@ -1365,7 +1366,9 @@ namespace SSW
                 if (screenshotStep == "layout" || screenshotStep == "layout-transitions")
                 {
                     await WaitForConditionAsync(
-                        "document.querySelectorAll('.schematic-airflow g[data-port] circle').length === 4 && " +
+                        "document.querySelectorAll('.schematic-airflow g[data-port]').length === 4 && " +
+                        "document.querySelectorAll('.schematic-airflow g[data-port] circle').length >= 4 && " +
+                        "document.querySelectorAll('.schematic-airflow g[data-port] circle').length <= 5 && " +
                         "document.querySelectorAll('.schematic-mounting svg').length === 1 && " +
                         "document.querySelectorAll('.schematic-legend .airflow-legend-item').length === 4 && " +
                         "document.querySelectorAll('.schematic-legend-key').length === 3",

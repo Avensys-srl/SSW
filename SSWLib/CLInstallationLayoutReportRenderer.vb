@@ -79,8 +79,12 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
         modelCode As String, code As String, mode As String)
         Dim c = snapshot.Configurations.Single(Function(item) EqualsCode(item.Code, code))
         Dim ssc = c.ReferenceView.StartsWith("SSC_", StringComparison.OrdinalIgnoreCase)
+        Dim st = EqualsCode(snapshot.AeraulicConnectionCode, "ST")
         Dim ns = Not ssc AndAlso mode = "wall" AndAlso c.ReferenceView = "OSC_NORTH_SOUTH"
-        Dim upright = ssc AndAlso mode = "floor" AndAlso c.ReferenceView = "SSC_UPRIGHT" AndAlso {"A1", "B1"}.Contains(code)
+        Dim splitPortFour = Not ssc AndAlso IsFsVsHciModel(modelCode)
+        Dim uprightSsc = ssc AndAlso mode = "floor" AndAlso c.ReferenceView = "SSC_UPRIGHT" AndAlso {"A1", "B1"}.Contains(code)
+        Dim uprightSt = mode = "floor" AndAlso st
+        Dim upright = uprightSsc OrElse uprightSt
         Using outline As New Pen(ColorTranslator.FromHtml("#91A0AE"), 3), red As New Pen(ColorTranslator.FromHtml("#D62828"), 5),
             title As New Font("Arial", 15, FontStyle.Bold), label As New Font("Arial", 12), number As New Font("Arial", 15, FontStyle.Bold)
             DrawCenteredText(g, InstallationViewCaption(mode, Not ns), title, Brushes.Black, New RectangleF(If(upright, 10, 20), 10, 480, 40))
@@ -119,13 +123,26 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
             End If
             g.Restore(state)
             If mode = "floor" Then DrawCenteredText(g, SchematicLabel(4), label, Brushes.Black, New RectangleF(If(upright, 10, 20), 450, 480, 40))
-            Dim r = If(ns, New RectangleF(700, 85, 196, 336), New RectangleF(580, 125, 420, 245))
+            Dim r = If(ns OrElse st, New RectangleF(700, 85, 196, 336), New RectangleF(580, 125, 420, 245))
             g.DrawRectangle(outline, r.X, r.Y, r.Width, r.Height)
             For Each p In snapshot.FlowPorts.Where(Function(item) item.Position.HasValue).OrderBy(Function(item) item.Position.Value)
                 Dim n = p.Position.Value
                 Dim x As Single
                 Dim y As Single
-                If ssc Then
+                Dim rear = False
+                If st Then
+                    Dim placement = StFlowPlacement(code, n, r, rear)
+                    x = placement.X
+                    y = placement.Y
+                ElseIf splitPortFour AndAlso n = 3 Then
+                    x = r.Right
+                    y = r.Top + r.Height / 2.0F
+                ElseIf splitPortFour AndAlso n = 4 Then
+                    x = r.Left + r.Width * 0.85F
+                    DrawCircle(g, p.FlowCode, x, r.Top, n, number)
+                    DrawCircle(g, p.FlowCode, x, r.Bottom, n, number)
+                    Continue For
+                ElseIf ssc Then
                     x = r.Left + r.Width * (25 + (n - 1) * 63) / 240.0F
                     y = r.Top
                 ElseIf ns Then
@@ -135,7 +152,7 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
                     x = If(n <= 2, r.Left, r.Right)
                     y = r.Top + r.Height * If(n Mod 2 = 1, 0.25F, 0.75F)
                 End If
-                DrawCircle(g, p.FlowCode, x, y, n, number)
+                DrawCircle(g, p.FlowCode, x, y, n, number, rear)
             Next
             Using captionFont As New Font("Arial", 11), format As New StringFormat With {
                 .Alignment = StringAlignment.Center, .LineAlignment = StringAlignment.Center,
@@ -154,6 +171,42 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
         End Using
     End Sub
 
+    Private Shared Function IsFsVsHciModel(modelCode As String) As Boolean
+        If String.IsNullOrWhiteSpace(modelCode) Then Return False
+        Dim tokens = modelCode.Split(New Char() {" "c, "-"c, "_"c},
+            StringSplitOptions.RemoveEmptyEntries)
+        Return tokens.Any(Function(token) token.Equals("FS", StringComparison.OrdinalIgnoreCase) OrElse
+            token.Equals("VS", StringComparison.OrdinalIgnoreCase) OrElse
+            token.Equals("HCI", StringComparison.OrdinalIgnoreCase))
+    End Function
+
+    Private Shared Function StFlowPlacement(code As String, position As Integer,
+        rectangle As RectangleF, ByRef rear As Boolean) As PointF
+        Dim normalizedCode = If(code, String.Empty).Trim().ToUpperInvariant()
+        rear = False
+        If position = 3 Then
+            Return New PointF(rectangle.Left + rectangle.Width * 0.5F,
+                rectangle.Top + rectangle.Height * 0.292F)
+        End If
+        If position = 4 Then
+            Return New PointF(rectangle.Left + rectangle.Width * 0.5F,
+                rectangle.Top + rectangle.Height * 0.792F)
+        End If
+        If position = 1 Then
+            rear = {"HU", "HH", "LH"}.Contains(normalizedCode)
+            Return New PointF(rectangle.Left + rectangle.Width * If(rear, 0.214F, 0.25F),
+                rectangle.Top + rectangle.Height * If(rear, 0.125F, 0.0F))
+        End If
+        If {"LU", "LH"}.Contains(normalizedCode) Then
+            rear = True
+            Return New PointF(rectangle.Left + rectangle.Width * 0.82F,
+                rectangle.Bottom - rectangle.Height * 0.125F)
+        End If
+        rear = normalizedCode = "UH" OrElse normalizedCode = "HH"
+        Return New PointF(rectangle.Left + rectangle.Width * 0.75F,
+            rectangle.Top + rectangle.Height * If(rear OrElse normalizedCode = "HH", 0.125F, 0.0F))
+    End Function
+
     Private Shared Sub DrawRedArrow(g As Graphics, pen As Pen, start As PointF, finish As PointF)
         Dim dx = finish.X - start.X
         Dim dy = finish.Y - start.Y
@@ -165,10 +218,17 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
         g.DrawLine(pen, finish, New PointF(finish.X - dx * 12 + dy * 10, finish.Y - dy * 12 - dx * 10))
     End Sub
 
-    Private Shared Sub DrawCircle(g As Graphics, role As String, x As Single, y As Single, n As Integer?, font As Font)
+    Private Shared Sub DrawCircle(g As Graphics, role As String, x As Single, y As Single, n As Integer?, font As Font,
+        Optional rear As Boolean = False)
         Dim incoming = EqualsCode(role, "Fresh") OrElse EqualsCode(role, "Return")
         Using brush As New SolidBrush(If(incoming, Color.White, FlowColor(role))), pen As New Pen(FlowColor(role), 4)
             g.FillEllipse(brush, x - 25, y - 25, 50, 50)
+            If rear Then
+                Using underlay As New Pen(Color.White, 7)
+                    g.DrawEllipse(underlay, x - 25, y - 25, 50, 50)
+                End Using
+                pen.DashStyle = Drawing2D.DashStyle.Dash
+            End If
             g.DrawEllipse(pen, x - 25, y - 25, 50, 50)
             If n.HasValue Then DrawCenteredText(g, n.Value.ToString(), font, If(incoming, Brushes.Black, Brushes.White), New RectangleF(x - 25, y - 25, 50, 50))
         End Using

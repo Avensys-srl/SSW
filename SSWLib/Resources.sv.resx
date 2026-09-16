@@ -1138,22 +1138,22 @@ Spara .sswsel-filen först när du behöver bevara redigerbara beräkningsindata
   <data name="DeviceLicense_NotActive" xml:space="preserve"><value>The SSW license is not active. Contact Avensys to reactivate it.</value></data>
   <data name="DeviceLicense_InternetRequired" xml:space="preserve"><value>An Internet connection is required to verify the license. Connect the computer and reopen SSW.</value></data>
   <data name="DeviceLicense_Revoked" xml:space="preserve"><value>The SSW license has been revoked. Contact Avensys.</value></data>
-  <data name="DeviceLicense_PrivacyTitle" xml:space="preserve"><value>Privacy notice</value></data>
-  <data name="DeviceLicense_PrivacyNotice" xml:space="preserve"><value>SSW PRIVACY NOTICE - VERSION 1.0 (16 September 2026)
+  <data name="DeviceLicense_PrivacyTitle" xml:space="preserve"><value>Integritetsmeddelande</value></data>
+  <data name="DeviceLicense_PrivacyNotice" xml:space="preserve"><value>SSW SEKRETESS MEDDELANDE - VERSION 1.0 (16 september 2026)
 
-Data controller: Avensys S.r.l., Via I Maggio 10/12, 26858 Sordio (LO), Italy - info@avensys-srl.com.
+Personuppgiftsansvarig: Avensys S.r.l., Via I Maggio 10/12, 26858 Sordio (LO), Italien - info@avensys-srl.com.
 
-Data processed: first name, last name, email address, company, installation and device identifiers, SSW and database versions, license status, activation and last-use dates, and daily launch counts.
+Behandlade data: förnamn, efternamn, e-postadress, företags-, installations- och enhetsidentifierare, SSW- och databasversioner, licensstatus, aktiverings- och senaste användningsdatum samt dagliga lanseringsräkningar.
 
-Purposes: issuing and managing the SSW license; enforcing the two-device limit; offline renewal and revocation; service security, support and aggregate usage statistics. No marketing or automated profiling is performed through this activation.
+Syfte: utfärda och hantera SSW-licensen; upprätthålla gränsen för två enheter; offline förnyelse och återkallelse; tjänstsäkerhet, support och aggregerad användningsstatistik. Ingen marknadsföring eller automatiserad profilering utförs genom denna aktivering.
 
-Legal basis: processing is necessary to provide and protect the licensed service and to pursue the controller&apos;s legitimate interests in license security and service operation. The requested identification data are required; without them SSW cannot be activated or registered.
+Rättslig grund: behandlingen är nödvändig för att tillhandahålla och skydda den licensierade tjänsten och för att fullfölja den registeransvariges legitima intressen i licenssäkerhet och tjänstedrift. De begärda identifieringsuppgifterna krävs; utan dem kan SSW inte aktiveras eller registreras.
 
-Recipients and transfers: data are accessible only to authorised Avensys personnel and service providers necessary to operate the licensing infrastructure. Data are not sold. Any transfer outside the European Economic Area will use the safeguards required by applicable law.
+Mottagare och överföringar: data är endast tillgängliga för auktoriserad Avensys personal och tjänsteleverantörer som är nödvändiga för att driva licensinfrastrukturen. Data säljs inte. Alla överföringar utanför Europeiska ekonomiska samarbetsområdet kommer att använda de skyddsåtgärder som krävs enligt tillämplig lag.
 
-Retention: account and license records are retained for the duration of the business relationship and afterwards only for the period required by legal obligations, security, support and the establishment or defence of legal claims. Usage statistics are retained only as long as necessary for these purposes.
+Lagring: konto- och licensuppgifter bevaras under affärsrelationens varaktighet och därefter endast under den period som krävs av juridiska skyldigheter, säkerhet, stöd och upprättande eller försvar av rättsliga anspråk. Användningsstatistik bevaras endast så länge det är nödvändigt för dessa ändamål.
 
-Rights: you may request access, rectification, erasure, restriction, objection or portability where applicable, and lodge a complaint with the competent data protection authority. Contact info@avensys-srl.com.</value></data>
-  <data name="DeviceLicense_PrivacyAcknowledgement" xml:space="preserve"><value>Accept the terms of use to activate SSW on this device</value></data>
+Rättigheter: du kan begära åtkomst, rättelse, radering, begränsning, invändning eller portabilitet där så är tillämpligt, och lämna in ett klagomål till den behöriga dataskyddsmyndigheten. Kontakta info@avensys-srl.com.</value></data>
+  <data name="DeviceLicense_PrivacyAcknowledgement" xml:space="preserve"><value>Acceptera användarvillkoren för att aktivera SSW på den här enheten</value></data>
   <data name="DeviceLicense_Company" xml:space="preserve"><value>Company</value></data>
 </root>

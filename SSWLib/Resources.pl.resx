@@ -882,22 +882,22 @@ Jeśli chcesz zachować edytowalne dane wejściowe obliczeń, najpierw zapisz pl
   <data name="DeviceLicense_NotActive" xml:space="preserve"><value>The SSW license is not active. Contact Avensys to reactivate it.</value></data>
   <data name="DeviceLicense_InternetRequired" xml:space="preserve"><value>An Internet connection is required to verify the license. Connect the computer and reopen SSW.</value></data>
   <data name="DeviceLicense_Revoked" xml:space="preserve"><value>The SSW license has been revoked. Contact Avensys.</value></data>
-  <data name="DeviceLicense_PrivacyTitle" xml:space="preserve"><value>Privacy notice</value></data>
-  <data name="DeviceLicense_PrivacyNotice" xml:space="preserve"><value>SSW PRIVACY NOTICE - VERSION 1.0 (16 September 2026)
+  <data name="DeviceLicense_PrivacyTitle" xml:space="preserve"><value>Informacja o prywatności</value></data>
+  <data name="DeviceLicense_PrivacyNotice" xml:space="preserve"><value>INFORMACJA O PRYWATNOŚCI SSW - WERSJA 1.0 (16 września 2026)
 
-Data controller: Avensys S.r.l., Via I Maggio 10/12, 26858 Sordio (LO), Italy - info@avensys-srl.com.
+Administrator danych: Avensys S.r.l., Via I Maggio 10/12, 26858 Sordio (LO), Włochy – info@avensys-srl.com.
 
-Data processed: first name, last name, email address, company, installation and device identifiers, SSW and database versions, license status, activation and last-use dates, and daily launch counts.
+Przetwarzane dane: imię, nazwisko, adres e-mail, firma, identyfikatory instalacji i urządzeń, wersje SSW i bazy danych, status licencji, daty aktywacji i ostatniego użycia oraz liczba codziennych uruchomień.
 
-Purposes: issuing and managing the SSW license; enforcing the two-device limit; offline renewal and revocation; service security, support and aggregate usage statistics. No marketing or automated profiling is performed through this activation.
+Cele: wydawanie i zarządzanie licencją SSW; egzekwowanie limitu dwóch urządzeń; odnowienie i unieważnienie w trybie offline; bezpieczeństwo usług, wsparcie i zbiorcze statystyki użytkowania. W wyniku tej aktywacji nie są przeprowadzane żadne działania marketingowe ani automatyczne profilowanie.
 
-Legal basis: processing is necessary to provide and protect the licensed service and to pursue the controller&apos;s legitimate interests in license security and service operation. The requested identification data are required; without them SSW cannot be activated or registered.
+Podstawa prawna: przetwarzanie jest niezbędne do świadczenia i ochrony licencjonowanej usługi oraz do realizacji prawnie uzasadnionych interesów administratora w zakresie bezpieczeństwa licencji i funkcjonowania usługi. Wymagane są wymagane dane identyfikacyjne; bez nich nie można aktywować ani zarejestrować SSW.
 
-Recipients and transfers: data are accessible only to authorised Avensys personnel and service providers necessary to operate the licensing infrastructure. Data are not sold. Any transfer outside the European Economic Area will use the safeguards required by applicable law.
+Odbiorcy i transfery: dostęp do danych mają wyłącznie upoważnieni pracownicy Avensys i dostawcy usług niezbędnych do obsługi infrastruktury licencyjnej. Dane nie są sprzedawane. W przypadku każdego transferu poza Europejski Obszar Gospodarczy zastosowane zostaną zabezpieczenia wymagane przez obowiązujące prawo.
 
-Retention: account and license records are retained for the duration of the business relationship and afterwards only for the period required by legal obligations, security, support and the establishment or defence of legal claims. Usage statistics are retained only as long as necessary for these purposes.
+Przechowywanie: zapisy dotyczące kont i licencji są przechowywane przez czas trwania relacji biznesowej, a następnie tylko przez okres wymagany ze względu na zobowiązania prawne, bezpieczeństwo, wsparcie oraz ustalenie lub obronę roszczeń prawnych. Statystyki użytkowania są przechowywane tylko tak długo, jak jest to konieczne do tych celów.
 
-Rights: you may request access, rectification, erasure, restriction, objection or portability where applicable, and lodge a complaint with the competent data protection authority. Contact info@avensys-srl.com.</value></data>
-  <data name="DeviceLicense_PrivacyAcknowledgement" xml:space="preserve"><value>Accept the terms of use to activate SSW on this device</value></data>
+Prawa: możesz zażądać dostępu, sprostowania, usunięcia, ograniczenia, sprzeciwu lub przeniesienia, jeśli ma to zastosowanie, oraz złożyć skargę do właściwego organu ochrony danych. Skontaktuj się z nami pod adresem info@avensys-srl.com.</value></data>
+  <data name="DeviceLicense_PrivacyAcknowledgement" xml:space="preserve"><value>Zaakceptuj warunki użytkowania, aby aktywować SSW na tym urządzeniu</value></data>
   <data name="DeviceLicense_Company" xml:space="preserve"><value>Company</value></data>
 </root>
