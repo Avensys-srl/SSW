@@ -165,6 +165,8 @@ namespace SSW
 				string	sswDCLitePath	= Path.Combine( Path.GetDirectoryName( Application.ExecutablePath ), "data", "DataCentral.sdf" );
 				CLSSWInfo sswInfo = Activator.CreateInstance(CLSSWProfile.SSWInfoClassType) as CLSSWInfo;
 				bool normalStartup = args == null || args.Length == 0;
+				bool nextUiStartup = args != null && args.Length > 0 &&
+					String.Equals(args[0], "--next-ui", StringComparison.OrdinalIgnoreCase);
 				if (normalStartup) CLDatabaseCatalogUpdater.CheckAndUpdate(sswDCLitePath, sswInfo);
 			
 				// Debug builds should still use the local data file next to the executable.
@@ -198,7 +200,7 @@ namespace SSW
 						args.Length > 2 ? args[2] : null);
 				}
 
-				if (normalStartup && !CLDeviceLicenseStartup.ValidateForNormalStartup()) return 4;
+				if ((normalStartup || nextUiStartup) && !CLDeviceLicenseStartup.ValidateForNormalStartup()) return 4;
 				Application.Run(new CLNextHostForm());
 				
 				return 0;
