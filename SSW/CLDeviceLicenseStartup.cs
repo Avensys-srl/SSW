@@ -126,50 +126,146 @@ namespace SSW
             StartPosition = FormStartPosition.CenterScreen;
             MaximizeBox = false;
             MinimizeBox = false;
-            ClientSize = new Size(470, mode == CLDeviceLicenseMode.NewInstallation ? 405 : 350);
-            Font = new Font("Segoe UI", 9F);
+            ShowIcon = false;
+            AutoScaleMode = AutoScaleMode.Dpi;
+            Font = new Font("Segoe UI", 9.5F);
+            BackColor = Color.White;
+            ClientSize = new Size(620, mode == CLDeviceLicenseMode.NewInstallation ? 470 : 410);
+            MinimumSize = new Size(620, mode == CLDeviceLicenseMode.NewInstallation ? 470 : 410);
 
-            var title = new Label { Text = Text, Font = new Font(Font, FontStyle.Bold), Location = new Point(28, 24), AutoSize = true };
+            var root = new TableLayoutPanel {
+                Dock = DockStyle.Fill,
+                BackColor = Color.White,
+                ColumnCount = 1,
+                RowCount = 4,
+                Margin = Padding.Empty,
+                Padding = Padding.Empty
+            };
+            root.RowStyles.Add(new RowStyle(SizeType.Absolute, 124F));
+            root.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            root.RowStyles.Add(new RowStyle(SizeType.Absolute, 48F));
+            root.RowStyles.Add(new RowStyle(SizeType.Absolute, 72F));
+
+            var header = new Panel { Dock = DockStyle.Fill, BackColor = Color.FromArgb(239, 247, 243), Padding = new Padding(32, 20, 32, 14) };
+            var accent = new Panel { Dock = DockStyle.Left, Width = 6, BackColor = Color.FromArgb(32, 127, 88) };
+            var eyebrow = new Label {
+                Text = "AVENSYS  ·  LICENZA SSW",
+                ForeColor = Color.FromArgb(23, 113, 78),
+                Font = new Font("Segoe UI Semibold", 8.5F),
+                AutoSize = true,
+                Location = new Point(32, 20)
+            };
+            var title = new Label {
+                Text = Text,
+                ForeColor = Color.FromArgb(20, 49, 39),
+                Font = new Font("Segoe UI Semibold", 18F),
+                AutoSize = true,
+                Location = new Point(29, 43)
+            };
             var description = new Label {
                 Text = mode == CLDeviceLicenseMode.NewInstallation
                     ? "Inserisci i dati comunicati ad Avensys e il codice di installazione ricevuto."
                     : "Questa installazione è già attiva. Associala alla persona che la utilizza.",
-                Location = new Point(28, 56), Size = new Size(414, 38)
+                ForeColor = Color.FromArgb(83, 105, 97),
+                Location = new Point(32, 82),
+                Size = new Size(545, 28)
             };
-            Controls.Add(title); Controls.Add(description);
+            header.Controls.Add(description);
+            header.Controls.Add(title);
+            header.Controls.Add(eyebrow);
+            header.Controls.Add(accent);
+            root.Controls.Add(header, 0, 0);
 
-            int y = 104;
-            AddField("Nome", firstName, ref y);
-            AddField("Cognome", lastName, ref y);
-            AddField("Email", email, ref y);
+            var fields = new TableLayoutPanel {
+                Dock = DockStyle.Fill,
+                ColumnCount = 2,
+                RowCount = mode == CLDeviceLicenseMode.NewInstallation ? 3 : 2,
+                Padding = new Padding(24, 18, 24, 8),
+                BackColor = Color.White
+            };
+            fields.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            fields.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            for (int row = 0; row < fields.RowCount; row++) fields.RowStyles.Add(new RowStyle(SizeType.Percent, 100F / fields.RowCount));
+            fields.Controls.Add(FieldBlock("Nome", firstName), 0, 0);
+            fields.Controls.Add(FieldBlock("Cognome", lastName), 1, 0);
+            fields.Controls.Add(FieldBlock("Email", email), 0, 1);
+            fields.SetColumnSpan(fields.GetControlFromPosition(0, 1), 2);
             if (mode == CLDeviceLicenseMode.NewInstallation)
             {
                 pin.MaxLength = 6;
-                AddField("Codice di installazione (6 cifre)", pin, ref y);
+                pin.TextAlign = HorizontalAlignment.Center;
+                fields.Controls.Add(FieldBlock("Codice di installazione", pin, "6 cifre, ricevute da Avensys"), 0, 2);
+                fields.SetColumnSpan(fields.GetControlFromPosition(0, 2), 2);
             }
+            root.Controls.Add(fields, 0, 1);
 
             error.ForeColor = Color.Firebrick;
-            error.Location = new Point(28, y + 2);
-            error.Size = new Size(414, 36);
-            Controls.Add(error);
+            error.BackColor = Color.FromArgb(255, 247, 247);
+            error.Dock = DockStyle.Fill;
+            error.Padding = new Padding(28, 11, 28, 8);
+            error.AutoEllipsis = true;
+            root.Controls.Add(error, 0, 2);
 
             confirm.Text = mode == CLDeviceLicenseMode.NewInstallation ? "Attiva" : "Associa installazione";
-            confirm.Location = new Point(252, ClientSize.Height - 54);
-            confirm.Size = new Size(190, 32);
+            confirm.Size = new Size(190, 40);
+            confirm.BackColor = Color.FromArgb(32, 127, 88);
+            confirm.ForeColor = Color.White;
+            confirm.FlatStyle = FlatStyle.Flat;
+            confirm.FlatAppearance.BorderSize = 0;
+            confirm.Font = new Font("Segoe UI Semibold", 9.5F);
             confirm.Click += async (_, __) => await SubmitAsync();
-            var cancel = new Button { Text = "Esci", DialogResult = DialogResult.Cancel, Location = new Point(160, ClientSize.Height - 54), Size = new Size(82, 32) };
-            Controls.Add(cancel); Controls.Add(confirm);
+            var cancel = new Button {
+                Text = "Esci",
+                DialogResult = DialogResult.Cancel,
+                Size = new Size(92, 40),
+                BackColor = Color.White,
+                ForeColor = Color.FromArgb(37, 66, 56),
+                FlatStyle = FlatStyle.Flat
+            };
+            cancel.FlatAppearance.BorderColor = Color.FromArgb(177, 196, 188);
+            var actions = new FlowLayoutPanel {
+                Dock = DockStyle.Fill,
+                FlowDirection = FlowDirection.RightToLeft,
+                WrapContents = false,
+                Padding = new Padding(24, 15, 24, 12),
+                BackColor = Color.FromArgb(246, 249, 248)
+            };
+            confirm.Margin = new Padding(10, 0, 0, 0);
+            cancel.Margin = Padding.Empty;
+            actions.Controls.Add(confirm);
+            actions.Controls.Add(cancel);
+            root.Controls.Add(actions, 0, 3);
+            Controls.Add(root);
             AcceptButton = confirm;
             CancelButton = cancel;
         }
 
-        private void AddField(string label, TextBox box, ref int y)
+        private static Control FieldBlock(string label, TextBox box, string hint = null)
         {
-            Controls.Add(new Label { Text = label, Location = new Point(28, y), AutoSize = true });
-            box.Location = new Point(28, y + 20);
-            box.Size = new Size(414, 25);
-            Controls.Add(box);
-            y += 60;
+            var block = new TableLayoutPanel { Dock = DockStyle.Fill, ColumnCount = 1, RowCount = hint == null ? 2 : 3, Margin = new Padding(6, 0, 6, 8) };
+            block.RowStyles.Add(new RowStyle(SizeType.Absolute, 23F));
+            block.RowStyles.Add(new RowStyle(SizeType.Absolute, 32F));
+            if (hint != null) block.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            block.Controls.Add(new Label {
+                Text = label,
+                Dock = DockStyle.Fill,
+                ForeColor = Color.FromArgb(29, 58, 48),
+                Font = new Font("Segoe UI Semibold", 9F),
+                TextAlign = ContentAlignment.BottomLeft
+            }, 0, 0);
+            box.Dock = DockStyle.Fill;
+            box.Font = new Font("Segoe UI", 10.5F);
+            box.BorderStyle = BorderStyle.FixedSingle;
+            box.Margin = new Padding(0, 3, 0, 0);
+            block.Controls.Add(box, 0, 1);
+            if (hint != null) block.Controls.Add(new Label {
+                Text = hint,
+                Dock = DockStyle.Fill,
+                ForeColor = Color.FromArgb(104, 120, 114),
+                Font = new Font("Segoe UI", 8F),
+                Padding = new Padding(0, 3, 0, 0)
+            }, 0, 2);
+            return block;
         }
 
         private async Task SubmitAsync()
