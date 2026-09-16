@@ -1,7 +1,7 @@
 # Licenze account e dispositivi
 
 Data: 16/09/2026
-Stato: implementata localmente, pubblicazione server da eseguire
+Stato: backend pubblicato e verificato, client SSW solo locale
 
 ## Contratto approvato
 
@@ -44,7 +44,7 @@ Stato: implementata localmente, pubblicazione server da eseguire
   e dai test locali; collaudo reale post-deploy ancora necessario.
 - [x] Test API e portale, frontend e build `AV|x86` completati il 16/09/2026.
 - [ ] Avvio grafico del binario esatto contro API migrata.
-- [ ] Migrazione applicata e smoke test sull'ambiente pubblicato.
+- [x] Migrazione applicata e smoke test sull'ambiente pubblicato il 16/09/2026.
 
 ## Checkpoint 16/09/2026
 
@@ -59,6 +59,22 @@ TypeScript/Vite, `SelectionIdentitySmoke` con profilo cifrato e chiamate
 licenza, build soluzione `AV|x86`. Il test grafico normale e' intenzionalmente
 rinviato: prima deve essere applicata la migrazione 007 e pubblicata l'API,
 altrimenti una nuova attivazione non puo' concludersi.
+
+## Checkpoint deployment 16/09/2026
+
+Creato prima della migrazione un dump SQL compresso completo di 13 tabelle:
+`ssw-selection-before-007-20260916-101853.sql.gz`, 168612 byte, SHA-256
+`80E935E44A4EEB671E4563BC04D68682D26A5F198F779124600F2A9DD6F94F9C`.
+Applicata la migrazione 007: le quattro tabelle licenza sono presenti e 223
+installazioni storiche sono abilitate alla sola associazione legacy monouso.
+
+Pubblicati `api/v1/index.php` e
+`api/v1/lib/TechnicalSelectionService.php`; gli hash coincidono con il
+repository `SSWweb`. Smoke test HTTPS riusciti: runner temporanei rimossi e
+non piu' raggiungibili, rotta di attivazione con rifiuto controllato per utente
+non autorizzato, portale HTTP 200 e repository licenze operativo. Nessun utente
+o dispositivo licenza e' stato creato durante il test. L'installer SSW non e'
+stato generato ne' modificato.
 
 ## Compatibilita' e rilascio
 
