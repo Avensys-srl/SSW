@@ -848,6 +848,7 @@ Salvați mai întâi fișierul .sswsel când trebuie să păstrați intrările d
   <data name="Report_Schematic_2" xml:space="preserve"><value>Aer care iese din unitate</value></data>
   <data name="Report_Schematic_3" xml:space="preserve"><value>Acces la panou / direcție de vizualizare</value></data>
   <data name="Report_Schematic_4" xml:space="preserve"><value>Kit suport SHK opțional</value></data>
+  <data name="Report_Schematic_5" xml:space="preserve"><value>Partea opusă vederii</value></data>
   <data name="DeviceLicense_LicenseTitle" xml:space="preserve"><value>SSW license</value></data>
   <data name="DeviceLicense_Eyebrow" xml:space="preserve"><value>AVENSYS  ·  SSW LICENSE</value></data>
   <data name="DeviceLicense_ActivationTitle" xml:space="preserve"><value>SSW activation</value></data>

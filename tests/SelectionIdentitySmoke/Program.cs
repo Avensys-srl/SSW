@@ -348,7 +348,7 @@ internal static class Program
             var client = new CLSelectionApiClient(new HttpClient(handler));
             if (CLDeviceLicenseStore.LoadSnapshot().Mode != CLDeviceLicenseMode.NewInstallation)
                 throw new InvalidOperationException("A new installation did not request activation.");
-            CLDeviceLicenseResult activated = client.ActivateDeviceLicenseAsync("Mario", "Rossi", "mario@example.com", "123456", context).GetAwaiter().GetResult();
+            CLDeviceLicenseResult activated = client.ActivateDeviceLicenseAsync("Mario", "Rossi", "mario@example.com", "Mario HVAC", "123456", context).GetAwaiter().GetResult();
             CLDeviceLicenseStore.SaveActive("Mario", "Rossi", "mario@example.com", activated.DeviceNumber, activated.ValidUntilUtc);
             CLDeviceLicenseSnapshot active = CLDeviceLicenseStore.LoadSnapshot();
             if (active.Mode != CLDeviceLicenseMode.Active || active.DeviceNumber != 1 || handler.LicenseActivationCount != 1)

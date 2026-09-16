@@ -854,6 +854,7 @@ Sla het .sswsel-bestand eerst op als u bewerkbare berekeningsinvoer wilt behoude
   <data name="Report_Schematic_2" xml:space="preserve"><value>Lucht uit de unit</value></data>
   <data name="Report_Schematic_3" xml:space="preserve"><value>Paneeltoegang / kijkrichting</value></data>
   <data name="Report_Schematic_4" xml:space="preserve"><value>Optionele SHK-steunset</value></data>
+  <data name="Report_Schematic_5" xml:space="preserve"><value>Zijde tegenover het aanzicht</value></data>
   <data name="DeviceLicense_LicenseTitle" xml:space="preserve"><value>SSW license</value></data>
   <data name="DeviceLicense_Eyebrow" xml:space="preserve"><value>AVENSYS  ·  SSW LICENSE</value></data>
   <data name="DeviceLicense_ActivationTitle" xml:space="preserve"><value>SSW activation</value></data>

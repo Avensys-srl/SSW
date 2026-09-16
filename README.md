@@ -58,7 +58,7 @@ Each profile maps to an `SSWInfo` class (`SSW/CLSSWInfo_*.cs`) that provides cus
 
 ## Current Version
 
-- Application version: `1.3.0.56` (single source: `SSWVersion.props`)
+- Application version: `2.0.0.0` (single source: `SSWVersion.props`)
 
 ## Prerequisites
 
@@ -102,8 +102,8 @@ The script:
 - generates matching assembly versions for `SSW.exe` and `SSWLib.dll`
 - stops the release if either binary does not match the declared version
 - signs `SSW.exe`, `SSWLib.dll`, and the final installer with SignTool
-- reads the AV enrollment key from `SSW_SELECTION_BOOTSTRAP_KEY_AV` without
-  storing it in the repository and provisions it for the current Windows user
+- uses the email and six-digit installation PIN flow for new device activation,
+  without embedding enrollment secrets in the installer
 - creates `installer/output/SSW_Setup_<version>.exe`
 - atomically publishes the installer and manifest to
   `F:\DOCUMENTS\tools\Selection Software`, verifies their integrity, and
@@ -112,9 +112,9 @@ The script:
 Historical installers and manifests remain available in `installer/output`;
 the public distribution directory intentionally contains only the latest pair.
 
-The enrollment key is consumed after the first successful API registration;
-the resulting installation token is stored with Windows DPAPI. Use
-`-SkipBootstrap` only for a non-distributable diagnostic installer.
+The optional legacy bootstrap parameters remain available only for controlled
+backward-compatibility builds. Normal public installers omit the bootstrap key;
+the resulting device token is stored with Windows DPAPI after activation.
 
 To build without recompiling the solution, pass `-SkipBuild`:
 

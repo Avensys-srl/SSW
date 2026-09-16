@@ -200,10 +200,12 @@ if ([string]::IsNullOrWhiteSpace($BootstrapKey)) {
         [EnvironmentVariableTarget]::Machine)
 }
 
+if (-not $SkipBootstrap -and [string]::IsNullOrWhiteSpace($BootstrapKey)) {
+    Write-Host "No legacy bootstrap key supplied; building the public PIN-activation installer."
+    $SkipBootstrap = $true
+}
+
 if (-not $SkipBootstrap) {
-    if ([string]::IsNullOrWhiteSpace($BootstrapKey)) {
-        throw "The technical-selection bootstrap key is missing. Set SSW_SELECTION_BOOTSTRAP_KEY_AV or pass -BootstrapKey."
-    }
     if ($BootstrapKey -notmatch '^[A-Za-z0-9_-]{32,}$') {
         throw "The technical-selection bootstrap key has an invalid format."
     }

@@ -1285,6 +1285,9 @@ input:disabled, select:disabled {
 .installation-schematics strong { display: block; font-size: 12px; margin-bottom: 12px; }
 .installation-schematics p, .schematic-mounting > span { font-size: 11px; line-height: 1.5; margin: 12px 0 0; }
 .shk-note { color: #53616e; }
+.st-rear-side-key { display: flex; justify-content: center; align-items: center; gap: 8px; min-height: 26px; margin-top: 4px; color: #53616e; font-size: 11px; line-height: 1.25; }
+.st-rear-side-key span { width: 18px; height: 18px; flex: 0 0 18px; border: 2px dashed #6f7d89; border-radius: 50%; box-sizing: border-box; }
+.st-rear-side-key b { font-weight: 400; }
 .schematic-legend { display: grid; gap: 8px; border-left: 1px solid #d4dde5; padding-left: 16px; font-family: Arial, sans-serif; }
 .schematic-legend .airflow-legend-item, .schematic-legend-key { display: grid; grid-template-columns: 36px 1fr; align-items: center; gap: 10px; font-size: 11px; min-height: 36px; }
 .schematic-legend svg { width: 36px; height: 36px; }

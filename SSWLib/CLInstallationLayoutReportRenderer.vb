@@ -122,7 +122,7 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
                 End If
             End If
             g.Restore(state)
-            If mode = "floor" Then DrawCenteredText(g, SchematicLabel(4), label, Brushes.Black, New RectangleF(If(upright, 10, 20), 450, 480, 40))
+            If mode = "floor" AndAlso Not st Then DrawCenteredText(g, SchematicLabel(4), label, Brushes.Black, New RectangleF(If(upright, 10, 20), 450, 480, 40))
             Dim r = If(ns OrElse st, New RectangleF(700, 85, 196, 336), New RectangleF(580, 125, 420, 245))
             g.DrawRectangle(outline, r.X, r.Y, r.Width, r.Height)
             For Each p In snapshot.FlowPorts.Where(Function(item) item.Position.HasValue).OrderBy(Function(item) item.Position.Value)
@@ -161,6 +161,14 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
                 g.DrawString(SchematicLabel(0), captionFont, Brushes.Black,
                     New RectangleF(r.Left + 20, r.Top + 45, r.Width - 40, r.Height - 90), format)
             End Using
+            If st AndAlso StHasRearPort(code) Then
+                Using rearPen As New Pen(ColorTranslator.FromHtml("#6F7D89"), 3)
+                    rearPen.DashStyle = Drawing2D.DashStyle.Dash
+                    g.DrawEllipse(rearPen, r.Left, r.Bottom + 18, 28, 28)
+                End Using
+                g.DrawString(SchematicLabel(5), label, Brushes.DimGray,
+                    New RectangleF(r.Left + 40, r.Bottom + 15, r.Width + 120, 38))
+            End If
             Dim roles = {"Fresh", "Supply", "Return", "Exhaust"}
             For i = 0 To 3
                 DrawCircle(g, roles(i), 1150, 65 + i * 65, Nothing, number)
@@ -178,6 +186,11 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
         Return tokens.Any(Function(token) token.Equals("FS", StringComparison.OrdinalIgnoreCase) OrElse
             token.Equals("VS", StringComparison.OrdinalIgnoreCase) OrElse
             token.Equals("HCI", StringComparison.OrdinalIgnoreCase))
+    End Function
+
+    Private Shared Function StHasRearPort(code As String) As Boolean
+        Return {"UH", "LU", "HU", "HH", "LH"}.Contains(
+            If(code, String.Empty).Trim().ToUpperInvariant())
     End Function
 
     Private Shared Function StFlowPlacement(code As String, position As Integer,
@@ -235,7 +248,7 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
     End Sub
 
     Private Shared Function SchematicLabel(index As Integer) As String
-        Dim fallback = {"Airflow view from the access-panel side", "Air drawn towards the unit", "Air discharged from the unit", "Panel access / viewing direction", "Optional SHK shelf kit"}
+        Dim fallback = {"Airflow view from the access-panel side", "Air drawn towards the unit", "Air discharged from the unit", "Panel access / viewing direction", "Optional SHK shelf kit", "Side opposite the view"}
         Return T("Report_Schematic_" & index.ToString(), fallback(index))
     End Function
 

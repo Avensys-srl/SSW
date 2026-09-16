@@ -901,6 +901,7 @@ Salvare prima il file .sswsel quando è necessario preservare gli input di calco
   <data name="Report_Schematic_2" xml:space="preserve"><value>Aria uscente dall&apos;unità</value></data>
   <data name="Report_Schematic_3" xml:space="preserve"><value>Accesso al pannello / direzione di osservazione</value></data>
   <data name="Report_Schematic_4" xml:space="preserve"><value>Kit mensola SHK opzionale</value></data>
+  <data name="Report_Schematic_5" xml:space="preserve"><value>Lato opposto alla vista</value></data>
   <data name="DeviceLicense_LicenseTitle" xml:space="preserve"><value>Licenza SSW</value></data>
   <data name="DeviceLicense_Eyebrow" xml:space="preserve"><value>AVENSYS  ·  LICENZA SSW</value></data>
   <data name="DeviceLicense_ActivationTitle" xml:space="preserve"><value>Attivazione SSW</value></data>
