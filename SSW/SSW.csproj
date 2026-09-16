@@ -334,6 +334,7 @@
     <TargetZone>LocalIntranet</TargetZone>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="System.Net.Http" />
     <Reference Include="alglib.net, Version=3.19.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\alglib.net.3.19.0\lib\net48\alglib.net.dll</HintPath>
     </Reference>
@@ -941,6 +942,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="CLProgram.cs" />
+    <Compile Include="CLDeviceLicenseStartup.cs" />
     <Compile Include="CLDatabaseCatalogUpdater.cs" />
     <Compile Include="CLNextHostForm.cs" />
     <Compile Include="CLSSWInfo_AC.cs" />

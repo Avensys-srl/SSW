@@ -364,6 +364,7 @@
     <Compile Include="CLSelectionFileName.vb" />
     <Compile Include="CLSelectionInstallationState.vb" />
     <Compile Include="CLSelectionCredentialStore.vb" />
+    <Compile Include="CLDeviceLicense.vb" />
     <Compile Include="CLSelectionApiClient.vb" />
     <Compile Include="CLSelectionApiClient.FollowUps.vb" />
     <Compile Include="CLFollowUpReminderModel.vb" />

@@ -30,6 +30,9 @@ internal sealed class TokenHandler : HttpMessageHandler
     public int FollowUpRescheduleCount { get; private set; }
     public int FollowUpCloseCount { get; private set; }
     public int FollowUpListCount { get; private set; }
+    public int LicenseActivationCount { get; private set; }
+    public int LicenseClaimCount { get; private set; }
+    public int LicenseCheckCount { get; private set; }
     public bool FailNextFollowUpCreate { get; set; }
     public List<string> FollowUpOperations { get; } = new List<string>();
     public List<string> FollowUpIdempotencyKeys { get; } = new List<string>();
@@ -54,6 +57,27 @@ internal sealed class TokenHandler : HttpMessageHandler
         {
             RenewalCount++;
             token = "renewed-token-never-plaintext";
+        }
+        else if (request.RequestUri.AbsolutePath.EndsWith("/license/activate", StringComparison.Ordinal))
+        {
+            LicenseActivationCount++;
+            string body = request.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            if (!body.Contains("\"activation_code\":\"123456\"") || !body.Contains("\"first_name\":\"Mario\""))
+                throw new InvalidOperationException("License activation payload is incomplete.");
+            return LicenseResponse(true);
+        }
+        else if (request.RequestUri.AbsolutePath.EndsWith("/license/claim-legacy", StringComparison.Ordinal))
+        {
+            LicenseClaimCount++;
+            if (request.Headers.Authorization == null) throw new InvalidOperationException("Legacy license bearer token missing.");
+            return LicenseResponse(false);
+        }
+        else if (request.RequestUri.AbsolutePath.EndsWith("/license/check", StringComparison.Ordinal))
+        {
+            LicenseCheckCount++;
+            string body = request.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            if (!body.Contains("session_id")) throw new InvalidOperationException("License usage session is missing.");
+            return LicenseResponse(false);
         }
         else if (request.RequestUri.AbsolutePath.EndsWith("/selections", StringComparison.Ordinal))
         {
@@ -223,6 +247,13 @@ internal sealed class TokenHandler : HttpMessageHandler
         });
     }
 
+    private static Task<HttpResponseMessage> LicenseResponse(bool includeToken)
+    {
+        string expiry = DateTime.UtcNow.AddDays(30).ToString("O");
+        string token = includeToken ? ",\"access_token\":\"licensed-token-never-plaintext\",\"token_expires_at_utc\":\"2027-12-31T00:00:00Z\"" : "";
+        return JsonResponse(HttpStatusCode.OK, "{\"status\":\"ACTIVE\",\"device_number\":1,\"valid_until_utc\":\"" + expiry + "\"" + token + "}");
+    }
+
     private static string JsonString(string json, string propertyName)
     {
         Match match = Regex.Match(json, "\\\"" + Regex.Escape(propertyName) + "\\\"\\s*:\\s*\\\"([^\\\"]*)\\\"");
@@ -243,6 +274,7 @@ internal static class Program
         Directory.CreateDirectory(root);
         Environment.SetEnvironmentVariable("SSW_SELECTION_CREDENTIAL_PATH", Path.Combine(root, "credentials.json"));
         Environment.SetEnvironmentVariable("SSW_SELECTION_STATE_PATH", Path.Combine(root, "draft-state.json"));
+        Environment.SetEnvironmentVariable("SSW_DEVICE_LICENSE_PATH", Path.Combine(root, "device-license.dat"));
         Environment.SetEnvironmentVariable("SSW_SELECTION_BOOTSTRAP_KEY_AV", "test-bootstrap-key");
         Environment.SetEnvironmentVariable("SSW_SELECTION_API_BASE_URL", "https://localhost/api/v1/");
         try
@@ -290,6 +322,7 @@ internal static class Program
             TestUiNeutralSelectionContracts();
             TestRegistryBootstrapProvisioning();
             TestBootstraplessRegistration(root);
+            TestDeviceLicensing(root, context);
 
             Console.WriteLine("Selection identity/snapshot smoke test passed: token=ok create=R01 reprint=R01 revise=R02 fingerprints=stable dialog=rendered update_integrity=ok practical_rules=ok ui_neutral_contracts=ok registry_bootstrap=ok public_enrollment=ok");
             return 0;
@@ -298,9 +331,40 @@ internal static class Program
         {
             Environment.SetEnvironmentVariable("SSW_SELECTION_CREDENTIAL_PATH", null);
             Environment.SetEnvironmentVariable("SSW_SELECTION_STATE_PATH", null);
+            Environment.SetEnvironmentVariable("SSW_DEVICE_LICENSE_PATH", null);
             Environment.SetEnvironmentVariable("SSW_SELECTION_BOOTSTRAP_KEY_AV", null);
             Environment.SetEnvironmentVariable("SSW_SELECTION_API_BASE_URL", null);
             try { Directory.Delete(root, true); } catch { }
+        }
+    }
+
+    private static void TestDeviceLicensing(string root, CLSelectionRegistrationContext context)
+    {
+        string originalCredentialPath = Environment.GetEnvironmentVariable("SSW_SELECTION_CREDENTIAL_PATH");
+        try
+        {
+            Environment.SetEnvironmentVariable("SSW_SELECTION_CREDENTIAL_PATH", Path.Combine(root, "license-credentials.json"));
+            var handler = new TokenHandler();
+            var client = new CLSelectionApiClient(new HttpClient(handler));
+            if (CLDeviceLicenseStore.LoadSnapshot().Mode != CLDeviceLicenseMode.NewInstallation)
+                throw new InvalidOperationException("A new installation did not request activation.");
+            CLDeviceLicenseResult activated = client.ActivateDeviceLicenseAsync("Mario", "Rossi", "mario@example.com", "123456", context).GetAwaiter().GetResult();
+            CLDeviceLicenseStore.SaveActive("Mario", "Rossi", "mario@example.com", activated.DeviceNumber, activated.ValidUntilUtc);
+            CLDeviceLicenseSnapshot active = CLDeviceLicenseStore.LoadSnapshot();
+            if (active.Mode != CLDeviceLicenseMode.Active || active.DeviceNumber != 1 || handler.LicenseActivationCount != 1)
+                throw new InvalidOperationException("Device activation state was not persisted.");
+            if (Encoding.UTF8.GetString(File.ReadAllBytes(CLDeviceLicenseStore.StateFilePath)).Contains("mario@example.com"))
+                throw new InvalidOperationException("Device license profile was stored in plaintext.");
+            CLDeviceLicenseResult checkedResult = client.CheckDeviceLicenseAsync(context, Guid.NewGuid()).GetAwaiter().GetResult();
+            CLDeviceLicenseStore.Renew(checkedResult.DeviceNumber, checkedResult.ValidUntilUtc);
+            if (handler.LicenseCheckCount != 1) throw new InvalidOperationException("Device license check was not sent.");
+            CLDeviceLicenseStore.MarkRevoked();
+            if (CLDeviceLicenseStore.LoadSnapshot().Mode != CLDeviceLicenseMode.Revoked)
+                throw new InvalidOperationException("Revoked device state was not persisted.");
+        }
+        finally
+        {
+            Environment.SetEnvironmentVariable("SSW_SELECTION_CREDENTIAL_PATH", originalCredentialPath);
         }
     }
 

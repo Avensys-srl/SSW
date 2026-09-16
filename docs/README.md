@@ -16,6 +16,7 @@ interessata all'inizio di ogni nuova sessione, anche usando altre chat o modelli
 - [Separazione UI e backend](UI_BACKEND_SEPARATION_ROADMAP.md)
 - [Selezione tecnica](TECHNICAL_SELECTION_ROADMAP.md)
 - [Progetti multiselezione](MULTI_SELECTION_PROJECT_ROADMAP.md)
+- [Licenze account e dispositivi](DEVICE_LICENSING_ROADMAP.md)
 
 ## Contratti e verifiche
 
