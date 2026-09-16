@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root xmlns:ns1="urn:schemas-microsoft-com:xml-msdata" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   
   <xs:schema id="root">
@@ -901,4 +901,50 @@ Salvare prima il file .sswsel quando è necessario preservare gli input di calco
   <data name="Report_Schematic_2" xml:space="preserve"><value>Aria uscente dall&apos;unità</value></data>
   <data name="Report_Schematic_3" xml:space="preserve"><value>Accesso al pannello / direzione di osservazione</value></data>
   <data name="Report_Schematic_4" xml:space="preserve"><value>Kit mensola SHK opzionale</value></data>
+  <data name="DeviceLicense_LicenseTitle" xml:space="preserve"><value>Licenza SSW</value></data>
+  <data name="DeviceLicense_Eyebrow" xml:space="preserve"><value>AVENSYS  ·  LICENZA SSW</value></data>
+  <data name="DeviceLicense_ActivationTitle" xml:space="preserve"><value>Attivazione SSW</value></data>
+  <data name="DeviceLicense_ProfileTitle" xml:space="preserve"><value>Completa il profilo SSW</value></data>
+  <data name="DeviceLicense_ActivationDescription" xml:space="preserve"><value>Inserisci i dati comunicati ad Avensys e il codice di installazione ricevuto.</value></data>
+  <data name="DeviceLicense_ProfileDescription" xml:space="preserve"><value>Questa installazione è già attiva. Registrala a nome della persona che la utilizza.</value></data>
+  <data name="DeviceLicense_FirstName" xml:space="preserve"><value>Nome</value></data>
+  <data name="DeviceLicense_LastName" xml:space="preserve"><value>Cognome</value></data>
+  <data name="DeviceLicense_Email" xml:space="preserve"><value>Email</value></data>
+  <data name="DeviceLicense_InstallationCode" xml:space="preserve"><value>Codice di installazione</value></data>
+  <data name="DeviceLicense_InstallationCodeHint" xml:space="preserve"><value>6 cifre, ricevute da Avensys</value></data>
+  <data name="DeviceLicense_Activate" xml:space="preserve"><value>Attiva</value></data>
+  <data name="DeviceLicense_Register" xml:space="preserve"><value>Registra</value></data>
+  <data name="DeviceLicense_Exit" xml:space="preserve"><value>Esci</value></data>
+  <data name="DeviceLicense_InvalidFields" xml:space="preserve"><value>Compila tutti i campi con dati validi.</value></data>
+  <data name="DeviceLicense_Checking" xml:space="preserve"><value>Verifica in corso...</value></data>
+  <data name="DeviceLicense_ConnectionUnavailable" xml:space="preserve"><value>Connessione al servizio non disponibile. Verifica Internet e riprova.</value></data>
+  <data name="DeviceLicense_RequestTimeout" xml:space="preserve"><value>Il servizio non ha risposto in tempo. Riprova.</value></data>
+  <data name="DeviceLicense_InvalidActivation" xml:space="preserve"><value>Email o codice di installazione non validi.</value></data>
+  <data name="DeviceLicense_DeviceLimit" xml:space="preserve"><value>Questa email ha già due dispositivi attivi.</value></data>
+  <data name="DeviceLicense_AssignmentConflict" xml:space="preserve"><value>L&apos;installazione è già associata a un&apos;altra utenza. Contatta Avensys.</value></data>
+  <data name="DeviceLicense_ActivationFailed" xml:space="preserve"><value>Attivazione non riuscita. Verifica i dati o contatta Avensys.</value></data>
+  <data name="DeviceLicense_NotActive" xml:space="preserve"><value>La licenza SSW non è attiva. Contattare Avensys per riattivarla.</value></data>
+  <data name="DeviceLicense_InternetRequired" xml:space="preserve"><value>Per verificare la licenza è necessaria una connessione Internet. Collegare il computer e riaprire SSW.</value></data>
+  <data name="DeviceLicense_Revoked" xml:space="preserve"><value>La licenza SSW è stata revocata. Contattare Avensys.</value></data>
+  <data name="DeviceLicense_PrivacyTitle" xml:space="preserve"><value>Informativa privacy</value></data>
+  <data name="DeviceLicense_PrivacyNotice" xml:space="preserve"><value>SSW PRIVACY NOTICE - VERSION 1.0 (16 September 2026)
+
+This notice is currently provided in English as the master version. Translations will be added to the supported SSW languages.
+SSW PRIVACY NOTICE - VERSION 1.0 (16 September 2026)
+
+Data controller: Avensys S.r.l., Via I Maggio 10/12, 26858 Sordio (LO), Italy - info@avensys-srl.com.
+
+Data processed: first name, last name, email address, company, installation and device identifiers, SSW and database versions, license status, activation and last-use dates, and daily launch counts.
+
+Purposes: issuing and managing the SSW license; enforcing the two-device limit; offline renewal and revocation; service security, support and aggregate usage statistics. No marketing or automated profiling is performed through this activation.
+
+Legal basis: processing is necessary to provide and protect the licensed service and to pursue the controller&apos;s legitimate interests in license security and service operation. The requested identification data are required; without them SSW cannot be activated or registered.
+
+Recipients and transfers: data are accessible only to authorised Avensys personnel and service providers necessary to operate the licensing infrastructure. Data are not sold. Any transfer outside the European Economic Area will use the safeguards required by applicable law.
+
+Retention: account and license records are retained for the duration of the business relationship and afterwards only for the period required by legal obligations, security, support and the establishment or defence of legal claims. Usage statistics are retained only as long as necessary for these purposes.
+
+Rights: you may request access, rectification, erasure, restriction, objection or portability where applicable, and lodge a complaint with the competent data protection authority. Contact info@avensys-srl.com.</value></data>
+  <data name="DeviceLicense_PrivacyAcknowledgement" xml:space="preserve"><value>Accetta i termini d&apos;uso per attivare SSW su questo dispositivo</value></data>
+  <data name="DeviceLicense_Company" xml:space="preserve"><value>Società</value></data>
 </root>

@@ -1,6 +1,36 @@
 ﻿
 Public Enum CLMessageResources
 
+    DeviceLicense_LicenseTitle
+    DeviceLicense_Eyebrow
+    DeviceLicense_ActivationTitle
+    DeviceLicense_ProfileTitle
+    DeviceLicense_ActivationDescription
+    DeviceLicense_ProfileDescription
+    DeviceLicense_FirstName
+    DeviceLicense_LastName
+    DeviceLicense_Email
+    DeviceLicense_Company
+    DeviceLicense_InstallationCode
+    DeviceLicense_InstallationCodeHint
+    DeviceLicense_Activate
+    DeviceLicense_Register
+    DeviceLicense_Exit
+    DeviceLicense_InvalidFields
+    DeviceLicense_Checking
+    DeviceLicense_ConnectionUnavailable
+    DeviceLicense_RequestTimeout
+    DeviceLicense_InvalidActivation
+    DeviceLicense_DeviceLimit
+    DeviceLicense_AssignmentConflict
+    DeviceLicense_ActivationFailed
+    DeviceLicense_NotActive
+    DeviceLicense_InternetRequired
+    DeviceLicense_Revoked
+    DeviceLicense_PrivacyTitle
+    DeviceLicense_PrivacyNotice
+    DeviceLicense_PrivacyAcknowledgement
+
     MainForm_UnitSelection
     MainForm_Unit
     MainForm_AirFlow

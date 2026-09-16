@@ -7,6 +7,7 @@ using System.Resources;
 using System.IO;
 using System.Text;
 using System.Diagnostics;
+using System.Globalization;
 
 namespace SSW
 {
@@ -177,6 +178,13 @@ namespace SSW
 				CLEnvironment.Current	= new CLEnvironment(
 					sswDCLitePath,
 					sswInfo );
+				CLLanguage startupLanguage = CLEnvironment.Current.FindLanguage(
+					CultureInfo.CurrentCulture.TwoLetterISOLanguageName);
+				if (startupLanguage == null || !startupLanguage.Enabled)
+					startupLanguage = CLEnvironment.Current.FindLanguage(sswInfo.DefaultLanguage);
+				if (startupLanguage == null || !startupLanguage.Enabled)
+					startupLanguage = CLEnvironment.Current.ENLanguage;
+				CLEnvironment.Current.SetLanguage(startupLanguage);
 
 				if (args != null && args.Length > 0 &&
 					String.Equals(args[0], "--technical-baseline", StringComparison.OrdinalIgnoreCase))

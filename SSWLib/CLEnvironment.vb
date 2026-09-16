@@ -599,6 +599,10 @@ Public Class CLEnvironment
         End Get
     End Property
 
+    Public Function GetLocalizedString(resource As CLMessageResources) As String
+        Return m_Localization.GetString(resource.ToString())
+    End Function
+
     Public ReadOnly Property PrimaryLanguage As CLLanguage
         Get
             Return m_PrimaryLanguage

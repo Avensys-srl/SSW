@@ -13,6 +13,11 @@ namespace SSW
         private static readonly Guid SessionId = Guid.NewGuid();
         private static System.Threading.Timer heartbeat;
 
+        private static string L(CLMessageResources key)
+        {
+            return CLEnvironment.Current.GetLocalizedString(key);
+        }
+
         internal static bool ValidateForNormalStartup()
         {
             CLDeviceLicenseSnapshot snapshot = CLDeviceLicenseStore.LoadSnapshot();
@@ -57,7 +62,7 @@ namespace SSW
                 if (exception.StatusCode == HttpStatusCode.Forbidden || exception.StatusCode == HttpStatusCode.Unauthorized)
                 {
                     CLDeviceLicenseStore.MarkRevoked();
-                    MessageBox.Show("La licenza SSW non è attiva. Contattare Avensys per riattivarla.", "Licenza SSW", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show(L(CLMessageResources.DeviceLicense_NotActive), L(CLMessageResources.DeviceLicense_LicenseTitle), MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return false;
                 }
                 return AllowOfflineOrExplain(snapshot);
@@ -74,7 +79,7 @@ namespace SSW
         {
             if (snapshot.ValidUntilUtc.HasValue && snapshot.ValidUntilUtc.Value > DateTime.UtcNow && snapshot.Mode != CLDeviceLicenseMode.Revoked)
                 return true;
-            MessageBox.Show("Per verificare la licenza è necessaria una connessione Internet. Collegare il computer e riaprire SSW.", "Licenza SSW", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(L(CLMessageResources.DeviceLicense_InternetRequired), L(CLMessageResources.DeviceLicense_LicenseTitle), MessageBoxButtons.OK, MessageBoxIcon.Information);
             return false;
         }
 
@@ -98,7 +103,7 @@ namespace SSW
                     if (Application.OpenForms.Count == 0) return;
                     Application.OpenForms[0].BeginInvoke(new Action(() =>
                     {
-                        MessageBox.Show("La licenza SSW è stata revocata. Contattare Avensys.", "Licenza SSW", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show(L(CLMessageResources.DeviceLicense_Revoked), L(CLMessageResources.DeviceLicense_LicenseTitle), MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         Application.Exit();
                     }));
                 }
@@ -114,14 +119,23 @@ namespace SSW
         private readonly TextBox firstName = new TextBox();
         private readonly TextBox lastName = new TextBox();
         private readonly TextBox email = new TextBox();
+        private readonly TextBox company = new TextBox();
         private readonly TextBox pin = new TextBox();
         private readonly Label error = new Label();
         private readonly Button confirm = new Button();
+        private readonly CheckBox privacyAcknowledgement = new CheckBox();
+
+        private static string L(CLMessageResources key)
+        {
+            return CLEnvironment.Current.GetLocalizedString(key);
+        }
 
         internal CLDeviceLicenseForm(CLDeviceLicenseMode mode)
         {
             this.mode = mode;
-            Text = mode == CLDeviceLicenseMode.NewInstallation ? "Attivazione SSW" : "Completa il profilo SSW";
+            Text = mode == CLDeviceLicenseMode.NewInstallation
+                ? L(CLMessageResources.DeviceLicense_ActivationTitle)
+                : L(CLMessageResources.DeviceLicense_ProfileTitle);
             FormBorderStyle = FormBorderStyle.FixedDialog;
             StartPosition = FormStartPosition.CenterScreen;
             MaximizeBox = false;
@@ -130,26 +144,26 @@ namespace SSW
             AutoScaleMode = AutoScaleMode.Dpi;
             Font = new Font("Segoe UI", 9.5F);
             BackColor = Color.White;
-            ClientSize = new Size(620, mode == CLDeviceLicenseMode.NewInstallation ? 470 : 410);
-            MinimumSize = new Size(620, mode == CLDeviceLicenseMode.NewInstallation ? 470 : 410);
+            ClientSize = new Size(620, mode == CLDeviceLicenseMode.NewInstallation ? 725 : 665);
+            MinimumSize = ClientSize;
 
             var root = new TableLayoutPanel {
                 Dock = DockStyle.Fill,
                 BackColor = Color.White,
                 ColumnCount = 1,
-                RowCount = 4,
+                RowCount = 5,
                 Margin = Padding.Empty,
                 Padding = Padding.Empty
             };
             root.RowStyles.Add(new RowStyle(SizeType.Absolute, 124F));
             root.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            root.RowStyles.Add(new RowStyle(SizeType.Absolute, 195F));
             root.RowStyles.Add(new RowStyle(SizeType.Absolute, 48F));
             root.RowStyles.Add(new RowStyle(SizeType.Absolute, 72F));
 
             var header = new Panel { Dock = DockStyle.Fill, BackColor = Color.FromArgb(239, 247, 243), Padding = new Padding(32, 20, 32, 14) };
-            var accent = new Panel { Dock = DockStyle.Left, Width = 6, BackColor = Color.FromArgb(32, 127, 88) };
             var eyebrow = new Label {
-                Text = "AVENSYS  ·  LICENZA SSW",
+                Text = L(CLMessageResources.DeviceLicense_Eyebrow),
                 ForeColor = Color.FromArgb(23, 113, 78),
                 Font = new Font("Segoe UI Semibold", 8.5F),
                 AutoSize = true,
@@ -164,8 +178,8 @@ namespace SSW
             };
             var description = new Label {
                 Text = mode == CLDeviceLicenseMode.NewInstallation
-                    ? "Inserisci i dati comunicati ad Avensys e il codice di installazione ricevuto."
-                    : "Questa installazione è già attiva. Associala alla persona che la utilizza.",
+                    ? L(CLMessageResources.DeviceLicense_ActivationDescription)
+                    : L(CLMessageResources.DeviceLicense_ProfileDescription),
                 ForeColor = Color.FromArgb(83, 105, 97),
                 Location = new Point(32, 82),
                 Size = new Size(545, 28)
@@ -173,40 +187,77 @@ namespace SSW
             header.Controls.Add(description);
             header.Controls.Add(title);
             header.Controls.Add(eyebrow);
-            header.Controls.Add(accent);
             root.Controls.Add(header, 0, 0);
 
             var fields = new TableLayoutPanel {
                 Dock = DockStyle.Fill,
                 ColumnCount = 2,
-                RowCount = mode == CLDeviceLicenseMode.NewInstallation ? 3 : 2,
+                RowCount = mode == CLDeviceLicenseMode.NewInstallation ? 4 : 3,
                 Padding = new Padding(24, 18, 24, 8),
                 BackColor = Color.White
             };
             fields.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             fields.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             for (int row = 0; row < fields.RowCount; row++) fields.RowStyles.Add(new RowStyle(SizeType.Percent, 100F / fields.RowCount));
-            fields.Controls.Add(FieldBlock("Nome", firstName), 0, 0);
-            fields.Controls.Add(FieldBlock("Cognome", lastName), 1, 0);
-            fields.Controls.Add(FieldBlock("Email", email), 0, 1);
+            fields.Controls.Add(FieldBlock(L(CLMessageResources.DeviceLicense_FirstName), firstName), 0, 0);
+            fields.Controls.Add(FieldBlock(L(CLMessageResources.DeviceLicense_LastName), lastName), 1, 0);
+            fields.Controls.Add(FieldBlock(L(CLMessageResources.DeviceLicense_Email), email), 0, 1);
             fields.SetColumnSpan(fields.GetControlFromPosition(0, 1), 2);
+            fields.Controls.Add(FieldBlock(L(CLMessageResources.DeviceLicense_Company), company), 0, 2);
+            fields.SetColumnSpan(fields.GetControlFromPosition(0, 2), 2);
             if (mode == CLDeviceLicenseMode.NewInstallation)
             {
                 pin.MaxLength = 6;
                 pin.TextAlign = HorizontalAlignment.Center;
-                fields.Controls.Add(FieldBlock("Codice di installazione", pin, "6 cifre, ricevute da Avensys"), 0, 2);
-                fields.SetColumnSpan(fields.GetControlFromPosition(0, 2), 2);
+                fields.Controls.Add(FieldBlock(L(CLMessageResources.DeviceLicense_InstallationCode), pin,
+                    L(CLMessageResources.DeviceLicense_InstallationCodeHint)), 0, 3);
+                fields.SetColumnSpan(fields.GetControlFromPosition(0, 3), 2);
             }
             root.Controls.Add(fields, 0, 1);
+
+            var privacy = new TableLayoutPanel {
+                Dock = DockStyle.Fill,
+                ColumnCount = 1,
+                RowCount = 3,
+                Padding = new Padding(30, 4, 30, 4),
+                BackColor = Color.White
+            };
+            privacy.RowStyles.Add(new RowStyle(SizeType.Absolute, 24F));
+            privacy.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            privacy.RowStyles.Add(new RowStyle(SizeType.Absolute, 30F));
+            privacy.Controls.Add(new Label {
+                Text = L(CLMessageResources.DeviceLicense_PrivacyTitle),
+                Dock = DockStyle.Fill,
+                ForeColor = Color.FromArgb(29, 58, 48),
+                Font = new Font("Segoe UI Semibold", 9F)
+            }, 0, 0);
+            privacy.Controls.Add(new RichTextBox {
+                Text = L(CLMessageResources.DeviceLicense_PrivacyNotice),
+                Dock = DockStyle.Fill,
+                ReadOnly = true,
+                BorderStyle = BorderStyle.FixedSingle,
+                BackColor = Color.FromArgb(250, 251, 251),
+                ForeColor = Color.FromArgb(52, 68, 62),
+                Font = new Font("Segoe UI", 8.5F),
+                ScrollBars = RichTextBoxScrollBars.Vertical,
+                DetectUrls = true
+            }, 0, 1);
+            privacyAcknowledgement.Text = L(CLMessageResources.DeviceLicense_PrivacyAcknowledgement);
+            privacyAcknowledgement.Dock = DockStyle.Fill;
+            privacyAcknowledgement.Font = new Font("Segoe UI Semibold", 8.5F);
+            privacyAcknowledgement.CheckedChanged += (_, __) => confirm.Enabled = privacyAcknowledgement.Checked;
+            privacy.Controls.Add(privacyAcknowledgement, 0, 2);
+            root.Controls.Add(privacy, 0, 2);
 
             error.ForeColor = Color.Firebrick;
             error.BackColor = Color.FromArgb(255, 247, 247);
             error.Dock = DockStyle.Fill;
             error.Padding = new Padding(28, 11, 28, 8);
             error.AutoEllipsis = true;
-            root.Controls.Add(error, 0, 2);
+            root.Controls.Add(error, 0, 3);
 
-            confirm.Text = mode == CLDeviceLicenseMode.NewInstallation ? "Attiva" : "Associa installazione";
+            confirm.Text = ConfirmText();
+            confirm.Enabled = false;
             confirm.Size = new Size(190, 40);
             confirm.BackColor = Color.FromArgb(32, 127, 88);
             confirm.ForeColor = Color.White;
@@ -215,7 +266,7 @@ namespace SSW
             confirm.Font = new Font("Segoe UI Semibold", 9.5F);
             confirm.Click += async (_, __) => await SubmitAsync();
             var cancel = new Button {
-                Text = "Esci",
+                Text = L(CLMessageResources.DeviceLicense_Exit),
                 DialogResult = DialogResult.Cancel,
                 Size = new Size(92, 40),
                 BackColor = Color.White,
@@ -234,7 +285,7 @@ namespace SSW
             cancel.Margin = Padding.Empty;
             actions.Controls.Add(confirm);
             actions.Controls.Add(cancel);
-            root.Controls.Add(actions, 0, 3);
+            root.Controls.Add(actions, 0, 4);
             Controls.Add(root);
             AcceptButton = confirm;
             CancelButton = cancel;
@@ -272,10 +323,10 @@ namespace SSW
         {
             error.Text = "";
             if (String.IsNullOrWhiteSpace(firstName.Text) || String.IsNullOrWhiteSpace(lastName.Text) ||
-                String.IsNullOrWhiteSpace(email.Text) || !email.Text.Contains("@") ||
+                String.IsNullOrWhiteSpace(email.Text) || !email.Text.Contains("@") || String.IsNullOrWhiteSpace(company.Text) ||
                 (mode == CLDeviceLicenseMode.NewInstallation && (pin.Text.Length != 6 || !Int32.TryParse(pin.Text, out _))))
             {
-                error.Text = "Compila tutti i campi con dati validi.";
+                error.Text = L(CLMessageResources.DeviceLicense_InvalidFields);
                 return;
             }
             SetBusy(true);
@@ -284,8 +335,8 @@ namespace SSW
                 var client = new CLSelectionApiClient();
                 var context = CLSelectionRegistrationContext.FromEnvironment(CLEnvironment.Current);
                 CLDeviceLicenseResult result = mode == CLDeviceLicenseMode.NewInstallation
-                    ? await client.ActivateDeviceLicenseAsync(firstName.Text, lastName.Text, email.Text, pin.Text, context)
-                    : await client.ClaimLegacyDeviceLicenseAsync(firstName.Text, lastName.Text, email.Text, context);
+                    ? await client.ActivateDeviceLicenseAsync(firstName.Text, lastName.Text, email.Text, company.Text, pin.Text, context)
+                    : await client.ClaimLegacyDeviceLicenseAsync(firstName.Text, lastName.Text, email.Text, company.Text, context);
                 CLDeviceLicenseStore.SaveActive(firstName.Text, lastName.Text, email.Text, result.DeviceNumber, result.ValidUntilUtc);
                 DialogResult = DialogResult.OK;
                 Close();
@@ -302,28 +353,36 @@ namespace SSW
             }
             catch (HttpRequestException)
             {
-                error.Text = "Connessione al servizio non disponibile. Verifica Internet e riprova.";
+                error.Text = L(CLMessageResources.DeviceLicense_ConnectionUnavailable);
             }
             catch (TaskCanceledException)
             {
-                error.Text = "Il servizio non ha risposto in tempo. Riprova.";
+                error.Text = L(CLMessageResources.DeviceLicense_RequestTimeout);
             }
             finally { SetBusy(false); }
         }
 
         private void SetBusy(bool busy)
         {
-            confirm.Enabled = !busy;
-            firstName.Enabled = lastName.Enabled = email.Enabled = pin.Enabled = !busy;
-            confirm.Text = busy ? "Verifica in corso..." : (mode == CLDeviceLicenseMode.NewInstallation ? "Attiva" : "Associa installazione");
+            confirm.Enabled = !busy && privacyAcknowledgement.Checked;
+            firstName.Enabled = lastName.Enabled = email.Enabled = company.Enabled = pin.Enabled = !busy;
+            confirm.Text = busy ? L(CLMessageResources.DeviceLicense_Checking) : ConfirmText();
+        }
+
+        private string ConfirmText()
+        {
+            return mode == CLDeviceLicenseMode.NewInstallation
+                ? L(CLMessageResources.DeviceLicense_Activate)
+                : L(CLMessageResources.DeviceLicense_Register);
         }
 
         private static string FriendlyError(string code)
         {
-            if (code == "activation_denied") return "Email o codice di installazione non validi.";
-            if (code == "device_limit_reached") return "Questa email ha già due dispositivi attivi.";
-            if (code == "user_assignment_conflict" || code == "installation_already_assigned") return "L'installazione è già associata a un'altra utenza. Contatta Avensys.";
-            return "Attivazione non riuscita. Verifica i dati o contatta Avensys.";
+            if (code == "activation_denied") return L(CLMessageResources.DeviceLicense_InvalidActivation);
+            if (code == "device_limit_reached") return L(CLMessageResources.DeviceLicense_DeviceLimit);
+            if (code == "user_assignment_conflict" || code == "installation_already_assigned")
+                return L(CLMessageResources.DeviceLicense_AssignmentConflict);
+            return L(CLMessageResources.DeviceLicense_ActivationFailed);
         }
     }
 }

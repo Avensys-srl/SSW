@@ -181,11 +181,11 @@ Public NotInheritable Class CLDeviceLicenseResult
 End Class
 
 Partial Public NotInheritable Class CLSelectionApiClient
-    Public Async Function ActivateDeviceLicenseAsync(firstName As String, lastName As String, email As String, pin As String,
+    Public Async Function ActivateDeviceLicenseAsync(firstName As String, lastName As String, email As String, companyName As String, pin As String,
         context As CLSelectionRegistrationContext, Optional cancellationToken As CancellationToken = Nothing) As Task(Of CLDeviceLicenseResult)
         ValidateContext(context)
         Dim credentials = CLSelectionCredentialStore.LoadOrCreate()
-        Dim payload = LicenseProfilePayload(firstName, lastName, email)
+        Dim payload = LicenseProfilePayload(firstName, lastName, email, companyName)
         payload("activation_code") = pin.Trim()
         payload("installation_id") = credentials.InstallationId
         payload("installation_code") = CLSelectionInstallationStateStore.GetInstallationCode()
@@ -201,13 +201,13 @@ Partial Public NotInheritable Class CLSelectionApiClient
         End Using
     End Function
 
-    Public Async Function ClaimLegacyDeviceLicenseAsync(firstName As String, lastName As String, email As String,
+    Public Async Function ClaimLegacyDeviceLicenseAsync(firstName As String, lastName As String, email As String, companyName As String,
         context As CLSelectionRegistrationContext, Optional cancellationToken As CancellationToken = Nothing) As Task(Of CLDeviceLicenseResult)
         ValidateContext(context)
         Dim token = Await EnsureAccessTokenAsync(context, cancellationToken).ConfigureAwait(False)
         Using request As New HttpRequestMessage(HttpMethod.Post, BuildUri("license/claim-legacy"))
             request.Headers.Authorization = New AuthenticationHeaderValue("Bearer", token)
-            request.Content = JsonContent(LicenseProfilePayload(firstName, lastName, email))
+            request.Content = JsonContent(LicenseProfilePayload(firstName, lastName, email, companyName))
             Return (Await SendLicenseRequestAsync(request, False, cancellationToken).ConfigureAwait(False)).Result
         End Using
     End Function
@@ -223,11 +223,11 @@ Partial Public NotInheritable Class CLSelectionApiClient
         End Using
     End Function
 
-    Private Shared Function LicenseProfilePayload(firstName As String, lastName As String, email As String) As Dictionary(Of String, Object)
-        If String.IsNullOrWhiteSpace(firstName) OrElse String.IsNullOrWhiteSpace(lastName) OrElse String.IsNullOrWhiteSpace(email) Then
-            Throw New ArgumentException("Name, surname and email are required.")
+    Private Shared Function LicenseProfilePayload(firstName As String, lastName As String, email As String, companyName As String) As Dictionary(Of String, Object)
+        If String.IsNullOrWhiteSpace(firstName) OrElse String.IsNullOrWhiteSpace(lastName) OrElse String.IsNullOrWhiteSpace(email) OrElse String.IsNullOrWhiteSpace(companyName) Then
+            Throw New ArgumentException("Name, surname, email and company are required.")
         End If
-        Return New Dictionary(Of String, Object) From {{"first_name", firstName.Trim()}, {"last_name", lastName.Trim()}, {"email", email.Trim().ToLowerInvariant()}}
+        Return New Dictionary(Of String, Object) From {{"first_name", firstName.Trim()}, {"last_name", lastName.Trim()}, {"email", email.Trim().ToLowerInvariant()}, {"company_name", companyName.Trim()}}
     End Function
 
     Private Async Function SendLicenseRequestAsync(request As HttpRequestMessage, expectsToken As Boolean, cancellationToken As CancellationToken) As Task(Of LicenseResponse)
