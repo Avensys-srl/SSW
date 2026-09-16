@@ -201,6 +201,29 @@ const additionalSelectionMessages: Record<LanguageCode, AdditionalSelectionMessa
   sv: { additionalCriteria: "Ytterligare urvalskriterier", additionalCriteriaDescription: "Tillämpas efter kontroll av driftpunkt och nödvändig reglering.", maximumSfp: "Maximal SFP", supplyNoise: "Maximalt tilluftsljud", breakoutNoise: "Maximalt utstrålat ljud", maximumLevel: "Maximal nivå", soundQuantity: "Akustisk storhet", soundPowerLevel: "Ljudeffekt LwA", soundPressureLevel: "Ljudtryck LpA", distance: "Avstånd", directivityFactor: "Riktningsfaktor", enableCriterion: "Aktivera" },
 };
 
+type RotarySelectionMessages = Pick<
+  UiMessages["preselection"],
+  "rotaryOnly" | "rotaryOnlyDescription"
+>;
+
+const rotarySelectionMessages: Record<LanguageCode, RotarySelectionMessages> = {
+  en: { rotaryOnly: "Rotary heat recovery units", rotaryOnlyDescription: "Only families 6 and 9." },
+  bg: { rotaryOnly: "Ротационни рекуператори", rotaryOnlyDescription: "Само фамилии 6 и 9." },
+  cs: { rotaryOnly: "Rotační rekuperační jednotky", rotaryOnlyDescription: "Pouze řady 6 a 9." },
+  da: { rotaryOnly: "Roterende varmegenvindingsaggregater", rotaryOnlyDescription: "Kun serie 6 og 9." },
+  de: { rotaryOnly: "Rotationswärmerückgewinnungsgeräte", rotaryOnlyDescription: "Nur Baureihen 6 und 9." },
+  fr: { rotaryOnly: "Récupérateurs rotatifs", rotaryOnlyDescription: "Uniquement les familles 6 et 9." },
+  hu: { rotaryOnly: "Forgódobos hővisszanyerők", rotaryOnlyDescription: "Csak a 6-os és 9-es család." },
+  is: { rotaryOnly: "Snúningsvarmaendurvinnslueiningar", rotaryOnlyDescription: "Aðeins vöruflokkar 6 og 9." },
+  it: { rotaryOnly: "Recuperatori rotativi", rotaryOnlyDescription: "Solo famiglie 6 e 9." },
+  nl: { rotaryOnly: "Roterende warmteterugwinunits", rotaryOnlyDescription: "Alleen families 6 en 9." },
+  no: { rotaryOnly: "Roterende varmegjenvinningsaggregater", rotaryOnlyDescription: "Kun serie 6 og 9." },
+  pl: { rotaryOnly: "Obrotowe centrale odzysku ciepła", rotaryOnlyDescription: "Tylko rodziny 6 i 9." },
+  ro: { rotaryOnly: "Recuperatoare rotative", rotaryOnlyDescription: "Numai familiile 6 și 9." },
+  sl: { rotaryOnly: "Rotacijske rekuperacijske enote", rotaryOnlyDescription: "Samo družini 6 in 9." },
+  sv: { rotaryOnly: "Roterande värmeåtervinningsaggregat", rotaryOnlyDescription: "Endast serie 6 och 9." },
+};
+
 const lexicons: Record<LanguageCode, UiLexicon> = {
   en: {
     notifications: "Notification centre", components: "UI components", currentSelection: "Current selection", saveDraft: "Save draft", noUnit: "No unit", supply: "Supply", extract: "Extract", pressure: "Pressure", layout: "Layout", efficiency: "Efficiency", margin: "Margin", power: "Power",
@@ -426,6 +449,7 @@ const buildUiMessages = (
       balancedNotice: base.tooltips.preselectionFilters,
       ...seasonalConditionMessages[code],
       ...additionalSelectionMessages[code],
+      ...rotarySelectionMessages[code],
       results: text.results,
       compatibleUnits: text.compatibleUnits,
       orderedByFit: text.orderedByFit,

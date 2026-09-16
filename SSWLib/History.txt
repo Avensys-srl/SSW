@@ -1,6 +1,11 @@
 SSW Changelog
 =============
 
+2.0.0.2 - 2026-09-16
+--------------------
+- Added a fourth preselection criterion that restricts results to rotary heat recovery units in families 6 and 9, with full localization and project persistence.
+- Restored the automatic software-update check when the guided UI opens and added a release-gate probe for older installed versions.
+
 2.0.0.1 - 2026-09-16
 --------------------
 - Corrected horizontal floor-mounted East-West configurations with front access to use the upright mounting schematic in both the guided UI and technical report.

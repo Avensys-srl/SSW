@@ -503,7 +503,9 @@ input:disabled, select:disabled {
 .selection-criterion { position: relative; min-width: 0; padding: 9px 10px; border: 1px solid var(--line); border-radius: 4px; }
 .selection-criterion legend { padding: 0 5px; color: var(--action); font-size: 10px; font-weight: 700; }
 .selection-criterion.criterion-disabled .criterion-controls,
-.selection-criterion.criterion-disabled > .compact-field { opacity: .42; filter: grayscale(.4); }
+.selection-criterion.criterion-disabled > .compact-field,
+.selection-criterion.criterion-disabled .criterion-description { opacity: .42; filter: grayscale(.4); }
+.criterion-description { margin: 4px 0 0; max-width: calc(100% - 92px); color: var(--muted); font-size: 10px; line-height: 1.35; }
 .criterion-toggle { position: absolute; top: -5px; right: 10px; padding-left: 6px; background: var(--surface); }
 .criterion-toggle b { font-size: 10px; }
 .criterion-controls { display: grid; grid-template-columns: minmax(155px, 1.45fr) repeat(3, minmax(82px, 1fr)); gap: 7px; align-items: end; }

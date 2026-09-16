@@ -69,6 +69,7 @@ export interface UnitOption {
 export type NoiseMetric = "LWA" | "LPA";
 
 export interface PreselectionFilterSettings {
+  rotaryOnlyEnabled: boolean;
   maximumSfpEnabled: boolean;
   maximumSfp: number;
   supplyNoiseEnabled: boolean;

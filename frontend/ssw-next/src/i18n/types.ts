@@ -189,6 +189,8 @@ export interface UiMessages {
     recommended: string;
     additionalCriteria: string;
     additionalCriteriaDescription: string;
+    rotaryOnly: string;
+    rotaryOnlyDescription: string;
     maximumSfp: string;
     supplyNoise: string;
     breakoutNoise: string;

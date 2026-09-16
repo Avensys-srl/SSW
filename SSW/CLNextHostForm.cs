@@ -148,6 +148,15 @@ namespace SSW
 
             lowDutyPoint.PreselectionFilters = new CLNextUiPreselectionFilters
             {
+                RotaryOnlyEnabled = true
+            };
+            var rotaryCandidates = CLNextUiApplicationService.Preselect(lowDutyPoint);
+            if (rotaryCandidates.Count == 0 || rotaryCandidates.Exists(item =>
+                item.Model.SeriesCode != "6" && item.Model.SeriesCode != "9"))
+                return 75;
+
+            lowDutyPoint.PreselectionFilters = new CLNextUiPreselectionFilters
+            {
                 SupplyNoiseEnabled = true,
                 SupplyNoiseMetric = "LPA",
                 MaximumSupplyNoiseDbA = 200,
@@ -476,6 +485,7 @@ namespace SSW
                 },
                 PreselectionFilters = new CLNextUiPreselectionFilters
                 {
+                    RotaryOnlyEnabled = true,
                     MaximumSfpEnabled = true,
                     MaximumSfp = 1.75,
                     SupplyNoiseEnabled = true,
@@ -547,6 +557,7 @@ namespace SSW
                 !restoredDocument.Selection.Sound.IncludeInReport ||
                 restoredDocument.Selection.Sound.Directivity != 4 ||
                 restoredDocument.Selection.PreselectionFilters == null ||
+                !restoredDocument.Selection.PreselectionFilters.RotaryOnlyEnabled ||
                 !restoredDocument.Selection.PreselectionFilters.MaximumSfpEnabled ||
                 restoredDocument.Selection.PreselectionFilters.MaximumSfp != 1.75 ||
                 restoredDocument.Selection.PreselectionFilters.SupplyNoiseMetric != "LPA" ||
@@ -567,6 +578,7 @@ namespace SSW
                 restoredInput.Sound == null ||
                 !restoredInput.Sound.IncludeInReport ||
                 restoredInput.PreselectionFilters == null ||
+                !restoredInput.PreselectionFilters.RotaryOnlyEnabled ||
                 !restoredInput.PreselectionFilters.MaximumSfpEnabled ||
                 restoredInput.PreselectionFilters.SupplyNoiseMetric != "LPA" ||
                 restoredInput.PreselectionFilters.BreakoutNoiseMetric != "LWA" ||
@@ -1085,7 +1097,12 @@ namespace SSW
             WindowState = FormWindowState.Maximized;
             webView = new WebView2 { Dock = DockStyle.Fill };
             Controls.Add(webView);
-            Shown += async delegate { await InitializeAsync(); };
+            Shown += async delegate
+            {
+                await InitializeAsync();
+                if (String.IsNullOrWhiteSpace(this.screenshotOutputPath))
+                    await UpdateManager.CheckForSoftwareUpdate(false);
+            };
         }
 
         private async Task InitializeAsync()
@@ -1886,6 +1903,7 @@ namespace SSW
                 },
                 PreselectionFilters = new CLNextUiPreselectionFilters
                 {
+                    RotaryOnlyEnabled = BooleanValue(preselectionFilters, "rotaryOnlyEnabled"),
                     MaximumSfpEnabled = BooleanValue(preselectionFilters, "maximumSfpEnabled"),
                     MaximumSfp = NumberValue(preselectionFilters, "maximumSfp", 2),
                     SupplyNoiseEnabled = BooleanValue(preselectionFilters, "supplyNoiseEnabled"),

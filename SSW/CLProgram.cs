@@ -198,6 +198,19 @@ namespace SSW
 					return CLNextUiSmokeCommand.Run();
 				}
 
+				if (args != null && args.Length > 1 &&
+					String.Equals(args[0], "--update-check-smoke", StringComparison.OrdinalIgnoreCase))
+				{
+					Version currentVersion;
+					if (!Version.TryParse(args[1], out currentVersion)) return 5;
+					SoftwareVersionInfo update = UpdateManager.FindAvailableSoftwareUpdate(
+						currentVersion).GetAwaiter().GetResult();
+					if (update == null) return 6;
+					Version latestVersion;
+					return Version.TryParse(update.latest_version, out latestVersion) &&
+						latestVersion > currentVersion ? 0 : 7;
+				}
+
 				if (args != null && args.Length > 0 &&
 					String.Equals(args[0], "--next-ui-screenshot", StringComparison.OrdinalIgnoreCase))
 				{

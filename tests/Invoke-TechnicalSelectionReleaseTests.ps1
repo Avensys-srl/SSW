@@ -52,6 +52,17 @@ if ($LASTEXITCODE -ne 0) { throw 'Technical calculation baselines failed.' }
 & (Join-Path $PSScriptRoot 'Invoke-NextUiSmoke.ps1') -Configuration $Configuration
 if ($LASTEXITCODE -ne 0) { throw 'SSW Next UI smoke failed.' }
 
+$updateProbe = Start-Process -FilePath (Join-Path $releaseDirectory 'SSW.exe') `
+    -ArgumentList @('--update-check-smoke', '2.0.0.0') `
+    -WorkingDirectory $releaseDirectory -WindowStyle Hidden -Wait -PassThru
+if ($updateProbe.ExitCode -ne 0) {
+    throw "Startup update check smoke failed with exit code $($updateProbe.ExitCode)."
+}
+$hostSource = Get-Content -LiteralPath (Join-Path $repo 'SSW\CLNextHostForm.cs') -Raw
+if ($hostSource -notmatch 'Shown \+= async delegate[\s\S]+CheckForSoftwareUpdate\(false\)') {
+    throw 'SSW Next UI startup does not invoke the automatic update check.'
+}
+
 $resourceFiles = Get-ChildItem (Join-Path $repo 'SSWLib') -Filter 'Resources.*.resx'
 if ($resourceFiles.Count -ne 15) { throw "Expected 15 localized RESX files, found $($resourceFiles.Count)." }
 $requiredKeys = @('Update_Title','Update_CheckFailed','Update_PackageIntegrityFailed',

@@ -222,6 +222,7 @@ class NativeSelectionBridge implements SelectionBridge {
         iso16032Enabled: false,
       },
       preselectionFilters: {
+        rotaryOnlyEnabled: false,
         maximumSfpEnabled: false,
         maximumSfp: 2,
         supplyNoiseEnabled: false,
@@ -633,6 +634,7 @@ class NativeSelectionBridge implements SelectionBridge {
     const supplyDirectivity = numberValue(nativeFilters.SupplyNoiseDirectivity, 2);
     const breakoutDirectivity = numberValue(nativeFilters.BreakoutNoiseDirectivity, 2);
     result.preselectionFilters = {
+      rotaryOnlyEnabled: Boolean(nativeFilters.RotaryOnlyEnabled),
       maximumSfpEnabled: Boolean(nativeFilters.MaximumSfpEnabled),
       maximumSfp: numberValue(nativeFilters.MaximumSfp, 2),
       supplyNoiseEnabled: Boolean(nativeFilters.SupplyNoiseEnabled),

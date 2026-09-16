@@ -41,6 +41,8 @@ export class MockSelectionBridge implements SelectionBridge {
           (unit) =>
             draft.operatingPoint.supplyAirflow <= unit.maxAirflow &&
             draft.operatingPoint.pressure <= unit.availablePressure &&
+            (!draft.preselectionFilters.rotaryOnlyEnabled ||
+              unit.family === "6" || unit.family === "9") &&
             (!draft.preselectionFilters.maximumSfpEnabled ||
               unit.sfp <= draft.preselectionFilters.maximumSfp) &&
             (!draft.preselectionFilters.supplyNoiseEnabled ||

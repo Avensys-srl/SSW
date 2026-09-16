@@ -164,6 +164,7 @@ export const mockDraft: SelectionDraft = {
     iso16032Enabled: false,
   },
   preselectionFilters: {
+    rotaryOnlyEnabled: false,
     maximumSfpEnabled: false,
     maximumSfp: 2,
     supplyNoiseEnabled: false,

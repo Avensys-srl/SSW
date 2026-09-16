@@ -21,6 +21,50 @@ Public Class UpdateManager
     Private Const CheckUpdateUrl As String = "https://www.avensys-srl.com/api/ssw_check_update.php"
     Private Shared ReadOnly CheckSemaphore As New System.Threading.SemaphoreSlim(1, 1)
 
+    Public Shared Async Function FindAvailableSoftwareUpdate(
+        currentAppVersion As Version,
+        Optional checkUrl As String = CheckUpdateUrl) As Task(Of SoftwareVersionInfo)
+
+        If currentAppVersion Is Nothing Then
+            Throw New ArgumentNullException(NameOf(currentAppVersion))
+        End If
+
+        Dim versionInfo As SoftwareVersionInfo
+        Using client As New HttpClient()
+            client.Timeout = TimeSpan.FromSeconds(15)
+            Dim separator = If(checkUrl.Contains("?"), "&", "?")
+            Dim checkUri As String = checkUrl & separator & "current_version=" &
+                Uri.EscapeDataString(currentAppVersion.ToString())
+            Using response As HttpResponseMessage = Await client.GetAsync(checkUri)
+                response.EnsureSuccessStatusCode()
+                Dim jsonString As String = Await response.Content.ReadAsStringAsync()
+                versionInfo = JsonSerializer.Deserialize(Of SoftwareVersionInfo)(jsonString,
+                    New JsonSerializerOptions With {.PropertyNameCaseInsensitive = True})
+            End Using
+        End Using
+
+        If versionInfo Is Nothing Then
+            Throw New InvalidDataException("The server response is empty.")
+        End If
+        If Not String.IsNullOrWhiteSpace(versionInfo.[error]) Then
+            Throw New InvalidDataException(versionInfo.[error])
+        End If
+
+        Dim latestServerVersion As Version = Nothing
+        If String.IsNullOrWhiteSpace(versionInfo.latest_version) OrElse
+            Not Version.TryParse(versionInfo.latest_version, latestServerVersion) Then
+            Throw New InvalidDataException("The server response does not contain a valid version number.")
+        End If
+        If latestServerVersion <= currentAppVersion Then Return Nothing
+
+        If Not versionInfo.verified_manifest OrElse versionInfo.manifest_version < 1 OrElse
+            String.IsNullOrWhiteSpace(versionInfo.sha256) OrElse versionInfo.sha256.Length <> 64 OrElse
+            Not versionInfo.size_bytes.HasValue OrElse versionInfo.size_bytes.Value <= 0 Then
+            Throw New InvalidDataException(PackageIntegrityError())
+        End If
+        Return versionInfo
+    End Function
+
     Public Shared Async Function CheckForSoftwareUpdate(Optional interactive As Boolean = False) As Task
         Await CheckSemaphore.WaitAsync()
         Try
@@ -39,21 +83,7 @@ Public Class UpdateManager
 
             Dim versionInfo As SoftwareVersionInfo
             Try
-                Using client As New HttpClient()
-                    client.Timeout = TimeSpan.FromSeconds(15)
-                    Dim checkUri As String = CheckUpdateUrl & "?current_version=" &
-                        Uri.EscapeDataString(currentAppVersion.ToString())
-                    Using response As HttpResponseMessage = Await client.GetAsync(checkUri)
-                        If Not response.IsSuccessStatusCode Then
-                            ShowCheckError(interactive, $"{response.StatusCode} - {response.ReasonPhrase}")
-                            Return
-                        End If
-
-                        Dim jsonString As String = Await response.Content.ReadAsStringAsync()
-                        versionInfo = JsonSerializer.Deserialize(Of SoftwareVersionInfo)(jsonString,
-                            New JsonSerializerOptions With {.PropertyNameCaseInsensitive = True})
-                    End Using
-                End Using
+                versionInfo = Await FindAvailableSoftwareUpdate(currentAppVersion)
             Catch ex As TaskCanceledException
                 ShowCheckError(interactive, "Timeout.")
                 Return
@@ -62,30 +92,8 @@ Public Class UpdateManager
                 Return
             End Try
 
-            If versionInfo Is Nothing Then
-                ShowCheckError(interactive, "The server response is empty.")
-                Return
-            End If
-
-            If Not String.IsNullOrWhiteSpace(versionInfo.[error]) Then
-                ShowCheckError(interactive, versionInfo.[error])
-                Return
-            End If
-
-            Dim latestServerVersion As Version = Nothing
-            If String.IsNullOrWhiteSpace(versionInfo.latest_version) OrElse
-                Not Version.TryParse(versionInfo.latest_version, latestServerVersion) Then
-                ShowCheckError(interactive, "The server response does not contain a valid version number.")
-                Return
-            End If
-
-            If latestServerVersion > currentAppVersion Then
-                If Not versionInfo.verified_manifest OrElse versionInfo.manifest_version < 1 OrElse
-                    String.IsNullOrWhiteSpace(versionInfo.sha256) OrElse versionInfo.sha256.Length <> 64 OrElse
-                    Not versionInfo.size_bytes.HasValue OrElse versionInfo.size_bytes.Value <= 0 Then
-                    ShowCheckError(interactive, PackageIntegrityError())
-                    Return
-                End If
+            If versionInfo IsNot Nothing Then
+                Dim latestServerVersion = Version.Parse(versionInfo.latest_version)
                 Dim message As String = LocalizedText(CLMessageResources.Update_NewAvailable,
                                                        "A new software update is available!") & vbCrLf & vbCrLf &
                     LocalizedText(CLMessageResources.Update_CurrentVersion, "Current version") & ": " & currentAppVersion.ToString() & vbCrLf &

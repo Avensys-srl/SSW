@@ -1310,6 +1310,7 @@ const renderPreselectionStep = (): string => {
     filters.maximumSfpEnabled ? text.ui.preselection.maximumSfp : "",
     filters.supplyNoiseEnabled ? text.ui.preselection.supplyNoise : "",
     filters.breakoutNoiseEnabled ? text.ui.preselection.breakoutNoise : "",
+    filters.rotaryOnlyEnabled ? text.ui.preselection.rotaryOnly : "",
   ].filter(Boolean);
   const noiseCriterion = (
     title: string,
@@ -1396,7 +1397,7 @@ const renderPreselectionStep = (): string => {
       <details class="additional-selection ${activeCriteria.length ? "has-active-criteria" : ""}" ${additionalCriteriaOpen ? "open" : ""}>
         <summary>
           <div><h3>${escapeHtml(text.ui.preselection.additionalCriteria)}</h3><p>${escapeHtml(text.ui.preselection.additionalCriteriaDescription)}</p></div>
-          <span class="criteria-state"><b>${activeCriteria.length}/3</b>${activeCriteria.length ? escapeHtml(activeCriteria.join(" · ")) : escapeHtml(text.ui.summary.notSelectedMasculine)}</span>
+          <span class="criteria-state"><b>${activeCriteria.length}/4</b>${activeCriteria.length ? escapeHtml(activeCriteria.join(" · ")) : escapeHtml(text.ui.summary.notSelectedMasculine)}</span>
         </summary>
         <div class="additional-selection-fields">
         <fieldset class="selection-criterion sfp-criterion ${filters.maximumSfpEnabled ? "" : "criterion-disabled"}">
@@ -1409,6 +1410,14 @@ const renderPreselectionStep = (): string => {
         </fieldset>
         ${noiseCriterion(text.ui.preselection.supplyNoise, "preselectionFilters.supplyNoiseEnabled", filters.supplyNoiseEnabled, "preselectionFilters.supplyNoiseMetric", filters.supplyNoiseMetric, "preselectionFilters.maximumSupplyNoiseDbA", filters.maximumSupplyNoiseDbA, "preselectionFilters.supplyNoiseDistanceMeters", filters.supplyNoiseDistanceMeters, "preselectionFilters.supplyNoiseDirectivityFactor", filters.supplyNoiseDirectivityFactor)}
         ${noiseCriterion(text.ui.preselection.breakoutNoise, "preselectionFilters.breakoutNoiseEnabled", filters.breakoutNoiseEnabled, "preselectionFilters.breakoutNoiseMetric", filters.breakoutNoiseMetric, "preselectionFilters.maximumBreakoutNoiseDbA", filters.maximumBreakoutNoiseDbA, "preselectionFilters.breakoutNoiseDistanceMeters", filters.breakoutNoiseDistanceMeters, "preselectionFilters.breakoutNoiseDirectivityFactor", filters.breakoutNoiseDirectivityFactor)}
+        <fieldset class="selection-criterion rotary-criterion ${filters.rotaryOnlyEnabled ? "" : "criterion-disabled"}">
+          <legend>${escapeHtml(text.ui.preselection.rotaryOnly)}</legend>
+          <label class="toggle criterion-toggle">
+            <input type="checkbox" data-field="preselectionFilters.rotaryOnlyEnabled" ${filters.rotaryOnlyEnabled ? "checked" : ""}/>
+            <span></span><b>${escapeHtml(text.ui.preselection.enableCriterion)}</b>
+          </label>
+          <p class="criterion-description">${escapeHtml(text.ui.preselection.rotaryOnlyDescription)}</p>
+        </fieldset>
         </div>
       </details>
       <div class="inline-notice">
@@ -2841,6 +2850,7 @@ const applyFieldValue = (
       draft!.co2.airflowPerPersonLitersPerSecond = Math.max(0, Number(value));
     },
     "sound.includeInReport": () => { draft!.sound.includeInReport = Boolean(value); },
+    "preselectionFilters.rotaryOnlyEnabled": () => { draft!.preselectionFilters.rotaryOnlyEnabled = Boolean(value); },
     "preselectionFilters.maximumSfpEnabled": () => { draft!.preselectionFilters.maximumSfpEnabled = Boolean(value); },
     "preselectionFilters.maximumSfp": () => { draft!.preselectionFilters.maximumSfp = Math.max(0, Number(value)); },
     "preselectionFilters.supplyNoiseEnabled": () => { draft!.preselectionFilters.supplyNoiseEnabled = Boolean(value); },

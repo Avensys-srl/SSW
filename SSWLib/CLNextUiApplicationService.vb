@@ -168,13 +168,17 @@ Public NotInheritable Class CLNextUiApplicationService
         End If
 
         Dim requestedPressure = Math.Max(0, input.PressurePa)
+        Dim filters = If(input.PreselectionFilters, New CLNextUiPreselectionFilters())
         Return CLEnvironment.Current.DCContext.CLDCHeatRecoveryModels.
             ToList().
             Where(Function(model) Not String.Equals(model.Code, "ACC", StringComparison.OrdinalIgnoreCase) AndAlso
-                                  Not String.Equals(model.Code, "IOM3", StringComparison.OrdinalIgnoreCase)).
+                                  Not String.Equals(model.Code, "IOM3", StringComparison.OrdinalIgnoreCase) AndAlso
+                                  (Not filters.RotaryOnlyEnabled OrElse
+                                   (model.CLSerie IsNot Nothing AndAlso
+                                    (model.CLSerie.Code = "6" OrElse model.CLSerie.Code = "9")))).
             Select(Function(model) CalculatePreselectionCandidate(
                 model, input.SupplyAirflowM3h, requestedPressure,
-                input.PreselectionFilters)).
+                filters)).
             Where(Function(candidate) candidate IsNot Nothing).
             OrderBy(Function(candidate) candidate.CombinedSfp).
             ThenBy(Function(candidate) candidate.RequiredRegulationPercent).
@@ -691,6 +695,7 @@ Public NotInheritable Class CLNextUiApplicationService
                 .IncludeIso16032 = sound.IncludeIso16032
             },
             .PreselectionFilters = New CLNextUiPreselectionFilters With {
+                .RotaryOnlyEnabled = filters.RotaryOnlyEnabled,
                 .MaximumSfpEnabled = filters.MaximumSfpEnabled,
                 .MaximumSfp = filters.MaximumSfp,
                 .SupplyNoiseEnabled = filters.SupplyNoiseEnabled,
@@ -747,6 +752,7 @@ Public NotInheritable Class CLNextUiApplicationService
         input As CLNextUiPreselectionFilters) As CLPreselectionFilterSelection
         If input Is Nothing Then input = New CLNextUiPreselectionFilters()
         Return New CLPreselectionFilterSelection With {
+            .RotaryOnlyEnabled = input.RotaryOnlyEnabled,
             .MaximumSfpEnabled = input.MaximumSfpEnabled,
             .MaximumSfp = input.MaximumSfp,
             .SupplyNoiseEnabled = input.SupplyNoiseEnabled,
