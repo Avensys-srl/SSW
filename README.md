@@ -105,9 +105,10 @@ The script:
 - uses the email and six-digit installation PIN flow for new device activation,
   without embedding enrollment secrets in the installer
 - creates `installer/output/SSW_Setup_<version>.exe`
-- atomically publishes the installer and manifest to
-  `F:\DOCUMENTS\tools\Selection Software`, verifies their integrity, and
-  removes older `SSW_Setup_*` public artifacts only after verification
+- leaves the installer and manifest in `installer\output` for pilot testing
+- publishes only when `-PublishCopyDir "F:\DOCUMENTS\tools\Selection Software"`
+  is passed explicitly; publication verifies integrity and removes older
+  `SSW_Setup_*` public artifacts only after verification
 
 Historical installers and manifests remain available in `installer/output`;
 the public distribution directory intentionally contains only the latest pair.

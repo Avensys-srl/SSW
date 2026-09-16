@@ -56,7 +56,7 @@ Name: "italian"; MessagesFile: "compiler:Languages\Italian.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "{#SourceDir}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: "*.pdb,*.xml,*.log,*.vshost.*,*.application,SSW.exe.manifest,app.publish\*,data\DataCentral___.sdf,data\*.bak,data\*.previous,data\catalog-update.state.json,frontend\ssw-next\*"
+Source: "{#SourceDir}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: "*.pdb,*.xml,*.log,*.vshost.*,*.application,SSW.exe.manifest,app.publish\*,data\DataCentral___.sdf,data\*.bak,data\*.previous,data\catalog-update.state.json"
 
 [Icons]
 Name: "{group}\{#AppName}"; Filename: "{app}\{#AppExeName}"

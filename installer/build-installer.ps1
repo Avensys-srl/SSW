@@ -8,7 +8,7 @@ param(
     [string]$CertificateThumbprint = $env:SSW_SIGN_CERT_THUMBPRINT,
     [string]$CertificatePassword = $env:SSW_SIGN_CERT_PASSWORD,
     [string]$TimestampUrl = "http://timestamp.digicert.com",
-    [string]$PublishCopyDir = "F:\DOCUMENTS\tools\Selection Software",
+    [string]$PublishCopyDir = "",
     [string]$BootstrapKey = $env:SSW_SELECTION_BOOTSTRAP_KEY_AV,
     [string]$BootstrapEnvironmentName = "SSW_SELECTION_BOOTSTRAP_KEY_AV",
     [string]$BootstrapRegistryValueName = "BootstrapKey_AV",
@@ -127,6 +127,35 @@ function Assert-ReleaseBinaryVersions {
     }
 }
 
+function Assert-FrontendAssets {
+    param([string]$Directory)
+
+    $frontendDirectory = Join-Path $Directory "frontend\ssw-next"
+    $requiredFiles = @(
+        (Join-Path $frontendDirectory "index.html"),
+        (Join-Path $frontendDirectory "airflow\installation-reference.svg")
+    )
+    foreach ($path in $requiredFiles) {
+        if (-not (Test-Path -LiteralPath $path -PathType Leaf)) {
+            throw "Required SSW Next UI asset not found: $path"
+        }
+    }
+
+    $assetDirectory = Join-Path $frontendDirectory "assets"
+    foreach ($pattern in @("*.js", "*.css", "*.mjs")) {
+        if (-not (Get-ChildItem -LiteralPath $assetDirectory -Filter $pattern -File -ErrorAction SilentlyContinue | Select-Object -First 1)) {
+            throw "Required SSW Next UI asset pattern not found: $assetDirectory\$pattern"
+        }
+    }
+}
+
+function Assert-InstallerIncludesFrontend {
+    $content = Get-Content -LiteralPath $innoScriptPath -Raw
+    if ($content -match '(?im)^Source:.*Excludes:.*frontend\\ssw-next') {
+        throw "The installer excludes the required SSW Next UI assets."
+    }
+}
+
 function Get-DefaultCertificateThumbprint {
     $content = Get-Content $appProjectPath -Raw
     $match = [regex]::Match($content, '<ManifestCertificateThumbprint>([^<]+)</ManifestCertificateThumbprint>')
@@ -239,6 +268,8 @@ if (-not $SkipBuild) {
 
 $BuildOutputDir = (Resolve-Path $BuildOutputDir).Path
 Assert-ReleaseBinaryVersions -Directory $BuildOutputDir -ExpectedVersion $appVersion
+Assert-FrontendAssets -Directory $BuildOutputDir
+Assert-InstallerIncludesFrontend
 
 if (-not $CertificatePath) {
     if ($env:SSW_SIGN_CERT_PATH) {
