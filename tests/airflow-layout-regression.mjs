@@ -36,6 +36,11 @@ assert.ok(main.includes('const splitPortFour = isFsVsHciModel() && !sameSide;'))
 assert.ok(main.includes('data-duplicate="true"'));
 assert.ok(main.includes('/(^|\\s)(FS|VS|HCI)(\\s|$)/i'));
 assert.ok(main.includes('const stFlowPlacement = (configurationCode: string, position: number)'));
+assert.ok(main.includes('const isFrontAccessHorizontalEastWestFloor = (): boolean =>'));
+assert.ok(main.includes('configuration?.orientation === "horizontal"'));
+assert.ok(main.includes('configuration.referenceView === "OSC_EAST_WEST"'));
+assert.ok(main.includes('configuration.accessSide === "front"'));
+assert.ok(main.includes('uprightSscFloor || uprightStFloor || isFrontAccessHorizontalEastWestFloor()'));
 assert.ok(main.includes('["HU", "HH", "LH"].includes(code)'));
 assert.ok(main.includes('["LU", "LH"].includes(code)'));
 assert.ok(main.includes('if (lowerRear) return { x: 194, y: 240, rear: true };'));

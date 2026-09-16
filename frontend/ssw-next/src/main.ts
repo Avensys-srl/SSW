@@ -1579,6 +1579,14 @@ const isSameSideFlatFloor = (): boolean =>
   draft?.installationMode === "floor" &&
   selectedLayoutConfiguration()?.referenceView === "SSC_FLAT";
 
+const isFrontAccessHorizontalEastWestFloor = (): boolean => {
+  const configuration = selectedLayoutConfiguration();
+  return draft?.installationMode === "floor" &&
+    configuration?.orientation === "horizontal" &&
+    configuration.referenceView === "OSC_EAST_WEST" &&
+    configuration.accessSide === "front";
+};
+
 const isOppositeSideEastWestWall = (): boolean =>
   !isSameSideConnection() &&
   draft?.installationMode === "wall" &&
@@ -1605,7 +1613,7 @@ const renderInstallationStep = (): string => {
   const surface = accessSurface();
   const uprightSscFloor = isSameSideUprightFloor() && ["A1", "B1"].includes(draft!.layoutCode);
   const uprightStFloor = isStConnection() && draft!.installationMode === "floor";
-  const uprightFloor = uprightSscFloor || uprightStFloor;
+  const uprightFloor = uprightSscFloor || uprightStFloor || isFrontAccessHorizontalEastWestFloor();
   const stFlowLayout = isStConnection();
   const showStRearSideKey = stFlowLayout && stHasRearPort(draft!.layoutCode);
   const northSouthWall = !isSameSideConnection() && draft!.installationMode === "wall" && selectedLayoutConfiguration()?.referenceView === "OSC_NORTH_SOUTH";

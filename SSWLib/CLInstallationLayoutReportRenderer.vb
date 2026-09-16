@@ -84,7 +84,11 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
         Dim splitPortFour = Not ssc AndAlso IsFsVsHciModel(modelCode)
         Dim uprightSsc = ssc AndAlso mode = "floor" AndAlso c.ReferenceView = "SSC_UPRIGHT" AndAlso {"A1", "B1"}.Contains(code)
         Dim uprightSt = mode = "floor" AndAlso st
-        Dim upright = uprightSsc OrElse uprightSt
+        Dim uprightFrontAccessFloor = mode = "floor" AndAlso
+            c.Orientation = CLInstallationLayoutOrientation.Horizontal AndAlso
+            EqualsCode(c.ReferenceView, "OSC_EAST_WEST") AndAlso
+            EqualsCode(c.AccessSide, "front")
+        Dim upright = uprightSsc OrElse uprightSt OrElse uprightFrontAccessFloor
         Using outline As New Pen(ColorTranslator.FromHtml("#91A0AE"), 3), red As New Pen(ColorTranslator.FromHtml("#D62828"), 5),
             title As New Font("Arial", 15, FontStyle.Bold), label As New Font("Arial", 12), number As New Font("Arial", 15, FontStyle.Bold)
             DrawCenteredText(g, InstallationViewCaption(mode, Not ns), title, Brushes.Black, New RectangleF(If(upright, 10, 20), 10, 480, 40))

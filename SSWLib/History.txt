@@ -1,6 +1,10 @@
 SSW Changelog
 =============
 
+2.0.0.1 - 2026-09-16
+--------------------
+- Corrected horizontal floor-mounted East-West configurations with front access to use the upright mounting schematic in both the guided UI and technical report.
+
 2.0.0.0 - 2026-09-16
 --------------------
 - Made the guided WebView2 technical-selection interface the default SSW experience.
