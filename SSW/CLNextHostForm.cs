@@ -1214,7 +1214,7 @@ namespace SSW
                         await webView.CoreWebView2.ExecuteScriptAsync(
                             "document.querySelector('[data-installation=\"" + mode + "\"]:not([disabled])').click()");
                         await WaitForConditionAsync(
-                            "document.querySelector('.airflow-diagram.installation-" + mode + "') !== null && document.querySelectorAll('.flow[data-port]').length === 4",
+                            "document.querySelector('.installation-schematics.installation-" + mode + "') !== null && document.querySelectorAll('.schematic-airflow g[data-port]').length === 4",
                             "Layout transition did not settle: " + mode);
                         string codesJson = await webView.CoreWebView2.ExecuteScriptAsync(
                             "Array.from(document.querySelector('#layoutCode').options).map(o => o.value)");
@@ -1223,20 +1223,16 @@ namespace SSW
                             await webView.CoreWebView2.ExecuteScriptAsync(
                                 "(function(){var select=document.querySelector('#layoutCode');select.value=" + new JavaScriptSerializer().Serialize(code) + ";select.dispatchEvent(new Event('change',{bubbles:true}));})()");
                             await WaitForConditionAsync(
-                                "document.querySelector('.airflow-diagram') !== null && document.querySelector('#layoutCode').value === " + new JavaScriptSerializer().Serialize(code) +
-                                " && new Set(Array.from(document.querySelectorAll('.flow')).map(p=>p.dataset.flow)).size === 4",
+                                "document.querySelector('.installation-schematics') !== null && document.querySelector('#layoutCode').value === " + new JavaScriptSerializer().Serialize(code) +
+                                " && new Set(Array.from(document.querySelectorAll('.schematic-airflow g[data-port]')).map(p=>p.dataset.flow)).size === 4",
                                 "Configuration transition did not settle: " + code);
-                            string airflowGeometry = await webView.CoreWebView2.ExecuteScriptAsync(
-                                "JSON.stringify(Array.from(document.querySelectorAll('.flow[data-port]')).map(function(f){" +
-                                "var m=document.querySelector('.duct-marker[data-port=\"'+f.dataset.port+'\"]'),fr=f.getBoundingClientRect(),mr=m.getBoundingClientRect();" +
-                                "return {port:f.dataset.port,flowX:fr.left,flowY:fr.top,ductX:mr.left+mr.width/2,ductY:mr.top+mr.height/2};}))");
                             await WaitForConditionAsync(
-                                "(function(){var d=document.querySelector('.airflow-diagram');if(!d)return false;var horizontal=d.classList.contains('wall-east-west');" +
-                                "return Array.from(document.querySelectorAll('.flow[data-port]')).every(function(f){" +
-                                "var m=document.querySelector('.duct-marker[data-port=\"'+f.dataset.port+'\"]');if(!m)return false;" +
-                                "var fr=f.getBoundingClientRect(),mr=m.getBoundingClientRect();" +
-                                "return Math.abs((horizontal?fr.top:fr.left)-(horizontal?(mr.top+mr.height/2):(mr.left+mr.width/2)))<=1;});})()",
-                                "Airflow symbol alignment failed: " + code + " " + airflowGeometry);
+                                "(function(){var svg=document.querySelector('.schematic-airflow svg'),r=svg&&svg.querySelector('rect');if(!r)return false;" +
+                                "var x=+r.getAttribute('x'),y=+r.getAttribute('y'),w=+r.getAttribute('width'),h=+r.getAttribute('height');" +
+                                "return Array.from(svg.querySelectorAll('g[data-port] circle')).length===4&&Array.from(svg.querySelectorAll('g[data-port] circle')).every(function(c){" +
+                                "var cx=+c.getAttribute('cx'),cy=+c.getAttribute('cy'),onX=Math.abs(cx-x)<=1||Math.abs(cx-(x+w))<=1,onY=Math.abs(cy-y)<=1||Math.abs(cy-(y+h))<=1;" +
+                                "return (onX&&cy>=y&&cy<=y+h)||(onY&&cx>=x&&cx<=x+w);});})()",
+                                "Airflow symbol alignment failed: " + code);
                         }
                     }
                     WindowState = FormWindowState.Normal;

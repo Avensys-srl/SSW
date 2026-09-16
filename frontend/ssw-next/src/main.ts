@@ -164,6 +164,7 @@ let projectEmailOpen = false;
 let projectEmailSchedule = true;
 let projectEmailDays = 7;
 let preselectionRequestVersion = 0;
+let additionalCriteriaOpen = false;
 let calculationRequestVersion = 0;
 let calculationFailed = false;
 let productDocuments: ProductDocumentState | null = null;
@@ -1305,6 +1306,11 @@ const renderMultiProjectSidebar = (): string => {
 const renderPreselectionStep = (): string => {
   const text = messages();
   const filters = draft!.preselectionFilters;
+  const activeCriteria = [
+    filters.maximumSfpEnabled ? text.ui.preselection.maximumSfp : "",
+    filters.supplyNoiseEnabled ? text.ui.preselection.supplyNoise : "",
+    filters.breakoutNoiseEnabled ? text.ui.preselection.breakoutNoise : "",
+  ].filter(Boolean);
   const noiseCriterion = (
     title: string,
     enabledField: string,
@@ -1387,8 +1393,12 @@ const renderPreselectionStep = (): string => {
           </fieldset>
         </div>
       </div>
-      <div class="additional-selection">
-        <div><h3>${escapeHtml(text.ui.preselection.additionalCriteria)}</h3><p>${escapeHtml(text.ui.preselection.additionalCriteriaDescription)}</p></div>
+      <details class="additional-selection ${activeCriteria.length ? "has-active-criteria" : ""}" ${additionalCriteriaOpen ? "open" : ""}>
+        <summary>
+          <div><h3>${escapeHtml(text.ui.preselection.additionalCriteria)}</h3><p>${escapeHtml(text.ui.preselection.additionalCriteriaDescription)}</p></div>
+          <span class="criteria-state"><b>${activeCriteria.length}/3</b>${activeCriteria.length ? escapeHtml(activeCriteria.join(" · ")) : escapeHtml(text.ui.summary.notSelectedMasculine)}</span>
+        </summary>
+        <div class="additional-selection-fields">
         <fieldset class="selection-criterion sfp-criterion ${filters.maximumSfpEnabled ? "" : "criterion-disabled"}">
           <legend>${escapeHtml(text.ui.preselection.maximumSfp)}</legend>
           <label class="toggle criterion-toggle">
@@ -1399,7 +1409,8 @@ const renderPreselectionStep = (): string => {
         </fieldset>
         ${noiseCriterion(text.ui.preselection.supplyNoise, "preselectionFilters.supplyNoiseEnabled", filters.supplyNoiseEnabled, "preselectionFilters.supplyNoiseMetric", filters.supplyNoiseMetric, "preselectionFilters.maximumSupplyNoiseDbA", filters.maximumSupplyNoiseDbA, "preselectionFilters.supplyNoiseDistanceMeters", filters.supplyNoiseDistanceMeters, "preselectionFilters.supplyNoiseDirectivityFactor", filters.supplyNoiseDirectivityFactor)}
         ${noiseCriterion(text.ui.preselection.breakoutNoise, "preselectionFilters.breakoutNoiseEnabled", filters.breakoutNoiseEnabled, "preselectionFilters.breakoutNoiseMetric", filters.breakoutNoiseMetric, "preselectionFilters.maximumBreakoutNoiseDbA", filters.maximumBreakoutNoiseDbA, "preselectionFilters.breakoutNoiseDistanceMeters", filters.breakoutNoiseDistanceMeters, "preselectionFilters.breakoutNoiseDirectivityFactor", filters.breakoutNoiseDirectivityFactor)}
-      </div>
+        </div>
+      </details>
       <div class="inline-notice">
         ${icon("info")}
         <span>${escapeHtml(text.ui.preselection.balancedNotice)}</span>
@@ -2106,7 +2117,7 @@ const unitCard = (unit: UnitOption, recommended: boolean): string => {
   return `
   <article class="ranked-unit ${unit.id === draft!.selectedUnitId ? "selected" : ""}" data-select-unit="${unit.id}">
     <div class="ranked-unit-score"><strong>${formatNumber(unit.requiredRegulation, 0)}</strong><span>%</span></div>
-    <div><small>${unit.family}</small><strong>${unit.model}</strong></div>
+    <div><strong>${unit.model}</strong></div>
     <div class="ranked-spec"><span>${formatNumber(unit.availablePressure, 0)} Pa</span><span>${formatNumber(unit.absorbedPower, 0)} W</span><span>SFP ${formatNumber(unit.sfp, 2)}</span>${acousticValues.map((value) => `<span>${escapeHtml(value)}</span>`).join("")}</div>
     ${recommended ? `<b class="recommended">${icon("sparkles", 14)} ${escapeHtml(text.ui.preselection.recommended)}</b>` : ""}
     ${unit.id === draft!.selectedUnitId ? icon("circle-check", 20) : icon("chevron-right", 20)}
@@ -2319,6 +2330,12 @@ const renderDimensionalCanvases = async (): Promise<void> => {
 };
 
 const bindShellEvents = (): void => {
+  document
+    .querySelector<HTMLDetailsElement>(".additional-selection")
+    ?.addEventListener("toggle", (event) => {
+      additionalCriteriaOpen = (event.currentTarget as HTMLDetailsElement).open;
+    });
+
   document.querySelectorAll<HTMLElement>("[data-step]").forEach((element) => {
     element.addEventListener("click", async () => {
       const step = element.dataset.step as StepId;

@@ -273,6 +273,7 @@ internal static class Program
             TestSelectionRegistrationClient(client, handler, context);
             TestFollowUpReminderStore(root);
             TestFollowUpSynchronization(root, client, handler, context);
+            TestHashValidation();
             TestSnapshotFingerprints(root);
             TestMultiSelectionProject(root);
             TestMultiSelectionEmailAndDialog(root);
@@ -301,6 +302,14 @@ internal static class Program
             Environment.SetEnvironmentVariable("SSW_SELECTION_API_BASE_URL", null);
             try { Directory.Delete(root, true); } catch { }
         }
+    }
+
+    private static void TestHashValidation()
+    {
+        if (!CLSelectionSnapshotService.IsValidHash(new string('a', 64)) ||
+            !CLSelectionSnapshotService.IsValidHash(new string('A', 64)) ||
+            CLSelectionSnapshotService.IsValidHash(new string('g', 64)))
+            throw new InvalidOperationException("SHA-256 validation is not case-compatible.");
     }
 
     private static void TestBootstraplessRegistration(string root)
@@ -932,18 +941,21 @@ internal static class Program
             string migratedPath = Path.Combine(root, fixtureName);
             File.Copy(Path.Combine(repositoryRoot, "docs", "examples", fixtureName), migratedPath, true);
             CLSelectionProjectDocument legacy = CLSelectionProjectSerializer.Load(migratedPath);
-            if (legacy.SelectionFormatVersion != 2 || legacy.SourceFormatVersion != 1 ||
+            if (legacy.SelectionFormatVersion != CLTechnicalVersions.CurrentSelectionFormatVersion ||
+                legacy.SourceFormatVersion != 1 ||
                 !legacy.RequiresMigrationBackup || legacy.RevisionTracking == null ||
-                legacy.Selection.Accessories == null || legacy.Selection.Accessories.Count != 0)
+                legacy.Selection.Accessories == null || legacy.Selection.Accessories.Count != 0 ||
+                legacy.Selection.DimensionalDrawing == null)
                 throw new InvalidOperationException("Legacy V1 fixture compatibility failed: " + fixtureName);
             CLSelectionProjectSerializer.Save(migratedPath, legacy);
             string backupPath = migratedPath + ".pre-migration-v1.bak";
             if (!File.Exists(backupPath) || !File.ReadAllText(backupPath).Contains("\"selectionFormatVersion\": 1"))
                 throw new InvalidOperationException("Legacy V1 migration backup failed: " + fixtureName);
             CLSelectionProjectDocument reloaded = CLSelectionProjectSerializer.Load(migratedPath);
-            if (reloaded.SelectionFormatVersion != 2 || reloaded.SourceFormatVersion != 2 ||
+            if (reloaded.SelectionFormatVersion != CLTechnicalVersions.CurrentSelectionFormatVersion ||
+                reloaded.SourceFormatVersion != CLTechnicalVersions.CurrentSelectionFormatVersion ||
                 reloaded.RequiresMigrationBackup)
-                throw new InvalidOperationException("Migrated V2 round-trip failed: " + fixtureName);
+                throw new InvalidOperationException("Migrated selection round-trip failed: " + fixtureName);
         }
     }
 
