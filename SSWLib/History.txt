@@ -1,6 +1,10 @@
 SSW Changelog
 =============
 
+2.0.0.4 - 2026-09-17
+--------------------
+- Clarified that the code entered after submitting a license request is the six-digit activation PIN, not the four-character device identifier.
+
 2.0.0.3 - 2026-09-17
 --------------------
 - Added a two-step activation flow: the user accepts the terms and sends a visible license request before the PIN field is shown.

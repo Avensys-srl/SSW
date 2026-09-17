@@ -990,7 +990,7 @@ Language names in the language menu are intentionally always displayed as autony
   <data name="DeviceLicense_FirstName" xml:space="preserve"><value>First name</value></data>
   <data name="DeviceLicense_LastName" xml:space="preserve"><value>Last name</value></data>
   <data name="DeviceLicense_Email" xml:space="preserve"><value>Email</value></data>
-  <data name="DeviceLicense_InstallationCode" xml:space="preserve"><value>Installation code</value></data>
+  <data name="DeviceLicense_InstallationCode" xml:space="preserve"><value>Activation code (6 digits)</value></data>
   <data name="DeviceLicense_InstallationCodeHint" xml:space="preserve"><value>6 digits, provided by Avensys</value></data>
   <data name="DeviceLicense_Activate" xml:space="preserve"><value>Activate</value></data>
   <data name="DeviceLicense_RequestActivation" xml:space="preserve"><value>Request activation</value></data>
