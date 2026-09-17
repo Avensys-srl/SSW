@@ -179,7 +179,7 @@ namespace SSW
 					sswDCLitePath,
 					sswInfo );
 				CLLanguage startupLanguage = CLEnvironment.Current.FindLanguage(
-					CultureInfo.CurrentCulture.TwoLetterISOLanguageName);
+					CultureInfo.CurrentUICulture.TwoLetterISOLanguageName);
 				if (startupLanguage == null || !startupLanguage.Enabled)
 					startupLanguage = CLEnvironment.Current.FindLanguage(sswInfo.DefaultLanguage);
 				if (startupLanguage == null || !startupLanguage.Enabled)

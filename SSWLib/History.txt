@@ -1,6 +1,10 @@
 SSW Changelog
 =============
 
+2.0.0.6 - 2026-09-17
+--------------------
+- Aligned setup and activation language with the Windows display language and enabled all available installer translations for supported SSW languages.
+
 2.0.0.5 - 2026-09-17
 --------------------
 - Split activation into explicit request, waiting and PIN-entry phases; the PIN field remains hidden until the user confirms that the code was received at the registered email address.
