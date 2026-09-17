@@ -2,6 +2,6 @@
 <Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <!-- Single source of truth for every SSW release artifact. -->
-    <SSWVersion>2.0.0.2</SSWVersion>
+    <SSWVersion>2.0.0.3</SSWVersion>
   </PropertyGroup>
 </Project>

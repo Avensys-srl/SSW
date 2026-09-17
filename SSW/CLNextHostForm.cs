@@ -1100,8 +1100,6 @@ namespace SSW
             Shown += async delegate
             {
                 await InitializeAsync();
-                if (String.IsNullOrWhiteSpace(this.screenshotOutputPath))
-                    await UpdateManager.CheckForSoftwareUpdate(false);
             };
         }
 

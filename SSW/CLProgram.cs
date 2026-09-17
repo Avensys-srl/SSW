@@ -221,7 +221,11 @@ namespace SSW
 						args.Length > 2 ? args[2] : null);
 				}
 
-				if ((normalStartup || nextUiStartup) && !CLDeviceLicenseStartup.ValidateForNormalStartup()) return 4;
+				if (normalStartup || nextUiStartup)
+				{
+					UpdateManager.CheckForSoftwareUpdate(false).GetAwaiter().GetResult();
+					if (!CLDeviceLicenseStartup.ValidateForNormalStartup()) return 4;
+				}
 				Application.Run(new CLNextHostForm());
 				
 				return 0;

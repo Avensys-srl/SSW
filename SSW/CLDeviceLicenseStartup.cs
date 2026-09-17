@@ -121,6 +121,8 @@ namespace SSW
         private readonly TextBox email = new TextBox();
         private readonly TextBox company = new TextBox();
         private readonly TextBox pin = new TextBox();
+        private Control pinBlock;
+        private bool requestSent;
         private readonly Label error = new Label();
         private readonly Button confirm = new Button();
         private readonly CheckBox privacyAcknowledgement = new CheckBox();
@@ -209,9 +211,11 @@ namespace SSW
             {
                 pin.MaxLength = 6;
                 pin.TextAlign = HorizontalAlignment.Center;
-                fields.Controls.Add(FieldBlock(L(CLMessageResources.DeviceLicense_InstallationCode), pin,
-                    L(CLMessageResources.DeviceLicense_InstallationCodeHint)), 0, 3);
-                fields.SetColumnSpan(fields.GetControlFromPosition(0, 3), 2);
+                pinBlock = FieldBlock(L(CLMessageResources.DeviceLicense_InstallationCode), pin,
+                    L(CLMessageResources.DeviceLicense_InstallationCodeHint));
+                pinBlock.Visible = false;
+                fields.Controls.Add(pinBlock, 0, 3);
+                fields.SetColumnSpan(pinBlock, 2);
             }
             root.Controls.Add(fields, 0, 1);
 
@@ -289,6 +293,23 @@ namespace SSW
             Controls.Add(root);
             AcceptButton = confirm;
             CancelButton = cancel;
+            if (mode == CLDeviceLicenseMode.NewInstallation)
+            {
+                CLDeviceLicenseSnapshot snapshot = CLDeviceLicenseStore.LoadSnapshot();
+                if (snapshot.ActivationRequestPending)
+                {
+                    firstName.Text = snapshot.FirstName;
+                    lastName.Text = snapshot.LastName;
+                    email.Text = snapshot.Email;
+                    company.Text = snapshot.CompanyName;
+                    requestSent = true;
+                    pinBlock.Visible = true;
+                    firstName.ReadOnly = lastName.ReadOnly = email.ReadOnly = company.ReadOnly = true;
+                    error.ForeColor = Color.FromArgb(23, 113, 78);
+                    error.Text = String.Format(L(CLMessageResources.DeviceLicense_RequestSent), email.Text);
+                    confirm.Text = ConfirmText();
+                }
+            }
         }
 
         private static Control FieldBlock(string label, TextBox box, string hint = null)
@@ -322,9 +343,10 @@ namespace SSW
         private async Task SubmitAsync()
         {
             error.Text = "";
+            error.ForeColor = Color.Firebrick;
             if (String.IsNullOrWhiteSpace(firstName.Text) || String.IsNullOrWhiteSpace(lastName.Text) ||
                 String.IsNullOrWhiteSpace(email.Text) || !email.Text.Contains("@") || String.IsNullOrWhiteSpace(company.Text) ||
-                (mode == CLDeviceLicenseMode.NewInstallation && (pin.Text.Length != 6 || !Int32.TryParse(pin.Text, out _))))
+                (mode == CLDeviceLicenseMode.NewInstallation && requestSent && (pin.Text.Length != 6 || !Int32.TryParse(pin.Text, out _))))
             {
                 error.Text = L(CLMessageResources.DeviceLicense_InvalidFields);
                 return;
@@ -334,6 +356,18 @@ namespace SSW
             {
                 var client = new CLSelectionApiClient();
                 var context = CLSelectionRegistrationContext.FromEnvironment(CLEnvironment.Current);
+                if (mode == CLDeviceLicenseMode.NewInstallation && !requestSent)
+                {
+                    await client.RequestDeviceLicenseAsync(firstName.Text, lastName.Text, email.Text, company.Text, context);
+                    CLDeviceLicenseStore.SavePendingRequest(firstName.Text, lastName.Text, email.Text, company.Text);
+                    requestSent = true;
+                    pinBlock.Visible = true;
+                    firstName.ReadOnly = lastName.ReadOnly = email.ReadOnly = company.ReadOnly = true;
+                    error.ForeColor = Color.FromArgb(23, 113, 78);
+                    error.Text = String.Format(L(CLMessageResources.DeviceLicense_RequestSent), email.Text.Trim());
+                    pin.Focus();
+                    return;
+                }
                 CLDeviceLicenseResult result = mode == CLDeviceLicenseMode.NewInstallation
                     ? await client.ActivateDeviceLicenseAsync(firstName.Text, lastName.Text, email.Text, company.Text, pin.Text, context)
                     : await client.ClaimLegacyDeviceLicenseAsync(firstName.Text, lastName.Text, email.Text, company.Text, context);
@@ -372,7 +406,7 @@ namespace SSW
         private string ConfirmText()
         {
             return mode == CLDeviceLicenseMode.NewInstallation
-                ? L(CLMessageResources.DeviceLicense_Activate)
+                ? L(requestSent ? CLMessageResources.DeviceLicense_Activate : CLMessageResources.DeviceLicense_RequestActivation)
                 : L(CLMessageResources.DeviceLicense_Register);
         }
 

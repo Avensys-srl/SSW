@@ -914,6 +914,8 @@ Salvare prima il file .sswsel quando è necessario preservare gli input di calco
   <data name="DeviceLicense_InstallationCode" xml:space="preserve"><value>Codice di installazione</value></data>
   <data name="DeviceLicense_InstallationCodeHint" xml:space="preserve"><value>6 cifre, ricevute da Avensys</value></data>
   <data name="DeviceLicense_Activate" xml:space="preserve"><value>Attiva</value></data>
+  <data name="DeviceLicense_RequestActivation" xml:space="preserve"><value>Richiedi attivazione</value></data>
+  <data name="DeviceLicense_RequestSent" xml:space="preserve"><value>Richiesta inviata per {0}. Inserisci il codice di attivazione ricevuto da Avensys.</value></data>
   <data name="DeviceLicense_Register" xml:space="preserve"><value>Registra</value></data>
   <data name="DeviceLicense_Exit" xml:space="preserve"><value>Esci</value></data>
   <data name="DeviceLicense_InvalidFields" xml:space="preserve"><value>Compila tutti i campi con dati validi.</value></data>

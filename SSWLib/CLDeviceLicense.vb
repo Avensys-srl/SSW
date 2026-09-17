@@ -21,6 +21,8 @@ Public NotInheritable Class CLDeviceLicenseState
     Public Property FirstName As String
     Public Property LastName As String
     Public Property Email As String
+    Public Property CompanyName As String
+    Public Property ActivationRequestPending As Boolean
     Public Property DeviceNumber As Integer?
     Public Property LastOnlineCheckUtc As DateTime?
     Public Property ValidUntilUtc As DateTime?
@@ -32,6 +34,8 @@ Public NotInheritable Class CLDeviceLicenseSnapshot
     Public Property FirstName As String
     Public Property LastName As String
     Public Property Email As String
+    Public Property CompanyName As String
+    Public Property ActivationRequestPending As Boolean
     Public Property DeviceNumber As Integer?
     Public Property LastOnlineCheckUtc As DateTime?
     Public Property ValidUntilUtc As DateTime?
@@ -67,17 +71,30 @@ Public NotInheritable Class CLDeviceLicenseStore
                 }
             End If
             Return New CLDeviceLicenseSnapshot With {
-                .Mode = If(state.Revoked, CLDeviceLicenseMode.Revoked,
-                    If(state.ValidUntilUtc.HasValue AndAlso state.ValidUntilUtc.Value > DateTime.UtcNow, CLDeviceLicenseMode.Active, CLDeviceLicenseMode.OfflineExpired)),
+                .Mode = If(state.ActivationRequestPending, CLDeviceLicenseMode.NewInstallation,
+                    If(state.Revoked, CLDeviceLicenseMode.Revoked,
+                    If(state.ValidUntilUtc.HasValue AndAlso state.ValidUntilUtc.Value > DateTime.UtcNow, CLDeviceLicenseMode.Active, CLDeviceLicenseMode.OfflineExpired))),
                 .FirstName = state.FirstName,
                 .LastName = state.LastName,
                 .Email = state.Email,
+                .CompanyName = state.CompanyName,
+                .ActivationRequestPending = state.ActivationRequestPending,
                 .DeviceNumber = state.DeviceNumber,
                 .LastOnlineCheckUtc = state.LastOnlineCheckUtc,
                 .ValidUntilUtc = state.ValidUntilUtc
             }
         End Function)
     End Function
+
+    Public Shared Sub SavePendingRequest(firstName As String, lastName As String, email As String, companyName As String)
+        Locked(Function()
+            WriteState(New CLDeviceLicenseState With {
+                .FirstName = firstName.Trim(), .LastName = lastName.Trim(), .Email = email.Trim().ToLowerInvariant(),
+                .CompanyName = companyName.Trim(), .ActivationRequestPending = True, .Revoked = False
+            })
+            Return Nothing
+        End Function)
+    End Sub
 
     Public Shared Sub SaveActive(firstName As String, lastName As String, email As String, deviceNumber As Integer, validUntilUtc As DateTime)
         Locked(Function()
@@ -181,6 +198,26 @@ Public NotInheritable Class CLDeviceLicenseResult
 End Class
 
 Partial Public NotInheritable Class CLSelectionApiClient
+    Public Async Function RequestDeviceLicenseAsync(firstName As String, lastName As String, email As String, companyName As String,
+        context As CLSelectionRegistrationContext, Optional cancellationToken As CancellationToken = Nothing) As Task
+        ValidateContext(context)
+        Dim credentials = CLSelectionCredentialStore.LoadOrCreate()
+        Dim payload = LicenseProfilePayload(firstName, lastName, email, companyName)
+        payload("installation_id") = credentials.InstallationId
+        payload("installation_code") = CLSelectionInstallationStateStore.GetInstallationCode()
+        payload("software_version") = context.SoftwareVersion
+        payload("database_schema_version") = context.DatabaseSchemaVersion
+        payload("database_content_hash") = context.DatabaseContentHash
+        payload("api_contract_version") = context.ApiContractVersion
+        Using request As New HttpRequestMessage(HttpMethod.Post, BuildUri("license/request"))
+            request.Content = JsonContent(payload)
+            Using response = Await m_HttpClient.SendAsync(request, cancellationToken).ConfigureAwait(False)
+                Dim body = Await response.Content.ReadAsStringAsync().ConfigureAwait(False)
+                If Not response.IsSuccessStatusCode Then Throw CreateApiException(response.StatusCode, body)
+            End Using
+        End Using
+    End Function
+
     Public Async Function ActivateDeviceLicenseAsync(firstName As String, lastName As String, email As String, companyName As String, pin As String,
         context As CLSelectionRegistrationContext, Optional cancellationToken As CancellationToken = Nothing) As Task(Of CLDeviceLicenseResult)
         ValidateContext(context)

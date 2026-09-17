@@ -58,14 +58,15 @@ $updateProbe = Start-Process -FilePath (Join-Path $releaseDirectory 'SSW.exe') `
 if ($updateProbe.ExitCode -ne 0) {
     throw "Startup update check smoke failed with exit code $($updateProbe.ExitCode)."
 }
-$hostSource = Get-Content -LiteralPath (Join-Path $repo 'SSW\CLNextHostForm.cs') -Raw
-if ($hostSource -notmatch 'Shown \+= async delegate[\s\S]+CheckForSoftwareUpdate\(false\)') {
-    throw 'SSW Next UI startup does not invoke the automatic update check.'
+$programSource = Get-Content -LiteralPath (Join-Path $repo 'SSW\CLProgram.cs') -Raw
+if ($programSource -notmatch 'CheckForSoftwareUpdate\(false\)[\s\S]+ValidateForNormalStartup') {
+    throw 'SSW startup must check for updates before enforcing device licensing.'
 }
 
 $resourceFiles = Get-ChildItem (Join-Path $repo 'SSWLib') -Filter 'Resources.*.resx'
 if ($resourceFiles.Count -ne 15) { throw "Expected 15 localized RESX files, found $($resourceFiles.Count)." }
 $requiredKeys = @('Update_Title','Update_CheckFailed','Update_PackageIntegrityFailed',
+    'DeviceLicense_RequestActivation','DeviceLicense_RequestSent',
     'MainForm_SelectionRegistration_Title','Water',
     'MainForm_CoilPerformance_ResultAirOut',
     'MainForm_CoilPerformance_InvalidCoolingTemperatures',

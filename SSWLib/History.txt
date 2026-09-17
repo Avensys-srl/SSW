@@ -1,6 +1,12 @@
 SSW Changelog
 =============
 
+2.0.0.3 - 2026-09-17
+--------------------
+- Added a two-step activation flow: the user accepts the terms and sends a visible license request before the PIN field is shown.
+- Persisted pending requests locally, exposed them in the license portal and added a notification badge for new license activity.
+- Moved the update check before license enforcement so future blocked installations can still receive software updates.
+
 2.0.0.2 - 2026-09-16
 --------------------
 - Added a fourth preselection criterion that restricts results to rotary heat recovery units in families 6 and 9, with full localization and project persistence.

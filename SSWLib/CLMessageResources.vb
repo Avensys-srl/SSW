@@ -14,6 +14,8 @@ Public Enum CLMessageResources
     DeviceLicense_InstallationCode
     DeviceLicense_InstallationCodeHint
     DeviceLicense_Activate
+    DeviceLicense_RequestActivation
+    DeviceLicense_RequestSent
     DeviceLicense_Register
     DeviceLicense_Exit
     DeviceLicense_InvalidFields
