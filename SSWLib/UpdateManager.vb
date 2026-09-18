@@ -35,6 +35,14 @@ Public Class UpdateManager
             Dim separator = If(checkUrl.Contains("?"), "&", "?")
             Dim checkUri As String = checkUrl & separator & "current_version=" &
                 Uri.EscapeDataString(currentAppVersion.ToString())
+            Try
+                Dim credentials = CLSelectionCredentialStore.LoadOrCreate()
+                If credentials IsNot Nothing AndAlso Not String.IsNullOrWhiteSpace(credentials.AccessToken) Then
+                    checkUri &= "&access_token=" & Uri.EscapeDataString(credentials.AccessToken)
+                End If
+            Catch
+                ' Update checks remain available for legacy installations without credentials.
+            End Try
             Using response As HttpResponseMessage = Await client.GetAsync(checkUri)
                 response.EnsureSuccessStatusCode()
                 Dim jsonString As String = Await response.Content.ReadAsStringAsync()
