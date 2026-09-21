@@ -45,7 +45,12 @@ namespace SSW
                 StartHeartbeat(TimeSpan.FromSeconds(2));
                 return true;
             }
-            if (!TryRefresh(snapshot)) return false;
+            if (!TryRefresh(snapshot))
+            {
+                if (CLDeviceLicenseStore.LoadSnapshot().Mode == CLDeviceLicenseMode.NewInstallation)
+                    return ValidateForNormalStartup();
+                return false;
+            }
             StartHeartbeat(TimeSpan.FromHours(6));
             return true;
         }
@@ -61,7 +66,7 @@ namespace SSW
             {
                 if (exception.StatusCode == HttpStatusCode.Forbidden || exception.StatusCode == HttpStatusCode.Unauthorized)
                 {
-                    CLDeviceLicenseStore.MarkRevoked();
+                    CLDeviceLicenseStore.ResetForNewActivation();
                     MessageBox.Show(L(CLMessageResources.DeviceLicense_NotActive), L(CLMessageResources.DeviceLicense_LicenseTitle), MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return false;
                 }

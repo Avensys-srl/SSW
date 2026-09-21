@@ -1,6 +1,12 @@
 SSW Changelog
 =============
 
+2.0.0.11 - 2026-09-21
+---------------------
+- Return automatically to PIN activation when a previously registered local license has been deleted or rejected by the server.
+- Allow an archived installation belonging to a deleted user to be safely reassigned after a new approved registration.
+- Accept harmless differences in the company name during activation; identity remains bound to the approved email and PIN.
+
 2.0.0.6 - 2026-09-17
 --------------------
 - Aligned setup and activation language with the Windows display language and enabled all available installer translations for supported SSW languages.

@@ -361,6 +361,9 @@ internal static class Program
             CLDeviceLicenseStore.MarkRevoked();
             if (CLDeviceLicenseStore.LoadSnapshot().Mode != CLDeviceLicenseMode.Revoked)
                 throw new InvalidOperationException("Revoked device state was not persisted.");
+            CLDeviceLicenseStore.ResetForNewActivation();
+            if (CLDeviceLicenseStore.LoadSnapshot().Mode != CLDeviceLicenseMode.NewInstallation)
+                throw new InvalidOperationException("A rejected device license did not return to new activation.");
         }
         finally
         {

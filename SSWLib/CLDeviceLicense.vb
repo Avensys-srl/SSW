@@ -130,6 +130,14 @@ Public NotInheritable Class CLDeviceLicenseStore
         End Function)
     End Sub
 
+    Public Shared Sub ResetForNewActivation()
+        Locked(Function()
+            If File.Exists(StateFilePath) Then File.Delete(StateFilePath)
+            CLSelectionCredentialStore.ClearAccessToken()
+            Return Nothing
+        End Function)
+    End Sub
+
     Private Shared Function ReadState() As CLDeviceLicenseState
         If Not File.Exists(StateFilePath) Then Return Nothing
         Try
