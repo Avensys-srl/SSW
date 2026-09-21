@@ -35,14 +35,6 @@ Public Class UpdateManager
             Dim separator = If(checkUrl.Contains("?"), "&", "?")
             Dim checkUri As String = checkUrl & separator & "current_version=" &
                 Uri.EscapeDataString(currentAppVersion.ToString())
-            Try
-                Dim credentials = CLSelectionCredentialStore.LoadOrCreate()
-                If credentials IsNot Nothing AndAlso Not String.IsNullOrWhiteSpace(credentials.AccessToken) Then
-                    checkUri &= "&access_token=" & Uri.EscapeDataString(credentials.AccessToken)
-                End If
-            Catch
-                ' Update checks remain available for legacy installations without credentials.
-            End Try
             Using response As HttpResponseMessage = Await client.GetAsync(checkUri)
                 response.EnsureSuccessStatusCode()
                 Dim jsonString As String = Await response.Content.ReadAsStringAsync()
@@ -167,6 +159,7 @@ Public Class UpdateManager
         Dim progressForm As DownloadProgressForm = Nothing
 
         Try
+            LogUpdate("download_start", downloadUrl)
             fileName = Path.GetFileName(fileName)
             If Not fileName.EndsWith(".exe", StringComparison.OrdinalIgnoreCase) Then
                 Throw New InvalidDataException(PackageIntegrityError())
@@ -186,6 +179,7 @@ Public Class UpdateManager
                 progressForm.Refresh()
 
                 Using response As HttpResponseMessage = Await client.GetAsync(downloadUrl, HttpCompletionOption.ResponseHeadersRead)
+                    LogUpdate("download_headers", CInt(response.StatusCode).ToString() & " " & response.ReasonPhrase)
                     If Not response.IsSuccessStatusCode Then
                         Throw New InvalidOperationException($"Download failed: {response.StatusCode} - {response.ReasonPhrase}")
                     End If
@@ -200,20 +194,16 @@ Public Class UpdateManager
             End Using
 
             VerifyDownloadedInstaller(localPath, versionInfo)
+            LogUpdate("download_verified", localPath)
 
             progressForm.Close()
             progressForm = Nothing
 
-            Dim psi As New ProcessStartInfo()
-            psi.FileName = localPath
-            psi.Arguments = "/CLOSEAPPLICATIONS /RESTARTAPPLICATIONS"
-            psi.UseShellExecute = True
-            Process.Start(psi)
-            ' The update check runs before Application.Run starts its message loop.
-            ' Application.Exit() only posts an exit request in that state, leaving
-            ' the process alive while Inno Setup is trying to replace its files.
+            StartInstallerAfterExit(localPath)
+            LogUpdate("installer_queued", localPath)
             Environment.Exit(0)
         Catch ex As Exception
+            LogUpdate("update_failed", ex.ToString())
             If progressForm IsNot Nothing Then
                 progressForm.Close()
             End If
@@ -228,6 +218,29 @@ Public Class UpdateManager
                             "Download Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Function
+
+    Private Shared Sub StartInstallerAfterExit(installerPath As String)
+        Dim escapedPath As String = installerPath.Replace("'", "''")
+        Dim command As String = "$p=Get-Process -Id " & Process.GetCurrentProcess().Id.ToString() &
+            " -ErrorAction SilentlyContinue; if($p){$p.WaitForExit()}; " &
+            "Start-Process -FilePath '" & escapedPath & "' -ArgumentList '/CLOSEAPPLICATIONS','/RESTARTAPPLICATIONS'"
+        Dim psi As New ProcessStartInfo()
+        psi.FileName = "powershell.exe"
+        psi.Arguments = "-NoProfile -NonInteractive -WindowStyle Hidden -Command """ & command.Replace("""", "\""") & """"
+        psi.UseShellExecute = False
+        psi.CreateNoWindow = True
+        Process.Start(psi)
+    End Sub
+
+    Private Shared Sub LogUpdate(eventName As String, details As String)
+        Try
+            Dim folder As String = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Avensys", "SSW", "Logs")
+            Directory.CreateDirectory(folder)
+            Dim line As String = DateTime.UtcNow.ToString("o") & vbTab & eventName & vbTab & details.Replace(vbCr, " ").Replace(vbLf, " ")
+            File.AppendAllText(Path.Combine(folder, "software-update.log"), line & Environment.NewLine)
+        Catch
+        End Try
+    End Sub
 
     Private Shared Sub VerifyDownloadedInstaller(filePath As String, versionInfo As SoftwareVersionInfo)
         Dim fileInfo As New FileInfo(filePath)
