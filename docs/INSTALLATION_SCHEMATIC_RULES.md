@@ -4,7 +4,7 @@
 - Mounting and airflow are separate drawings. The mounting drawing shows the support surface and red access/viewing arrow.
 - Mounting unit rectangles share the same proportions: horizontal 170 by 53.333, upright floor and both wall views 53.333 by 170 (the horizontal rectangle rotated by 90 degrees). This applies to UI and RDLC, not airflow-view rectangles.
 - Ceiling mounting includes two thin red vertical suspension lines connecting the mounting surface to the unit, symmetrically positioned near its ends.
-- A1/B1 SSC upright floor mounting only: the mounting unit is taller than wide, with a left-to-right access arrow and localized front-access label above it.
+- Any SSC floor configuration with `ReferenceView = SSC_UPRIGHT` uses an upright mounting unit, with a left-to-right access arrow and localized front-access label above it. The configuration code does not determine the geometry.
 - In the upright SSC floor mounting view, the unit rectangle, red support line, installation title and SHK note share the same vertical centerline. The access arrow remains to the left.
 - Horizontal floor configurations with East-West reference view and front access use the same upright mounting geometry, left-to-right front-access arrow and centered lower support. This includes the Series 6 `E2` case; the optional SHK note remains visible.
 - All ST floor configurations use the same upright mounting geometry, centered lower support and left-to-right front-access arrow. Their airflow-port geometry remains independent and will be defined separately.

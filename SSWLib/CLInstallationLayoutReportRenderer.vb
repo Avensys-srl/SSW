@@ -82,7 +82,7 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
         Dim st = EqualsCode(snapshot.AeraulicConnectionCode, "ST")
         Dim ns = Not ssc AndAlso mode = "wall" AndAlso c.ReferenceView = "OSC_NORTH_SOUTH"
         Dim splitPortFour = Not ssc AndAlso IsFsVsHciModel(modelCode)
-        Dim uprightSsc = ssc AndAlso mode = "floor" AndAlso c.ReferenceView = "SSC_UPRIGHT" AndAlso {"A1", "B1"}.Contains(code)
+        Dim uprightSsc = ssc AndAlso mode = "floor" AndAlso c.ReferenceView = "SSC_UPRIGHT"
         Dim uprightSt = mode = "floor" AndAlso st
         Dim uprightFrontAccessFloor = mode = "floor" AndAlso
             c.Orientation = CLInstallationLayoutOrientation.Horizontal AndAlso
@@ -334,7 +334,7 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
             Dim faceOn As Boolean
             Dim centerY As Single
             If uprightSameSide Then
-                ' A1/B1: the unit stands on its back, with ducts facing the ceiling.
+                ' SSC_UPRIGHT: the unit stands upright, with ducts facing the ceiling.
                 edge = PortEdge.Top
                 faceOn = False
                 centerY = unitRectangle.Top

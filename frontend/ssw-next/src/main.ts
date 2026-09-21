@@ -1685,7 +1685,7 @@ const renderInstallationStep = (): string => {
   const text = messages();
   const compatibleLayouts = layoutsForInstallation(draft!.installationMode);
   const surface = accessSurface();
-  const uprightSscFloor = isSameSideUprightFloor() && ["A1", "B1"].includes(draft!.layoutCode);
+  const uprightSscFloor = isSameSideUprightFloor();
   const uprightStFloor = isStConnection() && draft!.installationMode === "floor";
   const uprightFloor = uprightSscFloor || uprightStFloor || isFrontAccessHorizontalEastWestFloor();
   const stFlowLayout = isStConnection();
