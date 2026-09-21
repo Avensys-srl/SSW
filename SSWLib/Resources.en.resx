@@ -985,7 +985,7 @@ Language names in the language menu are intentionally always displayed as autony
   <data name="DeviceLicense_Eyebrow" xml:space="preserve"><value>AVENSYS  ·  SSW LICENSE</value></data>
   <data name="DeviceLicense_ActivationTitle" xml:space="preserve"><value>SSW activation</value></data>
   <data name="DeviceLicense_ProfileTitle" xml:space="preserve"><value>Complete your SSW profile</value></data>
-  <data name="DeviceLicense_ActivationDescription" xml:space="preserve"><value>Enter the details provided to Avensys and the installation code you received.</value></data>
+  <data name="DeviceLicense_ActivationDescription" xml:space="preserve"><value>Enter your registered email address and the six-digit PIN received from Avensys.</value></data>
   <data name="DeviceLicense_ProfileDescription" xml:space="preserve"><value>This installation is already active. Register it to the person who uses it.</value></data>
   <data name="DeviceLicense_FirstName" xml:space="preserve"><value>First name</value></data>
   <data name="DeviceLicense_LastName" xml:space="preserve"><value>Last name</value></data>

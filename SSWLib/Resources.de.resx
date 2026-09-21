@@ -793,13 +793,13 @@ Speichern Sie zuerst die Datei .sswsel, wenn Sie bearbeitbare Berechnungseingabe
   <data name="DeviceLicense_Eyebrow" xml:space="preserve"><value>AVENSYS  ·  SSW LICENSE</value></data>
   <data name="DeviceLicense_ActivationTitle" xml:space="preserve"><value>SSW activation</value></data>
   <data name="DeviceLicense_ProfileTitle" xml:space="preserve"><value>Complete your SSW profile</value></data>
-  <data name="DeviceLicense_ActivationDescription" xml:space="preserve"><value>Enter the details provided to Avensys and the installation code you received.</value></data>
+  <data name="DeviceLicense_ActivationDescription" xml:space="preserve"><value>Geben Sie Ihre registrierte E-Mail-Adresse und die sechsstellige PIN von Avensys ein.</value></data>
   <data name="DeviceLicense_ProfileDescription" xml:space="preserve"><value>This installation is already active. Register it to the person who uses it.</value></data>
   <data name="DeviceLicense_FirstName" xml:space="preserve"><value>First name</value></data>
   <data name="DeviceLicense_LastName" xml:space="preserve"><value>Last name</value></data>
   <data name="DeviceLicense_Email" xml:space="preserve"><value>Email</value></data>
-  <data name="DeviceLicense_InstallationCode" xml:space="preserve"><value>Installation code</value></data>
-  <data name="DeviceLicense_InstallationCodeHint" xml:space="preserve"><value>6 digits, provided by Avensys</value></data>
+  <data name="DeviceLicense_InstallationCode" xml:space="preserve"><value>Aktivierungscode (6 Ziffern)</value></data>
+  <data name="DeviceLicense_InstallationCodeHint" xml:space="preserve"><value>6 Ziffern, von Avensys bereitgestellt</value></data>
   <data name="DeviceLicense_Activate" xml:space="preserve"><value>Activate</value></data>
   <data name="DeviceLicense_RequestActivation" xml:space="preserve"><value>Aktivierung anfordern</value></data>
   <data name="DeviceLicense_RequestSent" xml:space="preserve"><value>Anfrage gesendet. Warten Sie auf den Aktivierungscode an {0}.</value></data>

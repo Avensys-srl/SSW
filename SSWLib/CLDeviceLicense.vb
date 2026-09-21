@@ -230,7 +230,11 @@ Partial Public NotInheritable Class CLSelectionApiClient
         context As CLSelectionRegistrationContext, Optional cancellationToken As CancellationToken = Nothing) As Task(Of CLDeviceLicenseResult)
         ValidateContext(context)
         Dim credentials = CLSelectionCredentialStore.LoadOrCreate()
-        Dim payload = LicenseProfilePayload(firstName, lastName, email, companyName)
+        If String.IsNullOrWhiteSpace(email) Then Throw New ArgumentException("Email is required.", NameOf(email))
+        Dim payload = New Dictionary(Of String, Object) From {{"email", email.Trim().ToLowerInvariant()}}
+        If Not String.IsNullOrWhiteSpace(firstName) Then payload("first_name") = firstName.Trim()
+        If Not String.IsNullOrWhiteSpace(lastName) Then payload("last_name") = lastName.Trim()
+        If Not String.IsNullOrWhiteSpace(companyName) Then payload("company_name") = companyName.Trim()
         payload("activation_code") = pin.Trim()
         payload("installation_id") = credentials.InstallationId
         payload("installation_code") = CLSelectionInstallationStateStore.GetInstallationCode()

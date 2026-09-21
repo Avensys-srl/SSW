@@ -906,7 +906,7 @@ Salvare prima il file .sswsel quando è necessario preservare gli input di calco
   <data name="DeviceLicense_Eyebrow" xml:space="preserve"><value>AVENSYS  ·  LICENZA SSW</value></data>
   <data name="DeviceLicense_ActivationTitle" xml:space="preserve"><value>Attivazione SSW</value></data>
   <data name="DeviceLicense_ProfileTitle" xml:space="preserve"><value>Completa il profilo SSW</value></data>
-  <data name="DeviceLicense_ActivationDescription" xml:space="preserve"><value>Inserisci i dati comunicati ad Avensys e il codice di installazione ricevuto.</value></data>
+  <data name="DeviceLicense_ActivationDescription" xml:space="preserve"><value>Inserisci l’indirizzo email registrato e il PIN di sei cifre ricevuto da Avensys.</value></data>
   <data name="DeviceLicense_ProfileDescription" xml:space="preserve"><value>Questa installazione è già attiva. Registrala a nome della persona che la utilizza.</value></data>
   <data name="DeviceLicense_FirstName" xml:space="preserve"><value>Nome</value></data>
   <data name="DeviceLicense_LastName" xml:space="preserve"><value>Cognome</value></data>

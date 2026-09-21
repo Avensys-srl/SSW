@@ -127,8 +127,6 @@ namespace SSW
         private readonly TextBox company = new TextBox();
         private readonly TextBox pin = new TextBox();
         private Control pinBlock;
-        private bool requestSent;
-        private bool codeEntryVisible;
         private readonly Label error = new Label();
         private readonly Button confirm = new Button();
         private readonly CheckBox privacyAcknowledgement = new CheckBox();
@@ -200,28 +198,32 @@ namespace SSW
             var fields = new TableLayoutPanel {
                 Dock = DockStyle.Fill,
                 ColumnCount = 2,
-                RowCount = mode == CLDeviceLicenseMode.NewInstallation ? 4 : 3,
+                RowCount = mode == CLDeviceLicenseMode.NewInstallation ? 2 : 3,
                 Padding = new Padding(24, 18, 24, 8),
                 BackColor = Color.White
             };
             fields.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             fields.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             for (int row = 0; row < fields.RowCount; row++) fields.RowStyles.Add(new RowStyle(SizeType.Percent, 100F / fields.RowCount));
-            fields.Controls.Add(FieldBlock(L(CLMessageResources.DeviceLicense_FirstName), firstName), 0, 0);
-            fields.Controls.Add(FieldBlock(L(CLMessageResources.DeviceLicense_LastName), lastName), 1, 0);
-            fields.Controls.Add(FieldBlock(L(CLMessageResources.DeviceLicense_Email), email), 0, 1);
-            fields.SetColumnSpan(fields.GetControlFromPosition(0, 1), 2);
-            fields.Controls.Add(FieldBlock(L(CLMessageResources.DeviceLicense_Company), company), 0, 2);
-            fields.SetColumnSpan(fields.GetControlFromPosition(0, 2), 2);
             if (mode == CLDeviceLicenseMode.NewInstallation)
             {
+                fields.Controls.Add(FieldBlock(L(CLMessageResources.DeviceLicense_Email), email), 0, 0);
+                fields.SetColumnSpan(fields.GetControlFromPosition(0, 0), 2);
                 pin.MaxLength = 6;
                 pin.TextAlign = HorizontalAlignment.Center;
                 pinBlock = FieldBlock(L(CLMessageResources.DeviceLicense_InstallationCode), pin,
                     L(CLMessageResources.DeviceLicense_InstallationCodeHint));
-                pinBlock.Visible = false;
-                fields.Controls.Add(pinBlock, 0, 3);
+                fields.Controls.Add(pinBlock, 0, 1);
                 fields.SetColumnSpan(pinBlock, 2);
+            }
+            else
+            {
+                fields.Controls.Add(FieldBlock(L(CLMessageResources.DeviceLicense_FirstName), firstName), 0, 0);
+                fields.Controls.Add(FieldBlock(L(CLMessageResources.DeviceLicense_LastName), lastName), 1, 0);
+                fields.Controls.Add(FieldBlock(L(CLMessageResources.DeviceLicense_Email), email), 0, 1);
+                fields.SetColumnSpan(fields.GetControlFromPosition(0, 1), 2);
+                fields.Controls.Add(FieldBlock(L(CLMessageResources.DeviceLicense_Company), company), 0, 2);
+                fields.SetColumnSpan(fields.GetControlFromPosition(0, 2), 2);
             }
             root.Controls.Add(fields, 0, 1);
 
@@ -304,16 +306,7 @@ namespace SSW
                 CLDeviceLicenseSnapshot snapshot = CLDeviceLicenseStore.LoadSnapshot();
                 if (snapshot.ActivationRequestPending)
                 {
-                    firstName.Text = snapshot.FirstName;
-                    lastName.Text = snapshot.LastName;
                     email.Text = snapshot.Email;
-                    company.Text = snapshot.CompanyName;
-                    requestSent = true;
-                    pinBlock.Visible = false;
-                    firstName.ReadOnly = lastName.ReadOnly = email.ReadOnly = company.ReadOnly = true;
-                    error.ForeColor = Color.FromArgb(23, 113, 78);
-                    error.Text = String.Format(L(CLMessageResources.DeviceLicense_RequestSent), email.Text);
-                    confirm.Text = ConfirmText();
                 }
             }
         }
@@ -350,9 +343,12 @@ namespace SSW
         {
             error.Text = "";
             error.ForeColor = Color.Firebrick;
-            if (String.IsNullOrWhiteSpace(firstName.Text) || String.IsNullOrWhiteSpace(lastName.Text) ||
-                String.IsNullOrWhiteSpace(email.Text) || !email.Text.Contains("@") || String.IsNullOrWhiteSpace(company.Text) ||
-                (mode == CLDeviceLicenseMode.NewInstallation && codeEntryVisible && (pin.Text.Length != 6 || !Int32.TryParse(pin.Text, out _))))
+            bool invalidNewActivation = mode == CLDeviceLicenseMode.NewInstallation &&
+                (String.IsNullOrWhiteSpace(email.Text) || !email.Text.Contains("@") || pin.Text.Length != 6 || !Int32.TryParse(pin.Text, out _));
+            bool invalidLegacyProfile = mode != CLDeviceLicenseMode.NewInstallation &&
+                (String.IsNullOrWhiteSpace(firstName.Text) || String.IsNullOrWhiteSpace(lastName.Text) ||
+                 String.IsNullOrWhiteSpace(email.Text) || !email.Text.Contains("@") || String.IsNullOrWhiteSpace(company.Text));
+            if (invalidNewActivation || invalidLegacyProfile)
             {
                 error.Text = L(CLMessageResources.DeviceLicense_InvalidFields);
                 return;
@@ -362,28 +358,8 @@ namespace SSW
             {
                 var client = new CLSelectionApiClient();
                 var context = CLSelectionRegistrationContext.FromEnvironment(CLEnvironment.Current);
-                if (mode == CLDeviceLicenseMode.NewInstallation && requestSent && !codeEntryVisible)
-                {
-                    codeEntryVisible = true;
-                    pinBlock.Visible = true;
-                    error.Text = "";
-                    confirm.Text = ConfirmText();
-                    pin.Focus();
-                    return;
-                }
-                if (mode == CLDeviceLicenseMode.NewInstallation && !requestSent)
-                {
-                    await client.RequestDeviceLicenseAsync(firstName.Text, lastName.Text, email.Text, company.Text, context);
-                    CLDeviceLicenseStore.SavePendingRequest(firstName.Text, lastName.Text, email.Text, company.Text);
-                    requestSent = true;
-                    pinBlock.Visible = false;
-                    firstName.ReadOnly = lastName.ReadOnly = email.ReadOnly = company.ReadOnly = true;
-                    error.ForeColor = Color.FromArgb(23, 113, 78);
-                    error.Text = String.Format(L(CLMessageResources.DeviceLicense_RequestSent), email.Text.Trim());
-                    return;
-                }
                 CLDeviceLicenseResult result = mode == CLDeviceLicenseMode.NewInstallation
-                    ? await client.ActivateDeviceLicenseAsync(firstName.Text, lastName.Text, email.Text, company.Text, pin.Text, context)
+                    ? await client.ActivateDeviceLicenseAsync("", "", email.Text, "", pin.Text, context)
                     : await client.ClaimLegacyDeviceLicenseAsync(firstName.Text, lastName.Text, email.Text, company.Text, context);
                 CLDeviceLicenseStore.SaveActive(firstName.Text, lastName.Text, email.Text, result.DeviceNumber, result.ValidUntilUtc);
                 DialogResult = DialogResult.OK;
@@ -420,8 +396,7 @@ namespace SSW
         private string ConfirmText()
         {
             return mode == CLDeviceLicenseMode.NewInstallation
-                ? L(!requestSent ? CLMessageResources.DeviceLicense_RequestActivation
-                    : (!codeEntryVisible ? CLMessageResources.DeviceLicense_CodeReceived : CLMessageResources.DeviceLicense_Activate))
+                ? L(CLMessageResources.DeviceLicense_Activate)
                 : L(CLMessageResources.DeviceLicense_Register);
         }
 
