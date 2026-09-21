@@ -1,6 +1,11 @@
 SSW Changelog
 =============
 
+2.0.0.16 - 2026-09-21
+---------------------
+- Made upright SSC floor schematics depend on the catalog `SSC_UPRIGHT` reference view instead of the historical A1/B1 code list.
+- Applied the same catalog-driven geometry to the interactive installation page and generated reports.
+
 2.0.0.15 - 2026-09-21
 ---------------------
 - Removed the startup updater deadlock caused by awaiting the installer download while the WinForms UI thread was synchronously waiting for the update check.
