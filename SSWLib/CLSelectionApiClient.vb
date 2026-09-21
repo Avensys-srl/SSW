@@ -40,7 +40,7 @@ Public NotInheritable Class CLSelectionRegistrationContext
         If String.IsNullOrWhiteSpace(apiCustomerCode) Then apiCustomerCode = environment.CustomerCode
         Return New CLSelectionRegistrationContext With {
             .CustomerCode = apiCustomerCode,
-            .SoftwareVersion = CLTechnicalVersions.SoftwareVersion.ToString(),
+            .SoftwareVersion = environment.SSWInfo.ReleaseVersion.ToString(),
             .DatabaseSchemaVersion = Math.Max(1, databaseInfo.SchemaVersion),
             .DatabaseContentHash = contentHash,
             .ApiContractVersion = CLTechnicalVersions.CurrentApiContractVersion

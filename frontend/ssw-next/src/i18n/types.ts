@@ -181,6 +181,7 @@ export interface UiMessages {
     outdoorRelativeHumidity: string;
     returnTemperature: string;
     returnRelativeHumidity: string;
+    supplyAirTemperature: string;
     results: string;
     compatibleUnits: string;
     orderedByFit: string;

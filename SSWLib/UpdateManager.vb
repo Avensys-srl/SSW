@@ -209,7 +209,10 @@ Public Class UpdateManager
             psi.Arguments = "/CLOSEAPPLICATIONS /RESTARTAPPLICATIONS"
             psi.UseShellExecute = True
             Process.Start(psi)
-            Application.Exit()
+            ' The update check runs before Application.Run starts its message loop.
+            ' Application.Exit() only posts an exit request in that state, leaving
+            ' the process alive while Inno Setup is trying to replace its files.
+            Environment.Exit(0)
         Catch ex As Exception
             If progressForm IsNot Nothing Then
                 progressForm.Close()

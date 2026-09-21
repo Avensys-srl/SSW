@@ -1,6 +1,7 @@
 import { airflowSlot, airflowSide } from "./airflow-layout";
 import { schematicText, flowCircle, mountingSvg } from "./mounting-schematic";
 import { projectActionLabels } from "./project-action-labels";
+import { releaseInfo } from "./release-info.generated";
 import {
   Activity,
   ArrowDown,
@@ -150,8 +151,13 @@ let calculating = false;
 let busyMessage: string | null = null;
 let pendingProjectLanguage: string | null = null;
 let activeProjectDocumentLanguage: string | null = null;
+let saveLanguagePromptOpen = false;
+let saveLanguagePromptSaveAs = false;
+let saveLanguageChoice = "it";
+let saveLanguageRemember = false;
 let toastMessage = "";
 let helpOpen = false;
+let releaseInfoOpen = false;
 let notificationCenterOpen = false;
 let notificationState: FollowUpCenterState = {
   unreadDueCount: 0,
@@ -241,6 +247,29 @@ const localizedSoundPath = (rawCode: string, rawLabel: string): string => {
   return labels[code] ?? (rawLabel || rawCode);
 };
 const helpContent = () => getHelpContent(languageCode());
+const releaseLabels = (): { title: string; version: string; builtAt: string; close: string } => ({
+  en: { title: "Release information", version: "Release", builtAt: "Build date and time", close: "Close" },
+  bg: { title: "Информация за версията", version: "Версия", builtAt: "Дата и час на компилация", close: "Затвори" },
+  cs: { title: "Informace o verzi", version: "Verze", builtAt: "Datum a čas sestavení", close: "Zavřít" },
+  da: { title: "Versionsoplysninger", version: "Version", builtAt: "Builddato og -tid", close: "Luk" },
+  de: { title: "Versionsinformationen", version: "Version", builtAt: "Build-Datum und -Uhrzeit", close: "Schließen" },
+  fr: { title: "Informations sur la version", version: "Version", builtAt: "Date et heure de compilation", close: "Fermer" },
+  hu: { title: "Verzióinformáció", version: "Verzió", builtAt: "Build dátuma és időpontja", close: "Bezárás" },
+  is: { title: "Útgáfuupplýsingar", version: "Útgáfa", builtAt: "Dagsetning og tími smíði", close: "Loka" },
+  it: { title: "Informazioni sulla release", version: "Release", builtAt: "Data e ora della build", close: "Chiudi" },
+  nl: { title: "Versie-informatie", version: "Versie", builtAt: "Builddatum en -tijd", close: "Sluiten" },
+  no: { title: "Versjonsinformasjon", version: "Versjon", builtAt: "Byggedato og -tid", close: "Lukk" },
+  pl: { title: "Informacje o wersji", version: "Wersja", builtAt: "Data i godzina kompilacji", close: "Zamknij" },
+  ro: { title: "Informații despre versiune", version: "Versiune", builtAt: "Data și ora compilării", close: "Închide" },
+  sl: { title: "Informacije o različici", version: "Različica", builtAt: "Datum in čas gradnje", close: "Zapri" },
+  sv: { title: "Versionsinformation", version: "Version", builtAt: "Byggdatum och tid", close: "Stäng" },
+}[languageCode()] ?? { title: "Release information", version: "Release", builtAt: "Build date and time", close: "Close" });
+const saveLanguagePromptText = (): { title: string; message: string; useLanguage: string; remember: string; save: string; cancel: string } => ({
+  it: { title: "Lingua dei documenti", message: "In quale lingua deve essere preparata l'offerta finale?", useLanguage: "Lingua dei documenti", remember: "Non chiedermelo più", save: "Salva", cancel: "Annulla" },
+  en: { title: "Document language", message: "Which language should be used for the final offer?", useLanguage: "Document language", remember: "Do not ask again", save: "Save", cancel: "Cancel" },
+  fr: { title: "Langue des documents", message: "Dans quelle langue l'offre finale doit-elle être préparée ?", useLanguage: "Langue des documents", remember: "Ne plus demander", save: "Enregistrer", cancel: "Annuler" },
+  de: { title: "Dokumentsprache", message: "In welcher Sprache soll das endgültige Angebot erstellt werden?", useLanguage: "Dokumentsprache", remember: "Nicht mehr fragen", save: "Speichern", cancel: "Abbrechen" },
+} as Record<string, { title: string; message: string; useLanguage: string; remember: string; save: string; cancel: string }>)[languageCode()] ?? { title: "Document language", message: "Which language should be used for the final offer?", useLanguage: "Document language", remember: "Do not ask again", save: "Save", cancel: "Cancel" };
 const helpTitle = (key: keyof LocalizedFrontendMessages["tooltips"]): string =>
   tooltipsEnabled ? messages().tooltips[key] : "";
 
@@ -445,26 +474,6 @@ const multiProjectTexts: Record<string, MultiProjectText> = {
 const multiProjectText = (): MultiProjectText =>
   multiProjectTexts[languageCode()] ?? multiProjectTexts.en;
 
-const interfaceLanguageLabels: Record<string, string> = {
-  bg: "Език на интерфейса",
-  cs: "Jazyk rozhraní",
-  da: "Grænsefladesprog",
-  de: "Sprache der Benutzeroberfläche",
-  en: "Interface language",
-  fr: "Langue de l’interface",
-  hu: "Felület nyelve",
-  is: "Tungumál viðmóts",
-  it: "Lingua interfaccia",
-  nl: "Interfacetaal",
-  no: "Grensesnittspråk",
-  pl: "Język interfejsu",
-  ro: "Limba interfeței",
-  sl: "Jezik vmesnika",
-  sv: "Gränssnittsspråk",
-};
-
-const interfaceLanguageLabel = (): string =>
-  interfaceLanguageLabels[languageCode()] ?? interfaceLanguageLabels.en;
 const escapeHtml = (value: unknown): string =>
   String(value ?? "")
     .replaceAll("&", "&amp;")
@@ -860,7 +869,6 @@ const renderCo2Chart = (
 };
 
 const renderLoading = (): void => {
-  const text = messages();
   app.innerHTML = `
     <main class="loading-screen" aria-live="polite">
       <div class="brand-mark" aria-hidden="true">
@@ -868,7 +876,12 @@ const renderLoading = (): void => {
       </div>
       <div class="loading-copy">
         <strong>SSW Next</strong>
-        <span>${escapeHtml(text.common.loading)}</span>
+        <div class="loading-languages">
+          <span lang="en">Please wait a moment...</span>
+          <span lang="fr">Veuillez patienter un instant...</span>
+          <span lang="de">Bitte warten Sie einen Moment...</span>
+          <span lang="it">Pazientare un attimo...</span>
+        </div>
       </div>
       <div class="loading-line"><span></span></div>
     </main>
@@ -923,12 +936,23 @@ const renderShell = (): void => {
 
   const unit = selectedUnit();
   const text = messages();
+  const workflow = workflowText();
   const help = helpContent();
   const activeStepMessage = stepMessage(currentStep);
   const activeHelpTopic = currentHelpTopic();
   const currentStepIndex = stepIndex(currentStep);
   const followingStep = steps[Math.min(steps.length - 1, currentStepIndex + 1)];
   const canGoForward = !calculating && !calculationFailed && canNavigateToStep(followingStep.id);
+  const winterCoil = result.waterCoilResults?.find((item) => item.mode === "HWD");
+  const summerCoil = result.waterCoilResults?.find((item) => item.mode === "CWD");
+  const winterPostheater = result.electricHeaterResults?.find((item) => item.mode === "EHD");
+  const projectReference = projectState?.publicReference || projectState?.localReference || workflow.notSaved;
+  const projectRevision = projectState?.revision ? `R${String(projectState.revision).padStart(2, "0")}` : "-";
+  const projectSavedAt = projectDirty
+    ? workflow.modified
+    : projectState?.savedAt
+      ? new Date(projectState.savedAt).toLocaleString(messages().locale)
+      : workflow.notSaved;
   app.innerHTML = `
     <div class="app-shell">
       ${busyMessage ? renderBusyOverlay(busyMessage) : ""}
@@ -948,13 +972,16 @@ const renderShell = (): void => {
             ${icon("bell")}
             ${notificationState.unreadDueCount > 0 ? `<span class="notification-dot"></span>` : ""}
           </button>
+          <button class="release-button" type="button" data-action="release-info" title="${escapeHtml(releaseLabels().title)}" aria-label="${escapeHtml(releaseLabels().title)}">
+            ${icon("info", 15)}<span>${escapeHtml(releaseInfo.version)}</span>
+          </button>
           <button class="icon-button" type="button" title="${escapeHtml(helpTitle("help"))}" aria-label="${escapeHtml(text.actions.openHelp)}" data-action="help">
             ${icon("circle-help")}
           </button>
         </div>
       </header>
 
-      <div class="workspace">
+      <div class="workspace${currentStep === "project" ? " workspace-project" : ""}">
         <aside class="step-rail" aria-label="${escapeHtml(text.ui.aria.selectionSteps)}">
           <div class="step-rail-heading">
             <span>${escapeHtml(text.common.configuration)}</span>
@@ -1043,7 +1070,19 @@ const renderShell = (): void => {
           </footer>
         </main>
 
-        <aside class="context-panel">
+        ${currentStep !== "project" ? `<aside class="context-panel">
+          ${currentStep === "preselection" ? `
+            <section class="context-project-status">
+              <div class="context-heading">
+                <span>${escapeHtml(text.ui.project.statusTitle)}</span>
+                <span class="context-status-badge">${escapeHtml(projectState?.publicReference ? text.ui.project.registered : text.ui.project.local)}</span>
+              </div>
+              <div class="project-status-list">
+                ${statusRow(text.ui.project.technicalReference, projectReference, projectState?.publicReference ? text.ui.project.registered : text.ui.project.local)}
+                ${statusRow(text.ui.project.revision, projectRevision, text.ui.project.current)}
+                ${statusRow(text.ui.project.lastSaved, projectSavedAt, projectState?.fileName || text.ui.project.local)}
+              </div>
+            </section>` : ""}
           <div class="context-heading">
             <span>${escapeHtml(text.ui.navigation.currentSelection)}</span>
             <button class="icon-button subtle" type="button" title="${escapeHtml(text.ui.navigation.saveDraft)}" data-action="save">
@@ -1060,6 +1099,19 @@ const renderShell = (): void => {
             [text.ui.context.extract, `${formatNumber(draft.operatingPoint.extractAirflow, 0)} m³/h`],
             [text.ui.context.pressure, `${formatNumber(draft.operatingPoint.pressure, 0)} Pa`],
             [text.ui.context.layout, draft.layoutCode],
+            [`${text.ui.preselection.winter} · ${text.ui.preselection.supplyAirTemperature} (HX)`, `${formatNumber(result.supplyTemperature, 1)} °C`],
+            ...(draft.waterCoilEnabled && winterCoil
+              ? [[`${text.ui.preselection.winter} · ${text.ui.preselection.supplyAirTemperature} (${draft.waterCoilMode})`, `${formatNumber(winterCoil.airOutletTemperatureC, 1)} °C`] as [string, string]]
+              : []),
+            ...(draft.electricPostheaterEnabled && winterPostheater
+              ? [[`${text.ui.preselection.winter} · ${text.ui.preselection.supplyAirTemperature} (EHD)`, `${formatNumber(winterPostheater.airOutletTemperatureC, 1)} °C`] as [string, string]]
+              : []),
+            ...(draft.summerEnabled
+              ? [[`${text.ui.preselection.summer} · ${text.ui.preselection.supplyAirTemperature} (HX)`, `${formatNumber(result.summerSupplyTemperature, 1)} °C`] as [string, string]]
+              : []),
+            ...(draft.summerEnabled && draft.waterCoilEnabled && summerCoil
+              ? [[`${text.ui.preselection.summer} · ${text.ui.preselection.supplyAirTemperature} (${draft.waterCoilMode})`, `${formatNumber(summerCoil.airOutletTemperatureC, 1)} °C`] as [string, string]]
+              : []),
           ])}
           <div class="context-divider"></div>
           <div class="metric-grid">
@@ -1078,8 +1130,27 @@ const renderShell = (): void => {
             </div>
           </div>
           ${renderMultiProjectSidebar()}
-        </aside>
+        </aside>` : ""}
       </div>
+      ${saveLanguagePromptOpen ? (() => {
+        const prompt = saveLanguagePromptText();
+        return `<div class="modal-backdrop" data-action="close-save-language">
+          <section class="help-dialog save-language-dialog" role="dialog" aria-modal="true" aria-labelledby="save-language-title">
+            <div class="panel-heading">
+              <span class="panel-icon">${icon("languages")}</span>
+              <div><h2 id="save-language-title">${escapeHtml(prompt.title)}</h2><p>${escapeHtml(prompt.message)}</p></div>
+              <button class="icon-button bordered" type="button" data-action="close-save-language" aria-label="${escapeHtml(prompt.cancel)}">${icon("circle-x")}</button>
+            </div>
+            <label class="field"><span>${escapeHtml(prompt.useLanguage)}</span>
+              <select data-save-language>
+                ${languageOptions.map((option) => `<option value="${option.code}" ${option.code === saveLanguageChoice ? "selected" : ""}>${escapeHtml(option.name)}</option>`).join("")}
+              </select>
+            </label>
+            <label class="toggle"><input type="checkbox" data-save-language-remember ${saveLanguageRemember ? "checked" : ""}/><span></span><b>${escapeHtml(prompt.remember)}</b></label>
+            <footer class="dialog-actions"><button class="button secondary" type="button" data-action="close-save-language">${escapeHtml(prompt.cancel)}</button><button class="button primary" type="button" data-action="confirm-save-language">${icon("save")} ${escapeHtml(prompt.save)}</button></footer>
+          </section>
+        </div>`;
+      })() : ""}
       ${toastMessage ? `<div class="toast">${icon("circle-check")} ${escapeHtml(toastMessage)}</div>` : ""}
       ${helpOpen ? `
         <div class="modal-backdrop" data-action="close-help">
@@ -1096,6 +1167,20 @@ const renderShell = (): void => {
             </div>
             <p class="help-workflow">${escapeHtml(help.workflowNote)}</p>
             <label class="toggle"><input type="checkbox" data-action="toggle-tooltips" ${tooltipsEnabled ? "checked" : ""}/><span></span><b>${escapeHtml(tooltipsEnabled ? text.actions.hideTooltips : text.actions.showTooltips)}</b></label>
+          </section>
+        </div>` : ""}
+      ${releaseInfoOpen ? `
+        <div class="modal-backdrop" data-action="close-release-info">
+          <section class="release-dialog" role="dialog" aria-modal="true" aria-labelledby="release-info-title">
+            <div class="panel-heading">
+              <span class="panel-icon">${icon("info")}</span>
+              <div><h2 id="release-info-title">${escapeHtml(releaseLabels().title)}</h2></div>
+              <button class="icon-button bordered" data-action="close-release-info" aria-label="${escapeHtml(releaseLabels().close)}">${icon("circle-x")}</button>
+            </div>
+            <dl class="release-details">
+              <div><dt>${escapeHtml(releaseLabels().version)}</dt><dd>${escapeHtml(releaseInfo.version)}</dd></div>
+              <div><dt>${escapeHtml(releaseLabels().builtAt)}</dt><dd>${escapeHtml(new Date(releaseInfo.builtAt).toLocaleString(languageCode()))}</dd></div>
+            </dl>
           </section>
         </div>` : ""}
       ${renderNotificationCenter()}
@@ -1193,19 +1278,7 @@ const renderStep = (step: StepId): string => {
 const renderProjectStep = (): string => {
   const text = messages();
   const copy = workflowText();
-  const unit = selectedUnit();
-  const reference =
-    projectState?.publicReference ||
-    projectState?.localReference ||
-    copy.notSaved;
-  const revision =
-    projectState?.revision ? `R${String(projectState.revision).padStart(2, "0")}` : "-";
-  const savedAt = projectDirty
-    ? copy.modified
-    : projectState?.savedAt
-    ? new Date(projectState.savedAt).toLocaleString(messages().locale)
-    : copy.notSaved;
-  return `<div class="content-grid two">
+  return `<div class="content-grid">
     <section class="panel">
       <div class="panel-heading">
         <span class="panel-icon">${icon("briefcase-business")}</span>
@@ -1215,7 +1288,7 @@ const renderProjectStep = (): string => {
         ${textField(text.ui.project.name, "project.name", draft!.project.name, text.ui.project.defaultName)}
         ${textField(text.ui.project.customerReference, "project.customerReference", draft!.project.customerReference, text.ui.project.referencePlaceholder)}
         <div class="field">
-          <label>${escapeHtml(interfaceLanguageLabel())}</label>
+          <label>${escapeHtml(`${text.ui.project.documentLanguage} offerta finale`)}</label>
           <select data-field="project.language">
             ${languageOptions.map((option) => `<option value="${option.code}" ${option.code === languageCode() ? "selected" : ""}>${escapeHtml(option.name)}</option>`).join("")}
           </select>
@@ -1226,34 +1299,16 @@ const renderProjectStep = (): string => {
         <button class="button secondary" type="button" data-action="save-as">${icon("save")} ${escapeHtml(copy.saveAs)}</button>
       </div>
     </section>
-    <section class="panel quiet-panel">
-      <div class="panel-heading">
-        <span class="panel-icon">${icon("folder-check")}</span>
-        <div><h2>${escapeHtml(text.ui.project.statusTitle)}</h2><p>${escapeHtml(text.ui.project.statusDescription)}</p></div>
-      </div>
-      <div class="project-status-list">
-        ${statusRow(text.ui.project.technicalReference, reference, projectState?.publicReference ? text.ui.project.registered : text.ui.project.local)}
-        ${statusRow(text.ui.project.revision, revision, text.ui.project.current)}
-        ${statusRow(text.ui.project.lastSaved, savedAt, projectState?.fileName || text.ui.project.local)}
-      </div>
-      <div class="project-selection-summary">
-        <h3>${escapeHtml(copy.selectionSummary)}</h3>
-        ${renderKeyValues([
-          [text.ui.summary.unit, `${unit?.family ?? "-"} · ${unit?.model ?? "-"}`],
-          [text.ui.preselection.supplyAirflow, `${formatNumber(draft!.operatingPoint.supplyAirflow, 0)} m³/h`],
-          [text.ui.preselection.extractAirflow, `${formatNumber(draft!.operatingPoint.extractAirflow, 0)} m³/h`],
-          [text.ui.preselection.staticPressure, `${formatNumber(draft!.operatingPoint.pressure, 0)} Pa`],
-          [text.ui.summary.installation, `${installationLabel(draft!.installationMode)} · ${draft!.layoutCode}`],
-          [copy.savedFile, projectState?.fileName || "-"],
-        ])}
-      </div>
-    </section>
   </div>`;
 };
 
 const renderMultiProjectSidebar = (): string => {
   const copy = multiProjectText();
   const state = multiProjectState;
+  const currentItem = state?.items.find((item) => item.current);
+  const currentMatchesDraft = Boolean(
+    currentItem && selectedUnit()?.model.trim().toLocaleUpperCase() === currentItem.unitName.trim().toLocaleUpperCase(),
+  );
   const items = state?.items.map((item) => `
     <article class="context-project-item ${item.current ? "current" : ""}" data-project-item="${escapeHtml(item.itemId)}">
       <button class="context-project-open" type="button" data-project-open="${escapeHtml(item.itemId)}" title="${escapeHtml(copy.open)}">
@@ -1282,7 +1337,7 @@ const renderMultiProjectSidebar = (): string => {
       <small title="${escapeHtml(state?.fileName || copy.unsaved)}">${escapeHtml(state?.fileName || copy.unsaved)}</small>
     </div>
     <label class="context-project-language">
-      <span>${escapeHtml(messages().ui.project.documentLanguage)}</span>
+      <span>${escapeHtml(`${messages().ui.project.documentLanguage} (output)`)}</span>
       <select data-project-language>
         ${languageOptions.map((option) => `<option value="${option.code}" ${option.code === projectLanguage ? "selected" : ""}>${escapeHtml(option.name)}</option>`).join("")}
       </select>
@@ -1297,8 +1352,8 @@ const renderMultiProjectSidebar = (): string => {
       ${items || `<p class="context-project-empty">${escapeHtml(copy.empty)}</p>`}
     </div>
     <small class="context-project-state">${state?.dirty ? escapeHtml(copy.unsaved) : escapeHtml(modified)}</small>
-    <button class="button primary context-project-command" type="button" data-action="project-add-current">${icon("file-down")} ${escapeHtml(projectActionLabels(languageCode())[state?.items.some((item) => item.current) ? 1 : 0])}</button>
-    ${state?.items.some((item) => item.current) ? `<button class="button secondary context-project-command" type="button" data-action="project-add-new">${icon("plus")} ${escapeHtml(projectActionLabels(languageCode())[0])}</button>` : ""}
+    <button class="button primary context-project-command" type="button" data-action="project-add-current">${icon("file-down")} ${escapeHtml(projectActionLabels(languageCode())[currentMatchesDraft ? 1 : 0])}</button>
+    ${currentMatchesDraft ? `<button class="button secondary context-project-command" type="button" data-action="project-add-new">${icon("plus")} ${escapeHtml(projectActionLabels(languageCode())[0])}</button>` : ""}
     <button class="button secondary context-project-command" type="button" data-action="project-email" ${state?.items.length ? "" : "disabled"}>${icon("mail")} ${escapeHtml(projectActionLabels(languageCode())[2])}</button>
   </section>`;
 };
@@ -1969,6 +2024,29 @@ const renderSoundStep = (): string => {
 
 const renderDocumentsStep = (): string => {
   const text = messages();
+  const applicationDocuments: [string, string, string, string, string, string] = ({
+    bg: ["Сертификати", "Текст на тръжната процедура", "3D модел", "Документ за въвеждане в експлоатация", "Инструкции за смяна на филтъра", "Технически лист на материала в експлоатация"],
+    cs: ["Certifikace", "Text zadávací dokumentace", "3D model", "Dokument uvedení do provozu", "Pokyny k výměně filtru", "Technický list materiálu v provozu"],
+    da: ["Certificeringer", "Tekst til udbudsmateriale", "3D-model", "Ibrugtagningdokument", "Instruktioner til udskiftning af filter", "Teknisk datablad for materiale i drift"],
+    de: ["Zertifizierungen", "Ausschreibungstext", "3D-Modell", "Inbetriebnahmedokument", "Anleitung zum Filterwechsel", "Technisches Datenblatt des eingesetzten Materials"],
+    en: ["Certifications", "Tender specification text", "3D model", "Commissioning document", "Filter replacement instructions", "Technical data sheet of material in service"],
+    fr: ["Certifications", "Texte du dossier d'appel d'offres", "Modèle 3D", "Document de mise en service", "Instructions de remplacement du filtre", "Fiche technique du matériau en service"],
+    hu: ["Tanúsítványok", "Közbeszerzési műszaki leírás", "3D modell", "Üzembe helyezési dokumentum", "Szűrőcsere utasításai", "Üzemben lévő anyag műszaki adatlapja"],
+    is: ["Vottanir", "Text útboðsgagna", "3D-líkan", "Gangsetningarskjal", "Leiðbeiningar um síuskipti", "Tæknilegt gagnablað efnis í notkun"],
+    it: ["Certificazioni", "Testo bando di gara", "Modello 3D", "Documento di messa in servizio", "Istruzioni per la sostituzione del filtro", "Scheda tecnica del materiale in servizio"],
+    nl: ["Certificeringen", "Tekst van de aanbestedingsspecificatie", "3D-model", "Inbedrijfstellingsdocument", "Instructies voor filtervervanging", "Technisch gegevensblad van materiaal in gebruik"],
+    no: ["Sertifiseringer", "Tekst til konkurransegrunnlag", "3D-modell", "Igangkjøringsdokument", "Instruksjoner for filterbytte", "Teknisk datablad for materiale i drift"],
+    pl: ["Certyfikaty", "Tekst specyfikacji przetargowej", "Model 3D", "Dokument uruchomienia", "Instrukcja wymiany filtra", "Karta techniczna materiału w eksploatacji"],
+    ro: ["Certificări", "Textul caietului de sarcini", "Model 3D", "Document de punere în funcțiune", "Instrucțiuni de înlocuire a filtrului", "Fișa tehnică a materialului în exploatare"],
+    sl: ["Certifikati", "Besedilo razpisne dokumentacije", "3D-model", "Dokument za zagon", "Navodila za zamenjavo filtra", "Tehnični list materiala v uporabi"],
+    sv: ["Certifieringar", "Text för upphandlingsunderlag", "3D-modell", "Driftsättningsdokument", "Instruktioner för filterbyte", "Tekniskt datablad för material i drift"],
+  } as Record<string, [string, string, string, string, string, string]>)[languageCode()] ?? ["Certifications", "Tender specification text", "3D model", "Commissioning document", "Filter replacement instructions", "Technical data sheet of material in service"];
+  const applicationTitle: string = {
+    bg: "Документи за приложения (референтни случаи)", cs: "Dokumenty k aplikacím (případové studie)", da: "Applikationsdokumenter (cases)", de: "Anwendungsdokumente (Referenzfälle)", en: "Application documents (Study cases)", fr: "Documents d'application (études de cas)", hu: "Alkalmazási dokumentumok (esettanulmányok)", is: "Notkunarskjöl (dæmisögur)", it: "Documenti applicativi (casi studio)", nl: "Toepassingsdocumenten (praktijkcases)", no: "Applikasjonsdokumenter (referanser)", pl: "Dokumenty aplikacyjne (studia przypadków)", ro: "Documente de aplicație (studii de caz)", sl: "Dokumenti aplikacij (študije primerov)", sv: "Applikationsdokument (referensfall)",
+  }[languageCode()] ?? "Application documents (Study cases)";
+  const applicationDescription: string = {
+    bg: "Референтни приложения и казуси", cs: "Referenční aplikace a případové studie", da: "Referenceapplikationer og cases", de: "Referenzanwendungen und Fallstudien", en: "Reference applications and study cases", fr: "Applications de référence et études de cas", hu: "Referenciaalkalmazások és esettanulmányok", is: "Viðmiðunarnotkun og dæmisögur", it: "Applicazioni di riferimento e casi studio", nl: "Referentietoepassingen en praktijkcases", no: "Referanseapplikasjoner og caser", pl: "Aplikacje referencyjne i studia przypadków", ro: "Aplicații de referință și studii de caz", sl: "Referenčne aplikacije in študije primerov", sv: "Referensapplikationer och fallstudier",
+  }[languageCode()] ?? "Reference applications and study cases";
   return `<div class="content-grid documents-grid">
     ${productDocumentsLoading ? `
       <div class="documents-loading" role="status" aria-live="polite">
@@ -1981,6 +2059,13 @@ const renderDocumentsStep = (): string => {
       </div>` : ""}
     ${documentCard(text.ui.documents.technicalSheet, text.ui.documents.technicalSheetDescription, "PDF", "file-text", "commercial-sheet", productDocuments?.commercialSheetAvailable === true)}
     ${documentCard(text.ui.documents.installationManual, text.ui.documents.installationManualDescription, "PDF", "book-open", "installation-manual", productDocuments?.installationManualAvailable === true)}
+    ${documentCard(applicationTitle, applicationDescription, "PDF", "files", null, false)}
+    ${documentCard(applicationDocuments[0], "", "PDF", "badge-check", null, false)}
+    ${documentCard(applicationDocuments[1], "", "PDF", "file-text", null, false)}
+    ${documentCard(applicationDocuments[2], "", "STEP", "box", null, false)}
+    ${documentCard(applicationDocuments[3], "", "PDF", "clipboard-check", null, false)}
+    ${documentCard(applicationDocuments[4], "", "PDF", "refresh-cw", null, false)}
+    ${documentCard(applicationDocuments[5], "", "PDF", "file-cog", null, false)}
   </div>
   <div class="inline-notice success">
     ${icon("hard-drive-download")}
@@ -2014,6 +2099,17 @@ const renderSummaryStep = (): string => {
             ${summaryMetric(text.ui.summary.extractAirflow, `${formatNumber(draft!.operatingPoint.extractAirflow, 0)} m³/h`)}
             ${summaryMetric(text.ui.summary.requestedPressure, `${formatNumber(draft!.operatingPoint.pressure, 0)} Pa`)}
             ${summaryMetric(text.ui.summary.availableMargin, `${formatNumber(result!.availablePressure, 0)} Pa`)}
+            ${summaryMetric(`${text.ui.preselection.winter} · ${text.ui.preselection.supplyAirTemperature} (HX)`, `${formatNumber(result!.supplyTemperature, 1)} °C`)}
+            ${draft!.waterCoilEnabled && result!.waterCoilResults?.find((item) => item.mode === "HWD")
+              ? summaryMetric(`${text.ui.preselection.winter} · ${text.ui.preselection.supplyAirTemperature} (${draft!.waterCoilMode})`, `${formatNumber(result!.waterCoilResults!.find((item) => item.mode === "HWD")!.airOutletTemperatureC, 1)} °C`)
+              : ""}
+            ${draft!.electricPostheaterEnabled && result!.electricHeaterResults?.find((item) => item.mode === "EHD")
+              ? summaryMetric(`${text.ui.preselection.winter} · ${text.ui.preselection.supplyAirTemperature} (EHD)`, `${formatNumber(result!.electricHeaterResults!.find((item) => item.mode === "EHD")!.airOutletTemperatureC, 1)} °C`)
+              : ""}
+            ${draft!.summerEnabled ? summaryMetric(`${text.ui.preselection.summer} · ${text.ui.preselection.supplyAirTemperature} (HX)`, `${formatNumber(result!.summerSupplyTemperature, 1)} °C`) : ""}
+            ${draft!.summerEnabled && draft!.waterCoilEnabled && result!.waterCoilResults?.find((item) => item.mode === "CWD")
+              ? summaryMetric(`${text.ui.preselection.summer} · ${text.ui.preselection.supplyAirTemperature} (${draft!.waterCoilMode})`, `${formatNumber(result!.waterCoilResults!.find((item) => item.mode === "CWD")!.airOutletTemperatureC, 1)} °C`)
+              : ""}
           </div>
         </div>
         <div class="summary-section">
@@ -2535,8 +2631,28 @@ const bindShellEvents = (): void => {
 
   document.querySelector<HTMLElement>('[data-action="previous"]')?.addEventListener("click", () => navigate(-1));
   document.querySelector<HTMLElement>('[data-action="next"]')?.addEventListener("click", () => navigate(1));
-  document.querySelector<HTMLElement>('[data-action="save"]')?.addEventListener("click", () => saveDraft(false));
-  document.querySelector<HTMLElement>('[data-action="save-as"]')?.addEventListener("click", () => saveDraft(true));
+  document.querySelector<HTMLElement>('[data-action="save"]')?.addEventListener("click", () => requestSaveDraft(false));
+  document.querySelector<HTMLElement>('[data-action="save-as"]')?.addEventListener("click", () => requestSaveDraft(true));
+  document.querySelector<HTMLSelectElement>("[data-save-language]")?.addEventListener("change", (event) => {
+    saveLanguageChoice = (event.currentTarget as HTMLSelectElement).value;
+  });
+  document.querySelector<HTMLInputElement>("[data-save-language-remember]")?.addEventListener("change", (event) => {
+    saveLanguageRemember = (event.currentTarget as HTMLInputElement).checked;
+  });
+  document.querySelectorAll<HTMLElement>('[data-action="close-save-language"]').forEach((element) => {
+    element.addEventListener("click", (event) => {
+      if (element.classList.contains("modal-backdrop") && event.target !== element) return;
+      saveLanguagePromptOpen = false;
+      renderShell();
+    });
+  });
+  document.querySelector<HTMLElement>('[data-action="confirm-save-language"]')?.addEventListener("click", async () => {
+    draft!.project.language = saveLanguageChoice;
+    if (saveLanguageRemember) window.localStorage.setItem("ssw-next.save-language-prompt", "false");
+    saveLanguagePromptOpen = false;
+    renderShell();
+    await saveDraft(saveLanguagePromptSaveAs);
+  });
   document.querySelector<HTMLElement>('[data-action="open-selection"]')?.addEventListener("click", openDraft);
   document.querySelector<HTMLElement>('[data-action="report"]')?.addEventListener("click", generateReport);
   document.querySelector<HTMLElement>('[data-action="open-dimensional-drawing"]')?.addEventListener("click", async () => {
@@ -2588,7 +2704,7 @@ const bindShellEvents = (): void => {
   document.querySelector<HTMLElement>('[data-action="project-open"]')?.addEventListener("click", openMultiProject);
   document.querySelector<HTMLElement>('[data-action="project-save"]')?.addEventListener("click", () => saveMultiProject(false));
   document.querySelector<HTMLElement>('[data-action="project-save-as"]')?.addEventListener("click", () => saveMultiProject(true));
-  document.querySelector<HTMLElement>('[data-action="project-add-current"]')?.addEventListener("click", () => addCurrentToMultiProject(false));
+  document.querySelector<HTMLElement>('[data-action="project-add-current"]')?.addEventListener("click", () => addCurrentToMultiProject());
   document.querySelector<HTMLElement>('[data-action="project-add-new"]')?.addEventListener("click", () => addCurrentToMultiProject(true));
   document.querySelector<HTMLSelectElement>("[data-project-language]")?.addEventListener("change", async (event) => {
     const targetLanguage = (event.currentTarget as HTMLSelectElement).value;
@@ -2716,6 +2832,17 @@ const bindShellEvents = (): void => {
   document.querySelector<HTMLElement>('[data-action="help"]')?.addEventListener("click", () => {
     helpOpen = true;
     renderShell();
+  });
+  document.querySelector<HTMLElement>('[data-action="release-info"]')?.addEventListener("click", () => {
+    releaseInfoOpen = true;
+    renderShell();
+  });
+  document.querySelectorAll<HTMLElement>('[data-action="close-release-info"]').forEach((element) => {
+    element.addEventListener("click", (event) => {
+      if (element.classList.contains("modal-backdrop") && event.target !== element) return;
+      releaseInfoOpen = false;
+      renderShell();
+    });
   });
   document.querySelectorAll<HTMLElement>('[data-action="close-help"]').forEach((element) => {
     element.addEventListener("click", (event) => {
@@ -2997,6 +3124,19 @@ const recalculate = async (): Promise<boolean> => {
   }
 };
 
+const requestSaveDraft = (saveAs = false): void => {
+  if (calculating || calculationFailed) return;
+  if (window.localStorage.getItem("ssw-next.save-language-prompt") === "false") {
+    void saveDraft(saveAs);
+    return;
+  }
+  saveLanguagePromptSaveAs = saveAs;
+  saveLanguageChoice = languageCode();
+  saveLanguageRemember = false;
+  saveLanguagePromptOpen = true;
+  renderShell();
+};
+
 const saveDraft = async (saveAs = false): Promise<void> => {
   if (calculating || calculationFailed) return;
   const response = await bridge.saveDraft(structuredClone(draft!), saveAs);
@@ -3050,9 +3190,12 @@ const saveMultiProject = async (saveAs = false): Promise<void> => {
   showToast(`${multiProjectText().saveProject}: ${response.project.fileName}`);
 };
 
-const addCurrentToMultiProject = async (createNew = false): Promise<void> => {
+const addCurrentToMultiProject = async (requestedCreateNew?: boolean): Promise<void> => {
   if (calculating || calculationFailed) return;
   const previous = multiProjectState?.items.find((item) => item.current);
+  const currentModel = selectedUnit()?.model.trim().toLocaleUpperCase() ?? "";
+  const previousModel = previous?.unitName.trim().toLocaleUpperCase() ?? "";
+  const createNew = requestedCreateNew ?? Boolean(previous && currentModel !== previousModel);
   const updating = !createNew && !!previous;
   const reference = window.prompt(multiProjectText().reference, draft!.project.customerReference);
   if (reference === null || !reference.trim()) return;

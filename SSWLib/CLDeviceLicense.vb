@@ -255,7 +255,10 @@ Partial Public NotInheritable Class CLSelectionApiClient
         Dim token = Await EnsureAccessTokenAsync(context, cancellationToken).ConfigureAwait(False)
         Using request As New HttpRequestMessage(HttpMethod.Post, BuildUri("license/check"))
             request.Headers.Authorization = New AuthenticationHeaderValue("Bearer", token)
-            request.Content = JsonContent(New Dictionary(Of String, Object) From {{"session_id", sessionId.ToString("D")}})
+            request.Content = JsonContent(New Dictionary(Of String, Object) From {
+                {"session_id", sessionId.ToString("D")},
+                {"software_version", context.SoftwareVersion}
+            })
             Return (Await SendLicenseRequestAsync(request, False, cancellationToken).ConfigureAwait(False)).Result
         End Using
     End Function
