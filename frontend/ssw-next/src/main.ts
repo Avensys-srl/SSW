@@ -196,6 +196,17 @@ const languageCode = () => {
 const messages = (): Readonly<LocalizedFrontendMessages> =>
   getMessages(languageCode());
 
+const interfaceLanguageLabels: Record<string, string> = {
+  en: "Interface language", it: "Lingua interfaccia", bg: "Език на интерфейса",
+  cs: "Jazyk rozhraní", da: "Grænsefladesprog", de: "Sprache der Benutzeroberfläche",
+  fr: "Langue de l’interface", hu: "Felület nyelve", is: "Tungumál viðmóts",
+  nl: "Interfacetaal", no: "Grensesnittspråk", pl: "Język interfejsu",
+  ro: "Limba interfeței", sl: "Jezik vmesnika", sv: "Gränssnittsspråk",
+};
+
+const interfaceLanguageLabel = (): string =>
+  interfaceLanguageLabels[languageCode()] ?? interfaceLanguageLabels.en;
+
 const accessLabels: Record<string, string> = {
   en: "Access", it: "Accesso", bg: "Достъп", cs: "Přístup", da: "Adgang",
   de: "Zugang", fr: "Accès", hu: "Hozzáférés", is: "Aðgangur",
@@ -1278,6 +1289,7 @@ const renderStep = (step: StepId): string => {
 const renderProjectStep = (): string => {
   const text = messages();
   const copy = workflowText();
+  const documentLanguage = pendingProjectLanguage || projectDocumentLanguage();
   return `<div class="content-grid">
     <section class="panel">
       <div class="panel-heading">
@@ -1287,10 +1299,16 @@ const renderProjectStep = (): string => {
       <div class="form-grid">
         ${textField(text.ui.project.name, "project.name", draft!.project.name, text.ui.project.defaultName)}
         ${textField(text.ui.project.customerReference, "project.customerReference", draft!.project.customerReference, text.ui.project.referencePlaceholder)}
-        <div class="field">
-          <label>${escapeHtml(`${text.ui.project.documentLanguage} offerta finale`)}</label>
+        <div class="field project-language-field">
+          <label>${escapeHtml(interfaceLanguageLabel())}</label>
           <select data-field="project.language">
             ${languageOptions.map((option) => `<option value="${option.code}" ${option.code === languageCode() ? "selected" : ""}>${escapeHtml(option.name)}</option>`).join("")}
+          </select>
+        </div>
+        <div class="field project-language-field">
+          <label>${escapeHtml(text.ui.project.documentLanguage)}</label>
+          <select data-project-language>
+            ${languageOptions.map((option) => `<option value="${option.code}" ${option.code === documentLanguage ? "selected" : ""}>${escapeHtml(option.name)}</option>`).join("")}
           </select>
         </div>
       </div>
@@ -1326,8 +1344,6 @@ const renderMultiProjectSidebar = (): string => {
   const modified = state?.modifiedAt
     ? new Date(state.modifiedAt).toLocaleString(messages().locale)
     : "";
-  const projectLanguage =
-    pendingProjectLanguage || projectDocumentLanguage();
   return `<section class="context-project">
     <div class="context-project-heading">
       <div>
@@ -1336,12 +1352,6 @@ const renderMultiProjectSidebar = (): string => {
       </div>
       <small title="${escapeHtml(state?.fileName || copy.unsaved)}">${escapeHtml(state?.fileName || copy.unsaved)}</small>
     </div>
-    <label class="context-project-language">
-      <span>${escapeHtml(`${messages().ui.project.documentLanguage} (output)`)}</span>
-      <select data-project-language>
-        ${languageOptions.map((option) => `<option value="${option.code}" ${option.code === projectLanguage ? "selected" : ""}>${escapeHtml(option.name)}</option>`).join("")}
-      </select>
-    </label>
     <div class="context-project-actions">
       <button class="icon-button bordered" type="button" data-action="project-new" title="${escapeHtml(copy.newProject)}">${icon("file-text", 15)}</button>
       <button class="icon-button bordered" type="button" data-action="project-open" title="${escapeHtml(copy.openProject)}">${icon("folder-check", 15)}</button>

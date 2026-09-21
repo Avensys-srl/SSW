@@ -145,22 +145,6 @@ button { color: inherit; }
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.context-project-language {
-  display: grid;
-  gap: 5px;
-}
-.context-project-language > span {
-  color: var(--muted);
-  font-size: 10px;
-  font-weight: 700;
-}
-.context-project-language select {
-  width: 100%;
-  height: 32px;
-  border: 1px solid var(--line-strong);
-  background: var(--surface);
-  color: var(--ink);
-}
 .context-project-actions {
   display: grid;
   grid-template-columns: repeat(4, 34px);
