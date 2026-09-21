@@ -1277,8 +1277,8 @@ input:disabled, select:disabled {
 @keyframes loading { from { transform: translateX(-110%); } to { transform: translateX(350%); } }
 @keyframes toast-in { from { opacity: 0; transform: translateY(8px); } }
 
-@media (max-width: 1280px) {
-  .workspace { grid-template-columns: 188px minmax(620px, 1fr) 280px; }
+@media (max-width: 1400px) {
+  .workspace { grid-template-columns: 188px minmax(0, 1fr) 280px; }
   .main-stage { padding-left: 22px; padding-right: 22px; }
   .step-footer { margin-left: -22px; margin-right: -22px; padding-left: 22px; padding-right: 22px; }
   .ranked-spec { display: none; }
