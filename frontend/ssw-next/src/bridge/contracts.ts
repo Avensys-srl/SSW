@@ -340,6 +340,7 @@ export interface FollowUpCenterState {
 export interface ProductDocumentState {
   commercialSheetAvailable: boolean;
   installationManualAvailable: boolean;
+  stepModelAvailable: boolean;
   opened?: boolean;
   available?: boolean;
 }
@@ -420,7 +421,7 @@ export interface SelectionBridge {
   ): Promise<{ fileName: string; delegated?: boolean }>;
   getProductDocuments(draft: SelectionDraft): Promise<ProductDocumentState>;
   openProductDocument(
-    documentType: "commercial-sheet" | "installation-manual",
+    documentType: "commercial-sheet" | "installation-manual" | "step-model",
     draft: SelectionDraft,
   ): Promise<ProductDocumentState>;
   getDimensionalDrawing(draft: SelectionDraft): Promise<DimensionalDrawingState>;

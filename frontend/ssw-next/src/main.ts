@@ -2072,7 +2072,7 @@ const renderDocumentsStep = (): string => {
     ${documentCard(applicationTitle, applicationDescription, "PDF", "files", null, false)}
     ${documentCard(applicationDocuments[0], "", "PDF", "badge-check", null, false)}
     ${documentCard(applicationDocuments[1], "", "PDF", "file-text", null, false)}
-    ${documentCard(applicationDocuments[2], "", "STEP", "box", null, false)}
+    ${documentCard(applicationDocuments[2], "", "STEP", "box", "step-model", productDocuments?.stepModelAvailable === true)}
     ${documentCard(applicationDocuments[3], "", "PDF", "clipboard-check", null, false)}
     ${documentCard(applicationDocuments[4], "", "PDF", "refresh-cw", null, false)}
     ${documentCard(applicationDocuments[5], "", "PDF", "file-cog", null, false)}
@@ -2396,7 +2396,7 @@ const documentCard = (
   description: string,
   format: string,
   iconName: string,
-  documentType: "commercial-sheet" | "installation-manual" | null,
+  documentType: "commercial-sheet" | "installation-manual" | "step-model" | null,
   available: boolean,
 ): string => `
   <article class="document-card ${available ? "" : "disabled"}">
@@ -2694,7 +2694,8 @@ const bindShellEvents = (): void => {
     button.addEventListener("click", async () => {
       const documentType = button.dataset.document as
         | "commercial-sheet"
-        | "installation-manual";
+        | "installation-manual"
+        | "step-model";
       busyMessage = documentBusyText().opening;
       renderShell();
       try {
@@ -3045,6 +3046,7 @@ const refreshProductDocuments = async (): Promise<void> => {
     productDocuments = {
       commercialSheetAvailable: false,
       installationManualAvailable: false,
+      stepModelAvailable: false,
     };
   } finally {
     productDocumentsLoading = false;

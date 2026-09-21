@@ -8,4 +8,5 @@ End Class
 Public NotInheritable Class CLNextUiProductDocuments
     Public Property CommercialSheetPath As String
     Public Property InstallationManualPath As String
+    Public Property StepModelPath As String
 End Class

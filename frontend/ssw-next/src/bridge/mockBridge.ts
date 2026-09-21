@@ -300,6 +300,7 @@ export class MockSelectionBridge implements SelectionBridge {
     return {
       commercialSheetAvailable: true,
       installationManualAvailable: true,
+      stepModelAvailable: true,
     };
   }
 
@@ -307,6 +308,7 @@ export class MockSelectionBridge implements SelectionBridge {
     return {
       commercialSheetAvailable: true,
       installationManualAvailable: true,
+      stepModelAvailable: true,
       available: true,
       opened: true,
     };

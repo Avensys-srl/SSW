@@ -7,6 +7,8 @@ Imports Climalombarda.DataCentral.LTModel
 Public NotInheritable Class CLProductDocumentService
     Private Const CommercialSheetBaseUrl As String =
         "https://www.avensys-srl.com/ftproot/DOCUMENTS/Commercial_leaflets/1_VENTILATION_HEAT_RECOVERY/1_Heat_recovery_units/LEAFLETS"
+    Private Const StepModelBaseUrl As String =
+        "https://www.avensys-srl.com/ftproot/DOCUMENTS/Drawing"
 
     Private Sub New()
     End Sub
@@ -56,8 +58,77 @@ Public NotInheritable Class CLProductDocumentService
                 model, modelName, normalizedLanguage, True,
                 shortName, autoSyncEnabled),
             .InstallationManualPath = ResolveInstallationManual(
-                model, normalizedLanguage, True, shortName)
+                model, normalizedLanguage, True, shortName),
+            .StepModelPath = ResolveStepModel(model)
         }
+    End Function
+
+    Public Shared Function ResolveStepModel(model As CLDCHeatRecoveryModel) As String
+        If model Is Nothing Then Return String.Empty
+
+        Dim modelId = ReadProperty(model, "ID")
+        If String.IsNullOrWhiteSpace(modelId) Then
+            modelId = ReadProperty(model, "Id")
+        End If
+        If String.IsNullOrWhiteSpace(modelId) Then
+            Log("STEP lookup skipped: model ID is unavailable.")
+            Return String.Empty
+        End If
+
+        Dim url = String.Format(
+            "{0}/{1}_stp.zip",
+            StepModelBaseUrl.TrimEnd("/"c),
+            Uri.EscapeDataString(modelId.Trim()))
+        Dim targetDirectory = Path.Combine(PdfDocumentDirectory, "STEP")
+        Dim targetFilePath = Path.Combine(
+            targetDirectory, modelId.Trim() & "_stp.zip")
+        Dim temporaryFilePath = targetFilePath & ".download"
+        Try
+            Directory.CreateDirectory(targetDirectory)
+            ServicePointManager.SecurityProtocol =
+                SecurityProtocolType.Tls12 Or
+                SecurityProtocolType.Tls11 Or
+                SecurityProtocolType.Tls
+            Dim request = DirectCast(WebRequest.Create(url), HttpWebRequest)
+            request.Method = "GET"
+            request.Timeout = 10000
+            request.ReadWriteTimeout = 30000
+            request.AllowAutoRedirect = True
+            If File.Exists(targetFilePath) Then
+                request.IfModifiedSince = File.GetLastWriteTimeUtc(targetFilePath)
+            End If
+            Using response = DirectCast(request.GetResponse(), HttpWebResponse)
+                Using source = response.GetResponseStream()
+                    Using destination = File.Create(temporaryFilePath)
+                        source.CopyTo(destination)
+                    End Using
+                End Using
+            End Using
+            File.Copy(temporaryFilePath, targetFilePath, True)
+            Log("Downloaded/updated STEP file: " & targetFilePath)
+            Return targetFilePath
+        Catch exception As WebException
+            Dim response = TryCast(exception.Response, HttpWebResponse)
+            If response IsNot Nothing AndAlso
+                response.StatusCode = HttpStatusCode.NotModified AndAlso
+                File.Exists(targetFilePath) Then
+                Log("STEP file unchanged, using local file: " & targetFilePath)
+                Return targetFilePath
+            End If
+            Log(String.Format(
+                "STEP lookup failed. URL='{0}' Error='{1}'",
+                url, exception.Message))
+        Catch exception As Exception
+            Log(String.Format(
+                "STEP lookup failed. URL='{0}' Error='{1}'",
+                url, exception.Message))
+        Finally
+            Try
+                If File.Exists(temporaryFilePath) Then File.Delete(temporaryFilePath)
+            Catch
+            End Try
+        End Try
+        Return If(File.Exists(targetFilePath), targetFilePath, String.Empty)
     End Function
 
     Public Shared Function ResolveInstallationManual(

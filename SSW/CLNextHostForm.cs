@@ -1373,7 +1373,9 @@ namespace SSW
                         "return true;" +
                         "})()");
                     await WaitForConditionAsync(
-                        "document.querySelectorAll('.document-card').length === 2",
+                        "document.querySelectorAll('.document-card').length === 9 && " +
+                        "document.querySelector('[data-document=\"step-model\"]') !== null && " +
+                        "document.querySelector('.documents-loading') === null",
                         "The Documents view did not become ready.");
                 }
                 await webView.CoreWebView2.ExecuteScriptAsync(
@@ -1800,7 +1802,12 @@ namespace SSW
                         "installation-manual",
                         StringComparison.OrdinalIgnoreCase)
                         ? resolved.InstallationManualPath
-                        : String.Empty;
+                        : String.Equals(
+                            documentType,
+                            "step-model",
+                            StringComparison.OrdinalIgnoreCase)
+                            ? resolved.StepModelPath
+                            : String.Empty;
             bool available = !String.IsNullOrWhiteSpace(requestedPath) &&
                 File.Exists(requestedPath);
             bool opened = false;
@@ -1820,6 +1827,9 @@ namespace SSW
                 installationManualAvailable =
                     !String.IsNullOrWhiteSpace(resolved.InstallationManualPath) &&
                     File.Exists(resolved.InstallationManualPath),
+                stepModelAvailable =
+                    !String.IsNullOrWhiteSpace(resolved.StepModelPath) &&
+                    File.Exists(resolved.StepModelPath),
                 opened,
                 available
             };

@@ -352,7 +352,7 @@ class NativeSelectionBridge implements SelectionBridge {
   }
 
   async openProductDocument(
-    documentType: "commercial-sheet" | "installation-manual",
+    documentType: "commercial-sheet" | "installation-manual" | "step-model",
     draft: SelectionDraft,
   ) {
     return nativeInvoke<ProductDocumentState>("documents.open", {

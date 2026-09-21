@@ -1,6 +1,11 @@
 SSW Changelog
 =============
 
+2.0.0.14 - 2026-09-21
+---------------------
+- Added model-specific STEP archives to the Documents page when the corresponding file is available, with verified download and local caching.
+- Moved the project document language selector into the initial Project page alongside the interface language selector.
+
 2.0.0.12 - 2026-09-21
 ---------------------
 - Simplified approved customer activation to require only the registered email address and six-digit PIN; profile data is reused from the portal registration.
