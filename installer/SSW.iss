@@ -67,7 +67,7 @@ Name: "swedish"; MessagesFile: "compiler:Languages\Swedish.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "{#SourceDir}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: "*.pdb,*.xml,*.log,*.vshost.*,*.application,SSW.exe.manifest,app.publish\*,data\DataCentral___.sdf,data\*.bak,data\*.previous,data\catalog-update.state.json"
+Source: "{#SourceDir}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: "*.pdb,*.xml,*.log,*.vshost.*,*.application,SSW.exe.manifest,app.publish\*,data\DataCentral___.sdf,data\*.bak,data\*.previous,data\catalog-update.state.json,css\STEP\*"
 
 [Icons]
 Name: "{group}\{#AppName}"; Filename: "{app}\{#AppExeName}"

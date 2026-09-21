@@ -1,6 +1,11 @@
 SSW Changelog
 =============
 
+2.0.0.15 - 2026-09-21
+---------------------
+- Removed the startup updater deadlock caused by awaiting the installer download while the WinForms UI thread was synchronously waiting for the update check.
+- Routed automatic update packages through the direct static distribution path while keeping invitation downloads protected by registration tokens.
+
 2.0.0.14 - 2026-09-21
 ---------------------
 - Added model-specific STEP archives to the Documents page when the corresponding file is available, with verified download and local caching.

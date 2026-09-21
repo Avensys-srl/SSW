@@ -1,5 +1,6 @@
 ﻿Imports System.Net.Http
 Imports System.IO
+Imports System.Net
 Imports System.Text.Json ' Or Newtonsoft.Json if you prefer/use that
 Imports System.Security.Cryptography
 
@@ -141,7 +142,7 @@ Public Class UpdateManager
         Return fallback
     End Function
 
-    Private Shared Async Function DownloadAndStartInstaller(versionInfo As SoftwareVersionInfo) As Task
+    Private Shared Function DownloadAndStartInstaller(versionInfo As SoftwareVersionInfo) As Task
         Dim downloadUrl As String = versionInfo.download_url
         If String.IsNullOrWhiteSpace(downloadUrl) Then
             downloadUrl = "https://www.avensys-srl.com/api/ssw_download.php?source=update&from_version=" &
@@ -171,24 +172,26 @@ Public Class UpdateManager
             End If
             localPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), fileName)
 
-            Using client As New HttpClient()
-                client.Timeout = TimeSpan.FromMinutes(10)
+            progressForm = New DownloadProgressForm()
+            progressForm.Show()
+            progressForm.Refresh()
 
-                progressForm = New DownloadProgressForm()
-                progressForm.Show()
-                progressForm.Refresh()
+            Dim request = DirectCast(WebRequest.Create(downloadUrl), HttpWebRequest)
+            request.Method = "GET"
+            request.Timeout = CInt(TimeSpan.FromMinutes(10).TotalMilliseconds)
+            request.ReadWriteTimeout = CInt(TimeSpan.FromMinutes(10).TotalMilliseconds)
+            request.AllowAutoRedirect = True
+            request.UserAgent = "Avensys-SSW-Updater/" & Application.ProductVersion
+            Using response = DirectCast(request.GetResponse(), HttpWebResponse)
+                LogUpdate("download_headers", CInt(response.StatusCode).ToString() & " " & response.StatusDescription)
+                If response.StatusCode <> HttpStatusCode.OK Then
+                    Throw New InvalidOperationException($"Download failed: {response.StatusCode} - {response.StatusDescription}")
+                End If
 
-                Using response As HttpResponseMessage = Await client.GetAsync(downloadUrl, HttpCompletionOption.ResponseHeadersRead)
-                    LogUpdate("download_headers", CInt(response.StatusCode).ToString() & " " & response.ReasonPhrase)
-                    If Not response.IsSuccessStatusCode Then
-                        Throw New InvalidOperationException($"Download failed: {response.StatusCode} - {response.ReasonPhrase}")
-                    End If
-
-                    Dim totalBytes As Long? = response.Content.Headers.ContentLength
-                    Using sourceStream As Stream = Await response.Content.ReadAsStreamAsync()
-                        Using targetStream As New FileStream(localPath, FileMode.Create, FileAccess.Write, FileShare.None)
-                            Await CopyToFileWithProgress(sourceStream, targetStream, totalBytes, progressForm)
-                        End Using
+                Dim totalBytes As Long? = If(response.ContentLength > 0, CType(response.ContentLength, Long?), Nothing)
+                Using sourceStream As Stream = response.GetResponseStream()
+                    Using targetStream As New FileStream(localPath, FileMode.Create, FileAccess.Write, FileShare.None)
+                        CopyToFileWithProgress(sourceStream, targetStream, totalBytes, progressForm)
                     End Using
                 End Using
             End Using
@@ -217,6 +220,7 @@ Public Class UpdateManager
                             $"You can download it manually from:{vbCrLf}{downloadUrl}",
                             "Download Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
+        Return Task.CompletedTask
     End Function
 
     Private Shared Sub StartInstallerAfterExit(installerPath As String)
@@ -263,23 +267,23 @@ Public Class UpdateManager
                              "The update package failed integrity verification.")
     End Function
 
-    Private Shared Async Function CopyToFileWithProgress(sourceStream As Stream,
-                                                         targetStream As Stream,
-                                                         totalBytes As Long?,
-                                                         progressForm As DownloadProgressForm) As Task
+    Private Shared Sub CopyToFileWithProgress(sourceStream As Stream,
+                                              targetStream As Stream,
+                                              totalBytes As Long?,
+                                              progressForm As DownloadProgressForm)
         Dim buffer(81919) As Byte
         Dim downloadedBytes As Long = 0
-        Dim bytesRead As Integer = Await sourceStream.ReadAsync(buffer, 0, buffer.Length)
+        Dim bytesRead As Integer = sourceStream.Read(buffer, 0, buffer.Length)
 
         While bytesRead > 0
-            Await targetStream.WriteAsync(buffer, 0, bytesRead)
+            targetStream.Write(buffer, 0, bytesRead)
             downloadedBytes += bytesRead
             progressForm.UpdateProgress(downloadedBytes, totalBytes)
             Application.DoEvents()
 
-            bytesRead = Await sourceStream.ReadAsync(buffer, 0, buffer.Length)
+            bytesRead = sourceStream.Read(buffer, 0, buffer.Length)
         End While
-    End Function
+    End Sub
 
 End Class
 
