@@ -1,6 +1,11 @@
 SSW Changelog
 =============
 
+2.0.0.17 - 2026-09-24
+---------------------
+- Limited preselection results to units whose available pressure exceeds the requested duty point by no more than 10 Pa or 5%, capped at 25 Pa.
+- Corrected report efficiency charts so their curves and working-point markers use the same airflow scale when fan regulation is below 100%.
+
 2.0.0.16 - 2026-09-21
 ---------------------
 - Made upright SSC floor schematics depend on the catalog `SSC_UPRIGHT` reference view instead of the historical A1/B1 code list.

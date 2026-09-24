@@ -18,6 +18,8 @@
 | Aggiornamento | manifest, dimensione e SHA-256 | pacchetto alterato rifiutato |
 | Localizzazione | 12 RESX e 4 RDLC | chiavi complete, XML valido |
 | Report | inverno/estate, coil on/off, CO2/suono | nessuna pagina vuota o sezione errata |
+| Report prestazioni | regolazione diversa da 100%, inverno/estate | il punto di lavoro del rendimento coincide con la curva alla stessa portata originale |
+| Preselezione pressione | punti di lavoro a pressioni diverse | sovrapressione non superiore a `min(25 Pa, max(10 Pa, 5% della pressione richiesta))` |
 
 ## Collaudo manuale pilota
 
@@ -32,6 +34,25 @@
 6. Ricerca del riferimento nel pannello Avensys e download dello snapshot.
 7. Aggiornamento con manifest valido e prova negativa su una copia alterata.
 8. Rollback all'installer precedente conservando `.sswsel` e SDF compatibili.
+
+## Checkpoint 2026-09-24 - asse delle curve di rendimento
+
+- Problema riprodotto nei grafici di report con regolazione diversa da 100%: i
+  campioni di rendimento erano calcolati sulle portate originali ma disegnati
+  sulle portate regolate, spostando orizzontalmente la curva rispetto al punto
+  di lavoro.
+- Correzione: il report associa `EfficienciesPercent` a `OriginalAirflows`, in
+  coerenza con il calcolo e con il renderer della UI guidata.
+- Accettazione: build `AV|x86` senza errori e controllo visivo di un nuovo PDF
+  con regolazione al 70%; la build da sola non conclude la verifica grafica.
+
+## Checkpoint 2026-09-24 - tolleranza pressione in preselezione
+
+- La preselezione mantiene la regolazione minima al 70%, ma non considera piu
+  compatibili le unita che a tale limite conservano una sovrapressione elevata.
+- La tolleranza applicata e `min(25 Pa, max(10 Pa, 5% della pressione richiesta))`.
+- Gli smoke test verificano la soglia sia sul punto nominale sia sul punto a
+  bassa portata `100 m3/h @ 100 Pa`.
 
 ## Evidenze di release
 

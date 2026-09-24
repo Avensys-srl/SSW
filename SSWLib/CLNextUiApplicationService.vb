@@ -1538,6 +1538,11 @@ Public NotInheritable Class CLNextUiApplicationService
             Dim operatingPoint = CLSelectionApplicationService.FindCompatibleFanOperatingPoint(
                 model, requestedAirflow, requestedPressure, 70)
             If operatingPoint Is Nothing Then Return Nothing
+            Dim maximumPressureExcess = Math.Min(25.0R,
+                Math.Max(10.0R, requestedPressure * 0.05R))
+            If operatingPoint.PressurePa - requestedPressure > maximumPressureExcess Then
+                Return Nothing
+            End If
             Dim combinedSfp = If(requestedAirflow > 0,
                 2 * operatingPoint.PowerW * 3.6R / requestedAirflow, Double.MaxValue)
             If Double.IsNaN(combinedSfp) OrElse Double.IsInfinity(combinedSfp) OrElse

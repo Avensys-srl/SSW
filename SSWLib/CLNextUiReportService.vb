@@ -576,7 +576,7 @@ Public NotInheritable Class CLNextUiReportService
         area.Position = position
         ConfigureArea(area, L("MainForm_Efficiency", "Efficiency [%]"), 60)
         chart.ChartAreas.Add(area)
-        AddSeries(chart, name & "Curve", name, curves.RegulatedAirflows,
+        AddSeries(chart, name & "Curve", name, curves.OriginalAirflows,
             curves.EfficienciesPercent, color)
         AddPoint(chart, name & "Point", name, curves.WorkingPointAirflow,
             curves.WorkingPointEfficiencyPercent)

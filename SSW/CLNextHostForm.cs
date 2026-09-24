@@ -119,6 +119,8 @@ namespace SSW
                 item.RequiredRegulationPercent < 70 ||
                 item.AvailablePressurePa <= 0 ||
                 item.AvailablePressurePa < preselectionInput.PressurePa ||
+                item.AvailablePressurePa - preselectionInput.PressurePa >
+                    Math.Min(25, Math.Max(10, preselectionInput.PressurePa * 0.05)) ||
                 item.AbsorbedPowerW <= 0 ||
                 item.CombinedSfp <= 0 ||
                 double.IsNaN(item.CombinedSfp) ||
@@ -131,6 +133,8 @@ namespace SSW
             };
             if (CLNextUiApplicationService.Preselect(lowDutyPoint).Exists(item =>
                 item.AvailablePressurePa <= 0 ||
+                item.AvailablePressurePa - lowDutyPoint.PressurePa >
+                    Math.Min(25, Math.Max(10, lowDutyPoint.PressurePa * 0.05)) ||
                 item.AbsorbedPowerW <= 0 ||
                 item.CombinedSfp <= 0 ||
                 double.IsNaN(item.CombinedSfp) ||
@@ -146,11 +150,20 @@ namespace SSW
             if (CLNextUiApplicationService.Preselect(lowDutyPoint).Count != 0)
                 return 67;
 
-            lowDutyPoint.PreselectionFilters = new CLNextUiPreselectionFilters
+            var rotaryModel = models.Find(item =>
+                item.SeriesCode == "6" || item.SeriesCode == "9");
+            if (rotaryModel == null) return 75;
+            var rotaryDutyPoint = new CLNextUiCalculationInput
             {
-                RotaryOnlyEnabled = true
+                SupplyAirflowM3h = Math.Max(1, rotaryModel.NominalAirflowM3h),
+                ExtractAirflowM3h = Math.Max(1, rotaryModel.NominalAirflowM3h),
+                PressurePa = Math.Max(0, rotaryModel.StaticPressurePa),
+                PreselectionFilters = new CLNextUiPreselectionFilters
+                {
+                    RotaryOnlyEnabled = true
+                }
             };
-            var rotaryCandidates = CLNextUiApplicationService.Preselect(lowDutyPoint);
+            var rotaryCandidates = CLNextUiApplicationService.Preselect(rotaryDutyPoint);
             if (rotaryCandidates.Count == 0 || rotaryCandidates.Exists(item =>
                 item.Model.SeriesCode != "6" && item.Model.SeriesCode != "9"))
                 return 75;
