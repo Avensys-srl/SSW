@@ -68,12 +68,18 @@ namespace SSW
                         bitmap.Save(imageStream, System.Drawing.Imaging.ImageFormat.Png);
                         testImage = imageStream.ToArray();
                     }
-                    CLNextHostForm.WriteDimensionalDrawingPdf(testPdf, testImage, drawing);
+                    CLNextHostForm.WriteDimensionalDrawingPdf(
+                        testPdf,
+                        testImage,
+                        drawing,
+                        primeModel.Code,
+                        CLNextHostForm.ImageBytes(CLEnvironment.Current.CustomerLogo));
                     using (var reader = new iTextSharp.text.pdf.PdfReader(testPdf))
                     {
                         if (reader.NumberOfPages != 1) return 72;
                         string pdfText = iTextSharp.text.pdf.parser.PdfTextExtractor.GetTextFromPage(reader, 1);
                         string normalizedPdfText = System.Text.RegularExpressions.Regex.Replace(pdfText, @"\s+", " ");
+                        if (normalizedPdfText.IndexOf(primeModel.Code, StringComparison.Ordinal) < 0) return 76;
                         foreach (CLDimensionalValue dimension in drawing.VisibleDimensions)
                         {
                             string expected = dimension.Code + " " +
@@ -1178,7 +1184,12 @@ namespace SSW
                     VirtualHostName,
                     assetDirectory,
                     CoreWebView2HostResourceAccessKind.DenyCors);
-                webView.Source = new Uri("https://" + VirtualHostName + "/index.html");
+                // Keep the virtual host stable for local assets, but vary the document URL
+                // between releases so WebView2 cannot reopen a cached UI from the previous
+                // installation after an in-place update.
+                string uiVersion = Uri.EscapeDataString(Application.ProductVersion ?? "unknown");
+                webView.Source = new Uri(
+                    "https://" + VirtualHostName + "/index.html?v=" + uiVersion);
             }
             catch (Exception exception)
             {
@@ -1386,7 +1397,8 @@ namespace SSW
                         "return true;" +
                         "})()");
                     await WaitForConditionAsync(
-                        "document.querySelectorAll('.document-card').length === 9 && " +
+                        "document.querySelectorAll('.document-card').length === 10 && " +
+                        "document.querySelector('[data-document=\"dimensional-drawing\"]') !== null && " +
                         "document.querySelector('[data-document=\"step-model\"]') !== null && " +
                         "document.querySelector('.documents-loading') === null",
                         "The Documents view did not become ready.");
@@ -1512,7 +1524,12 @@ namespace SSW
                 outputPath = dialog.FileName;
             }
 
-            WriteDimensionalDrawingPdf(outputPath, imageBytes, drawing);
+            WriteDimensionalDrawingPdf(
+                outputPath,
+                imageBytes,
+                drawing,
+                modelCode,
+                ImageBytes(CLEnvironment.Current.CustomerLogo));
 
             return new
             {
@@ -1524,7 +1541,9 @@ namespace SSW
         internal static void WriteDimensionalDrawingPdf(
             string outputPath,
             byte[] imageBytes,
-            CLDimensionalDrawingResult drawing)
+            CLDimensionalDrawingResult drawing,
+            string modelCode,
+            byte[] logoBytes)
         {
             if (String.IsNullOrWhiteSpace(outputPath))
                 throw new ArgumentException("Output path is required.", "outputPath");
@@ -1547,9 +1566,32 @@ namespace SSW
                     int legendRows = drawing.VisibleDimensions.Count +
                         (drawing.UnitWeightKilograms.HasValue && drawing.UnitWeightKilograms.Value != 0 ? 1 : 0);
                     float legendHeight = Math.Max(42f, legendRows * 20f + 8f);
-                    float drawingBottom = document.BottomMargin + legendHeight;
+                    float headerHeight = 30f;
+                    float logoHeight = 36f;
+                    float footerHeight = Math.Max(legendHeight, logoHeight);
+                    float drawingBottom = document.BottomMargin + footerHeight + 8f;
                     float drawingWidth = pageSize.Width - document.LeftMargin - document.RightMargin;
-                    float drawingHeight = pageSize.Height - document.TopMargin - drawingBottom;
+                    float drawingHeight = pageSize.Height - document.TopMargin - headerHeight - drawingBottom;
+
+                    iTextSharp.text.Font titleFont =
+                        iTextSharp.text.FontFactory.GetFont(iTextSharp.text.FontFactory.HELVETICA_BOLD, 14f);
+                    iTextSharp.text.pdf.ColumnText.ShowTextAligned(
+                        writer.DirectContent,
+                        iTextSharp.text.Element.ALIGN_LEFT,
+                        new iTextSharp.text.Phrase(modelCode ?? String.Empty, titleFont),
+                        document.LeftMargin,
+                        pageSize.Height - document.TopMargin - 15f,
+                        0f);
+                    writer.DirectContent.SetColorStroke(new iTextSharp.text.BaseColor(205, 214, 210));
+                    writer.DirectContent.SetLineWidth(0.6f);
+                    writer.DirectContent.MoveTo(
+                        document.LeftMargin,
+                        pageSize.Height - document.TopMargin - headerHeight + 6f);
+                    writer.DirectContent.LineTo(
+                        pageSize.Width - document.RightMargin,
+                        pageSize.Height - document.TopMargin - headerHeight + 6f);
+                    writer.DirectContent.Stroke();
+
                     drawingImage.ScaleToFit(drawingWidth, drawingHeight);
                     drawingImage.SetAbsolutePosition(
                         (pageSize.Width - drawingImage.ScaledWidth) / 2f,
@@ -1599,14 +1641,34 @@ namespace SSW
                     legend.WriteSelectedRows(
                         0,
                         -1,
-                        pageSize.Width - document.RightMargin - legend.TotalWidth,
+                        document.LeftMargin,
                         document.BottomMargin + legendHeight - 4f,
                         writer.DirectContent);
+
+                    if (logoBytes != null && logoBytes.Length > 0)
+                    {
+                        iTextSharp.text.Image logo = iTextSharp.text.Image.GetInstance(logoBytes);
+                        logo.ScaleToFit(112f, logoHeight);
+                        logo.SetAbsolutePosition(
+                            pageSize.Width - document.RightMargin - logo.ScaledWidth,
+                            document.BottomMargin + (footerHeight - logo.ScaledHeight) / 2f);
+                        document.Add(logo);
+                    }
                 }
                 finally
                 {
                     document.Close();
                 }
+            }
+        }
+
+        internal static byte[] ImageBytes(Image image)
+        {
+            if (image == null) return null;
+            using (var stream = new MemoryStream())
+            {
+                image.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
+                return stream.ToArray();
             }
         }
 
@@ -1692,12 +1754,32 @@ namespace SSW
                         payload = EmailMultiSelectionProject(request.Payload);
                         break;
                     case "report.generate":
-                        BeginInvoke(new Action(delegate
                         {
-                            OpenNextReport(CreateInput(request.Payload));
-                        }));
-                        payload = new { opened = true, delegated = true };
-                        break;
+                            CLNextUiCalculationInput reportInput = CreateInput(request.Payload);
+                            string interfaceLanguage = NormalizeLanguageCode(
+                                reportInput.LanguageCode);
+                            string requestedDocumentLanguage =
+                                TextValue(request.Payload, "documentLanguageCode");
+                            if (!String.IsNullOrWhiteSpace(requestedDocumentLanguage))
+                            {
+                                reportInput.LanguageCode = NormalizeLanguageCode(
+                                    requestedDocumentLanguage);
+                            }
+                            BeginInvoke(new Action(delegate
+                            {
+                                try
+                                {
+                                    OpenNextReport(reportInput);
+                                }
+                                finally
+                                {
+                                    CLNextUiApplicationService.ApplyLanguage(
+                                        interfaceLanguage);
+                                }
+                            }));
+                            payload = new { opened = true, delegated = true };
+                            break;
+                        }
                     case "documents.list":
                         payload = ResolveProductDocuments(request.Payload, false);
                         break;
@@ -1706,9 +1788,14 @@ namespace SSW
                         break;
                     case "drawing.get":
                         if (request.Payload == null) throw new ArgumentNullException("payload");
-                        payload = CLDimensionalDrawingService.Resolve(
+                        CLDimensionalDrawingResult drawingResult = CLDimensionalDrawingService.Resolve(
                             TextValue(request.Payload, "modelCode"),
                             TextValue(request.Payload, "layoutCode"));
+                        byte[] brandingLogo = ImageBytes(CLEnvironment.Current.CustomerLogo);
+                        drawingResult.BrandingLogoBase64 = brandingLogo == null
+                            ? null
+                            : Convert.ToBase64String(brandingLogo);
+                        payload = drawingResult;
                         break;
                     case "drawing.download":
                         payload = DownloadDimensionalDrawing(request.Payload);

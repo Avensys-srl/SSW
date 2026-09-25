@@ -333,8 +333,14 @@ class NativeSelectionBridge implements SelectionBridge {
     };
   }
 
-  async generateReport(draft: Parameters<SelectionBridge["generateReport"]>[0]) {
-    await nativeInvoke("report.generate", this.draftPayload(draft));
+  async generateReport(
+    draft: Parameters<SelectionBridge["generateReport"]>[0],
+    documentLanguageCode: string,
+  ) {
+    await nativeInvoke("report.generate", {
+      ...this.draftPayload(draft),
+      documentLanguageCode,
+    });
     const model =
       this.models.find((item) => item.Code === draft.selectedUnitId)?.Name ??
       draft.selectedUnitId;
@@ -377,6 +383,7 @@ class NativeSelectionBridge implements SelectionBridge {
       pageHeightPoints: numberValue(native.PageHeightPoints),
       pageRotation: numberValue(native.PageRotation),
       contentBase64: native.ContentBase64,
+      brandingLogoBase64: native.BrandingLogoBase64,
       orientation: native.Orientation,
       dimensions: (native.Dimensions ?? []).map((item: any) => ({
         code: item.Code,

@@ -444,7 +444,7 @@
     <value>Salva Manuale Installazione Utente</value>
   </data>
   <data name="Legal_Notice" xml:space="preserve">
-    <value>Legal Notice: I dati sono stati testati in specifici punti di lavoro in accordo con le norme sopra citate. Il caso reale potrebbe differire dal caso normativo. I dati restanti sono stati estrapolati . In caso di un'installazione molto sensibile ai dati di rumore per cortesia contattateci (il software non è certificato). Il calcolo del breakout viene effettuato secondo lo standard ASHRAE Handbook - HVAC Applications, Capitolo 47</value>
+    <value>Avviso legale: I dati sono stati testati in specifici punti di lavoro in accordo con le norme sopra citate. Il caso reale potrebbe differire dal caso normativo. I dati restanti sono stati estrapolati. In caso di un'installazione molto sensibile ai dati di rumore, per cortesia contattateci (il software non è certificato). Il calcolo del breakout viene effettuato secondo lo standard ASHRAE Handbook - HVAC Applications, Capitolo 47.</value>
   </data>
   <data name="Item_Code" xml:space="preserve">
     <value>Codificatore Articolo</value>

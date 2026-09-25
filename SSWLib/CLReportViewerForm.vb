@@ -46,7 +46,16 @@ Public Class CLReportViewerForm
         For Each reportDataSource As Microsoft.Reporting.WinForms.ReportDataSource In reportDataSources
             rpvReport.LocalReport.DataSources.Add(reportDataSource)
         Next
-        rpvReport.SetDisplayMode(displayMode)
+        ' PrintLayout derives its preview scale from the default printer driver. Some
+        ' high-DPI drivers report printer pixels as screen pixels and shrink the report.
+        ' Normal mode keeps preview sizing independent from the customer's printer;
+        ' PDF rendering still uses the physical page settings declared in the RDLC.
+        Dim effectiveDisplayMode = If(displayMode = Microsoft.Reporting.WinForms.DisplayMode.PrintLayout,
+            Microsoft.Reporting.WinForms.DisplayMode.Normal, displayMode)
+        rpvReport.SetDisplayMode(effectiveDisplayMode)
+        If effectiveDisplayMode = Microsoft.Reporting.WinForms.DisplayMode.Normal Then
+            rpvReport.ZoomMode = Microsoft.Reporting.WinForms.ZoomMode.PageWidth
+        End If
         rpvReport.RefreshReport()
     End Sub
 

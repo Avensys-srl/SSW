@@ -498,10 +498,13 @@ input:disabled, select:disabled {
 .preselection-technical > h3 { font-size: 12px; }
 .technical-controls { display: grid; grid-template-columns: minmax(130px, 1fr) auto; align-items: end; gap: 14px; }
 .seasonal-toggle { min-height: 36px; }
-.season-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.season-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr)); gap: 10px; }
 .season-card { min-width: 0; padding: 10px; border: 1px solid var(--line); border-radius: 4px; }
 .season-card legend { padding: 0 5px; color: var(--action); font-size: 10px; font-weight: 700; }
 .season-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+.season-fields .field { min-width: 0; }
+.season-fields .input-with-unit { grid-template-columns: minmax(48px, 1fr) auto; min-width: 0; }
+.season-fields .input-with-unit input { min-width: 0; }
 .selection-criterion { position: relative; min-width: 0; padding: 9px 10px; border: 1px solid var(--line); border-radius: 4px; }
 .selection-criterion legend { padding: 0 5px; color: var(--action); font-size: 10px; font-weight: 700; }
 .selection-criterion.criterion-disabled .criterion-controls,
@@ -1130,6 +1133,7 @@ input:disabled, select:disabled {
   margin-top: 18px;
 }
 .dimensional-image-frame {
+  position: relative;
   display: grid;
   min-height: 320px;
   place-items: center;
@@ -1143,6 +1147,18 @@ input:disabled, select:disabled {
   display: block;
   max-width: 100%;
   height: auto;
+}
+.dimensional-image-frame .dimensional-preview-logo {
+  position: absolute;
+  right: 28px;
+  bottom: 26px;
+  width: auto;
+  max-width: min(150px, 22%);
+  max-height: 46px;
+  padding: 5px 8px;
+  background: rgb(255 255 255 / 92%);
+  object-fit: contain;
+  pointer-events: none;
 }
 .dimensional-values { padding: 14px; border-left: 1px solid var(--line); }
 .dimensional-values table { width: 100%; border-collapse: collapse; }
@@ -1285,7 +1301,6 @@ input:disabled, select:disabled {
   .step-rail-heading, .step-button > span:last-child, .showcase-link { display: none; }
   .step-button { grid-template-columns: 1fr; justify-items: center; }
   .content-grid.split-main { grid-template-columns: 1fr; }
-  .season-fields { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .co2-profile-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .step-content { min-height: 420px; }
 }

@@ -1,6 +1,20 @@
 SSW Changelog
 =============
 
+2.0.0.19 - 2026-09-25
+---------------------
+- Added the dimensional drawing PDF to the Documents page for easier customer access.
+- Added the selected unit name and Avensys branding to dimensional drawing PDFs and previews.
+- Improved installation schematic spacing in generated reports.
+- Removed an incorrect boolean value from coil report footers and localized the Italian legal-notice heading.
+
+2.0.0.18 - 2026-09-25
+---------------------
+- Prevented the embedded interface from reopening cached assets from the previous release after an in-place update.
+- Made generated reports consistently use the project document language independently of the interface language.
+- Normalized report preview sizing so pages are not rendered at a fraction of their intended size because of local printer or display settings.
+- Kept seasonal-condition values visible and usable on smaller windows and displays.
+
 2.0.0.17 - 2026-09-24
 ---------------------
 - Limited preselection results to units whose available pressure exceeds the requested duty point by no more than 10 Pa or 5%, capped at 25 Pa.

@@ -175,6 +175,7 @@ export class MockSelectionBridge implements SelectionBridge {
 
   async generateReport(
     draft: SelectionDraft,
+    _documentLanguageCode: string,
   ): Promise<{ fileName: string }> {
     await wait(320);
     const unit = mockUnits.find((candidate) => candidate.id === draft.selectedUnitId);

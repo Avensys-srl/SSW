@@ -15,6 +15,7 @@ Public NotInheritable Class CLDimensionalDrawingResult
     Public Property PageHeightPoints As Double
     Public Property PageRotation As Integer
     Public Property ContentBase64 As String
+    Public Property BrandingLogoBase64 As String
     Public Property Orientation As String
     Public Property Dimensions As New List(Of CLDimensionalValue)()
     Public Property AdditionalDimensions As New List(Of CLDimensionalValue)()

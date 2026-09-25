@@ -356,6 +356,7 @@ export interface DimensionalDrawingState {
   pageHeightPoints?: number;
   pageRotation?: number;
   contentBase64?: string;
+  brandingLogoBase64?: string;
   orientation?: "H" | "V";
   dimensions: Array<{
     code: "A" | "B" | "C" | "D";
@@ -418,6 +419,7 @@ export interface SelectionBridge {
   ): Promise<{ opened: boolean; cancelled?: boolean; draft?: SelectionDraft; project?: ProjectSaveState }>;
   generateReport(
     draft: SelectionDraft,
+    documentLanguageCode: string,
   ): Promise<{ fileName: string; delegated?: boolean }>;
   getProductDocuments(draft: SelectionDraft): Promise<ProductDocumentState>;
   openProductDocument(

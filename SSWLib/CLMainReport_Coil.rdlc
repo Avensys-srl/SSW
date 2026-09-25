@@ -13266,36 +13266,6 @@
             </Border>
           </Style>
         </Textbox>
-        <Textbox Name="Legal_Notice3">
-          <CanGrow>true</CanGrow>
-          <KeepTogether>true</KeepTogether>
-          <Paragraphs>
-            <Paragraph>
-              <TextRuns>
-                <TextRun>
-                  <Value>=First(Fields!CustomDisclaimerAccepted.Value, "WaterCoilReport")</Value>
-                  <Style>
-                    <FontFamily>Helvetica</FontFamily>
-                    <FontSize>8pt</FontSize>
-                  </Style>
-                </TextRun>
-              </TextRuns>
-              <Style>
-                <TextAlign>Left</TextAlign>
-              </Style>
-            </Paragraph>
-          </Paragraphs>
-          <Top>0.6325cm</Top>
-          <Left>0.71803cm</Left>
-          <Height>0.5cm</Height>
-          <Width>18.64144cm</Width>
-          <ZIndex>2</ZIndex>
-          <Style>
-            <Border>
-              <Style>None</Style>
-            </Border>
-          </Style>
-        </Textbox>
       </ReportItems>
       <Style>
         <Border>

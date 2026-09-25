@@ -403,7 +403,10 @@ const renderDimensionalDrawing = (): string => {
       <div class="dimensional-drawing-content">
         <div class="dimensional-image-frame large">
           ${drawing.available && drawing.contentBase64
-            ? renderDimensionalSurface(true)
+            ? `${renderDimensionalSurface(true)}
+              ${drawing.brandingLogoBase64
+                ? `<img class="dimensional-preview-logo" src="data:image/png;base64,${drawing.brandingLogoBase64}" alt="Avensys" />`
+                : ""}`
             : `<div class="empty-state">${escapeHtml(text.status.unavailable)}</div>`}
         </div>
         <aside class="dimensional-values">
@@ -2068,6 +2071,7 @@ const renderDocumentsStep = (): string => {
         </div>
       </div>` : ""}
     ${documentCard(text.ui.documents.technicalSheet, text.ui.documents.technicalSheetDescription, "PDF", "file-text", "commercial-sheet", productDocuments?.commercialSheetAvailable === true)}
+    ${documentCard(text.ui.documents.dimensionalDrawing, text.ui.documents.dimensionalDrawingDescription, "PDF", "ruler", "dimensional-drawing", dimensionalDrawing?.available === true)}
     ${documentCard(text.ui.documents.installationManual, text.ui.documents.installationManualDescription, "PDF", "book-open", "installation-manual", productDocuments?.installationManualAvailable === true)}
     ${documentCard(applicationTitle, applicationDescription, "PDF", "files", null, false)}
     ${documentCard(applicationDocuments[0], "", "PDF", "badge-check", null, false)}
@@ -2396,7 +2400,7 @@ const documentCard = (
   description: string,
   format: string,
   iconName: string,
-  documentType: "commercial-sheet" | "installation-manual" | "step-model" | null,
+  documentType: "commercial-sheet" | "dimensional-drawing" | "installation-manual" | "step-model" | null,
   available: boolean,
 ): string => `
   <article class="document-card ${available ? "" : "disabled"}">
@@ -2422,7 +2426,7 @@ const currentDimensionalDrawingKey = (): string =>
   `${draft?.selectedUnitId ?? ""}|${draft?.layoutCode ?? ""}`;
 
 const ensureDimensionalDrawing = async (): Promise<void> => {
-  if (!draft || currentStep !== "installation") return;
+  if (!draft || (currentStep !== "installation" && currentStep !== "documents")) return;
   const key = currentDimensionalDrawingKey();
   if (!key || dimensionalDrawingKey === key) return;
 
@@ -2694,8 +2698,16 @@ const bindShellEvents = (): void => {
     button.addEventListener("click", async () => {
       const documentType = button.dataset.document as
         | "commercial-sheet"
+        | "dimensional-drawing"
         | "installation-manual"
         | "step-model";
+      if (documentType === "dimensional-drawing") {
+        await ensureDimensionalDrawing();
+        if (!dimensionalDrawing?.available) return;
+        dimensionalDrawingOpen = true;
+        renderShell();
+        return;
+      }
       busyMessage = documentBusyText().opening;
       renderShell();
       try {
@@ -3052,6 +3064,7 @@ const refreshProductDocuments = async (): Promise<void> => {
     productDocumentsLoading = false;
     busyMessage = null;
   }
+  await ensureDimensionalDrawing();
   renderShell();
 };
 
@@ -3294,7 +3307,10 @@ const openDraft = async (): Promise<void> => {
 
 const generateReport = async (): Promise<void> => {
   if (calculating || calculationFailed) return;
-  const response = await bridge.generateReport(structuredClone(draft!));
+  const response = await bridge.generateReport(
+    structuredClone(draft!),
+    projectDocumentLanguage(),
+  );
   if (response.delegated) {
     showToast(messages().ui.toast.completeReport);
     return;

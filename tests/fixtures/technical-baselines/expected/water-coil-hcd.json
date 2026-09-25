@@ -9327,7 +9327,7 @@
           "ElectricPowerInput_Value": "EN 5801  EN 13141-7  EN 13141-4 ",
           "NoiseLevel_Caption": "Livello sonoro",
           "NoiseLevel_Value": "EN 5135  EN 5136",
-          "Legal_Notice": "Legal Notice: I dati sono stati testati in specifici punti di lavoro in accordo con le norme sopra citate. Il caso reale potrebbe differire dal caso normativo. I dati restanti sono stati estrapolati . In caso di un\u0027installazione molto sensibile ai dati di rumore per cortesia contattateci (il software non \u00E8 certificato). Il calcolo del breakout viene effettuato secondo lo standard ASHRAE Handbook - HVAC Applications, Capitolo 47"
+          "Legal_Notice": "Avviso legale: I dati sono stati testati in specifici punti di lavoro in accordo con le norme sopra citate. Il caso reale potrebbe differire dal caso normativo. I dati restanti sono stati estrapolati. In caso di un\u0027installazione molto sensibile ai dati di rumore, per cortesia contattateci (il software non \u00E8 certificato). Il calcolo del breakout viene effettuato secondo lo standard ASHRAE Handbook - HVAC Applications, Capitolo 47."
         }
       ]
     },
@@ -10575,8 +10575,8 @@
   ],
   "runtime": {
     "databaseSchema": "5",
-    "databaseData": "2026.09.22.090130-DD498C37",
-    "databaseContent": "DD498C37125E705AB488B42BA345EDFB6BF00E861480C757F55B7BA2592BFA5E",
+    "databaseData": "2026.09.25.082517-5F799028",
+    "databaseContent": "5F7990285C13B97D74D15BF251BCE42A178C8C523D0B0F9976F5D68540EE1E38",
     "coilLibrary": "3C55C15F0998E2D627A1708B04F3D21CB54DDC662553A4BAAADE028B3AC05E95"
   }
 }

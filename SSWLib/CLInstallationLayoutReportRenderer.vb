@@ -77,6 +77,9 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
 
     Private Shared Sub DrawSchematic(g As Graphics, snapshot As CLInstallationLayoutSnapshot,
         modelCode As String, code As String, mode As String)
+        ' Leave a clear visual gap between the RDLC configuration table and the
+        ' complete schematic while preserving the relative alignment of all parts.
+        g.TranslateTransform(0.0F, 24.0F)
         Dim c = snapshot.Configurations.Single(Function(item) EqualsCode(item.Code, code))
         Dim ssc = c.ReferenceView.StartsWith("SSC_", StringComparison.OrdinalIgnoreCase)
         Dim st = EqualsCode(snapshot.AeraulicConnectionCode, "ST")

@@ -20,6 +20,7 @@
 | Report | inverno/estate, coil on/off, CO2/suono | nessuna pagina vuota o sezione errata |
 | Report prestazioni | regolazione diversa da 100%, inverno/estate | il punto di lavoro del rendimento coincide con la curva alla stessa portata originale |
 | Preselezione pressione | punti di lavoro a pressioni diverse | sovrapressione non superiore a `min(25 Pa, max(10 Pa, 5% della pressione richiesta))` |
+| Lingua report | lingua interfaccia diversa dalla lingua documenti | il PDF usa la lingua documenti e l'interfaccia conserva la propria lingua |
 
 ## Collaudo manuale pilota
 
@@ -53,6 +54,13 @@
 - La tolleranza applicata e `min(25 Pa, max(10 Pa, 5% della pressione richiesta))`.
 - Gli smoke test verificano la soglia sia sul punto nominale sia sul punto a
   bassa portata `100 m3/h @ 100 Pa`.
+
+## Checkpoint 2026-09-24 - lingua indipendente del report
+
+- La richiesta del report trasmette separatamente la lingua dell'interfaccia e
+  la lingua documenti scelta nel progetto.
+- Il report viene preparato nella lingua documenti e, alla chiusura del viewer,
+  il backend ripristina la lingua dell'interfaccia.
 
 ## Evidenze di release
 
