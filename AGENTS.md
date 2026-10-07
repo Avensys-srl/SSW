@@ -171,8 +171,8 @@ For every extraction step:
 4. test balanced airflow explicitly;
 5. open legacy `.sswsel` fixtures;
 6. compile `SSW.sln` with configuration `AV`, platform `x86`;
-7. for desktop validation launch exactly:
-   `D:\mdev\SSW\SSW\bin\x86\AV\SSW.exe`;
+7. for local desktop validation use `build-local.ps1` and launch
+   `SSW\bin\x86\NewUI\SSW.exe` relative to this checkout;
 8. verify the tested process path before interacting with the UI.
 
 The minimum regression set must cover:

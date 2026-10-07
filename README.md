@@ -4,6 +4,10 @@ SSW is a Windows desktop selection tool (WinForms) built for multiple HVAC/venti
 
 This repository targets the .NET Framework and uses SQL Server Compact for the local data store, Entity Framework for data access, and ReportViewer/iTextSharp for report generation.
 
+This branch builds SSW Next, the guided WebView2 UI. Use
+`codex/ssw-next-ui-backend` and `build-local.ps1`; the supported local output is
+`SSW\bin\x86\NewUI\SSW.exe`. The local script compiles only the AV new-UI host.
+
 ## Key Capabilities
 
 - Multiple OEM builds via compile-time profiles.
@@ -58,7 +62,7 @@ Each profile maps to an `SSWInfo` class (`SSW/CLSSWInfo_*.cs`) that provides cus
 
 ## Current Version
 
-- Application version: `2.0.0.6` (single source: `SSWVersion.props`)
+- Application version: `2.0.0.19` (single source: `SSWVersion.props`)
 
 ## Prerequisites
 
@@ -69,10 +73,13 @@ Each profile maps to an `SSWInfo` class (`SSW/CLSSWInfo_*.cs`) that provides cus
   to verify the commands below; the full Visual Studio IDE is optional.
 - [.NET Framework 4.8 Developer Pack](https://dotnet.microsoft.com/en-us/download/dotnet-framework/net48),
   including its targeting pack and SDK. A modern `dotnet` SDK alone is insufficient.
+- [Node.js LTS](https://nodejs.org/en/download) with npm to compile the bundled frontend.
+- [WebView2 Evergreen Runtime](https://developer.microsoft.com/en-us/microsoft-edge/webview2/)
+  to run the new desktop UI.
 
 ## New PC Setup
 
-The steps below prepare a fresh checkout of `master`, build the Avensys profile,
+The steps below prepare a fresh checkout of `codex/ssw-next-ui-backend`, build the Avensys new UI,
 and launch it with a compatible product database. Private package archives and
 product databases are not distributed by this public repository.
 
@@ -83,6 +90,8 @@ links above and select the same workload/components in Visual Studio Installer.
 
 ```powershell
 winget install --id Git.Git -e --source winget --accept-package-agreements --accept-source-agreements
+winget install --id OpenJS.NodeJS.LTS -e --source winget --accept-package-agreements --accept-source-agreements
+winget install --id Microsoft.EdgeWebView2Runtime -e --source winget --accept-package-agreements --accept-source-agreements
 winget install --id Microsoft.VisualStudio.2022.BuildTools -e --source winget --accept-package-agreements --accept-source-agreements --silent --override "--wait --quiet --norestart --add Microsoft.VisualStudio.Workload.ManagedDesktopBuildTools --add Microsoft.Net.Component.4.8.TargetingPack --add Microsoft.Net.Component.4.8.SDK --includeRecommended"
 ```
 
@@ -98,15 +107,15 @@ Choose an empty folder. This example uses `D:\SSW`; use another writable locatio
 if the PC has no `D:` drive.
 
 ```powershell
-git clone --branch master https://github.com/Avensys-srl/SSW.git D:\SSW
+git clone --branch codex/ssw-next-ui-backend https://github.com/Avensys-srl/SSW.git D:\SSW
 Set-Location D:\SSW
 git remote -v
 git status
 ```
 
 `origin` must point to `https://github.com/Avensys-srl/SSW.git`.
-Read `SSWVersion.props` for the version of the selected checkout. `master` can
-be older than the versions listed under [release tags](https://github.com/Avensys-srl/SSW/tags).
+Read `SSWVersion.props` for the version of the selected checkout. `master` is the
+older product line; use this new-UI branch for local development.
 Use a database compatible with the checked-out source, not simply the newest SDF.
 
 ### 3. Obtain the four private packages
@@ -151,19 +160,21 @@ Cloning the four library repositories is optional for inspecting their source.
 ### 4. Compile
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File .\build-local.ps1 -Configuration AV
+powershell -NoProfile -ExecutionPolicy Bypass -File .\build-local.ps1
 ```
 
 [build-local.ps1](build-local.ps1) finds MSBuild through `vswhere`, restores NuGet
-packages, and performs a full `AV|x86` rebuild. It stops on restore/build failure.
-The resulting executable is `SSW\bin\x86\AV\SSW.exe`. Without `-Configuration`,
-the script builds `Debug|x86` and writes `SSW\bin\Debug\SSW.exe`.
+packages, and performs a full `AV|x86` rebuild with the output directory fixed to
+`SSW\bin\x86\NewUI`. MSBuild runs `npm ci` when needed, builds the TypeScript/Vite
+frontend, and copies it beside the executable. The script stops on failure.
+It does not build a separate old-edition executable.
 
 Assembly and ClickOnce manifest signing are enabled when their certificate files
 are present. An unsigned development build does not require the private PFX files.
 Signed installer publication has separate requirements described below.
 
-For profiles that embed commercial PDF sheets, the build uses the mapped `M:`
+The local new-UI script disables external commercial PDF sheets. For manual
+builds that embed these sheets, the project uses the mapped `M:`
 marketing share when available, with the legacy share as a fallback. To build
 without these external PDF sheets:
 
@@ -184,47 +195,46 @@ Compilation does not create a product database. Obtain a profile-compatible
 `DataCentral.sdf` from an approved Avensys export or a matching installation.
 Copy it into `data` beside the executable. Work on a copy of the database.
 
-For the `master` version `1.3.0.55`, the compatibility reader supports legacy
-databases and managed schemas 1 through 3. A schema-6 database from a newer
-installation is rejected. Do not modify its schema metadata to bypass that check.
+The new-UI branch supports managed schemas up to 6. Use a current AV catalog
+with the required features. Do not modify schema metadata to bypass compatibility checks.
 The database must also match the customer code and minimum SSW version.
 
-The following legacy AV database was successfully used for startup on the verified
-workstation. Availability of this internal archive depends on your share access:
+On this workstation, a copy of the existing Avensys installation's schema-6
+database passed the new-UI smoke test. Change the source path if your installation differs:
 
 ```powershell
-$databaseSource = 'T:\TECHNO_SOFT\mercurial\SSW\SSW_1305\SSW\SSW\bin\x86\AV\data\DataCentral.sdf'
-$dataDirectory = '.\SSW\bin\x86\AV\data'
+$databaseSource = Join-Path $env:LOCALAPPDATA 'Programs\Avensys\SSW\data\DataCentral.sdf'
+$dataDirectory = '.\SSW\bin\x86\NewUI\data'
 New-Item -ItemType Directory -Path $dataDirectory -Force | Out-Null
 Copy-Item -LiteralPath $databaseSource -Destination (Join-Path $dataDirectory 'DataCentral.sdf') -ErrorAction Stop
 ```
 
-This older database is suitable for legacy startup/performance checks. Features
-requiring a newer managed catalog need a compatible export with those features.
+On a fresh PC without an existing installation, obtain a compatible AV export
+from the internal catalog owner before launching.
 The SDF files under `tests\fixtures` are test fixtures, not production catalogs.
 
 ### 6. Launch and test
 
 ```powershell
-$exe = (Resolve-Path .\SSW\bin\x86\AV\SSW.exe).Path
+$exe = (Resolve-Path .\SSW\bin\x86\NewUI\SSW.exe).Path
 Start-Process -FilePath $exe -WorkingDirectory (Split-Path $exe)
 ```
 
-Verify that the performance screen opens, a product is selected, and results and
+Verify that the guided new-UI screen opens, a product can be selected, and results and
 charts are populated. Change airflow within the product's range and confirm that
 the results recalculate. Check project save/reopen and report preview separately.
 Decline software-update installation prompts when testing the local executable;
 installing a published update does not test the locally compiled build.
 
-Run the lightweight alternative-reference smoke test with 32-bit PowerShell:
+Run the new-UI smoke test:
 
 ```powershell
-& "$env:WINDIR\SysWOW64\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -ExecutionPolicy Bypass -File .\tests\Invoke-AlternativeReferenceSmoke.ps1
+$test = Start-Process -FilePath $exe -ArgumentList '--next-ui-smoke' -WorkingDirectory (Split-Path $exe) -Wait -PassThru
+if ($test.ExitCode -ne 0) { throw "New UI smoke failed: $($test.ExitCode)" }
 ```
 
-Expected output: `Alternative reference progression passed.`
-This test and the `Debug|x86` / `AV|x86` builds were verified during local setup.
-The AV performance screen opened with calculated values using the legacy database.
+Expected exit code: `0`. The AV new-UI build and this smoke test were verified
+with the schema-6 AV database during local setup.
 This does not establish that every workflow or API integration passes.
 
 [tests/Invoke-TechnicalSelectionReleaseTests.ps1](tests/Invoke-TechnicalSelectionReleaseTests.ps1)
@@ -247,8 +257,7 @@ Required for installer builds:
 ## Build
 
 For a local command-line build, run `powershell -ExecutionPolicy Bypass -File .\build-local.ps1`.
-The script restores packages and rebuilds `Debug|x86`; use `-Configuration AV` for the AV profile.
-The Debug executable is written to `SSW\bin\Debug\SSW.exe`.
+The script restores packages and rebuilds only the AV new UI in `SSW\bin\x86\NewUI`.
 
 Private package archives on this PC are stored in `packages\local-feed`, configured by `NuGet.Config`.
 Assembly and manifest signing are enabled when their certificate files are present.

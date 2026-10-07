@@ -2,6 +2,10 @@
 
 Data decisione architetturale: 27/07/2026
 
+Checkpoint 07/10/2026: the local build script now builds only the AV new-UI
+host into `SSW/bin/x86/NewUI`. Setup, smoke and screenshot evidence are in
+[LOCAL_NEW_UI_BUILD_2026-10-07.md](LOCAL_NEW_UI_BUILD_2026-10-07.md).
+
 Checkpoint 08/09/2026: normalizzazione atomica selezione/risultati, protezioni
 contro risposte asincrone obsolete e controlli backend per accessori e
 trattamenti incompatibili. Evidenze e limiti in

@@ -20,6 +20,7 @@ interessata all'inizio di ogni nuova sessione, anche usando altre chat o modelli
 
 ## Contratti e verifiche
 
+- [New-UI-only local x86 build, 07/10/2026](LOCAL_NEW_UI_BUILD_2026-10-07.md)
 - [Portate sbilanciate](UNBALANCED_AIRFLOW_CONTRACT.md)
 - [Versionamento](TECHNICAL_SELECTION_VERSIONING.md)
 - [Matrice di test](TECHNICAL_SELECTION_TEST_MATRIX.md)
