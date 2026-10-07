@@ -28,3 +28,18 @@ Validation:
 The screenshot command validates the embedded WebView2 view without enrollment
 or software-update actions. Normal startup retains the existing license and
 update checks. This checkpoint is not a full report/API/installer release audit.
+
+## Development Workstation Follow-Up
+
+The master build was rebuilt and the workstation dependencies rechecked.
+`start-frontend.ps1` starts Vite with a fixed localhost port for hot reload.
+`start-new-ui.ps1 -DevUrl <url>` launches the real desktop backend against that
+server; without the option it explicitly uses bundled assets. The launcher
+restores the caller's environment after spawning the host.
+Browser previews use mock data; desktop validation uses the SQL CE catalog.
+
+Follow-up verification: full master rebuild, new-UI smoke and screenshot command
+passed; the captured guided project screen was inspected. The frontend development
+server returned HTTP 200 at localhost:5173. All three PowerShell entry scripts
+passed syntax parsing. Existing dependency/obsolete-API warnings remain; this is
+development readiness, not a signed production installer release.

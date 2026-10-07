@@ -272,6 +272,33 @@ to build without the external datasheets.
 
 The `SSW` project includes a post-build step that copies SQL Server Compact native binaries into `x86` and `amd64` folders in the output directory.
 
+## Daily Development
+
+Work in this repository on `master`. Build the complete desktop app with
+`powershell -NoProfile -ExecutionPolicy Bypass -File .\build-local.ps1` and launch
+it with `powershell -NoProfile -ExecutionPolicy Bypass -File .\start-new-ui.ps1`.
+The launch script uses bundled assets unless `-DevUrl` is explicitly supplied.
+
+For frontend hot reload, run this in one PowerShell window:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\start-frontend.ps1
+```
+
+Open `http://127.0.0.1:5173/#/selection` for the browser preview or
+`http://127.0.0.1:5173/#/showcase` for controls. The browser uses mock data.
+To use the real calculation backend with hot reload, run in a second window:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\start-new-ui.ps1 -DevUrl http://127.0.0.1:5173
+```
+
+Keep the first window running; Ctrl+C stops its server. If port 5173 is busy,
+pass `-Port 5174` to `start-frontend.ps1` and use that port in `-DevUrl`.
+Backend C#/VB.NET changes require a new desktop build with the app closed.
+Normal startup retains licensing and update checks; decline installer updates
+while testing local code. Installed production updates do not update this Git checkout.
+
 ## Installer Build
 
 The installer is generated with Inno Setup from `installer/SSW.iss`.
