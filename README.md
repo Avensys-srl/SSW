@@ -4,6 +4,10 @@ SSW is a Windows desktop selection tool (WinForms) built for multiple HVAC/venti
 
 This repository targets the .NET Framework and uses SQL Server Compact for the local data store, Entity Framework for data access, and ReportViewer/iTextSharp for report generation.
 
+This branch builds SSW Next, the guided WebView2 UI. Use
+`master` and `build-local.ps1`; the supported local output is
+`SSW\bin\x86\NewUI\SSW.exe`. The local script compiles only the AV new-UI host.
+
 ## Key Capabilities
 
 - Multiple OEM builds via compile-time profiles.
@@ -58,13 +62,187 @@ Each profile maps to an `SSWInfo` class (`SSW/CLSSWInfo_*.cs`) that provides cus
 
 ## Current Version
 
-- Application version: `2.0.0.6` (single source: `SSWVersion.props`)
+- Application version: `2.0.0.19` (single source: `SSWVersion.props`)
 
 ## Prerequisites
 
-- Windows
-- Visual Studio 2019 or newer with ".NET desktop development" workload
-- .NET Framework 4.8 Targeting Pack
+- Windows with PowerShell and access to Avensys private dependencies.
+- [Git for Windows](https://git-scm.com/download/win).
+- [Visual Studio Build Tools](https://visualstudio.microsoft.com/downloads/) with
+  the .NET desktop build tools workload. Visual Studio 2022 Build Tools was used
+  to verify the commands below; the full Visual Studio IDE is optional.
+- [.NET Framework 4.8 Developer Pack](https://dotnet.microsoft.com/en-us/download/dotnet-framework/net48),
+  including its targeting pack and SDK. A modern `dotnet` SDK alone is insufficient.
+- [Node.js LTS](https://nodejs.org/en/download) with npm to compile the bundled frontend.
+- [WebView2 Evergreen Runtime](https://developer.microsoft.com/en-us/microsoft-edge/webview2/)
+  to run the new desktop UI.
+
+## New PC Setup
+
+The steps below prepare a fresh checkout of `master`, build the Avensys new UI,
+and launch it with a compatible product database. Private package archives and
+product databases are not distributed by this public repository.
+
+### 1. Install the build tools
+
+Open PowerShell as Administrator. If `winget` is unavailable, use the download
+links above and select the same workload/components in Visual Studio Installer.
+
+```powershell
+winget install --id Git.Git -e --source winget --accept-package-agreements --accept-source-agreements
+winget install --id OpenJS.NodeJS.LTS -e --source winget --accept-package-agreements --accept-source-agreements
+winget install --id Microsoft.EdgeWebView2Runtime -e --source winget --accept-package-agreements --accept-source-agreements
+winget install --id Microsoft.VisualStudio.2022.BuildTools -e --source winget --accept-package-agreements --accept-source-agreements --silent --override "--wait --quiet --norestart --add Microsoft.VisualStudio.Workload.ManagedDesktopBuildTools --add Microsoft.Net.Component.4.8.TargetingPack --add Microsoft.Net.Component.4.8.SDK --includeRecommended"
+```
+
+Complete any requested restart, then open a new PowerShell window. Verify Git:
+
+```powershell
+git --version
+```
+
+### 2. Create the local repository
+
+Choose an empty folder. This example uses `D:\SSW`; use another writable location
+if the PC has no `D:` drive.
+
+```powershell
+git clone --branch master https://github.com/Avensys-srl/SSW.git D:\SSW
+Set-Location D:\SSW
+git remote -v
+git status
+```
+
+`origin` must point to `https://github.com/Avensys-srl/SSW.git`.
+Read `SSWVersion.props` for the version of the selected checkout. `master` now
+contains the new UI and is the default branch for local development.
+Use a database compatible with the checked-out source, not simply the newest SDF.
+
+### 3. Obtain the four private packages
+
+These exact archives are required:
+
+| Archive | Source repository (requires Avensys access) |
+| --- | --- |
+| `CLCommonLib.2018.1.24.16190.nupkg` | [CLCommonLib](https://github.com/Avensys-srl/CLCommonLib) |
+| `CLDataCentralCommonLib.2018.1.24.16193.nupkg` | [CLDataCentralCommonLib](https://github.com/Avensys-srl/CLDataCentralCommonLib) |
+| `CLDataCentralLTModel.2018.1.24.16201.nupkg` | [CLDataCentralLTModel](https://github.com/Avensys-srl/CLDataCentralLTModel) |
+| `CLEFCommonLib.2017.12.4.11112.nupkg` | [CLEFCommonLib](https://github.com/Avensys-srl/CLEFCommonLib) |
+
+The linked repositories contain library source, not the original package archives.
+Their READMEs identify the internal package feed. On the verified workstation,
+the archives were available at `T:\TECHNO_SOFT\nuget\repository`.
+Connect to the Avensys share, or obtain these archives from the package owner.
+They cannot be restored from NuGet.org.
+
+From the SSW repository root, copy the archives to the local feed:
+
+```powershell
+$packageSource = 'T:\TECHNO_SOFT\nuget\repository'
+New-Item -ItemType Directory -Path .\packages\local-feed -Force | Out-Null
+$packages = @(
+    'CLCommonLib.2018.1.24.16190',
+    'CLDataCentralCommonLib.2018.1.24.16193',
+    'CLDataCentralLTModel.2018.1.24.16201',
+    'CLEFCommonLib.2017.12.4.11112'
+)
+foreach ($package in $packages) {
+    Copy-Item -LiteralPath (Join-Path $packageSource ($package + '.nupkg')) -Destination .\packages\local-feed -ErrorAction Stop
+}
+```
+
+Set `$packageSource` to your actual archive directory if the share differs.
+[NuGet.Config](NuGet.Config) uses `packages\local-feed` and NuGet.org. Public
+dependencies, including `System.Text.Json`, restore automatically during the build.
+The `packages` directory is ignored by Git; keep private archives out of commits.
+Cloning the four library repositories is optional for inspecting their source.
+
+### 4. Compile
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\build-local.ps1
+```
+
+[build-local.ps1](build-local.ps1) finds MSBuild through `vswhere`, restores NuGet
+packages, and performs a full `AV|x86` rebuild with the output directory fixed to
+`SSW\bin\x86\NewUI`. MSBuild runs `npm ci` when needed, builds the TypeScript/Vite
+frontend, and copies it beside the executable. The script stops on failure.
+It does not build a separate old-edition executable.
+
+Assembly and ClickOnce manifest signing are enabled when their certificate files
+are present. An unsigned development build does not require the private PFX files.
+Signed installer publication has separate requirements described below.
+
+The local new-UI script disables external commercial PDF sheets. For manual
+builds that embed these sheets, the project uses the mapped `M:`
+marketing share when available, with the legacy share as a fallback. To build
+without these external PDF sheets:
+
+```powershell
+$env:IncludeCSS = 'false'
+powershell -NoProfile -ExecutionPolicy Bypass -File .\build-local.ps1 -Configuration AV
+Remove-Item Env:\IncludeCSS
+```
+
+Alternatively, set `$env:SSWMarketingRoot` to the share root containing
+`MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW`, ending the root path with `\`.
+SQL Server Compact native DLLs are copied from restored packages into the output;
+a separate SQL Server installation is not required for the local product database.
+
+### 5. Prepare the runtime database
+
+Compilation does not create a product database. Obtain a profile-compatible
+`DataCentral.sdf` from an approved Avensys export or a matching installation.
+Copy it into `data` beside the executable. Work on a copy of the database.
+
+The new-UI branch supports managed schemas up to 6. Use a current AV catalog
+with the required features. Do not modify schema metadata to bypass compatibility checks.
+The database must also match the customer code and minimum SSW version.
+
+On this workstation, a copy of the existing Avensys installation's schema-6
+database passed the new-UI smoke test. Change the source path if your installation differs:
+
+```powershell
+$databaseSource = Join-Path $env:LOCALAPPDATA 'Programs\Avensys\SSW\data\DataCentral.sdf'
+$dataDirectory = '.\SSW\bin\x86\NewUI\data'
+New-Item -ItemType Directory -Path $dataDirectory -Force | Out-Null
+Copy-Item -LiteralPath $databaseSource -Destination (Join-Path $dataDirectory 'DataCentral.sdf') -ErrorAction Stop
+```
+
+On a fresh PC without an existing installation, obtain a compatible AV export
+from the internal catalog owner before launching.
+The SDF files under `tests\fixtures` are test fixtures, not production catalogs.
+
+### 6. Launch and test
+
+```powershell
+$exe = (Resolve-Path .\SSW\bin\x86\NewUI\SSW.exe).Path
+Start-Process -FilePath $exe -WorkingDirectory (Split-Path $exe)
+```
+
+Verify that the guided new-UI screen opens, a product can be selected, and results and
+charts are populated. Change airflow within the product's range and confirm that
+the results recalculate. Check project save/reopen and report preview separately.
+Decline software-update installation prompts when testing the local executable;
+installing a published update does not test the locally compiled build.
+
+Run the new-UI smoke test:
+
+```powershell
+$test = Start-Process -FilePath $exe -ArgumentList '--next-ui-smoke' -WorkingDirectory (Split-Path $exe) -Wait -PassThru
+if ($test.ExitCode -ne 0) { throw "New UI smoke failed: $($test.ExitCode)" }
+```
+
+Expected exit code: `0`. The AV new-UI build and this smoke test were verified
+with the schema-6 AV database during local setup.
+This does not establish that every workflow or API integration passes.
+
+[tests/Invoke-TechnicalSelectionReleaseTests.ps1](tests/Invoke-TechnicalSelectionReleaseTests.ps1)
+is the broader release matrix. It currently assumes a Visual Studio 2019 Enterprise
+MSBuild path, a feature-complete AV catalog, and a separate PHP/API environment.
+It needs environment-specific setup before use on a fresh PC; it is not the basic
+desktop startup test. API-connected registration and synchronization additionally
+need the appropriate service access/enrollment configuration.
 
 Optional for runtime distribution:
 
@@ -78,12 +256,48 @@ Required for installer builds:
 
 ## Build
 
+For a local command-line build, run `powershell -ExecutionPolicy Bypass -File .\build-local.ps1`.
+The script restores packages and rebuilds only the AV new UI in `SSW\bin\x86\NewUI`.
+
+Private package archives on this PC are stored in `packages\local-feed`, configured by `NuGet.Config`.
+Assembly and manifest signing are enabled when their certificate files are present.
+Datasheets use the mapped `M:` marketing share when available, with the legacy share as a fallback.
+Override the share root with the MSBuild property `SSWMarketingRoot`, or use `/p:IncludeCSS=false`
+to build without the external datasheets.
+
 1. Open `SSW.sln` in Visual Studio.
 2. Restore NuGet packages (solution uses `packages.config`).
 3. Select the desired configuration (e.g., `CL|x86`, `AC|x86`, etc.).
 4. Build the solution.
 
 The `SSW` project includes a post-build step that copies SQL Server Compact native binaries into `x86` and `amd64` folders in the output directory.
+
+## Daily Development
+
+Work in this repository on `master`. Build the complete desktop app with
+`powershell -NoProfile -ExecutionPolicy Bypass -File .\build-local.ps1` and launch
+it with `powershell -NoProfile -ExecutionPolicy Bypass -File .\start-new-ui.ps1`.
+The launch script uses bundled assets unless `-DevUrl` is explicitly supplied.
+
+For frontend hot reload, run this in one PowerShell window:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\start-frontend.ps1
+```
+
+Open `http://127.0.0.1:5173/#/selection` for the browser preview or
+`http://127.0.0.1:5173/#/showcase` for controls. The browser uses mock data.
+To use the real calculation backend with hot reload, run in a second window:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\start-new-ui.ps1 -DevUrl http://127.0.0.1:5173
+```
+
+Keep the first window running; Ctrl+C stops its server. If port 5173 is busy,
+pass `-Port 5174` to `start-frontend.ps1` and use that port in `-DevUrl`.
+Backend C#/VB.NET changes require a new desktop build with the app closed.
+Normal startup retains licensing and update checks; decline installer updates
+while testing local code. Installed production updates do not update this Git checkout.
 
 ## Installer Build
 

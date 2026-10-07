@@ -7,6 +7,14 @@ descritta nei checkpoint storici e' superata. Solo 2.x resta supportata;
 importazione file storici e componenti tecnici condivisi sono conservati.
 Fasi e criteri in [abbandono graduale legacy](LEGACY_RETIREMENT_ROADMAP.md).
 
+Checkpoint 07/10/2026: the local build script now builds only the AV new-UI
+host into `SSW/bin/x86/NewUI`. Setup, smoke and screenshot evidence are in
+[LOCAL_NEW_UI_BUILD_2026-10-07.md](LOCAL_NEW_UI_BUILD_2026-10-07.md).
+At the user's request, the new-UI branch has been promoted to `master`;
+the earlier dedicated-branch policy is superseded for ongoing development.
+Local hot-reload entry scripts and master rebuild verification are recorded in
+the same checkpoint; the bundled desktop build remains the default launch mode.
+
 Checkpoint 08/09/2026: normalizzazione atomica selezione/risultati, protezioni
 contro risposte asincrone obsolete e controlli backend per accessori e
 trattamenti incompatibili. Evidenze e limiti in

@@ -37,6 +37,7 @@ interessata all'inizio di ogni nuova sessione, anche usando altre chat o modelli
 
 - [Ripristino e verifica avvio SSW, 05/10/2026](STARTUP_RECOVERY_2026-10-05.md)
 - [Coil regulation catalog audit, 01/10/2026](COIL_CATALOG_AUDIT_2026-10-01.md)
+- [New-UI-only local x86 build, 07/10/2026](LOCAL_NEW_UI_BUILD_2026-10-07.md)
 - [Portate sbilanciate](UNBALANCED_AIRFLOW_CONTRACT.md)
 - [Versionamento](TECHNICAL_SELECTION_VERSIONING.md)
 - [Matrice di test](TECHNICAL_SELECTION_TEST_MATRIX.md)

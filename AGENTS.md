@@ -30,8 +30,8 @@ The target architecture is:
 - Continue in the existing `Avensys-srl/SSW` repository.
 - Do not create a copied repository or restart history.
 - Keep `master` releasable.
-- Perform the modernization on a dedicated branch until the new UI reaches
-  agreed parity.
+- The user promoted the new UI to `master` on 7 October 2026. Continue new-UI
+  development from `master`; local builds use `SSW/bin/x86/NewUI`.
 - Add new projects beside the legacy projects; do not replace the legacy
   executable at the beginning of the migration.
 - Commit by testable architectural increment. Avoid one final large migration
@@ -177,8 +177,8 @@ For every extraction step:
 4. test balanced airflow explicitly;
 5. open legacy `.sswsel` fixtures;
 6. compile `SSW.sln` with configuration `AV`, platform `x86`;
-7. for desktop validation launch exactly:
-   `D:\mdev\SSW\SSW\bin\x86\AV\SSW.exe`;
+7. for local desktop validation use `build-local.ps1` and launch
+   `SSW\bin\x86\NewUI\SSW.exe` relative to this checkout;
 8. verify the tested process path before interacting with the UI.
 
 The minimum regression set must cover:
