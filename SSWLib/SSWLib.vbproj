@@ -360,10 +360,24 @@
       <DependentUpon>CLMainForm.vb</DependentUpon>
     </Compile>
     <Compile Include="CLSelectionProjectModel.vb" />
+    <Compile Include="CLSelectionContracts.vb" />
+    <Compile Include="CLSelectionContractMapper.vb" />
+    <Compile Include="CLSelectionContractValidator.vb" />
+    <Compile Include="CLSelectionApplicationService.vb" />
+    <Compile Include="CLNextUiApplicationService.vb" />
+    <Compile Include="CLNextUiIndoorQualityService.vb" />
+    <Compile Include="CLNextUiInfrastructureModels.vb" />
+    <Compile Include="CLNextUiReportService.vb" />
+    <Compile Include="CLProductDocumentService.vb" />
+    <Compile Include="CLTechnicalSelectionRegistrationService.vb" />
+    <Compile Include="CLInstallationLayoutRepository.vb" />
+    <Compile Include="CLDimensionalDrawingService.vb" />
+    <Compile Include="CLInstallationLayoutReportRenderer.vb" />
     <Compile Include="CLSelectionProjectSerializer.vb" />
     <Compile Include="CLSelectionFileName.vb" />
     <Compile Include="CLSelectionInstallationState.vb" />
     <Compile Include="CLSelectionCredentialStore.vb" />
+    <Compile Include="CLDeviceLicense.vb" />
     <Compile Include="CLSelectionApiClient.vb" />
     <Compile Include="CLSelectionApiClient.FollowUps.vb" />
     <Compile Include="CLFollowUpReminderModel.vb" />
@@ -390,6 +404,7 @@
       <DependentUpon>CLMainForm.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="CLTechnicalBaseline.vb" />
     <Compile Include="CLPleaseWaitForm.Designer.vb">
       <DependentUpon>CLPleaseWaitForm.vb</DependentUpon>
     </Compile>
@@ -543,6 +558,7 @@
     <EmbeddedResource Include="Resources.sv.resx" />
     <EmbeddedResource Include="Resources.no.resx" />
     <EmbeddedResource Include="Resources.is.resx" />
+    <EmbeddedResource Include="Resources.cs.resx" />
     <EmbeddedResource Include="Resources.hu.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.hu.Designer.vb</LastGenOutput>
@@ -599,6 +615,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.sl.Designer.vb</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Airflow\exhaust.png" />
+    <EmbeddedResource Include="Resources\Airflow\fresh.png" />
+    <EmbeddedResource Include="Resources\Airflow\return.png" />
+    <EmbeddedResource Include="Resources\Airflow\supply.png" />
     <None Include="ssw.pfx" />
     <None Include="SSW_3_TemporaryKey.pfx" />
   </ItemGroup>

@@ -74,6 +74,7 @@ Public Class CLMainForm
         Public Property Thermo As termo
         Public Property WorkPoint As Double()
         Public Property AirFlow As Double
+        Public Property Curves As CLPerformanceCurveCalculation
     End Class
 
     Private ReadOnly Property Environment As CLEnvironment
@@ -126,6 +127,7 @@ Public Class CLMainForm
         tsmiOption_Language_SV.Visible = Environment.FindLanguage(CLEnvironment.LanguageCode_SV).Enabled
         tsmiOption_Language_NO.Visible = Environment.FindLanguage(CLEnvironment.LanguageCode_NO).Enabled
         tsmiOption_Language_IS.Visible = Environment.FindLanguage(CLEnvironment.LanguageCode_IS).Enabled
+        tsmiOption_Language_CS.Visible = Environment.FindLanguage(CLEnvironment.LanguageCode_CS).Enabled
 
         txbPerformance_PassiveHaus_Limit.Text = (0.45D).ToString()
         If Not Environment.HasBranchs Then
@@ -148,6 +150,12 @@ Public Class CLMainForm
                 tsmiBranchs.DropDownItems.Add(menuItem)
             Next
         End If
+    End Sub
+
+    Protected Overrides Sub OnFormClosed(e As FormClosedEventArgs)
+        RemoveHandler Environment.LanguageChanged, AddressOf Environment_LanguageChanged
+        RemoveHandler Environment.BranchChanged, AddressOf Environment_BranchChanged
+        MyBase.OnFormClosed(e)
     End Sub
 
     Private Sub CLMainForm_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
@@ -220,12 +228,31 @@ Public Class CLMainForm
         Next
         SoundPerformances_UIDGVRefreshColumns()
 
+        If m_NextUiReportHost Then
+            CoilPerformance_InitializeTab()
+            ElectricHeater_InitializeTab()
+            Accessories_InitializeTab()
+        End If
+
         ' Set regional settings
-        MeasureUnit = CLMeasureUnit.SI
+        If m_NextUiReportHost Then
+            m_MeasureUnit = CLMeasureUnit.SI
+            tsmiOption_Unit_SI.Checked = True
+            tsmiOption_Unit_IP.Checked = False
+            UpdateLocalization_MeasureUnit()
+        Else
+            MeasureUnit = CLMeasureUnit.SI
+        End If
 
         state = CultureInfo.CurrentCulture.Name.Substring(3)
 
-        language = Environment.FindLanguage(CultureInfo.CurrentCulture.Name.Substring(0, 2))
+        If m_NextUiReportHost Then
+            ' The hidden report host must use the document language already
+            ' selected by Next UI, independently from the interface culture.
+            language = Environment.FindLanguage(Environment.PrimaryLanguageCode)
+        Else
+            language = Environment.FindLanguage(CultureInfo.CurrentCulture.Name.Substring(0, 2))
+        End If
         If language Is Nothing OrElse Not language.Enabled Then
             language = Environment.FindLanguage(Environment.SSWInfo.DefaultLanguage)
         End If
@@ -233,7 +260,14 @@ Public Class CLMainForm
             language = Environment.ENLanguage
         End If
 
-        Environment.SetLanguage(language)
+        If Not String.Equals(Environment.PrimaryLanguageCode, language.Code,
+            StringComparison.OrdinalIgnoreCase) Then
+            Environment.SetLanguage(language)
+        Else
+            ' The Next UI initializes localization before creating the hidden
+            ' legacy report host, so no LanguageChanged event is raised here.
+            UpdateLocalization()
+        End If
         SeasonalCalculation_UpdateModeButton()
 
         If state = "GB" Then
@@ -243,9 +277,11 @@ Public Class CLMainForm
             tbcMain.TabPages.Remove(tbpCertification)
         End If
 
-        CoilPerformance_InitializeTab()
-        ElectricHeater_InitializeTab()
-        Accessories_InitializeTab()
+        If Not m_NextUiReportHost Then
+            CoilPerformance_InitializeTab()
+            ElectricHeater_InitializeTab()
+            Accessories_InitializeTab()
+        End If
         Help_ApplyToolTips()
 
         txbPerformance_AirFlow.Text = "100"
@@ -269,7 +305,11 @@ Public Class CLMainForm
 
         'CLModule.Environment.ExportModelsToCsv("d:\temp\environment.txt")
 
-        m_AutomaticUpdateCheckTask = UpdateManager.CheckForSoftwareUpdate(False)
+        If Not m_NextUiReportHost AndAlso
+            Not String.Equals(System.Environment.GetEnvironmentVariable("SSW_TECHNICAL_BASELINE_MODE"),
+            "1", StringComparison.Ordinal) Then
+            m_AutomaticUpdateCheckTask = UpdateManager.CheckForSoftwareUpdate(False)
+        End If
     End Sub
 
     Private Sub tsmiFile_Exit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsmiFile_Exit.Click
@@ -1755,7 +1795,9 @@ Public Class CLMainForm
             soundPowerDataRow = reportDataSet.SoundPowerDataTable.NewSoundPowerDataTableRow()
 
             soundPowerDataRow.Type = soundPerformance(SoundColumnName_Type)
-            soundPowerDataRow.Caption = soundPerformance(SoundColumnName_Caption)
+            soundPowerDataRow.Caption = SoundPerformance_GetLocalizedCaption(
+                soundPerformance(SoundColumnName_Type),
+                soundPerformance(SoundColumnName_Caption))
             soundPowerDataRow.Hz63_Value = soundPerformance(SoundColumnName_63Hz)
             soundPowerDataRow.Hz125_Value = soundPerformance(SoundColumnName_125Hz)
             soundPowerDataRow.Hz250_Value = soundPerformance(SoundColumnName_250Hz)
@@ -1773,14 +1815,41 @@ Public Class CLMainForm
 
         ' Diagram
         '---------------------------------------------------
-        diagramDataRow = reportDataSet.DiagramDataTable.NewDiagramDataTableRow()
-        diagramDataRow.AirFlowImage = Bitmap_GetBytes(airflowImage)
-        diagramDataRow.LegendImage = Bitmap_GetBytes(legendImage)
-        diagramDataRow.PowerImage = Bitmap_GetBytes(powerImage)
-        diagramDataRow.PressureImage = Bitmap_GetBytes(pressureImage)
-        diagramDataRow.CO2Image = Bitmap_GetBytes(CO2Image)
-        reportDataSet.DiagramDataTable.Rows.Add(diagramDataRow)
-
+        Dim selectedLayoutCode As String = Nothing
+        Dim selectedInstallationMode As String = Nothing
+        If m_ProjectDocument IsNot Nothing AndAlso
+            m_ProjectDocument.Selection IsNot Nothing Then
+            selectedLayoutCode = m_ProjectDocument.Selection.LayoutCode
+            selectedInstallationMode = m_ProjectDocument.Selection.InstallationMode
+        End If
+        Using installation = CLInstallationLayoutReportRenderer.Create(
+            SelectedHeatRecoveryModel, selectedLayoutCode, selectedInstallationMode)
+            Dim installationColumns = {
+                New KeyValuePair(Of String, Type)("InstallationImage", GetType(Byte())),
+                New KeyValuePair(Of String, Type)("InstallationTitle", GetType(String)),
+                New KeyValuePair(Of String, Type)("InstallationConfigurationCaption", GetType(String)),
+                New KeyValuePair(Of String, Type)("InstallationConfigurationValue", GetType(String)),
+                New KeyValuePair(Of String, Type)("InstallationModeCaption", GetType(String)),
+                New KeyValuePair(Of String, Type)("InstallationModeValue", GetType(String))}
+            For Each column In installationColumns
+                If Not reportDataSet.DiagramDataTable.Columns.Contains(column.Key) Then
+                    reportDataSet.DiagramDataTable.Columns.Add(column.Key, column.Value)
+                End If
+            Next
+            diagramDataRow = reportDataSet.DiagramDataTable.NewDiagramDataTableRow()
+            diagramDataRow.AirFlowImage = Bitmap_GetBytes(airflowImage)
+            diagramDataRow.LegendImage = Bitmap_GetBytes(legendImage)
+            diagramDataRow.PowerImage = Bitmap_GetBytes(powerImage)
+            diagramDataRow.PressureImage = Bitmap_GetBytes(pressureImage)
+            diagramDataRow.CO2Image = Bitmap_GetBytes(CO2Image)
+            diagramDataRow("InstallationImage") = Bitmap_GetBytes(installation.Image)
+            diagramDataRow("InstallationTitle") = installation.Title
+            diagramDataRow("InstallationConfigurationCaption") = installation.ConfigurationCaption
+            diagramDataRow("InstallationConfigurationValue") = installation.ConfigurationValue
+            diagramDataRow("InstallationModeCaption") = installation.InstallationCaption
+            diagramDataRow("InstallationModeValue") = installation.InstallationValue
+            reportDataSet.DiagramDataTable.Rows.Add(diagramDataRow)
+        End Using
         reportDataSet.AcceptChanges()
 
         Dim winterWorkingPointTable As DataTable = Report_CopyRows(reportDataSet.WorkingPointDataTable, Function(row) True)
@@ -1839,6 +1908,19 @@ Public Class CLMainForm
             reportFileName = If(hasAirTreatmentAccessoryReport, "CLMainReportWithCO2_Coil.rdlc", "CLMainReportWithCO2.rdlc")
         Else
             reportFileName = If(hasAirTreatmentAccessoryReport, "CLMainReport_Coil.rdlc", "CLMainReport.rdlc")
+        End If
+
+        If m_TechnicalBaselineReportSink IsNot Nothing Then
+            m_TechnicalBaselineReportSink(reportDataSources, reportFileName)
+            reportViewForm.Dispose()
+            waitForm.Dispose()
+            Return
+        End If
+        If m_NextUiReportSink IsNot Nothing Then
+            m_NextUiReportSink(reportDataSources, reportFileName)
+            reportViewForm.Dispose()
+            waitForm.Dispose()
+            Return
         End If
 
         reportViewForm.SetReport(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), reportFileName),
@@ -2312,6 +2394,7 @@ Public Class CLMainForm
                 dgvSAP.Item(6, 6).Style.BackColor = Color.Red
             End If
         Catch exception As Exception
+            If m_NextUiPreparingReport Then Throw
             MessageBox.Show(Me, exception.Message, "", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
@@ -2371,8 +2454,10 @@ Public Class CLMainForm
         tsmiOption_Language_SV.Checked = IIf(Environment.PrimaryLanguageCode = CLEnvironment.LanguageCode_SV, True, False)
         tsmiOption_Language_NO.Checked = IIf(Environment.PrimaryLanguageCode = CLEnvironment.LanguageCode_NO, True, False)
         tsmiOption_Language_IS.Checked = IIf(Environment.PrimaryLanguageCode = CLEnvironment.LanguageCode_IS, True, False)
+        tsmiOption_Language_CS.Checked = IIf(Environment.PrimaryLanguageCode = CLEnvironment.LanguageCode_CS, True, False)
 
         UpdateLocalization()
+        If m_NextUiReportHost Then Return
         Calculate()
         tsmiFile_SaveCommercialSheet.Enabled = CommercialSheet_CanGenerate(Environment.PrimaryLanguageCode, Environment.Branch.ShortName)
 
@@ -2529,6 +2614,7 @@ Public Class CLMainForm
         tsmiOption_Language_SV.Text = "Svenska"
         tsmiOption_Language_NO.Text = "Norsk"
         tsmiOption_Language_IS.Text = "Íslenska"
+        tsmiOption_Language_CS.Text = "Čeština"
 
         tsmiOption_Unit.Text = Environment.Localization.GetString(CLMessageResources.MainForm_Menu_Option_Unit.ToString())
         tsmiOption_Unit_IP.Text = Environment.Localization.GetString(CLMessageResources.MainForm_Menu_Option_Unit_IP.ToString())
@@ -2725,6 +2811,10 @@ Public Class CLMainForm
     Private Sub tsmiOption_Language_IS_Click(sender As Object, e As EventArgs) Handles tsmiOption_Language_IS.Click
         Environment.SetLanguage(Environment.FindLanguage(CLEnvironment.LanguageCode_IS))
     End Sub
+
+    Private Sub tsmiOption_Language_CS_Click(sender As Object, e As EventArgs) Handles tsmiOption_Language_CS.Click
+        Environment.SetLanguage(Environment.FindLanguage(CLEnvironment.LanguageCode_CS))
+    End Sub
 #End Region
 
 #Region "====[ Measure Unit ]===="
@@ -2759,6 +2849,16 @@ Public Class CLMainForm
     Private Function IOM_GetFile(languageCode As String, useEnLanguageWhenNotExist As Boolean, shortname As String) As String
 
         Dim dcHeatRecoveryModel As CLDCHeatRecoveryModel = SelectedHeatRecoveryModel
+        Return IOM_GetFileForModel(
+            dcHeatRecoveryModel, languageCode, useEnLanguageWhenNotExist, shortname)
+
+    End Function
+
+    Private Shared Function IOM_GetFileForModel(
+        dcHeatRecoveryModel As CLDCHeatRecoveryModel,
+        languageCode As String,
+        useEnLanguageWhenNotExist As Boolean,
+        shortname As String) As String
 
         If dcHeatRecoveryModel Is Nothing OrElse String.IsNullOrEmpty(dcHeatRecoveryModel.PDFInstallationOperationManuals) _
             OrElse Not Directory.Exists(PDFDocumentDirectory) Then
@@ -2775,7 +2875,8 @@ Public Class CLMainForm
         Next
 
         If pdfFiles.Count = 0 AndAlso useEnLanguageWhenNotExist AndAlso languageCode <> "EN" Then
-            Return IOM_GetFile("EN", False, Environment.Branch.ShortName)
+            Return IOM_GetFileForModel(
+                dcHeatRecoveryModel, "EN", False, shortname)
         End If
 
         If pdfFiles.Count = 0 Then
@@ -2865,7 +2966,7 @@ Public Class CLMainForm
         Return Not String.IsNullOrEmpty(CommercialSheet_GetFiles(languageCode, True, shortname))
     End Function
 
-    Private Sub CommercialSheet_Log(message As String)
+    Private Shared Sub CommercialSheet_Log(message As String)
         Try
             Dim line As String = String.Format("{0:yyyy-MM-dd HH:mm:ss.fff} | {1}", DateTime.Now, message)
             Debug.WriteLine(line)
@@ -2879,6 +2980,23 @@ Public Class CLMainForm
     Private Function CommercialSheet_GetFiles(languageCode As String, useEnLanguageWhenNotExist As Boolean, shortname As String) As String
 
         Dim dcHeatRecoveryModel As CLDCHeatRecoveryModel = SelectedHeatRecoveryModel
+        Return CommercialSheet_GetFilesForModel(
+            dcHeatRecoveryModel,
+            SelectedHeatRecoveryModelCustomerName,
+            languageCode,
+            useEnLanguageWhenNotExist,
+            shortname,
+            tsmiOption_CommercialSheetAutoSync.Checked)
+
+    End Function
+
+    Private Shared Function CommercialSheet_GetFilesForModel(
+        dcHeatRecoveryModel As CLDCHeatRecoveryModel,
+        selectedModelName As String,
+        languageCode As String,
+        useEnLanguageWhenNotExist As Boolean,
+        shortname As String,
+        autoSyncEnabled As Boolean) As String
 
         If dcHeatRecoveryModel Is Nothing Then
             CommercialSheet_Log("Lookup skipped: model is Nothing.")
@@ -2905,7 +3023,7 @@ Public Class CLMainForm
             serieName = ""
         End Try
 
-        modelName = SelectedHeatRecoveryModelCustomerName
+        modelName = selectedModelName
         If String.IsNullOrWhiteSpace(modelName) Then
             Try
                 modelName = CStr(CallByName(dcHeatRecoveryModel, "Name", CallType.Get))
@@ -2938,7 +3056,7 @@ Public Class CLMainForm
         If Not String.IsNullOrWhiteSpace(serieCode) Then
             Dim expectedFileName As String = CommercialSheet_BuildExpectedFileName(modelName, normalizedLanguageCode, shortname)
             If Not String.IsNullOrEmpty(expectedFileName) Then
-                If String.Equals(shortname, "AV", StringComparison.OrdinalIgnoreCase) AndAlso tsmiOption_CommercialSheetAutoSync.Checked Then
+                If String.Equals(shortname, "AV", StringComparison.OrdinalIgnoreCase) AndAlso autoSyncEnabled Then
                     pdfFile = CommercialSheet_GetOnlineFile(serieCode.Trim(), normalizedLanguageCode, expectedFileName, shortname)
                     If Not String.IsNullOrEmpty(pdfFile) Then
                         CommercialSheet_Log("FOUND ONLINE (preferred for AV): " & pdfFile)
@@ -2956,7 +3074,9 @@ Public Class CLMainForm
 
         If useEnLanguageWhenNotExist AndAlso normalizedLanguageCode <> "EN" Then
             CommercialSheet_Log(String.Format("Fallback to EN from language '{0}'", normalizedLanguageCode))
-            Return CommercialSheet_GetFiles("EN", False, shortname)
+            Return CommercialSheet_GetFilesForModel(
+                dcHeatRecoveryModel, modelName, "EN", False, shortname,
+                autoSyncEnabled)
         End If
 
         CommercialSheet_Log("NOT FOUND for current lookup.")
@@ -2974,7 +3094,7 @@ Public Class CLMainForm
         tsmiFile_SaveCommercialSheet.Enabled = CommercialSheet_CanGenerate(Environment.PrimaryLanguageCode, Environment.Branch.ShortName)
     End Sub
 
-    Private Function CommercialSheet_GetSerieFolderName(serieCode As String) As String
+    Private Shared Function CommercialSheet_GetSerieFolderName(serieCode As String) As String
 
         Dim normalizedSerieCode As String = If(serieCode, "").Trim().ToUpperInvariant()
         If normalizedSerieCode = "32" Then
@@ -2985,7 +3105,7 @@ Public Class CLMainForm
 
     End Function
 
-    Private Function CommercialSheet_BuildExpectedFileName(modelName As String, languageCode As String, shortname As String) As String
+    Private Shared Function CommercialSheet_BuildExpectedFileName(modelName As String, languageCode As String, shortname As String) As String
 
         Dim cleanedModelName As String = modelName.Replace(ChrW(160), " "c)
         Dim tokens() As String = cleanedModelName.Split(New Char() {" "c, ControlChars.Tab}, StringSplitOptions.RemoveEmptyEntries)
@@ -3013,7 +3133,7 @@ Public Class CLMainForm
 
     End Function
 
-    Private Function CommercialSheet_BuildAndFindFile(directoryPath As String, modelName As String, languageCode As String, shortname As String) As String
+    Private Shared Function CommercialSheet_BuildAndFindFile(directoryPath As String, modelName As String, languageCode As String, shortname As String) As String
 
         If String.IsNullOrWhiteSpace(directoryPath) OrElse String.IsNullOrWhiteSpace(modelName) _
             OrElse Not Directory.Exists(directoryPath) Then
@@ -3042,7 +3162,7 @@ Public Class CLMainForm
 
     End Function
 
-    Private Function CommercialSheet_GetOnlineFile(serieCode As String, languageCode As String, fileName As String, shortname As String) As String
+    Private Shared Function CommercialSheet_GetOnlineFile(serieCode As String, languageCode As String, fileName As String, shortname As String) As String
 
         Dim baseUrl As String = ""
 
@@ -3061,18 +3181,47 @@ Public Class CLMainForm
 
         Dim targetDirectory As String = Path.Combine(PDFDocumentDirectory, serieFolder, langFolder)
         Dim targetFilePath As String = Path.Combine(targetDirectory, fileName)
+        Dim temporaryFilePath As String = targetFilePath & ".download"
 
         Try
             Directory.CreateDirectory(targetDirectory)
 
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 Or SecurityProtocolType.Tls11 Or SecurityProtocolType.Tls
-            Using client As New WebClient()
-                CommercialSheet_Log("Trying online URL: " & url)
-                client.DownloadFile(url, targetFilePath)
+            Dim request = DirectCast(WebRequest.Create(url), HttpWebRequest)
+            request.Method = "GET"
+            request.Timeout = 10000
+            request.ReadWriteTimeout = 20000
+            If File.Exists(targetFilePath) Then
+                request.IfModifiedSince = File.GetLastWriteTimeUtc(targetFilePath)
+            End If
+
+            CommercialSheet_Log("Trying conditional online URL: " & url)
+            Using response = DirectCast(request.GetResponse(), HttpWebResponse)
+                Using source = response.GetResponseStream()
+                    Using destination = File.Create(temporaryFilePath)
+                        source.CopyTo(destination)
+                    End Using
+                End Using
             End Using
+            File.Copy(temporaryFilePath, targetFilePath, True)
 
             CommercialSheet_Log("Downloaded/updated local css file: " & targetFilePath)
             Return targetFilePath
+        Catch ex As WebException
+            Dim response = TryCast(ex.Response, HttpWebResponse)
+            If response IsNot Nothing AndAlso
+                response.StatusCode = HttpStatusCode.NotModified AndAlso
+                File.Exists(targetFilePath) Then
+                CommercialSheet_Log("Online file unchanged, using local css file: " & targetFilePath)
+                Return targetFilePath
+            End If
+
+            CommercialSheet_Log(String.Format("Online download failed. URL='{0}' Error='{1}'", url, ex.Message))
+            If File.Exists(targetFilePath) Then
+                CommercialSheet_Log("Online failed, using existing local css file: " & targetFilePath)
+                Return targetFilePath
+            End If
+            Return ""
         Catch ex As Exception
             CommercialSheet_Log(String.Format("Online download failed. URL='{0}' Error='{1}'", url, ex.Message))
             If File.Exists(targetFilePath) Then
@@ -3080,6 +3229,11 @@ Public Class CLMainForm
                 Return targetFilePath
             End If
             Return ""
+        Finally
+            Try
+                If File.Exists(temporaryFilePath) Then File.Delete(temporaryFilePath)
+            Catch
+            End Try
         End Try
 
     End Function
@@ -3107,7 +3261,7 @@ Public Class CLMainForm
 
     End Function
 
-    Private ReadOnly Property PDFDocumentDirectory() As String
+    Private Shared ReadOnly Property PDFDocumentDirectory() As String
         Get
             Return Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "css")
         End Get
@@ -4529,30 +4683,15 @@ Public Class CLMainForm
         Optional preheatPowerW As Double = 0) As CLThermalCalculationResult
 
         Dim dcHeatRecoveryModel As CLDCHeatRecoveryModel = SelectedHeatRecoveryModel
-        Dim rec As String = dcHeatRecoveryModel.ModRec
-        Dim pl As Double = CDbl(dcHeatRecoveryModel.LenRec)
         Dim ritm As Double = ParseUIDouble(returnTemperatureTextBox.Text)
-        Dim rhritm As Double = ParseUIDouble(returnRHTextBox.Text) / 100
+        Dim rhritmPercent As Double = ParseUIDouble(returnRHTextBox.Text)
         Dim fitm As Double = ParseUIDouble(freshTemperatureTextBox.Text)
-        Dim rhfitm As Double = ParseUIDouble(freshRHTextBox.Text) / 100
+        Dim rhfitmPercent As Double = ParseUIDouble(freshRHTextBox.Text)
         Dim afm As Double = ParseUIDouble(airflowTextBox.Text)
         Dim maxPressure As Double = ParseUIDouble(maxPressureTextBox.Text, maxPressureFallback)
         Dim chart1 As Chart = If(drawCharts, crtPerformance_Chart1, New Chart())
         Dim chart2 As Chart = If(drawCharts, crtPerformance_Chart2, New Chart())
         Dim chart3 As Chart = If(drawCharts, crtPerformance_Chart3, New Chart())
-
-        If afm = 0 Then
-            afm = 1
-        ElseIf m_MeasureUnit = CLMeasureUnit.IP Then
-            afm *= 3.6
-        End If
-
-        Dim originalFreshTemperature As Double = fitm
-        Dim originalFreshHumidity As psychro = PsychroCalc(fitm, rhfitm)
-        If preheatPowerW > 0 Then
-            fitm = originalFreshTemperature + CLElectricHeaterCalculator.TemperatureRise(preheatPowerW, afm)
-            rhfitm = PsychroCalcW(fitm, originalFreshHumidity.w).rh
-        End If
 
         If Not drawCharts Then
             chart1.ChartAreas.Add(New ChartArea())
@@ -4560,13 +4699,38 @@ Public Class CLMainForm
             chart3.ChartAreas.Add(New ChartArea())
         End If
 
+        Dim scenario As New CLSeasonCalculationInput With {
+            .Enabled = True,
+            .ScenarioCode = If(drawCharts, "Winter", "Summer"),
+            .Airflows = CLAirflowPair.Balanced(afm),
+            .MaximumPressurePa = CLBranchValuePair.Balanced(maxPressure),
+            .OutdoorTemperatureC = fitm,
+            .OutdoorRelativeHumidityPercent = rhfitmPercent,
+            .ReturnTemperatureC = ritm,
+            .ReturnRelativeHumidityPercent = rhritmPercent,
+            .RegulationPercent = prbPerformance_RegulationLevel.Value
+        }
+        Dim applicationCalculation As CLBalancedScenarioCalculation =
+            CLSelectionApplicationService.CalculateBalancedScenario(New CLBalancedScenarioCalculationRequest With {
+                .Scenario = scenario,
+                .Model = dcHeatRecoveryModel,
+                .MeasureUnit = MeasureUnit,
+                .AdditionalPressureDropPa = additionalPressureDrop,
+                .PreheatPowerW = preheatPowerW,
+                .ShowSfpArea = drawCharts AndAlso (chbPerformance_SFP_ShowArea.Checked OrElse chbPerformance_SEL_ShowArea.Checked),
+                .ShowErpArea = drawCharts AndAlso chbPerformance_ERP2018_ShowArea.Checked,
+                .SfpLimit = nudPerformance_SFP_Limit.Value,
+                .ShowPassiveHouseArea = drawCharts AndAlso chbPerformance_PassiveHaus_ShowArea.Checked,
+                .PassiveHouseLimit = ParseUIDouble(txbPerformance_PassiveHaus_Limit.Text)
+            })
+
         Dim workpoint As Double() = curva(MeasureUnit,
-           afm,
+           If(afm = 0, 1, afm),
            dcHeatRecoveryModel,
            ritm,
-           rhritm,
+           rhritmPercent / 100,
            fitm,
-           rhfitm,
+           rhfitmPercent / 100,
            prbPerformance_RegulationLevel.Value,
            chart1,
            chart2,
@@ -4578,19 +4742,14 @@ Public Class CLMainForm
            drawCharts AndAlso chbPerformance_PassiveHaus_ShowArea.Checked,
            ParseUIDouble(txbPerformance_PassiveHaus_Limit.Text),
            additionalPressureDrop,
-           afm)
-
-        If preheatPowerW > 0 Then
-            fitm = originalFreshTemperature + CLElectricHeaterCalculator.TemperatureRise(preheatPowerW, workpoint(1))
-            rhfitm = PsychroCalcW(fitm, originalFreshHumidity.w).rh
-        End If
-
-        Dim thermoWork As termo = termo_calc(ritm, rhritm, fitm, rhfitm, workpoint(1), rec, pl, 0)
+           If(m_MeasureUnit = CLMeasureUnit.IP, afm * 3.6, afm),
+           applicationCalculation.Curves)
 
         Return New CLThermalCalculationResult With {
-            .Thermo = thermoWork,
+            .Thermo = applicationCalculation.LegacyThermodynamics,
             .WorkPoint = workpoint,
-            .AirFlow = afm
+            .AirFlow = afm,
+            .Curves = applicationCalculation.Curves
         }
     End Function
 
@@ -4623,8 +4782,9 @@ Public Class CLMainForm
             Return
         End If
 
-        Dim originalSeries As Series = crtPerformance_Chart3.Series.FindByName(ChartSeries_OriginalCurve_Name)
-        If originalSeries Is Nothing OrElse originalSeries.Points.Count = 0 Then
+        If summerResult Is Nothing OrElse summerResult.Curves Is Nothing OrElse
+           summerResult.Curves.OriginalAirflows Is Nothing OrElse
+           summerResult.Curves.EfficienciesPercent Is Nothing Then
             Return
         End If
 
@@ -4638,26 +4798,8 @@ Public Class CLMainForm
             crtPerformance_Chart3.Series.Remove(crtPerformance_Chart3.Series(pointName))
         End If
 
-        Dim dcHeatRecoveryModel As CLDCHeatRecoveryModel = SelectedHeatRecoveryModel
-        Dim ritm As Double = ParseUIDouble(TextBox5.Text)
-        Dim rhritm As Double = ParseUIDouble(TextBox6.Text) / 100
-        Dim fitm As Double = ParseUIDouble(TextBox3.Text)
-        Dim rhfitm As Double = ParseUIDouble(TextBox4.Text) / 100
-        Dim rec As String = dcHeatRecoveryModel.ModRec
-        Dim pl As Double = CDbl(dcHeatRecoveryModel.LenRec)
-        Dim xValues As New List(Of Double)
-        Dim yValues As New List(Of Double)
-
-        For Each point As DataPoint In originalSeries.Points
-            Dim displayAirflow As Double = point.XValue
-            Dim calculationAirflow As Double = If(m_MeasureUnit = CLMeasureUnit.IP, displayAirflow * 3.6, displayAirflow)
-            Dim summerThermo As termo = termo_calc(ritm, rhritm, fitm, rhfitm, calculationAirflow, rec, pl, 0)
-
-            xValues.Add(displayAirflow)
-            yValues.Add(100 * summerThermo.efficiency)
-        Next
-
-        Chart_ExtrapolateEfficiencyAtZero(xValues, yValues)
+        Dim xValues As New List(Of Double)(summerResult.Curves.OriginalAirflows)
+        Dim yValues As New List(Of Double)(summerResult.Curves.EfficienciesPercent)
 
         Dim summerArea As ChartArea = Chart_ConfigureSplitEfficiencyAreas(crtPerformance_Chart3)
 
@@ -4680,37 +4822,6 @@ Public Class CLMainForm
 
         Chart_ApplySummerEfficiencyStyle(crtPerformance_Chart3)
         Chart_ApplyHighQualityScreenRendering(crtPerformance_Chart3)
-    End Sub
-
-    Private Sub Chart_ExtrapolateEfficiencyAtZero(xValues As IList(Of Double), yValues As IList(Of Double))
-        If xValues Is Nothing OrElse yValues Is Nothing OrElse
-           xValues.Count < 3 OrElse xValues.Count <> yValues.Count OrElse xValues(0) <> 0 Then Return
-
-        Dim stableStartIndex As Integer = -1
-        For index As Integer = 1 To xValues.Count - 3
-            If xValues(index) <= 0 OrElse
-               Double.IsNaN(yValues(index)) OrElse Double.IsInfinity(yValues(index)) OrElse
-               Double.IsNaN(yValues(index + 1)) OrElse Double.IsInfinity(yValues(index + 1)) OrElse
-               Double.IsNaN(yValues(index + 2)) OrElse Double.IsInfinity(yValues(index + 2)) Then Continue For
-
-            If yValues(index + 1) <= yValues(index) AndAlso yValues(index + 2) <= yValues(index + 1) Then
-                stableStartIndex = index
-                Exit For
-            End If
-        Next
-
-        If stableStartIndex < 0 Then Return
-
-        Dim x1 As Double = xValues(stableStartIndex)
-        Dim x2 As Double = xValues(stableStartIndex + 1)
-        If x2 <= x1 Then Return
-
-        Dim y1 As Double = yValues(stableStartIndex)
-        Dim slope As Double = (yValues(stableStartIndex + 1) - y1) / (x2 - x1)
-        For index As Integer = 0 To stableStartIndex - 1
-            Dim extrapolated As Double = y1 + (xValues(index) - x1) * slope
-            yValues(index) = Math.Max(0, Math.Min(100, extrapolated))
-        Next
     End Sub
 
     Private Sub Clear_SummerThermalOutputs()
@@ -4912,9 +5023,13 @@ Public Class CLMainForm
         txbCO2Level_Parameters_maxCO2.Text = 1000
         txbCO2Level_Parameters_extCO2.Text = 380
 
-        cmbCO2Level_Parameters_CalcMet.SelectedIndex = 0
+        If cmbCO2Level_Parameters_CalcMet.Items.Count > 0 Then
+            cmbCO2Level_Parameters_CalcMet.SelectedIndex = 0
+        End If
 
-        cmbCO2Level_Parameters_stdpreset.SelectedIndex = 0
+        If cmbCO2Level_Parameters_stdpreset.Items.Count > 0 Then
+            cmbCO2Level_Parameters_stdpreset.SelectedIndex = 0
+        End If
 
         co2level_std_preset_change()
 
@@ -5631,6 +5746,32 @@ Public Class CLMainForm
         _Breakout
         _Frisse
     End Enum
+
+    Private Function SoundPerformance_GetLocalizedCaption(soundType As Object, fallbackCaption As Object) As String
+        Dim resource As CLMessageResources
+
+        Select Case Convert.ToString(soundType)
+            Case CLSoundPerformanceType._Fresh.ToString()
+                resource = CLMessageResources.Sound_Fresh
+            Case CLSoundPerformanceType._Supply.ToString()
+                resource = CLMessageResources.Sound_Supply
+            Case CLSoundPerformanceType._Exhaust.ToString()
+                resource = CLMessageResources.Sound_Exhaust
+            Case CLSoundPerformanceType._Return.ToString()
+                resource = CLMessageResources.Sound_Return
+            Case CLSoundPerformanceType._Breakout.ToString()
+                resource = CLMessageResources.Sound_Breakout
+            Case Else
+                Return Convert.ToString(fallbackCaption)
+        End Select
+
+        Dim localizedCaption = Environment.Localization.GetString(resource.ToString())
+        If String.IsNullOrWhiteSpace(localizedCaption) Then
+            Return Convert.ToString(fallbackCaption)
+        End If
+
+        Return localizedCaption
+    End Function
 
     Private Const SoundColumnName_Type As String = "Type"
     Private Const SoundColumnName_Caption As String = "Caption"

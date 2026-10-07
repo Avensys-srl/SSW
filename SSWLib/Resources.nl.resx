@@ -827,4 +827,78 @@ Sla het .sswsel-bestand eerst op als u bewerkbare berekeningsinvoer wilt behoude
   <data name="Help_MenuTip_FollowUps" xml:space="preserve"><value>Open het opvolgcentrum om herinneringen voor technische selecties en projecten te bekijken, opnieuw te plannen of af te sluiten.</value></data>
   <data name="Help_Topic_FollowUps_Title" xml:space="preserve"><value>Herinneringen voor klantopvolging</value></data>
   <data name="Help_Topic_FollowUps_Body" xml:space="preserve"><value>Plan een klantopvolging tussen 1 en 90 dagen; de standaardwaarde is 7 dagen. De termijn begint pas nadat het Outlook-concept met succes is voorbereid. De bel opent het herinneringscentrum met vervallen, toekomstige en afgesloten items. Dubbelklik op een item om de lokale selectie of het lokale project opnieuw te openen. Een herinnering kan als succesvol of niet succesvol worden afgesloten, opnieuw worden gepland of geannuleerd. De gegevens blijven privé voor de huidige Windows-installatie; offline worden wijzigingen lokaal opgeslagen en later gesynchroniseerd.</value></data>
+  <data name="Report_InstallationLayout_Title" xml:space="preserve"><value>Installatieconfiguratie</value></data>
+  <data name="Report_InstallationLayout_Configuration" xml:space="preserve"><value>Configuratie</value></data>
+  <data name="Report_InstallationLayout_Installation" xml:space="preserve"><value>Installatie</value></data>
+  <data name="Report_InstallationLayout_Ceiling" xml:space="preserve"><value>Plafond</value></data>
+  <data name="Report_InstallationLayout_Floor" xml:space="preserve"><value>Vloer</value></data>
+  <data name="Report_InstallationLayout_Wall" xml:space="preserve"><value>Wand</value></data>
+  <data name="Report_InstallationLayout_AccessPanel" xml:space="preserve"><value>Toegangspaneel</value></data>
+  <data name="Report_InstallationLayout_UpperAccess" xml:space="preserve"><value>Toegang bovenzijde</value></data>
+  <data name="Report_InstallationLayout_LowerAccess" xml:space="preserve"><value>Toegang onderzijde</value></data>
+  <data name="Report_InstallationLayout_FrontAccess" xml:space="preserve"><value>Toegang voorzijde</value></data>
+  <data name="Report_InstallationLayout_Fresh" xml:space="preserve">
+    <value>Buitenlucht</value>
+  </data>
+  <data name="Report_InstallationLayout_Return" xml:space="preserve">
+    <value>Retourlucht</value>
+  </data>
+  <data name="Report_InstallationLayout_Supply" xml:space="preserve">
+    <value>Toevoerlucht</value>
+  </data>
+  <data name="Report_InstallationLayout_Exhaust" xml:space="preserve">
+    <value>Afvoerlucht</value>
+  </data>
+  <data name="Report_Schematic_0" xml:space="preserve"><value>Luchtstroomaanzicht vanaf het toegangspaneel</value></data>
+  <data name="Report_Schematic_1" xml:space="preserve"><value>Lucht naar de unit</value></data>
+  <data name="Report_Schematic_2" xml:space="preserve"><value>Lucht uit de unit</value></data>
+  <data name="Report_Schematic_3" xml:space="preserve"><value>Paneeltoegang / kijkrichting</value></data>
+  <data name="Report_Schematic_4" xml:space="preserve"><value>Optionele SHK-steunset</value></data>
+  <data name="Report_Schematic_5" xml:space="preserve"><value>Zijde tegenover het aanzicht</value></data>
+  <data name="DeviceLicense_LicenseTitle" xml:space="preserve"><value>SSW license</value></data>
+  <data name="DeviceLicense_Eyebrow" xml:space="preserve"><value>AVENSYS  ·  SSW LICENSE</value></data>
+  <data name="DeviceLicense_ActivationTitle" xml:space="preserve"><value>SSW activation</value></data>
+  <data name="DeviceLicense_ProfileTitle" xml:space="preserve"><value>Complete your SSW profile</value></data>
+  <data name="DeviceLicense_ActivationDescription" xml:space="preserve"><value>Enter the details provided to Avensys and the installation code you received.</value></data>
+  <data name="DeviceLicense_ProfileDescription" xml:space="preserve"><value>This installation is already active. Register it to the person who uses it.</value></data>
+  <data name="DeviceLicense_FirstName" xml:space="preserve"><value>First name</value></data>
+  <data name="DeviceLicense_LastName" xml:space="preserve"><value>Last name</value></data>
+  <data name="DeviceLicense_Email" xml:space="preserve"><value>Email</value></data>
+  <data name="DeviceLicense_InstallationCode" xml:space="preserve"><value>Installation code</value></data>
+  <data name="DeviceLicense_InstallationCodeHint" xml:space="preserve"><value>6 digits, provided by Avensys</value></data>
+  <data name="DeviceLicense_Activate" xml:space="preserve"><value>Activate</value></data>
+  <data name="DeviceLicense_RequestActivation" xml:space="preserve"><value>Request activation</value></data>
+  <data name="DeviceLicense_RequestSent" xml:space="preserve"><value>Request sent. Wait for the activation code at {0}.</value></data>
+  <data name="DeviceLicense_CodeReceived" xml:space="preserve"><value>I received the code</value></data>
+  <data name="DeviceLicense_Register" xml:space="preserve"><value>Register</value></data>
+  <data name="DeviceLicense_Exit" xml:space="preserve"><value>Exit</value></data>
+  <data name="DeviceLicense_InvalidFields" xml:space="preserve"><value>Complete all fields with valid information.</value></data>
+  <data name="DeviceLicense_Checking" xml:space="preserve"><value>Checking...</value></data>
+  <data name="DeviceLicense_ConnectionUnavailable" xml:space="preserve"><value>The service is unavailable. Check your Internet connection and try again.</value></data>
+  <data name="DeviceLicense_RequestTimeout" xml:space="preserve"><value>The service did not respond in time. Try again.</value></data>
+  <data name="DeviceLicense_InvalidActivation" xml:space="preserve"><value>The email or installation code is invalid.</value></data>
+  <data name="DeviceLicense_DeviceLimit" xml:space="preserve"><value>This email already has two active devices.</value></data>
+  <data name="DeviceLicense_AssignmentConflict" xml:space="preserve"><value>This installation is already linked to another user. Contact Avensys.</value></data>
+  <data name="DeviceLicense_ActivationFailed" xml:space="preserve"><value>Activation failed. Check your information or contact Avensys.</value></data>
+  <data name="DeviceLicense_NotActive" xml:space="preserve"><value>The SSW license is not active. Contact Avensys to reactivate it.</value></data>
+  <data name="DeviceLicense_InternetRequired" xml:space="preserve"><value>An Internet connection is required to verify the license. Connect the computer and reopen SSW.</value></data>
+  <data name="DeviceLicense_Revoked" xml:space="preserve"><value>The SSW license has been revoked. Contact Avensys.</value></data>
+  <data name="DeviceLicense_PrivacyTitle" xml:space="preserve"><value>Privacyverklaring</value></data>
+  <data name="DeviceLicense_PrivacyNotice" xml:space="preserve"><value>SSW PRIVACYVERKLARING - VERSIE 1.0 (16 september 2026)
+
+Gegevensbeheerder: Avensys S.r.l., Via I Maggio 10/12, 26858 Sordio (LO), Italië - info@avensys-srl.com.
+
+Verwerkte gegevens: voornaam, achternaam, e-mailadres, bedrijfs-, installatie- en apparaat-ID&apos;s, SSW- en databaseversies, licentiestatus, datums van activering en laatste gebruik, en dagelijkse lanceringsaantallen.
+
+Doeleinden: het verstrekken en beheren van de SSW-vergunning; het afdwingen van de limiet van twee apparaten; offline verlenging en intrekking; servicebeveiliging, ondersteuning en geaggregeerde gebruiksstatistieken. Via deze activering wordt geen marketing of geautomatiseerde profilering uitgevoerd.
+
+Rechtsgrond: verwerking is noodzakelijk om de gelicentieerde dienst te verlenen en te beschermen en om de legitieme belangen van de verwerkingsverantwoordelijke op het gebied van licentiebeveiliging en dienstverlening na te streven. De gevraagde identificatiegegevens zijn vereist; zonder hen kan SSW niet worden geactiveerd of geregistreerd.
+
+Ontvangers en overdrachten: gegevens zijn alleen toegankelijk voor geautoriseerd Avensys-personeel en dienstverleners die nodig zijn om de licentie-infrastructuur te exploiteren. Gegevens worden niet verkocht. Bij elke overdracht buiten de Europese Economische Ruimte worden de door de toepasselijke wetgeving vereiste waarborgen gebruikt.
+
+Bewaring: account- en licentiegegevens worden bewaard voor de duur van de zakelijke relatie en daarna alleen voor de periode die vereist is door wettelijke verplichtingen, beveiliging, ondersteuning en het instellen of verdedigen van juridische claims. Gebruiksstatistieken worden slechts bewaard zolang als nodig is voor deze doeleinden.
+
+Rechten: u kunt indien van toepassing verzoeken om toegang, rectificatie, verwijdering, beperking, bezwaar of portabiliteit, en een klacht indienen bij de bevoegde gegevensbeschermingsautoriteit. Neem contact op met info@avensys-srl.com.</value></data>
+  <data name="DeviceLicense_PrivacyAcknowledgement" xml:space="preserve"><value>Accepteer de gebruiksvoorwaarden om SSW op dit apparaat te activeren</value></data>
+  <data name="DeviceLicense_Company" xml:space="preserve"><value>Company</value></data>
 </root>

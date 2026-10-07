@@ -200,6 +200,12 @@
               <xs:element name="AirFlowImage" msprop:Generator_ColumnVarNameInTable="columnAirFlowImage" msprop:Generator_ColumnPropNameInRow="AirFlowImage" msprop:Generator_ColumnPropNameInTable="AirFlowImageColumn" msprop:Generator_UserColumnName="AirFlowImage" type="xs:base64Binary" minOccurs="0" />
               <xs:element name="LegendImage" msprop:Generator_ColumnVarNameInTable="columnLegendImage" msprop:Generator_ColumnPropNameInRow="LegendImage" msprop:Generator_ColumnPropNameInTable="LegendImageColumn" msprop:Generator_UserColumnName="LegendImage" type="xs:base64Binary" minOccurs="0" />
               <xs:element name="CO2Image" msprop:Generator_ColumnVarNameInTable="columnCO2Image" msprop:Generator_ColumnPropNameInRow="CO2Image" msprop:Generator_ColumnPropNameInTable="CO2ImageColumn" msprop:Generator_UserColumnName="CO2Image" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="InstallationImage" msprop:Generator_ColumnVarNameInTable="columnInstallationImage" msprop:Generator_ColumnPropNameInRow="InstallationImage" msprop:Generator_ColumnPropNameInTable="InstallationImageColumn" msprop:Generator_UserColumnName="InstallationImage" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="InstallationTitle" type="xs:string" minOccurs="0" />
+              <xs:element name="InstallationConfigurationCaption" type="xs:string" minOccurs="0" />
+              <xs:element name="InstallationConfigurationValue" type="xs:string" minOccurs="0" />
+              <xs:element name="InstallationModeCaption" type="xs:string" minOccurs="0" />
+              <xs:element name="InstallationModeValue" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

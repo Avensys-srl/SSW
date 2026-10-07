@@ -1,6 +1,88 @@
 SSW Changelog
 =============
 
+2.0.0.19 - 2026-09-25
+---------------------
+- Added the dimensional drawing PDF to the Documents page for easier customer access.
+- Added the selected unit name and Avensys branding to dimensional drawing PDFs and previews.
+- Improved installation schematic spacing in generated reports.
+- Removed an incorrect boolean value from coil report footers and localized the Italian legal-notice heading.
+
+2.0.0.18 - 2026-09-25
+---------------------
+- Prevented the embedded interface from reopening cached assets from the previous release after an in-place update.
+- Made generated reports consistently use the project document language independently of the interface language.
+- Normalized report preview sizing so pages are not rendered at a fraction of their intended size because of local printer or display settings.
+- Kept seasonal-condition values visible and usable on smaller windows and displays.
+
+2.0.0.17 - 2026-09-24
+---------------------
+- Limited preselection results to units whose available pressure exceeds the requested duty point by no more than 10 Pa or 5%, capped at 25 Pa.
+- Corrected report efficiency charts so their curves and working-point markers use the same airflow scale when fan regulation is below 100%.
+
+2.0.0.16 - 2026-09-21
+---------------------
+- Made upright SSC floor schematics depend on the catalog `SSC_UPRIGHT` reference view instead of the historical A1/B1 code list.
+- Applied the same catalog-driven geometry to the interactive installation page and generated reports.
+
+2.0.0.15 - 2026-09-21
+---------------------
+- Removed the startup updater deadlock caused by awaiting the installer download while the WinForms UI thread was synchronously waiting for the update check.
+- Routed automatic update packages through the direct static distribution path while keeping invitation downloads protected by registration tokens.
+
+2.0.0.14 - 2026-09-21
+---------------------
+- Added model-specific STEP archives to the Documents page when the corresponding file is available, with verified download and local caching.
+- Moved the project document language selector into the initial Project page alongside the interface language selector.
+
+2.0.0.12 - 2026-09-21
+---------------------
+- Simplified approved customer activation to require only the registered email address and six-digit PIN; profile data is reused from the portal registration.
+
+2.0.0.11 - 2026-09-21
+---------------------
+- Return automatically to PIN activation when a previously registered local license has been deleted or rejected by the server.
+- Allow an archived installation belonging to a deleted user to be safely reassigned after a new approved registration.
+- Accept harmless differences in the company name during activation; identity remains bound to the approved email and PIN.
+
+2.0.0.6 - 2026-09-17
+--------------------
+- Aligned setup and activation language with the Windows display language and enabled all available installer translations for supported SSW languages.
+
+2.0.0.5 - 2026-09-17
+--------------------
+- Split activation into explicit request, waiting and PIN-entry phases; the PIN field remains hidden until the user confirms that the code was received at the registered email address.
+
+2.0.0.4 - 2026-09-17
+--------------------
+- Clarified that the code entered after submitting a license request is the six-digit activation PIN, not the four-character device identifier.
+
+2.0.0.3 - 2026-09-17
+--------------------
+- Added a two-step activation flow: the user accepts the terms and sends a visible license request before the PIN field is shown.
+- Persisted pending requests locally, exposed them in the license portal and added a notification badge for new license activity.
+- Moved the update check before license enforcement so future blocked installations can still receive software updates.
+
+2.0.0.2 - 2026-09-16
+--------------------
+- Added a fourth preselection criterion that restricts results to rotary heat recovery units in families 6 and 9, with full localization and project persistence.
+- Restored the automatic software-update check when the guided UI opens and added a release-gate probe for older installed versions.
+
+2.0.0.1 - 2026-09-16
+--------------------
+- Corrected horizontal floor-mounted East-West configurations with front access to use the upright mounting schematic in both the guided UI and technical report.
+
+2.0.0.0 - 2026-09-16
+--------------------
+- Made the guided WebView2 technical-selection interface the default SSW experience.
+- Preserved the existing calculation engine, offline product database and historical project compatibility behind the new workflow.
+- Added automatic signed SDF catalog updates with compatibility checks and local fallback.
+- Added email and six-digit PIN device activation, two-device licensing, offline renewal, revocation and localized privacy acceptance.
+- Added project selection management with distinct room/location references, explicit accessories and duplicate-unit support.
+- Reworked installation and airflow schematics in both the UI and RDLC reports, including SSC, OSC, FS/VS/HCI and ST layouts.
+- Added localized dimensional drawings, improved summaries and reports, and completed supported-language coverage for the new UI.
+- Updated the public installer to use PIN activation without embedding the obsolete bootstrap credential.
+
 1.3.0.55 - 2026-07-22
 ---------------------
 - Added private per-installation follow-up reminders for emailed selections and multi-selection projects.

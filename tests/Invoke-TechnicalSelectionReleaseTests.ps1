@@ -46,9 +46,27 @@ if ($LASTEXITCODE -ne 0) { throw 'Accessory catalog smoke test failed.' }
 & (Join-Path $PSScriptRoot 'Invoke-PublishedReleaseRetentionSmoke.ps1')
 if ($LASTEXITCODE -ne 0) { throw 'Published release retention smoke test failed.' }
 
+& (Join-Path $PSScriptRoot 'Invoke-TechnicalBaselines.ps1') -Configuration $Configuration
+if ($LASTEXITCODE -ne 0) { throw 'Technical calculation baselines failed.' }
+
+& (Join-Path $PSScriptRoot 'Invoke-NextUiSmoke.ps1') -Configuration $Configuration
+if ($LASTEXITCODE -ne 0) { throw 'SSW Next UI smoke failed.' }
+
+$updateProbe = Start-Process -FilePath (Join-Path $releaseDirectory 'SSW.exe') `
+    -ArgumentList @('--update-check-smoke', '2.0.0.0') `
+    -WorkingDirectory $releaseDirectory -WindowStyle Hidden -Wait -PassThru
+if ($updateProbe.ExitCode -ne 0) {
+    throw "Startup update check smoke failed with exit code $($updateProbe.ExitCode)."
+}
+$programSource = Get-Content -LiteralPath (Join-Path $repo 'SSW\CLProgram.cs') -Raw
+if ($programSource -notmatch 'CheckForSoftwareUpdate\(false\)[\s\S]+ValidateForNormalStartup') {
+    throw 'SSW startup must check for updates before enforcing device licensing.'
+}
+
 $resourceFiles = Get-ChildItem (Join-Path $repo 'SSWLib') -Filter 'Resources.*.resx'
-if ($resourceFiles.Count -ne 14) { throw "Expected 14 localized RESX files, found $($resourceFiles.Count)." }
+if ($resourceFiles.Count -ne 15) { throw "Expected 15 localized RESX files, found $($resourceFiles.Count)." }
 $requiredKeys = @('Update_Title','Update_CheckFailed','Update_PackageIntegrityFailed',
+    'DeviceLicense_RequestActivation','DeviceLicense_RequestSent',
     'MainForm_SelectionRegistration_Title','Water',
     'MainForm_CoilPerformance_ResultAirOut',
     'MainForm_CoilPerformance_InvalidCoolingTemperatures',

@@ -1,0 +1,29 @@
+{
+  "source": "layout_configuration.pdf / manufacturer sheet 01.23 / received 2026-09-09",
+  "OSC": {
+    "A3": ["Exhaust", "Fresh", "Supply", "Return"],
+    "A4": ["Fresh", "Exhaust", "Return", "Supply"],
+    "B1": ["Fresh", "Exhaust", "Return", "Supply"],
+    "B2": ["Supply", "Return", "Exhaust", "Fresh"],
+    "B3": ["Supply", "Return", "Exhaust", "Fresh"],
+    "B4": ["Exhaust", "Fresh", "Supply", "Return"],
+    "B5": ["Fresh", "Exhaust", "Return", "Supply"],
+    "B6": ["Exhaust", "Fresh", "Supply", "Return"],
+    "C1": ["Exhaust", "Supply", "Fresh", "Return"],
+    "C2": ["Fresh", "Return", "Exhaust", "Supply"],
+    "C3": ["Supply", "Exhaust", "Return", "Fresh"],
+    "C4": ["Exhaust", "Supply", "Fresh", "Return"],
+    "D1": ["Supply", "Exhaust", "Return", "Fresh"],
+    "D2": ["Supply", "Exhaust", "Return", "Fresh"],
+    "D3": ["Exhaust", "Supply", "Fresh", "Return"],
+    "D4": ["Supply", "Exhaust", "Return", "Fresh"]
+  },
+  "SSC": {
+    "A1": ["Exhaust", "Fresh", "Return", "Supply"],
+    "A2": ["Exhaust", "Fresh", "Return", "Supply"],
+    "A3": ["Exhaust", "Fresh", "Return", "Supply"],
+    "B1": ["Supply", "Return", "Fresh", "Exhaust"],
+    "B2": ["Supply", "Return", "Fresh", "Exhaust"],
+    "B3": ["Supply", "Return", "Fresh", "Exhaust"]
+  }
+}

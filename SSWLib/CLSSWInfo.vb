@@ -11,7 +11,7 @@ Public MustInherit Class CLSSWInfo
 
     Public Overridable ReadOnly Property ReleaseVersion As Version
         Get
-            Return Assembly.GetAssembly(GetType(CLMainForm)).GetName().Version
+            Return Assembly.GetExecutingAssembly().GetName().Version
         End Get
     End Property
 

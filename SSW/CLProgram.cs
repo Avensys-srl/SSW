@@ -7,6 +7,7 @@ using System.Resources;
 using System.IO;
 using System.Text;
 using System.Diagnostics;
+using System.Globalization;
 
 namespace SSW
 {
@@ -155,7 +156,7 @@ namespace SSW
 		/// Punto di ingresso principale dell'applicazione.
 		/// </summary>
 		[STAThread]
-		static int Main()
+		static int Main(string[] args)
 		{
 			try
 			{
@@ -163,6 +164,11 @@ namespace SSW
 				Application.SetCompatibleTextRenderingDefault(false);
 
 				string	sswDCLitePath	= Path.Combine( Path.GetDirectoryName( Application.ExecutablePath ), "data", "DataCentral.sdf" );
+				CLSSWInfo sswInfo = Activator.CreateInstance(CLSSWProfile.SSWInfoClassType) as CLSSWInfo;
+				bool normalStartup = args == null || args.Length == 0;
+				bool nextUiStartup = args != null && args.Length > 0 &&
+					String.Equals(args[0], "--next-ui", StringComparison.OrdinalIgnoreCase);
+				if (normalStartup) CLDatabaseCatalogUpdater.CheckAndUpdate(sswDCLitePath, sswInfo);
 			
 				// Debug builds should still use the local data file next to the executable.
 				// This avoids hardcoded machine/network paths causing missing DB errors.
@@ -171,14 +177,81 @@ namespace SSW
 
 				CLEnvironment.Current	= new CLEnvironment(
 					sswDCLitePath,
-					Activator.CreateInstance( CLSSWProfile.SSWInfoClassType ) as CLSSWInfo );
+					sswInfo );
+				CLLanguage startupLanguage = CLEnvironment.Current.FindLanguage(
+					CultureInfo.CurrentUICulture.TwoLetterISOLanguageName);
+				if (startupLanguage == null || !startupLanguage.Enabled)
+					startupLanguage = CLEnvironment.Current.FindLanguage(sswInfo.DefaultLanguage);
+				if (startupLanguage == null || !startupLanguage.Enabled)
+					startupLanguage = CLEnvironment.Current.ENLanguage;
+				CLEnvironment.Current.SetLanguage(startupLanguage);
 
-				Application.Run( new CLMainForm() );
+				if (args != null && args.Length > 0 &&
+					String.Equals(args[0], "--technical-baseline", StringComparison.OrdinalIgnoreCase))
+				{
+					return CLTechnicalBaselineCommand.Run(args.Skip(1).ToArray());
+				}
+
+				if (args != null && args.Length > 0 &&
+					String.Equals(args[0], "--next-ui-smoke", StringComparison.OrdinalIgnoreCase))
+				{
+					return CLNextUiSmokeCommand.Run();
+				}
+
+				if (args != null && args.Length > 1 &&
+					String.Equals(args[0], "--update-check-smoke", StringComparison.OrdinalIgnoreCase))
+				{
+					Version currentVersion;
+					if (!Version.TryParse(args[1], out currentVersion)) return 5;
+					SoftwareVersionInfo update = UpdateManager.FindAvailableSoftwareUpdate(
+						currentVersion).GetAwaiter().GetResult();
+					if (update == null) return 6;
+					Version latestVersion;
+					return Version.TryParse(update.latest_version, out latestVersion) &&
+						latestVersion > currentVersion ? 0 : 7;
+				}
+
+				if (args != null && args.Length > 0 &&
+					String.Equals(args[0], "--next-ui-screenshot", StringComparison.OrdinalIgnoreCase))
+				{
+					if (args.Length < 2 || String.IsNullOrWhiteSpace(args[1]))
+						return 2;
+					return CLNextUiScreenshotCommand.Run(
+						args[1],
+						args.Length > 2 ? args[2] : null);
+				}
+
+				if (normalStartup || nextUiStartup)
+				{
+					UpdateManager.CheckForSoftwareUpdate(false).GetAwaiter().GetResult();
+					if (!CLDeviceLicenseStartup.ValidateForNormalStartup()) return 4;
+				}
+				Application.Run(new CLNextHostForm());
 				
 				return 0;
 			}
 			catch (Exception exception)
 			{
+				if (args != null && args.Length > 0 &&
+					String.Equals(args[0], "--next-ui-smoke", StringComparison.OrdinalIgnoreCase))
+				{
+					File.WriteAllText(
+						Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "next-ui-smoke-error.log"),
+						exception.ToString());
+					return -1;
+				}
+				if (args != null && args.Length > 0 &&
+					String.Equals(args[0], "--next-ui-screenshot", StringComparison.OrdinalIgnoreCase))
+				{
+					string errorPath = args.Length > 1 && !String.IsNullOrWhiteSpace(args[1])
+						? Path.GetFullPath(args[1]) + ".error.log"
+						: Path.Combine(
+							Path.GetDirectoryName(Application.ExecutablePath),
+							"next-ui-screenshot-error.log");
+					File.WriteAllText(errorPath, exception.ToString());
+					return 3;
+				}
+
 				StringBuilder	message				= new StringBuilder();
 				Exception		currentException	= exception;
 

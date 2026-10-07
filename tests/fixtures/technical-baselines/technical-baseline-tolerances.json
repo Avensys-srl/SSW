@@ -1,0 +1,17 @@
+{
+  "default": {
+    "absolute": 0.000001,
+    "relative": 0.000001
+  },
+  "rules": [
+    { "pattern": "airflow|x$", "absolute": 0.1, "relative": 0.000001 },
+    { "pattern": "pressure|drop|availablePressure|y$", "absolute": 0.5, "relative": 0.00001 },
+    { "pattern": "power|heat|capacity", "absolute": 1.0, "relative": 0.001 },
+    { "pattern": "temperature", "absolute": 0.1, "relative": 0.00001 },
+    { "pattern": "humidity|efficiency", "absolute": 0.5, "relative": 0.00001 },
+    { "pattern": "condensate", "absolute": 0.005, "relative": 0.0001 },
+    { "pattern": "fluidPressure", "absolute": 0.05, "relative": 0.001 },
+    { "pattern": "fluidFlow", "absolute": 0.5, "relative": 0.001 },
+    { "pattern": "velocity|current", "absolute": 0.005, "relative": 0.001 }
+  ]
+}

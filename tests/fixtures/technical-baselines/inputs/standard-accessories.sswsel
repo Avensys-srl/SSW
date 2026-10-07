@@ -1,0 +1,127 @@
+{
+    "format":  "SSWSelection",
+    "selectionFormatVersion":  2,
+    "projectId":  "10000000-0000-0000-0000-000000000001",
+    "createdAtUtc":  "2000-01-01T00:00:00Z",
+    "modifiedAtUtc":  "2000-01-01T00:00:00Z",
+    "versions":  {
+                     "selectionFormatVersion":  2,
+                     "reportTemplateVersion":  3,
+                     "apiContractVersion":  1
+                 },
+    "features":  [
+                     "SummerCalculation",
+                     "AccessoriesAndControlFunctions"
+                 ],
+    "identity":  {
+                     "localDraftReference":  "BASELINE"
+                 },
+    "selection":  {
+                      "customerCode":  "TEST",
+                      "customerReference":  "",
+                      "unit":  {
+                                   "code":  "CLRC 038 OSC",
+                                   "managementCode":  "ECOP",
+                                   "name":  "CLRC 038 OSC"
+                               },
+                      "winter":  {
+                                     "enabled":  true,
+                                     "scenarioCode":  "Winter",
+                                     "standardCode":  "",
+                                     "supplyAirflowM3h":  100,
+                                     "extractAirflowM3h":  100,
+                                     "maximumPressurePa":  426,
+                                     "outdoorTemperatureC":  -10,
+                                     "outdoorRelativeHumidityPercent":  80,
+                                     "returnTemperatureC":  20,
+                                     "returnRelativeHumidityPercent":  60,
+                                     "regulationPercent":  100
+                                 },
+                      "summer":  {
+                                     "enabled":  true,
+                                     "scenarioCode":  "Summer",
+                                     "standardCode":  "Summer",
+                                     "supplyAirflowM3h":  100,
+                                     "extractAirflowM3h":  100,
+                                     "maximumPressurePa":  426,
+                                     "outdoorTemperatureC":  32,
+                                     "outdoorRelativeHumidityPercent":  80,
+                                     "returnTemperatureC":  26,
+                                     "returnRelativeHumidityPercent":  50,
+                                     "regulationPercent":  100
+                                 },
+                      "waterCoil":  {
+                                        "enabled":  false,
+                                        "selectionCase":  "Standard",
+                                        "installationType":  "External",
+                                        "calculationMode":  "HCD",
+                                        "fluid":  {
+                                                      "code":  "Water",
+                                                      "glycolPercent":  10
+                                                  },
+                                        "geometry":  {
+                                                         "geometryCode":  "2510",
+                                                         "lengthMm":  350,
+                                                         "heightMm":  250,
+                                                         "tubes":  10,
+                                                         "numberOfRows":  3,
+                                                         "finSpacingMm":  2.1,
+                                                         "numberOfCircuits":  4
+                                                     },
+                                        "coolingWaterInletTemperatureC":  7,
+                                        "coolingWaterOutletTemperatureC":  12,
+                                        "heatingWaterInletTemperatureC":  80,
+                                        "heatingWaterOutletTemperatureC":  70
+                                    },
+                      "electricHeater":  {
+                                             "enabled":  false,
+                                             "ehd":  {
+                                                         "enabled":  false,
+                                                         "mode":  "EHD",
+                                                         "selectionCase":  "Standard",
+                                                         "installationType":  "Internal"
+                                                     },
+                                             "pehd":  {
+                                                          "enabled":  false,
+                                                          "mode":  "PEHD",
+                                                          "selectionCase":  "Standard",
+                                                          "installationType":  "Internal"
+                                                      }
+                                         },
+                      "accessories":  [
+                                          {
+                                              "code":  "CAFS",
+                                              "itemType":  "Hardware",
+                                              "quantity":  1,
+                                              "availability":  "Optional",
+                                              "installationType":  "Internal",
+                                              "localizedDisplayName":  "Constant airflow control - supply",
+                                              "localizedDescription":  "Constant airflow control - supply",
+                                              "localizedFunctionNames":  [
+
+                                                                         ]
+                                          },
+                                          {
+                                              "code":  "KTS EXTRA",
+                                              "itemType":  "Hardware",
+                                              "quantity":  1,
+                                              "availability":  "Optional",
+                                              "installationType":  "External",
+                                              "localizedDisplayName":  "KTS Extra",
+                                              "localizedDescription":  "KTS Extra touch screen controller",
+                                              "localizedFunctionNames":  [
+
+                                                                         ]
+                                          }
+                                      ],
+                      "report":  {
+                                     "languageCode":  "it",
+                                     "includePerformanceCharts":  true,
+                                     "includeSoundPower":  false,
+                                     "includeCo2":  false
+                                 }
+                  },
+    "revisionTracking":  {
+
+                         }
+}

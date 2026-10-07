@@ -30,6 +30,9 @@ internal sealed class TokenHandler : HttpMessageHandler
     public int FollowUpRescheduleCount { get; private set; }
     public int FollowUpCloseCount { get; private set; }
     public int FollowUpListCount { get; private set; }
+    public int LicenseActivationCount { get; private set; }
+    public int LicenseClaimCount { get; private set; }
+    public int LicenseCheckCount { get; private set; }
     public bool FailNextFollowUpCreate { get; set; }
     public List<string> FollowUpOperations { get; } = new List<string>();
     public List<string> FollowUpIdempotencyKeys { get; } = new List<string>();
@@ -54,6 +57,27 @@ internal sealed class TokenHandler : HttpMessageHandler
         {
             RenewalCount++;
             token = "renewed-token-never-plaintext";
+        }
+        else if (request.RequestUri.AbsolutePath.EndsWith("/license/activate", StringComparison.Ordinal))
+        {
+            LicenseActivationCount++;
+            string body = request.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            if (!body.Contains("\"activation_code\":\"123456\"") || !body.Contains("\"email\":\"mario@example.com\"") || body.Contains("\"first_name\""))
+                throw new InvalidOperationException("License activation payload is incomplete.");
+            return LicenseResponse(true);
+        }
+        else if (request.RequestUri.AbsolutePath.EndsWith("/license/claim-legacy", StringComparison.Ordinal))
+        {
+            LicenseClaimCount++;
+            if (request.Headers.Authorization == null) throw new InvalidOperationException("Legacy license bearer token missing.");
+            return LicenseResponse(false);
+        }
+        else if (request.RequestUri.AbsolutePath.EndsWith("/license/check", StringComparison.Ordinal))
+        {
+            LicenseCheckCount++;
+            string body = request.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            if (!body.Contains("session_id")) throw new InvalidOperationException("License usage session is missing.");
+            return LicenseResponse(false);
         }
         else if (request.RequestUri.AbsolutePath.EndsWith("/selections", StringComparison.Ordinal))
         {
@@ -223,6 +247,13 @@ internal sealed class TokenHandler : HttpMessageHandler
         });
     }
 
+    private static Task<HttpResponseMessage> LicenseResponse(bool includeToken)
+    {
+        string expiry = DateTime.UtcNow.AddDays(30).ToString("O");
+        string token = includeToken ? ",\"access_token\":\"licensed-token-never-plaintext\",\"token_expires_at_utc\":\"2027-12-31T00:00:00Z\"" : "";
+        return JsonResponse(HttpStatusCode.OK, "{\"status\":\"ACTIVE\",\"device_number\":1,\"valid_until_utc\":\"" + expiry + "\"" + token + "}");
+    }
+
     private static string JsonString(string json, string propertyName)
     {
         Match match = Regex.Match(json, "\\\"" + Regex.Escape(propertyName) + "\\\"\\s*:\\s*\\\"([^\\\"]*)\\\"");
@@ -243,6 +274,7 @@ internal static class Program
         Directory.CreateDirectory(root);
         Environment.SetEnvironmentVariable("SSW_SELECTION_CREDENTIAL_PATH", Path.Combine(root, "credentials.json"));
         Environment.SetEnvironmentVariable("SSW_SELECTION_STATE_PATH", Path.Combine(root, "draft-state.json"));
+        Environment.SetEnvironmentVariable("SSW_DEVICE_LICENSE_PATH", Path.Combine(root, "device-license.dat"));
         Environment.SetEnvironmentVariable("SSW_SELECTION_BOOTSTRAP_KEY_AV", "test-bootstrap-key");
         Environment.SetEnvironmentVariable("SSW_SELECTION_API_BASE_URL", "https://localhost/api/v1/");
         try
@@ -273,6 +305,7 @@ internal static class Program
             TestSelectionRegistrationClient(client, handler, context);
             TestFollowUpReminderStore(root);
             TestFollowUpSynchronization(root, client, handler, context);
+            TestHashValidation();
             TestSnapshotFingerprints(root);
             TestMultiSelectionProject(root);
             TestMultiSelectionEmailAndDialog(root);
@@ -286,20 +319,64 @@ internal static class Program
             TestRegistrationFailureDialog();
             TestUpdateIntegrity(root);
             TestPracticalSelectionRules();
+            TestUiNeutralSelectionContracts();
             TestRegistryBootstrapProvisioning();
             TestBootstraplessRegistration(root);
+            TestDeviceLicensing(root, context);
 
-            Console.WriteLine("Selection identity/snapshot smoke test passed: token=ok create=R01 reprint=R01 revise=R02 fingerprints=stable dialog=rendered update_integrity=ok practical_rules=ok registry_bootstrap=ok public_enrollment=ok");
+            Console.WriteLine("Selection identity/snapshot smoke test passed: token=ok create=R01 reprint=R01 revise=R02 fingerprints=stable dialog=rendered update_integrity=ok practical_rules=ok ui_neutral_contracts=ok registry_bootstrap=ok public_enrollment=ok");
             return 0;
         }
         finally
         {
             Environment.SetEnvironmentVariable("SSW_SELECTION_CREDENTIAL_PATH", null);
             Environment.SetEnvironmentVariable("SSW_SELECTION_STATE_PATH", null);
+            Environment.SetEnvironmentVariable("SSW_DEVICE_LICENSE_PATH", null);
             Environment.SetEnvironmentVariable("SSW_SELECTION_BOOTSTRAP_KEY_AV", null);
             Environment.SetEnvironmentVariable("SSW_SELECTION_API_BASE_URL", null);
             try { Directory.Delete(root, true); } catch { }
         }
+    }
+
+    private static void TestDeviceLicensing(string root, CLSelectionRegistrationContext context)
+    {
+        string originalCredentialPath = Environment.GetEnvironmentVariable("SSW_SELECTION_CREDENTIAL_PATH");
+        try
+        {
+            Environment.SetEnvironmentVariable("SSW_SELECTION_CREDENTIAL_PATH", Path.Combine(root, "license-credentials.json"));
+            var handler = new TokenHandler();
+            var client = new CLSelectionApiClient(new HttpClient(handler));
+            if (CLDeviceLicenseStore.LoadSnapshot().Mode != CLDeviceLicenseMode.NewInstallation)
+                throw new InvalidOperationException("A new installation did not request activation.");
+            CLDeviceLicenseResult activated = client.ActivateDeviceLicenseAsync("", "", "mario@example.com", "", "123456", context).GetAwaiter().GetResult();
+            CLDeviceLicenseStore.SaveActive("Mario", "Rossi", "mario@example.com", activated.DeviceNumber, activated.ValidUntilUtc);
+            CLDeviceLicenseSnapshot active = CLDeviceLicenseStore.LoadSnapshot();
+            if (active.Mode != CLDeviceLicenseMode.Active || active.DeviceNumber != 1 || handler.LicenseActivationCount != 1)
+                throw new InvalidOperationException("Device activation state was not persisted.");
+            if (Encoding.UTF8.GetString(File.ReadAllBytes(CLDeviceLicenseStore.StateFilePath)).Contains("mario@example.com"))
+                throw new InvalidOperationException("Device license profile was stored in plaintext.");
+            CLDeviceLicenseResult checkedResult = client.CheckDeviceLicenseAsync(context, Guid.NewGuid()).GetAwaiter().GetResult();
+            CLDeviceLicenseStore.Renew(checkedResult.DeviceNumber, checkedResult.ValidUntilUtc);
+            if (handler.LicenseCheckCount != 1) throw new InvalidOperationException("Device license check was not sent.");
+            CLDeviceLicenseStore.MarkRevoked();
+            if (CLDeviceLicenseStore.LoadSnapshot().Mode != CLDeviceLicenseMode.Revoked)
+                throw new InvalidOperationException("Revoked device state was not persisted.");
+            CLDeviceLicenseStore.ResetForNewActivation();
+            if (CLDeviceLicenseStore.LoadSnapshot().Mode != CLDeviceLicenseMode.NewInstallation)
+                throw new InvalidOperationException("A rejected device license did not return to new activation.");
+        }
+        finally
+        {
+            Environment.SetEnvironmentVariable("SSW_SELECTION_CREDENTIAL_PATH", originalCredentialPath);
+        }
+    }
+
+    private static void TestHashValidation()
+    {
+        if (!CLSelectionSnapshotService.IsValidHash(new string('a', 64)) ||
+            !CLSelectionSnapshotService.IsValidHash(new string('A', 64)) ||
+            CLSelectionSnapshotService.IsValidHash(new string('g', 64)))
+            throw new InvalidOperationException("SHA-256 validation is not case-compatible.");
     }
 
     private static void TestBootstraplessRegistration(string root)
@@ -333,7 +410,7 @@ internal static class Program
     private static void TestAccessoryLocalization()
     {
         string repositoryRoot = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", ".."));
-        string[] languages = { "bg", "da", "de", "en", "fr", "hu", "is", "it", "nl", "no", "pl", "ro", "sl", "sv" };
+        string[] languages = { "bg", "cs", "da", "de", "en", "fr", "hu", "is", "it", "nl", "no", "pl", "ro", "sl", "sv" };
         string[] keys =
         {
             "MainForm_Accessories_Tab", "MainForm_Accessories_AllCategories",
@@ -375,7 +452,7 @@ internal static class Program
     private static void TestMultiSelectionLocalization()
     {
         string repositoryRoot = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", ".."));
-        string[] languages = { "bg", "da", "de", "en", "fr", "hu", "is", "it", "nl", "no", "pl", "ro", "sl", "sv" };
+        string[] languages = { "bg", "cs", "da", "de", "en", "fr", "hu", "is", "it", "nl", "no", "pl", "ro", "sl", "sv" };
         string[] keys =
         {
             "MultiProject_Title", "MultiProject_DefaultReference", "MultiProject_Reference",
@@ -467,7 +544,7 @@ internal static class Program
 
         string repositoryRoot = Path.GetFullPath(Path.Combine(
             AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", ".."));
-        string[] languages = { "bg", "da", "de", "en", "fr", "hu", "is", "it", "nl", "no", "pl", "ro", "sl", "sv" };
+        string[] languages = { "bg", "cs", "da", "de", "en", "fr", "hu", "is", "it", "nl", "no", "pl", "ro", "sl", "sv" };
         string[] keys =
         {
             "ReportViewer_Email", "ReportViewer_EmailTooltip", "ReportViewer_EmailSubject",
@@ -931,18 +1008,21 @@ internal static class Program
             string migratedPath = Path.Combine(root, fixtureName);
             File.Copy(Path.Combine(repositoryRoot, "docs", "examples", fixtureName), migratedPath, true);
             CLSelectionProjectDocument legacy = CLSelectionProjectSerializer.Load(migratedPath);
-            if (legacy.SelectionFormatVersion != 2 || legacy.SourceFormatVersion != 1 ||
+            if (legacy.SelectionFormatVersion != CLTechnicalVersions.CurrentSelectionFormatVersion ||
+                legacy.SourceFormatVersion != 1 ||
                 !legacy.RequiresMigrationBackup || legacy.RevisionTracking == null ||
-                legacy.Selection.Accessories == null || legacy.Selection.Accessories.Count != 0)
+                legacy.Selection.Accessories == null || legacy.Selection.Accessories.Count != 0 ||
+                legacy.Selection.DimensionalDrawing == null)
                 throw new InvalidOperationException("Legacy V1 fixture compatibility failed: " + fixtureName);
             CLSelectionProjectSerializer.Save(migratedPath, legacy);
             string backupPath = migratedPath + ".pre-migration-v1.bak";
             if (!File.Exists(backupPath) || !File.ReadAllText(backupPath).Contains("\"selectionFormatVersion\": 1"))
                 throw new InvalidOperationException("Legacy V1 migration backup failed: " + fixtureName);
             CLSelectionProjectDocument reloaded = CLSelectionProjectSerializer.Load(migratedPath);
-            if (reloaded.SelectionFormatVersion != 2 || reloaded.SourceFormatVersion != 2 ||
+            if (reloaded.SelectionFormatVersion != CLTechnicalVersions.CurrentSelectionFormatVersion ||
+                reloaded.SourceFormatVersion != CLTechnicalVersions.CurrentSelectionFormatVersion ||
                 reloaded.RequiresMigrationBackup)
-                throw new InvalidOperationException("Migrated V2 round-trip failed: " + fixtureName);
+                throw new InvalidOperationException("Migrated selection round-trip failed: " + fixtureName);
         }
     }
 
@@ -996,7 +1076,7 @@ internal static class Program
         CLSelectionProjectDocument selection = CreateCalculatedDocument();
         CLMultiSelectionProjectDocument project = CLMultiSelectionProjectSerializer.CreateNew("Project 01", "en");
         CLMultiSelectionProjectSerializer.AddOrUpdate(project, selection, pdfPath, "en");
-        foreach (string language in new[] { "bg", "da", "de", "en", "fr", "hu", "is", "it", "nl", "no", "pl", "ro", "sl", "sv" })
+        foreach (string language in new[] { "bg", "cs", "da", "de", "en", "fr", "hu", "is", "it", "nl", "no", "pl", "ro", "sl", "sv" })
         {
             project.LanguageCode = language;
             project.Items[0].LanguageCode = language;
@@ -1159,6 +1239,140 @@ internal static class Program
             handler.FollowUpListCount != 1)
             throw new InvalidOperationException("Ordered/idempotent follow-up synchronization failed.");
 
+    }
+
+    private static void TestUiNeutralSelectionContracts()
+    {
+        Type[] contractTypes =
+        {
+            typeof(CLAirflowPair),
+            typeof(CLBranchValuePair),
+            typeof(CLSelectionCalculationInput),
+            typeof(CLSeasonCalculationInput),
+            typeof(CLSelectionCalculationResult),
+            typeof(CLSeasonCalculationResult),
+            typeof(CLBranchCalculationResult),
+            typeof(CLThermodynamicCalculationResult),
+            typeof(CLChartDefinition),
+            typeof(CLChartSeries),
+            typeof(CLChartPoint),
+            typeof(CLValidationIssue),
+            typeof(CLValidationResult)
+        };
+        foreach (Type contractType in contractTypes)
+        {
+            foreach (PropertyInfo property in contractType.GetProperties(BindingFlags.Instance | BindingFlags.Public))
+            {
+                string propertyNamespace = property.PropertyType.Namespace ?? String.Empty;
+                if (propertyNamespace.StartsWith("System.Windows.Forms", StringComparison.Ordinal) ||
+                    propertyNamespace.StartsWith("System.Drawing", StringComparison.Ordinal) ||
+                    propertyNamespace.StartsWith("Microsoft.Reporting", StringComparison.Ordinal))
+                    throw new InvalidOperationException("UI type leaked into contract: " + contractType.Name + "." + property.Name);
+            }
+        }
+
+        CLSelectionProjectDocument document = CreateCalculatedDocument();
+        document.Selection.Winter.ExtractAirflowM3h = 85;
+        document.Selection.Winter.RegulationPercent = 88;
+        document.Selection.WaterCoil.CalculationMode = "HCD";
+        document.Selection.WaterCoil.InstallationType = "External";
+        document.Selection.WaterCoil.Coil = new CLSelectionEntityReference
+        {
+            Id = 12,
+            Code = "CWD-TEST",
+            ManagementCode = "ERP-12",
+            Name = "Test coil"
+        };
+        document.Selection.WaterCoil.Fluid = new CLFluidSelection { Code = "PropyleneGlycol", GlycolPercent = 20 };
+        document.Selection.WaterCoil.Geometry = new CLCoilGeometrySelection
+        {
+            GeometryCode = "2510",
+            LengthMm = 350,
+            HeightMm = 250,
+            Tubes = 10,
+            NumberOfRows = 3,
+            FinSpacingMm = 2.1,
+            NumberOfCircuits = 4,
+            HeaderTypeCode = "3/4"
+        };
+        document.Selection.WaterCoil.CoolingWaterInletTemperatureC = 7;
+        document.Selection.WaterCoil.CoolingWaterOutletTemperatureC = 9;
+        document.Selection.WaterCoil.HeatingWaterInletTemperatureC = 80;
+        document.Selection.WaterCoil.HeatingWaterOutletTemperatureC = 70;
+        document.Selection.ElectricHeater.Enabled = true;
+        document.Selection.ElectricHeater.PEHD.Enabled = true;
+        document.Selection.ElectricHeater.PEHD.Heater = new CLSelectionEntityReference { Code = "EH-0.9-230" };
+        document.Snapshot.WaterCoils.Add(new CLWaterCoilCalculationSnapshot
+        {
+            ScenarioCode = "Winter",
+            Mode = "HWD",
+            Status = "OK",
+            CapacityW = 1690,
+            FluidPressureDropKPa = 32.4,
+            FluidFlowLitersPerHour = 140
+        });
+        document.Snapshot.ElectricHeaters.Add(new CLElectricHeaterCalculationSnapshot
+        {
+            ScenarioCode = "Winter",
+            Mode = "PEHD",
+            HeaterCode = "EH-0.9-230",
+            PowerW = 900,
+            AirOutletTemperatureC = 16.9
+        });
+
+        CLSelectionCalculationInput independent = CLSelectionContractMapper.FromProject(document, false);
+        if (independent.Winter.Airflows.SupplyM3h != 100 || independent.Winter.Airflows.ExtractM3h != 85 ||
+            independent.Winter.Airflows.IsBalanced())
+            throw new InvalidOperationException("Independent airflow mapping lost branch values.");
+        if (independent.WaterCoil.Coil.ManagementCode != "ERP-12" ||
+            independent.WaterCoil.NumberOfCircuits != 4 ||
+            independent.WaterCoil.FluidCode != "PropyleneGlycol" ||
+            independent.ElectricHeater.PEHD.Heater.Code != "EH-0.9-230" ||
+            independent.Accessories.Count != 1)
+            throw new InvalidOperationException("Selection contract mapping is incomplete.");
+
+        CLSelectionCalculationInput legacy = CLSelectionContractMapper.FromProject(document);
+        if (!legacy.Winter.Airflows.IsBalanced() || legacy.Winter.Airflows.ExtractM3h != 100)
+            throw new InvalidOperationException("Legacy adapter did not preserve balanced operation.");
+
+        CLSelectionCalculationResult calculation = CLSelectionContractMapper.FromSnapshot(document.Snapshot);
+        if (calculation.Winter.SupplyBranch.AirflowM3h != 100 ||
+            calculation.Winter.ExtractBranch.AirflowM3h != 100 ||
+            calculation.Winter.Thermodynamics.HeatTransferredW != 967 ||
+            calculation.WaterCoils.Count != 1 ||
+            calculation.WaterCoils[0].FluidPressureDropKPa != 32.4 ||
+            calculation.ElectricHeaters.Count != 1)
+            throw new InvalidOperationException("Calculation snapshot mapping is incomplete.");
+
+        CLValidationResult validation = CLSelectionContractValidator.Validate(independent);
+        if (!validation.HasWarnings ||
+            !validation.Issues.Any(issue => issue.Code == "water.delta.critical" &&
+                issue.MessageKey == "Validation.WaterDeltaCritical"))
+            throw new InvalidOperationException("Structured water delta validation is missing.");
+
+        independent.ElectricHeater.EHD.Enabled = true;
+        validation = CLSelectionContractValidator.Validate(independent);
+        if (!validation.HasErrors ||
+            !validation.Issues.Any(issue => issue.Code == "heater.ehd.hot_water_conflict"))
+            throw new InvalidOperationException("Structured EHD/hot-water validation is missing.");
+
+        var chart = new CLChartDefinition
+        {
+            ChartCode = "efficiency",
+            Kind = CLChartKind.Efficiency,
+            XAxisUnit = "m3/h",
+            YAxisUnit = "%"
+        };
+        chart.Series.Add(new CLChartSeries
+        {
+            SeriesCode = "winter-supply",
+            Role = CLChartSeriesRole.Winter,
+            BranchCode = "Supply",
+            ScenarioCode = "Winter",
+            Points = new List<CLChartPoint> { new CLChartPoint { X = 100, Y = 95 } }
+        });
+        if (chart.Series[0].Points[0].Y != 95)
+            throw new InvalidOperationException("Numeric chart contract failed.");
     }
 
     private static void AssertChange(CLSelectionProjectDocument document, CLSelectionChangeKind expected)

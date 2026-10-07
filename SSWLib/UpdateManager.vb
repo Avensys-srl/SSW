@@ -1,5 +1,6 @@
 ﻿Imports System.Net.Http
 Imports System.IO
+Imports System.Net
 Imports System.Text.Json ' Or Newtonsoft.Json if you prefer/use that
 Imports System.Security.Cryptography
 
@@ -21,6 +22,50 @@ Public Class UpdateManager
     Private Const CheckUpdateUrl As String = "https://www.avensys-srl.com/api/ssw_check_update.php"
     Private Shared ReadOnly CheckSemaphore As New System.Threading.SemaphoreSlim(1, 1)
 
+    Public Shared Async Function FindAvailableSoftwareUpdate(
+        currentAppVersion As Version,
+        Optional checkUrl As String = CheckUpdateUrl) As Task(Of SoftwareVersionInfo)
+
+        If currentAppVersion Is Nothing Then
+            Throw New ArgumentNullException(NameOf(currentAppVersion))
+        End If
+
+        Dim versionInfo As SoftwareVersionInfo
+        Using client As New HttpClient()
+            client.Timeout = TimeSpan.FromSeconds(15)
+            Dim separator = If(checkUrl.Contains("?"), "&", "?")
+            Dim checkUri As String = checkUrl & separator & "current_version=" &
+                Uri.EscapeDataString(currentAppVersion.ToString())
+            Using response As HttpResponseMessage = Await client.GetAsync(checkUri)
+                response.EnsureSuccessStatusCode()
+                Dim jsonString As String = Await response.Content.ReadAsStringAsync()
+                versionInfo = JsonSerializer.Deserialize(Of SoftwareVersionInfo)(jsonString,
+                    New JsonSerializerOptions With {.PropertyNameCaseInsensitive = True})
+            End Using
+        End Using
+
+        If versionInfo Is Nothing Then
+            Throw New InvalidDataException("The server response is empty.")
+        End If
+        If Not String.IsNullOrWhiteSpace(versionInfo.[error]) Then
+            Throw New InvalidDataException(versionInfo.[error])
+        End If
+
+        Dim latestServerVersion As Version = Nothing
+        If String.IsNullOrWhiteSpace(versionInfo.latest_version) OrElse
+            Not Version.TryParse(versionInfo.latest_version, latestServerVersion) Then
+            Throw New InvalidDataException("The server response does not contain a valid version number.")
+        End If
+        If latestServerVersion <= currentAppVersion Then Return Nothing
+
+        If Not versionInfo.verified_manifest OrElse versionInfo.manifest_version < 1 OrElse
+            String.IsNullOrWhiteSpace(versionInfo.sha256) OrElse versionInfo.sha256.Length <> 64 OrElse
+            Not versionInfo.size_bytes.HasValue OrElse versionInfo.size_bytes.Value <= 0 Then
+            Throw New InvalidDataException(PackageIntegrityError())
+        End If
+        Return versionInfo
+    End Function
+
     Public Shared Async Function CheckForSoftwareUpdate(Optional interactive As Boolean = False) As Task
         Await CheckSemaphore.WaitAsync()
         Try
@@ -39,21 +84,7 @@ Public Class UpdateManager
 
             Dim versionInfo As SoftwareVersionInfo
             Try
-                Using client As New HttpClient()
-                    client.Timeout = TimeSpan.FromSeconds(15)
-                    Dim checkUri As String = CheckUpdateUrl & "?current_version=" &
-                        Uri.EscapeDataString(currentAppVersion.ToString())
-                    Using response As HttpResponseMessage = Await client.GetAsync(checkUri)
-                        If Not response.IsSuccessStatusCode Then
-                            ShowCheckError(interactive, $"{response.StatusCode} - {response.ReasonPhrase}")
-                            Return
-                        End If
-
-                        Dim jsonString As String = Await response.Content.ReadAsStringAsync()
-                        versionInfo = JsonSerializer.Deserialize(Of SoftwareVersionInfo)(jsonString,
-                            New JsonSerializerOptions With {.PropertyNameCaseInsensitive = True})
-                    End Using
-                End Using
+                versionInfo = Await FindAvailableSoftwareUpdate(currentAppVersion)
             Catch ex As TaskCanceledException
                 ShowCheckError(interactive, "Timeout.")
                 Return
@@ -62,30 +93,8 @@ Public Class UpdateManager
                 Return
             End Try
 
-            If versionInfo Is Nothing Then
-                ShowCheckError(interactive, "The server response is empty.")
-                Return
-            End If
-
-            If Not String.IsNullOrWhiteSpace(versionInfo.[error]) Then
-                ShowCheckError(interactive, versionInfo.[error])
-                Return
-            End If
-
-            Dim latestServerVersion As Version = Nothing
-            If String.IsNullOrWhiteSpace(versionInfo.latest_version) OrElse
-                Not Version.TryParse(versionInfo.latest_version, latestServerVersion) Then
-                ShowCheckError(interactive, "The server response does not contain a valid version number.")
-                Return
-            End If
-
-            If latestServerVersion > currentAppVersion Then
-                If Not versionInfo.verified_manifest OrElse versionInfo.manifest_version < 1 OrElse
-                    String.IsNullOrWhiteSpace(versionInfo.sha256) OrElse versionInfo.sha256.Length <> 64 OrElse
-                    Not versionInfo.size_bytes.HasValue OrElse versionInfo.size_bytes.Value <= 0 Then
-                    ShowCheckError(interactive, PackageIntegrityError())
-                    Return
-                End If
+            If versionInfo IsNot Nothing Then
+                Dim latestServerVersion = Version.Parse(versionInfo.latest_version)
                 Dim message As String = LocalizedText(CLMessageResources.Update_NewAvailable,
                                                        "A new software update is available!") & vbCrLf & vbCrLf &
                     LocalizedText(CLMessageResources.Update_CurrentVersion, "Current version") & ": " & currentAppVersion.ToString() & vbCrLf &
@@ -133,7 +142,7 @@ Public Class UpdateManager
         Return fallback
     End Function
 
-    Private Shared Async Function DownloadAndStartInstaller(versionInfo As SoftwareVersionInfo) As Task
+    Private Shared Function DownloadAndStartInstaller(versionInfo As SoftwareVersionInfo) As Task
         Dim downloadUrl As String = versionInfo.download_url
         If String.IsNullOrWhiteSpace(downloadUrl) Then
             downloadUrl = "https://www.avensys-srl.com/api/ssw_download.php?source=update&from_version=" &
@@ -151,6 +160,7 @@ Public Class UpdateManager
         Dim progressForm As DownloadProgressForm = Nothing
 
         Try
+            LogUpdate("download_start", downloadUrl)
             fileName = Path.GetFileName(fileName)
             If Not fileName.EndsWith(".exe", StringComparison.OrdinalIgnoreCase) Then
                 Throw New InvalidDataException(PackageIntegrityError())
@@ -162,39 +172,41 @@ Public Class UpdateManager
             End If
             localPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), fileName)
 
-            Using client As New HttpClient()
-                client.Timeout = TimeSpan.FromMinutes(10)
+            progressForm = New DownloadProgressForm()
+            progressForm.Show()
+            progressForm.Refresh()
 
-                progressForm = New DownloadProgressForm()
-                progressForm.Show()
-                progressForm.Refresh()
+            Dim request = DirectCast(WebRequest.Create(downloadUrl), HttpWebRequest)
+            request.Method = "GET"
+            request.Timeout = CInt(TimeSpan.FromMinutes(10).TotalMilliseconds)
+            request.ReadWriteTimeout = CInt(TimeSpan.FromMinutes(10).TotalMilliseconds)
+            request.AllowAutoRedirect = True
+            request.UserAgent = "Avensys-SSW-Updater/" & Application.ProductVersion
+            Using response = DirectCast(request.GetResponse(), HttpWebResponse)
+                LogUpdate("download_headers", CInt(response.StatusCode).ToString() & " " & response.StatusDescription)
+                If response.StatusCode <> HttpStatusCode.OK Then
+                    Throw New InvalidOperationException($"Download failed: {response.StatusCode} - {response.StatusDescription}")
+                End If
 
-                Using response As HttpResponseMessage = Await client.GetAsync(downloadUrl, HttpCompletionOption.ResponseHeadersRead)
-                    If Not response.IsSuccessStatusCode Then
-                        Throw New InvalidOperationException($"Download failed: {response.StatusCode} - {response.ReasonPhrase}")
-                    End If
-
-                    Dim totalBytes As Long? = response.Content.Headers.ContentLength
-                    Using sourceStream As Stream = Await response.Content.ReadAsStreamAsync()
-                        Using targetStream As New FileStream(localPath, FileMode.Create, FileAccess.Write, FileShare.None)
-                            Await CopyToFileWithProgress(sourceStream, targetStream, totalBytes, progressForm)
-                        End Using
+                Dim totalBytes As Long? = If(response.ContentLength > 0, CType(response.ContentLength, Long?), Nothing)
+                Using sourceStream As Stream = response.GetResponseStream()
+                    Using targetStream As New FileStream(localPath, FileMode.Create, FileAccess.Write, FileShare.None)
+                        CopyToFileWithProgress(sourceStream, targetStream, totalBytes, progressForm)
                     End Using
                 End Using
             End Using
 
             VerifyDownloadedInstaller(localPath, versionInfo)
+            LogUpdate("download_verified", localPath)
 
             progressForm.Close()
             progressForm = Nothing
 
-            Dim psi As New ProcessStartInfo()
-            psi.FileName = localPath
-            psi.Arguments = "/CLOSEAPPLICATIONS /RESTARTAPPLICATIONS"
-            psi.UseShellExecute = True
-            Process.Start(psi)
-            Application.Exit()
+            StartInstallerAfterExit(localPath)
+            LogUpdate("installer_queued", localPath)
+            Environment.Exit(0)
         Catch ex As Exception
+            LogUpdate("update_failed", ex.ToString())
             If progressForm IsNot Nothing Then
                 progressForm.Close()
             End If
@@ -208,7 +220,31 @@ Public Class UpdateManager
                             $"You can download it manually from:{vbCrLf}{downloadUrl}",
                             "Download Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
+        Return Task.CompletedTask
     End Function
+
+    Private Shared Sub StartInstallerAfterExit(installerPath As String)
+        Dim escapedPath As String = installerPath.Replace("'", "''")
+        Dim command As String = "$p=Get-Process -Id " & Process.GetCurrentProcess().Id.ToString() &
+            " -ErrorAction SilentlyContinue; if($p){$p.WaitForExit()}; " &
+            "Start-Process -FilePath '" & escapedPath & "' -ArgumentList '/CLOSEAPPLICATIONS','/RESTARTAPPLICATIONS'"
+        Dim psi As New ProcessStartInfo()
+        psi.FileName = "powershell.exe"
+        psi.Arguments = "-NoProfile -NonInteractive -WindowStyle Hidden -Command """ & command.Replace("""", "\""") & """"
+        psi.UseShellExecute = False
+        psi.CreateNoWindow = True
+        Process.Start(psi)
+    End Sub
+
+    Private Shared Sub LogUpdate(eventName As String, details As String)
+        Try
+            Dim folder As String = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Avensys", "SSW", "Logs")
+            Directory.CreateDirectory(folder)
+            Dim line As String = DateTime.UtcNow.ToString("o") & vbTab & eventName & vbTab & details.Replace(vbCr, " ").Replace(vbLf, " ")
+            File.AppendAllText(Path.Combine(folder, "software-update.log"), line & Environment.NewLine)
+        Catch
+        End Try
+    End Sub
 
     Private Shared Sub VerifyDownloadedInstaller(filePath As String, versionInfo As SoftwareVersionInfo)
         Dim fileInfo As New FileInfo(filePath)
@@ -231,23 +267,23 @@ Public Class UpdateManager
                              "The update package failed integrity verification.")
     End Function
 
-    Private Shared Async Function CopyToFileWithProgress(sourceStream As Stream,
-                                                         targetStream As Stream,
-                                                         totalBytes As Long?,
-                                                         progressForm As DownloadProgressForm) As Task
+    Private Shared Sub CopyToFileWithProgress(sourceStream As Stream,
+                                              targetStream As Stream,
+                                              totalBytes As Long?,
+                                              progressForm As DownloadProgressForm)
         Dim buffer(81919) As Byte
         Dim downloadedBytes As Long = 0
-        Dim bytesRead As Integer = Await sourceStream.ReadAsync(buffer, 0, buffer.Length)
+        Dim bytesRead As Integer = sourceStream.Read(buffer, 0, buffer.Length)
 
         While bytesRead > 0
-            Await targetStream.WriteAsync(buffer, 0, bytesRead)
+            targetStream.Write(buffer, 0, bytesRead)
             downloadedBytes += bytesRead
             progressForm.UpdateProgress(downloadedBytes, totalBytes)
             Application.DoEvents()
 
-            bytesRead = Await sourceStream.ReadAsync(buffer, 0, buffer.Length)
+            bytesRead = sourceStream.Read(buffer, 0, buffer.Length)
         End While
-    End Function
+    End Sub
 
 End Class
 

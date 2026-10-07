@@ -121,7 +121,8 @@ Public NotInheritable Class CLSelectionSnapshotService
     Public Shared Function IsValidHash(value As String) As Boolean
         If String.IsNullOrWhiteSpace(value) OrElse value.Length <> 64 Then Return False
         Return value.All(Function(character) (character >= "0"c AndAlso character <= "9"c) OrElse
-            (character >= "a"c AndAlso character <= "f"c))
+            (character >= "a"c AndAlso character <= "f"c) OrElse
+            (character >= "A"c AndAlso character <= "F"c))
     End Function
 
     Private Shared Function HashCanonical(value As Object, excludedProperties As HashSet(Of String)) As String

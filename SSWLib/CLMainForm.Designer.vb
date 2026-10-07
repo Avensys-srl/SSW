@@ -70,6 +70,7 @@ Partial Class CLMainForm
         Me.tsmiOption_Language_SV = New System.Windows.Forms.ToolStripMenuItem()
         Me.tsmiOption_Language_NO = New System.Windows.Forms.ToolStripMenuItem()
         Me.tsmiOption_Language_IS = New System.Windows.Forms.ToolStripMenuItem()
+        Me.tsmiOption_Language_CS = New System.Windows.Forms.ToolStripMenuItem()
         Me.tsmiOption_Unit = New System.Windows.Forms.ToolStripMenuItem()
         Me.tsmiOption_Unit_SI = New System.Windows.Forms.ToolStripMenuItem()
         Me.tsmiOption_Unit_IP = New System.Windows.Forms.ToolStripMenuItem()
@@ -440,7 +441,7 @@ Partial Class CLMainForm
         '
         'tsmiOption_Language
         '
-        Me.tsmiOption_Language.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsmiOption_Language_EN, Me.tsmiOption_Language_DE, Me.tsmiOption_Language_FR, Me.tsmiOption_Language_NL, Me.tsmiOption_Language_PL, Me.tsmiOption_Language_SL, Me.tsmiOption_Language_RO, Me.tsmiOption_Language_BG, Me.tsmiOption_Language_HU, Me.tsmiOption_Language_IT, Me.tsmiOption_Language_DA, Me.tsmiOption_Language_SV, Me.tsmiOption_Language_NO, Me.tsmiOption_Language_IS})
+        Me.tsmiOption_Language.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsmiOption_Language_EN, Me.tsmiOption_Language_DE, Me.tsmiOption_Language_FR, Me.tsmiOption_Language_NL, Me.tsmiOption_Language_PL, Me.tsmiOption_Language_SL, Me.tsmiOption_Language_RO, Me.tsmiOption_Language_BG, Me.tsmiOption_Language_HU, Me.tsmiOption_Language_IT, Me.tsmiOption_Language_DA, Me.tsmiOption_Language_SV, Me.tsmiOption_Language_NO, Me.tsmiOption_Language_IS, Me.tsmiOption_Language_CS})
         Me.tsmiOption_Language.Name = "tsmiOption_Language"
         Me.tsmiOption_Language.Size = New System.Drawing.Size(233, 22)
         Me.tsmiOption_Language.Text = "Language"
@@ -528,6 +529,12 @@ Partial Class CLMainForm
         Me.tsmiOption_Language_IS.Name = "tsmiOption_Language_IS"
         Me.tsmiOption_Language_IS.Size = New System.Drawing.Size(130, 22)
         Me.tsmiOption_Language_IS.Text = "Íslenska"
+        '
+        'tsmiOption_Language_CS
+        '
+        Me.tsmiOption_Language_CS.Name = "tsmiOption_Language_CS"
+        Me.tsmiOption_Language_CS.Size = New System.Drawing.Size(130, 22)
+        Me.tsmiOption_Language_CS.Text = "Čeština"
         '
         'tsmiOption_Unit
         '
@@ -3488,6 +3495,7 @@ Partial Class CLMainForm
     Friend WithEvents tsmiOption_Language_SV As ToolStripMenuItem
     Friend WithEvents tsmiOption_Language_NO As ToolStripMenuItem
     Friend WithEvents tsmiOption_Language_IS As ToolStripMenuItem
+    Friend WithEvents tsmiOption_Language_CS As ToolStripMenuItem
     Friend WithEvents btnEN308 As Button
     Friend WithEvents btn_winter As Button
     Friend WithEvents btn_summer As Button

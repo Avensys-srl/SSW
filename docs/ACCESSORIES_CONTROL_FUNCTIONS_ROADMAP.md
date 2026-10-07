@@ -2,6 +2,11 @@
 
 Data di approvazione del contratto: 20/07/2026
 
+Checkpoint 08/09/2026: default KTS BASIC trasferito nel catalogo centrale,
+senza override runtime delle eccezioni di serie/modello. Normalizzazione Next
+e guardie di salvataggio per indisponibilita', esclusivita' e dipendenze.
+Dettagli e test in [AUDIT_CORREZIONI_2026-09-08.md](AUDIT_CORREZIONI_2026-09-08.md).
+
 ## Obiettivo
 
 Completare la selezione tecnica SSW con un catalogo estendibile di accessori
@@ -49,8 +54,8 @@ backlog di progetto:
 
 I quattro KTS sono mutuamente esclusivi:
 
-- KTS Basic: livello `Basic`;
-- KTS Extra: livello `Extra` e scelta predefinita globale;
+- KTS Basic: livello `Basic` e scelta predefinita globale;
+- KTS Extra: livello `Extra`;
 - KTS RFM: livello minimo `Extra` con capacita' RFM;
 - KTS WiFi: livello minimo `Extra` con capacita' WiFi.
 
@@ -60,7 +65,7 @@ Basic resta disabilitato quando accessori o funzioni selezionati richiedono il
 livello Extra; il tooltip elenca gli elementi che devono essere rimossi per
 renderlo selezionabile. Non vengono eseguite sostituzioni silenziose.
 
-`KTS Extra` e' una scelta predefinita sostituibile, non un elemento standard
+`KTS Basic` e' una scelta predefinita sostituibile, non un elemento standard
 bloccato, salvo diversa regola esplicita per una serie o un modello.
 
 ## Regole relazionali
