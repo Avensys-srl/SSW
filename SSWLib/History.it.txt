@@ -1,0 +1,290 @@
+Registro modifiche SSW
+======================
+
+2.0.0.25 - 2026-10-06
+---------------------
+- Aggiunto un archivio delle offerte definitive indipendente dai promemoria facoltativi, con revisioni locali conservate e riapertura.
+- La colonna Cliente del portale risale all'utente dell'installazione licenziata della revisione, mantenendo il dato storico quando manca il collegamento.
+
+2.0.0.24 - 2026-10-05
+---------------------
+- Corretto il simbolo percentuale duplicato nel livello di regolazione dei report inverno ed estate.
+- Migliorato il controllo documenti con disponibilita online, badge delle lingue e fallback inglese; aggiunta la verifica online STEP.
+- Aggiornati registrazione dell'offerta definitiva e promemoria; nascosti Salva con nome e offerta provvisoria.
+- Esclusa dalle build clienti l'interfaccia legacy, mantenendo importazione dei file storici e migrazione delle licenze.
+
+2.0.0.23 - 2026-10-03
+---------------------
+- Passaggio automatico da KTS BASIC a KTS EXTRA quando viene selezionato un accessorio opzionale, una batteria ad acqua o un riscaldatore elettrico.
+- Corretto il controllo di disponibilità documenti affinché trovi le schede commerciali anche tramite il nome canonico del modello quando la ricerca con il nome visualizzato localizzato non corrisponde.
+- [TODO-001] Verificare i valori di consumo dei ventilatori rispetto ai dati di riferimento approvati.
+- [TODO-002] Popolare le categorie "Brochure commerciale" e "Benchmark document (confidential)" e rinominare l'attuale categoria "Scheda commerciale" in "Scheda tecnico-commerciale".
+- [TODO-003] Aggiungere al catalogo modelli DataCentral un campo esplicito per il tipo di recuperatore; il filtro per i recuperatori a piastre dipende da questa classificazione e non deve essere dedotto dalla famiglia.
+- [TODO-004] Caricare il documento applicativo tecnico SG 127 ST nella sezione Documenti.
+
+2.0.0.22 - 2026-10-01
+---------------------
+- Corretto il ripetuto aumento della regolazione dei ventilatori durante la selezione della batteria ad acqua, che impediva la stabilizzazione del calcolo.
+- Aggiunto alla sezione Documenti il documento applicativo tecnico SG 127 ST, disponibile offline.
+
+2.0.0.21 - 2026-09-29
+---------------------
+- Mantenuto distinto il livello minimo di regolazione impostato dall'utente dalla regolazione di funzionamento calcolata per l'unità selezionata.
+- Raffinati i passi interni di calcolo della regolazione per non escludere punti di lavoro validi tra valori percentuali interi.
+
+2.0.0.20 - 2026-09-28
+---------------------
+- Allineata l'anteprima del report allo stesso PDF A4 esportato, indipendentemente dalle impostazioni della stampante.
+- Adeguata la finestra di anteprima affinché la barra degli strumenti non copra più la parte superiore del report.
+- Mantenuta interamente visibile la dicitura dell'accesso frontale nei disegni di installazione riducendo il carattere e disponendo il testo su due righe.
+
+2.0.0.19 - 2026-09-25
+---------------------
+- Aggiunto il PDF del disegno dimensionale alla sezione Documenti per facilitarne l'accesso ai clienti.
+- Aggiunti il nome dell'unità selezionata e il marchio Avensys nei PDF e nelle anteprime dei disegni dimensionali.
+- Migliorata la spaziatura degli schemi di installazione nei report generati.
+- Rimosso un valore booleano errato dai piè di pagina dei report delle batterie e tradotto il titolo dell'avvertenza legale in italiano.
+
+2.0.0.18 - 2026-09-25
+---------------------
+- Impedita la riapertura di risorse memorizzate nella cache della versione precedente dopo un aggiornamento dell'interfaccia incorporata.
+- Resa coerente la lingua dei report generati con quella dei documenti del progetto, indipendentemente dalla lingua dell'interfaccia.
+- Uniformata la visualizzazione dell'anteprima dei report, evitando che le pagine siano ridotte a una frazione delle dimensioni previste in base alle impostazioni locali di stampante o schermo.
+- Mantenuti visibili e utilizzabili i valori delle condizioni stagionali anche su finestre e schermi più piccoli.
+
+2.0.0.17 - 2026-09-24
+---------------------
+- Limitati i risultati della preselezione alle unità con pressione disponibile superiore al punto di lavoro richiesto di non più di 10 Pa o del 5%, con un limite massimo di 25 Pa.
+- Corretti i grafici di rendimento dei report affinché curve e indicatori del punto di lavoro utilizzino la stessa scala di portata quando la regolazione del ventilatore è inferiore al 100%.
+
+2.0.0.16 - 2026-09-21
+---------------------
+- Resi gli schemi verticali a pavimento SSC dipendenti dalla vista di riferimento `SSC_UPRIGHT` del catalogo anziché dal precedente elenco di codici A1/B1.
+- Applicata la stessa geometria basata sul catalogo alla pagina di installazione interattiva e ai report generati.
+
+2.0.0.15 - 2026-09-21
+---------------------
+- Rimosso il blocco dell'aggiornamento all'avvio causato dall'attesa del download dell'installer mentre il thread dell'interfaccia WinForms attendeva sincronicamente il controllo aggiornamenti.
+- Instradati i pacchetti di aggiornamento automatico attraverso il percorso statico diretto, mantenendo protetti con token di registrazione i download su invito.
+
+2.0.0.14 - 2026-09-21
+---------------------
+- Aggiunti alla sezione Documenti gli archivi STEP specifici del modello quando disponibili, con verifica del download e memorizzazione locale.
+- Spostato il selettore della lingua dei documenti del progetto nella pagina iniziale Progetto, accanto al selettore della lingua dell'interfaccia.
+
+2.0.0.12 - 2026-09-21
+---------------------
+- Semplificata l'attivazione dei clienti approvati: sono richiesti solo l'indirizzo e-mail registrato e il PIN a sei cifre; i dati del profilo vengono riutilizzati dalla registrazione nel portale.
+
+2.0.0.11 - 2026-09-21
+---------------------
+- Ripristinato automaticamente l'inserimento del PIN quando una licenza locale già registrata viene eliminata o rifiutata dal server.
+- Consentita la riassegnazione sicura a una nuova registrazione approvata di un'installazione archiviata appartenente a un utente eliminato.
+- Accettate differenze non sostanziali nella ragione sociale durante l'attivazione; l'identità resta associata all'e-mail approvata e al PIN.
+
+2.0.0.6 - 2026-09-17
+--------------------
+- Allineate le lingue di installazione e attivazione alla lingua di visualizzazione di Windows e abilitate tutte le traduzioni disponibili dell'installer per le lingue SSW supportate.
+
+2.0.0.5 - 2026-09-17
+--------------------
+- Suddivisa l'attivazione nelle fasi di richiesta, attesa e inserimento del PIN; il campo PIN resta nascosto finché l'utente non conferma di aver ricevuto il codice via e-mail.
+
+2.0.0.4 - 2026-09-17
+--------------------
+- Chiarito che il codice da inserire dopo l'invio di una richiesta di licenza è il PIN di attivazione a sei cifre, non l'identificativo dispositivo di quattro caratteri.
+
+2.0.0.3 - 2026-09-17
+--------------------
+- Aggiunto un flusso di attivazione in due passaggi: l'utente accetta le condizioni e invia una richiesta di licenza visibile prima che venga mostrato il campo PIN.
+- Salvate localmente le richieste in attesa, rese consultabili nel portale licenze e aggiunto un indicatore di notifica per le nuove attività di licenza.
+- Anticipato il controllo degli aggiornamenti rispetto alla verifica della licenza, così le future installazioni bloccate potranno comunque ricevere aggiornamenti software.
+
+2.0.0.2 - 2026-09-16
+--------------------
+- Aggiunto un quarto criterio di preselezione per limitare i risultati ai recuperatori rotativi delle famiglie 6 e 9, con traduzioni complete e memorizzazione nei progetti.
+- Ripristinato il controllo automatico degli aggiornamenti all'apertura dell'interfaccia guidata e aggiunto un controllo di compatibilità per le versioni installate precedenti.
+
+2.0.0.1 - 2026-09-16
+--------------------
+- Corrette le configurazioni orizzontali a pavimento East-West con accesso frontale, usando lo schema verticale sia nell'interfaccia guidata sia nel report tecnico.
+
+2.0.0.0 - 2026-09-16
+--------------------
+- Impostata come esperienza SSW predefinita l'interfaccia di selezione tecnica guidata basata su WebView2.
+- Mantenuti nel nuovo flusso il motore di calcolo esistente, il database prodotti offline e la compatibilità con i progetti storici.
+- Aggiunti gli aggiornamenti automatici firmati del catalogo SDF con controlli di compatibilità e ripiego locale.
+- Aggiunte l'attivazione dispositivo via e-mail e PIN a sei cifre, le licenze per due dispositivi, il rinnovo offline, la revoca e l'accettazione localizzata dell'informativa sulla privacy.
+- Aggiunta la gestione delle selezioni di progetto con riferimenti distinti per locale e ubicazione, accessori espliciti e supporto per unità duplicate.
+- Rielaborati gli schemi di installazione e dei flussi d'aria nell'interfaccia e nei report RDLC, inclusi i layout SSC, OSC, FS/VS/HCI e ST.
+- Aggiunti disegni dimensionali localizzati, migliorati riepiloghi e report e completate le traduzioni dell'interfaccia per tutte le lingue supportate.
+- Aggiornato l'installer pubblico per usare l'attivazione PIN senza incorporare la credenziale bootstrap obsoleta.
+
+1.3.0.55 - 2026-07-22
+---------------------
+- Aggiunti promemoria privati di ricontatto per installazione, per selezioni inviate via e-mail e progetti con più unità.
+- Aggiunti pianificazione configurabile da 1 a 90 giorni e un centro notifiche localizzato con indicatore di scadenza e azioni di riapertura, riprogrammazione, esito positivo, esito negativo e annullamento.
+- Aggiunte memorizzazione atomica offline-first dei promemoria, sincronizzazione ordinata e idempotente e aggiornamento autenticato con paginazione.
+- Aggiunti suggerimenti localizzati per i ricontatti e guida per il pulsante notifiche in tutte le 14 lingue supportate; aggiunto inoltre il controllo Help/UX pre-release alla verifica di rilascio.
+- Aggiunte al database centrale le traduzioni del catalogo accessori in norvegese e islandese e rigenerato il database prodotti AV.
+
+1.3.0.54 - 2026-07-22
+---------------------
+- Aggiunti norvegese e islandese come lingue applicative complete, mantenendo i nomi delle lingue leggibili nella forma originale.
+- Aggiunta una guida localizzata integrata nell'applicazione, dedicata a selezione, calcolo, salvataggio, alternative, report, progetti e invio e-mail.
+- Aggiunti suggerimenti contestuali facoltativi per i controlli e i comandi del menu File, attivi per impostazione predefinita sulle nuove installazioni e mantenuti dopo gli aggiornamenti.
+- Aggiornato il database prodotti AV con le relazioni più recenti dei riscaldatori elettrici per le unità SG e PRIME.
+- Aggiunte roadmap tecniche approvate per i layout di installazione e i promemoria locali di ricontatto.
+
+1.3.0.53 - 2026-07-21
+---------------------
+- Aggiunti progetti con selezioni multiple, nomi progetto localizzati, collegamenti riutilizzabili alle selezioni e composizione aggregata delle e-mail con PDF.
+- Aggiunta la sincronizzazione centralizzata e best-effort dei progetti e dei relativi riepiloghi, mantenendo il funzionamento offline.
+- Corretta l'idempotenza della selezione tecnica affinché un riferimento cliente aggiornato possa essere registrato senza riutilizzare una chiave di richiesta obsoleta.
+- Aggiunto il contesto del download aggiornamento per distinguere il primo download dagli aggiornamenti dell'applicazione.
+- Aggiunti gestione progetti e contenuti e-mail localizzati in tutte le lingue supportate.
+- Rimosso dai pacchetti AV pubblici il requisito obsoleto della credenziale bootstrap.
+
+1.3.0.52 - 2026-07-20
+---------------------
+- Modernizzati i grafici delle prestazioni nell'applicazione e nei report con immagini PNG ad alta risoluzione e punti di funzionamento circolari.
+- Sincronizzati assi e intervalli di portata nei grafici di pressione, potenza assorbita e rendimento.
+- Separati i rendimenti invernale ed estivo in grafici stagionali allineati con scala condivisa dal 60 al 100%.
+- Corretti i campioni estivi iniziali instabili e uniformato lo stile delle curve stagionali.
+- Estese le curve di pressione che terminano sopra 10 Pa fino alla portata interpolata a pressione nulla.
+- Rifiniti margini, riquadri, legende e allineamento dei titoli degli assi dei grafici nei report per evitare ritagli.
+
+1.3.0.51 - 2026-07-15
+---------------------
+- Aggiunte alternative progressive che duplicano una selezione e antepongono al riferimento cliente Alt. 01, Alt. 02 e i numeri successivi.
+- Aggiunta un'avvertenza localizzata di presa visione per i progetti personalizzati delle batterie ad acqua e memorizzata la relativa accettazione nelle selezioni.
+- Esportata nei dataset di tutti i report delle batterie ad acqua l'accettazione localizzata dell'avvertenza per le batterie personalizzate.
+- Chiarito che le dimensioni mostrate riguardano solo la batteria ad acqua e che dimensioni complessive, tempi di consegna e quotazione devono essere richiesti.
+- Rifiniti i layout localizzati dei report delle batterie ad acqua.
+- Mantenuti nella cartella pubblica solo l'installer e il manifesto verificati più recenti, conservando localmente lo storico delle build.
+
+1.3.0.50 - 2026-07-15
+---------------------
+- Resa automatica la registrazione al primo avvio delle installazioni AV pubbliche anche quando la credenziale bootstrap dell'installer non è disponibile.
+- Usato il profilo di distribuzione AV, invece del codice di gestione del database prodotti, come identità cliente per l'API.
+- Mantenuti token di accesso specifici per installazione, revoca e limitazione delle richieste di registrazione lato server.
+
+1.3.0.49 - 2026-07-15
+---------------------
+- Completati gli aggiornamenti dall'applicazione senza richiedere il riavvio di Windows.
+- Chiusa l'istanza SSW in esecuzione prima di sostituire i file dell'applicazione e riaperta la versione aggiornata tramite l'installer.
+
+1.3.0.48 - 2026-07-15
+---------------------
+- Corretta l'attivazione automatica delle nuove installazioni su PC appena configurati.
+- Provisionata nel registro di sistema la credenziale bootstrap monouso del cliente e consumata dopo la registrazione riuscita.
+- Mantenuta la ricerca della credenziale bootstrap tramite variabile d'ambiente per compatibilità con le installazioni esistenti.
+
+1.3.0.47 - 2026-07-15
+---------------------
+- Aggiunto ai nomi file suggeriti un prefisso sanificato dal riferimento cliente, con lunghezza massima di 30 caratteri.
+- Vincolati i campi di temperatura dell'acqua in riscaldamento/raffrescamento a una direzione valida e a un delta T minimo di 1 K.
+- Aggiunti avvisi localizzati per delta T dell'acqua basso (da 3 K incluso a 5 K escluso) e perdita di carico lato acqua superiore a 40 kPa.
+- Chiarito che la temperatura dell'aria in uscita dalla batteria calcolata è il valore massimo con valvola completamente aperta.
+
+1.3.0.46 - 2026-07-15
+---------------------
+- Centralizzata la versione software affinché SSW.exe, SSWLib.dll, ClickOnce, installer e manifest non possano divergere.
+- Rimossi la scheda Accessori obsoleta e la vecchia integrazione strutturata COILcalc.
+- Mantenuto il calcolo locale HEDes della batteria ad acqua usato nella scheda Batterie ad acqua.
+- Aggiunta una geolocalizzazione approssimativa locale di paese e città senza memorizzare gli indirizzi IP delle selezioni.
+- Aggiunto il pannello autenticato Avensys per il recupero con esportazione e audit delle revisioni immutabili.
+- Aggiunti manifest di aggiornamento verificati con versioni dei componenti, SHA-256, compatibilità e metadati di ripristino.
+- Aggiunto il controllo d'integrità del download dell'installer e localizzati gli errori d'integrità in tutte le 12 lingue.
+- Aggiornato il database AV distribuito allo schema 2 con dati e relazioni dei riscaldatori elettrici.
+- Aggiunti fixture storiche SDF e progetti, una matrice automatizzata delle release, controlli di integrità e runbook di rilascio.
+- Definiti i controlli di privacy e conservazione per i dati di selezione tecnica e per i log dei download.
+
+1.3.0.45 - 2026-07-14
+---------------------
+- Aggiunti controlli di compatibilità versionata SDF e diagnostica dei metadati del database.
+- Aggiunti file progetto riutilizzabili `.sswsel` con flussi per nuova selezione, apertura, salvataggio, duplicazione e selezioni recenti.
+- Aggiunte istantanee immutabili delle selezioni tecniche, riferimenti centralizzati opachi e tracciamento delle revisioni.
+- Aggiunti riferimenti progressivi locali per le bozze e un ripiego offline per i report.
+- Aggiunti a tutti i layout dei report riferimenti, revisioni e stati della selezione tecnica tradotti.
+- Aggiunta la registrazione automatica delle installazioni con token di accesso protetti da DPAPI e credenziali bootstrap revocabili.
+- Corretta la ricerca della credenziale bootstrap nelle sessioni Windows già avviate.
+- Mantenuti silenziosi i controlli automatici degli aggiornamenti quando il servizio non è disponibile.
+
+1.3.0.44 - 2026-07-13
+---------------------
+- Aggiunti calcoli termodinamici e curve di rendimento stagionali invernali ed estive.
+- Integrata la selezione delle batterie ad acqua e il calcolo delle prestazioni effettive tramite COILcalc.
+- Aggiunte modalità di calcolo HCD riscaldamento, raffrescamento e combinato con le corrette condizioni stagionali dell'aria di mandata.
+- Aggiunte opzioni di installazione interna ed esterna della batteria, con impostazioni predefinite e personalizzazione della geometria per modello.
+- Applicate le perdite di carico aerauliche della batteria alla curva dell'unità e limitata la portata al punto di funzionamento ammissibile.
+- Aggiunti perdita di carico lato acqua, portata del fluido e velocità del mezzo.
+- Estesi i report con le sezioni prestazionali stagionali dello scambiatore e della batteria ad acqua.
+- Aggiunto lo svedese e completate per tutte le lingue supportate le traduzioni delle batterie ad acqua.
+- Migliorati i grafici dei report ad alta risoluzione e corretto il parsing dei valori numerici localizzati.
+
+1.3.0.43 - 2026-07-06
+---------------------
+- Aggiunto il supporto al calcolo dello scambiatore entalpico EN366 e ENRFC27.
+- Separate l'efficienza termica e l'efficienza di umidità per gli scambiatori entalpici.
+- Aggiunte curve dedicate all'efficienza di umidità basate sui dati del selettore Recutech.
+- Impostata a zero l'acqua prodotta negli scambiatori entalpici.
+
+1.3.0.42 - 2026-06-17
+---------------------
+- Aggiornato il database delle macchine AV.
+- Aggiunti i modelli SG serie 6, taglie 356 e 456.
+
+1.3.0.41 - 2026-06-17
+---------------------
+- Corrette le pagine vuote nei report generati quando la tabella acustica include la riga EN ISO 16032.
+- Separato il layout principale del report affinché la sezione CO2 venga caricata solo quando inclusa esplicitamente.
+- Nascosto il contenitore del report SAP quando i dati SAP non sono mostrati, evitando interruzioni di pagina vuote.
+
+1.3.0.40 - 2026-06-17
+---------------------
+- Aggiunto un indicatore di avanzamento visibile durante il download degli installer di aggiornamento.
+- Corretto il flusso di download dell'installer affinché l'applicazione non sembri bloccata durante le attese prolungate.
+- Corretta l'avvertenza di build causata dai valori di rumore irradiato QUARK non inizializzati.
+- Aggiornate le impostazioni di architettura dell'installer per evitare identificatori Inno Setup deprecati.
+
+1.3.0.39 - 2026-06-16
+---------------------
+- Aggiunta la generazione dell'installer Inno Setup con firma automatica.
+- Aggiunta la copia automatica dell'installer nella cartella di distribuzione della release.
+- Aggiunto il supporto API ai pacchetti installer mantenendo la compatibilità con i pacchetti precedenti.
+- Migliorato il flusso di aggiornamento per scaricare e avviare l'installer dopo la conferma dell'utente.
+
+1.3.0.38 - 2026-06-16
+---------------------
+- Aggiunto il pulsante Registro modifiche alla finestra Informazioni.
+- Caricato il registro modifiche dal file locale History.txt, rendendolo disponibile anche con il repository privato.
+- Confermato il coefficiente di correzione della potenza sonora del motore.
+
+1.3.0.37
+--------
+- Release di manutenzione.
+
+1.3.0.36
+--------
+- Migliorata la ricerca delle schede commerciali nelle fonti AV locali e online.
+- Aggiunta la memorizzazione della sincronizzazione automatica configurabile delle schede commerciali.
+- Corretti problemi di codifica delle risorse.
+
+1.3.0.35
+--------
+- Allineate le traduzioni alle risorse master inglesi.
+- Aggiunte le chiavi di localizzazione mancanti.
+- Mantenuti i nomi delle lingue nella rispettiva forma originale.
+
+1.3.0.31
+--------
+- Aggiunti i pulsanti Inverno ed Estate con le relative traduzioni.
+
+1.3.0.30
+--------
+- Corretti problemi di generazione dei report.
+
+1.3.0.28
+--------
+- Aggiunto il pulsante EN308.

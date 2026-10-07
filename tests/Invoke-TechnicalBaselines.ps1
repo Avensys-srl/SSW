@@ -1,5 +1,6 @@
 param(
     [string]$Configuration = 'AV',
+    [string]$ExecutablePath = '',
     [switch]$Update,
     [switch]$NumericOnly
 )
@@ -11,6 +12,7 @@ $fixtureRoot = Join-Path $PSScriptRoot 'fixtures\technical-baselines'
 $inputRoot = Join-Path $fixtureRoot 'inputs'
 $expectedRoot = Join-Path $fixtureRoot 'expected'
 $executable = Join-Path $repo "SSW\bin\x86\$Configuration\SSW.exe"
+if ($ExecutablePath) { $executable = [IO.Path]::GetFullPath($ExecutablePath) }
 $tolerances = Get-Content -LiteralPath (Join-Path $fixtureRoot 'technical-baseline-tolerances.json') -Raw | ConvertFrom-Json
 
 function Read-BaselineJson([string]$Path) {

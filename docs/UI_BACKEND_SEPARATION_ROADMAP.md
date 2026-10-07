@@ -2,6 +2,11 @@
 
 Data decisione architetturale: 27/07/2026
 
+Aggiornamento approvato 05/10/2026: la manutenzione parallela della linea 1.3.x
+descritta nei checkpoint storici e' superata. Solo 2.x resta supportata;
+importazione file storici e componenti tecnici condivisi sono conservati.
+Fasi e criteri in [abbandono graduale legacy](LEGACY_RETIREMENT_ROADMAP.md).
+
 Checkpoint 08/09/2026: normalizzazione atomica selezione/risultati, protezioni
 contro risposte asincrone obsolete e controlli backend per accessori e
 trattamenti incompatibili. Evidenze e limiti in
@@ -404,7 +409,96 @@ Checkpoint: release candidate `2.0.0.0` installabile su un sistema con
   comune delle serie.
 - Nessun catalogo dati parallelo al database centrale e all'SDF.
 
+## Checkpoint 01/10/2026: documento applicativo SG 127 ST
+
+- Collegata la scheda Documenti applicativi al servizio documenti e al bridge
+  nativo, prima non attiva.
+- PDF inglese ST 127 rev. 07 (9 pagine) conservato senza modifiche in
+  `SSW/Resources/ApplicationDocuments/S7/EN/ST_127_EN_AV.pdf` e copiato dalla
+  build in `css/ApplicationDocuments/S7/EN/ST_127_EN_AV.pdf` per uso offline.
+- Associazione tramite serie e nome canonico del modello SDF, lingua e marchio,
+  con fallback inglese. Nessuna associazione a SG 127 FS/VS/HCI o altre taglie.
+- Nessuna modifica al catalogo, ai calcoli, alla versione o al feed pubblico.
+- Verifiche superate: build AV/x86 (inclusa build TypeScript/Vite), 25 casi
+  `tests/Invoke-ApplicationDocumentSmoke.ps1`, 8 casi di rendering della scheda
+  `node tests/application-documents-regression.mjs`, regressione selezione
+  `node tests/next-selection-regression.mjs` e `git diff --check`.
+- SHA-256 del PDF originale e distribuito:
+  `609E02EE0247CF024299D77379831A4C0AF5461D71C0637C2D6B3D9BBCCE2623`.
+- Verificata la disponibilita' e il collegamento nel renderer; non eseguito un
+  click manuale nel lettore PDF del cliente. Build locale, non pubblicata.
+
+## Checkpoint 01/10/2026: convergenza selezione batteria acqua
+
+- Riprodotto su CLRC 223 SSC, 2000 m3/h, 100 Pa, CWD 163 in HCD: perdita di
+  carico costante 55 Pa, ma i ricalcoli incrementavano la regolazione da 90.1%
+  a 91%, 92%, 93%, 94%, 95%, esaurendo i sei tentativi del frontend.
+- Causa: `Ceiling` della regolazione effettiva prima della ricerca successiva,
+  sommato alla deriva floating-point del ciclo con decrementi di 0.1.
+- Correzione: soglia interna Double senza arrotondamento all'intero e scansione
+  a decimi ottenuta da tick interi. Invariati minimo di ricerca, presentazione
+  percentuale intera, dati catalogo e formule di pressione/potenza.
+- Test dedicato: `tests/Invoke-CoilNormalizationSmoke.ps1`, con il caso reale
+  nelle modalita' HCD/CWD/HWD; regressione frontend in
+  `tests/next-selection-regression.mjs`.
+- Verifica post-fix: HCD e CWD convergono a 90.1%, HWD a 89.1%; ogni modalita'
+  resta identica nel secondo calcolo. Risultati batteria presenti e pressione
+  richiesta rispettata. Build AV/x86 e regressione frontend superate.
+- La prima build nella cartella standard era bloccata da due istanze SSW aperte;
+  validazione iniziale in cartella separata, poi build standard ripetuta dopo
+  la chiusura da parte dell'utente. Nessuna pubblicazione della release.
+
+## Checkpoint 01/10/2026: preparazione release 2.0.0.22
+
+- Inclusi fix convergenza batteria acqua e documento applicativo SG 127 ST.
+- Build AV/x86 e matrice completa `Invoke-TechnicalSelectionReleaseTests.ps1`
+  superate: baseline, identita'/revisioni, round-trip, PDF A4, UI nativa,
+  screenshot, localizzazioni, aggiornamento e API.
+- Confrontate tutte le quattro baseline: uniche differenze rispetto ai
+  riferimenti locali precedenti in `runtime.databaseSchema`, `databaseData`
+  e `databaseContent`, dovute al catalogo gia' presente schema 6 del 01/10.
+  Nessuna variazione di valori tecnici o report; riferimenti riallineati.
+- Ripetuti sul binario 2.0.0.22: caso CLRC 223 SSC nelle tre modalita',
+  25 verifiche documento, 8 casi frontend documento e regressione selezione.
+- Audit solver su 111 modelli: 2152 casi convergenti entro due iterazioni,
+  inclusi 348 limiti di capacita'; 128 punti base non disponibili esclusi.
+  Perimetro e limiti in `COIL_CATALOG_AUDIT_2026-10-01.md`.
+- Installer e manifest 2.0.0.21 conservati in `installer/output` e verificati
+  contro le copie pubbliche per rollback. Nessuna nuova protezione software
+  attivata: il piano sicurezza resta documentazione, non implementazione.
+
+## Checkpoint 02/10/2026: conferma layout e lingua accessori
+
+- La configurazione proposta richiede conferma esplicita tramite checkbox
+  localizzata. Next e navigazione laterale alle fasi successive restano
+  bloccati fino alla conferma; anche aggiunta al progetto e generazione report
+  verificano lo stesso requisito.
+- Cambi modello, installazione o configurazione e normalizzazioni automatiche
+  invalidano la conferma. Le selezioni riaperte richiedono nuova verifica del
+  layout nella sessione corrente; nessuna modifica al formato dei file.
+- Rimosse le conferme implicite causate da Next o navigazione laterale.
+- La lingua del catalogo accessori usa `CLEnvironment.PrimaryLanguageCode`.
+  Il precedente `CurrentUICulture` rimaneva italiano anche con UI francese.
+- Verificati 38 accessori PRIME 020DL EN, nomi/descrizioni/categorie nelle
+  sequenze fr/en/it/fr con cultura Windows italiana, rispetto al catalogo SDF.
+  Esempio francese: APC = Sonde CO2 d'ambiance, categoria qualita' aria francese.
+- Build AV/x86 e regressioni selezione superate; screenshot nativi verificano
+  blocco iniziale, cambi installazione e sblocco dopo conferma esplicita.
+  Nessuna nuova pubblicazione: modifica nella build di sviluppo.
+
 ## Ambito commerciale rinviato
+
+### Eccezione approvata 2026-10-04: fase offerta e promemoria
+
+- Il riepilogo Next distingue report/offerta provvisoria e definitiva.
+- La definitiva richiede registrazione tecnica e può creare un promemoria
+  privato per installazione, usando il centro già esistente. Giorni e mesi
+  (periodi fissi da 30 giorni, massimo 3) sono scelti prima della generazione.
+- Questa eccezione non introduce prezzi, totali commerciali, gestione clienti
+  o pipeline CRM. Il contratto API attuale non registra centralmente lo stato
+  provvisorio/definitivo; per quello serve un'estensione separata del backend.
+- Verifica e pubblicazione restano da completare nel checkpoint in
+  `FOLLOW_UP_REMINDERS_ROADMAP.md`.
 
 Sono esplicitamente successivi:
 

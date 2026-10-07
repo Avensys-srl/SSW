@@ -3791,6 +3791,7 @@ Public Class CLMainForm
 
         CoilPerformance_UpdateControlState()
         ElectricHeater_UpdateControlState()
+        Accessories_RefreshControllerRequirement()
         CoilPerformance_Recalculate()
     End Sub
 
@@ -3801,6 +3802,7 @@ Public Class CLMainForm
 
         CoilPerformance_UpdateControlState()
         ElectricHeater_UpdateControlState()
+        Accessories_RefreshControllerRequirement()
 
         If chbCoilPerformance_Enable.Checked Then
             CoilPerformance_SetBusy(True)
@@ -5386,7 +5388,7 @@ Public Class CLMainForm
 
             If chbPerformance_IPEHD.Checked = True Then
                 Code = Code + "1"
-                Descr = Descr + " IPEHD"
+                Descr = Descr + " PEHD"
             Else
                 Code = Code + "0"
             End If
@@ -5398,7 +5400,7 @@ Public Class CLMainForm
                 Descr = Descr + " IHWD"
             ElseIf rdbPerformance_IEHD.Checked Then
                 Code = Code + "2"
-                Descr = Descr + " IEHD"
+                Descr = Descr + " EHD"
             ElseIf rdbPerformance_ICWD.Checked Then
                 Code = Code + "3"
                 Descr = Descr + " ICWD"
@@ -5571,7 +5573,7 @@ Public Class CLMainForm
 
             If chb_qtm_IPEHD.Checked = True Then
                 Code = Code + "1"
-                Descr = Descr + " IPEHD"
+                Descr = Descr + " PEHD"
             ElseIf chb_qtm_IPEHD.Checked = False Then
                 Code = Code + "0"
             Else

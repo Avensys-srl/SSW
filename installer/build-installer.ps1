@@ -271,6 +271,14 @@ Assert-ReleaseBinaryVersions -Directory $BuildOutputDir -ExpectedVersion $appVer
 Assert-FrontendAssets -Directory $BuildOutputDir
 Assert-InstallerIncludesFrontend
 
+$releaseAssembly = [Reflection.Assembly]::Load([IO.File]::ReadAllBytes((Join-Path $BuildOutputDir 'SSWLib.dll')))
+$legacyMarker = [Reflection.CustomAttributeData]::GetCustomAttributes($releaseAssembly) |
+    Where-Object { $_.AttributeType.FullName -eq 'System.Reflection.AssemblyMetadataAttribute' -and
+        $_.ConstructorArguments[0].Value -eq 'SSWLegacyReferenceUi' } | Select-Object -First 1
+if (-not $legacyMarker -or $legacyMarker.ConstructorArguments[1].Value -ne 'false') {
+    throw 'Installer requires a Next-only build. Legacy reference UI is diagnostic-only; rebuild with SSWIncludeLegacyReferenceUi=false.'
+}
+
 if (-not $CertificatePath) {
     if ($env:SSW_SIGN_CERT_PATH) {
         $CertificatePath = $env:SSW_SIGN_CERT_PATH

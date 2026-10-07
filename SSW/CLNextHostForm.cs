@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 using System.Text.RegularExpressions;
@@ -40,6 +41,38 @@ namespace SSW
         {
             var models = CLNextUiApplicationService.GetModels();
             if (models == null || models.Count == 0) return 10;
+            var avensysOnlyModels = models.FindAll(item =>
+                item.Code.EndsWith(" CFI", StringComparison.OrdinalIgnoreCase) ||
+                item.Code.EndsWith(" CDR", StringComparison.OrdinalIgnoreCase) ||
+                item.Code.EndsWith(" CFD", StringComparison.OrdinalIgnoreCase));
+            if (avensysOnlyModels.Count == 0) return 79;
+            foreach (var avensysModel in avensysOnlyModels)
+            {
+                var avensysResult = CLNextUiApplicationService.Calculate(
+                    new CLNextUiCalculationInput
+                    {
+                        ModelCode = avensysModel.Code,
+                        SupplyAirflowM3h = Math.Max(1, avensysModel.NominalAirflowM3h),
+                        ExtractAirflowM3h = Math.Max(1, avensysModel.NominalAirflowM3h),
+                        PressurePa = Math.Max(0, avensysModel.StaticPressurePa)
+                    });
+                if (!avensysResult.RequiresAvensysSelection ||
+                    avensysResult.Winter != null || avensysResult.Summer != null ||
+                    avensysResult.Layout.Configurations.Count != 0 ||
+                    !avensysResult.Validation.Issues.Exists(issue =>
+                        issue.Code == "SpecialUnitRequiresAvensysSelection" &&
+                        issue.Severity == CLValidationSeverity.Information)) return 80;
+                try
+                {
+                    CLNextUiApplicationService.CreateProjectDocument(
+                        new CLNextUiCalculationInput { ModelCode = avensysModel.Code },
+                        avensysResult);
+                    return 81;
+                }
+                catch (InvalidOperationException)
+                {
+                }
+            }
             if (CLEnvironment.Current.DatabaseCompatibility != null &&
                 CLEnvironment.Current.DatabaseCompatibility.HasFeature("DimensionalDrawings"))
             {
@@ -208,6 +241,25 @@ namespace SSW
             var comparisonCandidates =
                 CLNextUiApplicationService.Preselect(comparisonDutyPoint);
             if (comparisonCandidates.Count == 0) return 28;
+            comparisonDutyPoint.MinimumRegulationPercent = 90;
+            var highRegulationCandidates =
+                CLNextUiApplicationService.Preselect(comparisonDutyPoint);
+            if (highRegulationCandidates.Exists(candidate =>
+                candidate.RequiredRegulationPercent < 90)) return 77;
+            comparisonDutyPoint.MinimumRegulationPercent = 70;
+            foreach (var airflow in new[] { 3000, 3100, 3300 })
+            {
+                var dutyPoint = new CLNextUiCalculationInput
+                {
+                    SupplyAirflowM3h = airflow,
+                    ExtractAirflowM3h = airflow,
+                    PressurePa = 200,
+                    MinimumRegulationPercent = 70
+                };
+                if (!CLNextUiApplicationService.Preselect(dutyPoint).Exists(candidate =>
+                    candidate.Model.Code.Equals("CLRC 32A OSC", StringComparison.OrdinalIgnoreCase)))
+                    return 78;
+            }
             if (comparisonCandidates.Exists(candidate =>
                 candidate.Model.Code.StartsWith(
                     "CLRC 013 ",
@@ -227,6 +279,12 @@ namespace SSW
                         PressurePa = comparisonDutyPoint.PressurePa,
                         RegulationPercent = candidate.RequiredRegulationPercent
                     });
+                if (candidateResult.RequiresAvensysSelection)
+                {
+                    if (candidateResult.Winter != null || candidateResult.Summer != null)
+                        return 79;
+                    continue;
+                }
                 if (!NearlyEqual(
                         candidate.AvailablePressurePa,
                         candidateResult.Winter.Curves.WorkingPointPressurePa,
@@ -490,6 +548,7 @@ namespace SSW
                 ExtractAirflowM3h =
                     Math.Max(1, Math.Min(1000, reportModel.NominalAirflowM3h)),
                 PressurePa = 100,
+                MinimumRegulationPercent = 84,
                 InstallationMode = "Ceiling",
                 LayoutCode = "B6",
                 ImbalanceEnabled = false,
@@ -504,7 +563,9 @@ namespace SSW
                 },
                 PreselectionFilters = new CLNextUiPreselectionFilters
                 {
+                    MinimumRegulationPercent = 84,
                     RotaryOnlyEnabled = true,
+                    RecoveryCategory = "centralized",
                     MaximumSfpEnabled = true,
                     MaximumSfp = 1.75,
                     SupplyNoiseEnabled = true,
@@ -576,7 +637,9 @@ namespace SSW
                 !restoredDocument.Selection.Sound.IncludeInReport ||
                 restoredDocument.Selection.Sound.Directivity != 4 ||
                 restoredDocument.Selection.PreselectionFilters == null ||
+                restoredDocument.Selection.PreselectionFilters.MinimumRegulationPercent != 84 ||
                 !restoredDocument.Selection.PreselectionFilters.RotaryOnlyEnabled ||
+                restoredDocument.Selection.PreselectionFilters.RecoveryCategory != "centralized" ||
                 !restoredDocument.Selection.PreselectionFilters.MaximumSfpEnabled ||
                 restoredDocument.Selection.PreselectionFilters.MaximumSfp != 1.75 ||
                 restoredDocument.Selection.PreselectionFilters.SupplyNoiseMetric != "LPA" ||
@@ -597,7 +660,9 @@ namespace SSW
                 restoredInput.Sound == null ||
                 !restoredInput.Sound.IncludeInReport ||
                 restoredInput.PreselectionFilters == null ||
+                restoredInput.MinimumRegulationPercent != 84 ||
                 !restoredInput.PreselectionFilters.RotaryOnlyEnabled ||
+                restoredInput.PreselectionFilters.RecoveryCategory != "centralized" ||
                 !restoredInput.PreselectionFilters.MaximumSfpEnabled ||
                 restoredInput.PreselectionFilters.SupplyNoiseMetric != "LPA" ||
                 restoredInput.PreselectionFilters.BreakoutNoiseMetric != "LWA" ||
@@ -920,10 +985,24 @@ namespace SSW
                     prepared.ReportTemplate);
                 foreach (Microsoft.Reporting.WinForms.ReportDataSource source
                     in prepared.DataSources)
+                {
+                    var table = source.Value as System.Data.DataTable;
+                    if (table != null && table.Columns.Contains("RegLev_Value"))
+                        foreach (System.Data.DataRow row in table.Rows)
+                            if (Convert.ToString(row["RegLev_Value"]).Contains("%"))
+                                return ReportPreparationFailed("Regulation data must not include the percent suffix added by the report template.");
                     report.DataSources.Add(source);
+                }
                 byte[] pdf = report.Render("PDF");
                 if (pdf == null || pdf.Length <= 1000)
                     return ReportPreparationFailed("Rendered PDF is empty.");
+                string smokeReportDirectory = Environment.GetEnvironmentVariable("SSW_NEXT_SMOKE_REPORT_DIRECTORY");
+                if (!String.IsNullOrWhiteSpace(smokeReportDirectory))
+                {
+                    Directory.CreateDirectory(smokeReportDirectory);
+                    File.WriteAllBytes(Path.Combine(smokeReportDirectory,
+                        "report-" + Guid.NewGuid().ToString("N") + ".pdf"), pdf);
+                }
                 return true;
             }
         }
@@ -1076,6 +1155,7 @@ namespace SSW
     internal sealed class CLNextHostForm : Form
     {
         private const string VirtualHostName = "ssw.local";
+
         private readonly WebView2 webView;
         private readonly JavaScriptSerializer serializer = new JavaScriptSerializer();
         private readonly string screenshotOutputPath;
@@ -1092,8 +1172,34 @@ namespace SSW
         private string currentMultiSelectionPath;
         private bool currentMultiSelectionDirty;
         private bool screenshotStarted;
+        private bool documentAuditDialogOpen;
 
         internal int ScreenshotExitCode { get; private set; }
+
+        private void ShowDocumentCoverageAudit()
+        {
+            if (documentAuditDialogOpen) return;
+            try
+            {
+                documentAuditDialogOpen = true;
+                using (var audit = new CLDocumentCoverageAuditForm())
+                    audit.ShowDialog(this);
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(
+                    this,
+                    "Impossibile completare il controllo dei documenti.\r\n\r\n" +
+                    exception.Message,
+                    "Controllo disponibilità documenti",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+            finally
+            {
+                documentAuditDialogOpen = false;
+            }
+        }
 
         public CLNextHostForm()
             : this(null, null)
@@ -1216,6 +1322,14 @@ namespace SSW
             {
                 await WaitForFrontendReadyAsync();
 
+                if (screenshotStep == "offer-reminder-dialog" || screenshotStep == "offer-reminder-create" || screenshotStep == "offer-reminder-reopen" || screenshotStep == "offer-reminder-cleanup" || screenshotStep == "offer-reminder-reprint" || screenshotStep == "offer-reminder-offline")
+                {
+                    await VerifyOfferReminderAsync(screenshotStep != "offer-reminder-reopen");
+                    ScreenshotExitCode = 0;
+                    BeginInvoke(new Action(Close));
+                    return;
+                }
+
                 bool layoutReviewScenario =
                     String.Equals(screenshotStep, "layout-review", StringComparison.OrdinalIgnoreCase) ||
                     String.Equals(screenshotStep, "layout-review-accepted", StringComparison.OrdinalIgnoreCase);
@@ -1244,6 +1358,18 @@ namespace SSW
                     await WaitForConditionAsync(
                         "document.querySelector('.layout-preview') !== null",
                         "The Layout view did not become ready.");
+                    await WaitForConditionAsync(
+                        "document.querySelector('[data-confirm-installation]:not([disabled])') !== null && " +
+                        "document.querySelector('[data-action=\"next\"]').disabled && " +
+                        "document.querySelector('[data-step=\"accessories\"]').disabled",
+                        "An unconfirmed installation must block Next and later steps.");
+                    if (String.Equals(screenshotStep, "co2", StringComparison.OrdinalIgnoreCase) ||
+                        String.Equals(screenshotStep, "sound", StringComparison.OrdinalIgnoreCase) ||
+                        String.Equals(screenshotStep, "documents", StringComparison.OrdinalIgnoreCase))
+                    {
+                        await webView.CoreWebView2.ExecuteScriptAsync(
+                            "document.querySelector('[data-confirm-installation]').click()");
+                    }
                 }
 
                 if (String.Equals(screenshotStep, "layout-transitions", StringComparison.OrdinalIgnoreCase))
@@ -1251,9 +1377,13 @@ namespace SSW
                     foreach (string mode in new[] { "ceiling", "wall", "ceiling", "wall" })
                     {
                         await webView.CoreWebView2.ExecuteScriptAsync(
+                            "(function(){var c=document.querySelector('[data-confirm-installation]');if(c&&!c.checked)c.click();})()");
+                        await webView.CoreWebView2.ExecuteScriptAsync(
                             "document.querySelector('[data-installation=\"" + mode + "\"]:not([disabled])').click()");
                         await WaitForConditionAsync(
-                            "document.querySelector('.installation-schematics.installation-" + mode + "') !== null && document.querySelectorAll('.schematic-airflow g[data-port]').length === 4",
+                            "document.querySelector('.installation-schematics.installation-" + mode + "') !== null && document.querySelectorAll('.schematic-airflow g[data-port]').length === 4 && " +
+                            "(function(){var c=document.querySelector('[data-confirm-installation]'),n=document.querySelector('[data-action=\"next\"]');" +
+                            "return document.querySelector('#layoutCode').options.length>1 ? !!c&&!c.checked&&n.disabled : !c&&!n.disabled;})()",
                             "Layout transition did not settle: " + mode);
                         string codesJson = await webView.CoreWebView2.ExecuteScriptAsync(
                             "Array.from(document.querySelector('#layoutCode').options).map(o => o.value)");
@@ -1299,6 +1429,11 @@ namespace SSW
                         "layout-review-accepted",
                         StringComparison.OrdinalIgnoreCase))
                     {
+                        await webView.CoreWebView2.ExecuteScriptAsync(
+                            "document.querySelector('[data-confirm-installation]').click()");
+                        await WaitForConditionAsync(
+                            "!document.querySelector('[data-action=\"next\"]').disabled",
+                            "Explicit installation confirmation must unlock Next.");
                         await webView.CoreWebView2.ExecuteScriptAsync(
                             "document.querySelector('[data-step=\"summary\"]').click()");
                         await WaitForConditionAsync(
@@ -1383,6 +1518,14 @@ namespace SSW
                     await WaitForConditionAsync(
                         "document.querySelector('.notification-dialog') !== null",
                         "The integrated notification center did not become ready.");
+                    if (Environment.GetEnvironmentVariable("SSW_OFFER_ARCHIVE_REOPEN_SMOKE") == "1")
+                    {
+                        await WaitForConditionAsync("document.querySelector('[data-offer-open]') !== null", "Definitive offer missing from archive.");
+                        await webView.CoreWebView2.ExecuteScriptAsync("document.querySelector('[data-offer-open]').click()");
+                        await WaitForConditionAsync("document.querySelector('.notification-dialog') === null", "Archived offer did not reopen.");
+                        if (currentSelectionDocument == null || currentSelectionDocument.Identity.OfferStatus != "Definitive")
+                            throw new InvalidOperationException("Reopened offer lost its definitive identity.");
+                    }
                 }
                 else if (String.Equals(
                     screenshotStep,
@@ -1397,7 +1540,7 @@ namespace SSW
                         "return true;" +
                         "})()");
                     await WaitForConditionAsync(
-                        "document.querySelectorAll('.document-card').length === 10 && " +
+                        "document.querySelectorAll('.document-card').length === 11 && " +
                         "document.querySelector('[data-document=\"dimensional-drawing\"]') !== null && " +
                         "document.querySelector('[data-document=\"step-model\"]') !== null && " +
                         "document.querySelector('.documents-loading') === null",
@@ -1427,6 +1570,191 @@ namespace SSW
             }
 
             BeginInvoke(new Action(Close));
+        }
+
+        private async Task VerifyOfferReminderAsync(bool create)
+        {
+            string reference = Environment.GetEnvironmentVariable("SSW_OFFER_SMOKE_REFERENCE");
+            if (String.IsNullOrWhiteSpace(reference) || !reference.StartsWith("SSW-TEST-", StringComparison.Ordinal))
+                throw new InvalidOperationException("Set SSW_OFFER_SMOKE_REFERENCE to a unique SSW-TEST- reference.");
+            string encodedReference = serializer.Serialize(reference);
+            if (screenshotStep == "offer-reminder-cleanup")
+            {
+                CLFollowUpReminder[] items = followUpStore.LoadSnapshot().Reminders.Where(
+                    reminder => reminder.DisplayReference == "Definitive offer - " + reference).ToArray();
+                foreach (CLFollowUpReminder item in items)
+                    if (item.Status != CLFollowUpReminderStatus.Cancelled)
+                        followUpStore.CloseLocal(item.ReminderUuid, CLFollowUpReminderStatus.Cancelled);
+                var synchronization = new CLFollowUpSynchronizationService(followUpStore);
+                var context = CLSelectionRegistrationContext.FromEnvironment(CLEnvironment.Current);
+                CLFollowUpSynchronizationResult result = await synchronization.SyncBestEffortAsync(context);
+                if (!result.Succeeded) throw new InvalidOperationException(result.Diagnostic);
+                File.WriteAllText(screenshotOutputPath + ".result.json", serializer.Serialize(new {
+                    reference, reminderIds = items.Select(item => item.ReminderUuid).ToArray(), cancelled = true, synchronized = true
+                }));
+                return;
+            }
+            if (create)
+            {
+                string existingTestPath = Environment.GetEnvironmentVariable("SSW_OFFER_SMOKE_SELECTION_PATH");
+                if (!String.IsNullOrWhiteSpace(existingTestPath))
+                {
+                    CLSelectionProjectDocument existingTest = CLSelectionProjectSerializer.Load(existingTestPath);
+                    if (existingTest.Selection.CustomerReference != reference)
+                        throw new InvalidOperationException("The reused smoke selection belongs to another test.");
+                    LoadSelection(existingTestPath);
+                }
+                if (screenshotStep == "offer-reminder-reprint")
+                {
+                    CLFollowUpReminder previous = followUpStore.LoadSnapshot().Reminders.Single(
+                        reminder => reminder.DisplayReference == "Definitive offer - " + reference);
+                    LoadSelection(previous.LocalPath);
+                    await WaitForConditionAsync("document.querySelector('[data-field=\"project.customerReference\"]') !== null", "Project did not reopen.");
+                }
+                await webView.CoreWebView2.ExecuteScriptAsync(
+                    "var f=document.querySelector('[data-field=\"project.customerReference\"]');f.value=" +
+                    encodedReference + ";f.dispatchEvent(new Event('change',{bubbles:true}));");
+                await Task.Delay(500);
+                await WaitForConditionAsync("document.querySelector('[data-step=\"preselection\"]:not([disabled])') !== null", "Search is unavailable.");
+                await webView.CoreWebView2.ExecuteScriptAsync("document.querySelector('[data-step=\"preselection\"]').click()");
+                await WaitForConditionAsync("document.querySelector('[data-select-unit]') !== null", "No test unit available.");
+                await webView.CoreWebView2.ExecuteScriptAsync("document.querySelector('[data-select-unit]').click()");
+                await WaitForConditionAsync("document.querySelector('.layout-preview') !== null", "Installation did not load.");
+                await webView.CoreWebView2.ExecuteScriptAsync(
+                    "var c=document.querySelector('[data-confirm-installation]');if(c&&!c.checked)c.click();");
+                await WaitForConditionAsync("!document.querySelector('[data-action=\"next\"]').disabled", "Installation remained blocked.");
+                await webView.CoreWebView2.ExecuteScriptAsync("document.querySelector('[data-step=\"summary\"]').click()");
+                await WaitForConditionAsync("document.querySelector('[data-action=\"offer-definitive\"]:not([disabled])') !== null", "Definitive offer unavailable.");
+                if (screenshotStep == "offer-reminder-offline")
+                {
+                    Uri testApi;
+                    if (!Uri.TryCreate(Environment.GetEnvironmentVariable("SSW_SELECTION_API_BASE_URL"), UriKind.Absolute, out testApi) || !testApi.IsLoopback)
+                        throw new InvalidOperationException("The offline smoke test requires a loopback API endpoint.");
+                    using (var offlineTimer = new System.Windows.Forms.Timer { Interval = 250 })
+                    {
+                        offlineTimer.Tick += delegate
+                        {
+                            foreach (CLReportViewerForm openedViewer in Application.OpenForms.OfType<CLReportViewerForm>().ToArray())
+                                openedViewer.Close();
+                        };
+                        offlineTimer.Start();
+                        await webView.CoreWebView2.ExecuteScriptAsync("document.querySelector('[data-action=\"offer-provisional\"]').click()");
+                        for (int attempt = 0; attempt < 160 && currentSelectionDocument == null; attempt++)
+                            await Task.Delay(250);
+                        if (currentSelectionDocument == null || !String.IsNullOrWhiteSpace(currentSelectionDocument.Identity.PublicReference))
+                            throw new InvalidOperationException("Offline draft was not preserved or was falsely registered.");
+                        string path = SaveOfferReminderSelection(currentSelectionDocument);
+                        CLSelectionProjectDocument reopenedDraft = CLSelectionProjectSerializer.Load(path);
+                        if (reopenedDraft.ProjectId != currentSelectionDocument.ProjectId || reopenedDraft.Selection.CustomerReference != reference ||
+                            followUpStore.LoadSnapshot().Reminders.Count != 0)
+                            throw new InvalidOperationException("Offline save/reopen failed or created an unwanted reminder.");
+                        File.WriteAllText(screenshotOutputPath + ".result.json", serializer.Serialize(new {
+                            reference, offline = true, pdfPrepared = true, saved = true, reopened = true,
+                            centrallyRegistered = false, reminderCount = 0
+                        }));
+                        await CaptureFullPagePngAsync(screenshotOutputPath);
+                        return;
+                    }
+                }
+                if (Environment.GetEnvironmentVariable("SSW_OFFER_SMOKE_LIFECYCLE") == "1" &&
+                    screenshotStep == "offer-reminder-create")
+                {
+                    using (var provisionalTimer = new System.Windows.Forms.Timer { Interval = 250 })
+                    {
+                        provisionalTimer.Tick += delegate
+                        {
+                            if (currentSelectionDocument == null || currentSelectionDocument.Identity.OfferStatus != "Provisional") return;
+                            foreach (CLReportViewerForm openedViewer in Application.OpenForms.OfType<CLReportViewerForm>().ToArray())
+                                openedViewer.Close();
+                        };
+                        provisionalTimer.Start();
+                        await webView.CoreWebView2.ExecuteScriptAsync("document.querySelector('[data-action=\"offer-provisional\"]').click()");
+                        for (int attempt = 0; attempt < 120; attempt++)
+                        {
+                            if (currentSelectionDocument != null && currentSelectionDocument.Identity.OfferStatus == "Provisional") break;
+                            await Task.Delay(250);
+                        }
+                        if (currentSelectionDocument == null || currentSelectionDocument.Identity.OfferStatus != "Provisional")
+                            throw new InvalidOperationException("Provisional offer was not centrally registered.");
+                        if (followUpStore.LoadSnapshot().Reminders.Any(reminder => reminder.DisplayReference == "Definitive offer - " + reference))
+                            throw new InvalidOperationException("Provisional offer created a reminder.");
+                        File.WriteAllText(screenshotOutputPath + ".provisional.json", serializer.Serialize(new {
+                            reference, publicReference = currentSelectionDocument.Identity.PublicReference,
+                            revision = currentSelectionDocument.Identity.Revision,
+                            status = currentSelectionDocument.Identity.OfferStatus, reminderCount = 0
+                        }));
+                        await Task.Delay(500);
+                    }
+                }
+                await webView.CoreWebView2.ExecuteScriptAsync("document.querySelector('[data-action=\"offer-definitive\"]').click()");
+                await WaitForConditionAsync(
+                    "document.querySelector('[data-offer-reminder]').checked && document.querySelector('[data-offer-reminder-amount]').value === '7' && document.querySelector('[data-offer-reminder-unit]').value === 'days'",
+                    "Offer reminder defaults are incorrect.");
+                await CaptureFullPagePngAsync(screenshotOutputPath + ".confirmation.png");
+                if (screenshotStep == "offer-reminder-dialog") return;
+                using (var timer = new System.Windows.Forms.Timer { Interval = 250 })
+                {
+                    timer.Tick += delegate
+                    {
+                        CLFollowUpReminder item = followUpStore.LoadSnapshot().Reminders.FirstOrDefault(
+                            reminder => reminder.DisplayReference == "Definitive offer - " + reference);
+                        if (item == null) return;
+                        foreach (CLReportViewerForm viewer in Application.OpenForms.OfType<CLReportViewerForm>().ToArray())
+                            viewer.Close();
+                    };
+                    timer.Start();
+                    await webView.CoreWebView2.ExecuteScriptAsync("document.querySelector('[data-action=\"confirm-definitive-offer\"]').click()");
+                    bool synchronized = false;
+                    for (int attempt = 0; attempt < 120; attempt++)
+                    {
+                        CLFollowUpReminder item = followUpStore.LoadSnapshot().Reminders.FirstOrDefault(
+                            reminder => reminder.DisplayReference == "Definitive offer - " + reference);
+                        if (item != null && item.LastSuccessfulSyncAtUtc.HasValue) { synchronized = true; break; }
+                        if (item != null && followUpStore.LoadSnapshot().PendingMutations.Any(
+                            mutation => mutation.ReminderUuid == item.ReminderUuid && mutation.RetryCount > 0)) break;
+                        await Task.Delay(250);
+                    }
+                    WriteDiagnostic("Offer reminder desktop test synchronization=" + synchronized);
+                    await Task.Delay(500);
+                }
+            }
+            CLFollowUpReminderSnapshot snapshot = followUpStore.LoadSnapshot();
+            CLFollowUpReminder[] matches = snapshot.Reminders.Where(
+                reminder => reminder.DisplayReference == "Definitive offer - " + reference).ToArray();
+            if (matches.Length != 1) throw new InvalidOperationException("Expected exactly one offer reminder.");
+            CLFollowUpReminder target = matches[0];
+            if (Math.Abs((target.DueAtUtc - target.EmailPreparedAtUtc).TotalDays - 7) > 0.05)
+                throw new InvalidOperationException("Reminder delay is not seven days.");
+            CLSelectionProjectDocument saved = CLSelectionProjectSerializer.Load(target.LocalPath);
+            if (saved.Selection.CustomerReference != reference || saved.ProjectId != target.TargetUuid || String.IsNullOrWhiteSpace(saved.Identity.PublicReference))
+                throw new InvalidOperationException("Reminder selection identity is incorrect.");
+            if (saved.Identity.OfferStatus != "Definitive" || saved.Identity.OfferRevision != saved.Identity.Revision)
+                throw new InvalidOperationException("Definitive offer state was not persisted.");
+            await webView.CoreWebView2.ExecuteScriptAsync("document.querySelector('[data-action=\"notifications\"]').click()");
+            await WaitForConditionAsync("document.querySelector('[data-notification-view=\"reminders\"]') !== null", "Notification tabs missing.");
+            await webView.CoreWebView2.ExecuteScriptAsync("document.querySelector('[data-notification-view=\"reminders\"]').click()");
+            string rowSelector = "[data-reminder-open=\"" + target.ReminderUuid.ToString("D") + "\"]";
+            string encodedSelector = serializer.Serialize(rowSelector);
+            await WaitForConditionAsync("document.querySelector(" + encodedSelector + ") !== null", "Reminder missing from notification center.");
+            await CaptureFullPagePngAsync(screenshotOutputPath);
+            if (!create)
+            {
+                await webView.CoreWebView2.ExecuteScriptAsync("document.querySelector(" + encodedSelector + ").dispatchEvent(new MouseEvent('dblclick',{bubbles:true}))");
+                await WaitForConditionAsync("document.querySelector('.notification-dialog') === null", "Reminder did not reopen its selection.");
+                await webView.CoreWebView2.ExecuteScriptAsync("document.querySelector('[data-step=\"project\"]').click()");
+                await WaitForConditionAsync("document.querySelector('[data-field=\"project.customerReference\"]').value === " + encodedReference, "Wrong selection reopened.");
+                await CaptureFullPagePngAsync(screenshotOutputPath + ".selection.png");
+            }
+            File.WriteAllText(screenshotOutputPath + ".result.json", serializer.Serialize(new {
+                reference, reminderId = target.ReminderUuid, selectionId = target.TargetUuid,
+                publicReference = saved.Identity.PublicReference, model = saved.Selection.Unit.Code,
+                offerStatus = saved.Identity.OfferStatus, offerRevision = saved.Identity.OfferRevision,
+                definitiveAt = saved.Identity.OfferDefinitiveAtUtc,
+                localPath = target.LocalPath, synchronizedAt = target.LastSuccessfulSyncAtUtc,
+                persisted = true, reopened = !create, reminderCount = matches.Length,
+                pendingMutations = snapshot.PendingMutations.Count(item => item.ReminderUuid == target.ReminderUuid),
+                diagnostic = snapshot.PendingMutations.Where(item => item.ReminderUuid == target.ReminderUuid).Select(item => item.LastDiagnostic).FirstOrDefault()
+            }));
         }
 
         private async Task WaitForFrontendReadyAsync()
@@ -1708,6 +2036,10 @@ namespace SSW
                             Text = CLSSWProfile.AssemblyTitle + " - UI Preview (SDF connected)";
                         }));
                         break;
+                    case "documents.audit.open":
+                        BeginInvoke(new Action(ShowDocumentCoverageAudit));
+                        payload = new { opened = true, delegated = true };
+                        break;
                     case "selection.calculate":
                         payload = CalculateSelection(request.Payload);
                         break;
@@ -1756,6 +2088,19 @@ namespace SSW
                     case "report.generate":
                         {
                             CLNextUiCalculationInput reportInput = CreateInput(request.Payload);
+                            bool definitiveOffer = String.Equals(
+                                TextValue(request.Payload, "offerType"),
+                                "definitive",
+                                StringComparison.OrdinalIgnoreCase);
+                            bool reminderEnabled = definitiveOffer &&
+                                BooleanValue(request.Payload, "reminderEnabled");
+                            int reminderDelayDays = IntegerValue(
+                                request.Payload, "reminderDelayDays", 0);
+                            if (reminderEnabled &&
+                                (reminderDelayDays < CLFollowUpReminderRules.MinimumDelayDays ||
+                                 reminderDelayDays > CLFollowUpReminderRules.MaximumDelayDays))
+                                throw new InvalidOperationException(
+                                    "The offer reminder interval must be between 1 and 90 days.");
                             string interfaceLanguage = NormalizeLanguageCode(
                                 reportInput.LanguageCode);
                             string requestedDocumentLanguage =
@@ -1769,7 +2114,11 @@ namespace SSW
                             {
                                 try
                                 {
-                                    OpenNextReport(reportInput);
+                                    OpenNextReport(
+                                        reportInput,
+                                        definitiveOffer,
+                                        reminderEnabled,
+                                        reminderDelayDays);
                                 }
                                 finally
                                 {
@@ -1904,6 +2253,11 @@ namespace SSW
                         ? resolved.InstallationManualPath
                         : String.Equals(
                             documentType,
+                            "application-document",
+                            StringComparison.OrdinalIgnoreCase)
+                            ? resolved.ApplicationDocumentPath
+                        : String.Equals(
+                            documentType,
                             "step-model",
                             StringComparison.OrdinalIgnoreCase)
                             ? resolved.StepModelPath
@@ -1930,6 +2284,9 @@ namespace SSW
                 stepModelAvailable =
                     !String.IsNullOrWhiteSpace(resolved.StepModelPath) &&
                     File.Exists(resolved.StepModelPath),
+                applicationDocumentAvailable =
+                    !String.IsNullOrWhiteSpace(resolved.ApplicationDocumentPath) &&
+                    File.Exists(resolved.ApplicationDocumentPath),
                 opened,
                 available
             };
@@ -1969,6 +2326,7 @@ namespace SSW
                 ImbalanceEnabled = BooleanValue(payload, "imbalanceEnabled"),
                 PressurePa = NumberValue(payload, "pressure", 0),
                 RegulationPercent = NumberValue(payload, "regulation", 100),
+                MinimumRegulationPercent = IntegerValue(payload, "minimumRegulationPercent", 70),
                 SummerEnabled = BooleanValue(payload, "summerEnabled", true),
                 WinterOutdoorTemperatureC = NumberValue(payload, "winterOutdoorTemperature", -10),
                 WinterOutdoorRhPercent = NumberValue(payload, "winterOutdoorRh", 80),
@@ -2011,7 +2369,9 @@ namespace SSW
                 },
                 PreselectionFilters = new CLNextUiPreselectionFilters
                 {
+                    MinimumRegulationPercent = IntegerValue(payload, "minimumRegulationPercent", 70),
                     RotaryOnlyEnabled = BooleanValue(preselectionFilters, "rotaryOnlyEnabled"),
+                    RecoveryCategory = TextValue(preselectionFilters, "recoveryCategory"),
                     MaximumSfpEnabled = BooleanValue(preselectionFilters, "maximumSfpEnabled"),
                     MaximumSfp = NumberValue(preselectionFilters, "maximumSfp", 2),
                     SupplyNoiseEnabled = BooleanValue(preselectionFilters, "supplyNoiseEnabled"),
@@ -2654,7 +3014,8 @@ namespace SSW
 
         private CLPreparedNextUiReport PrepareNextReport(
             CLSelectionProjectDocument document,
-            bool registerSelection)
+            bool registerSelection,
+            bool allowUnregisteredDraft = true)
         {
             if (document == null)
                 throw new ArgumentNullException("document");
@@ -2665,13 +3026,16 @@ namespace SSW
                 CLNextUiApplicationService.Calculate(input);
             CLNextUiApplicationService.PopulateCalculatedSnapshot(
                 document, calculation);
-            if (registerSelection && !RegisterSelectionWithChoice(document))
+            if (registerSelection && !RegisterSelectionWithChoice(
+                    document,
+                    allowUnregisteredDraft))
                 return null;
             return CLNextUiReportService.Prepare(document, calculation);
         }
 
         private bool RegisterSelectionWithChoice(
-            CLSelectionProjectDocument document)
+            CLSelectionProjectDocument document,
+            bool allowUnregisteredDraft = true)
         {
             var registration =
                 new CLTechnicalSelectionRegistrationService();
@@ -2687,6 +3051,12 @@ namespace SSW
                 }
                 catch (Exception exception)
                 {
+                    if (!String.IsNullOrWhiteSpace(screenshotOutputPath) &&
+                        screenshotStep == "offer-reminder-offline" && allowUnregisteredDraft)
+                        return true;
+                    if (!String.IsNullOrWhiteSpace(screenshotOutputPath) &&
+                        screenshotStep != null && screenshotStep.StartsWith("offer-reminder-", StringComparison.Ordinal))
+                        throw;
                     DialogResult choice = MessageBox.Show(
                         this,
                         "The technical selection could not be registered:\r\n\r\n" +
@@ -2696,7 +3066,7 @@ namespace SSW
                         MessageBoxButtons.YesNoCancel,
                         MessageBoxIcon.Warning);
                     if (choice == DialogResult.Yes) continue;
-                    return choice == DialogResult.No;
+                    return allowUnregisteredDraft && choice == DialogResult.No;
                 }
             }
         }
@@ -2705,8 +3075,8 @@ namespace SSW
             CLSelectionProjectDocument document)
         {
             if (document == null ||
-                currentSelectionDocument == null ||
-                document.ProjectId != currentSelectionDocument.ProjectId)
+                (currentSelectionDocument != null &&
+                 document.ProjectId != currentSelectionDocument.ProjectId))
                 return;
             currentSelectionDocument = document;
             if (String.IsNullOrWhiteSpace(currentSelectionPath)) return;
@@ -2813,6 +3183,18 @@ namespace SSW
             return new
             {
                 unreadDueCount,
+                offers = CLOfferArchive.Read().Select(entry => new
+                {
+                    id = "offer:" + Path.GetFileName(entry.Path),
+                    reference = entry.Document.Identity.PublicReference,
+                    customerReference = entry.Document.Selection.CustomerReference,
+                    model = entry.Document.Selection.Unit.Code,
+                    revision = entry.Document.Identity.Revision,
+                    definitiveAt = (entry.Document.Identity.OfferDefinitiveAtUtc ?? File.GetLastWriteTimeUtc(entry.Path)).ToString("O", CultureInfo.InvariantCulture),
+                    reminderStatus = snapshot.Reminders.FirstOrDefault(reminder =>
+                        entry.Paths.Any(path => String.Equals(reminder.LocalPath, path, StringComparison.OrdinalIgnoreCase)))?.Status.ToString(),
+                    fileAvailable = true
+                }).ToArray(),
                 reminders = reminders.ToArray()
             };
         }
@@ -2852,6 +3234,15 @@ namespace SSW
         private object OpenNotificationTarget(
             Dictionary<string, object> payload)
         {
+            string targetId = TextValue(payload, "id");
+            if (targetId.StartsWith("offer:", StringComparison.Ordinal))
+            {
+                string fileName = targetId.Substring(6);
+                var entry = CLOfferArchive.Read().FirstOrDefault(item =>
+                    String.Equals(Path.GetFileName(item.Path), fileName, StringComparison.OrdinalIgnoreCase));
+                if (entry == null) return new { opened = false, fileAvailable = false };
+                return LoadSelection(entry.Path);
+            }
             Guid reminderId;
             if (!Guid.TryParse(TextValue(payload, "id"), out reminderId))
                 throw new InvalidOperationException(
@@ -2889,7 +3280,11 @@ namespace SSW
             return LoadSelection(reminder.LocalPath);
         }
 
-        private void OpenNextReport(CLNextUiCalculationInput input)
+        private void OpenNextReport(
+            CLNextUiCalculationInput input,
+            bool definitiveOffer = false,
+            bool reminderEnabled = false,
+            int reminderDelayDays = 0)
         {
             CLSelectionProjectDocument document =
                 CLNextUiApplicationService.CreateProjectDocument(input);
@@ -2897,12 +3292,21 @@ namespace SSW
             try
             {
                 PreserveCurrentSelectionIdentity(document);
-                preparedReport = PrepareNextReport(document, true);
+                preparedReport = PrepareNextReport(
+                    document,
+                    true,
+                    !definitiveOffer);
             }
             catch (Exception reportError)
             {
                 WriteDiagnostic(
                     "Next report generation failed.\r\n" + reportError);
+                if (!String.IsNullOrWhiteSpace(screenshotOutputPath) &&
+                    screenshotStep != null && screenshotStep.StartsWith("offer-reminder-", StringComparison.Ordinal))
+                {
+                    CompleteScreenshotWithError(reportError);
+                    return;
+                }
                 MessageBox.Show(
                     this,
                     reportError.Message,
@@ -2923,9 +3327,125 @@ namespace SSW
                     preparedReport.DataSources.ToArray(),
                     Microsoft.Reporting.WinForms.DisplayMode.PrintLayout);
                 viewer.SetDisplayName(BuildNextReportDisplayName(input));
+                try
+                {
+                    // Validate the actual PDF before recording a generated offer.
+                    viewer.PreparePdf();
+                    bool currentRegistration = document.RevisionTracking.LastRegistered != null &&
+                        document.RevisionTracking.Current != null &&
+                        document.RevisionTracking.LastRegistered.Fingerprints.SnapshotHash ==
+                            document.RevisionTracking.Current.SnapshotHash;
+                    if (currentRegistration)
+                    {
+                        new CLSelectionApiClient().RecordOfferAsync(document, definitiveOffer,
+                            CLSelectionRegistrationContext.FromEnvironment(CLEnvironment.Current))
+                            .GetAwaiter().GetResult();
+                        PersistRegisteredSelection(document);
+                        SaveOfferReminderSelection(document);
+                    }
+                    else if (definitiveOffer)
+                        throw new InvalidOperationException("The definitive offer requires a current central registration.");
+                    else
+                    {
+                        currentSelectionDocument = document;
+                        document.Identity.OfferStatus = "Provisional";
+                        document.Identity.OfferRevision = null;
+                        SaveOfferReminderSelection(document);
+                    }
+                }
+                catch (Exception offerError)
+                {
+                    WriteDiagnostic("Offer registration or PDF generation failed.\r\n" + offerError);
+                    if (!String.IsNullOrWhiteSpace(screenshotOutputPath))
+                    {
+                        CompleteScreenshotWithError(offerError);
+                        return;
+                    }
+                    MessageBox.Show(this, offerError.Message, CLSSWProfile.AssemblyTitle,
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    if (definitiveOffer) return;
+                }
+                if (definitiveOffer && reminderEnabled &&
+                    document.Identity.OfferReminderRevision != document.Identity.Revision)
+                {
+                    viewer.Shown += async delegate
+                    {
+                        try
+                        {
+                            ScheduleDefinitiveOfferReminder(
+                                document,
+                                reminderDelayDays);
+                            var synchronization =
+                                new CLFollowUpSynchronizationService(followUpStore);
+                            var context = CLSelectionRegistrationContext.FromEnvironment(
+                                CLEnvironment.Current);
+                            await Task.Run(async delegate
+                            {
+                                CLFollowUpSynchronizationResult syncResult =
+                                    await synchronization.SyncBestEffortAsync(context).ConfigureAwait(false);
+                                WriteDiagnostic("Definitive offer reminder synchronization: success=" +
+                                    syncResult.Succeeded + ", diagnostic=" + syncResult.Diagnostic);
+                            }).ConfigureAwait(true);
+                        }
+                        catch (Exception reminderError)
+                        {
+                            WriteDiagnostic(
+                                "Definitive offer reminder failed.\r\n" +
+                                reminderError);
+                            MessageBox.Show(
+                                this,
+                                "The definitive offer was generated, but its reminder could not be saved: " +
+                                    reminderError.Message,
+                                CLSSWProfile.AssemblyTitle,
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
+                        }
+                    };
+                }
                 viewer.WindowState = FormWindowState.Maximized;
                 viewer.ShowDialog(this);
             }
+        }
+
+        private void ScheduleDefinitiveOfferReminder(
+            CLSelectionProjectDocument document,
+            int delayDays)
+        {
+            CLFollowUpReminderRules.ValidateDelayDays(delayDays);
+            DateTime preparedUtc = document.Identity.OfferDefinitiveAtUtc ?? DateTime.UtcNow;
+            string localPath = SaveOfferReminderSelection(document);
+            string reference = String.IsNullOrWhiteSpace(
+                    document.Selection.CustomerReference)
+                ? document.Identity.PublicReference
+                : document.Selection.CustomerReference;
+            followUpStore.CreateLocal(
+                CLFollowUpTargetType.Selection,
+                document.ProjectId,
+                "Definitive offer - " + (String.IsNullOrWhiteSpace(reference)
+                    ? document.Selection.Unit.Code
+                    : reference),
+                localPath,
+                preparedUtc,
+                CLFollowUpReminderRules.CalculateDueUtc(
+                    preparedUtc,
+                    delayDays));
+            document.Identity.OfferReminderRevision = document.Identity.Revision;
+            CLSelectionProjectSerializer.Save(localPath, document);
+            PersistRegisteredSelection(document);
+        }
+
+        private static string SaveOfferReminderSelection(
+            CLSelectionProjectDocument document)
+        {
+            string directoryPath = CLOfferArchive.DirectoryPath;
+            Directory.CreateDirectory(directoryPath);
+            string targetPath = Path.Combine(
+                directoryPath,
+                document.ProjectId.ToString("N") +
+                    (document.Identity.Revision.HasValue ? "-R" + document.Identity.Revision.Value.ToString("D2", CultureInfo.InvariantCulture) : String.Empty) +
+                    CLSelectionProjectSerializer.FileExtension);
+            CLSelectionProjectSerializer.Save(targetPath, document);
+            return Path.GetFullPath(targetPath);
         }
 
         private static string BuildNextReportDisplayName(

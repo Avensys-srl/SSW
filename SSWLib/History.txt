@@ -1,6 +1,43 @@
 SSW Changelog
 =============
 
+2.0.0.25 - 2026-10-06
+---------------------
+- Added a definitive-offer archive independent of optional reminders, with revision-preserving local storage and reopening.
+- Portal customer display now resolves the user linked to the revision's licensed installation, retaining historical fallback.
+
+2.0.0.24 - 2026-10-05
+---------------------
+- Fixed the duplicated percent symbol in winter and summer report regulation levels.
+- Improved document availability checks with online coverage, compact language badges and English fallback coverage; added online STEP checks.
+- Updated definitive-offer registration and reminder workflow; hid optional Save As and provisional-offer controls.
+- Customer builds now exclude retired legacy UI while preserving historical file imports and license migration.
+
+2.0.0.23 - 2026-10-03
+---------------------
+- Automatically switch KTS BASIC to KTS EXTRA when an optional accessory, water coil or electric heater is selected.
+- Fixed the document-availability audit to find commercial leaflets by canonical model name when the localized display-name lookup does not match.
+- [TODO-001] Verify fan power consumption values against approved reference data.
+- [TODO-002] Populate the separate Commercial brochure and Benchmark document (confidential) categories, and rename the current Commercial sheet category to Technical-commercial sheet.
+- [TODO-003] Add an explicit recovery type to the DataCentral model catalog; plate-only filtering depends on this classification and must not be inferred from the family code.
+- [TODO-004] Load the SG 127 ST technical application document into the Documents section.
+
+2.0.0.22 - 2026-10-01
+---------------------
+- Fixed water-coil selection repeatedly increasing fan regulation and failing to stabilize.
+- Added the SG 127 ST technical application document to the Documents page, available offline.
+
+2.0.0.21 - 2026-09-29
+---------------------
+- Kept the user-defined minimum fan regulation separate from the selected unit's calculated operating regulation.
+- Evaluated fan regulation in finer internal steps so valid duty points are not omitted between whole-percent settings.
+
+2.0.0.20 - 2026-09-28
+---------------------
+- Made the report preview use the same A4 PDF as export, independently of printer settings.
+- Adjusted the preview window so its toolbar no longer covers the top of the report.
+- Kept the front-access caption fully visible in installation drawings by using a smaller two-line label.
+
 2.0.0.19 - 2026-09-25
 ---------------------
 - Added the dimensional drawing PDF to the Documents page for easier customer access.

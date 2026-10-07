@@ -84,3 +84,16 @@ client non va distribuito finche' le nuove rotte non rispondono sul server di
 produzione. La pubblicazione richiede backup database, prova di attivazione,
 prova di secondo dispositivo, rifiuto del terzo, revoca/riattivazione e prova
 offline con concessione valida e scaduta.
+
+## Checkpoint 30/09/2026: evoluzione della protezione
+
+Il [piano di protezione software](SOFTWARE_PROTECTION_ROADMAP.md) documenta le
+operazioni proposte per licenze firmate dal server e associate a una chiave
+dispositivo, protezione della libreria/catalogo, migrazione automatica e collaudo.
+Il limite resta di due dispositivi; la migrazione ordinaria dei PC autorizzati
+non deve richiedere un nuovo PIN o occupare un altro slot. La concessione offline
+di 30 giorni resta la base proposta, da confermare nella politica di prodotto.
+
+Stato di questo checkpoint: analisi e pianificazione, non implementazione o
+pubblicazione delle nuove protezioni. I checkpoint precedenti descrivono lo
+stato storico del flusso licenze, non attestano la nuova protezione della DLL.

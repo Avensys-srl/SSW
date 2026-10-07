@@ -221,6 +221,14 @@
       <HintPath>..\packages\Microsoft.ReportViewer.Windows.11.0.3452\lib\net40\Microsoft.ReportViewer.WinForms.DLL</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.Web.WebView2.Core, Version=1.0.4078.44, Culture=neutral, PublicKeyToken=2a8ab48044d2601e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.WebView2.1.0.4078.44\lib\net462\Microsoft.Web.WebView2.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Web.WebView2.WinForms, Version=1.0.4078.44, Culture=neutral, PublicKeyToken=2a8ab48044d2601e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.WebView2.1.0.4078.44\lib\net462\Microsoft.Web.WebView2.WinForms.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.SqlServer.Types, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.SqlServer.Types.14.0.1016.290\lib\net40\Microsoft.SqlServer.Types.dll</HintPath>
       <Private>True</Private>
@@ -692,9 +700,16 @@
       <_SSWVersionLine Include="Imports System.Reflection" />
       <_SSWVersionLine Include="&lt;Assembly: AssemblyVersion(&quot;$(SSWVersion)&quot;)&gt;" />
       <_SSWVersionLine Include="&lt;Assembly: AssemblyFileVersion(&quot;$(SSWVersion)&quot;)&gt;" />
+      <_SSWVersionLine Include="&lt;Assembly: AssemblyMetadata(&quot;SSWLegacyReferenceUi&quot;, &quot;$(SSWIncludeLegacyReferenceUi)&quot;)&gt;" />
       <Compile Include="$(_SSWVersionAssemblyInfo)" />
     </ItemGroup>
     <WriteLinesToFile File="$(_SSWVersionAssemblyInfo)" Lines="@(_SSWVersionLine)" Overwrite="true" Encoding="UTF-8" />
+  </Target>
+  <Target Name="ExcludeRetiredLegacyUi" BeforeTargets="PrepareForBuild" Condition="'$(SSWIncludeLegacyReferenceUi)' != 'true'">
+    <ItemGroup>
+      <Compile Remove="CLMainForm*.vb;CLTechnicalBaseline.vb;CLAboutBoxForm*.vb;CLPleaseWaitForm*.vb;CLHelpForm.vb;CLFollowUpNotificationCenterForm.vb" />
+      <EmbeddedResource Remove="CLMainForm*.resx;CLAboutBoxForm*.resx;CLPleaseWaitForm*.resx" />
+    </ItemGroup>
   </Target>
   <PropertyGroup>
     <PreBuildEvent>

@@ -1,4 +1,14 @@
 Public Class CLReportViewerForm
+    Private Const A4PdfDeviceInfo As String =
+        "<DeviceInfo><OutputFormat>PDF</OutputFormat><PageWidth>21cm</PageWidth>" &
+        "<PageHeight>29.7cm</PageHeight><MarginTop>0.5cm</MarginTop>" &
+        "<MarginBottom>0.5cm</MarginBottom><MarginLeft>0.5cm</MarginLeft>" &
+        "<MarginRight>0.5cm</MarginRight></DeviceInfo>"
+
+    Private m_Preview As Microsoft.Web.WebView2.WinForms.WebView2
+    Private m_PreviewPdfPath As String
+    Private m_PdfBytes As Byte()
+
     Public Sub SetDisplayName(displayName As String)
         rpvReport.LocalReport.DisplayName = displayName
     End Sub
@@ -46,17 +56,7 @@ Public Class CLReportViewerForm
         For Each reportDataSource As Microsoft.Reporting.WinForms.ReportDataSource In reportDataSources
             rpvReport.LocalReport.DataSources.Add(reportDataSource)
         Next
-        ' PrintLayout derives its preview scale from the default printer driver. Some
-        ' high-DPI drivers report printer pixels as screen pixels and shrink the report.
-        ' Normal mode keeps preview sizing independent from the customer's printer;
-        ' PDF rendering still uses the physical page settings declared in the RDLC.
-        Dim effectiveDisplayMode = If(displayMode = Microsoft.Reporting.WinForms.DisplayMode.PrintLayout,
-            Microsoft.Reporting.WinForms.DisplayMode.Normal, displayMode)
-        rpvReport.SetDisplayMode(effectiveDisplayMode)
-        If effectiveDisplayMode = Microsoft.Reporting.WinForms.DisplayMode.Normal Then
-            rpvReport.ZoomMode = Microsoft.Reporting.WinForms.ZoomMode.PageWidth
-        End If
-        rpvReport.RefreshReport()
+        ' Render the A4 PDF when the window opens, after the display name is set.
     End Sub
 
     Private Sub rpvReport_PrintingBegin(sender As Object,
@@ -235,12 +235,28 @@ Public Class CLReportViewerForm
 
     Private Function ExportPdf(filePath As String) As String
         Dim fullPath As String = IO.Path.GetFullPath(filePath)
-        Dim bytes As Byte() = rpvReport.LocalReport.Render("PDF")
+        Dim bytes As Byte() = GetPdfBytes()
         WritePdfAtomically(fullPath, bytes)
         If Not IO.File.Exists(fullPath) OrElse New IO.FileInfo(fullPath).Length = 0 Then
             Throw New IO.IOException("The rendered PDF was not created.")
         End If
         Return fullPath
+    End Function
+
+    Public Sub PreparePdf()
+        GetPdfBytes()
+    End Sub
+
+    Private Function GetPdfBytes() As Byte()
+        If m_PdfBytes Is Nothing Then
+            m_PdfBytes = RenderA4Pdf(rpvReport.LocalReport)
+        End If
+        Return m_PdfBytes
+    End Function
+
+    Public Shared Function RenderA4Pdf(report As Microsoft.Reporting.WinForms.LocalReport) As Byte()
+        If report Is Nothing Then Throw New ArgumentNullException(NameOf(report))
+        Return report.Render("PDF", A4PdfDeviceInfo)
     End Function
 
     Private Shared Function CreateTemporaryEmailPdfPath(displayName As String) As String
@@ -345,8 +361,91 @@ Public Class CLReportViewerForm
         End Try
     End Sub
 
-    Private Sub CLReportViewerForm_Load(sender As Object, e As EventArgs) Handles Me.Load
-        ReportControl_AddExportHandler(rpvReport)
+    Private Async Sub CLReportViewerForm_Shown(sender As Object, e As EventArgs) Handles Me.Shown
+        Try
+            UseWaitCursor = True
+            m_PreviewPdfPath = IO.Path.Combine(IO.Path.GetTempPath(),
+                "ssw-report-preview-" & Guid.NewGuid().ToString("N") & ".pdf")
+            WritePdfAtomically(m_PreviewPdfPath, GetPdfBytes())
+
+            Dim toolbar As New ToolStrip With {
+                .GripStyle = ToolStripGripStyle.Hidden,
+                .Dock = DockStyle.Fill,
+                .Margin = Padding.Empty
+            }
+            Dim pdfButton As New ToolStripButton("PDF")
+            AddHandler pdfButton.Click, AddressOf PdfExportButton_Click
+            toolbar.Items.Add(pdfButton)
+            Dim printButton As New ToolStripButton(EmailText("ReportViewer_Print", "Print")) With {
+                .Enabled = False
+            }
+            AddHandler printButton.Click, Sub()
+                                              If m_Preview.CoreWebView2 IsNot Nothing Then
+                                                  m_Preview.CoreWebView2.ShowPrintUI()
+                                              End If
+                                          End Sub
+            toolbar.Items.Add(printButton)
+            m_EmailButton = New ToolStripButton(EmailText(CLMessageResources.ReportViewer_Email, "Email"))
+            AddHandler m_EmailButton.Click, AddressOf EmailButton_Click
+            toolbar.Items.Add(m_EmailButton)
+            m_AddToProjectButton = New ToolStripButton(EmailText("ReportViewer_AddToProject", "Add to project"))
+            AddHandler m_AddToProjectButton.Click, AddressOf AddToProjectButton_Click
+            m_AddToProjectButton.Visible = False
+            toolbar.Items.Add(m_AddToProjectButton)
+            UpdateEmailButtonState()
+
+            m_Preview = New Microsoft.Web.WebView2.WinForms.WebView2 With {
+                .Dock = DockStyle.Fill,
+                .Margin = Padding.Empty
+            }
+            Dim previewLayout As New TableLayoutPanel With {
+                .Dock = DockStyle.Fill,
+                .ColumnCount = 1,
+                .RowCount = 2,
+                .Margin = Padding.Empty,
+                .Padding = Padding.Empty
+            }
+            previewLayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 100.0F))
+            previewLayout.RowStyles.Add(New RowStyle(SizeType.AutoSize))
+            previewLayout.RowStyles.Add(New RowStyle(SizeType.Percent, 100.0F))
+            previewLayout.Controls.Add(toolbar, 0, 0)
+            previewLayout.Controls.Add(m_Preview, 0, 1)
+            Controls.Add(previewLayout)
+            previewLayout.BringToFront()
+            rpvReport.Visible = False
+            Dim userDataDirectory = IO.Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                "Avensys", "SSW", "WebView2Preview")
+            Dim webEnvironment = Await Microsoft.Web.WebView2.Core.CoreWebView2Environment.CreateAsync(
+                Nothing, userDataDirectory)
+            If IsDisposed Then Return
+            Await m_Preview.EnsureCoreWebView2Async(webEnvironment)
+            If IsDisposed Then Return
+            m_Preview.Source = New Uri(m_PreviewPdfPath)
+            printButton.Enabled = True
+        Catch ex As Exception
+            Diagnostics.Trace.WriteLine(ex.ToString())
+            If m_Preview IsNot Nothing Then m_Preview.Parent.Visible = False
+            rpvReport.Visible = True
+            rpvReport.SetDisplayMode(Microsoft.Reporting.WinForms.DisplayMode.Normal)
+            rpvReport.ZoomMode = Microsoft.Reporting.WinForms.ZoomMode.PageWidth
+            rpvReport.RefreshReport()
+            ReportControl_AddExportHandler(rpvReport)
+            MessageBox.Show(Me, ex.Message, Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Warning)
+        Finally
+            UseWaitCursor = False
+        End Try
+    End Sub
+
+    Private Sub CLReportViewerForm_FormClosed(sender As Object, e As FormClosedEventArgs) Handles Me.FormClosed
+        If m_Preview IsNot Nothing Then m_Preview.Dispose()
+        If Not String.IsNullOrWhiteSpace(m_PreviewPdfPath) Then
+            Try
+                IO.File.Delete(m_PreviewPdfPath)
+            Catch ex As IO.IOException
+                Diagnostics.Trace.WriteLine(ex.ToString())
+            End Try
+        End If
     End Sub
 
 End Class

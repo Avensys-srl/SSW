@@ -175,6 +175,53 @@ Public NotInheritable Partial Class CLSelectionApiClient
         End Using
     End Function
 
+    Public Async Function RecordOfferAsync(document As CLSelectionProjectDocument,
+        definitive As Boolean,
+        context As CLSelectionRegistrationContext,
+        Optional cancellationToken As CancellationToken = Nothing) As Task
+
+        ValidateSelectionDocument(document)
+        If Not document.Identity.Revision.HasValue OrElse String.IsNullOrWhiteSpace(document.Identity.ResumeToken) Then
+            Throw New InvalidDataException("The offer requires a registered technical revision.")
+        End If
+        Dim payload As New Dictionary(Of String, Object) From {
+            {"status", If(definitive, "Definitive", "Provisional")},
+            {"revision", document.Identity.Revision.Value},
+            {"resume_token", document.Identity.ResumeToken},
+            {"snapshot_hash", document.RevisionTracking.Current.SnapshotHash}
+        }
+        Dim payloadJson As String = JsonSerializer.Serialize(payload, JsonOptions)
+        Dim token As String = Await EnsureAccessTokenAsync(context, cancellationToken).ConfigureAwait(False)
+        Using request As New HttpRequestMessage(HttpMethod.Post,
+            BuildUri("selections/" & GetReferenceDigits(document.Identity.PublicReference) & "/offer"))
+            request.Headers.Authorization = New AuthenticationHeaderValue("Bearer", token)
+            ' Each user action reads the current monotonic state, not an old cached provisional response.
+            request.Headers.Add("Idempotency-Key", CreateIdempotencyKey("offer", Guid.NewGuid(), payloadJson))
+            request.Content = New StringContent(payloadJson, Encoding.UTF8, "application/json")
+            Using response As HttpResponseMessage = Await m_HttpClient.SendAsync(request, cancellationToken).ConfigureAwait(False)
+                Dim body As String = Await response.Content.ReadAsStringAsync().ConfigureAwait(False)
+                If Not response.IsSuccessStatusCode Then Throw CreateApiException(response.StatusCode, body)
+                Using result As JsonDocument = JsonDocument.Parse(body)
+                    Dim root As JsonElement = result.RootElement
+                    Dim status As String = root.GetProperty("status").GetString()
+                    If root.GetProperty("revision").GetInt32() <> document.Identity.Revision.Value OrElse
+                        (status <> "Provisional" AndAlso status <> "Definitive") OrElse
+                        (definitive AndAlso status <> "Definitive") Then
+                        Throw New InvalidDataException("The offer response does not match the registered revision.")
+                    End If
+                    document.Identity.OfferStatus = status
+                    document.Identity.OfferRevision = document.Identity.Revision
+                    document.Identity.OfferGeneratedAtUtc = DateTime.Parse(root.GetProperty("generated_at_utc").GetString(),
+                        CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal Or DateTimeStyles.AssumeUniversal)
+                    Dim confirmed As JsonElement = root.GetProperty("definitive_at_utc")
+                    document.Identity.OfferDefinitiveAtUtc = If(confirmed.ValueKind = JsonValueKind.Null,
+                        CType(Nothing, DateTime?), DateTime.Parse(confirmed.GetString(), CultureInfo.InvariantCulture,
+                        DateTimeStyles.AdjustToUniversal Or DateTimeStyles.AssumeUniversal))
+                End Using
+            End Using
+        End Using
+    End Function
+
     Private Async Function SendSelectionAsync(document As CLSelectionProjectDocument,
         accessToken As String,
         cancellationToken As CancellationToken) As Task(Of CLSelectionRegistrationResult)

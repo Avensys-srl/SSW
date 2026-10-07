@@ -7,6 +7,11 @@ senza override runtime delle eccezioni di serie/modello. Normalizzazione Next
 e guardie di salvataggio per indisponibilita', esclusivita' e dipendenze.
 Dettagli e test in [AUDIT_CORREZIONI_2026-09-08.md](AUDIT_CORREZIONI_2026-09-08.md).
 
+Checkpoint 02/10/2026: KTS BASIC passa automaticamente a KTS EXTRA quando e'
+selezionato un accessorio opzionale, una batteria ad acqua o un riscaldatore
+elettrico. Un controller gia' di livello Extra o superiore viene mantenuto;
+senza opzioni KTS BASIC resta il default.
+
 ## Obiettivo
 
 Completare la selezione tecnica SSW con un catalogo estendibile di accessori
@@ -61,9 +66,12 @@ I quattro KTS sono mutuamente esclusivi:
 
 Le relazioni dichiarano un livello minimo, non uno specifico modello KTS. Una
 funzione che richiede `Extra o superiore` e' compatibile con Extra, RFM e WiFi.
-Basic resta disabilitato quando accessori o funzioni selezionati richiedono il
-livello Extra; il tooltip elenca gli elementi che devono essere rimossi per
-renderlo selezionabile. Non vengono eseguite sostituzioni silenziose.
+Quando viene selezionato un accessorio opzionale, una batteria ad acqua o un
+riscaldatore elettrico, KTS BASIC viene sostituito automaticamente da KTS
+EXTRA. KTS RFM e KTS WiFi, gia' di livello Extra, restano selezionati. In
+assenza di tali opzioni KTS BASIC resta la scelta predefinita. Le normali
+regole di compatibilita' del catalogo continuano ad applicarsi agli altri
+accessori e funzioni.
 
 `KTS Basic` e' una scelta predefinita sostituibile, non un elemento standard
 bloccato, salvo diversa regola esplicita per una serie o un modello.

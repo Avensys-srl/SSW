@@ -353,7 +353,8 @@ Partial Public NotInheritable Class CLSelectionApiClient
     End Function
 
     Private Shared Function FormatUtc(value As DateTime) As String
-        Return CLFollowUpReminderRules.RequireUtc(value, NameOf(value)).ToString("O", CultureInfo.InvariantCulture)
+        ' The API accepts UTC timestamps at microsecond precision (at most six fractional digits).
+        Return CLFollowUpReminderRules.RequireUtc(value, NameOf(value)).ToString("yyyy-MM-dd'T'HH:mm:ss.ffffff'Z'", CultureInfo.InvariantCulture)
     End Function
 
     Private Shared Function FollowUpDays(fromUtc As DateTime, dueUtc As DateTime) As Integer

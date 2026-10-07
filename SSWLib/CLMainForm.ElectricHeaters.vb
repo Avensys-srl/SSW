@@ -257,6 +257,7 @@ Partial Public Class CLMainForm
         End If
         CoilPerformance_UpdateControlState()
         ElectricHeater_UpdateControlState()
+        Accessories_RefreshControllerRequirement()
         Calculate()
     End Sub
 

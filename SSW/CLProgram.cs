@@ -186,10 +186,33 @@ namespace SSW
 					startupLanguage = CLEnvironment.Current.ENLanguage;
 				CLEnvironment.Current.SetLanguage(startupLanguage);
 
+				if (args != null && args.Length > 1 &&
+					String.Equals(args[0], "--document-coverage-audit-smoke", StringComparison.OrdinalIgnoreCase))
+				{
+					try
+					{
+						List<CLProductDocumentCoverageRow> coverage =
+							CLProductDocumentService.BuildLocalCoverage(CLSSWProfile.ShortName);
+						File.WriteAllText(args[1], "OK | Models scanned: " + coverage.Count);
+						return 0;
+					}
+					catch (Exception exception)
+					{
+						File.WriteAllText(args[1], exception.ToString());
+						return 1;
+					}
+				}
+
 				if (args != null && args.Length > 0 &&
 					String.Equals(args[0], "--technical-baseline", StringComparison.OrdinalIgnoreCase))
 				{
-					return CLTechnicalBaselineCommand.Run(args.Skip(1).ToArray());
+                    Type baselineCommand = typeof(CLNextUiApplicationService).Assembly.GetType("SSW.CLTechnicalBaselineCommand");
+                    if (baselineCommand == null)
+                    {
+                        Console.Error.WriteLine("Legacy reference baselines require an isolated diagnostic build with SSWIncludeLegacyReferenceUi=true.");
+                        return 8;
+                    }
+                    return (int)baselineCommand.GetMethod("Run").Invoke(null, new object[] { args.Skip(1).ToArray() });
 				}
 
 				if (args != null && args.Length > 0 &&

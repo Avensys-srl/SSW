@@ -46,6 +46,13 @@ Public NotInheritable Class CLSelectionIdentity
     Public Property ParentPublicReference As String
     Public Property ResumeToken As String
 
+    ' Commercial lifecycle metadata is independent of technical fingerprints.
+    Public Property OfferStatus As String
+    Public Property OfferRevision As Integer?
+    Public Property OfferGeneratedAtUtc As DateTime?
+    Public Property OfferDefinitiveAtUtc As DateTime?
+    Public Property OfferReminderRevision As Integer?
+
 End Class
 
 Public NotInheritable Class CLSelectionRevisionTracking
@@ -114,7 +121,9 @@ Public NotInheritable Class CLDimensionalSelectionValue
 End Class
 
 Public NotInheritable Class CLPreselectionFilterSelection
+    Public Property MinimumRegulationPercent As Integer = 70
     Public Property RotaryOnlyEnabled As Boolean
+    Public Property RecoveryCategory As String = "any"
     Public Property MaximumSfpEnabled As Boolean
     Public Property MaximumSfp As Double = 2
     Public Property SupplyNoiseEnabled As Boolean

@@ -24,7 +24,12 @@
 #endif
 
 [Setup]
+#ifdef IntegrationTest
+AppId=SSW-Isolated-Installer-Integration-Test
+UsePreviousAppDir=no
+#else
 AppId={{7C326B6C-D147-4F11-A4A1-4B0135F3F0C9}
+#endif
 AppName={#AppName}
 AppVersion={#AppVersion}
 AppPublisher={#AppPublisher}
@@ -67,12 +72,14 @@ Name: "swedish"; MessagesFile: "compiler:Languages\Swedish.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "{#SourceDir}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: "*.pdb,*.xml,*.log,*.vshost.*,*.application,SSW.exe.manifest,app.publish\*,data\DataCentral___.sdf,data\*.bak,data\*.previous,data\catalog-update.state.json,css\STEP\*"
+Source: "{#SourceDir}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: "*.pdb,*.xml,*.log,*.vshost.*,*.application,SSW.exe.manifest,app.publish\*,data\DataCentral___.sdf,data\*.sdf.*,data\*.bak,data\*.previous,data\catalog-update.state.json,css\STEP\*"
 
 [Icons]
+#ifndef IntegrationTest
 Name: "{group}\{#AppName}"; Filename: "{app}\{#AppExeName}"
 Name: "{group}\Uninstall {#AppName}"; Filename: "{uninstallexe}"
 Name: "{autodesktop}\{#AppName}"; Filename: "{app}\{#AppExeName}"; Tasks: desktopicon
+#endif
 
 [Registry]
 #ifdef BootstrapKey

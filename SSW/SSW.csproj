@@ -945,6 +945,8 @@
     <Compile Include="CLDeviceLicenseStartup.cs" />
     <Compile Include="CLDatabaseCatalogUpdater.cs" />
     <Compile Include="CLNextHostForm.cs" />
+    <Compile Include="CLOfferArchive.cs" />
+    <Compile Include="CLDocumentCoverageAuditForm.cs" />
     <Compile Include="CLSSWInfo_AC.cs" />
     <Compile Include="CLSSWInfo_AL.cs" />
     <Compile Include="CLSSWInfo_IN.cs" />
@@ -969,6 +971,10 @@
     </Compile>
     <Content Include="..\SSWLib\CLMainReport.rdlc">
       <Link>CLMainReport.rdlc</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\ApplicationDocuments\S7\EN\ST_127_EN_AV.pdf">
+      <Link>css\ApplicationDocuments\S7\EN\ST_127_EN_AV.pdf</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="..\SSWLib\CLMainReport_Coil.rdlc">
@@ -1118,6 +1124,10 @@
   </Target>
   <Target Name="BeforeBuild">
     <Message Text="CIAOOOOO" />
+  </Target>
+  <Target Name="EnforceSupportedSSWProductLine" BeforeTargets="PrepareForBuild">
+    <Error Condition="'$(SSWVersion)' == ''" Text="SSWVersion is required for the supported Next product line." />
+    <Error Condition="'$(SSWVersion)' != '' And $([System.Version]::Parse('$(SSWVersion)').Major) &lt; 2" Text="SSW 1.x is retired. Build historical releases from their archived Git revision; the active product line requires version 2.0.0.0 or later." />
   </Target>
   <PropertyGroup>
     <PostBuildEvent>

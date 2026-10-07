@@ -2,6 +2,12 @@
 
 ## Mission
 
+Approved support-policy update (2026-10-05): only software 2.0.0.0 and later
+is actively supported. Earlier instructions to maintain a parallel 1.3.x
+product line are superseded by docs/LEGACY_RETIREMENT_ROADMAP.md. Preserve
+historical-file imports/backups and shared verified calculation components.
+Do not remove legacy code until incoming dependencies have been audited.
+
 Evolve SSW without rewriting or invalidating the verified calculation
 algorithms. The current WinForms application remains the behavioral reference
 and release fallback while the application layer is separated from the UI and

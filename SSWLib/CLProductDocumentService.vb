@@ -1,6 +1,8 @@
 Imports System.Diagnostics
 Imports System.IO
 Imports System.Net
+Imports System.Collections.Generic
+Imports System.Linq
 Imports Climalombarda.DataCentral
 Imports Climalombarda.DataCentral.LTModel
 
@@ -59,8 +61,151 @@ Public NotInheritable Class CLProductDocumentService
                 shortName, autoSyncEnabled),
             .InstallationManualPath = ResolveInstallationManual(
                 model, normalizedLanguage, True, shortName),
+            .ApplicationDocumentPath = ResolveApplicationDocument(
+                model, normalizedLanguage, shortName),
             .StepModelPath = ResolveStepModel(model)
         }
+    End Function
+
+    Public Shared Function ResolveApplicationDocument(
+        model As CLDCHeatRecoveryModel,
+        languageCode As String,
+        shortName As String,
+        Optional fallbackToEnglish As Boolean = True) As String
+
+        If model Is Nothing Then Return String.Empty
+        Dim seriesCode = ReadProperty(model.CLSerie, "Code")
+        If String.IsNullOrWhiteSpace(seriesCode) Then Return String.Empty
+
+        Dim directoryPath = Path.Combine(
+            PdfDocumentDirectory, "ApplicationDocuments",
+            GetSeriesFolderName(seriesCode))
+        Dim normalizedLanguage = NormalizeLanguageCode(languageCode)
+        Dim localFile = BuildAndFindFile(
+            Path.Combine(directoryPath, normalizedLanguage),
+            model.Name, normalizedLanguage, shortName)
+        If Not String.IsNullOrEmpty(localFile) Then Return localFile
+        If Not fallbackToEnglish OrElse normalizedLanguage = "EN" Then
+            Return String.Empty
+        End If
+
+        Return BuildAndFindFile(
+            Path.Combine(directoryPath, "EN"), model.Name, "EN", shortName)
+    End Function
+
+    Public Shared Function BuildLocalCoverage(
+        shortName As String) As List(Of CLProductDocumentCoverageRow)
+
+        Dim rows As New List(Of CLProductDocumentCoverageRow)()
+        If CLEnvironment.Current Is Nothing OrElse
+            CLEnvironment.Current.DCContext Is Nothing Then
+            Return rows
+        End If
+
+        Dim drawingVersions = CLDimensionalDrawingService.GetActiveDrawingCoverage()
+        Dim stepDirectory = Path.Combine(PdfDocumentDirectory, "STEP")
+        Dim models = CLEnvironment.Current.DCContext.CLDCHeatRecoveryModels.ToList()
+        For Each model In models.
+            Where(Function(item) Not String.Equals(item.Code, "ACC", StringComparison.OrdinalIgnoreCase) AndAlso
+                                 Not String.Equals(item.Code, "IOM3", StringComparison.OrdinalIgnoreCase)).
+            OrderBy(Function(item) If(item.CLSerie Is Nothing, String.Empty, item.CLSerie.Code)).
+            ThenBy(Function(item) item.Size).
+            ThenBy(Function(item) item.Code)
+
+            Dim seriesCode = If(model.CLSerie Is Nothing, String.Empty, model.CLSerie.Code)
+            Dim seriesFolder = If(seriesCode = "32", "SA", "S" & seriesCode.Trim())
+            Dim row As New CLProductDocumentCoverageRow With {
+                .ModelCode = If(model.Code, String.Empty),
+                .ModelName = CLEnvironment.Current.GetCustomerHeatRecoveryModelName(model),
+                .SeriesCode = seriesCode,
+                .ModelSize = model.Size
+            }
+            For Each language In New String() {"BG", "CS", "DA", "DE", "EN", "FR", "HU", "IS", "IT", "NL", "NO", "PL", "RO", "SL", "SV"}
+                If String.Equals(shortName, "AV", StringComparison.OrdinalIgnoreCase) Then
+                    Dim candidates As New List(Of String)()
+                    For Each candidateName In New String() {row.ModelName, model.Name}
+                        Dim candidateFile = BuildExpectedFileName(candidateName, language, shortName)
+                        If Not String.IsNullOrEmpty(candidateFile) Then
+                            Dim candidateUrl = CommercialSheetBaseUrl & "/" & GetSeriesFolderName(seriesCode) & "/" & language & "/" & Uri.EscapeDataString(candidateFile)
+                            If Not candidates.Contains(candidateUrl) Then candidates.Add(candidateUrl)
+                        End If
+                    Next
+                    row.CommercialSheetOnlineCandidates(language) = candidates
+                End If
+                Dim commercialDirectory = Path.Combine(
+                    PdfDocumentDirectory, seriesFolder, language)
+                Dim commercialFile = BuildExpectedFileName(
+                    row.ModelName, language, shortName)
+                Dim commercialPath = If(
+                    String.IsNullOrEmpty(commercialFile),
+                    String.Empty,
+                    Path.Combine(commercialDirectory, commercialFile))
+                If Not File.Exists(commercialPath) Then
+                    commercialPath = BuildAndFindFile(
+                        commercialDirectory, model.Name, language, shortName)
+                End If
+                If Not String.IsNullOrEmpty(commercialPath) AndAlso
+                    File.Exists(commercialPath) Then
+                    row.CommercialSheetPaths.Add(commercialPath)
+                End If
+
+                If Directory.Exists(PdfDocumentDirectory) AndAlso
+                    Not String.IsNullOrWhiteSpace(model.PDFInstallationOperationManuals) Then
+                    Dim manualPattern = model.PDFInstallationOperationManuals.
+                        Replace("%LanguageCode%", language).
+                        Replace("%ShortName%", shortName)
+                    If manualPattern.IndexOfAny(
+                        New Char() {Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar}) < 0 AndAlso
+                        Not manualPattern.Contains("..") Then
+                        row.InstallationManualPaths.AddRange(
+                            Directory.GetFiles(PdfDocumentDirectory, manualPattern))
+                    End If
+                End If
+
+                Dim applicationDirectory = Path.Combine(
+                    PdfDocumentDirectory, "ApplicationDocuments", seriesFolder, language)
+                If Directory.Exists(applicationDirectory) Then
+                    Dim applicationFile = ResolveApplicationDocument(
+                        model, language, shortName, False)
+                    If Not String.IsNullOrWhiteSpace(applicationFile) Then
+                        row.ApplicationDocumentPaths.Add(applicationFile)
+                    End If
+                End If
+            Next
+
+            Dim modelId = Convert.ToString(model.Id, Globalization.CultureInfo.InvariantCulture)
+            row.StepModelPath = Path.Combine(stepDirectory, modelId & "_stp.zip")
+            row.StepModelOnlineUrl = StepModelBaseUrl & "/" & Uri.EscapeDataString(modelId) & "_stp.zip"
+            If Not File.Exists(row.StepModelPath) Then row.StepModelPath = String.Empty
+            Dim revisions As String = Nothing
+            If drawingVersions.TryGetValue(model.Id, revisions) Then
+                row.DimensionalDrawingVersions.AddRange(
+                    revisions.Split(New String() {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries))
+            End If
+            rows.Add(row)
+        Next
+        Return rows
+    End Function
+
+    Private Shared Function FindDocumentLanguages() As List(Of String)
+        Dim available As New HashSet(Of String)(StringComparer.OrdinalIgnoreCase)
+        Dim supported As New HashSet(Of String)(StringComparer.OrdinalIgnoreCase) From {
+            "BG", "CS", "DA", "DE", "EN", "FR", "HU", "IS", "IT", "NL", "NO", "PL", "RO", "SL", "SV"
+        }
+        If Directory.Exists(PdfDocumentDirectory) Then
+            For Each directoryPath In Directory.GetDirectories(PdfDocumentDirectory, "*", SearchOption.AllDirectories)
+                Dim language = Path.GetFileName(directoryPath)
+                If supported.Contains(language) Then available.Add(language.ToUpperInvariant())
+            Next
+            For Each filePath In Directory.GetFiles(PdfDocumentDirectory, "IOM_*_AV.pdf")
+                Dim tokens = Path.GetFileNameWithoutExtension(filePath).Split("_"c)
+                If tokens.Length >= 4 AndAlso supported.Contains(tokens(tokens.Length - 2)) Then
+                    available.Add(tokens(tokens.Length - 2).ToUpperInvariant())
+                End If
+            Next
+        End If
+        available.Add("EN")
+        Return available.OrderBy(Function(item) item).ToList()
     End Function
 
     Public Shared Function ResolveStepModel(model As CLDCHeatRecoveryModel) As String

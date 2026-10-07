@@ -21,6 +21,7 @@ type NativeModel = {
   Code: string;
   Name: string;
   SeriesCode: string;
+  RecoveryType?: string;
   NominalAirflowM3h: number;
   StaticPressurePa: number;
 };
@@ -131,6 +132,16 @@ export const logClientError = (error: unknown): void => {
   });
 };
 
+export const openDocumentCoverageAudit = (): void => {
+  const webview = window.chrome?.webview;
+  if (!webview) return;
+  webview.postMessage({
+    requestId: crypto.randomUUID(),
+    command: "documents.audit.open",
+    payload: {},
+  });
+};
+
 const numberValue = (value: unknown, fallback = 0): number => {
   const parsed = Number(value);
   return Number.isFinite(parsed) ? parsed : fallback;
@@ -164,6 +175,7 @@ class NativeSelectionBridge implements SelectionBridge {
         pressure: Math.max(0, Math.min(100, preferred.StaticPressurePa)),
       },
       imbalanceEnabled: false,
+      minimumRegulationPercent: 70,
       regulationPercent: 100,
       summerEnabled: true,
       winterOutdoorTemperature: -10,
@@ -223,6 +235,7 @@ class NativeSelectionBridge implements SelectionBridge {
       },
       preselectionFilters: {
         rotaryOnlyEnabled: false,
+        recoveryCategory: "any",
         maximumSfpEnabled: false,
         maximumSfp: 2,
         supplyNoiseEnabled: false,
@@ -336,10 +349,14 @@ class NativeSelectionBridge implements SelectionBridge {
   async generateReport(
     draft: Parameters<SelectionBridge["generateReport"]>[0],
     documentLanguageCode: string,
+    offer: Parameters<SelectionBridge["generateReport"]>[2],
   ) {
     await nativeInvoke("report.generate", {
       ...this.draftPayload(draft),
       documentLanguageCode,
+      offerType: offer.type,
+      reminderEnabled: offer.reminderEnabled,
+      reminderDelayDays: offer.reminderDelayDays,
     });
     const model =
       this.models.find((item) => item.Code === draft.selectedUnitId)?.Name ??
@@ -358,7 +375,7 @@ class NativeSelectionBridge implements SelectionBridge {
   }
 
   async openProductDocument(
-    documentType: "commercial-sheet" | "installation-manual" | "step-model",
+    documentType: "commercial-sheet" | "installation-manual" | "application-document" | "step-model",
     draft: SelectionDraft,
   ) {
     return nativeInvoke<ProductDocumentState>("documents.open", {
@@ -557,6 +574,7 @@ class NativeSelectionBridge implements SelectionBridge {
     result.operatingPoint.extractAirflow = numberValue(native.ExtractAirflowM3h);
     result.operatingPoint.pressure = numberValue(native.PressurePa);
     result.imbalanceEnabled = Boolean(native.ImbalanceEnabled);
+    result.minimumRegulationPercent = numberValue(native.MinimumRegulationPercent, 70);
     result.regulationPercent = numberValue(native.RegulationPercent);
     result.summerEnabled = Boolean(native.SummerEnabled);
     result.winterOutdoorTemperature = numberValue(native.WinterOutdoorTemperatureC);
@@ -642,6 +660,10 @@ class NativeSelectionBridge implements SelectionBridge {
     const breakoutDirectivity = numberValue(nativeFilters.BreakoutNoiseDirectivity, 2);
     result.preselectionFilters = {
       rotaryOnlyEnabled: Boolean(nativeFilters.RotaryOnlyEnabled),
+      recoveryCategory: ["any", "plate", "decentralized", "centralized", "rotary"].includes(nativeFilters.RecoveryCategory) &&
+        (nativeFilters.RecoveryCategory !== "any" || !Boolean(nativeFilters.RotaryOnlyEnabled))
+        ? nativeFilters.RecoveryCategory
+        : Boolean(nativeFilters.RotaryOnlyEnabled) ? "rotary" : "any",
       maximumSfpEnabled: Boolean(nativeFilters.MaximumSfpEnabled),
       maximumSfp: numberValue(nativeFilters.MaximumSfp, 2),
       supplyNoiseEnabled: Boolean(nativeFilters.SupplyNoiseEnabled),
@@ -680,6 +702,7 @@ class NativeSelectionBridge implements SelectionBridge {
     return {
       id: model.Code,
       family: model.SeriesCode,
+      recoveryType: model.RecoveryType,
       model: model.Name || model.Code,
       maxAirflow: numberValue(model.NominalAirflowM3h),
       availablePressure: numberValue(item.AvailablePressurePa),
@@ -710,6 +733,7 @@ class NativeSelectionBridge implements SelectionBridge {
       extractAirflow: draft.operatingPoint.extractAirflow,
       imbalanceEnabled: draft.imbalanceEnabled,
       pressure: draft.operatingPoint.pressure,
+      minimumRegulationPercent: draft.minimumRegulationPercent,
       regulation: draft.regulationPercent,
       summerEnabled: draft.summerEnabled,
       winterOutdoorTemperature: draft.winterOutdoorTemperature,
@@ -776,8 +800,10 @@ class NativeSelectionBridge implements SelectionBridge {
   private mapResult(native: any, requiredPressure: number) {
     const winter = native.Winter;
     const summer = native.Summer;
-    const pressureMargin =
-      numberValue(winter?.Curves?.WorkingPointPressurePa) - requiredPressure;
+    const requiresAvensysSelection = Boolean(native.RequiresAvensysSelection);
+    const pressureMargin = requiresAvensysSelection
+      ? 0
+      : numberValue(winter?.Curves?.WorkingPointPressurePa) - requiredPressure;
     const pressure = Math.max(0, pressureMargin);
     const winterThermo = winter?.Result?.Thermodynamics;
     const summerThermo = summer?.Result?.Thermodynamics;
@@ -791,11 +817,9 @@ class NativeSelectionBridge implements SelectionBridge {
               ? ("information" as const)
               : ("warning" as const);
         return {
-          message:
-            issue.MessageKey ||
-            issue.Code ||
-            "Configuration requires verification.",
+          message: issue.MessageKey || issue.Code || "Configuration requires verification.",
           severity,
+          code: issue.Code,
         };
       },
     );
@@ -838,6 +862,7 @@ class NativeSelectionBridge implements SelectionBridge {
           : ("valid" as const),
       messages: notices.map((notice) => notice.message),
       notices,
+      requiresAvensysSelection,
       effectiveRegulationPercent: numberValue(
         native.EffectiveRegulationPercent,
       ),

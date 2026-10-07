@@ -106,6 +106,7 @@ export const mockDraft: SelectionDraft = {
     pressure: 220,
   },
   imbalanceEnabled: false,
+  minimumRegulationPercent: 70,
   regulationPercent: 100,
   summerEnabled: true,
   winterOutdoorTemperature: -10,
@@ -165,6 +166,7 @@ export const mockDraft: SelectionDraft = {
   },
   preselectionFilters: {
     rotaryOnlyEnabled: false,
+    recoveryCategory: "any",
     maximumSfpEnabled: false,
     maximumSfp: 2,
     supplyNoiseEnabled: false,

@@ -12,7 +12,7 @@ Public NotInheritable Class CLPerformanceCurveRequest
     Public Property ReturnRelativeHumidity As Double
     Public Property FreshTemperatureC As Double
     Public Property FreshRelativeHumidity As Double
-    Public Property RegulationPercent As Integer
+    Public Property RegulationPercent As Double
     Public Property ShowSfpArea As Boolean
     Public Property ShowErpArea As Boolean
     Public Property SfpLimit As Double
@@ -76,7 +76,7 @@ Public NotInheritable Class CLBalancedScenarioCalculation
 End Class
 
 Friend NotInheritable Class CLCompatibleFanOperatingPoint
-    Public Property RegulationPercent As Integer
+    Public Property RegulationPercent As Double
     Public Property PressurePa As Double
     Public Property PowerW As Double
 End Class
@@ -117,7 +117,7 @@ Public NotInheritable Class CLSelectionApplicationService
             .ReturnRelativeHumidity = returnHumidity,
             .FreshTemperatureC = freshTemperature,
             .FreshRelativeHumidity = freshHumidity,
-            .RegulationPercent = CInt(Math.Round(request.Scenario.RegulationPercent.GetValueOrDefault(100))),
+            .RegulationPercent = request.Scenario.RegulationPercent.GetValueOrDefault(100),
             .ShowSfpArea = request.ShowSfpArea,
             .ShowErpArea = request.ShowErpArea,
             .SfpLimit = request.SfpLimit,
@@ -338,7 +338,7 @@ Public NotInheritable Class CLSelectionApplicationService
         model As CLDCHeatRecoveryModel,
         requestedAirflow As Double,
         requestedPressure As Double,
-        minimumRegulationPercent As Integer) As CLCompatibleFanOperatingPoint
+        minimumRegulationPercent As Double) As CLCompatibleFanOperatingPoint
 
         If model Is Nothing OrElse requestedAirflow <= 0 OrElse requestedPressure < 0 Then Return Nothing
         Dim airflows As Double() = ParseCurveItems(model.Airflows)
@@ -367,7 +367,10 @@ Public NotInheritable Class CLSelectionApplicationService
         If maximumPoint.PressurePa - requestedPressure <= 5 Then Return maximumPoint
 
         Dim acceptedPoint As CLCompatibleFanOperatingPoint = maximumPoint
-        For regulation = 99 To Math.Max(1, minimumRegulationPercent) Step -1
+        ' Integer ticks avoid cumulative drift when the result becomes the next minimum.
+        For regulationTick As Integer = 999 To 10 Step -1
+            Dim regulation As Double = regulationTick / 10.0R
+            If regulation < Math.Max(1, minimumRegulationPercent) Then Exit For
             Dim candidate = EvaluateFanOperatingPoint(
                 interpolatedAirflows, interpolatedPressures, interpolatedPowers,
                 requestedAirflow, regulation, maximumOriginalAirflow)
@@ -382,7 +385,7 @@ Public NotInheritable Class CLSelectionApplicationService
         pressures As Double(),
         powers As Double(),
         requestedAirflow As Double,
-        regulationPercent As Integer,
+        regulationPercent As Double,
         maximumOriginalAirflow As Double) As CLCompatibleFanOperatingPoint
 
         Dim factor = regulationPercent / 100.0R

@@ -34,6 +34,9 @@ internal sealed class TokenHandler : HttpMessageHandler
     public int LicenseClaimCount { get; private set; }
     public int LicenseCheckCount { get; private set; }
     public bool FailNextFollowUpCreate { get; set; }
+    public bool FailNextOffer { get; set; }
+    public List<string> OfferIdempotencyKeys { get; } = new List<string>();
+    private string offerStatus;
     public List<string> FollowUpOperations { get; } = new List<string>();
     public List<string> FollowUpIdempotencyKeys { get; } = new List<string>();
     public bool LastRegistrationHadBootstrap { get; private set; }
@@ -119,12 +122,32 @@ internal sealed class TokenHandler : HttpMessageHandler
                 + ",\"snapshot_hash\":\"" + snapshotHash + "\",\"change_kind\":\""
                 + (reprint ? "Reprint" : "TechnicalChange") + "\"}");
         }
+        else if (request.RequestUri.AbsolutePath.EndsWith("/offer", StringComparison.Ordinal))
+        {
+            if (request.Headers.Authorization == null || !request.Headers.Contains("Idempotency-Key"))
+                throw new InvalidOperationException("Offer authentication/idempotency missing.");
+            OfferIdempotencyKeys.Add(request.Headers.GetValues("Idempotency-Key").Single());
+            if (FailNextOffer) { FailNextOffer = false; throw new HttpRequestException("Simulated offline offer."); }
+            string body = request.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            if (JsonString(body, "snapshot_hash") != latestSnapshotHash || JsonString(body, "resume_token") != latestResumeToken)
+                throw new InvalidOperationException("Offer registered against wrong snapshot/token.");
+            if (offerStatus != "Definitive") offerStatus = JsonString(body, "status");
+            return JsonResponse(HttpStatusCode.OK, "{\"revision\":" + latestRevision + ",\"status\":\"" + offerStatus +
+                "\",\"generated_at_utc\":\"2026-10-05T09:00:00.000000Z\",\"definitive_at_utc\":" +
+                (offerStatus == "Definitive" ? "\"2026-10-05T09:01:00.000000Z\"" : "null") + "}");
+        }
         else if (request.RequestUri.AbsolutePath.EndsWith("/follow-ups", StringComparison.Ordinal) &&
             request.Method == HttpMethod.Post)
         {
             FollowUpCreateCount++;
             VerifyFollowUpHeaders(request, "Create");
             string body = request.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            foreach (string field in new[] { "email_prepared_at_utc", "due_at_utc" })
+            {
+                if (!System.Text.RegularExpressions.Regex.IsMatch(JsonString(body, field),
+                    @"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,6})?Z$"))
+                    throw new InvalidOperationException("Follow-up UTC timestamp exceeds the API precision: " + field);
+            }
             if (body.IndexOf("localPath", StringComparison.OrdinalIgnoreCase) >= 0 ||
                 body.IndexOf("local_path", StringComparison.OrdinalIgnoreCase) >= 0 ||
                 !body.Contains("\"target_type\"") || !body.Contains("\"due_at_utc\"") ||
@@ -314,6 +337,7 @@ internal static class Program
             TestMultiSelectionLocalization();
             TestAccessoryReportTemplates();
             TestKtsExclusiveGroupReplacement();
+            TestKtsUpgradeForSelectedEquipment();
             TestRegulationLevelControlSynchronization();
             TestReportEmailFeature();
             TestRegistrationFailureDialog();
@@ -409,7 +433,7 @@ internal static class Program
 
     private static void TestAccessoryLocalization()
     {
-        string repositoryRoot = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", ".."));
+        string repositoryRoot = Path.GetFullPath(Environment.GetEnvironmentVariable("SSW_TEST_REPOSITORY_ROOT") ?? Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", ".."));
         string[] languages = { "bg", "cs", "da", "de", "en", "fr", "hu", "is", "it", "nl", "no", "pl", "ro", "sl", "sv" };
         string[] keys =
         {
@@ -451,7 +475,7 @@ internal static class Program
 
     private static void TestMultiSelectionLocalization()
     {
-        string repositoryRoot = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", ".."));
+        string repositoryRoot = Path.GetFullPath(Environment.GetEnvironmentVariable("SSW_TEST_REPOSITORY_ROOT") ?? Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", ".."));
         string[] languages = { "bg", "cs", "da", "de", "en", "fr", "hu", "is", "it", "nl", "no", "pl", "ro", "sl", "sv" };
         string[] keys =
         {
@@ -485,7 +509,13 @@ internal static class Program
         var items = new List<CLSelectionCatalogItem> { extra, wifi, sma, dependent, unrelated };
         var selected = new HashSet<int> { wifi.Id, sma.Id, dependent.Id, unrelated.Id };
 
-        MethodInfo method = typeof(CLMainForm).GetMethod(
+        Type legacyReference = typeof(CLNextUiApplicationService).Assembly.GetType("SSW.CLMainForm");
+        if (legacyReference == null)
+        {
+            Console.WriteLine("Legacy-only exclusive-group control test omitted in Next-only build; Next normalization is tested separately.");
+            return;
+        }
+        MethodInfo method = legacyReference.GetMethod(
             "Accessories_RemoveDependentsForExclusiveGroupChange",
             BindingFlags.NonPublic | BindingFlags.Static);
         if (method == null) throw new InvalidOperationException("KTS replacement rule was not found.");
@@ -495,9 +525,54 @@ internal static class Program
             throw new InvalidOperationException("KTS replacement did not remove only incompatible dependent functions.");
     }
 
+    private static void TestKtsUpgradeForSelectedEquipment()
+    {
+        var basic = new CLSelectionCatalogItem
+        {
+            Id = 10, Code = "KTS BASIC", ExclusiveGroupCode = "KTS",
+            Availability = "Optional", CustomerSelectable = true, ControllerLevel = 1,
+            DefaultSelected = true
+        };
+        var extra = new CLSelectionCatalogItem
+        {
+            Id = 11, Code = "KTS EXTRA", ExclusiveGroupCode = "KTS",
+            Availability = "Optional", CustomerSelectable = true, ControllerLevel = 2
+        };
+        var wifi = new CLSelectionCatalogItem
+        {
+            Id = 12, Code = "KTS WIFI", ExclusiveGroupCode = "KTS",
+            Availability = "Optional", CustomerSelectable = true, ControllerLevel = 2
+        };
+        var items = new List<CLSelectionCatalogItem> { basic, extra, wifi };
+        var method = typeof(CLNextUiApplicationService).GetMethod(
+            "NormalizeAccessorySelection", BindingFlags.NonPublic | BindingFlags.Static);
+        if (method == null) throw new InvalidOperationException("KTS accessory normalization was not found.");
+
+        var plainSelection = new HashSet<int> { basic.Id };
+        method.Invoke(null, new object[] { items, plainSelection, false });
+        if (!plainSelection.Contains(basic.Id) || plainSelection.Contains(extra.Id))
+            throw new InvalidOperationException("A plain unit should retain KTS Basic.");
+
+        var withOption = new HashSet<int> { basic.Id };
+        method.Invoke(null, new object[] { items, withOption, true });
+        if (withOption.Contains(basic.Id) || !withOption.Contains(extra.Id))
+            throw new InvalidOperationException("An active accessory or treatment should upgrade KTS Basic to Extra.");
+
+        var withHigherController = new HashSet<int> { wifi.Id };
+        method.Invoke(null, new object[] { items, withHigherController, true });
+        if (!withHigherController.Contains(wifi.Id) || withHigherController.Contains(extra.Id))
+            throw new InvalidOperationException("The automatic KTS upgrade should preserve an already selected Extra-level controller.");
+    }
+
     private static void TestRegulationLevelControlSynchronization()
     {
-        MethodInfo method = typeof(CLMainForm).GetMethod(
+        Type legacyReference = typeof(CLNextUiApplicationService).Assembly.GetType("SSW.CLMainForm");
+        if (legacyReference == null)
+        {
+            Console.WriteLine("Retired WinForms regulation-control test omitted in Next-only build.");
+            return;
+        }
+        MethodInfo method = legacyReference.GetMethod(
             "Performance_SynchronizeRegulationLevelControls",
             BindingFlags.NonPublic | BindingFlags.Static);
         if (method == null) throw new InvalidOperationException("Regulation-level control synchronization was not found.");
@@ -542,7 +617,7 @@ internal static class Program
         if (bodyWithoutReference != "Selected unit: CLRC 038 OSC; airflow: 100; pressure: 421.")
             throw new InvalidOperationException("Selection email body contains an empty reference paragraph.");
 
-        string repositoryRoot = Path.GetFullPath(Path.Combine(
+        string repositoryRoot = Path.GetFullPath(Environment.GetEnvironmentVariable("SSW_TEST_REPOSITORY_ROOT") ?? Path.Combine(
             AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", ".."));
         string[] languages = { "bg", "cs", "da", "de", "en", "fr", "hu", "is", "it", "nl", "no", "pl", "ro", "sl", "sv" };
         string[] keys =
@@ -567,7 +642,7 @@ internal static class Program
 
     private static void TestAccessoryReportTemplates()
     {
-        string repositoryRoot = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", ".."));
+        string repositoryRoot = Path.GetFullPath(Environment.GetEnvironmentVariable("SSW_TEST_REPOSITORY_ROOT") ?? Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", ".."));
         string[] reportFiles = {
             "CLMainReport.rdlc", "CLMainReport_Coil.rdlc",
             "CLMainReportWithCO2.rdlc", "CLMainReportWithCO2_Coil.rdlc"
@@ -594,10 +669,22 @@ internal static class Program
 
             byte[] shortReport = RenderAccessoryReport(document, Path.Combine(repositoryRoot, "SSWLib", reportFile), 1);
             byte[] longReport = RenderAccessoryReport(document, Path.Combine(repositoryRoot, "SSWLib", reportFile), 80);
+            string previewSample = Environment.GetEnvironmentVariable("SSW_REPORT_PREVIEW_SAMPLE");
+            if (!String.IsNullOrWhiteSpace(previewSample) && reportFile == "CLMainReportWithCO2_Coil.rdlc")
+                File.WriteAllBytes(previewSample, shortReport);
             if (shortReport.Length < 1000 || longReport.Length < 1000)
                 throw new InvalidOperationException("Accessory report PDF rendering is empty: " + reportFile);
             if (PdfPageCount(longReport) < 2)
                 throw new InvalidOperationException("Long accessory report did not paginate: " + reportFile);
+            using (var pdf = new iTextSharp.text.pdf.PdfReader(longReport))
+            {
+                for (int pageNumber = 1; pageNumber <= pdf.NumberOfPages; pageNumber++)
+                {
+                    iTextSharp.text.Rectangle page = pdf.GetPageSize(pageNumber);
+                    if (Math.Abs(page.Width - 595.28f) > 1f || Math.Abs(page.Height - 841.89f) > 1f)
+                        throw new InvalidOperationException("Report preview is not A4: " + reportFile);
+                }
+            }
         }
     }
 
@@ -641,7 +728,7 @@ internal static class Program
                 }
                 report.DataSources.Add(new ReportDataSource(dataSetName, table));
             }
-            return report.Render("PDF");
+            return CLReportViewerForm.RenderA4Pdf(report);
         }
     }
 
@@ -771,7 +858,7 @@ internal static class Program
 
     private static void TestSdfFixtures(string temporaryRoot)
     {
-        string repositoryRoot = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", ".."));
+        string repositoryRoot = Path.GetFullPath(Environment.GetEnvironmentVariable("SSW_TEST_REPOSITORY_ROOT") ?? Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", ".."));
         string fixtureRoot = Path.Combine(repositoryRoot, "tests", "fixtures", "sdf");
         string legacyPath = CopySdfFixture(fixtureRoot, temporaryRoot, "legacy-0.sdf");
         string schema1Path = CopySdfFixture(fixtureRoot, temporaryRoot, "schema-1-av.sdf");
@@ -821,7 +908,7 @@ internal static class Program
         var context = new CLSelectionRegistrationContext
         {
             CustomerCode = "AV",
-            SoftwareVersion = typeof(CLMainForm).Assembly.GetName().Version.ToString(),
+            SoftwareVersion = CLTechnicalVersions.SoftwareVersion.ToString(),
             DatabaseSchemaVersion = 1,
             DatabaseContentHash = "release-installer-smoke",
             ApiContractVersion = 1
@@ -907,6 +994,27 @@ internal static class Program
         CLSelectionRegistrationResult revised = client.RegisterSelectionAsync(reopened, context).GetAwaiter().GetResult();
         if (revised.Revision != 2 || revised.ChangeKind != "TechnicalChange" || handler.SelectionRevisionCount != 3)
             throw new InvalidOperationException("Changed selection did not create R02.");
+
+        CLSelectionSnapshotService.MarkRegistered(reopened, revised.PublicReference, revised.Revision,
+            reopened.Identity.ResumeToken, DateTime.UtcNow);
+        string offerFingerprint = reopened.RevisionTracking.Current.SnapshotHash;
+        client.RecordOfferAsync(reopened, false, context).GetAwaiter().GetResult();
+        if (reopened.Identity.OfferStatus != "Provisional" || reopened.Identity.OfferDefinitiveAtUtc.HasValue)
+            throw new InvalidOperationException("Provisional offer started definitive timing.");
+        handler.FailNextOffer = true;
+        try { client.RecordOfferAsync(reopened, true, context).GetAwaiter().GetResult(); throw new InvalidOperationException("Offline offer unexpectedly succeeded."); }
+        catch (HttpRequestException) { }
+        if (reopened.Identity.OfferStatus != "Provisional")
+            throw new InvalidOperationException("Offline failure falsely marked offer definitive.");
+        client.RecordOfferAsync(reopened, true, context).GetAwaiter().GetResult();
+        if (handler.OfferIdempotencyKeys.Count != 3 ||
+            reopened.Identity.OfferStatus != "Definitive" || !reopened.Identity.OfferDefinitiveAtUtc.HasValue)
+            throw new InvalidOperationException("Offer retry did not persist definitive state.");
+        client.RecordOfferAsync(reopened, false, context).GetAwaiter().GetResult();
+        CLSelectionProjectDocument savedOffer = CLSelectionProjectSerializer.Deserialize(CLSelectionProjectSerializer.Serialize(reopened));
+        if (savedOffer.Identity.OfferStatus != "Definitive" || savedOffer.Identity.OfferRevision != 2 ||
+            CLSelectionSnapshotService.Refresh(savedOffer).SnapshotHash != offerFingerprint)
+            throw new InvalidOperationException("Offer state lost on reopen or changed technical fingerprints.");
 
         var multiProject = CLMultiSelectionProjectSerializer.CreateNew("Project 01", "en");
         multiProject.Items.Add(new CLMultiSelectionProjectItem
@@ -1002,7 +1110,7 @@ internal static class Program
             throw new InvalidOperationException("The report companion project lost its snapshot fingerprint.");
         }
 
-        string repositoryRoot = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", ".."));
+        string repositoryRoot = Path.GetFullPath(Environment.GetEnvironmentVariable("SSW_TEST_REPOSITORY_ROOT") ?? Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", ".."));
         foreach (string fixtureName in new[] { "selection-v1.sswsel", "selection-v1-sparse.sswsel" })
         {
             string migratedPath = Path.Combine(root, fixtureName);

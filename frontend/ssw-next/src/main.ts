@@ -19,12 +19,15 @@ import {
   createIcons,
   ExternalLink,
   FileDown,
+  FileCheck,
   FileText,
   FolderCheck,
+  FolderOpen,
   Gauge,
   HardDrive,
   HardDriveDownload,
   Info,
+  Keyboard,
   LoaderCircle,
   Mail,
   Minus,
@@ -32,6 +35,7 @@ import {
   PanelBottom,
   PanelLeft,
   PanelTop,
+  Printer,
   Ruler,
   Save,
   Search,
@@ -45,7 +49,9 @@ import {
 } from "lucide";
 import pdfWorkerUrl from "pdfjs-dist/build/pdf.worker.min.mjs?url";
 import "./styles.css";
-import { createBridge, logClientError } from "./bridge";
+// Retain these workflows for future reactivation without exposing their controls.
+const optionalWorkflowControls = { saveAs: false, provisionalOffer: false };
+import { createBridge, logClientError, openDocumentCoverageAudit } from "./bridge";
 import { normalizeSelection } from "./bridge/normalizeSelection";
 import { getHelpContent } from "./help";
 import {
@@ -92,6 +98,32 @@ const steps: StepDefinition[] = [
 ];
 
 const bridge = createBridge();
+window.addEventListener("keydown", (event) => {
+  if (event.repeat) return;
+  const key = event.key.toLowerCase();
+  if (key === "l" && event.ctrlKey && event.shiftKey && event.altKey && !event.metaKey) {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    releaseInfoOpen = true;
+    releaseHistoryOpen = false;
+    internalToolsUnlocked = false;
+    quickCommandsCodeError = false;
+    renderShell();
+    return;
+  }
+  if (key !== "d") return;
+  const requestedShortcut = event.ctrlKey && event.shiftKey && event.metaKey && !event.altKey;
+  const fallbackShortcut = event.ctrlKey && event.altKey && event.shiftKey && !event.metaKey;
+  if (!requestedShortcut && !fallbackShortcut) return;
+  event.preventDefault();
+  event.stopImmediatePropagation();
+  releaseInfoOpen = true;
+  releaseHistoryOpen = false;
+  internalToolsUnlocked = false;
+  quickCommandsCodeError = false;
+  renderShell();
+}, true);
+
 const app = document.querySelector<HTMLDivElement>("#app");
 const iconSet = {
   Activity,
@@ -109,12 +141,15 @@ const iconSet = {
   CircleX,
   ExternalLink,
   FileDown,
+  FileCheck,
   FileText,
   FolderCheck,
+  FolderOpen,
   Gauge,
   HardDrive,
   HardDriveDownload,
   Info,
+  Keyboard,
   LoaderCircle,
   Mail,
   Minus,
@@ -122,6 +157,7 @@ const iconSet = {
   PanelBottom,
   PanelLeft,
   PanelTop,
+  Printer,
   Ruler,
   Save,
   Search,
@@ -144,7 +180,7 @@ let result: SelectionResult | null = null;
 let currentStep: StepId = "project";
 let maximumReachableStepIndex = 1;
 let confirmedUnitId: string | null = null;
-let installationReviewRequired = false;
+let installationReviewRequired = true;
 const visitedSteps = new Set<StepId>(["project"]);
 const skippedOptionalSteps = new Set<StepId>();
 let calculating = false;
@@ -155,10 +191,19 @@ let saveLanguagePromptOpen = false;
 let saveLanguagePromptSaveAs = false;
 let saveLanguageChoice = "it";
 let saveLanguageRemember = false;
+let offerDialogOpen = false;
+let offerReminderEnabled = true;
+let offerReminderAmount = 7;
+let offerReminderUnit: "days" | "months" = "days";
 let toastMessage = "";
 let helpOpen = false;
 let releaseInfoOpen = false;
+let releaseHistoryOpen = false;
+let releaseHistoryLanguage: "en" | "it" = "en";
+let internalToolsUnlocked = false;
+let quickCommandsCodeError = false;
 let notificationCenterOpen = false;
+let notificationView: "offers" | "reminders" = "offers";
 let notificationState: FollowUpCenterState = {
   unreadDueCount: 0,
   reminders: [],
@@ -258,29 +303,93 @@ const localizedSoundPath = (rawCode: string, rawLabel: string): string => {
   return labels[code] ?? (rawLabel || rawCode);
 };
 const helpContent = () => getHelpContent(languageCode());
-const releaseLabels = (): { title: string; version: string; builtAt: string; close: string } => ({
-  en: { title: "Release information", version: "Release", builtAt: "Build date and time", close: "Close" },
-  bg: { title: "Информация за версията", version: "Версия", builtAt: "Дата и час на компилация", close: "Затвори" },
-  cs: { title: "Informace o verzi", version: "Verze", builtAt: "Datum a čas sestavení", close: "Zavřít" },
-  da: { title: "Versionsoplysninger", version: "Version", builtAt: "Builddato og -tid", close: "Luk" },
-  de: { title: "Versionsinformationen", version: "Version", builtAt: "Build-Datum und -Uhrzeit", close: "Schließen" },
-  fr: { title: "Informations sur la version", version: "Version", builtAt: "Date et heure de compilation", close: "Fermer" },
-  hu: { title: "Verzióinformáció", version: "Verzió", builtAt: "Build dátuma és időpontja", close: "Bezárás" },
-  is: { title: "Útgáfuupplýsingar", version: "Útgáfa", builtAt: "Dagsetning og tími smíði", close: "Loka" },
-  it: { title: "Informazioni sulla release", version: "Release", builtAt: "Data e ora della build", close: "Chiudi" },
-  nl: { title: "Versie-informatie", version: "Versie", builtAt: "Builddatum en -tijd", close: "Sluiten" },
-  no: { title: "Versjonsinformasjon", version: "Versjon", builtAt: "Byggedato og -tid", close: "Lukk" },
-  pl: { title: "Informacje o wersji", version: "Wersja", builtAt: "Data i godzina kompilacji", close: "Zamknij" },
-  ro: { title: "Informații despre versiune", version: "Versiune", builtAt: "Data și ora compilării", close: "Închide" },
-  sl: { title: "Informacije o različici", version: "Različica", builtAt: "Datum in čas gradnje", close: "Zapri" },
-  sv: { title: "Versionsinformation", version: "Version", builtAt: "Byggdatum och tid", close: "Stäng" },
-}[languageCode()] ?? { title: "Release information", version: "Release", builtAt: "Build date and time", close: "Close" });
+const recoveryCategoryLabels: Record<string, { title: string; any: string; plate: string; decentralized: string; centralized: string; rotary: string; plateNote: string }> = {
+  en: { title: "Heat-recovery type", any: "Any type", plate: "Plate heat recovery", decentralized: "Decentralized", centralized: "Centralized", rotary: "Rotary heat recovery", plateNote: "Plate classification requires a recovery-type field in the product database." },
+  bg: { title: "Тип рекуператор", any: "Всички типове", plate: "Пластинчат рекуператор", decentralized: "Децентрализиран", centralized: "Централизиран", rotary: "Ротационен", plateNote: "За филтъра по тип е необходимо поле в продуктовата база данни." },
+  cs: { title: "Typ rekuperace", any: "Všechny typy", plate: "Deskový rekuperátor", decentralized: "Decentralizovaný", centralized: "Centralizovaný", rotary: "Rotační rekuperátor", plateNote: "Filtrování deskových rekuperátorů vyžaduje údaj v databázi produktů." },
+  da: { title: "Varmegenvindingstype", any: "Alle typer", plate: "Pladevarmegenvinding", decentralized: "Decentraliseret", centralized: "Centraliseret", rotary: "Roterende", plateNote: "Filteret for pladevekslere kræver en typeangivelse i produktdatabasen." },
+  de: { title: "Wärmerückgewinnungstyp", any: "Alle Typen", plate: "Plattenwärmerückgewinnung", decentralized: "Dezentral", centralized: "Zentral", rotary: "Rotierend", plateNote: "Die Plattenfilterung benötigt ein Wärmerückgewinnungsmerkmal in der Produktdatenbank." },
+  fr: { title: "Type de récupération de chaleur", any: "Tous les types", plate: "Récupérateur à plaques", decentralized: "Décentralisé", centralized: "Centralisé", rotary: "Rotatif", plateNote: "Le filtre à plaques nécessite un champ de classification dans la base produits." },
+  hu: { title: "Hővisszanyerő típusa", any: "Minden típus", plate: "Lemezes hővisszanyerő", decentralized: "Decentralizált", centralized: "Centralizált", rotary: "Forgódobos", plateNote: "A lemezes szűréshez hővisszanyerési típus mező szükséges a termékadatbázisban." },
+  is: { title: "Tegund varmaendurvinnslu", any: "Allar tegundir", plate: "Plötuvarmaendurvinnsla", decentralized: "Dreifð eining", centralized: "Miðlæg eining", rotary: "Snúningsbúnaður", plateNote: "Plötusíun krefst tegundarreits í vörugagnagrunninum." },
+  it: { title: "Tipologia recuperatore", any: "Tutte le tipologie", plate: "Recuperatore a piastre", decentralized: "Decentralizzato", centralized: "Centralizzato", rotary: "Rotativo", plateNote: "Il filtro piastre richiede un campo tipologia nel database prodotti." },
+  nl: { title: "Type warmteterugwinning", any: "Alle typen", plate: "Platenwarmteterugwinning", decentralized: "Decentraal", centralized: "Centraal", rotary: "Roterend", plateNote: "Filteren op platen vereist een typeveld in de productdatabase." },
+  no: { title: "Type varmegjenvinning", any: "Alle typer", plate: "Platevarmegjenvinning", decentralized: "Desentralisert", centralized: "Sentralisert", rotary: "Roterende", plateNote: "Platefilteret krever et typefelt i produktdatabasen." },
+  pl: { title: "Typ odzysku ciepła", any: "Wszystkie typy", plate: "Odzysk ciepła na wymienniku płytowym", decentralized: "Zdecentralizowana", centralized: "Centralizowana", rotary: "Obrotowy", plateNote: "Filtrowanie wymienników płytowych wymaga pola typu w bazie produktów." },
+  ro: { title: "Tip recuperare de căldură", any: "Toate tipurile", plate: "Recuperator cu plăci", decentralized: "Descentralizat", centralized: "Centralizat", rotary: "Rotativ", plateNote: "Filtrarea recuperatoarelor cu plăci necesită un câmp de tip în baza de produse." },
+  sl: { title: "Vrsta rekuperacije toplote", any: "Vse vrste", plate: "Ploščni rekuperator", decentralized: "Decentraliziran", centralized: "Centraliziran", rotary: "Rotacijski", plateNote: "Filtriranje ploščnih enot zahteva podatek o vrsti v podatkovni bazi izdelkov." },
+  sv: { title: "Typ av värmeåtervinning", any: "Alla typer", plate: "Plattvärmeåtervinning", decentralized: "Decentraliserad", centralized: "Centraliserad", rotary: "Roterande", plateNote: "Plattfilter kräver ett typfält i produktdatabasen." },
+};
+const recoveryCategoryText = () => recoveryCategoryLabels[languageCode()] ?? recoveryCategoryLabels.en;
+const releaseLabels = (): { title: string; version: string; builtAt: string; close: string; history: string; quick: string; release: string; date: string; changes: string; shortcut: string; action: string; accessCode: string; unlock: string; invalidCode: string } => ({
+  en: { title: "Release information", version: "Release", builtAt: "Build date and time", close: "Close", history: "Improvement log", quick: "Document availability", release: "Release", date: "Date", changes: "Changes", shortcut: "Shortcut", action: "Action", accessCode: "Access code", unlock: "Unlock", invalidCode: "Incorrect code." },
+  bg: { title: "Информация за версията", version: "Версия", builtAt: "Дата и час на компилация", close: "Затвори", history: "Дневник на подобренията", quick: "Налични/липсващи документи", release: "Версия", date: "Дата", changes: "Промени", shortcut: "Пряк път", action: "Действие", accessCode: "Код за достъп", unlock: "Отключи", invalidCode: "Неправилен код." },
+  cs: { title: "Informace o verzi", version: "Verze", builtAt: "Datum a čas sestavení", close: "Zavřít", history: "Přehled vylepšení", quick: "Dostupné/chybějící dokumenty", release: "Verze", date: "Datum", changes: "Změny", shortcut: "Zkratka", action: "Akce", accessCode: "Přístupový kód", unlock: "Odemknout", invalidCode: "Nesprávný kód." },
+  da: { title: "Versionsoplysninger", version: "Version", builtAt: "Builddato og -tid", close: "Luk", history: "Forbedringslog", quick: "Tilgængelige/manglende dokumenter", release: "Version", date: "Dato", changes: "Ændringer", shortcut: "Genvej", action: "Handling", accessCode: "Adgangskode", unlock: "Lås op", invalidCode: "Forkert kode." },
+  de: { title: "Versionsinformationen", version: "Version", builtAt: "Build-Datum und -Uhrzeit", close: "Schließen", history: "Verbesserungsprotokoll", quick: "Verfügbare/fehlende Dokumente", release: "Version", date: "Datum", changes: "Änderungen", shortcut: "Tastenkürzel", action: "Aktion", accessCode: "Zugangscode", unlock: "Freischalten", invalidCode: "Falscher Code." },
+  fr: { title: "Informations sur la version", version: "Version", builtAt: "Date et heure de compilation", close: "Fermer", history: "Journal des améliorations", quick: "Documents disponibles/manquants", release: "Version", date: "Date", changes: "Modifications", shortcut: "Raccourci", action: "Action", accessCode: "Code d’accès", unlock: "Déverrouiller", invalidCode: "Code incorrect." },
+  hu: { title: "Verzióinformáció", version: "Verzió", builtAt: "Build dátuma és időpontja", close: "Bezárás", history: "Fejlesztési napló", quick: "Elérhető/hiányzó dokumentumok", release: "Verzió", date: "Dátum", changes: "Változások", shortcut: "Billentyűparancs", action: "Művelet", accessCode: "Hozzáférési kód", unlock: "Feloldás", invalidCode: "Hibás kód." },
+  is: { title: "Útgáfuupplýsingar", version: "Útgáfa", builtAt: "Dagsetning og tími smíði", close: "Loka", history: "Umbótaskrá", quick: "Tiltæk/vöntuð skjöl", release: "Útgáfa", date: "Dagsetning", changes: "Breytingar", shortcut: "Flýtilykill", action: "Aðgerð", accessCode: "Aðgangskóði", unlock: "Opna", invalidCode: "Rangur kóði." },
+  it: { title: "Informazioni sulla release", version: "Release", builtAt: "Data e ora della build", close: "Chiudi", history: "Registro miglioramenti", quick: "Documenti presenti/mancanti", release: "Release", date: "Data", changes: "Modifiche", shortcut: "Comando rapido", action: "Funzione", accessCode: "Codice di accesso", unlock: "Accedi", invalidCode: "Codice non corretto." },
+  nl: { title: "Versie-informatie", version: "Versie", builtAt: "Builddatum en -tijd", close: "Sluiten", history: "Verbeteringenlogboek", quick: "Beschikbare/ontbrekende documenten", release: "Versie", date: "Datum", changes: "Wijzigingen", shortcut: "Sneltoets", action: "Actie", accessCode: "Toegangscode", unlock: "Ontgrendelen", invalidCode: "Onjuiste code." },
+  no: { title: "Versjonsinformasjon", version: "Versjon", builtAt: "Byggedato og -tid", close: "Lukk", history: "Forbedringslogg", quick: "Tilgjengelige/manglende dokumenter", release: "Versjon", date: "Dato", changes: "Endringer", shortcut: "Snarvei", action: "Handling", accessCode: "Tilgangskode", unlock: "Lås opp", invalidCode: "Feil kode." },
+  pl: { title: "Informacje o wersji", version: "Wersja", builtAt: "Data i godzina kompilacji", close: "Zamknij", history: "Dziennik ulepszeń", quick: "Dostępne/brakujące dokumenty", release: "Wersja", date: "Data", changes: "Zmiany", shortcut: "Skrót", action: "Działanie", accessCode: "Kod dostępu", unlock: "Odblokuj", invalidCode: "Nieprawidłowy kod." },
+  ro: { title: "Informații despre versiune", version: "Versiune", builtAt: "Data și ora compilării", close: "Închide", history: "Jurnalul îmbunătățirilor", quick: "Documente disponibile/lipsă", release: "Versiune", date: "Data", changes: "Modificări", shortcut: "Scurtătură", action: "Acțiune", accessCode: "Cod de acces", unlock: "Deblochează", invalidCode: "Cod incorect." },
+  sl: { title: "Informacije o različici", version: "Različica", builtAt: "Datum in čas gradnje", close: "Zapri", history: "Dnevnik izboljšav", quick: "Razpoložljivi/manjkajoči dokumenti", release: "Različica", date: "Datum", changes: "Spremembe", shortcut: "Bližnjica", action: "Dejanje", accessCode: "Dostopna koda", unlock: "Odkleni", invalidCode: "Napačna koda." },
+  sv: { title: "Versionsinformation", version: "Version", builtAt: "Byggdatum och tid", close: "Stäng", history: "Förbättringslogg", quick: "Tillgängliga/saknade dokument", release: "Version", date: "Datum", changes: "Ändringar", shortcut: "Kortkommando", action: "Åtgärd", accessCode: "Åtkomstkod", unlock: "Lås upp", invalidCode: "Felaktig kod." },
+}[languageCode()] ?? { title: "Release information", version: "Release", builtAt: "Build date and time", close: "Close", history: "Improvement log", quick: "Document availability", release: "Release", date: "Date", changes: "Changes", shortcut: "Shortcut", action: "Action", accessCode: "Access code", unlock: "Unlock", invalidCode: "Incorrect code." });
+
+const quickCommandActions: Record<string, readonly [string, string]> = {
+  en: ["Documentation dashboard", "Review document availability by unit size, model and version."],
+  bg: ["Табло за наличност на документи", "Проверете документите според размер, модел и версия."],
+  cs: ["Přehled dostupnosti dokumentů", "Zkontrolujte dostupnost dokumentů podle velikosti, modelu a verze."],
+  da: ["Dokumentoversigt", "Se tilgængelige dokumenter efter størrelse, model og version."],
+  de: ["Dokumentenübersicht", "Dokumentverfügbarkeit nach Größe, Modell und Version prüfen."],
+  fr: ["Tableau de disponibilité des documents", "Consulter les documents disponibles par taille, modèle et version."],
+  hu: ["Dokumentumok elérhetősége", "A dokumentumok ellenőrzése méret, modell és verzió szerint."],
+  is: ["Yfirlit yfir tiltæk skjöl", "Skoðaðu tiltæk skjöl eftir stærð, gerð og útgáfu."],
+  it: ["Dashboard documentazione", "Controlla la disponibilità dei documenti per taglia, modello e versione."],
+  nl: ["Documentenoverzicht", "Controleer beschikbare documenten per grootte, model en versie."],
+  no: ["Dokumentoversikt", "Se tilgjengelige dokumenter etter størrelse, modell og versjon."],
+  pl: ["Przegląd dostępności dokumentów", "Sprawdź dostępność dokumentów według wielkości, modelu i wersji."],
+  ro: ["Panou de disponibilitate a documentelor", "Verificați documentele disponibile după dimensiune, model și versiune."],
+  sl: ["Pregled razpoložljivosti dokumentov", "Preverite dokumente glede na velikost, model in različico."],
+  sv: ["Dokumentöversikt", "Kontrollera tillgängliga dokument efter storlek, modell och version."],
+};
+
+const quickCommandRows = () => {
+  const commandText = quickCommandActions[languageCode()] ?? quickCommandActions.en;
+  return [
+    { shortcut: "Ctrl + Shift + Alt + D", alternate: "Ctrl + Shift + Windows + D", action: commandText[0], description: commandText[1] },
+    { shortcut: "Ctrl + Shift + Alt + L", alternate: "", action: releaseLabels().history, description: "" },
+  ];
+};
 const saveLanguagePromptText = (): { title: string; message: string; useLanguage: string; remember: string; save: string; cancel: string } => ({
   it: { title: "Lingua dei documenti", message: "In quale lingua deve essere preparata l'offerta finale?", useLanguage: "Lingua dei documenti", remember: "Non chiedermelo più", save: "Salva", cancel: "Annulla" },
   en: { title: "Document language", message: "Which language should be used for the final offer?", useLanguage: "Document language", remember: "Do not ask again", save: "Save", cancel: "Cancel" },
   fr: { title: "Langue des documents", message: "Dans quelle langue l'offre finale doit-elle être préparée ?", useLanguage: "Langue des documents", remember: "Ne plus demander", save: "Enregistrer", cancel: "Annuler" },
   de: { title: "Dokumentsprache", message: "In welcher Sprache soll das endgültige Angebot erstellt werden?", useLanguage: "Dokumentsprache", remember: "Nicht mehr fragen", save: "Speichern", cancel: "Abbrechen" },
 } as Record<string, { title: string; message: string; useLanguage: string; remember: string; save: string; cancel: string }>)[languageCode()] ?? { title: "Document language", message: "Which language should be used for the final offer?", useLanguage: "Document language", remember: "Do not ask again", save: "Save", cancel: "Cancel" };
+const offerTexts: Record<string, { provisional: string; definitive: string; title: string; description: string; reminder: string; interval: string; days: string; months: string; confirm: string; cancel: string }> = {
+  en: { provisional: "Generate provisional offer", definitive: "Generate definitive offer", title: "Definitive offer", description: "Confirm the offer and choose whether to set a reminder.", reminder: "Remind me about this offer", interval: "Reminder after", days: "days", months: "months (30 days)", confirm: "Generate definitive offer", cancel: "Cancel" },
+  it: { provisional: "Genera offerta provvisoria", definitive: "Genera offerta definitiva", title: "Offerta definitiva", description: "Conferma l'offerta e scegli se impostare un promemoria.", reminder: "Ricordami questa offerta", interval: "Promemoria dopo", days: "giorni", months: "mesi (30 giorni)", confirm: "Genera offerta definitiva", cancel: "Annulla" },
+  fr: { provisional: "Générer une offre provisoire", definitive: "Générer une offre définitive", title: "Offre définitive", description: "Confirmez l'offre et choisissez si vous souhaitez un rappel.", reminder: "Me rappeler cette offre", interval: "Rappel après", days: "jours", months: "mois (30 jours)", confirm: "Générer l'offre définitive", cancel: "Annuler" },
+  de: { provisional: "Vorläufiges Angebot erstellen", definitive: "Endgültiges Angebot erstellen", title: "Endgültiges Angebot", description: "Bestätigen Sie das Angebot und legen Sie optional eine Erinnerung fest.", reminder: "An dieses Angebot erinnern", interval: "Erinnerung nach", days: "Tagen", months: "Monaten (30 Tage)", confirm: "Endgültiges Angebot erstellen", cancel: "Abbrechen" },
+  bg: { provisional: "Генериране на предварителна оферта", definitive: "Генериране на окончателна оферта", title: "Окончателна оферта", description: "Потвърдете офертата и изберете дали да зададете напомняне.", reminder: "Напомнете ми за тази оферта", interval: "Напомняне след", days: "дни", months: "месеца (30 дни)", confirm: "Генерирай окончателна оферта", cancel: "Отказ" },
+  cs: { provisional: "Vytvořit předběžnou nabídku", definitive: "Vytvořit konečnou nabídku", title: "Konečná nabídka", description: "Potvrďte nabídku a zvolte, zda nastavit připomenutí.", reminder: "Připomenout tuto nabídku", interval: "Připomenout za", days: "dní", months: "měsíců (30 dní)", confirm: "Vytvořit konečnou nabídku", cancel: "Zrušit" },
+  da: { provisional: "Opret foreløbigt tilbud", definitive: "Opret endeligt tilbud", title: "Endeligt tilbud", description: "Bekræft tilbuddet, og vælg om der skal oprettes en påmindelse.", reminder: "Mind mig om dette tilbud", interval: "Påmindelse efter", days: "dage", months: "måneder (30 dage)", confirm: "Opret endeligt tilbud", cancel: "Annuller" },
+  hu: { provisional: "Előzetes ajánlat készítése", definitive: "Végleges ajánlat készítése", title: "Végleges ajánlat", description: "Erősítse meg az ajánlatot, és válassza ki, kér-e emlékeztetőt.", reminder: "Emlékeztessen erre az ajánlatra", interval: "Emlékeztető ennyi idő múlva", days: "nap", months: "hónap (30 nap)", confirm: "Végleges ajánlat készítése", cancel: "Mégse" },
+  is: { provisional: "Búa til bráðabirgðatilboð", definitive: "Búa til endanlegt tilboð", title: "Endanlegt tilboð", description: "Staðfestu tilboðið og veldu hvort setja eigi áminningu.", reminder: "Minna mig á þetta tilboð", interval: "Áminning eftir", days: "daga", months: "mánuði (30 dagar)", confirm: "Búa til endanlegt tilboð", cancel: "Hætta við" },
+  nl: { provisional: "Voorlopige offerte genereren", definitive: "Definitieve offerte genereren", title: "Definitieve offerte", description: "Bevestig de offerte en kies of u een herinnering wilt instellen.", reminder: "Herinner mij aan deze offerte", interval: "Herinnering na", days: "dagen", months: "maanden (30 dagen)", confirm: "Definitieve offerte genereren", cancel: "Annuleren" },
+  no: { provisional: "Opprett foreløpig tilbud", definitive: "Opprett endelig tilbud", title: "Endelig tilbud", description: "Bekreft tilbudet og velg om du vil opprette en påminnelse.", reminder: "Minn meg på dette tilbudet", interval: "Påminnelse etter", days: "dager", months: "måneder (30 dager)", confirm: "Opprett endelig tilbud", cancel: "Avbryt" },
+  pl: { provisional: "Utwórz ofertę wstępną", definitive: "Utwórz ofertę ostateczną", title: "Oferta ostateczna", description: "Potwierdź ofertę i zdecyduj, czy ustawić przypomnienie.", reminder: "Przypomnij mi o tej ofercie", interval: "Przypomnienie za", days: "dni", months: "miesiące (30 dni)", confirm: "Utwórz ofertę ostateczną", cancel: "Anuluj" },
+  ro: { provisional: "Generează oferta provizorie", definitive: "Generează oferta definitivă", title: "Ofertă definitivă", description: "Confirmați oferta și alegeți dacă doriți un memento.", reminder: "Amintește-mi de această ofertă", interval: "Memento după", days: "zile", months: "luni (30 de zile)", confirm: "Generează oferta definitivă", cancel: "Anulează" },
+  sl: { provisional: "Ustvari začasno ponudbo", definitive: "Ustvari dokončno ponudbo", title: "Dokončna ponudba", description: "Potrdite ponudbo in izberite, ali želite opomnik.", reminder: "Opomni me na to ponudbo", interval: "Opomnik čez", days: "dni", months: "mesecev (30 dni)", confirm: "Ustvari dokončno ponudbo", cancel: "Prekliči" },
+  sv: { provisional: "Skapa preliminärt erbjudande", definitive: "Skapa slutligt erbjudande", title: "Slutligt erbjudande", description: "Bekräfta erbjudandet och välj om du vill ställa in en påminnelse.", reminder: "Påminn mig om erbjudandet", interval: "Påminnelse efter", days: "dagar", months: "månader (30 dagar)", confirm: "Skapa slutligt erbjudande", cancel: "Avbryt" },
+};
+const offerReminderToDays = (amount: number, unit: "days" | "months"): number =>
+  amount * (unit === "months" ? 30 : 1);
+const offerText = () => offerTexts[languageCode()] ?? offerTexts.en;
 const helpTitle = (key: keyof LocalizedFrontendMessages["tooltips"]): string =>
   tooltipsEnabled ? messages().tooltips[key] : "";
 
@@ -304,6 +413,16 @@ type WorkflowText = {
 };
 
 const workflowTexts: Record<string, WorkflowText> = {
+  bg: { openSelection: "Отвори подбор", saveAs: "Запази като", notSaved: "Още не е запазен", savedFile: "Запазен файл", selectionSummary: "Обобщение на подбора", notifications: "Напомняния", noNotifications: "Няма напомняния.", due: "Изтекъл срок", upcoming: "Предстоящи", closed: "Приключени", reschedule: "Промени срока", successful: "Приключи успешно", unsuccessful: "Приключи без успех", days: "дни", fileMissing: "Локалният файл не е наличен", modified: "Променен" },
+  da: { openSelection: "Åbn valg", saveAs: "Gem som", notSaved: "Endnu ikke gemt", savedFile: "Gemt fil", selectionSummary: "Oversigt over valg", notifications: "Påmindelser", noNotifications: "Ingen påmindelser.", due: "Forfalden", upcoming: "Kommende", closed: "Afsluttet", reschedule: "Planlæg igen", successful: "Afslut med succes", unsuccessful: "Afslut uden succes", days: "dage", fileMissing: "Lokal fil er ikke tilgængelig", modified: "Ændret" },
+  hu: { openSelection: "Kiválasztás megnyitása", saveAs: "Mentés másként", notSaved: "Még nincs mentve", savedFile: "Mentett fájl", selectionSummary: "Kiválasztás összegzése", notifications: "Emlékeztetők", noNotifications: "Nincs emlékeztető.", due: "Esedékes", upcoming: "Közelgő", closed: "Lezárt", reschedule: "Átütemezés", successful: "Sikeres lezárás", unsuccessful: "Sikertelen lezárás", days: "nap", fileMissing: "A helyi fájl nem érhető el", modified: "Módosítva" },
+  is: { openSelection: "Opna val", saveAs: "Vista sem", notSaved: "Ekki enn vistað", savedFile: "Vistuð skrá", selectionSummary: "Yfirlit vals", notifications: "Áminningar", noNotifications: "Engar áminningar.", due: "Á gjalddaga", upcoming: "Væntanlegt", closed: "Lokið", reschedule: "Breyta dagsetningu", successful: "Ljúka með árangri", unsuccessful: "Ljúka án árangurs", days: "dagar", fileMissing: "Staðbundin skrá er ekki tiltæk", modified: "Breytt" },
+  nl: { openSelection: "Selectie openen", saveAs: "Opslaan als", notSaved: "Nog niet opgeslagen", savedFile: "Opgeslagen bestand", selectionSummary: "Selectieoverzicht", notifications: "Herinneringen", noNotifications: "Geen herinneringen.", due: "Vervallen", upcoming: "Gepland", closed: "Gesloten", reschedule: "Opnieuw plannen", successful: "Succesvol afsluiten", unsuccessful: "Zonder succes afsluiten", days: "dagen", fileMissing: "Lokaal bestand niet beschikbaar", modified: "Gewijzigd" },
+  no: { openSelection: "Åpne valg", saveAs: "Lagre som", notSaved: "Ikke lagret ennå", savedFile: "Lagret fil", selectionSummary: "Valgoversikt", notifications: "Påminnelser", noNotifications: "Ingen påminnelser.", due: "Forfalt", upcoming: "Kommende", closed: "Avsluttet", reschedule: "Planlegg på nytt", successful: "Avslutt med suksess", unsuccessful: "Avslutt uten suksess", days: "dager", fileMissing: "Lokal fil er ikke tilgjengelig", modified: "Endret" },
+  pl: { openSelection: "Otwórz dobór", saveAs: "Zapisz jako", notSaved: "Jeszcze nie zapisano", savedFile: "Zapisany plik", selectionSummary: "Podsumowanie doboru", notifications: "Przypomnienia", noNotifications: "Brak przypomnień.", due: "Po terminie", upcoming: "Nadchodzące", closed: "Zamknięte", reschedule: "Zmień termin", successful: "Zamknij z sukcesem", unsuccessful: "Zamknij bez sukcesu", days: "dni", fileMissing: "Plik lokalny jest niedostępny", modified: "Zmieniono" },
+  ro: { openSelection: "Deschide selecția", saveAs: "Salvează ca", notSaved: "Nu a fost salvată", savedFile: "Fișier salvat", selectionSummary: "Rezumatul selecției", notifications: "Mementouri", noNotifications: "Nu există mementouri.", due: "Scadent", upcoming: "Programate", closed: "Închise", reschedule: "Reprogramează", successful: "Închide cu succes", unsuccessful: "Închide fără succes", days: "zile", fileMissing: "Fișierul local nu este disponibil", modified: "Modificată" },
+  sl: { openSelection: "Odpri izbor", saveAs: "Shrani kot", notSaved: "Še ni shranjeno", savedFile: "Shranjena datoteka", selectionSummary: "Povzetek izbora", notifications: "Opomniki", noNotifications: "Ni opomnikov.", due: "Zapadlo", upcoming: "Prihodnji", closed: "Zaključeni", reschedule: "Prestavi termin", successful: "Uspešno zaključi", unsuccessful: "Zaključi brez uspeha", days: "dni", fileMissing: "Lokalna datoteka ni na voljo", modified: "Spremenjeno" },
+  sv: { openSelection: "Öppna val", saveAs: "Spara som", notSaved: "Inte sparat ännu", savedFile: "Sparad fil", selectionSummary: "Sammanfattning av val", notifications: "Påminnelser", noNotifications: "Inga påminnelser.", due: "Förfallen", upcoming: "Kommande", closed: "Avslutade", reschedule: "Planera om", successful: "Avsluta framgångsrikt", unsuccessful: "Avsluta utan framgång", days: "dagar", fileMissing: "Lokal fil är inte tillgänglig", modified: "Ändrad" },
   it: { openSelection: "Apri selezione", saveAs: "Salva con nome", notSaved: "Non ancora salvata", savedFile: "File salvato", selectionSummary: "Riepilogo selezione", notifications: "Promemoria", noNotifications: "Nessun promemoria presente.", due: "Scaduto", upcoming: "In programma", closed: "Chiuso", reschedule: "Riprogramma", successful: "Chiudi con successo", unsuccessful: "Chiudi senza successo", days: "giorni", fileMissing: "File locale non disponibile", modified: "Modificata" },
   en: { openSelection: "Open selection", saveAs: "Save as", notSaved: "Not saved yet", savedFile: "Saved file", selectionSummary: "Selection summary", notifications: "Reminders", noNotifications: "No reminders.", due: "Due", upcoming: "Upcoming", closed: "Closed", reschedule: "Reschedule", successful: "Close successful", unsuccessful: "Close unsuccessful", days: "days", fileMissing: "Local file unavailable", modified: "Modified" },
   cs: { openSelection: "Otevřít výběr", saveAs: "Uložit jako", notSaved: "Dosud neuloženo", savedFile: "Uložený soubor", selectionSummary: "Souhrn výběru", notifications: "Připomínky", noNotifications: "Žádné připomínky.", due: "Po termínu", upcoming: "Naplánováno", closed: "Uzavřeno", reschedule: "Přeplánovat", successful: "Uzavřít úspěšně", unsuccessful: "Uzavřít neúspěšně", days: "dnů", fileMissing: "Místní soubor není dostupný", modified: "Změněno" },
@@ -506,23 +625,54 @@ const renderIcons = (): void => {
 const renderNotificationCenter = (): string => {
   if (!notificationCenterOpen) return "";
   const copy = workflowText();
+  const archiveLabels: Record<string, [string, string, string]> = {
+    it: ["Offerte definitive", "Nessuna offerta definitiva.", "Senza promemoria"],
+    en: ["Definitive offers", "No definitive offers.", "No reminder"],
+    fr: ["Offres définitives", "Aucune offre définitive.", "Sans rappel"],
+    de: ["Endgültige Angebote", "Keine endgültigen Angebote.", "Ohne Erinnerung"],
+    bg: ["Окончателни оферти", "Няма окончателни оферти.", "Без напомняне"],
+    cs: ["Konecne nabidky", "Zadne konecne nabidky.", "Bez pripominky"],
+    da: ["Endelige tilbud", "Ingen endelige tilbud.", "Ingen paamindelse"],
+    hu: ["Vegleges ajanlatok", "Nincsenek vegleges ajanlatok.", "Emlekezteto nelkul"],
+    is: ["Endanleg tilbod", "Engin endanleg tilbod.", "An aminningar"],
+    nl: ["Definitieve offertes", "Geen definitieve offertes.", "Zonder herinnering"],
+    no: ["Endelige tilbud", "Ingen endelige tilbud.", "Uten paaminnelse"],
+    pl: ["Oferty ostateczne", "Brak ofert ostatecznych.", "Bez przypomnienia"],
+    ro: ["Oferte definitive", "Nu exista oferte definitive.", "Fara memento"],
+    sl: ["Dokoncne ponudbe", "Ni dokoncnih ponudb.", "Brez opomnika"],
+    sv: ["Slutliga offerter", "Inga slutliga offerter.", "Utan paminnelse"],
+  };
+  const archive = archiveLabels[languageCode()] ?? archiveLabels.en;
   const pending = notificationState.reminders
     .filter((item) => item.status === "Pending")
     .sort((left, right) => left.dueAt.localeCompare(right.dueAt));
   const closed = notificationState.reminders
     .filter((item) => item.status !== "Pending")
     .sort((left, right) => right.dueAt.localeCompare(left.dueAt));
-  const rows = [...pending, ...closed]
+  const reminderRows = [...pending, ...closed]
     .map((item) => renderNotificationRow(item, copy))
     .join("");
+  const offers = notificationState.offers ?? [];
+  const offerRows = offers.map((item) => `<article class="notification-row offer-row" data-reminder-open="${escapeHtml(item.id)}">
+    <div class="notification-status">${icon("file-check")}<span>${escapeHtml(offerText().title)}</span></div>
+    <div class="notification-copy"><strong>${escapeHtml(item.customerReference || item.model)}</strong>
+      <small>${escapeHtml(item.reference)} · R${String(item.revision).padStart(2, "0")} · ${escapeHtml(item.model)} · ${escapeHtml(new Date(item.definitiveAt).toLocaleDateString(messages().locale))}</small></div>
+    <div>${escapeHtml(item.reminderStatus ? (item.reminderStatus === "Pending" ? copy.upcoming : copy.closed) : archive[2])}</div>
+    <button type="button" class="icon-button bordered" data-offer-open="${escapeHtml(item.id)}" title="${escapeHtml(copy.openSelection)}">${icon("folder-open")}</button>
+  </article>`).join("");
+  const rows = notificationView === "offers" ? offerRows : reminderRows;
   return `<div class="modal-backdrop" data-action="close-notifications">
     <section class="notification-dialog" role="dialog" aria-modal="true">
       <header>
-        <div><h2>${escapeHtml(copy.notifications)}</h2><p>${escapeHtml(messages().tooltips.notifications)}</p></div>
+        <div><h2>${escapeHtml(notificationView === "offers" ? archive[0] : copy.notifications)}</h2></div>
         <button class="icon-button bordered" data-action="close-notifications" aria-label="${escapeHtml(messages().actions.close)}">${icon("circle-x")}</button>
       </header>
+      <div class="notification-tabs" role="tablist">
+        <button type="button" role="tab" aria-selected="${notificationView === "offers"}" data-notification-view="offers">${escapeHtml(archive[0])} (${offers.length})</button>
+        <button type="button" role="tab" aria-selected="${notificationView === "reminders"}" data-notification-view="reminders">${escapeHtml(copy.notifications)} (${notificationState.reminders.length})</button>
+      </div>
       <div class="notification-list">
-        ${rows || `<div class="empty-state">${icon("bell")}<p>${escapeHtml(copy.noNotifications)}</p></div>`}
+        ${rows || `<div class="empty-state">${icon("bell")}<p>${escapeHtml(notificationView === "offers" ? archive[1] : copy.noNotifications)}</p></div>`}
       </div>
     </section>
   </div>`;
@@ -586,8 +736,48 @@ const selectedUnit = (): UnitOption | undefined =>
 const stepIndex = (step: StepId): number =>
   steps.findIndex((candidate) => candidate.id === step);
 
+const hasBlockingValidation = (): boolean =>
+  Boolean(calculationFailed || result?.status === "invalid");
+
+const isAvensysSelectionOnlyCode = (code: string | undefined): boolean =>
+  /\b(CFI|CDR|CFD)$/i.test(code ?? "");
+
+const specialUnitNotice = (modelCode = selectedUnit()?.id): string => {
+  if (!isAvensysSelectionOnlyCode(modelCode)) return "";
+  const notices: Record<string, string> = {
+    bg: "Този модел е наличен, но конфигурацията и техническите характеристики не са дефинирани. Свържете се с Avensys за избор.",
+    cs: "Tento model je dostupný, ale konfigurace a technické údaje nejsou definovány. Pro výběr kontaktujte Avensys.",
+    da: "Denne model er tilgængelig, men konfiguration og tekniske data er ikke defineret. Kontakt Avensys for valg.",
+    de: "Dieses Modell ist verfügbar, aber Konfiguration und technische Leistungsdaten sind nicht definiert. Bitte wenden Sie sich für die Auswahl an Avensys.",
+    en: "This unit is available, but its configuration and performance data are not defined. Contact Avensys to complete the technical selection.",
+    fr: "Cette unité est disponible, mais sa configuration et ses performances ne sont pas définies. Contactez Avensys pour finaliser la sélection technique.",
+    hu: "Ez az egység elérhető, de a konfigurációja és a teljesítményadatai nincsenek meghatározva. A műszaki kiválasztáshoz vegye fel a kapcsolatot az Avensys céggel.",
+    is: "Þessi eining er í boði, en uppsetning hennar og afkastagögn hafa ekki verið skilgreind. Hafðu samband við Avensys til að ljúka tæknilegu vali.",
+    it: "Questa unità è disponibile, ma configurazione e prestazioni non sono definite. Contatta Avensys per completare la selezione tecnica.",
+    nl: "Deze unit is beschikbaar, maar de configuratie en prestatiegegevens zijn niet gedefinieerd. Neem contact op met Avensys om de technische selectie af te ronden.",
+    no: "Denne enheten er tilgjengelig, men konfigurasjon og ytelsesdata er ikke definert. Kontakt Avensys for å fullføre det tekniske valget.",
+    pl: "To urządzenie jest dostępne, ale jego konfiguracja i dane wydajnościowe nie zostały określone. Skontaktuj się z Avensys, aby dokończyć dobór techniczny.",
+    ro: "Această unitate este disponibilă, dar configurația și datele de performanță nu sunt definite. Contactați Avensys pentru finalizarea selecției tehnice.",
+    sl: "Ta enota je na voljo, vendar konfiguracija in podatki o zmogljivosti niso določeni. Za dokončanje tehničnega izbora se obrnite na Avensys.",
+    sv: "Enheten är tillgänglig, men konfiguration och prestandadata är inte definierade. Kontakta Avensys för att slutföra det tekniska valet.",
+  };
+  return notices[languageCode()] ?? notices.en;
+};
+
+const canGenerateTechnicalOutput = (): boolean =>
+  !result?.requiresAvensysSelection;
+
+const installationConfirmationPending = (): boolean =>
+  installationReviewRequired &&
+  Boolean(draft) &&
+  !result?.requiresAvensysSelection &&
+  layoutsForInstallation(draft!.installationMode).length > 1;
+
 const canNavigateToStep = (step: StepId): boolean =>
-  stepIndex(step) <= maximumReachableStepIndex;
+  stepIndex(step) <= maximumReachableStepIndex &&
+  (!result?.requiresAvensysSelection || stepIndex(step) <= stepIndex("installation")) &&
+  (!hasBlockingValidation() || stepIndex(step) <= stepIndex(currentStep)) &&
+  (!installationConfirmationPending() || stepIndex(step) <= stepIndex("installation"));
 
 const unlockConfiguredWorkflow = (): void => {
   maximumReachableStepIndex = steps.length - 1;
@@ -595,10 +785,6 @@ const unlockConfiguredWorkflow = (): void => {
 
 const lockWorkflowAtPreselection = (): void => {
   maximumReachableStepIndex = 1;
-};
-
-const confirmInstallationReview = (): void => {
-  installationReviewRequired = false;
 };
 
 const resetOptionalStepVisits = (): void => {
@@ -617,7 +803,7 @@ const markSkippedOptionalSteps = (from: StepId, to: StepId): void => {
 
 const restoreConfiguredWorkflow = (): void => {
   confirmedUnitId = draft?.selectedUnitId || null;
-  confirmInstallationReview();
+  installationReviewRequired = true;
   visitedSteps.clear();
   visitedSteps.add("project");
   unlockConfiguredWorkflow();
@@ -768,7 +954,7 @@ const renderPerformanceStrip = (): string => {
       winter.workingPointPowerW,
     ),
   );
-  const regulationLabel = `${formatNumber(draft.regulationPercent, 0)}%`;
+  const regulationLabel = `${formatNumber(result?.effectiveRegulationPercent ?? draft.regulationPercent, 0)}%`;
   const text = messages();
   return `<section class="performance-strip">
     ${renderPerformanceChart(
@@ -956,7 +1142,7 @@ const renderShell = (): void => {
   const activeHelpTopic = currentHelpTopic();
   const currentStepIndex = stepIndex(currentStep);
   const followingStep = steps[Math.min(steps.length - 1, currentStepIndex + 1)];
-  const canGoForward = !calculating && !calculationFailed && canNavigateToStep(followingStep.id);
+  const canGoForward = !calculating && !hasBlockingValidation() && canNavigateToStep(followingStep.id);
   const winterCoil = result.waterCoilResults?.find((item) => item.mode === "HWD");
   const summerCoil = result.waterCoilResults?.find((item) => item.mode === "CWD");
   const winterPostheater = result.electricHeaterResults?.find((item) => item.mode === "EHD");
@@ -1013,7 +1199,7 @@ const renderShell = (): void => {
                       ? "complete"
                       : "";
                 const attention =
-                  step.id === "installation" && installationReviewRequired
+                  step.id === "installation" && installationConfirmationPending()
                     ? "attention"
                     : "";
                 const skipped =
@@ -1044,7 +1230,7 @@ const renderShell = (): void => {
               <p>${escapeHtml(activeStepMessage.description)}</p>
             </div>
             ${steps.findIndex((step) => step.id === currentStep) >= 1 && steps.findIndex((step) => step.id === currentStep) <= 8 && selectedUnit()?.model ? `<strong class="page-selected-unit">${escapeHtml(selectedUnit()!.model.toUpperCase())}</strong>` : ""}
-            <div class="calculation-state ${stateTone()}">
+            <div class="calculation-state ${stateTone()} ${specialUnitNotice() ? "special-unit-state" : ""}">
               <span>${icon(result.status === "valid" ? "circle-check" : "triangle-alert")}</span>
               <div>
                 <small>${escapeHtml(text.common.technicalSelection)}</small>
@@ -1054,11 +1240,12 @@ const renderShell = (): void => {
           </div>
 
           <section class="step-content" aria-live="polite">
+            ${specialUnitNotice() ? `<div class="inline-notice warning special-unit-notice">${icon("triangle-alert")}<span>${escapeHtml(specialUnitNotice())}</span></div>` : ""}
             ${renderStep(currentStep)}
           </section>
 
           ${
-            currentStep !== "project" && currentStep !== "preselection"
+            currentStep !== "project" && currentStep !== "preselection" && canGenerateTechnicalOutput()
               ? renderPerformanceStrip()
               : ""
           }
@@ -1074,9 +1261,10 @@ const renderShell = (): void => {
             </div>
             ${
               currentStep === "summary"
-                ? `<button class="button primary" data-action="report" type="button">
-                    ${icon("file-down")} ${escapeHtml(text.actions.generateReport)}
-                  </button>`
+                ? `<div class="offer-actions">
+                    <button class="button secondary" data-action="offer-provisional" type="button" ${optionalWorkflowControls.provisionalOffer ? "" : 'hidden style="display:none"'} ${canGenerateTechnicalOutput() ? "" : "disabled"}>${icon("file-down")} ${escapeHtml(offerText().provisional)}</button>
+                    <button class="button primary" data-action="offer-definitive" type="button" ${canGenerateTechnicalOutput() ? "" : "disabled"}>${icon("file-down")} ${escapeHtml(offerText().definitive)}</button>
+                  </div>`
                 : `<button class="button primary" data-action="next" type="button" ${canGoForward ? "" : "disabled"}>
                     ${escapeHtml(text.actions.next)} ${icon("arrow-right")}
                   </button>`
@@ -1108,7 +1296,7 @@ const renderShell = (): void => {
               <strong>${escapeHtml(unit?.model ?? text.ui.context.noUnit)}</strong>
             </div>
           </div>
-          ${renderKeyValues([
+          ${result.requiresAvensysSelection ? "" : renderKeyValues([
             [text.ui.context.supply, `${formatNumber(draft.operatingPoint.supplyAirflow, 0)} m³/h`],
             [text.ui.context.extract, `${formatNumber(draft.operatingPoint.extractAirflow, 0)} m³/h`],
             [text.ui.context.pressure, `${formatNumber(draft.operatingPoint.pressure, 0)} Pa`],
@@ -1127,7 +1315,7 @@ const renderShell = (): void => {
               ? [[`${text.ui.preselection.summer} · ${text.ui.preselection.supplyAirTemperature} (${draft.waterCoilMode})`, `${formatNumber(summerCoil.airOutletTemperatureC, 1)} °C`] as [string, string]]
               : []),
           ])}
-          <div class="context-divider"></div>
+          ${result.requiresAvensysSelection ? "" : `<div class="context-divider"></div>
           <div class="metric-grid">
             ${metric(text.ui.context.efficiency, `${formatNumber(result.winterEfficiency)}%`, "trending-up")}
             ${metric(text.ui.context.margin, `${formatNumber(result.availablePressure, 0)} Pa`, "gauge")}
@@ -1142,7 +1330,7 @@ const renderShell = (): void => {
               ${draft.electricPostheaterEnabled ? "<b>EHD</b>" : ""}
               ${draft.accessoryCodes.map((code) => `<b>${escapeHtml(code)}</b>`).join("")}
             </div>
-          </div>
+          </div>`}
           ${renderMultiProjectSidebar()}
         </aside>` : ""}
       </div>
@@ -1162,6 +1350,27 @@ const renderShell = (): void => {
             </label>
             <label class="toggle"><input type="checkbox" data-save-language-remember ${saveLanguageRemember ? "checked" : ""}/><span></span><b>${escapeHtml(prompt.remember)}</b></label>
             <footer class="dialog-actions"><button class="button secondary" type="button" data-action="close-save-language">${escapeHtml(prompt.cancel)}</button><button class="button primary" type="button" data-action="confirm-save-language">${icon("save")} ${escapeHtml(prompt.save)}</button></footer>
+          </section>
+        </div>`;
+      })() : ""}
+      ${offerDialogOpen ? (() => {
+        const prompt = offerText();
+        return `<div class="modal-backdrop" data-action="close-offer-dialog">
+          <section class="help-dialog offer-dialog" role="dialog" aria-modal="true" aria-labelledby="offer-dialog-title">
+            <div class="panel-heading">
+              <span class="panel-icon">${icon("file-text")}</span>
+              <div><h2 id="offer-dialog-title">${escapeHtml(prompt.title)}</h2><p>${escapeHtml(prompt.description)}</p></div>
+              <button class="icon-button bordered" type="button" data-action="close-offer-dialog" aria-label="${escapeHtml(prompt.cancel)}">${icon("circle-x")}</button>
+            </div>
+            <label class="toggle offer-reminder-toggle"><input type="checkbox" data-offer-reminder ${offerReminderEnabled ? "checked" : ""}/><span></span><b>${escapeHtml(prompt.reminder)}</b></label>
+            <div class="offer-reminder-fields">
+              <label class="field"><span>${escapeHtml(prompt.interval)}</span><input type="number" min="1" max="${offerReminderUnit === "days" ? "90" : "3"}" step="1" value="${offerReminderAmount}" data-offer-reminder-amount ${offerReminderEnabled ? "" : "disabled"}/></label>
+              <label class="field"><span aria-hidden="true">&nbsp;</span><select data-offer-reminder-unit ${offerReminderEnabled ? "" : "disabled"}>
+                <option value="days" ${offerReminderUnit === "days" ? "selected" : ""}>${escapeHtml(prompt.days)}</option>
+                <option value="months" ${offerReminderUnit === "months" ? "selected" : ""}>${escapeHtml(prompt.months)}</option>
+              </select></label>
+            </div>
+            <footer class="dialog-actions"><button class="button secondary" type="button" data-action="close-offer-dialog">${escapeHtml(prompt.cancel)}</button><button class="button primary" type="button" data-action="confirm-definitive-offer">${icon("file-down")} ${escapeHtml(prompt.confirm)}</button></footer>
           </section>
         </div>`;
       })() : ""}
@@ -1188,13 +1397,55 @@ const renderShell = (): void => {
           <section class="release-dialog" role="dialog" aria-modal="true" aria-labelledby="release-info-title">
             <div class="panel-heading">
               <span class="panel-icon">${icon("info")}</span>
-              <div><h2 id="release-info-title">${escapeHtml(releaseLabels().title)}</h2></div>
+              <div><h2 id="release-info-title" class="screen-only">${escapeHtml(releaseLabels().title)}</h2><h1 class="print-only">SSW change logs</h1><p class="print-only release-print-updated">Ultimo aggiornamento / Last updated: ${escapeHtml(releaseInfo.updatedAt)}</p></div>
               <button class="icon-button bordered" data-action="close-release-info" aria-label="${escapeHtml(releaseLabels().close)}">${icon("circle-x")}</button>
             </div>
             <dl class="release-details">
-              <div><dt>${escapeHtml(releaseLabels().version)}</dt><dd>${escapeHtml(releaseInfo.version)}</dd></div>
-              <div><dt>${escapeHtml(releaseLabels().builtAt)}</dt><dd>${escapeHtml(new Date(releaseInfo.builtAt).toLocaleString(languageCode()))}</dd></div>
+              <div><dt>Release / Release</dt><dd>${escapeHtml(releaseInfo.version)}</dd></div>
+              <div><dt>Data build / Build date</dt><dd>${escapeHtml(new Date(releaseInfo.builtAt).toLocaleString(languageCode()))}</dd></div>
             </dl>
+            ${internalToolsUnlocked ? `
+              <div class="release-tabs" role="group" aria-label="${escapeHtml(releaseLabels().title)}">
+                <button class="button secondary" type="button" data-action="document-audit">${icon("file-text")} ${escapeHtml(releaseLabels().quick)}</button>
+                <button class="button secondary ${releaseHistoryOpen ? "active" : ""}" type="button" data-action="release-history">${icon("keyboard")} ${escapeHtml(releaseLabels().history)}</button>
+                ${releaseHistoryOpen ? `<div class="release-language-toggle" role="group" aria-label="Change log language"><button type="button" data-action="release-language" data-language="en" class="${releaseHistoryLanguage === "en" ? "active" : ""}" aria-pressed="${releaseHistoryLanguage === "en"}">EN</button><button type="button" data-action="release-language" data-language="it" class="${releaseHistoryLanguage === "it" ? "active" : ""}" aria-pressed="${releaseHistoryLanguage === "it"}">IT</button></div>` : ""}
+              </div>
+              <div class="release-table-scroll quick-commands-scroll">
+                <table class="release-table quick-commands-table">
+                  <thead><tr><th>${escapeHtml(releaseLabels().shortcut)}</th><th>${escapeHtml(releaseLabels().action)}</th></tr></thead>
+                  <tbody>${quickCommandRows().map((command) => `
+                    <tr><td><strong>${escapeHtml(command.shortcut)}</strong>${command.alternate ? `<small>${escapeHtml(command.alternate)}</small>` : ""}</td><td><strong>${escapeHtml(command.action)}</strong>${command.description ? `<small>${escapeHtml(command.description)}</small>` : ""}</td></tr>
+                  `).join("")}</tbody>
+                </table>
+              </div>` : ""}
+            ${internalToolsUnlocked && releaseHistoryOpen ? `
+              <div class="release-table-scroll">
+                <table class="release-table">
+                  <thead><tr><th>Release / Release</th><th>Data / Date</th><th>Modifiche / Changes</th></tr></thead>
+                  <tbody>${releaseInfo.history.map((entry) => {
+                    const changes = releaseHistoryLanguage === "it" ? entry.changesIt : entry.changes;
+                    return `
+                    <tr><th scope="row">${escapeHtml(entry.version)}</th><td>${escapeHtml(entry.date || "-")}</td><td>${changes.length ? `<ul>${changes.map((change, index) => {
+                      const pendingMatch = entry.changes[index].match(/^\[TODO-(\d{3})\]\s*/u);
+                      const displayChange = pendingMatch
+                        ? `⚠ TODO-${pendingMatch[1]} ${change.replace(/^\[TODO-\d{3}\]\s*/u, "").trim()}`
+                        : change;
+                      return `<li class="${pendingMatch ? "release-db-note" : ""}">${escapeHtml(displayChange)}</li>`;
+                    }).join("")}</ul>` : "-"}</td></tr>
+                  `;
+                  }).join("")}</tbody>
+                </table>
+              </div>` : ""}
+            ${internalToolsUnlocked && releaseHistoryOpen ? `<div class="release-print-actions"><button class="button secondary" type="button" data-action="print-release-history">${icon("printer")} Stampa / Print</button></div>` : ""}
+            ${!internalToolsUnlocked ? `
+              <form class="quick-command-access" data-action="quick-command-access">
+                <label for="quick-command-code">${escapeHtml(releaseLabels().accessCode)}</label>
+                <div class="quick-command-access-row">
+                  <input id="quick-command-code" name="accessCode" type="password" inputmode="numeric" autocomplete="off" maxlength="12" required />
+                  <button class="button primary" type="submit">${escapeHtml(releaseLabels().unlock)}</button>
+                </div>
+                ${quickCommandsCodeError ? `<p class="quick-command-error" role="alert">${escapeHtml(releaseLabels().invalidCode)}</p>` : ""}
+              </form>` : ""}
           </section>
         </div>` : ""}
       ${renderNotificationCenter()}
@@ -1317,7 +1568,7 @@ const renderProjectStep = (): string => {
       </div>
       <div class="project-command-row">
         <button class="button secondary" type="button" data-action="open-selection">${icon("folder-check")} ${escapeHtml(copy.openSelection)}</button>
-        <button class="button secondary" type="button" data-action="save-as">${icon("save")} ${escapeHtml(copy.saveAs)}</button>
+        <button class="button secondary" type="button" data-action="save-as" ${optionalWorkflowControls.saveAs ? "" : 'hidden style="display:none"'}>${icon("save")} ${escapeHtml(copy.saveAs)}</button>
       </div>
     </section>
   </div>`;
@@ -1359,14 +1610,14 @@ const renderMultiProjectSidebar = (): string => {
       <button class="icon-button bordered" type="button" data-action="project-new" title="${escapeHtml(copy.newProject)}">${icon("file-text", 15)}</button>
       <button class="icon-button bordered" type="button" data-action="project-open" title="${escapeHtml(copy.openProject)}">${icon("folder-check", 15)}</button>
       <button class="icon-button bordered" type="button" data-action="project-save" title="${escapeHtml(copy.saveProject)}">${icon("save", 15)}</button>
-      <button class="icon-button bordered" type="button" data-action="project-save-as" title="${escapeHtml(copy.saveProjectAs)}">${icon("hard-drive-download", 15)}</button>
+      <button class="icon-button bordered" type="button" data-action="project-save-as" ${optionalWorkflowControls.saveAs ? "" : 'hidden style="display:none"'} title="${escapeHtml(copy.saveProjectAs)}">${icon("hard-drive-download", 15)}</button>
     </div>
     <div class="context-project-list">
       ${items || `<p class="context-project-empty">${escapeHtml(copy.empty)}</p>`}
     </div>
     <small class="context-project-state">${state?.dirty ? escapeHtml(copy.unsaved) : escapeHtml(modified)}</small>
-    <button class="button primary context-project-command" type="button" data-action="project-add-current">${icon("file-down")} ${escapeHtml(projectActionLabels(languageCode())[currentMatchesDraft ? 1 : 0])}</button>
-    ${currentMatchesDraft ? `<button class="button secondary context-project-command" type="button" data-action="project-add-new">${icon("plus")} ${escapeHtml(projectActionLabels(languageCode())[0])}</button>` : ""}
+    <button class="button primary context-project-command" type="button" data-action="project-add-current" ${installationConfirmationPending() || calculating || hasBlockingValidation() || !canGenerateTechnicalOutput() ? "disabled" : ""}>${icon("file-down")} ${escapeHtml(projectActionLabels(languageCode())[currentMatchesDraft ? 1 : 0])}</button>
+    ${currentMatchesDraft ? `<button class="button secondary context-project-command" type="button" data-action="project-add-new" ${canGenerateTechnicalOutput() ? "" : "disabled"}>${icon("plus")} ${escapeHtml(projectActionLabels(languageCode())[0])}</button>` : ""}
     <button class="button secondary context-project-command" type="button" data-action="project-email" ${state?.items.length ? "" : "disabled"}>${icon("mail")} ${escapeHtml(projectActionLabels(languageCode())[2])}</button>
   </section>`;
 };
@@ -1374,11 +1625,12 @@ const renderMultiProjectSidebar = (): string => {
 const renderPreselectionStep = (): string => {
   const text = messages();
   const filters = draft!.preselectionFilters;
+  const recoveryText = recoveryCategoryText();
   const activeCriteria = [
     filters.maximumSfpEnabled ? text.ui.preselection.maximumSfp : "",
     filters.supplyNoiseEnabled ? text.ui.preselection.supplyNoise : "",
     filters.breakoutNoiseEnabled ? text.ui.preselection.breakoutNoise : "",
-    filters.rotaryOnlyEnabled ? text.ui.preselection.rotaryOnly : "",
+    filters.recoveryCategory !== "any" ? recoveryText[filters.recoveryCategory] : "",
   ].filter(Boolean);
   const noiseCriterion = (
     title: string,
@@ -1434,7 +1686,7 @@ const renderPreselectionStep = (): string => {
       </div>
       <div class="preselection-technical">
         <div class="technical-controls">
-          ${technicalNumberField(text.ui.preselection.regulationPercent, "regulationPercent", draft!.regulationPercent, "%", false, 0, 100)}
+          ${technicalNumberField(text.ui.preselection.regulationPercent, "minimumRegulationPercent", draft!.minimumRegulationPercent, "%", false, 70, 100)}
           <label class="toggle seasonal-toggle">
             <input type="checkbox" data-field="summerEnabled" ${draft!.summerEnabled ? "checked" : ""}/>
             <span></span><b>${escapeHtml(text.ui.preselection.summerEnabled)}</b>
@@ -1478,13 +1730,12 @@ const renderPreselectionStep = (): string => {
         </fieldset>
         ${noiseCriterion(text.ui.preselection.supplyNoise, "preselectionFilters.supplyNoiseEnabled", filters.supplyNoiseEnabled, "preselectionFilters.supplyNoiseMetric", filters.supplyNoiseMetric, "preselectionFilters.maximumSupplyNoiseDbA", filters.maximumSupplyNoiseDbA, "preselectionFilters.supplyNoiseDistanceMeters", filters.supplyNoiseDistanceMeters, "preselectionFilters.supplyNoiseDirectivityFactor", filters.supplyNoiseDirectivityFactor)}
         ${noiseCriterion(text.ui.preselection.breakoutNoise, "preselectionFilters.breakoutNoiseEnabled", filters.breakoutNoiseEnabled, "preselectionFilters.breakoutNoiseMetric", filters.breakoutNoiseMetric, "preselectionFilters.maximumBreakoutNoiseDbA", filters.maximumBreakoutNoiseDbA, "preselectionFilters.breakoutNoiseDistanceMeters", filters.breakoutNoiseDistanceMeters, "preselectionFilters.breakoutNoiseDirectivityFactor", filters.breakoutNoiseDirectivityFactor)}
-        <fieldset class="selection-criterion rotary-criterion ${filters.rotaryOnlyEnabled ? "" : "criterion-disabled"}">
-          <legend>${escapeHtml(text.ui.preselection.rotaryOnly)}</legend>
-          <label class="toggle criterion-toggle">
-            <input type="checkbox" data-field="preselectionFilters.rotaryOnlyEnabled" ${filters.rotaryOnlyEnabled ? "checked" : ""}/>
-            <span></span><b>${escapeHtml(text.ui.preselection.enableCriterion)}</b>
-          </label>
-          <p class="criterion-description">${escapeHtml(text.ui.preselection.rotaryOnlyDescription)}</p>
+        <fieldset class="selection-criterion recovery-category-criterion ${filters.recoveryCategory !== "any" ? "" : "criterion-disabled"}">
+          <legend>${escapeHtml(recoveryText.title)}</legend>
+          <select data-field="preselectionFilters.recoveryCategory">
+            ${(["any", "plate", "decentralized", "centralized", "rotary"] as const).map((category) => `<option value="${category}" ${filters.recoveryCategory === category ? "selected" : ""}>${escapeHtml(recoveryText[category])}</option>`).join("")}
+          </select>
+          ${filters.recoveryCategory === "plate" ? `<p class="criterion-note-required">${escapeHtml(recoveryText.plateNote)}</p>` : ""}
         </fieldset>
         </div>
       </details>
@@ -1712,11 +1963,16 @@ const renderInstallationStep = (): string => {
       </div>
       <div class="field">
         <label for="layoutCode">${escapeHtml(text.ui.installation.airflowConfiguration)}</label>
-        <select id="layoutCode" data-field="layoutCode">
-          ${compatibleLayouts.map((configuration) => `<option ${draft!.layoutCode === configuration.code ? "selected" : ""}>${configuration.code}</option>`).join("")}
-        </select>
-        <small>${escapeHtml(text.ui.installation.defaultHint)}</small>
-        ${installationReviewRequired ? `<div class="layout-confirmation-warning" role="alert">${icon("triangle-alert", 15)} ${escapeHtml(drawingUiText().confirmLayout)}</div>` : ""}
+        ${result!.requiresAvensysSelection
+          ? `<div class="empty-state">${escapeHtml(text.status.unavailable)}</div>`
+          : `<select id="layoutCode" data-field="layoutCode">
+              ${compatibleLayouts.map((configuration) => `<option ${draft!.layoutCode === configuration.code ? "selected" : ""}>${configuration.code}</option>`).join("")}
+            </select>
+            <small>${escapeHtml(text.ui.installation.defaultHint)}</small>
+            ${compatibleLayouts.length > 1 ? `<label class="layout-confirmation-warning ${installationConfirmationPending() ? "" : "confirmed"}">
+              <input type="checkbox" data-confirm-installation ${installationConfirmationPending() ? "" : "checked"} ${calculating || calculationFailed ? "disabled" : ""}>
+              ${escapeHtml(drawingUiText().confirmLayout)}
+            </label>` : ""}`}
       </div>
     </section>
     <section class="panel layout-preview">
@@ -2071,9 +2327,10 @@ const renderDocumentsStep = (): string => {
         </div>
       </div>` : ""}
     ${documentCard(text.ui.documents.technicalSheet, text.ui.documents.technicalSheetDescription, "PDF", "file-text", "commercial-sheet", productDocuments?.commercialSheetAvailable === true)}
+    ${documentCard("Benchmark document (confidential)", "", "PDF", "lock-keyhole", null, false)}
     ${documentCard(text.ui.documents.dimensionalDrawing, text.ui.documents.dimensionalDrawingDescription, "PDF", "ruler", "dimensional-drawing", dimensionalDrawing?.available === true)}
     ${documentCard(text.ui.documents.installationManual, text.ui.documents.installationManualDescription, "PDF", "book-open", "installation-manual", productDocuments?.installationManualAvailable === true)}
-    ${documentCard(applicationTitle, applicationDescription, "PDF", "files", null, false)}
+    ${documentCard(applicationTitle, applicationDescription, "PDF", "files", "application-document", productDocuments?.applicationDocumentAvailable === true)}
     ${documentCard(applicationDocuments[0], "", "PDF", "badge-check", null, false)}
     ${documentCard(applicationDocuments[1], "", "PDF", "file-text", null, false)}
     ${documentCard(applicationDocuments[2], "", "STEP", "box", "step-model", productDocuments?.stepModelAvailable === true)}
@@ -2289,12 +2546,13 @@ const unitCard = (unit: UnitOption, recommended: boolean): string => {
       ? `${text.ui.preselection.breakoutNoise}: ${formatNumber(filters.breakoutNoiseMetric === "LPA" ? unit.breakoutSoundPressureDbA ?? 0 : unit.breakoutSoundPowerDbA ?? 0, 1)} dB(A) ${filters.breakoutNoiseMetric}`
       : "",
   ].filter(Boolean);
+  const avensysOnly = isAvensysSelectionOnlyCode(unit.id);
   return `
   <article class="ranked-unit ${unit.id === draft!.selectedUnitId ? "selected" : ""}" data-select-unit="${unit.id}">
-    <div class="ranked-unit-score"><strong>${formatNumber(unit.requiredRegulation, 0)}</strong><span>%</span></div>
-    <div><strong>${unit.model}</strong></div>
-    <div class="ranked-spec"><span>${formatNumber(unit.availablePressure, 0)} Pa</span><span>${formatNumber(unit.absorbedPower, 0)} W</span><span>SFP ${formatNumber(unit.sfp, 2)}</span>${acousticValues.map((value) => `<span>${escapeHtml(value)}</span>`).join("")}</div>
-    ${recommended ? `<b class="recommended">${icon("sparkles", 14)} ${escapeHtml(text.ui.preselection.recommended)}</b>` : ""}
+    ${avensysOnly ? `<span class="ranked-unit-score">${escapeHtml(text.status.warning)}</span>` : `<div class="ranked-unit-score"><strong>${formatNumber(unit.requiredRegulation, 0)}</strong><span>%</span></div>`}
+    <div><strong>${unit.model}</strong>${avensysOnly ? `<small class="special-unit-card-notice">${escapeHtml(specialUnitNotice(unit.id))}</small>` : ""}</div>
+    ${avensysOnly ? "" : `<div class="ranked-spec"><span>${formatNumber(unit.availablePressure, 0)} Pa</span><span>${formatNumber(unit.absorbedPower, 0)} W</span><span>SFP ${formatNumber(unit.sfp, 2)}</span>${acousticValues.map((value) => `<span>${escapeHtml(value)}</span>`).join("")}</div>`}
+    ${recommended && !avensysOnly ? `<b class="recommended">${icon("sparkles", 14)} ${escapeHtml(text.ui.preselection.recommended)}</b>` : ""}
     ${unit.id === draft!.selectedUnitId ? icon("circle-check", 20) : icon("chevron-right", 20)}
   </article>`;
 };
@@ -2400,7 +2658,7 @@ const documentCard = (
   description: string,
   format: string,
   iconName: string,
-  documentType: "commercial-sheet" | "dimensional-drawing" | "installation-manual" | "step-model" | null,
+  documentType: "commercial-sheet" | "dimensional-drawing" | "installation-manual" | "application-document" | "step-model" | null,
   available: boolean,
 ): string => `
   <article class="document-card ${available ? "" : "disabled"}">
@@ -2514,13 +2772,7 @@ const bindShellEvents = (): void => {
   document.querySelectorAll<HTMLElement>("[data-step]").forEach((element) => {
     element.addEventListener("click", async () => {
       const step = element.dataset.step as StepId;
-      if (calculating || (calculationFailed && stepIndex(step) > 1) || !canNavigateToStep(step)) return;
-      if (
-        currentStep === "installation" &&
-        stepIndex(step) > stepIndex(currentStep)
-      ) {
-        confirmInstallationReview();
-      }
+      if (calculating || !canNavigateToStep(step)) return;
       markSkippedOptionalSteps(currentStep, step);
       currentStep = step;
       renderShell();
@@ -2532,7 +2784,7 @@ const bindShellEvents = (): void => {
     element.addEventListener("click", async () => {
       const selectedUnitId = element.dataset.selectUnit ?? draft!.selectedUnitId;
       const modelChanged =
-        confirmedUnitId !== null && confirmedUnitId !== selectedUnitId;
+        confirmedUnitId !== selectedUnitId;
       draft!.selectedUnitId = selectedUnitId;
       const unit = selectedUnit();
       if (unit) draft!.regulationPercent = unit.requiredRegulation;
@@ -2556,7 +2808,7 @@ const bindShellEvents = (): void => {
       if (!configuration) return;
       draft!.installationMode = mode;
       draft!.layoutCode = configuration.code;
-      confirmInstallationReview();
+      installationReviewRequired = true;
       await recalculate();
     });
   });
@@ -2600,13 +2852,19 @@ const bindShellEvents = (): void => {
         draft!.waterCoilCustomDisclaimerAccepted = true;
       }
       applyFieldValue(field, element);
-      if (field === "layoutCode") confirmInstallationReview();
+      if (field === "layoutCode") installationReviewRequired = true;
       if (currentStep === "preselection") {
         await refreshPreselection();
       } else {
         await recalculate();
       }
     });
+  });
+
+  document.querySelector<HTMLInputElement>("[data-confirm-installation]")?.addEventListener("change", (event) => {
+    if (calculating || calculationFailed) return;
+    installationReviewRequired = !(event.currentTarget as HTMLInputElement).checked;
+    renderShell();
   });
 
   const bindAccessoryRows = (): void => {
@@ -2668,7 +2926,48 @@ const bindShellEvents = (): void => {
     await saveDraft(saveLanguagePromptSaveAs);
   });
   document.querySelector<HTMLElement>('[data-action="open-selection"]')?.addEventListener("click", openDraft);
-  document.querySelector<HTMLElement>('[data-action="report"]')?.addEventListener("click", generateReport);
+  document.querySelector<HTMLElement>('[data-action="offer-provisional"]')?.addEventListener("click", () => generateReport("provisional"));
+  document.querySelector<HTMLElement>('[data-action="offer-definitive"]')?.addEventListener("click", () => {
+    if (installationConfirmationPending() || calculating || hasBlockingValidation()) return;
+    offerReminderEnabled = true;
+    offerReminderAmount = 7;
+    offerReminderUnit = "days";
+    offerDialogOpen = true;
+    renderShell();
+  });
+  document.querySelectorAll<HTMLElement>('[data-action="close-offer-dialog"]').forEach((element) => {
+    element.addEventListener("click", (event) => {
+      if (element.classList.contains("modal-backdrop") && event.target !== element) return;
+      offerDialogOpen = false;
+      renderShell();
+    });
+  });
+  document.querySelector<HTMLInputElement>("[data-offer-reminder]")?.addEventListener("change", (event) => {
+    offerReminderEnabled = (event.currentTarget as HTMLInputElement).checked;
+    const disabled = !offerReminderEnabled;
+    document.querySelector<HTMLInputElement>("[data-offer-reminder-amount]")!.disabled = disabled;
+    document.querySelector<HTMLSelectElement>("[data-offer-reminder-unit]")!.disabled = disabled;
+  });
+  document.querySelector<HTMLInputElement>("[data-offer-reminder-amount]")?.addEventListener("change", (event) => {
+    const input = event.currentTarget as HTMLInputElement;
+    offerReminderAmount = Number(input.value);
+    if (!input.checkValidity()) input.reportValidity();
+  });
+  document.querySelector<HTMLSelectElement>("[data-offer-reminder-unit]")?.addEventListener("change", (event) => {
+    offerReminderUnit = (event.currentTarget as HTMLSelectElement).value === "months" ? "months" : "days";
+    offerReminderAmount = Math.min(offerReminderAmount, offerReminderUnit === "days" ? 90 : 3);
+    renderShell();
+  });
+  document.querySelector<HTMLElement>('[data-action="confirm-definitive-offer"]')?.addEventListener("click", async () => {
+    const amountInput = document.querySelector<HTMLInputElement>("[data-offer-reminder-amount]");
+    if (offerReminderEnabled && amountInput && !amountInput.reportValidity()) return;
+    offerDialogOpen = false;
+    renderShell();
+    const reminderDelayDays = offerReminderEnabled
+      ? offerReminderToDays(offerReminderAmount, offerReminderUnit)
+      : 0;
+    await generateReport("definitive", offerReminderEnabled, reminderDelayDays);
+  });
   document.querySelector<HTMLElement>('[data-action="open-dimensional-drawing"]')?.addEventListener("click", async () => {
     await ensureDimensionalDrawing();
     if (!dimensionalDrawing?.available) return;
@@ -2700,6 +2999,7 @@ const bindShellEvents = (): void => {
         | "commercial-sheet"
         | "dimensional-drawing"
         | "installation-manual"
+        | "application-document"
         | "step-model";
       if (documentType === "dimensional-drawing") {
         await ensureDimensionalDrawing();
@@ -2823,7 +3123,14 @@ const bindShellEvents = (): void => {
       renderShell();
     });
   });
+  document.querySelectorAll<HTMLElement>("[data-notification-view]").forEach((button) => {
+    button.addEventListener("click", () => {
+      notificationView = button.dataset.notificationView as "offers" | "reminders";
+      renderShell();
+    });
+  });
   document.querySelectorAll<HTMLElement>("[data-reminder-open]").forEach((row) => {
+    row.querySelector<HTMLButtonElement>("[data-offer-open]")?.addEventListener("click", () => row.dispatchEvent(new MouseEvent("dblclick", { bubbles: true })));
     row.addEventListener("dblclick", async (event) => {
       if ((event.target as HTMLElement).closest(".notification-actions")) return;
       const response = await bridge.openNotificationTarget(
@@ -2858,12 +3165,46 @@ const bindShellEvents = (): void => {
   });
   document.querySelector<HTMLElement>('[data-action="release-info"]')?.addEventListener("click", () => {
     releaseInfoOpen = true;
+    releaseHistoryOpen = false;
+    internalToolsUnlocked = false;
+    quickCommandsCodeError = false;
+    renderShell();
+  });
+  document.querySelector<HTMLElement>('[data-action="release-history"]')?.addEventListener("click", () => {
+    releaseHistoryOpen = !releaseHistoryOpen;
+    renderShell();
+  });
+  document.querySelectorAll<HTMLButtonElement>('[data-action="release-language"]').forEach((button) => {
+    button.addEventListener("click", () => {
+      const language = button.dataset.language;
+      if (language !== "en" && language !== "it") return;
+      releaseHistoryLanguage = language;
+      renderShell();
+    });
+  });
+  document.querySelector<HTMLElement>('[data-action="print-release-history"]')?.addEventListener("click", () => window.print());
+  document.querySelector<HTMLElement>('[data-action="document-audit"]')?.addEventListener("click", () => {
+    releaseInfoOpen = false;
+    releaseHistoryOpen = false;
+    internalToolsUnlocked = false;
+    quickCommandsCodeError = false;
+    renderShell();
+    openDocumentCoverageAudit();
+  });
+  document.querySelector<HTMLFormElement>('[data-action="quick-command-access"]')?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const code = new FormData(event.currentTarget as HTMLFormElement).get("accessCode");
+    internalToolsUnlocked = code === "0987";
+    quickCommandsCodeError = !internalToolsUnlocked;
     renderShell();
   });
   document.querySelectorAll<HTMLElement>('[data-action="close-release-info"]').forEach((element) => {
     element.addEventListener("click", (event) => {
       if (element.classList.contains("modal-backdrop") && event.target !== element) return;
       releaseInfoOpen = false;
+      releaseHistoryOpen = false;
+      internalToolsUnlocked = false;
+      quickCommandsCodeError = false;
       renderShell();
     });
   });
@@ -2915,7 +3256,7 @@ const applyFieldValue = (
     },
     "operatingPoint.pressure": () => { draft!.operatingPoint.pressure = Number(value); },
     imbalanceEnabled: () => { draft!.imbalanceEnabled = Boolean(value); },
-    regulationPercent: () => { draft!.regulationPercent = Number(value); },
+    minimumRegulationPercent: () => { draft!.minimumRegulationPercent = Math.max(70, Math.min(100, Number(value))); },
     summerEnabled: () => { draft!.summerEnabled = Boolean(value); },
     winterOutdoorTemperature: () => { draft!.winterOutdoorTemperature = Number(value); },
     winterOutdoorRh: () => { draft!.winterOutdoorRh = Number(value); },
@@ -3001,6 +3342,13 @@ const applyFieldValue = (
     },
     "sound.includeInReport": () => { draft!.sound.includeInReport = Boolean(value); },
     "preselectionFilters.rotaryOnlyEnabled": () => { draft!.preselectionFilters.rotaryOnlyEnabled = Boolean(value); },
+    "preselectionFilters.recoveryCategory": () => {
+      const category = String(value);
+      draft!.preselectionFilters.recoveryCategory = ["any", "plate", "decentralized", "centralized", "rotary"].includes(category)
+        ? category as "any" | "plate" | "decentralized" | "centralized" | "rotary"
+        : "any";
+      draft!.preselectionFilters.rotaryOnlyEnabled = false;
+    },
     "preselectionFilters.maximumSfpEnabled": () => { draft!.preselectionFilters.maximumSfpEnabled = Boolean(value); },
     "preselectionFilters.maximumSfp": () => { draft!.preselectionFilters.maximumSfp = Math.max(0, Number(value)); },
     "preselectionFilters.supplyNoiseEnabled": () => { draft!.preselectionFilters.supplyNoiseEnabled = Boolean(value); },
@@ -3032,12 +3380,10 @@ const applyFieldValue = (
 };
 
 const navigate = async (offset: number): Promise<void> => {
+  if (calculating || (offset > 0 && hasBlockingValidation())) return;
   const currentIndex = stepIndex(currentStep);
   const next = steps[Math.max(0, Math.min(steps.length - 1, currentIndex + offset))];
   if (!canNavigateToStep(next.id)) return;
-  if (offset > 0 && currentStep === "installation") {
-    confirmInstallationReview();
-  }
   markSkippedOptionalSteps(currentStep, next.id);
   currentStep = next.id;
   renderShell();
@@ -3056,6 +3402,7 @@ const refreshProductDocuments = async (): Promise<void> => {
   } catch (error) {
     logClientError(error);
     productDocuments = {
+      applicationDocumentAvailable: false,
       commercialSheetAvailable: false,
       installationManualAvailable: false,
       stepModelAvailable: false,
@@ -3085,7 +3432,7 @@ const refreshPreselection = async (): Promise<void> => {
     if (!current) {
       draft!.selectedUnitId = "";
       confirmedUnitId = null;
-      confirmInstallationReview();
+      installationReviewRequired = true;
       lockWorkflowAtPreselection();
       return;
     }
@@ -3127,6 +3474,11 @@ const recalculate = async (): Promise<boolean> => {
       if (JSON.stringify(normalized) !== JSON.stringify(effective)) {
         effective = normalized;
         continue;
+      }
+      if (draft!.selectedUnitId !== effective.selectedUnitId ||
+          draft!.installationMode !== effective.installationMode ||
+          draft!.layoutCode !== effective.layoutCode) {
+        installationReviewRequired = true;
       }
       draft = effective;
       result = calculated;
@@ -3216,7 +3568,8 @@ const saveMultiProject = async (saveAs = false): Promise<void> => {
 };
 
 const addCurrentToMultiProject = async (requestedCreateNew?: boolean): Promise<void> => {
-  if (calculating || calculationFailed) return;
+  if (installationConfirmationPending()) return;
+  if (calculating || hasBlockingValidation()) return;
   const previous = multiProjectState?.items.find((item) => item.current);
   const currentModel = selectedUnit()?.model.trim().toLocaleUpperCase() ?? "";
   const previousModel = previous?.unitName.trim().toLocaleUpperCase() ?? "";
@@ -3305,17 +3658,28 @@ const openDraft = async (): Promise<void> => {
   renderShell();
 };
 
-const generateReport = async (): Promise<void> => {
-  if (calculating || calculationFailed) return;
-  const response = await bridge.generateReport(
-    structuredClone(draft!),
-    projectDocumentLanguage(),
-  );
-  if (response.delegated) {
-    showToast(messages().ui.toast.completeReport);
-    return;
+const generateReport = async (
+  offerType: "provisional" | "definitive",
+  reminderEnabled = false,
+  reminderDelayDays = 0,
+): Promise<void> => {
+  if (installationConfirmationPending()) return;
+  if (calculating || hasBlockingValidation()) return;
+  try {
+    const response = await bridge.generateReport(
+      structuredClone(draft!),
+      projectDocumentLanguage(),
+      { type: offerType, reminderEnabled, reminderDelayDays },
+    );
+    if (response.delegated) {
+      showToast(messages().ui.toast.completeReport);
+      return;
+    }
+    showToast(`${messages().ui.toast.reportReady}: ${response.fileName}`);
+  } catch (error) {
+    logClientError(error);
+    showToast(error instanceof Error ? error.message : String(error));
   }
-  showToast(`${messages().ui.toast.reportReady}: ${response.fileName}`);
 };
 
 const showToast = (message: string): void => {
@@ -3336,7 +3700,7 @@ const bootstrap = async (): Promise<void> => {
     draft = structuredClone(data.draft);
     result = structuredClone(data.result);
     confirmedUnitId = null;
-    confirmInstallationReview();
+    installationReviewRequired = true;
     visitedSteps.clear();
     visitedSteps.add("project");
     skippedOptionalSteps.clear();

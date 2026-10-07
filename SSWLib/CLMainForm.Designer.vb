@@ -1885,7 +1885,7 @@ Partial Class CLMainForm
         Me.chbPerformance_IPEHD.Name = "chbPerformance_IPEHD"
         Me.chbPerformance_IPEHD.Size = New System.Drawing.Size(59, 17)
         Me.chbPerformance_IPEHD.TabIndex = 1
-        Me.chbPerformance_IPEHD.Text = "IPEHD"
+        Me.chbPerformance_IPEHD.Text = "PEHD"
         Me.chbPerformance_IPEHD.UseVisualStyleBackColor = True
         '
         'rdbPerformance_ICWD
@@ -1927,7 +1927,7 @@ Partial Class CLMainForm
         Me.rdbPerformance_IEHD.Name = "rdbPerformance_IEHD"
         Me.rdbPerformance_IEHD.Size = New System.Drawing.Size(51, 17)
         Me.rdbPerformance_IEHD.TabIndex = 0
-        Me.rdbPerformance_IEHD.Text = "IEHD"
+        Me.rdbPerformance_IEHD.Text = "EHD"
         Me.rdbPerformance_IEHD.UseVisualStyleBackColor = True
         '
         'rdbPerformance_IHCD
@@ -2059,7 +2059,7 @@ Partial Class CLMainForm
         Me.chb_qtm_IPEHD.Name = "chb_qtm_IPEHD"
         Me.chb_qtm_IPEHD.Size = New System.Drawing.Size(59, 17)
         Me.chb_qtm_IPEHD.TabIndex = 1
-        Me.chb_qtm_IPEHD.Text = "IPEHD"
+        Me.chb_qtm_IPEHD.Text = "PEHD"
         Me.chb_qtm_IPEHD.UseVisualStyleBackColor = True
         '
         'grbPerformance_IGVersionQTM

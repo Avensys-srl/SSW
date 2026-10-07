@@ -215,7 +215,7 @@ Public NotInheritable Class CLNextUiReportService
             "SEL_Caption", "SEL [J/m3]",
             "SEL_Value", F(branch.SpecificFanPowerWPerM3hPerSecond, 0),
             "RegLev_Caption", L("MainForm_RegulationLevel", "Regulation level"),
-            "RegLev_Value", F(input.RegulationPercent, 0) & " %",
+            "RegLev_Value", F(input.RegulationPercent, 0),
             "RegLev_Note", String.Empty}
         AddRow(allWorking, workingValues)
         AddRow(scenarioWorking, workingValues)

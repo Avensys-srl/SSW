@@ -28,7 +28,9 @@ Public NotInheritable Class CLNextUiSoundResult
 End Class
 
 Public NotInheritable Class CLNextUiPreselectionFilters
+    Public Property MinimumRegulationPercent As Integer = 70
     Public Property RotaryOnlyEnabled As Boolean
+    Public Property RecoveryCategory As String = "any"
     Public Property MaximumSfpEnabled As Boolean
     Public Property MaximumSfp As Double = 2
     Public Property SupplyNoiseEnabled As Boolean

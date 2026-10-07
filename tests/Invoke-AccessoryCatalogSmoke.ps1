@@ -111,7 +111,7 @@ function Test-Normalize($catalog, [int[]]$ids) {
     foreach ($item in $catalog) { $list.Add($item) }
     $selected = New-Object 'System.Collections.Generic.HashSet[int]'
     foreach ($id in $ids) { [void]$selected.Add($id) }
-    [void]$normalize.Invoke($null, [object[]]@($list.PSObject.BaseObject, $selected.PSObject.BaseObject))
+    [void]$normalize.Invoke($null, [object[]]@($list.PSObject.BaseObject, $selected.PSObject.BaseObject, $false))
     return ,$selected
 }
 $unavailable = New-TestItem 1 'UNAVAILABLE' 'Unavailable'

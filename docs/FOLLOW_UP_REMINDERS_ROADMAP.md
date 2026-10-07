@@ -16,9 +16,11 @@ API and the related database migration.
 - The feature represents a **follow-up reminder**, not the technical expiry of
   a selection or project.
 - Reminder scheduling is offered when SSW successfully prepares an Outlook
-  email with the relevant PDF attachment or project PDF attachments.
+  email with the relevant PDF attachment or project PDF attachments, or when
+  a definitive single-selection offer report is opened successfully.
 - SSW cannot prove that Outlook actually sent the message. The recorded event
-  therefore means `EmailPrepared`, never `EmailSent`.
+  therefore means `EmailPrepared`, never `EmailSent`. A definitive offer is a
+  separate reminder trigger and must not be described as an email event.
 - Scheduling is enabled by default with a default delay of 7 days.
 - The user can choose any whole number from 1 through 90 days.
 - The due instant is calculated from the local calendar date and stored in UTC.
@@ -334,3 +336,92 @@ The internal portal may later expose aggregate or support views. This must be a
 separate, explicitly authorized feature. The SSW API contract remains private
 per installation and does not gain a cross-installation endpoint as a side
 effect.
+
+## Checkpoint 2026-10-04: definitive offer reminder in Next SSW
+
+Status: implementation started in the Next frontend and WinForms host; build,
+desktop validation and publication are still pending.
+
+- The summary offers separate provisional and definitive report actions. The
+  definitive action requires successful technical-selection registration;
+  the existing unregistered-draft fallback remains available only for a
+  provisional report.
+- Before definitive generation, a confirmation asks whether to create a
+  reminder and for its interval. The reminder checkbox defaults on, the value
+  defaults to 7, and days are selected by default. Months are represented as
+  fixed 30-day periods, limited to three months to respect the deployed API's
+  90-day maximum.
+- The reminder is created locally only after the report viewer opens, points
+  to a saved `.sswsel`, and enters the existing best-effort synchronization
+  queue. Multi-selection email reminders remain unchanged.
+- The deployed reminder contract has no offer-status field and its timestamp
+  is named `email_prepared_at_utc`; it cannot centrally distinguish a
+  provisional offer from a definitive one. This UI change does not claim to
+  provide a shared offer-status register. A separate API/portal contract is
+  required if centralized offer lifecycle tracking is needed.
+- Remaining verification: frontend typecheck and regression, AV/x86 compile,
+  definitive/provisional online and offline smoke tests, reminder de-duplication
+  against any future single-selection email integration, and localization/UI
+  review. The currently running SSW process must be closed before replacing its
+  development executable.
+
+## Checkpoint 2026-10-05: compiled Next offer reminder verification
+
+Status: desktop persistence/reopening verified; live reminder synchronization
+remains blocked by an API internal error. This checkpoint does not mark the
+central offer lifecycle contract implemented.
+
+- Built the complete AV/x86 solution, including TypeScript and production
+  frontend assets, and exercised the exact standard `SSW.exe` outside the
+  restricted execution environment.
+- Added opt-in screenshot scenarios `offer-reminder-dialog`,
+  `offer-reminder-create`, `offer-reminder-reopen` and
+  `offer-reminder-cleanup`. They require an explicit
+  `SSW_OFFER_SMOKE_REFERENCE` beginning with `SSW-TEST-`.
+  Create registers a real technical selection and therefore needs explicit
+  authorization before execution against the production API.
+- Verified the actual definitive-offer confirmation defaults: reminder on,
+  seven days, days selected. The report opened and a local reminder was created.
+- With a separate test queue configured through `SSW_FOLLOW_UP_STATE_PATH`,
+  verified exactly one reminder, seven-day interval, a saved registered
+  `.sswsel`, visibility in the integrated notification center, persistence in
+  a second process and reopening the same selection by double-click.
+- Found and corrected a client/API timestamp incompatibility: .NET round-trip
+  format emitted seven fractional digits, but `parseUtcTimestamp` in the API
+  accepts at most six. Follow-up API timestamps now use six-digit UTC precision.
+  Added the same contract restriction to the local smoke test handler.
+- `SelectionIdentitySmoke` passed, including persistence/restart, ordered
+  offline mutations, retry and synchronization checks. Desktop test result
+  explicitly distinguishes local success from online synchronization.
+- The live API rejected reminder creation with HTTP 500/internal_error,
+  exposed as `The technical selection service is temporarily unavailable.`
+  This reproduced with a fresh test queue after the timestamp correction;
+  it is not solely a historical queue blockage. Technical selection
+  registration succeeded; the failing area is the reminder endpoint.
+- All three reminders created during these diagnostic attempts were marked
+  Cancelled locally. Their queued operations remain available for later retry;
+  online cancellation cannot be certified while the API is failing.
+
+Evidence was captured under the local development workspace `tmp/`:
+`offer-verified-create.png`, its confirmation and result JSON,
+`offer-verified-reopen.png`, its reopened-selection screenshot and result JSON,
+and `offer-verified-cleanup.png.error.log`. The reminder UUID in the isolated
+verification is `8abac3ab-87a5-4490-807d-ef13b8da8e7c` and the saved selection
+UUID is `593c2064-60f9-41e1-b625-c2061e1cc0a4`.
+
+Remaining acceptance: diagnose the server-side reminder exception, verify
+successful create/list/close synchronization and complete queued cancellation
+of the test reminders. Production data/schema changes were not performed.
+
+## Checkpoint 2026-10-05: central offer lifecycle and final acceptance
+
+This checkpoint supersedes the earlier server-error and missing-contract
+limitations above. Migration 006 tables were restored before this work;
+additive migration 010 and the authenticated offer endpoint are now deployed.
+Central provisional/definitive state, monotonic reprints, reminder synchronization,
+desktop reopening and cancellation of the current test all passed.
+The standard AV/x86 executable was rebuilt and tested, including offline
+provisional PDF/save/reopen and 15-language offer dialogs. Earlier isolated
+diagnostic queues remain unreplayed, not silently declared reconciled.
+
+See [dated acceptance and recovery record](OFFER_STATUS_2026-10-05.md).

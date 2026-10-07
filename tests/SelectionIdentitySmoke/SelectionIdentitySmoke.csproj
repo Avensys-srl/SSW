@@ -12,6 +12,7 @@
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
     <OutputPath>..\..\SSWLib\bin\x86\Release\</OutputPath>
     <PlatformTarget>x86</PlatformTarget>
+    <SSWTestAssemblyPath Condition="'$(SSWTestAssemblyPath)' == ''">..\..\SSWLib\bin\x86\Release\SSWLib.dll</SSWTestAssemblyPath>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -33,12 +34,16 @@
       <HintPath>..\..\packages\Microsoft.ReportViewer.Windows.11.0.3452\lib\net40\Microsoft.ReportViewer.WinForms.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="itextsharp">
+      <HintPath>..\..\packages\iTextSharp.5.5.13.3\lib\itextsharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.SqlServer.Types, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.SqlServer.Types.160.1000.6\lib\net462\Microsoft.SqlServer.Types.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="SSWLib">
-      <HintPath>..\..\SSWLib\bin\x86\Release\SSWLib.dll</HintPath>
+      <HintPath>$(SSWTestAssemblyPath)</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>

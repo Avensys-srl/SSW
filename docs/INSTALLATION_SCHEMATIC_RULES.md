@@ -22,6 +22,7 @@
 - House icons are not used in the installation UI. Legend entries show circles and a red access/viewing arrow.
 - The optional SHK shelf-kit note appears for floor mounting only.
 - All explanatory labels use the selected project language. Model identifiers, configuration codes and SHK remain unchanged.
+- Front-access captions in portrait/upright mounting views use a smaller font and wrap the localized caption onto two lines so the full text remains visible.
 
 ## Verification status
 

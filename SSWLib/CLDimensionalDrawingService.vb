@@ -1,4 +1,5 @@
 Imports Climalombarda.DataCentral.LTModel
+Imports System.Collections.Generic
 Imports System.Data.SqlServerCe
 Imports System.IO
 Imports System.Linq
@@ -47,6 +48,53 @@ Public NotInheritable Class CLDimensionalDrawingService
         Dim result = ResolveCore(modelCode, configurationCode, includeContent)
         result.VisibleDimensions = BuildVisibleDimensions(result)
         Return result
+    End Function
+
+    Public Shared Function GetActiveDrawingCoverage() As Dictionary(Of Integer, String)
+        Dim coverage As New Dictionary(Of Integer, String)()
+        If CLEnvironment.Current Is Nothing OrElse
+            CLEnvironment.Current.DatabaseCompatibility Is Nothing OrElse
+            Not CLEnvironment.Current.DatabaseCompatibility.HasFeature("DimensionalDrawings") Then
+            Return coverage
+        End If
+
+        Dim databasePath = CLEnvironment.Current.DCLiteDatabasePath
+        If String.IsNullOrWhiteSpace(databasePath) OrElse Not File.Exists(databasePath) Then
+            Return coverage
+        End If
+        Using connection As New SqlCeConnection(String.Format(
+            "Data Source=""{0}""; Password=""{1}""", databasePath, DatabasePassword))
+            connection.Open()
+            If Not TableExists(connection, "CLDimensionalDrawings") OrElse
+                Not TableExists(connection, "CLHeatRecoveryModelDimensionalDrawings") Then
+                Return coverage
+            End If
+            Using command = connection.CreateCommand()
+                command.CommandText =
+                    "SELECT relation.IdHeatRecoveryModel,relation.OrientationScope," &
+                    "drawing.Code,drawing.Revision FROM CLHeatRecoveryModelDimensionalDrawings relation " &
+                    "INNER JOIN CLDimensionalDrawings drawing ON drawing.Id=relation.IdDimensionalDrawing " &
+                    "WHERE relation.Active=1 AND drawing.Active=1 " &
+                    "ORDER BY relation.IdHeatRecoveryModel,relation.OrientationScope,drawing.Code,drawing.Revision"
+                Using reader = command.ExecuteReader()
+                    While reader.Read()
+                        Dim modelId = Convert.ToInt32(reader.GetValue(0))
+                        Dim revision = String.Format(
+                            "{0}: {1} R{2}",
+                            Convert.ToString(reader.GetValue(1), Globalization.CultureInfo.InvariantCulture),
+                            Convert.ToString(reader.GetValue(2), Globalization.CultureInfo.InvariantCulture),
+                            Convert.ToString(reader.GetValue(3), Globalization.CultureInfo.InvariantCulture))
+                        Dim current As String = Nothing
+                        If coverage.TryGetValue(modelId, current) Then
+                            coverage(modelId) = current & Environment.NewLine & revision
+                        Else
+                            coverage.Add(modelId, revision)
+                        End If
+                    End While
+                End Using
+            End Using
+        End Using
+        Return coverage
     End Function
 
     Private Shared Function ResolveCore(modelCode As String,

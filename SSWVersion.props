@@ -2,6 +2,7 @@
 <Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <!-- Single source of truth for every SSW release artifact. -->
-    <SSWVersion>2.0.0.19</SSWVersion>
+    <SSWVersion>2.0.0.25</SSWVersion>
+    <SSWIncludeLegacyReferenceUi Condition="'$(SSWIncludeLegacyReferenceUi)' == ''">false</SSWIncludeLegacyReferenceUi>
   </PropertyGroup>
 </Project>

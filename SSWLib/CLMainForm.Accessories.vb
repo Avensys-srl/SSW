@@ -464,6 +464,7 @@ Partial Public Class CLMainForm
         For Each item In m_AccessoryItems.Where(Function(candidate) candidate.IsStandard)
             m_AccessorySelected.Add(item.Id)
         Next
+        Accessories_UpgradeControllerForSelectedOptions()
 
         Dim changed As Boolean
         Do
@@ -484,6 +485,49 @@ Partial Public Class CLMainForm
                 Next
             Next
         Loop While changed
+    End Sub
+
+    Private Sub Accessories_RefreshControllerRequirement()
+        If m_AccessoriesChanging OrElse m_AccessoryItems.Count = 0 Then Return
+        Dim previousControllerId = m_AccessoryItems.Where(Function(item) _
+            m_AccessorySelected.Contains(item.Id) AndAlso
+            String.Equals(item.ExclusiveGroupCode, "KTS", StringComparison.OrdinalIgnoreCase)).
+            Select(Function(item) item.Id).FirstOrDefault()
+        Accessories_NormalizeSelection()
+        Dim currentControllerId = m_AccessoryItems.Where(Function(item) _
+            m_AccessorySelected.Contains(item.Id) AndAlso
+            String.Equals(item.ExclusiveGroupCode, "KTS", StringComparison.OrdinalIgnoreCase)).
+            Select(Function(item) item.Id).FirstOrDefault()
+        If previousControllerId <> currentControllerId Then Project_MarkDirty()
+        Accessories_ApplyFilter()
+    End Sub
+
+    Private Sub Accessories_UpgradeControllerForSelectedOptions()
+        Dim requiresExtra = m_AccessoryItems.Any(Function(item) m_AccessorySelected.Contains(item.Id) AndAlso
+            Not item.IsStandard AndAlso
+            Not String.Equals(item.ExclusiveGroupCode, "KTS", StringComparison.OrdinalIgnoreCase))
+        If Not requiresExtra AndAlso chbCoilPerformance_Enable IsNot Nothing Then
+            requiresExtra = chbCoilPerformance_Enable.Checked
+        End If
+        If Not requiresExtra AndAlso m_ElectricModeControls.Count > 0 Then
+            requiresExtra = m_ElectricModeControls.Values.Any(Function(item) item.Enable.Checked)
+        End If
+        If Not requiresExtra Then Return
+
+        Dim extraController = m_AccessoryItems.FirstOrDefault(Function(item) _
+            String.Equals(item.ExclusiveGroupCode, "KTS", StringComparison.OrdinalIgnoreCase) AndAlso
+            String.Equals(item.Code, "KTS EXTRA", StringComparison.OrdinalIgnoreCase) AndAlso
+            Not String.Equals(item.Availability, "Unavailable", StringComparison.OrdinalIgnoreCase) AndAlso
+            item.CustomerSelectable)
+        If extraController Is Nothing Then Return
+        Dim currentController = m_AccessoryItems.FirstOrDefault(Function(item) _
+            m_AccessorySelected.Contains(item.Id) AndAlso
+            String.Equals(item.ExclusiveGroupCode, "KTS", StringComparison.OrdinalIgnoreCase))
+        If currentController IsNot Nothing AndAlso
+            currentController.ControllerLevel >= extraController.ControllerLevel Then Return
+
+        m_AccessorySelected.Add(extraController.Id)
+        Accessories_ApplyExclusiveGroup(extraController)
     End Sub
 
     Private Sub Accessories_SelectDependencies(item As CLSelectionCatalogItem)

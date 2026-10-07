@@ -18,6 +18,7 @@ const wait = (milliseconds: number) =>
   new Promise<void>((resolve) => window.setTimeout(resolve, milliseconds));
 
 export class MockSelectionBridge implements SelectionBridge {
+  private reminders: FollowUpCenterState["reminders"] = [];
   private multiProject: MultiProjectState = {
     loaded: true,
     dirty: false,
@@ -41,6 +42,12 @@ export class MockSelectionBridge implements SelectionBridge {
           (unit) =>
             draft.operatingPoint.supplyAirflow <= unit.maxAirflow &&
             draft.operatingPoint.pressure <= unit.availablePressure &&
+            unit.requiredRegulation >= draft.minimumRegulationPercent &&
+            (draft.preselectionFilters.recoveryCategory === "any" ||
+              (draft.preselectionFilters.recoveryCategory === "plate" && unit.recoveryType?.toLowerCase() === "plate") ||
+              (draft.preselectionFilters.recoveryCategory === "decentralized" && unit.family === "7") ||
+              (draft.preselectionFilters.recoveryCategory === "centralized" && unit.family !== "7") ||
+              (draft.preselectionFilters.recoveryCategory === "rotary" && (unit.family === "6" || unit.family === "9"))) &&
             (!draft.preselectionFilters.rotaryOnlyEnabled ||
               unit.family === "6" || unit.family === "9") &&
             (!draft.preselectionFilters.maximumSfpEnabled ||
@@ -176,23 +183,72 @@ export class MockSelectionBridge implements SelectionBridge {
   async generateReport(
     draft: SelectionDraft,
     _documentLanguageCode: string,
+    offer: Parameters<SelectionBridge["generateReport"]>[2],
   ): Promise<{ fileName: string }> {
     await wait(320);
     const unit = mockUnits.find((candidate) => candidate.id === draft.selectedUnitId);
     const safeModel = (unit?.model ?? "SSW").replaceAll(" ", "_");
+    if (offer.type === "definitive" && offer.reminderEnabled) {
+      const preparedAt = new Date();
+      const dueAt = new Date(
+        preparedAt.getTime() + offer.reminderDelayDays * 24 * 60 * 60 * 1000,
+      );
+      this.reminders.unshift({
+        id: crypto.randomUUID(),
+        targetType: "Selection",
+        reference: draft.project.customerReference || draft.project.name || safeModel,
+        localPath: `C:\\Selections\\${safeModel}.sswsel`,
+        preparedAt: preparedAt.toISOString(),
+        dueAt: dueAt.toISOString(),
+        status: "Pending",
+        rescheduleCount: 0,
+        unread: false,
+        due: false,
+        fileAvailable: true,
+      });
+    }
     return { fileName: `${safeModel}_Technical_selection.pdf` };
   }
 
   async listNotifications(): Promise<FollowUpCenterState> {
-    return { unreadDueCount: 0, reminders: [] };
+    return this.notificationState();
   }
 
   async getNotificationSummary(): Promise<FollowUpCenterState> {
-    return { unreadDueCount: 0, reminders: [] };
+    return this.notificationState();
   }
 
-  async updateNotification(): Promise<FollowUpCenterState> {
-    return { unreadDueCount: 0, reminders: [] };
+  async updateNotification(
+    id: string,
+    action: "reschedule" | "succeeded" | "unsuccessful",
+    days = 7,
+  ): Promise<FollowUpCenterState> {
+    const reminder = this.reminders.find((item) => item.id === id);
+    if (reminder) {
+      if (action === "reschedule") {
+        const dueAt = new Date(Date.now() + Math.max(1, Math.min(90, days)) * 24 * 60 * 60 * 1000);
+        reminder.dueAt = dueAt.toISOString();
+        reminder.due = false;
+        reminder.unread = false;
+        reminder.rescheduleCount += 1;
+      } else {
+        reminder.status = action === "succeeded" ? "Succeeded" : "Unsuccessful";
+        reminder.unread = false;
+      }
+    }
+    return this.notificationState();
+  }
+
+  private notificationState(): FollowUpCenterState {
+    const now = Date.now();
+    const reminders = this.reminders.map((reminder) => ({
+      ...reminder,
+      due: reminder.status === "Pending" && Date.parse(reminder.dueAt) <= now,
+    }));
+    return {
+      unreadDueCount: reminders.filter((reminder) => reminder.due && reminder.unread).length,
+      reminders,
+    };
   }
 
   async openNotificationTarget(
@@ -299,6 +355,7 @@ export class MockSelectionBridge implements SelectionBridge {
 
   async getProductDocuments() {
     return {
+      applicationDocumentAvailable: false,
       commercialSheetAvailable: true,
       installationManualAvailable: true,
       stepModelAvailable: true,
@@ -307,6 +364,7 @@ export class MockSelectionBridge implements SelectionBridge {
 
   async openProductDocument() {
     return {
+      applicationDocumentAvailable: false,
       commercialSheetAvailable: true,
       installationManualAvailable: true,
       stepModelAvailable: true,

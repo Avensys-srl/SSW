@@ -4617,7 +4617,7 @@
           "AirFlowImage": "binary:37181",
           "LegendImage": "binary:15890",
           "CO2Image": "binary:61645",
-          "InstallationImage": "binary:30762",
+          "InstallationImage": "binary:30750",
           "InstallationTitle": "Configurazione installativa",
           "InstallationConfigurationCaption": "Configurazione",
           "InstallationConfigurationValue": "B6",
@@ -5312,9 +5312,9 @@
     }
   ],
   "runtime": {
-    "databaseSchema": "5",
-    "databaseData": "2026.09.25.082517-5F799028",
-    "databaseContent": "5F7990285C13B97D74D15BF251BCE42A178C8C523D0B0F9976F5D68540EE1E38",
+    "databaseSchema": "6",
+    "databaseData": "2026.10.01.144149-B9DB72EA",
+    "databaseContent": "B9DB72EAA774057F9DFCCBE279B960F2634F25BB3B082E0DFEA29F284A614059",
     "coilLibrary": "3C55C15F0998E2D627A1708B04F3D21CB54DDC662553A4BAAADE028B3AC05E95"
   }
 }

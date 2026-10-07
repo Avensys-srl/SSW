@@ -7,6 +7,7 @@ Public NotInheritable Class CLNextUiModelSummary
     Public Property Code As String
     Public Property Name As String
     Public Property SeriesCode As String
+    Public Property RecoveryType As String
     Public Property NominalAirflowM3h As Double
     Public Property StaticPressurePa As Double
     Public Property AeraulicConnectionCode As String
@@ -76,6 +77,7 @@ Public NotInheritable Class CLNextUiCalculationInput
     Public Property ImbalanceEnabled As Boolean
     Public Property PressurePa As Double
     Public Property RegulationPercent As Double = 100
+    Public Property MinimumRegulationPercent As Integer = 70
     Public Property SummerEnabled As Boolean = True
     Public Property WinterOutdoorTemperatureC As Double = -10
     Public Property WinterOutdoorRhPercent As Double = 80
@@ -129,6 +131,7 @@ Public NotInheritable Class CLNextUiCalculationResult
     Public Property EffectiveRegulationPercent As Double
     Public Property PressureCapacityExceeded As Boolean
     Public Property PressureCapacityExceededMessage As String
+    Public Property RequiresAvensysSelection As Boolean
     Public Property WaterHeatingEnabled As Boolean = True
     Public Property WaterHeatingDisabledReason As String
     Public Property ElectricPostheaterEnabled As Boolean = True
@@ -175,9 +178,11 @@ Public NotInheritable Class CLNextUiApplicationService
                                   Not String.Equals(model.Code, "IOM3", StringComparison.OrdinalIgnoreCase) AndAlso
                                   (Not filters.RotaryOnlyEnabled OrElse
                                    (model.CLSerie IsNot Nothing AndAlso
-                                    (model.CLSerie.Code = "6" OrElse model.CLSerie.Code = "9")))).
+                                    (model.CLSerie.Code = "6" OrElse model.CLSerie.Code = "9"))) AndAlso
+                                  MatchesRecoveryCategory(model, filters.RecoveryCategory)).
             Select(Function(model) CalculatePreselectionCandidate(
                 model, input.SupplyAirflowM3h, requestedPressure,
+                Math.Max(70, Math.Min(100, input.MinimumRegulationPercent)),
                 filters)).
             Where(Function(candidate) candidate IsNot Nothing).
             OrderBy(Function(candidate) candidate.CombinedSfp).
@@ -196,6 +201,26 @@ Public NotInheritable Class CLNextUiApplicationService
 
         Dim airflow = If(input.SupplyAirflowM3h > 0, input.SupplyAirflowM3h, CDbl(model.NominalAirflow.GetValueOrDefault()))
         Dim pressure = If(input.PressurePa >= 0, input.PressurePa, CDbl(model.StaticPressure.GetValueOrDefault()))
+        If IsAvensysSelectionOnly(model) Then
+            Dim unavailableLayout = CLInstallationLayoutRepository.Create().GetForModel(model, Nothing)
+            unavailableLayout.ConfigurationCode = Nothing
+            unavailableLayout.Configurations.Clear()
+            unavailableLayout.HorizontalDimensions.Clear()
+            unavailableLayout.VerticalDimensions.Clear()
+            unavailableLayout.FlowPorts.Clear()
+            Dim specialValidation As New CLValidationResult()
+            specialValidation.Issues.Add(New CLValidationIssue With {
+                .Code = "SpecialUnitRequiresAvensysSelection",
+                .Severity = CLValidationSeverity.Information,
+                .Path = "ModelCode",
+                .MessageKey = "SpecialUnitRequiresAvensysSelection"})
+            Return New CLNextUiCalculationResult With {
+                .Model = MapModel(model),
+                .Layout = unavailableLayout,
+                .RequiresAvensysSelection = True,
+                .Validation = specialValidation
+            }
+        End If
         Dim coils = CLCoilPerformanceCalculator.GetAvailableCoils(model)
         Dim heaters = CLElectricHeaterCalculator.GetAvailableHeaters(model)
         Dim selectedPreheater = SelectHeater(
@@ -230,7 +255,7 @@ Public NotInheritable Class CLNextUiApplicationService
                 model,
                 airflow,
                 requiredFanPressure,
-                CInt(Math.Ceiling(effectiveRegulation)))
+                effectiveRegulation)
             If operatingPoint Is Nothing Then
                 effectiveRegulation = 100
                 pressureCapacityExceeded = True
@@ -256,7 +281,16 @@ Public NotInheritable Class CLNextUiApplicationService
         End If
 
         Dim layout = CLInstallationLayoutRepository.Create().GetForModel(model, input.LayoutCode)
-        Dim accessories = GetAccessories(model, input.AccessoryCodes)
+        Dim requiresAvensysSelection = IsAvensysSelectionOnly(model)
+        If requiresAvensysSelection Then
+            layout.ConfigurationCode = Nothing
+            layout.Configurations.Clear()
+            layout.HorizontalDimensions.Clear()
+            layout.VerticalDimensions.Clear()
+            layout.FlowPorts.Clear()
+        End If
+        Dim accessories = GetAccessories(model, input.AccessoryCodes,
+            RequiresExtraController(input))
         Dim validation = ValidateAirTreatment(input, selectedPostheater, waterResults)
         For Each unavailable In UnavailableTreatments(input, coils, heaters)
             validation.Issues.Add(New CLValidationIssue With {
@@ -264,7 +298,13 @@ Public NotInheritable Class CLNextUiApplicationService
                 .Path = unavailable, .MessageKey = unavailable & ": " & LocalizedText(
                     "MainForm_Accessories_Unavailable", "Not available for this unit.")})
         Next
-        If layout.Configurations.Count = 0 Then
+        If requiresAvensysSelection Then
+            validation.Issues.Add(New CLValidationIssue With {
+                .Code = "SpecialUnitRequiresAvensysSelection",
+                .Severity = CLValidationSeverity.Information,
+                .Path = "ModelCode",
+                .MessageKey = "SpecialUnitRequiresAvensysSelection"})
+        ElseIf layout.Configurations.Count = 0 Then
             validation.Issues.Add(New CLValidationIssue With {
                 .Code = "LayoutConfigurationsMissing", .Severity = CLValidationSeverity.Error,
                 .Path = "LayoutCode", .MessageKey = LocalizedText(
@@ -297,6 +337,7 @@ Public NotInheritable Class CLNextUiApplicationService
             .EffectiveRegulationPercent = effectiveRegulation,
             .PressureCapacityExceeded = pressureCapacityExceeded,
             .PressureCapacityExceededMessage = PressureCapacityExceededText(),
+            .RequiresAvensysSelection = requiresAvensysSelection,
             .WaterHeatingEnabled = Not input.ElectricPostheaterEnabled,
             .WaterHeatingDisabledReason = If(
                 input.ElectricPostheaterEnabled,
@@ -342,6 +383,9 @@ Public NotInheritable Class CLNextUiApplicationService
         If model Is Nothing Then
             Throw New InvalidOperationException("The selected unit is not available in the local SDF.")
         End If
+        If IsAvensysSelectionOnly(model) Then
+            Throw New InvalidOperationException("This unit requires technical selection by Avensys and cannot produce a technical report from the available local data.")
+        End If
 
         Dim layout = CLInstallationLayoutRepository.Create().GetForModel(model, input.LayoutCode)
         Dim chosenLayout = If(String.IsNullOrWhiteSpace(input.LayoutCode), layout.DefaultConfiguration,
@@ -353,7 +397,8 @@ Public NotInheritable Class CLNextUiApplicationService
             input.InstallationMode, StringComparison.OrdinalIgnoreCase))) Then
             Throw New InvalidOperationException("The installation configuration must be reviewed before saving.")
         End If
-        Dim effectiveAccessories = GetAccessories(model, input.AccessoryCodes)
+        Dim effectiveAccessories = GetAccessories(model, input.AccessoryCodes,
+            RequiresExtraController(input))
         If UnavailableTreatments(input, CLCoilPerformanceCalculator.GetAvailableCoils(model),
             CLElectricHeaterCalculator.GetAvailableHeaters(model)).Any() Then
             Throw New InvalidOperationException("The air-treatment selection must be reviewed before saving.")
@@ -463,7 +508,8 @@ Public NotInheritable Class CLNextUiApplicationService
             document.Selection.ElectricHeater.PEHD.Enabled OrElse
             document.Selection.ElectricHeater.EHD.Enabled
 
-        Dim availableAccessories = GetAccessories(model, input.AccessoryCodes)
+        Dim availableAccessories = GetAccessories(model, input.AccessoryCodes,
+            RequiresExtraController(input))
         For Each item In availableAccessories.Where(Function(candidate) candidate.Included)
             document.Selection.Accessories.Add(New CLAccessorySelection With {
                 .Code = item.Code,
@@ -654,6 +700,7 @@ Public NotInheritable Class CLNextUiApplicationService
             .ImbalanceEnabled = selection.ImbalanceEnabled,
             .PressurePa = winter.MaximumPressurePa.GetValueOrDefault(),
             .RegulationPercent = winter.RegulationPercent.GetValueOrDefault(100),
+            .MinimumRegulationPercent = filters.MinimumRegulationPercent,
             .SummerEnabled = summer.Enabled,
             .WinterOutdoorTemperatureC = winter.OutdoorTemperatureC.GetValueOrDefault(-10),
             .WinterOutdoorRhPercent = winter.OutdoorRelativeHumidityPercent.GetValueOrDefault(80),
@@ -695,7 +742,9 @@ Public NotInheritable Class CLNextUiApplicationService
                 .IncludeIso16032 = sound.IncludeIso16032
             },
             .PreselectionFilters = New CLNextUiPreselectionFilters With {
+                .MinimumRegulationPercent = filters.MinimumRegulationPercent,
                 .RotaryOnlyEnabled = filters.RotaryOnlyEnabled,
+                .RecoveryCategory = filters.RecoveryCategory,
                 .MaximumSfpEnabled = filters.MaximumSfpEnabled,
                 .MaximumSfp = filters.MaximumSfp,
                 .SupplyNoiseEnabled = filters.SupplyNoiseEnabled,
@@ -752,7 +801,9 @@ Public NotInheritable Class CLNextUiApplicationService
         input As CLNextUiPreselectionFilters) As CLPreselectionFilterSelection
         If input Is Nothing Then input = New CLNextUiPreselectionFilters()
         Return New CLPreselectionFilterSelection With {
+            .MinimumRegulationPercent = input.MinimumRegulationPercent,
             .RotaryOnlyEnabled = input.RotaryOnlyEnabled,
+            .RecoveryCategory = input.RecoveryCategory,
             .MaximumSfpEnabled = input.MaximumSfpEnabled,
             .MaximumSfp = input.MaximumSfp,
             .SupplyNoiseEnabled = input.SupplyNoiseEnabled,
@@ -1201,9 +1252,10 @@ Public NotInheritable Class CLNextUiApplicationService
 
     Private Shared Function GetAccessories(
         model As CLDCHeatRecoveryModel,
-        requestedCodes As IEnumerable(Of String)) As List(Of CLNextUiAccessorySummary)
+        requestedCodes As IEnumerable(Of String),
+        requiresExtraController As Boolean) As List(Of CLNextUiAccessorySummary)
 
-        Dim languageCode = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName
+        Dim languageCode = CLEnvironment.Current.PrimaryLanguageCode
         Dim items = CLSelectionCatalogRepository.GetEffectiveItems(
                 CLEnvironment.Current.DCLiteDatabasePath,
                 model.Id,
@@ -1234,7 +1286,7 @@ Public NotInheritable Class CLNextUiApplicationService
             End If
             selected.Add(item.Id)
         Next
-        NormalizeAccessorySelection(items, selected)
+        NormalizeAccessorySelection(items, selected, requiresExtraController)
 
         Return items.Select(Function(item)
             Dim disabledReason = AccessoryDisabledReason(items, selected, item)
@@ -1260,11 +1312,29 @@ Public NotInheritable Class CLNextUiApplicationService
 
     Private Shared Sub NormalizeAccessorySelection(
         items As List(Of CLSelectionCatalogItem),
-        selected As HashSet(Of Integer))
+        selected As HashSet(Of Integer),
+        Optional requiresExtraController As Boolean = False)
 
         For Each item In items.Where(Function(candidate) candidate.IsStandard)
             selected.Add(item.Id)
         Next
+        If requiresExtraController Then
+            Dim extraController = items.FirstOrDefault(Function(item) item.CustomerSelectable AndAlso
+                Not String.Equals(item.Availability, "Unavailable", StringComparison.OrdinalIgnoreCase) AndAlso
+                String.Equals(item.ExclusiveGroupCode, "KTS", StringComparison.OrdinalIgnoreCase) AndAlso
+                String.Equals(item.Code, "KTS EXTRA", StringComparison.OrdinalIgnoreCase))
+            Dim currentController = items.FirstOrDefault(Function(item) selected.Contains(item.Id) AndAlso
+                String.Equals(item.ExclusiveGroupCode, "KTS", StringComparison.OrdinalIgnoreCase))
+            If extraController IsNot Nothing AndAlso
+                (currentController Is Nothing OrElse
+                 currentController.ControllerLevel < extraController.ControllerLevel) Then
+                For Each controller In items.Where(Function(item) String.Equals(
+                    item.ExclusiveGroupCode, "KTS", StringComparison.OrdinalIgnoreCase))
+                    selected.Remove(controller.Id)
+                Next
+                selected.Add(extraController.Id)
+            End If
+        End If
         For Each group In items.Where(Function(item) selected.Contains(item.Id) AndAlso
             Not String.IsNullOrWhiteSpace(item.ExclusiveGroupCode)).GroupBy(Function(item) _
                 item.ExclusiveGroupCode, StringComparer.OrdinalIgnoreCase)
@@ -1323,6 +1393,24 @@ Public NotInheritable Class CLNextUiApplicationService
             Next
         Loop While changed
     End Sub
+
+    Private Shared Function RequiresExtraController(input As CLNextUiCalculationInput) As Boolean
+        If input Is Nothing Then Return False
+        If input.WaterCoilEnabled OrElse input.ElectricPreheaterEnabled OrElse
+            input.ElectricPostheaterEnabled Then Return True
+        If input.AccessoryCodes Is Nothing OrElse input.AccessoryCodes.Count = 0 Then Return False
+        Dim model = CLEnvironment.Current.DCContext.CLDCHeatRecoveryModels.AsEnumerable().
+            FirstOrDefault(Function(item) String.Equals(item.Code, input.ModelCode,
+                StringComparison.OrdinalIgnoreCase))
+        If model Is Nothing Then Return False
+        Dim requested = New HashSet(Of String)(input.AccessoryCodes,
+            StringComparer.OrdinalIgnoreCase)
+        Return CLSelectionCatalogRepository.GetEffectiveItems(
+            CLEnvironment.Current.DCLiteDatabasePath, model.Id,
+            CLEnvironment.Current.PrimaryLanguageCode).Any(Function(item) _
+                requested.Contains(item.Code) AndAlso Not item.IsStandard AndAlso
+                Not String.Equals(item.ExclusiveGroupCode, "KTS", StringComparison.OrdinalIgnoreCase))
+    End Function
 
     Private Shared Function AccessoryDisabledReason(
         items As List(Of CLSelectionCatalogItem),
@@ -1514,12 +1602,47 @@ Public NotInheritable Class CLNextUiApplicationService
         Return fallback
     End Function
 
+    Private Shared Function MatchesRecoveryCategory(
+        model As CLDCHeatRecoveryModel,
+        recoveryCategory As String) As Boolean
+        If String.IsNullOrWhiteSpace(recoveryCategory) OrElse
+           String.Equals(recoveryCategory, "any", StringComparison.OrdinalIgnoreCase) Then
+            Return True
+        End If
+        If model Is Nothing OrElse model.CLSerie Is Nothing OrElse
+           String.IsNullOrWhiteSpace(model.CLSerie.Code) Then Return False
+
+        Dim familyCode = model.CLSerie.Code.Trim()
+        Select Case recoveryCategory.Trim().ToLowerInvariant()
+            Case "decentralized"
+                Return String.Equals(familyCode, "7", StringComparison.OrdinalIgnoreCase)
+            Case "centralized"
+                Return Not String.Equals(familyCode, "7", StringComparison.OrdinalIgnoreCase)
+            Case "rotary"
+                Return String.Equals(familyCode, "6", StringComparison.OrdinalIgnoreCase) OrElse
+                       String.Equals(familyCode, "9", StringComparison.OrdinalIgnoreCase)
+            Case "plate"
+                Return String.Equals(ReadRecoveryType(model), "plate", StringComparison.OrdinalIgnoreCase)
+            Case Else
+                Return False
+        End Select
+    End Function
+
+    Private Shared Function ReadRecoveryType(model As Object) As String
+        If model Is Nothing Then Return String.Empty
+        Dim propertyInfo = model.GetType().GetProperty("RecoveryType")
+        If propertyInfo Is Nothing Then Return String.Empty
+        Dim value = propertyInfo.GetValue(model, Nothing)
+        Return If(value Is Nothing, String.Empty, Convert.ToString(value, CultureInfo.InvariantCulture).Trim())
+    End Function
+
     Private Shared Function MapModel(model As CLDCHeatRecoveryModel) As CLNextUiModelSummary
         Return New CLNextUiModelSummary With {
             .Id = model.Id,
             .Code = model.Code,
             .Name = CLEnvironment.Current.GetCustomerHeatRecoveryModelName(model),
             .SeriesCode = If(model.CLSerie Is Nothing, String.Empty, model.CLSerie.Code),
+            .RecoveryType = ReadRecoveryType(model),
             .NominalAirflowM3h = model.NominalAirflow.GetValueOrDefault(),
             .StaticPressurePa = model.StaticPressure.GetValueOrDefault(),
             .AeraulicConnectionCode = If(model.CLEnumItem_AeraulicConnection Is Nothing,
@@ -1528,15 +1651,22 @@ Public NotInheritable Class CLNextUiApplicationService
         }
     End Function
 
+    Private Shared Function IsAvensysSelectionOnly(model As CLDCHeatRecoveryModel) As Boolean
+        If model Is Nothing OrElse String.IsNullOrWhiteSpace(model.Code) Then Return False
+        Return {"CFI", "CDR", "CFD"}.Any(Function(suffix) _
+            model.Code.Trim().EndsWith(" " & suffix, StringComparison.OrdinalIgnoreCase))
+    End Function
+
     Private Shared Function CalculatePreselectionCandidate(
         model As CLDCHeatRecoveryModel,
         requestedAirflow As Double,
         requestedPressure As Double,
+        minimumRegulationPercent As Integer,
         filters As CLNextUiPreselectionFilters) As CLNextUiPreselectionSummary
 
         Try
             Dim operatingPoint = CLSelectionApplicationService.FindCompatibleFanOperatingPoint(
-                model, requestedAirflow, requestedPressure, 70)
+                model, requestedAirflow, requestedPressure, minimumRegulationPercent)
             If operatingPoint Is Nothing Then Return Nothing
             Dim maximumPressureExcess = Math.Min(25.0R,
                 Math.Max(10.0R, requestedPressure * 0.05R))

@@ -113,7 +113,7 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
                 g.DrawRectangle(outline, 123.3335F, 25.0F, 53.333F, 170.0F)
                 g.DrawLine(red, 95, 205, 205, 205)
                 DrawRedArrow(g, red, New PointF(25, 110), New PointF(113.3335F, 110))
-                DrawCenteredText(g, AccessCaption(c.AccessSide), label, Brushes.Black, New RectangleF(0, 65, 138.3335F, 30))
+                DrawAccessCaption(g, c.AccessSide, label, New RectangleF(0, 53, 105, 50))
             Else
                 g.DrawRectangle(outline, 65.0F, 65.0F, 170.0F, 53.333F)
                 Dim supportY = If(mode = "floor", 165, 45)
@@ -182,7 +182,7 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
                 g.DrawString(FlowCaption(roles(i)), label, Brushes.Black, 1200, 50 + i * 65)
             Next
             DrawRedArrow(g, red, New PointF(1150, 335), New PointF(1150, 380))
-            g.DrawString(AccessCaption(c.AccessSide), label, Brushes.Black, New RectangleF(1200, 340, 380, 60))
+            DrawAccessCaption(g, c.AccessSide, label, New RectangleF(1200, 340, 380, 60))
         End Using
     End Sub
 
@@ -319,6 +319,20 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
                 configuration.AccessSide)
             DrawFlowLegend(graphics, configuration.AccessSide)
         End Using
+    End Sub
+
+    Private Shared Sub DrawAccessCaption(graphics As Graphics,
+        accessSide As String, regularFont As Font, bounds As RectangleF)
+
+        Dim caption = AccessCaption(accessSide)
+        If EqualsCode(accessSide, "front") Then
+            caption = T("Report_InstallationLayout_FrontAccess", "Front access").Replace(" ", Environment.NewLine)
+            Using frontFont As New Font("Arial", 7.0F, FontStyle.Regular)
+                DrawCenteredText(graphics, caption, frontFont, Brushes.Black, bounds)
+            End Using
+        Else
+            DrawCenteredText(graphics, caption, regularFont, Brushes.Black, bounds)
+        End If
     End Sub
 
     Private Shared Function BuildPortPlacements(snapshot As CLInstallationLayoutSnapshot,
@@ -531,8 +545,8 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
             Case Else
                 DrawObserverCross(graphics,
                     New PointF(centerX, unitRectangle.Top + unitRectangle.Height * 0.56F), 18.0F, 2.5F)
-                DrawCenteredText(graphics, label, font, Brushes.Black,
-                    New RectangleF(centerX - 160.0F, unitRectangle.Top + unitRectangle.Height * 0.67F, 320.0F, 22.0F))
+                DrawAccessCaption(graphics, position, font,
+                    New RectangleF(centerX - 160.0F, unitRectangle.Top + unitRectangle.Height * 0.67F, 320.0F, 40.0F))
         End Select
         End Using
     End Sub

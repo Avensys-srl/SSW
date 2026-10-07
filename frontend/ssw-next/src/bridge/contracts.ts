@@ -51,6 +51,7 @@ export interface PerformanceCurveData {
 export interface UnitOption {
   id: string;
   family: string;
+  recoveryType?: string;
   model: string;
   maxAirflow: number;
   availablePressure: number;
@@ -70,6 +71,7 @@ export type NoiseMetric = "LWA" | "LPA";
 
 export interface PreselectionFilterSettings {
   rotaryOnlyEnabled: boolean;
+  recoveryCategory: "any" | "plate" | "decentralized" | "centralized" | "rotary";
   maximumSfpEnabled: boolean;
   maximumSfp: number;
   supplyNoiseEnabled: boolean;
@@ -216,6 +218,7 @@ export interface SelectionDraft {
   project: ProjectInfo;
   operatingPoint: OperatingPoint;
   imbalanceEnabled: boolean;
+  minimumRegulationPercent: number;
   regulationPercent: number;
   summerEnabled: boolean;
   winterOutdoorTemperature: number;
@@ -265,9 +268,11 @@ export interface SelectionResult {
   sfp: number;
   status: "valid" | "warning" | "invalid";
   messages: string[];
+  requiresAvensysSelection?: boolean;
   notices?: Array<{
     message: string;
     severity: "information" | "warning" | "danger";
+    code?: string;
   }>;
   effectiveRegulationPercent?: number;
   accessories?: AccessoryOption[];
@@ -334,10 +339,12 @@ export interface FollowUpReminder {
 
 export interface FollowUpCenterState {
   unreadDueCount: number;
+  offers?: Array<{ id: string; reference: string; customerReference: string; model: string; revision: number; definitiveAt: string; reminderStatus: FollowUpReminder["status"] | null; fileAvailable: boolean }>;
   reminders: FollowUpReminder[];
 }
 
 export interface ProductDocumentState {
+  applicationDocumentAvailable: boolean;
   commercialSheetAvailable: boolean;
   installationManualAvailable: boolean;
   stepModelAvailable: boolean;
@@ -420,10 +427,15 @@ export interface SelectionBridge {
   generateReport(
     draft: SelectionDraft,
     documentLanguageCode: string,
+    offer: {
+      type: "provisional" | "definitive";
+      reminderEnabled: boolean;
+      reminderDelayDays: number;
+    },
   ): Promise<{ fileName: string; delegated?: boolean }>;
   getProductDocuments(draft: SelectionDraft): Promise<ProductDocumentState>;
   openProductDocument(
-    documentType: "commercial-sheet" | "installation-manual" | "step-model",
+    documentType: "commercial-sheet" | "installation-manual" | "application-document" | "step-model",
     draft: SelectionDraft,
   ): Promise<ProductDocumentState>;
   getDimensionalDrawing(draft: SelectionDraft): Promise<DimensionalDrawingState>;
