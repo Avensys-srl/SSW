@@ -22,6 +22,9 @@ type NativeModel = {
   Name: string;
   SeriesCode: string;
   RecoveryType?: string;
+  ExchangerType?: string;
+  UnitApplication?: string;
+  InstallationEnvironment?: string;
   NominalAirflowM3h: number;
   StaticPressurePa: number;
 };
@@ -188,6 +191,7 @@ class NativeSelectionBridge implements SelectionBridge {
       summerReturnRh: 50,
       selectedUnitId: preferred.Code,
       installationMode: "ceiling" as const,
+      installationEnvironment: "Indoor" as const,
       layoutCode: "B6",
       waterCoilEnabled: false,
       waterCoilMode: "HCD" as const,
@@ -375,12 +379,14 @@ class NativeSelectionBridge implements SelectionBridge {
   }
 
   async openProductDocument(
-    documentType: "commercial-sheet" | "installation-manual" | "application-document" | "step-model",
+    documentType: "commercial-sheet" | "brochure" | "installation-manual" | "application-document" | "step-model",
     draft: SelectionDraft,
+    brochureId?: string,
   ) {
     return nativeInvoke<ProductDocumentState>("documents.open", {
       ...this.draftPayload(draft),
       documentType,
+      brochureId,
     });
   }
 
@@ -388,6 +394,7 @@ class NativeSelectionBridge implements SelectionBridge {
     const native = await nativeInvoke<any>("drawing.get", {
       modelCode: draft.selectedUnitId,
       layoutCode: draft.layoutCode,
+      installationEnvironment: draft.installationEnvironment ?? "Indoor",
     });
     return {
       available: native.Available === true,
@@ -438,6 +445,7 @@ class NativeSelectionBridge implements SelectionBridge {
         modelCode: draft.selectedUnitId,
         layoutCode: draft.layoutCode,
         imageBase64,
+        installationEnvironment: draft.installationEnvironment ?? "Indoor",
       },
     );
   }
@@ -586,6 +594,7 @@ class NativeSelectionBridge implements SelectionBridge {
     result.summerReturnTemperature = numberValue(native.SummerReturnTemperatureC);
     result.summerReturnRh = numberValue(native.SummerReturnRhPercent);
     result.installationMode = native.InstallationMode || "Ceiling";
+    result.installationEnvironment = native.InstallationEnvironment || "Indoor";
     result.layoutCode = native.LayoutCode || result.layoutCode;
     result.waterCoilEnabled = Boolean(native.WaterCoilEnabled);
     result.waterCoilId = numberValue(native.WaterCoilId);
@@ -660,6 +669,12 @@ class NativeSelectionBridge implements SelectionBridge {
     const breakoutDirectivity = numberValue(nativeFilters.BreakoutNoiseDirectivity, 2);
     result.preselectionFilters = {
       rotaryOnlyEnabled: Boolean(nativeFilters.RotaryOnlyEnabled),
+      recoveryOperation: nativeFilters.RecoveryOperation && nativeFilters.RecoveryOperation !== "any" ? nativeFilters.RecoveryOperation :
+        Boolean(nativeFilters.RotaryOnlyEnabled) || nativeFilters.RecoveryCategory === "rotary" ? "Rotary" : nativeFilters.RecoveryCategory === "plate" ? "Plate" : "any",
+      exchangerType: nativeFilters.ExchangerType || "any",
+      unitApplication: nativeFilters.UnitApplication && nativeFilters.UnitApplication !== "any" ? nativeFilters.UnitApplication :
+        nativeFilters.RecoveryCategory === "centralized" ? "Centralized" : nativeFilters.RecoveryCategory === "decentralized" ? "Decentralized" : "any",
+      installationEnvironment: nativeFilters.InstallationEnvironment || "any",
       recoveryCategory: ["any", "plate", "decentralized", "centralized", "rotary"].includes(nativeFilters.RecoveryCategory) &&
         (nativeFilters.RecoveryCategory !== "any" || !Boolean(nativeFilters.RotaryOnlyEnabled))
         ? nativeFilters.RecoveryCategory
@@ -703,6 +718,9 @@ class NativeSelectionBridge implements SelectionBridge {
       id: model.Code,
       family: model.SeriesCode,
       recoveryType: model.RecoveryType,
+      exchangerType: model.ExchangerType,
+      unitApplication: model.UnitApplication,
+      installationEnvironment: model.InstallationEnvironment,
       model: model.Name || model.Code,
       maxAirflow: numberValue(model.NominalAirflowM3h),
       availablePressure: numberValue(item.AvailablePressurePa),
@@ -767,6 +785,7 @@ class NativeSelectionBridge implements SelectionBridge {
       electricPostheaterId: draft.electricPostheaterId,
       accessoryCodes: draft.accessoryCodes,
       installationMode: draft.installationMode,
+      installationEnvironment: draft.installationEnvironment ?? "Indoor",
       layoutCode: draft.layoutCode,
       co2: {
         includeInReport: draft.co2.includeInReport,

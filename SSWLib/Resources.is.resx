@@ -1380,4 +1380,5 @@ Varðveisla: reiknings- og leyfisskrár eru varðveittar á meðan viðskiptasam
 Réttindi: þú getur beðið um aðgang, leiðréttingu, eyðingu, takmörkun, andmæli eða færanleika þar sem við á og lagt fram kvörtun til lögbærs gagnaverndaryfirvalds. Hafðu samband við info@avensys-srl.com.</value></data>
   <data name="DeviceLicense_PrivacyAcknowledgement" xml:space="preserve"><value>Samþykktu notkunarskilmálana til að virkja SSW á þessu tæki</value></data>
   <data name="DeviceLicense_Company" xml:space="preserve"><value>Company</value></data>
+  <data name="PDF_TotalUnitPower" xml:space="preserve"><value>Heildarafl einingar [W]</value></data>
 </root>

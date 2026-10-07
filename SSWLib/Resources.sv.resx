@@ -1160,4 +1160,5 @@ Lagring: konto- och licensuppgifter bevaras under affärsrelationens varaktighet
 Rättigheter: du kan begära åtkomst, rättelse, radering, begränsning, invändning eller portabilitet där så är tillämpligt, och lämna in ett klagomål till den behöriga dataskyddsmyndigheten. Kontakta info@avensys-srl.com.</value></data>
   <data name="DeviceLicense_PrivacyAcknowledgement" xml:space="preserve"><value>Acceptera användarvillkoren för att aktivera SSW på den här enheten</value></data>
   <data name="DeviceLicense_Company" xml:space="preserve"><value>Company</value></data>
+  <data name="PDF_TotalUnitPower" xml:space="preserve"><value>Aggregatets totala effekt [W]</value></data>
 </root>

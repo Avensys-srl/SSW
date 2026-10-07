@@ -948,4 +948,5 @@ Conservazione: i dati dell&apos;account e della licenza sono conservati per la d
 Diritti: è possibile richiedere accesso, rettifica, cancellazione, limitazione, opposizione o portabilità ove applicabile e proporre reclamo all&apos;autorità competente per la protezione dei dati. Contattare info@avensys-srl.com.</value></data>
   <data name="DeviceLicense_PrivacyAcknowledgement" xml:space="preserve"><value>Accetta i termini d&apos;uso per attivare SSW su questo dispositivo</value></data>
   <data name="DeviceLicense_Company" xml:space="preserve"><value>Società</value></data>
+  <data name="PDF_TotalUnitPower" xml:space="preserve"><value>Potenza totale unità [W]</value></data>
 </root>

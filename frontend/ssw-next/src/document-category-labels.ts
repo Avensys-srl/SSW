@@ -1,0 +1,17 @@
+export const documentCategoryLabels: Record<string, { sheet: string; brochure: string }> = {
+  en: { sheet: "Technical-commercial data sheet", brochure: "Commercial brochure" },
+  it: { sheet: "Scheda tecnico-commerciale", brochure: "Brochure commerciale" },
+  bg: { sheet: "Техническо-търговски лист", brochure: "Търговска брошура" },
+  cs: { sheet: "Technicko-obchodní list", brochure: "Obchodní brožura" },
+  da: { sheet: "Teknisk-kommercielt datablad", brochure: "Salgsbrochure" },
+  de: { sheet: "Technisch-kommerzielles Datenblatt", brochure: "Verkaufsbroschüre" },
+  fr: { sheet: "Fiche technico-commerciale", brochure: "Brochure commerciale" },
+  hu: { sheet: "Műszaki-kereskedelmi adatlap", brochure: "Kereskedelmi brosúra" },
+  is: { sheet: "Tækni- og viðskiptagagnablað", brochure: "Sölubæklingur" },
+  nl: { sheet: "Technisch-commercieel gegevensblad", brochure: "Commerciële brochure" },
+  no: { sheet: "Teknisk-kommersielt datablad", brochure: "Salgsbrosjyre" },
+  pl: { sheet: "Karta techniczno-handlowa", brochure: "Broszura handlowa" },
+  ro: { sheet: "Fișă tehnico-comercială", brochure: "Broșură comercială" },
+  sl: { sheet: "Tehnično-komercialni list", brochure: "Komercialna brošura" },
+  sv: { sheet: "Tekniskt-kommersiellt datablad", brochure: "Försäljningsbroschyr" },
+};

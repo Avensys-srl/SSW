@@ -26,6 +26,8 @@ $installer = (Resolve-Path $InstallerPath).Path
 $sswExe = Join-Path $build 'SSW.exe'
 $sswLib = Join-Path $build 'SSWLib.dll'
 $softwareVersion = [Diagnostics.FileVersionInfo]::GetVersionInfo($sswLib).FileVersion
+$releaseAssembly = [Reflection.Assembly]::Load([IO.File]::ReadAllBytes($sswLib))
+$technicalVersions = $releaseAssembly.GetType('SSW.CLTechnicalVersions', $true)
 if ([string]::IsNullOrWhiteSpace($softwareVersion)) { throw 'SSWLib.dll has no FileVersion.' }
 $applicationVersion = [Diagnostics.FileVersionInfo]::GetVersionInfo($sswExe).FileVersion
 if ([string]::IsNullOrWhiteSpace($applicationVersion)) { throw 'SSW.exe has no FileVersion.' }
@@ -44,7 +46,7 @@ $artifacts += Get-Artifact 'application' $sswExe $softwareVersion
 $artifacts += Get-Artifact 'calculation-engine' $sswLib $softwareVersion
 $artifacts += Get-Artifact 'database' $databasePath ([string]$databaseMetadata.data_version)
 foreach ($report in @('CLMainReport.rdlc','CLMainReportWithCO2.rdlc','CLMainReport_Coil.rdlc','CLMainReportWithCO2_Coil.rdlc')) {
-    $artifacts += Get-Artifact 'report-template' (Join-Path $build $report) '2'
+    $artifacts += Get-Artifact 'report-template' (Join-Path $build $report) ([string]$technicalVersions.GetField('CurrentReportTemplateVersion').GetRawConstantValue())
 }
 $coilEngine = Join-Path $build 'COILcalc.dll'
 if (Test-Path -LiteralPath $coilEngine) {
@@ -79,9 +81,9 @@ $manifest = [ordered]@{
     compatibility = [ordered]@{
         minimum_ssw_version = [string]$databaseMetadata.minimum_ssw_version
         database_schema_version = [int]$databaseMetadata.schema_version
-        selection_format_version = 1
-        report_template_version = 2
-        api_contract_version = 1
+        selection_format_version = [int]$technicalVersions.GetField('CurrentSelectionFormatVersion').GetRawConstantValue()
+        report_template_version = [int]$technicalVersions.GetField('CurrentReportTemplateVersion').GetRawConstantValue()
+        api_contract_version = [int]$technicalVersions.GetField('CurrentApiContractVersion').GetRawConstantValue()
     }
     database = [ordered]@{
         data_version = [string]$databaseMetadata.data_version

@@ -377,6 +377,9 @@
     <Compile Include="CLNextUiInfrastructureModels.vb" />
     <Compile Include="CLNextUiReportService.vb" />
     <Compile Include="CLProductDocumentService.vb" />
+    <Compile Include="CLCommercialBrochureService.vb" />
+    <Compile Include="CLApplicationDocumentService.vb" />
+    <Compile Include="CLUnitClassificationRepository.vb" />
     <Compile Include="CLTechnicalSelectionRegistrationService.vb" />
     <Compile Include="CLInstallationLayoutRepository.vb" />
     <Compile Include="CLDimensionalDrawingService.vb" />

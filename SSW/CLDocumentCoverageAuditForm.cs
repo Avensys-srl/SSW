@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -110,8 +111,9 @@ namespace SSW
             AddTextColumn("variant", "Versione / variante modello", 190, true);
             AddTextColumn("code", "Codice SDF", 145, true);
             AddTextColumn("series", "Serie", 60, true);
-            AddTextColumn("commercial", "Scheda commerciale", 180, false);
+            AddTextColumn("commercial", "Scheda tecnico-commerciale", 180, false);
             AddTextColumn("benchmark", "Benchmark document (confidential)", 180, false);
+            AddTextColumn("brochure", "Brochure commerciale", 180, false);
             AddTextColumn("manual", "Manuale installazione", 135, false);
             AddTextColumn("application", "Documento applicativo", 135, false);
             AddTextColumn("drawing", "Disegno dimensionale", 135, false);
@@ -155,13 +157,27 @@ namespace SSW
             FormClosed += delegate { onlineCancellation.Cancel(); };
             Shown += async delegate
             {
-                summary.Text = "Verifica online delle schede e dei modelli STEP 3D in corso...";
+                summary.Text = "Verifica online di schede, brochure e modelli STEP 3D in corso...";
+                await Task.Run(() =>
+                {
+                    if (!String.Equals(CLSSWProfile.ShortName, "AV", StringComparison.OrdinalIgnoreCase)) return;
+                    foreach (var row in rows)
+                        foreach (var language in DirectLanguages)
+                        {
+                            var candidates = CLCommercialBrochureService.Candidates(row.SeriesCode, row.AeraulicConnectionCode, row.ModelSize, language, true, false);
+                            row.BrochureOnlineCandidates[language] = candidates.Select(item => item.Url).ToList();
+                        }
+                });
+                if (IsDisposed || onlineCancellation.IsCancellationRequested) return;
                 var checks = rows.SelectMany(row => row.CommercialSheetOnlineCandidates.Where(pair => !FallbackLanguages.Contains(pair.Key)).Select(pair =>
-                    new { Row = row, Language = pair.Key, Urls = pair.Value }))
+                    new { Row = row, Language = pair.Key, Urls = pair.Value, Brochure = false }))
+                    .Concat(rows.SelectMany(row => row.BrochureOnlineCandidates.Where(pair => !FallbackLanguages.Contains(pair.Key)).Select(pair =>
+                        new { Row = row, Language = pair.Key, Urls = pair.Value, Brochure = true })))
                     .Concat(rows.Select(row => new { Row = row, Language = "STEP", Urls =
-                        String.IsNullOrWhiteSpace(row.StepModelOnlineUrl) ? new List<string>() : new List<string> { row.StepModelOnlineUrl } })).ToList();
+                        String.IsNullOrWhiteSpace(row.StepModelOnlineUrl) ? new List<string>() : new List<string> { row.StepModelOnlineUrl }, Brochure = false })).ToList();
                 try
                 {
+                    var probes = new ConcurrentDictionary<string, Lazy<string>>();
                     await Task.Run(() => Parallel.ForEach(checks,
                         new ParallelOptions { MaxDegreeOfParallelism = 4, CancellationToken = onlineCancellation.Token },
                         check =>
@@ -171,7 +187,7 @@ namespace SSW
                             foreach (string url in check.Urls)
                             {
                                 onlineCancellation.Token.ThrowIfCancellationRequested();
-                                string result = ProbeDocument(url);
+                                string result = probes.GetOrAdd(url, key => new Lazy<string>(() => ProbeDocument(key))).Value;
                                 if (result == "Online") { status = result; break; }
                                 if (result != "Missing") absent = false;
                             }
@@ -179,6 +195,7 @@ namespace SSW
                             lock (check.Row)
                             {
                                 if (check.Language == "STEP") check.Row.StepModelOnlineStatus = status;
+                                else if (check.Brochure) check.Row.BrochureOnlineStatus[check.Language] = status;
                                 else check.Row.CommercialSheetOnlineStatus[check.Language] = status;
                             }
                         }));
@@ -231,14 +248,22 @@ namespace SSW
             return values.Count > 0 ? String.Join(Environment.NewLine, values) : Availability(row.CommercialSheetPaths);
         }
 
-        private static string LanguageStatus(CLProductDocumentCoverageRow row, string language)
+        private static string LanguageStatus(CLProductDocumentCoverageRow row, string language, bool brochure = false)
         {
             lock (row)
             {
-                if (row.CommercialSheetPaths.Any(path => File.Exists(path) &&
+                var paths = brochure ? row.BrochurePaths : row.CommercialSheetPaths;
+                var statuses = brochure ? row.BrochureOnlineStatus : row.CommercialSheetOnlineStatus;
+                if (paths.Any(path => File.Exists(path) &&
                     String.Equals(LanguageForPath(path), language, StringComparison.OrdinalIgnoreCase))) return "Offline";
                 string status;
-                return row.CommercialSheetOnlineStatus.TryGetValue(language, out status) ? status : "Unverified";
+                status = statuses.TryGetValue(language, out status) ? status : "Unverified";
+                if (brochure && language != "EN" && !IsAvailable(status))
+                {
+                    string english = LanguageStatus(row, "EN", true);
+                    if (IsAvailable(english)) return english;
+                }
+                return status;
             }
         }
 
@@ -254,7 +279,8 @@ namespace SSW
 
         private void PaintLanguageBadges(object sender, DataGridViewCellPaintingEventArgs e)
         {
-            if (e.RowIndex < 0 || grid.Columns[e.ColumnIndex].Name != "commercial") return;
+            if (e.RowIndex < 0 || (grid.Columns[e.ColumnIndex].Name != "commercial" && grid.Columns[e.ColumnIndex].Name != "brochure")) return;
+            bool brochure = grid.Columns[e.ColumnIndex].Name == "brochure";
             var row = grid.Rows[e.RowIndex].Tag as CLProductDocumentCoverageRow;
             if (row == null) return;
             e.PaintBackground(e.ClipBounds, true);
@@ -264,7 +290,7 @@ namespace SSW
                 {
                     for (int i = 0; i < languages.Length; i++)
                     {
-                        bool available = IsAvailable(LanguageStatus(row, fallback ? "EN" : languages[i]));
+                        bool available = IsAvailable(LanguageStatus(row, fallback ? "EN" : languages[i], brochure));
                         var rectangle = new Rectangle(e.CellBounds.Left + 8 + (i % 4) * 39,
                             e.CellBounds.Top + top + (i / 4) * 20, 33, 17);
                         using (var brush = new SolidBrush(available ? Color.FromArgb(222, 241, 230) : Color.FromArgb(255, 230, 226)))
@@ -275,7 +301,7 @@ namespace SSW
                     }
                 };
                 paint(DirectLanguages, 5, false);
-                TextRenderer.DrawText(e.Graphics, IsAvailable(LanguageStatus(row, "EN")) ? "Fallback EN available" : "Fallback EN non verificato/assente",
+                TextRenderer.DrawText(e.Graphics, IsAvailable(LanguageStatus(row, "EN", brochure)) ? "Fallback EN available" : "Fallback EN non verificato/assente",
                     font, new Rectangle(e.CellBounds.Left + 6, e.CellBounds.Top + 46, 168, 16), Color.DimGray);
                 paint(FallbackLanguages, 64, true);
             }
@@ -283,16 +309,16 @@ namespace SSW
             e.Handled = true;
         }
 
-        private static string CommercialBadgesHtml(CLProductDocumentCoverageRow row)
+        private static string CommercialBadgesHtml(CLProductDocumentCoverageRow row, bool brochure = false)
         {
             Func<string, string, string> badge = (language, source) =>
             {
-                string status = LanguageStatus(row, source);
+                string status = LanguageStatus(row, source, brochure);
                 return "<span class=\"badge " + (IsAvailable(status) ? "ok" : "bad") + "\" title=\"" +
                     WebUtility.HtmlEncode(source + ": " + status) + "\">" + language + "</span>";
             };
             return String.Join("", DirectLanguages.Select(language => badge(language, language))) +
-                "<div class=\"fallback\">" + (IsAvailable(LanguageStatus(row, "EN")) ? "Fallback EN available" : "Fallback EN: unverified / missing") +
+                "<div class=\"fallback\">" + (IsAvailable(LanguageStatus(row, "EN", brochure)) ? "Fallback EN available" : "Fallback EN: unverified / missing") +
                 "</div>" + String.Join("", FallbackLanguages.Select(language => badge(language, "EN")));
         }
 
@@ -335,6 +361,7 @@ namespace SSW
                     row.SeriesCode ?? String.Empty,
                     CommercialAvailability(row),
                     "N/D",
+                    String.Join(Environment.NewLine, DirectLanguages.Select(lang => lang + ": " + LanguageStatus(row, lang, true))),
                     Availability(row.InstallationManualPaths),
                     Availability(row.ApplicationDocumentPaths),
                     row.DimensionalDrawingVersions.Count == 0
@@ -349,6 +376,7 @@ namespace SSW
                 gridRow.Cells["commercial"].ToolTipText = CommercialAvailability(row) + Environment.NewLine +
                     "BG, CS, HU, IS, NO, RO, SL: fallback EN. Rosso: assente o non verificato.";
                 SetFileTooltip(gridRow.Cells["manual"], row.InstallationManualPaths);
+                gridRow.Cells["brochure"].ToolTipText = String.Join(Environment.NewLine, DirectLanguages.Select(lang => lang + ": " + LanguageStatus(row, lang, true)));
                 SetFileTooltip(gridRow.Cells["application"], row.ApplicationDocumentPaths);
                 gridRow.Cells["drawing"].ToolTipText =
                     row.DimensionalDrawingVersions.Count == 0
@@ -362,7 +390,7 @@ namespace SSW
 
             int missingModels = rows.Count(HasMissingTrackedDocument);
             summary.Text = String.Format(
-                "{0} modelli visualizzati su {1} · {2} con scheda o STEP assente confermato · Altre categorie: verifica locale; N/D: fonte non collegata",
+                "{0} modelli visualizzati su {1} · {2} con scheda, brochure o STEP assente confermato · Altre categorie: verifica locale; N/D: fonte non collegata",
                 visibleRows.Count, rows.Count, missingModels);
         }
 
@@ -408,7 +436,8 @@ namespace SSW
         private static bool HasMissingTrackedDocument(CLProductDocumentCoverageRow row)
         {
             lock (row)
-                return (row.StepModelOnlineStatus == "Missing" && !File.Exists(row.StepModelPath ?? String.Empty)) ||
+                return row.BrochureOnlineStatus.Any(pair => !FallbackLanguages.Contains(pair.Key) && pair.Value == "Missing" && !IsAvailable(LanguageStatus(row, pair.Key, true))) ||
+                    (row.StepModelOnlineStatus == "Missing" && !File.Exists(row.StepModelPath ?? String.Empty)) ||
                     row.CommercialSheetOnlineStatus.Any(pair => !FallbackLanguages.Contains(pair.Key) && pair.Value == "Missing" &&
                     !row.CommercialSheetPaths.Any(path => File.Exists(path) &&
                         String.Equals(LanguageForPath(path), pair.Key, StringComparison.OrdinalIgnoreCase)));
@@ -427,8 +456,9 @@ namespace SSW
             string[] headers =
             {
                 "Taglia / Size", "Variante modello / Model variant", "Codice SDF / SDF code",
-                "Serie / Series", "Scheda commerciale / Commercial sheet",
+                "Serie / Series", "Scheda tecnico-commerciale / Technical-commercial data sheet",
                 "Benchmark document (confidential)",
+                "Brochure commerciale / Commercial brochure",
                 "Manuale installazione / Installation manual", "Documento applicativo / Application document",
                 "Disegno dimensionale / Dimensional drawing", "Modello 3D / 3D model",
                 "Certificazioni / Certifications", "Testo bando / Tender specification",
@@ -456,6 +486,7 @@ namespace SSW
                     row.SeriesCode ?? String.Empty,
                     CommercialAvailability(row),
                     "N/D / N/A",
+                    "Brochure",
                     PrintAvailability(row.InstallationManualPaths),
                     PrintAvailability(row.ApplicationDocumentPaths),
                     row.DimensionalDrawingVersions.Count == 0
@@ -470,7 +501,7 @@ namespace SSW
                     string value = values[i];
                     string css = value == "Mancante / Missing" ? " class=\"missing\"" :
                         value == "N/D / N/A" ? " class=\"na\"" : String.Empty;
-                    html.Append("<td").Append(i == 4 ? "" : css).Append(">").Append(i == 4 ? CommercialBadgesHtml(row) : WebUtility.HtmlEncode(value).Replace(Environment.NewLine, "<br>")).Append("</td>");
+                    html.Append("<td").Append(i == 4 || i == 6 ? "" : css).Append(">").Append(i == 4 || i == 6 ? CommercialBadgesHtml(row, i == 6) : WebUtility.HtmlEncode(value).Replace(Environment.NewLine, "<br>")).Append("</td>");
                 }
                 html.Append("</tr>");
             }
@@ -502,7 +533,7 @@ namespace SSW
         private void FormatStatusCell(object sender, DataGridViewCellFormattingEventArgs eventArgs)
         {
             if (eventArgs.RowIndex < 0 || eventArgs.ColumnIndex < 4) return;
-            if (grid.Columns[eventArgs.ColumnIndex].Name == "commercial") return;
+            if (grid.Columns[eventArgs.ColumnIndex].Name == "commercial" || grid.Columns[eventArgs.ColumnIndex].Name == "brochure") return;
             string value = Convert.ToString(eventArgs.Value);
             if (value != null && (value.Contains("Mancante / Missing") ||
                 (grid.Columns[eventArgs.ColumnIndex].Name == "step" && value.Contains("Unverified"))))

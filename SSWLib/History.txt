@@ -1,6 +1,17 @@
 SSW Changelog
 =============
 
+2.0.0.26 - 2026-10-07
+---------------------
+- Winter/summer reports show only localized total unit power used for SFP, without the single-branch power value.
+- Added independent DataCentral-backed recovery operation, EN/LT/AL, unit application and installation environment filters.
+- Convertible units automatically select OKI outdoors and apply A/W, B/L and C/H increases; the environment is retained in saved selections and reports.
+- Added a localized button to clear all additional criteria without changing the operating point.
+- Linked the SG 127 ST application document to a JSON catalog shared with WebSite, with requested-language/EN fallback and offline availability.
+- Renamed the commercial sheet to technical-commercial data sheet in all interface languages, retaining existing PDFs and lookup rules.
+- Added localized commercial brochures from the shared WebSite JSON catalog, with model/series rules, English fallback and offline caching.
+- Added brochure availability badges and printing to the internal document dashboard.
+
 2.0.0.25 - 2026-10-06
 ---------------------
 - Added a definitive-offer archive independent of optional reminders, with revision-preserving local storage and reopening.
@@ -17,10 +28,10 @@ SSW Changelog
 ---------------------
 - Automatically switch KTS BASIC to KTS EXTRA when an optional accessory, water coil or electric heater is selected.
 - Fixed the document-availability audit to find commercial leaflets by canonical model name when the localized display-name lookup does not match.
-- [TODO-001] Verify fan power consumption values against approved reference data.
-- [TODO-002] Populate the separate Commercial brochure and Benchmark document (confidential) categories, and rename the current Commercial sheet category to Technical-commercial sheet.
-- [TODO-003] Add an explicit recovery type to the DataCentral model catalog; plate-only filtering depends on this classification and must not be inferred from the family code.
-- [TODO-004] Load the SG 127 ST technical application document into the Documents section.
+- [DONE-001] Fan power consumption verification completed, as confirmed by the project owner.
+- [DONE-002] Added Commercial brochure and Benchmark document (confidential) categories and renamed Commercial sheet to Technical-commercial sheet. Brochures are connected to the shared catalog; Benchmark document content remains to be supplied.
+- [TODO-003] DataCentral classification, four SSW filters and Outdoor/OKI handling are implemented: verify the public 2.x update with the new catalog and installer before closing this activity.
+- [DONE-004] SG 127 ST technical application document is present in the Documents section and available offline.
 
 2.0.0.22 - 2026-10-01
 ---------------------

@@ -980,8 +980,16 @@
       <Link>CLMainReport.rdlc</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\brochures.json">
+      <Link>css\Brochures\brochures.json</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\ApplicationDocuments\S7\EN\ST_127_EN_AV.pdf">
       <Link>css\ApplicationDocuments\S7\EN\ST_127_EN_AV.pdf</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\application-documents.json">
+      <Link>css\ApplicationDocuments\application-documents.json</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="..\SSWLib\CLMainReport_Coil.rdlc">

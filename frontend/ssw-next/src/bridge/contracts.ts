@@ -52,6 +52,9 @@ export interface UnitOption {
   id: string;
   family: string;
   recoveryType?: string;
+  exchangerType?: string;
+  unitApplication?: string;
+  installationEnvironment?: string;
   model: string;
   maxAirflow: number;
   availablePressure: number;
@@ -72,6 +75,10 @@ export type NoiseMetric = "LWA" | "LPA";
 export interface PreselectionFilterSettings {
   rotaryOnlyEnabled: boolean;
   recoveryCategory: "any" | "plate" | "decentralized" | "centralized" | "rotary";
+  recoveryOperation?: "any" | "Plate" | "Rotary";
+  exchangerType?: "any" | "EN" | "LT" | "AL";
+  unitApplication?: "any" | "Centralized" | "Decentralized";
+  installationEnvironment?: "any" | "Indoor" | "Outdoor" | "Both";
   maximumSfpEnabled: boolean;
   maximumSfp: number;
   supplyNoiseEnabled: boolean;
@@ -231,6 +238,7 @@ export interface SelectionDraft {
   summerReturnRh: number;
   selectedUnitId: string;
   installationMode: InstallationMode;
+  installationEnvironment?: "Indoor" | "Outdoor";
   layoutCode: string;
   waterCoilEnabled: boolean;
   waterCoilMode: CoilMode;
@@ -344,6 +352,7 @@ export interface FollowUpCenterState {
 }
 
 export interface ProductDocumentState {
+  brochures: Array<{ id: string; language: string }>;
   applicationDocumentAvailable: boolean;
   commercialSheetAvailable: boolean;
   installationManualAvailable: boolean;
@@ -435,8 +444,9 @@ export interface SelectionBridge {
   ): Promise<{ fileName: string; delegated?: boolean }>;
   getProductDocuments(draft: SelectionDraft): Promise<ProductDocumentState>;
   openProductDocument(
-    documentType: "commercial-sheet" | "installation-manual" | "application-document" | "step-model",
+    documentType: "commercial-sheet" | "brochure" | "installation-manual" | "application-document" | "step-model",
     draft: SelectionDraft,
+    brochureId?: string,
   ): Promise<ProductDocumentState>;
   getDimensionalDrawing(draft: SelectionDraft): Promise<DimensionalDrawingState>;
   downloadDimensionalDrawing(

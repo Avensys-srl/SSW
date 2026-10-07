@@ -43,13 +43,10 @@ export class MockSelectionBridge implements SelectionBridge {
             draft.operatingPoint.supplyAirflow <= unit.maxAirflow &&
             draft.operatingPoint.pressure <= unit.availablePressure &&
             unit.requiredRegulation >= draft.minimumRegulationPercent &&
-            (draft.preselectionFilters.recoveryCategory === "any" ||
-              (draft.preselectionFilters.recoveryCategory === "plate" && unit.recoveryType?.toLowerCase() === "plate") ||
-              (draft.preselectionFilters.recoveryCategory === "decentralized" && unit.family === "7") ||
-              (draft.preselectionFilters.recoveryCategory === "centralized" && unit.family !== "7") ||
-              (draft.preselectionFilters.recoveryCategory === "rotary" && (unit.family === "6" || unit.family === "9"))) &&
-            (!draft.preselectionFilters.rotaryOnlyEnabled ||
-              unit.family === "6" || unit.family === "9") &&
+            (!draft.preselectionFilters.recoveryOperation || draft.preselectionFilters.recoveryOperation === "any" || unit.recoveryType === draft.preselectionFilters.recoveryOperation) &&
+            (!draft.preselectionFilters.exchangerType || draft.preselectionFilters.exchangerType === "any" || unit.exchangerType === draft.preselectionFilters.exchangerType) &&
+            (!draft.preselectionFilters.unitApplication || draft.preselectionFilters.unitApplication === "any" || unit.unitApplication === draft.preselectionFilters.unitApplication) &&
+            (!draft.preselectionFilters.installationEnvironment || draft.preselectionFilters.installationEnvironment === "any" || unit.installationEnvironment === draft.preselectionFilters.installationEnvironment || (unit.installationEnvironment === "Both" && draft.preselectionFilters.installationEnvironment !== "Both")) &&
             (!draft.preselectionFilters.maximumSfpEnabled ||
               unit.sfp <= draft.preselectionFilters.maximumSfp) &&
             (!draft.preselectionFilters.supplyNoiseEnabled ||
@@ -355,6 +352,7 @@ export class MockSelectionBridge implements SelectionBridge {
 
   async getProductDocuments() {
     return {
+      brochures: [],
       applicationDocumentAvailable: false,
       commercialSheetAvailable: true,
       installationManualAvailable: true,
@@ -364,6 +362,7 @@ export class MockSelectionBridge implements SelectionBridge {
 
   async openProductDocument() {
     return {
+      brochures: [],
       applicationDocumentAvailable: false,
       commercialSheetAvailable: true,
       installationManualAvailable: true,

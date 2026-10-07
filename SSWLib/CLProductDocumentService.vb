@@ -56,6 +56,10 @@ Public NotInheritable Class CLProductDocumentService
 
         Dim normalizedLanguage = NormalizeLanguageCode(languageCode)
         Return New CLNextUiProductDocuments With {
+            .Brochures = If(String.Equals(shortName, "AV", StringComparison.OrdinalIgnoreCase),
+                CLCommercialBrochureService.Resolve(If(model.CLSerie Is Nothing, "", model.CLSerie.Code),
+                    If(model.CLEnumItem_AeraulicConnection Is Nothing, "", model.CLEnumItem_AeraulicConnection.TextCode), model.Size, normalizedLanguage),
+                New List(Of CLCommercialBrochure)()),
             .CommercialSheetPath = ResolveCommercialSheet(
                 model, modelName, normalizedLanguage, True,
                 shortName, autoSyncEnabled),
@@ -71,11 +75,19 @@ Public NotInheritable Class CLProductDocumentService
         model As CLDCHeatRecoveryModel,
         languageCode As String,
         shortName As String,
-        Optional fallbackToEnglish As Boolean = True) As String
+        Optional fallbackToEnglish As Boolean = True,
+        Optional online As Boolean = True) As String
 
         If model Is Nothing Then Return String.Empty
         Dim seriesCode = ReadProperty(model.CLSerie, "Code")
         If String.IsNullOrWhiteSpace(seriesCode) Then Return String.Empty
+
+        If String.Equals(shortName, "AV", StringComparison.OrdinalIgnoreCase) Then
+            Dim matched = CLApplicationDocumentService.Resolve(seriesCode,
+                If(model.CLEnumItem_AeraulicConnection Is Nothing, "", model.CLEnumItem_AeraulicConnection.TextCode),
+                model.Size, NormalizeLanguageCode(languageCode), online, fallbackToEnglish).FirstOrDefault()
+            Return If(matched Is Nothing, String.Empty, matched.Path)
+        End If
 
         Dim directoryPath = Path.Combine(
             PdfDocumentDirectory, "ApplicationDocuments",
@@ -118,9 +130,16 @@ Public NotInheritable Class CLProductDocumentService
                 .ModelCode = If(model.Code, String.Empty),
                 .ModelName = CLEnvironment.Current.GetCustomerHeatRecoveryModelName(model),
                 .SeriesCode = seriesCode,
-                .ModelSize = model.Size
+                .ModelSize = model.Size,
+                .AeraulicConnectionCode = If(model.CLEnumItem_AeraulicConnection Is Nothing, "", model.CLEnumItem_AeraulicConnection.TextCode)
             }
             For Each language In New String() {"BG", "CS", "DA", "DE", "EN", "FR", "HU", "IS", "IT", "NL", "NO", "PL", "RO", "SL", "SV"}
+                If String.Equals(shortName, "AV", StringComparison.OrdinalIgnoreCase) Then
+                    Dim brochureCandidates = CLCommercialBrochureService.Candidates(seriesCode,
+                        row.AeraulicConnectionCode, model.Size, language, False, False)
+                    row.BrochureOnlineCandidates(language) = brochureCandidates.Select(Function(item) item.Url).ToList()
+                    row.BrochurePaths.AddRange(brochureCandidates.Where(Function(item) File.Exists(item.Path)).Select(Function(item) item.Path))
+                End If
                 If String.Equals(shortName, "AV", StringComparison.OrdinalIgnoreCase) Then
                     Dim candidates As New List(Of String)()
                     For Each candidateName In New String() {row.ModelName, model.Name}
@@ -162,14 +181,9 @@ Public NotInheritable Class CLProductDocumentService
                     End If
                 End If
 
-                Dim applicationDirectory = Path.Combine(
-                    PdfDocumentDirectory, "ApplicationDocuments", seriesFolder, language)
-                If Directory.Exists(applicationDirectory) Then
-                    Dim applicationFile = ResolveApplicationDocument(
-                        model, language, shortName, False)
-                    If Not String.IsNullOrWhiteSpace(applicationFile) Then
-                        row.ApplicationDocumentPaths.Add(applicationFile)
-                    End If
+                Dim applicationFile = ResolveApplicationDocument(model, language, shortName, False, False)
+                If Not String.IsNullOrWhiteSpace(applicationFile) Then
+                    row.ApplicationDocumentPaths.Add(applicationFile)
                 End If
             Next
 

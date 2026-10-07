@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "fallback_language": "EN",
+  "documents": [
+    {
+      "id": "GRAND_TERTIAIRE",
+      "order": 10,
+      "filename_template": "COMMERCIAL/{lang}/BROCHURE_GRAND_TERTIAIRE_{lang}_NEUTRE.pdf",
+      "rules": [
+        {
+          "series": [
+            "S3",
+            "S6",
+            "SA"
+          ]
+        },
+        {
+          "series": [
+            "S8"
+          ],
+          "size_min": 89
+        }
+      ],
+      "text_key": "COMMERCIAL_BROCHURE_text"
+    },
+    {
+      "id": "PETIT_TERTIAIRE",
+      "order": 20,
+      "filename_template": "COMMERCIAL/{lang}/BROCHURE_PETIT_TERTIAIRE_{lang}_NEUTRE.pdf",
+      "rules": [
+        {
+          "series": [
+            "S8"
+          ],
+          "configurations": [
+            "SSC",
+            "OSC"
+          ],
+          "size_max": 88
+        }
+      ],
+      "text_key": "COMMERCIAL_BROCHURE_text"
+    },
+    {
+      "id": "SCHOOL_HCI",
+      "order": 30,
+      "filename_template": "COMMERCIAL/{lang}/BROCHURE_SCHOOL_HCI_{lang}_NEUTRE.pdf",
+      "rules": [
+        {
+          "series": [
+            "S7"
+          ],
+          "configurations": [
+            "HCI"
+          ]
+        }
+      ],
+      "text_key": "COMMERCIAL_BROCHURE_text"
+    }
+  ]
+}

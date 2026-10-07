@@ -8,6 +8,9 @@ Public NotInheritable Class CLNextUiModelSummary
     Public Property Name As String
     Public Property SeriesCode As String
     Public Property RecoveryType As String
+    Public Property ExchangerType As String
+    Public Property UnitApplication As String
+    Public Property InstallationEnvironment As String
     Public Property NominalAirflowM3h As Double
     Public Property StaticPressurePa As Double
     Public Property AeraulicConnectionCode As String
@@ -98,6 +101,7 @@ Public NotInheritable Class CLNextUiCalculationInput
     Public Property WaterCoilCircuits As Integer
     Public Property WaterCoilFinSpacingMm As Double
     Public Property InstallationMode As String = "Ceiling"
+    Public Property InstallationEnvironment As String = "Indoor"
     Public Property LayoutCode As String
     Public Property FluidCode As String = "Water"
     Public Property GlycolPercent As Double = 10
@@ -176,10 +180,7 @@ Public NotInheritable Class CLNextUiApplicationService
             ToList().
             Where(Function(model) Not String.Equals(model.Code, "ACC", StringComparison.OrdinalIgnoreCase) AndAlso
                                   Not String.Equals(model.Code, "IOM3", StringComparison.OrdinalIgnoreCase) AndAlso
-                                  (Not filters.RotaryOnlyEnabled OrElse
-                                   (model.CLSerie IsNot Nothing AndAlso
-                                    (model.CLSerie.Code = "6" OrElse model.CLSerie.Code = "9"))) AndAlso
-                                  MatchesRecoveryCategory(model, filters.RecoveryCategory)).
+                                  CLUnitClassificationRepository.Matches(model.Id, filters)).
             Select(Function(model) CalculatePreselectionCandidate(
                 model, input.SupplyAirflowM3h, requestedPressure,
                 Math.Max(70, Math.Min(100, input.MinimumRegulationPercent)),
@@ -281,6 +282,9 @@ Public NotInheritable Class CLNextUiApplicationService
         End If
 
         Dim layout = CLInstallationLayoutRepository.Create().GetForModel(model, input.LayoutCode)
+        input.InstallationEnvironment = CLUnitClassificationRepository.EffectiveEnvironment(model.Id, input.InstallationEnvironment)
+        CLUnitClassificationRepository.ApplyDimensions(model.Id, input.InstallationEnvironment, layout.HorizontalDimensions)
+        CLUnitClassificationRepository.ApplyDimensions(model.Id, input.InstallationEnvironment, layout.VerticalDimensions)
         Dim requiresAvensysSelection = IsAvensysSelectionOnly(model)
         If requiresAvensysSelection Then
             layout.ConfigurationCode = Nothing
@@ -290,7 +294,7 @@ Public NotInheritable Class CLNextUiApplicationService
             layout.FlowPorts.Clear()
         End If
         Dim accessories = GetAccessories(model, input.AccessoryCodes,
-            RequiresExtraController(input))
+            RequiresExtraController(input), input.InstallationEnvironment)
         Dim validation = ValidateAirTreatment(input, selectedPostheater, waterResults)
         For Each unavailable In UnavailableTreatments(input, coils, heaters)
             validation.Issues.Add(New CLValidationIssue With {
@@ -398,7 +402,7 @@ Public NotInheritable Class CLNextUiApplicationService
             Throw New InvalidOperationException("The installation configuration must be reviewed before saving.")
         End If
         Dim effectiveAccessories = GetAccessories(model, input.AccessoryCodes,
-            RequiresExtraController(input))
+            RequiresExtraController(input), CLUnitClassificationRepository.EffectiveEnvironment(model.Id, input.InstallationEnvironment))
         If UnavailableTreatments(input, CLCoilPerformanceCalculator.GetAvailableCoils(model),
             CLElectricHeaterCalculator.GetAvailableHeaters(model)).Any() Then
             Throw New InvalidOperationException("The air-treatment selection must be reviewed before saving.")
@@ -413,6 +417,7 @@ Public NotInheritable Class CLNextUiApplicationService
         document.Selection.ProjectName = input.ProjectName
         document.Selection.CustomerReference = input.CustomerReference
         document.Selection.InstallationMode = chosenLayout.InstallationMode
+        document.Selection.InstallationEnvironment = CLUnitClassificationRepository.EffectiveEnvironment(model.Id, input.InstallationEnvironment)
         document.Selection.LayoutCode = chosenLayout.Code
         document.Selection.ImbalanceEnabled = input.ImbalanceEnabled
         document.Selection.Unit = New CLSelectionEntityReference With {
@@ -425,7 +430,7 @@ Public NotInheritable Class CLNextUiApplicationService
             .Name = CLEnvironment.Current.GetCustomerHeatRecoveryModelName(model)
         }
         Dim dimensionalDrawing = CLDimensionalDrawingService.Resolve(
-            model.Code, chosenLayout.Code, False)
+            model.Code, chosenLayout.Code, False, document.Selection.InstallationEnvironment)
         document.Selection.DimensionalDrawing = New CLDimensionalDrawingSelection With {
             .Available = dimensionalDrawing.Available,
             .AssetCode = dimensionalDrawing.Code,
@@ -509,7 +514,7 @@ Public NotInheritable Class CLNextUiApplicationService
             document.Selection.ElectricHeater.EHD.Enabled
 
         Dim availableAccessories = GetAccessories(model, input.AccessoryCodes,
-            RequiresExtraController(input))
+            RequiresExtraController(input), document.Selection.InstallationEnvironment)
         For Each item In availableAccessories.Where(Function(candidate) candidate.Included)
             document.Selection.Accessories.Add(New CLAccessorySelection With {
                 .Code = item.Code,
@@ -711,6 +716,7 @@ Public NotInheritable Class CLNextUiApplicationService
             .SummerReturnTemperatureC = summer.ReturnTemperatureC.GetValueOrDefault(26),
             .SummerReturnRhPercent = summer.ReturnRelativeHumidityPercent.GetValueOrDefault(50),
             .InstallationMode = If(selection.InstallationMode, "Ceiling"),
+            .InstallationEnvironment = If(selection.InstallationEnvironment, "Indoor"),
             .LayoutCode = If(selection.LayoutCode, String.Empty),
             .WaterCoilEnabled = water.Enabled,
             .WaterCoilId = water.Coil?.Id.GetValueOrDefault(),
@@ -745,6 +751,10 @@ Public NotInheritable Class CLNextUiApplicationService
                 .MinimumRegulationPercent = filters.MinimumRegulationPercent,
                 .RotaryOnlyEnabled = filters.RotaryOnlyEnabled,
                 .RecoveryCategory = filters.RecoveryCategory,
+                .RecoveryOperation = filters.RecoveryOperation,
+                .ExchangerType = filters.ExchangerType,
+                .UnitApplication = filters.UnitApplication,
+                .InstallationEnvironment = filters.InstallationEnvironment,
                 .MaximumSfpEnabled = filters.MaximumSfpEnabled,
                 .MaximumSfp = filters.MaximumSfp,
                 .SupplyNoiseEnabled = filters.SupplyNoiseEnabled,
@@ -804,6 +814,10 @@ Public NotInheritable Class CLNextUiApplicationService
             .MinimumRegulationPercent = input.MinimumRegulationPercent,
             .RotaryOnlyEnabled = input.RotaryOnlyEnabled,
             .RecoveryCategory = input.RecoveryCategory,
+            .RecoveryOperation = input.RecoveryOperation,
+            .ExchangerType = input.ExchangerType,
+            .UnitApplication = input.UnitApplication,
+            .InstallationEnvironment = input.InstallationEnvironment,
             .MaximumSfpEnabled = input.MaximumSfpEnabled,
             .MaximumSfp = input.MaximumSfp,
             .SupplyNoiseEnabled = input.SupplyNoiseEnabled,
@@ -1253,7 +1267,8 @@ Public NotInheritable Class CLNextUiApplicationService
     Private Shared Function GetAccessories(
         model As CLDCHeatRecoveryModel,
         requestedCodes As IEnumerable(Of String),
-        requiresExtraController As Boolean) As List(Of CLNextUiAccessorySummary)
+        requiresExtraController As Boolean,
+        Optional environment As String = "Indoor") As List(Of CLNextUiAccessorySummary)
 
         Dim languageCode = CLEnvironment.Current.PrimaryLanguageCode
         Dim items = CLSelectionCatalogRepository.GetEffectiveItems(
@@ -1286,7 +1301,16 @@ Public NotInheritable Class CLNextUiApplicationService
             End If
             selected.Add(item.Id)
         Next
-        NormalizeAccessorySelection(items, selected, requiresExtraController)
+        Dim outdoorKitRequired = CLUnitClassificationRepository.RequiresOutdoorKit(model.Id, environment)
+        If outdoorKitRequired Then
+            Dim kit = items.FirstOrDefault(Function(item) String.Equals(item.Code, "OKI", StringComparison.OrdinalIgnoreCase))
+            If kit Is Nothing OrElse String.Equals(kit.Availability, "Unavailable", StringComparison.OrdinalIgnoreCase) Then Throw New InvalidOperationException("OKI is required for outdoor installation but is not available in the accessory catalog.")
+            selected.Add(kit.Id)
+        End If
+        NormalizeAccessorySelection(items, selected, requiresExtraController OrElse outdoorKitRequired)
+        If outdoorKitRequired AndAlso Not items.Any(Function(item) selected.Contains(item.Id) AndAlso String.Equals(item.Code, "OKI", StringComparison.OrdinalIgnoreCase)) Then
+            Throw New InvalidOperationException("Outdoor installation conflicts with the accessory dependencies in the catalog.")
+        End If
 
         Return items.Select(Function(item)
             Dim disabledReason = AccessoryDisabledReason(items, selected, item)
@@ -1302,6 +1326,7 @@ Public NotInheritable Class CLNextUiApplicationService
                 .FunctionNames = item.FunctionNames.ToList(),
                 .Included = selected.Contains(item.Id),
                 .Locked = item.IsStandard OrElse Not item.CustomerSelectable OrElse
+                    (outdoorKitRequired AndAlso String.Equals(item.Code, "OKI", StringComparison.OrdinalIgnoreCase)) OrElse
                     Not String.IsNullOrWhiteSpace(requiredReason),
                 .Enabled = String.IsNullOrWhiteSpace(disabledReason),
                 .DisabledReason = If(
@@ -1602,47 +1627,16 @@ Public NotInheritable Class CLNextUiApplicationService
         Return fallback
     End Function
 
-    Private Shared Function MatchesRecoveryCategory(
-        model As CLDCHeatRecoveryModel,
-        recoveryCategory As String) As Boolean
-        If String.IsNullOrWhiteSpace(recoveryCategory) OrElse
-           String.Equals(recoveryCategory, "any", StringComparison.OrdinalIgnoreCase) Then
-            Return True
-        End If
-        If model Is Nothing OrElse model.CLSerie Is Nothing OrElse
-           String.IsNullOrWhiteSpace(model.CLSerie.Code) Then Return False
-
-        Dim familyCode = model.CLSerie.Code.Trim()
-        Select Case recoveryCategory.Trim().ToLowerInvariant()
-            Case "decentralized"
-                Return String.Equals(familyCode, "7", StringComparison.OrdinalIgnoreCase)
-            Case "centralized"
-                Return Not String.Equals(familyCode, "7", StringComparison.OrdinalIgnoreCase)
-            Case "rotary"
-                Return String.Equals(familyCode, "6", StringComparison.OrdinalIgnoreCase) OrElse
-                       String.Equals(familyCode, "9", StringComparison.OrdinalIgnoreCase)
-            Case "plate"
-                Return String.Equals(ReadRecoveryType(model), "plate", StringComparison.OrdinalIgnoreCase)
-            Case Else
-                Return False
-        End Select
-    End Function
-
-    Private Shared Function ReadRecoveryType(model As Object) As String
-        If model Is Nothing Then Return String.Empty
-        Dim propertyInfo = model.GetType().GetProperty("RecoveryType")
-        If propertyInfo Is Nothing Then Return String.Empty
-        Dim value = propertyInfo.GetValue(model, Nothing)
-        Return If(value Is Nothing, String.Empty, Convert.ToString(value, CultureInfo.InvariantCulture).Trim())
-    End Function
-
     Private Shared Function MapModel(model As CLDCHeatRecoveryModel) As CLNextUiModelSummary
         Return New CLNextUiModelSummary With {
             .Id = model.Id,
             .Code = model.Code,
             .Name = CLEnvironment.Current.GetCustomerHeatRecoveryModelName(model),
             .SeriesCode = If(model.CLSerie Is Nothing, String.Empty, model.CLSerie.Code),
-            .RecoveryType = ReadRecoveryType(model),
+            .RecoveryType = CLUnitClassificationRepository.Find(model.Id)?.RecoveryOperation,
+            .ExchangerType = CLUnitClassificationRepository.Find(model.Id)?.ExchangerType,
+            .UnitApplication = CLUnitClassificationRepository.Find(model.Id)?.UnitApplication,
+            .InstallationEnvironment = CLUnitClassificationRepository.Find(model.Id)?.InstallationEnvironment,
             .NominalAirflowM3h = model.NominalAirflow.GetValueOrDefault(),
             .StaticPressurePa = model.StaticPressure.GetValueOrDefault(),
             .AeraulicConnectionCode = If(model.CLEnumItem_AeraulicConnection Is Nothing,

@@ -43,9 +43,15 @@ Public NotInheritable Class CLDimensionalDrawingService
 
     Public Shared Function Resolve(modelCode As String,
         configurationCode As String,
-        Optional includeContent As Boolean = True) As CLDimensionalDrawingResult
+        Optional includeContent As Boolean = True,
+        Optional installationEnvironment As String = "Indoor") As CLDimensionalDrawingResult
 
         Dim result = ResolveCore(modelCode, configurationCode, includeContent)
+        Dim model = CLEnvironment.Current.DCContext.CLDCHeatRecoveryModels.FirstOrDefault(Function(item) item.Code = modelCode)
+        If model IsNot Nothing Then
+            CLUnitClassificationRepository.ApplyDimensions(model.Id, installationEnvironment, result.Dimensions)
+            CLUnitClassificationRepository.ApplyDimensions(model.Id, installationEnvironment, result.AdditionalDimensions)
+        End If
         result.VisibleDimensions = BuildVisibleDimensions(result)
         Return result
     End Function

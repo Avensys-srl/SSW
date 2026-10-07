@@ -895,4 +895,5 @@ Păstrarea: evidențele contului și ale licenței sunt păstrate pe durata rela
 Drepturi: puteți solicita acces, rectificare, ștergere, restricționare, obiecție sau portabilitate, acolo unde este cazul, și puteți depune o plângere la autoritatea competentă pentru protecția datelor. Contactați info@avensys-srl.com.</value></data>
   <data name="DeviceLicense_PrivacyAcknowledgement" xml:space="preserve"><value>Acceptați termenii de utilizare pentru a activa SSW pe acest dispozitiv</value></data>
   <data name="DeviceLicense_Company" xml:space="preserve"><value>Company</value></data>
+  <data name="PDF_TotalUnitPower" xml:space="preserve"><value>Puterea totală a unității [W]</value></data>
 </root>

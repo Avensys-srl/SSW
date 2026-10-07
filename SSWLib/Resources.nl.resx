@@ -901,4 +901,5 @@ Bewaring: account- en licentiegegevens worden bewaard voor de duur van de zakeli
 Rechten: u kunt indien van toepassing verzoeken om toegang, rectificatie, verwijdering, beperking, bezwaar of portabiliteit, en een klacht indienen bij de bevoegde gegevensbeschermingsautoriteit. Neem contact op met info@avensys-srl.com.</value></data>
   <data name="DeviceLicense_PrivacyAcknowledgement" xml:space="preserve"><value>Accepteer de gebruiksvoorwaarden om SSW op dit apparaat te activeren</value></data>
   <data name="DeviceLicense_Company" xml:space="preserve"><value>Company</value></data>
+  <data name="PDF_TotalUnitPower" xml:space="preserve"><value>Totaal vermogen van de unit [W]</value></data>
 </root>

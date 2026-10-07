@@ -513,9 +513,10 @@ input:disabled, select:disabled {
 }
 .additional-selection:hover,
 .additional-selection[open] { border-color: var(--action); box-shadow: 0 3px 10px rgba(24, 84, 58, .16); }
-.additional-selection summary { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 14px; padding: 10px 12px; cursor: pointer; list-style: none; }
+.additional-selection summary { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 34px 22px; align-items: center; gap: 10px; padding: 10px 12px; cursor: pointer; list-style: none; }
 .additional-selection summary::-webkit-details-marker { display: none; }
-.additional-selection summary::after { content: "+"; grid-column: 3; width: 22px; text-align: center; font-size: 20px; line-height: 1; }
+.additional-selection summary::after { content: "+"; grid-column: 4; width: 22px; text-align: center; font-size: 20px; line-height: 1; }
+.additional-selection [data-reset-preselection-filters] { width: 34px; height: 34px; }
 .additional-selection[open] summary::after { content: "−"; }
 .additional-selection summary h3 { margin: 0 0 2px; font-size: 12px; }
 .additional-selection summary p { margin: 0; color: var(--muted); font-size: 10px; }

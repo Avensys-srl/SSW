@@ -1,6 +1,9 @@
 import { airflowSlot, airflowSide } from "./airflow-layout";
 import { schematicText, flowCircle, mountingSvg } from "./mounting-schematic";
 import { projectActionLabels } from "./project-action-labels";
+import { documentCategoryLabels } from "./document-category-labels";
+import { classificationLabels } from "./unit-classification-labels";
+import { resetPreselectionFilters } from "./reset-preselection-filters";
 import { releaseInfo } from "./release-info.generated";
 import {
   Activity,
@@ -18,6 +21,7 @@ import {
   CircleX,
   createIcons,
   ExternalLink,
+  FilterX,
   FileDown,
   FileCheck,
   FileText,
@@ -140,6 +144,7 @@ const iconSet = {
   CircleHelp,
   CircleX,
   ExternalLink,
+  FilterX,
   FileDown,
   FileCheck,
   FileText,
@@ -1626,11 +1631,15 @@ const renderPreselectionStep = (): string => {
   const text = messages();
   const filters = draft!.preselectionFilters;
   const recoveryText = recoveryCategoryText();
+  const classificationText = classificationLabels(languageCode());
+  const classificationCriterion = (field: "recoveryOperation" | "exchangerType" | "unitApplication" | "installationEnvironment", title: string, choices: [string, string][]) =>
+    `<fieldset class="selection-criterion ${(filters[field] ?? "any") === "any" ? "criterion-disabled" : ""}"><legend>${escapeHtml(title)}</legend><select data-field="preselectionFilters.${field}">${[["any", recoveryText.any], ...choices].map(([value, label]) => `<option value="${value}" ${(filters[field] ?? "any") === value ? "selected" : ""}>${escapeHtml(label)}</option>`).join("")}</select></fieldset>`;
   const activeCriteria = [
     filters.maximumSfpEnabled ? text.ui.preselection.maximumSfp : "",
     filters.supplyNoiseEnabled ? text.ui.preselection.supplyNoise : "",
     filters.breakoutNoiseEnabled ? text.ui.preselection.breakoutNoise : "",
-    filters.recoveryCategory !== "any" ? recoveryText[filters.recoveryCategory] : "",
+    ...(["recoveryOperation", "exchangerType", "unitApplication", "installationEnvironment"] as const).map((field, index) =>
+      filters[field] && filters[field] !== "any" ? classificationText.titles[index] : ""),
   ].filter(Boolean);
   const noiseCriterion = (
     title: string,
@@ -1717,7 +1726,8 @@ const renderPreselectionStep = (): string => {
       <details class="additional-selection ${activeCriteria.length ? "has-active-criteria" : ""}" ${additionalCriteriaOpen ? "open" : ""}>
         <summary>
           <div><h3>${escapeHtml(text.ui.preselection.additionalCriteria)}</h3><p>${escapeHtml(text.ui.preselection.additionalCriteriaDescription)}</p></div>
-          <span class="criteria-state"><b>${activeCriteria.length}/4</b>${activeCriteria.length ? escapeHtml(activeCriteria.join(" · ")) : escapeHtml(text.ui.summary.notSelectedMasculine)}</span>
+          <span class="criteria-state"><b>${activeCriteria.length}/7</b>${activeCriteria.length ? escapeHtml(activeCriteria.join(" · ")) : escapeHtml(text.ui.summary.notSelectedMasculine)}</span>
+          <button type="button" class="icon-button bordered" data-reset-preselection-filters title="${escapeHtml(classificationText.reset)}" aria-label="${escapeHtml(classificationText.reset)}" ${!activeCriteria.length || calculating ? "disabled" : ""}>${icon("filter-x")}</button>
         </summary>
         <div class="additional-selection-fields">
         <fieldset class="selection-criterion sfp-criterion ${filters.maximumSfpEnabled ? "" : "criterion-disabled"}">
@@ -1730,13 +1740,10 @@ const renderPreselectionStep = (): string => {
         </fieldset>
         ${noiseCriterion(text.ui.preselection.supplyNoise, "preselectionFilters.supplyNoiseEnabled", filters.supplyNoiseEnabled, "preselectionFilters.supplyNoiseMetric", filters.supplyNoiseMetric, "preselectionFilters.maximumSupplyNoiseDbA", filters.maximumSupplyNoiseDbA, "preselectionFilters.supplyNoiseDistanceMeters", filters.supplyNoiseDistanceMeters, "preselectionFilters.supplyNoiseDirectivityFactor", filters.supplyNoiseDirectivityFactor)}
         ${noiseCriterion(text.ui.preselection.breakoutNoise, "preselectionFilters.breakoutNoiseEnabled", filters.breakoutNoiseEnabled, "preselectionFilters.breakoutNoiseMetric", filters.breakoutNoiseMetric, "preselectionFilters.maximumBreakoutNoiseDbA", filters.maximumBreakoutNoiseDbA, "preselectionFilters.breakoutNoiseDistanceMeters", filters.breakoutNoiseDistanceMeters, "preselectionFilters.breakoutNoiseDirectivityFactor", filters.breakoutNoiseDirectivityFactor)}
-        <fieldset class="selection-criterion recovery-category-criterion ${filters.recoveryCategory !== "any" ? "" : "criterion-disabled"}">
-          <legend>${escapeHtml(recoveryText.title)}</legend>
-          <select data-field="preselectionFilters.recoveryCategory">
-            ${(["any", "plate", "decentralized", "centralized", "rotary"] as const).map((category) => `<option value="${category}" ${filters.recoveryCategory === category ? "selected" : ""}>${escapeHtml(recoveryText[category])}</option>`).join("")}
-          </select>
-          ${filters.recoveryCategory === "plate" ? `<p class="criterion-note-required">${escapeHtml(recoveryText.plateNote)}</p>` : ""}
-        </fieldset>
+        ${classificationCriterion("recoveryOperation", classificationText.titles[0], [["Plate", recoveryText.plate], ["Rotary", recoveryText.rotary]])}
+        ${classificationCriterion("exchangerType", classificationText.titles[1], [["EN", "EN"], ["LT", "LT"], ["AL", "AL"]])}
+        ${classificationCriterion("unitApplication", classificationText.titles[2], [["Centralized", recoveryText.centralized], ["Decentralized", recoveryText.decentralized]])}
+        ${classificationCriterion("installationEnvironment", classificationText.titles[3], [["Indoor", classificationText.environment[0]], ["Outdoor", classificationText.environment[1]], ["Both", classificationText.environment[2]]])}
         </div>
       </details>
       <div class="inline-notice">
@@ -1956,6 +1963,12 @@ const renderInstallationStep = (): string => {
       <div class="panel-heading compact">
         <div><h2>${escapeHtml(text.ui.installation.typeTitle)}</h2><p>${escapeHtml(text.ui.installation.typeDescription)}</p></div>
       </div>
+      ${selectedUnit()?.installationEnvironment ? `<div class="field">
+        <label for="installationEnvironment">${escapeHtml(classificationLabels(languageCode()).titles[3])}</label>
+        <select id="installationEnvironment" data-field="installationEnvironment">
+          ${(["Indoor", "Outdoor"] as const).filter(environment => selectedUnit()?.installationEnvironment === "Both" || selectedUnit()?.installationEnvironment === environment).map(environment => `<option value="${environment}" ${(draft!.installationEnvironment ?? "Indoor") === environment ? "selected" : ""}>${escapeHtml(classificationLabels(languageCode()).environment[environment === "Indoor" ? 0 : 1])}</option>`).join("")}
+        </select>
+      </div>` : ""}
       <div class="segmented-cards">
         ${choiceCard("ceiling", text.domain.installation.ceiling, text.ui.installation.ceilingDescription, "panel-top", !installationAvailable("ceiling"))}
         ${choiceCard("floor", text.domain.installation.floor, text.ui.installation.floorDescription, "panel-bottom", !installationAvailable("floor"))}
@@ -2328,6 +2341,9 @@ const renderDocumentsStep = (): string => {
       </div>` : ""}
     ${documentCard(text.ui.documents.technicalSheet, text.ui.documents.technicalSheetDescription, "PDF", "file-text", "commercial-sheet", productDocuments?.commercialSheetAvailable === true)}
     ${documentCard("Benchmark document (confidential)", "", "PDF", "lock-keyhole", null, false)}
+    ${(productDocuments?.brochures?.length ? productDocuments.brochures : [{ id: "", language: "" }]).map(item => documentCard(
+      (documentCategoryLabels[languageCode()] ?? documentCategoryLabels.en).brochure,
+      item.language, "PDF", "book-open", "brochure", !!item.id, item.id)).join("")}
     ${documentCard(text.ui.documents.dimensionalDrawing, text.ui.documents.dimensionalDrawingDescription, "PDF", "ruler", "dimensional-drawing", dimensionalDrawing?.available === true)}
     ${documentCard(text.ui.documents.installationManual, text.ui.documents.installationManualDescription, "PDF", "book-open", "installation-manual", productDocuments?.installationManualAvailable === true)}
     ${documentCard(applicationTitle, applicationDescription, "PDF", "files", "application-document", productDocuments?.applicationDocumentAvailable === true)}
@@ -2360,7 +2376,7 @@ const renderSummaryStep = (): string => {
             [text.ui.summary.project, draft!.project.name],
             [text.ui.summary.reference, draft!.project.customerReference || "-"],
             [text.ui.summary.unit, `${unit?.family} · ${unit?.model}`],
-            [text.ui.summary.installation, `${installationLabel(draft!.installationMode)} · ${draft!.layoutCode}`],
+            [text.ui.summary.installation, `${classificationLabels(languageCode()).environment[draft!.installationEnvironment === "Outdoor" ? 1 : 0]} · ${installationLabel(draft!.installationMode)} · ${draft!.layoutCode}`],
           ], "wide")}
         </div>
         <div class="summary-section">
@@ -2658,13 +2674,14 @@ const documentCard = (
   description: string,
   format: string,
   iconName: string,
-  documentType: "commercial-sheet" | "dimensional-drawing" | "installation-manual" | "application-document" | "step-model" | null,
+  documentType: "commercial-sheet" | "brochure" | "dimensional-drawing" | "installation-manual" | "application-document" | "step-model" | null,
   available: boolean,
+  brochureId = "",
 ): string => `
   <article class="document-card ${available ? "" : "disabled"}">
     <span>${icon(iconName, 24)}</span>
     <div><h2>${escapeHtml(title)}</h2><p>${escapeHtml(description)}</p><small>${format}${available ? ` · ${escapeHtml(messages().ui.documents.offlineAvailable)}` : ""}</small></div>
-    <button class="icon-button bordered" ${documentType ? `data-document="${documentType}"` : ""} title="${escapeHtml(messages().ui.documents.openDocument)}" ${available ? "" : "disabled"}>${icon("external-link")}</button>
+    <button class="icon-button bordered" ${documentType ? `data-document="${documentType}"` : ""} data-brochure-id="${escapeHtml(brochureId)}" title="${escapeHtml(messages().ui.documents.openDocument)}" ${available ? "" : "disabled"}>${icon("external-link")}</button>
   </article>`;
 
 const summaryMetric = (label: string, value: string): string => `<div><span>${label}</span><strong>${value}</strong></div>`;
@@ -2681,7 +2698,7 @@ const relationInstallationLabel = (installation: string): string =>
     : messages().domain.installation.external;
 
 const currentDimensionalDrawingKey = (): string =>
-  `${draft?.selectedUnitId ?? ""}|${draft?.layoutCode ?? ""}`;
+  `${draft?.selectedUnitId ?? ""}|${draft?.layoutCode ?? ""}|${draft?.installationEnvironment ?? "Indoor"}`;
 
 const ensureDimensionalDrawing = async (): Promise<void> => {
   if (!draft || (currentStep !== "installation" && currentStep !== "documents")) return;
@@ -2763,6 +2780,13 @@ const renderDimensionalCanvases = async (): Promise<void> => {
 };
 
 const bindShellEvents = (): void => {
+  document.querySelector<HTMLButtonElement>("[data-reset-preselection-filters]")?.addEventListener("click", async (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    if (!draft || calculating) return;
+    draft.preselectionFilters = resetPreselectionFilters(draft.preselectionFilters);
+    await refreshPreselection();
+  });
   document
     .querySelector<HTMLDetailsElement>(".additional-selection")
     ?.addEventListener("toggle", (event) => {
@@ -2787,6 +2811,10 @@ const bindShellEvents = (): void => {
         confirmedUnitId !== selectedUnitId;
       draft!.selectedUnitId = selectedUnitId;
       const unit = selectedUnit();
+      if (modelChanged) {
+        draft!.installationEnvironment = unit?.installationEnvironment === "Outdoor" || (unit?.installationEnvironment === "Both" && draft!.preselectionFilters.installationEnvironment === "Outdoor") ? "Outdoor" : "Indoor";
+        if (draft!.installationEnvironment === "Indoor") draft!.accessoryCodes = draft!.accessoryCodes.filter(code => code.toUpperCase() !== "OKI");
+      }
       if (unit) draft!.regulationPercent = unit.requiredRegulation;
       if (!await recalculate() || draft!.selectedUnitId !== selectedUnitId) return;
       confirmedUnitId = selectedUnitId;
@@ -2852,7 +2880,7 @@ const bindShellEvents = (): void => {
         draft!.waterCoilCustomDisclaimerAccepted = true;
       }
       applyFieldValue(field, element);
-      if (field === "layoutCode") installationReviewRequired = true;
+      if (field === "layoutCode" || field === "installationEnvironment") installationReviewRequired = true;
       if (currentStep === "preselection") {
         await refreshPreselection();
       } else {
@@ -2997,6 +3025,7 @@ const bindShellEvents = (): void => {
     button.addEventListener("click", async () => {
       const documentType = button.dataset.document as
         | "commercial-sheet"
+        | "brochure"
         | "dimensional-drawing"
         | "installation-manual"
         | "application-document"
@@ -3014,6 +3043,7 @@ const bindShellEvents = (): void => {
         productDocuments = await bridge.openProductDocument(
           documentType,
           structuredClone(draft!),
+          button.dataset.brochureId,
         );
       } catch (error) {
         logClientError(error);
@@ -3341,7 +3371,12 @@ const applyFieldValue = (
       draft!.co2.airflowPerPersonLitersPerSecond = Math.max(0, Number(value));
     },
     "sound.includeInReport": () => { draft!.sound.includeInReport = Boolean(value); },
+    "installationEnvironment": () => { draft!.installationEnvironment = String(value) as "Indoor" | "Outdoor"; if (value === "Indoor") draft!.accessoryCodes = draft!.accessoryCodes.filter(code => code.toUpperCase() !== "OKI"); },
     "preselectionFilters.rotaryOnlyEnabled": () => { draft!.preselectionFilters.rotaryOnlyEnabled = Boolean(value); },
+    "preselectionFilters.recoveryOperation": () => { draft!.preselectionFilters.recoveryOperation = String(value) as "any" | "Plate" | "Rotary"; draft!.preselectionFilters.recoveryCategory = "any"; draft!.preselectionFilters.rotaryOnlyEnabled = false; },
+    "preselectionFilters.exchangerType": () => { draft!.preselectionFilters.exchangerType = String(value) as "any" | "EN" | "LT" | "AL"; draft!.preselectionFilters.recoveryCategory = "any"; draft!.preselectionFilters.rotaryOnlyEnabled = false; },
+    "preselectionFilters.unitApplication": () => { draft!.preselectionFilters.unitApplication = String(value) as "any" | "Centralized" | "Decentralized"; draft!.preselectionFilters.recoveryCategory = "any"; draft!.preselectionFilters.rotaryOnlyEnabled = false; },
+    "preselectionFilters.installationEnvironment": () => { draft!.preselectionFilters.installationEnvironment = String(value) as "any" | "Indoor" | "Outdoor" | "Both"; draft!.preselectionFilters.recoveryCategory = "any"; draft!.preselectionFilters.rotaryOnlyEnabled = false; },
     "preselectionFilters.recoveryCategory": () => {
       const category = String(value);
       draft!.preselectionFilters.recoveryCategory = ["any", "plate", "decentralized", "centralized", "rotary"].includes(category)
@@ -3402,6 +3437,7 @@ const refreshProductDocuments = async (): Promise<void> => {
   } catch (error) {
     logClientError(error);
     productDocuments = {
+      brochures: [],
       applicationDocumentAvailable: false,
       commercialSheetAvailable: false,
       installationManualAvailable: false,
@@ -3437,6 +3473,11 @@ const refreshPreselection = async (): Promise<void> => {
       return;
     }
     draft!.selectedUnitId = current.id;
+    if (draft!.preselectionFilters.installationEnvironment === "Outdoor" && current.installationEnvironment === "Both") draft!.installationEnvironment = "Outdoor";
+    if (draft!.preselectionFilters.installationEnvironment === "Indoor" && current.installationEnvironment === "Both") {
+      draft!.installationEnvironment = "Indoor";
+      draft!.accessoryCodes = draft!.accessoryCodes.filter(code => code.toUpperCase() !== "OKI");
+    }
     if (previousConfirmedUnitId !== null && previousConfirmedUnitId !== current.id) {
       installationReviewRequired = true;
       resetOptionalStepVisits();
@@ -3459,6 +3500,10 @@ const refreshPreselection = async (): Promise<void> => {
 };
 
 const recalculate = async (): Promise<boolean> => {
+  const capability = selectedUnit()?.installationEnvironment;
+  if (capability === "Outdoor") draft!.installationEnvironment = "Outdoor";
+  else if (capability === "Indoor") draft!.installationEnvironment = "Indoor";
+  else draft!.installationEnvironment ??= "Indoor";
   const version = ++calculationRequestVersion;
   const original = JSON.stringify(draft);
   let effective = structuredClone(draft!);

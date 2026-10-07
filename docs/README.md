@@ -6,6 +6,13 @@ interessata all'inizio di ogni nuova sessione, anche usando altre chat o modelli
 
 ## Proposte e decisioni
 
+- [Pubblicazione 2.0.0.26, 07/10/2026](RELEASE_2_0_0_26_2026-10-07.md)
+- [Classificazione unita e Outdoor/OKI, 07/10/2026](UNIT_CLASSIFICATION_ROADMAP_2026-10-07.md)
+- [Catalogo documenti applicativi, 07/10/2026](APPLICATION_DOCUMENT_CATALOG_2026-10-07.md)
+- [Potenza totale unita nel report, 07/10/2026](REPORT_TOTAL_FAN_POWER_2026-10-07.md)
+
+- [Brochure commerciali condivise WebSite/SSW, 07/10/2026](COMMERCIAL_BROCHURES_2026-10-07.md)
+
 - [Pubblicazione installer 2.0.0.25, 06/10/2026](RELEASE_2_0_0_25_2026-10-06.md)
 
 - [Archivio offerte e utente licenziato, 06/10/2026](OFFER_ARCHIVE_AND_LICENSE_OWNER_2026-10-06.md)

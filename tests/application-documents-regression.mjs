@@ -6,6 +6,7 @@ import ts from '../frontend/ssw-next/node_modules/typescript/lib/typescript.js';
 const main = fs.readFileSync(new URL('../frontend/ssw-next/src/main.ts', import.meta.url), 'utf8');
 const render = main.slice(main.indexOf('const renderDocumentsStep ='), main.indexOf('const renderSummaryStep ='));
 const card = main.slice(main.indexOf('const documentCard ='), main.indexOf('const summaryMetric ='));
+const labels = fs.readFileSync(new URL('../frontend/ssw-next/src/document-category-labels.ts', import.meta.url), 'utf8');
 for (const language of ['en', 'it', 'fr', 'de']) {
   for (const available of [true, false]) {
     const context = vm.createContext({
@@ -17,7 +18,7 @@ for (const language of ['en', 'it', 'fr', 'de']) {
       icon: () => '',
       escapeHtml: (value) => String(value ?? ''),
     });
-    const compiled = ts.transpileModule(`${card}\n${render}\nglobalThis.html = renderDocumentsStep();`, {
+    const compiled = ts.transpileModule(`${labels.replace('export const', 'const')}\n${card}\n${render}\nglobalThis.html = renderDocumentsStep();`, {
       compilerOptions: { target: ts.ScriptTarget.ES2022 },
     }).outputText;
     vm.runInContext(compiled, context);

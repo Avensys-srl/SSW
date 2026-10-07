@@ -1380,4 +1380,5 @@ Oppbevaring: konto- og lisensregistreringer oppbevares så lenge forretningsforh
 Rettigheter: du kan be om tilgang, retting, sletting, begrensning, innsigelse eller portabilitet der det er aktuelt, og sende inn en klage til den kompetente databeskyttelsesmyndigheten. Kontakt info@avensys-srl.com.</value></data>
   <data name="DeviceLicense_PrivacyAcknowledgement" xml:space="preserve"><value>Godta vilkårene for bruk for å aktivere SSW på denne enheten</value></data>
   <data name="DeviceLicense_Company" xml:space="preserve"><value>Company</value></data>
+  <data name="PDF_TotalUnitPower" xml:space="preserve"><value>Aggregatets totale effekt [W]</value></data>
 </root>

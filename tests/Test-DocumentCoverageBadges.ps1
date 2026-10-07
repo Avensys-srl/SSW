@@ -14,7 +14,7 @@ foreach ($status in @('Online', 'Missing', 'Unverified')) {
     foreach ($language in @('BG','CS','HU','IS','NO','RO','SL')) {
         $row.CommercialSheetOnlineStatus[$language] = 'Missing'
     }
-    $html = $htmlMethod.Invoke($null, @($row))
+    $html = $htmlMethod.Invoke($null, @($row,$false))
     foreach ($language in @('BG','CS','HU','IS','NO','RO','SL')) {
         $color = if ($status -eq 'Online') { 'ok' } else { 'bad' }
         if ($html -notmatch ('class="badge ' + $color + '" title="EN: ' + $status + '">' + $language + '</span>')) {
@@ -32,7 +32,7 @@ try {
     $row = [Activator]::CreateInstance($rowType)
     $row.CommercialSheetPaths.Add($path)
     $row.CommercialSheetOnlineStatus['EN'] = 'Missing'
-    $html = $htmlMethod.Invoke($null, @($row))
+    $html = $htmlMethod.Invoke($null, @($row,$false))
     if ($html -notmatch 'Fallback EN available' -or $missingMethod.Invoke($null, @($row))) {
         throw 'Offline EN must provide fallback even when online EN is missing.'
     }
@@ -45,4 +45,15 @@ foreach ($status in @('Online', 'Missing', 'Unverified')) {
     if ($stepMethod.Invoke($null, @($row)) -ne $expected) { throw "Incorrect STEP state $status" }
     if ($missingMethod.Invoke($null, @($row)) -ne ($status -eq 'Missing')) { throw "Incorrect STEP filter $status" }
 }
-'Document badges and STEP passed: available/missing/unverified states, EN fallback and confirmed-missing filter.'
+foreach ($status in @('Online', 'Missing', 'Unverified')) {
+    $row = [Activator]::CreateInstance($rowType)
+    $row.BrochureOnlineStatus['FR'] = 'Online'
+    $row.BrochureOnlineStatus['EN'] = $status
+    $row.BrochureOnlineStatus['IT'] = 'Missing'
+    $html = $htmlMethod.Invoke($null,@($row,$true))
+    if ($html -notmatch 'class="badge ok" title="FR: Online">FR') { throw 'FR brochure availability lost' }
+    $color = if ($status -eq 'Online') { 'ok' } else { 'bad' }
+    if ($html -notmatch ('class="badge '+$color+'" title="IT: ')) { throw 'IT must use EN, not FR fallback' }
+    if ($missingMethod.Invoke($null,@($row)) -ne ($status -ne 'Online')) { throw 'Incorrect brochure missing filter' }
+}
+'Document badges, brochures and STEP passed: available/missing/unverified states, EN-only fallback and confirmed-missing filter.'

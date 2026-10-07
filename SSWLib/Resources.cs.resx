@@ -1502,4 +1502,5 @@ Uchovávání: záznamy o účtech a licencích jsou uchovávány po dobu trván
 Práva: můžete požádat o přístup, opravu, vymazání, omezení, vznést námitku nebo přenositelnost tam, kde je to možné, a podat stížnost příslušnému úřadu pro ochranu údajů. Kontaktujte info@avensys-srl.com.</value></data>
   <data name="DeviceLicense_PrivacyAcknowledgement" xml:space="preserve"><value>Přijměte podmínky použití pro aktivaci SSW na tomto zařízení</value></data>
   <data name="DeviceLicense_Company" xml:space="preserve"><value>Company</value></data>
+  <data name="PDF_TotalUnitPower" xml:space="preserve"><value>Celkový příkon jednotky [W]</value></data>
 </root>

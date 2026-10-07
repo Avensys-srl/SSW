@@ -904,4 +904,5 @@
 Права: можете да поискате достъп, коригиране, изтриване, ограничаване, възражение или преносимост, когато е приложимо, и да подадете жалба до компетентния орган за защита на данните. Свържете се с info@avensys-srl.com.</value></data>
   <data name="DeviceLicense_PrivacyAcknowledgement" xml:space="preserve"><value>Приемете условията за ползване, за да активирате SSW на това устройство</value></data>
   <data name="DeviceLicense_Company" xml:space="preserve"><value>Company</value></data>
+  <data name="PDF_TotalUnitPower" xml:space="preserve"><value>Обща мощност на агрегата [W]</value></data>
 </root>

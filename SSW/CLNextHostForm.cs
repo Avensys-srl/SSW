@@ -41,6 +41,59 @@ namespace SSW
         {
             var models = CLNextUiApplicationService.GetModels();
             if (models == null || models.Count == 0) return 10;
+            if (Environment.GetEnvironmentVariable("SSW_CLASSIFICATION_SMOKE") == "1")
+            {
+                foreach (var candidate in models)
+                {
+                    var classification = CLUnitClassificationRepository.Find(candidate.Id);
+                    if (classification == null) throw new InvalidDataException("Missing classification: " + candidate.Code);
+                    var matching = new CLNextUiPreselectionFilters {
+                        RecoveryOperation = classification.RecoveryOperation,
+                        ExchangerType = classification.ExchangerType,
+                        UnitApplication = classification.UnitApplication,
+                        InstallationEnvironment = classification.InstallationEnvironment };
+                    if (!CLUnitClassificationRepository.Matches(candidate.Id, matching)) throw new InvalidDataException("Classification AND filter failed.");
+                    matching.ExchangerType = classification.ExchangerType == "EN" ? "AL" : "EN";
+                    if (CLUnitClassificationRepository.Matches(candidate.Id, matching)) throw new InvalidDataException("Mismatched exchanger passed.");
+                    foreach (string environment in new[] { "Indoor", "Outdoor", "Both" })
+                    {
+                        var filter = new CLNextUiPreselectionFilters { InstallationEnvironment = environment };
+                        bool expected = environment == classification.InstallationEnvironment || (classification.InstallationEnvironment == "Both" && environment != "Both");
+                        if (CLUnitClassificationRepository.Matches(candidate.Id, filter) != expected) throw new InvalidDataException("Environment filter failed.");
+                    }
+                }
+                var convertible = models.First(item => item.InstallationEnvironment == "Both" && !new[] { "CFI", "CDR", "CFD" }.Any(suffix => item.Code.EndsWith(" " + suffix)));
+                var row = CLUnitClassificationRepository.Find(convertible.Id);
+                int a = row.OutdoorIncreaseA, b = row.OutdoorIncreaseB, c = row.OutdoorIncreaseC;
+                    // Test nonzero arithmetic separately without changing the SDF or source database.
+                    var dimensionFixture = new List<CLDimensionalValue> { new CLDimensionalValue { Code = "W", ValueMillimeters = 100 }, new CLDimensionalValue { Code = "L", ValueMillimeters = 200 }, new CLDimensionalValue { Code = "H", ValueMillimeters = 300 } };
+                    CLUnitClassificationRepository.ApplyDimensions(new CLUnitClassification { InstallationEnvironment = "Both", OutdoorIncreaseA = 13, OutdoorIncreaseB = 17, OutdoorIncreaseC = 19 }, "Outdoor", dimensionFixture);
+                    if (dimensionFixture[0].ValueMillimeters != 113 || dimensionFixture[1].ValueMillimeters != 217 || dimensionFixture[2].ValueMillimeters != 319) throw new InvalidDataException("W/L/H mapping failed.");
+                    var input = new CLNextUiCalculationInput { ModelCode = convertible.Code, SupplyAirflowM3h = 100, ExtractAirflowM3h = 100, PressurePa = 100 };
+                    var indoor = CLNextUiApplicationService.Calculate(input);
+                    input.InstallationEnvironment = "Outdoor";
+                    var outdoor = CLNextUiApplicationService.Calculate(input);
+                    if (!outdoor.Accessories.Exists(item => item.Code == "OKI" && item.Included && item.Locked)) throw new InvalidDataException("Outdoor OKI was not selected and locked.");
+                    var layout = outdoor.Layout.Configurations.First();
+                    input.LayoutCode = layout.Code; input.InstallationMode = layout.InstallationMode;
+                    var classificationDocument = CLNextUiApplicationService.CreateProjectDocument(input);
+                    var restored = CLSelectionProjectSerializer.Deserialize(CLSelectionProjectSerializer.Serialize(classificationDocument));
+                    if (restored.Selection.InstallationEnvironment != "Outdoor") throw new InvalidDataException("Outdoor persistence failed.");
+                    if (!CanPrepareReport(restored)) throw new InvalidDataException("Outdoor PDF report failed.");
+                    var preparedOutdoorReport = CLNextUiReportService.Prepare(restored);
+                    var outdoorDiagram = (System.Data.DataTable)preparedOutdoorReport.DataSources.First(source => source.Name == "Diagram").Value;
+                    File.WriteAllBytes(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "classification-report-layout.png"), (byte[])outdoorDiagram.Rows[0]["InstallationImage"]);
+                    var reopened = CLNextUiApplicationService.Calculate(CLNextUiApplicationService.CreateInputFromProjectDocument(restored));
+                    foreach (var dimension in indoor.Layout.HorizontalDimensions)
+                    {
+                        int increase = dimension.Code == "A" ? a : dimension.Code == "B" ? b : dimension.Code == "C" ? c : 0;
+                        var current = outdoor.Layout.HorizontalDimensions.First(item => item.Code == dimension.Code);
+                        var again = reopened.Layout.HorizontalDimensions.First(item => item.Code == dimension.Code);
+                        if (current.ValueMillimeters != dimension.ValueMillimeters + increase || again.ValueMillimeters != current.ValueMillimeters) throw new InvalidDataException("Outdoor increment mismatch " + dimension.Code + ": base=" + dimension.ValueMillimeters + ", outdoor=" + current.ValueMillimeters + ", reopened=" + again.ValueMillimeters + ", increase=" + increase);
+                    }
+                File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "classification-smoke.txt"), "PASS: " + models.Count + " model classifications; AND/environment filters; OKI; increments; persistence/reopen.");
+                return 0;
+            }
             var avensysOnlyModels = models.FindAll(item =>
                 item.Code.EndsWith(" CFI", StringComparison.OrdinalIgnoreCase) ||
                 item.Code.EndsWith(" CDR", StringComparison.OrdinalIgnoreCase) ||
@@ -989,8 +1042,17 @@ namespace SSW
                     var table = source.Value as System.Data.DataTable;
                     if (table != null && table.Columns.Contains("RegLev_Value"))
                         foreach (System.Data.DataRow row in table.Rows)
+                        {
                             if (Convert.ToString(row["RegLev_Value"]).Contains("%"))
                                 return ReportPreparationFailed("Regulation data must not include the percent suffix added by the report template.");
+                            string[] powers = Convert.ToString(row["PowerInput_Value"]).Split(new[] { "\r\n" }, StringSplitOptions.None);
+                            string[] captions = Convert.ToString(row["PowerInput_Caption"]).Split(new[] { "\r\n" }, StringSplitOptions.None);
+                            double totalPower;
+                            if (powers.Length != 1 || captions.Length != 1 ||
+                                !captions[0].EndsWith("[W]", StringComparison.Ordinal) ||
+                                !Double.TryParse(powers[0], NumberStyles.Number, CultureInfo.CurrentCulture, out totalPower) || totalPower < 0)
+                                return ReportPreparationFailed("Report must include only localized total unit power.");
+                        }
                     report.DataSources.Add(source);
                 }
                 byte[] pdf = report.Render("PDF");
@@ -1322,6 +1384,16 @@ namespace SSW
             {
                 await WaitForFrontendReadyAsync();
 
+                string documentSmokeLanguage = Environment.GetEnvironmentVariable("SSW_DOCUMENTS_SMOKE_LANGUAGE");
+                if (screenshotStep == "documents" && !String.IsNullOrWhiteSpace(documentSmokeLanguage))
+                {
+                    string languageJson = new JavaScriptSerializer().Serialize(documentSmokeLanguage);
+                    await webView.CoreWebView2.ExecuteScriptAsync("(function(){var s=document.querySelector('[data-field=\"project.language\"]');s.value=" + languageJson + ";s.dispatchEvent(new Event('change',{bubbles:true}));})()");
+                    await WaitForConditionAsync("document.querySelector('[data-field=\"project.language\"]').value === " + languageJson + " && document.querySelector('.busy-overlay') === null", "Interface language did not settle.");
+                    await webView.CoreWebView2.ExecuteScriptAsync("(function(){var s=document.querySelector('[data-project-language]');s.value=" + languageJson + ";s.dispatchEvent(new Event('change',{bubbles:true}));})()");
+                    await WaitForConditionAsync("document.querySelector('[data-project-language]').value === " + languageJson + " && document.querySelector('.busy-overlay') === null", "Document language did not settle.");
+                }
+
                 if (screenshotStep == "offer-reminder-dialog" || screenshotStep == "offer-reminder-create" || screenshotStep == "offer-reminder-reopen" || screenshotStep == "offer-reminder-cleanup" || screenshotStep == "offer-reminder-reprint" || screenshotStep == "offer-reminder-offline")
                 {
                     await VerifyOfferReminderAsync(screenshotStep != "offer-reminder-reopen");
@@ -1334,6 +1406,7 @@ namespace SSW
                     String.Equals(screenshotStep, "layout-review", StringComparison.OrdinalIgnoreCase) ||
                     String.Equals(screenshotStep, "layout-review-accepted", StringComparison.OrdinalIgnoreCase);
                 bool needsConfiguredWorkflow =
+                    String.Equals(screenshotStep, "outdoor", StringComparison.OrdinalIgnoreCase) ||
                     String.Equals(screenshotStep, "layout", StringComparison.OrdinalIgnoreCase) ||
                     String.Equals(screenshotStep, "layout-transitions", StringComparison.OrdinalIgnoreCase) ||
                     layoutReviewScenario ||
@@ -1353,25 +1426,31 @@ namespace SSW
                     await WaitForConditionAsync(
                         "document.querySelector('[data-select-unit]') !== null",
                         "The preselection results did not become ready.");
+                    string documentSmokeModel = screenshotStep == "documents" ? Environment.GetEnvironmentVariable("SSW_DOCUMENTS_SMOKE_MODEL") : null;
+                    if (screenshotStep == "outdoor") documentSmokeModel = "CLRC 023 OSC";
+                    string selector = String.IsNullOrWhiteSpace(documentSmokeModel) ? "[data-select-unit]" : "[data-select-unit=\"" + documentSmokeModel + "\"]";
                     await webView.CoreWebView2.ExecuteScriptAsync(
-                        "document.querySelector('[data-select-unit]').click()");
+                        "document.querySelector(" + new JavaScriptSerializer().Serialize(selector) + ").click()");
                     await WaitForConditionAsync(
                         "document.querySelector('.layout-preview') !== null",
                         "The Layout view did not become ready.");
                     await WaitForConditionAsync(
-                        "document.querySelector('[data-confirm-installation]:not([disabled])') !== null && " +
-                        "document.querySelector('[data-action=\"next\"]').disabled && " +
-                        "document.querySelector('[data-step=\"accessories\"]').disabled",
+                        "(function(){var c=document.querySelector('[data-confirm-installation]');return c ? !c.disabled && document.querySelector('[data-action=\"next\"]').disabled && document.querySelector('[data-step=\"accessories\"]').disabled : !document.querySelector('[data-action=\"next\"]').disabled;})()",
                         "An unconfirmed installation must block Next and later steps.");
                     if (String.Equals(screenshotStep, "co2", StringComparison.OrdinalIgnoreCase) ||
                         String.Equals(screenshotStep, "sound", StringComparison.OrdinalIgnoreCase) ||
                         String.Equals(screenshotStep, "documents", StringComparison.OrdinalIgnoreCase))
                     {
                         await webView.CoreWebView2.ExecuteScriptAsync(
-                            "document.querySelector('[data-confirm-installation]').click()");
+                            "(function(){var c=document.querySelector('[data-confirm-installation]');if(c)c.click();})()");
                     }
                 }
 
+                if (screenshotStep == "outdoor")
+                {
+                    await webView.CoreWebView2.ExecuteScriptAsync("(function(){var select=document.querySelector('#installationEnvironment');if(!select||select.options.length!==2)throw new Error('Missing Indoor/Outdoor choices');select.value='Outdoor';select.dispatchEvent(new Event('change',{bubbles:true}));})()");
+                    await WaitForConditionAsync("document.querySelector('#installationEnvironment').value === 'Outdoor' && document.body.innerText.includes('KTS EXTRA')", "Outdoor selection or automatic controller upgrade did not settle.");
+                }
                 if (String.Equals(screenshotStep, "layout-transitions", StringComparison.OrdinalIgnoreCase))
                 {
                     foreach (string mode in new[] { "ceiling", "wall", "ceiling", "wall" })
@@ -1458,6 +1537,12 @@ namespace SSW
                     await WaitForConditionAsync(
                         "document.querySelector('.additional-selection') !== null",
                         "The preselection filters did not become ready.");
+                    await webView.CoreWebView2.ExecuteScriptAsync("(function(){var details=document.querySelector('.additional-selection');details.open=true;details.dispatchEvent(new Event('toggle'));})()");
+                    await WaitForConditionAsync("document.querySelectorAll('.additional-selection select[data-field^=\"preselectionFilters.\"]').length >= 4", "The four classification selectors were not rendered.");
+                    await webView.CoreWebView2.ExecuteScriptAsync("(function(){window.resetFilterPoint=Array.from(document.querySelectorAll('[data-field^=\"operatingPoint.\"]')).map(input=>input.value).join('|');var select=document.querySelector('[data-field=\"preselectionFilters.exchangerType\"]');select.value='AL';select.dispatchEvent(new Event('change',{bubbles:true}));})()");
+                    await WaitForConditionAsync("document.querySelector('.criteria-state b').innerText === '1/7' && !document.querySelector('[data-reset-preselection-filters]').disabled", "The selected filter did not settle.");
+                    await webView.CoreWebView2.ExecuteScriptAsync("document.querySelector('[data-reset-preselection-filters]').click()");
+                    await WaitForConditionAsync("document.querySelector('.criteria-state b').innerText === '0/7' && document.querySelector('.additional-selection').open && document.querySelector('[data-field=\"preselectionFilters.exchangerType\"]').value === 'any' && Array.from(document.querySelectorAll('[data-field^=\"operatingPoint.\"]')).map(input=>input.value).join('|') === window.resetFilterPoint", "Reset filters changed the working point, closed the panel or failed to clear the criteria.");
                 }
                 else if (String.Equals(
                     screenshotStep,
@@ -1540,7 +1625,7 @@ namespace SSW
                         "return true;" +
                         "})()");
                     await WaitForConditionAsync(
-                        "document.querySelectorAll('.document-card').length === 11 && " +
+                        "document.querySelectorAll('.document-card').length >= 12 && " +
                         "document.querySelector('[data-document=\"dimensional-drawing\"]') !== null && " +
                         "document.querySelector('[data-document=\"step-model\"]') !== null && " +
                         "document.querySelector('.documents-loading') === null",
@@ -1831,7 +1916,7 @@ namespace SSW
                 throw new InvalidDataException("Dimensional drawing image is missing.");
 
             CLDimensionalDrawingResult drawing =
-                CLDimensionalDrawingService.Resolve(modelCode, layoutCode, false);
+                CLDimensionalDrawingService.Resolve(modelCode, layoutCode, false, TextValue(payload, "installationEnvironment"));
             if (!drawing.Available)
                 throw new InvalidOperationException("Dimensional drawing is not available.");
 
@@ -2139,7 +2224,7 @@ namespace SSW
                         if (request.Payload == null) throw new ArgumentNullException("payload");
                         CLDimensionalDrawingResult drawingResult = CLDimensionalDrawingService.Resolve(
                             TextValue(request.Payload, "modelCode"),
-                            TextValue(request.Payload, "layoutCode"));
+                            TextValue(request.Payload, "layoutCode"), true, TextValue(request.Payload, "installationEnvironment"));
                         byte[] brandingLogo = ImageBytes(CLEnvironment.Current.CustomerLogo);
                         drawingResult.BrandingLogoBase64 = brandingLogo == null
                             ? null
@@ -2264,6 +2349,12 @@ namespace SSW
                             : String.Empty;
             bool available = !String.IsNullOrWhiteSpace(requestedPath) &&
                 File.Exists(requestedPath);
+            if (String.Equals(documentType, "brochure", StringComparison.OrdinalIgnoreCase))
+            {
+                var brochure = resolved.Brochures.FirstOrDefault(item => item.Id == TextValue(payload, "brochureId"));
+                requestedPath = brochure == null ? String.Empty : brochure.Path;
+                available = !String.IsNullOrWhiteSpace(requestedPath) && File.Exists(requestedPath);
+            }
             bool opened = false;
             if (openRequestedDocument && available)
             {
@@ -2278,6 +2369,7 @@ namespace SSW
                 commercialSheetAvailable =
                     !String.IsNullOrWhiteSpace(resolved.CommercialSheetPath) &&
                     File.Exists(resolved.CommercialSheetPath),
+                brochures = resolved.Brochures.Where(item => File.Exists(item.Path)).Select(item => new { id = item.Id, language = item.Language }).ToArray(),
                 installationManualAvailable =
                     !String.IsNullOrWhiteSpace(resolved.InstallationManualPath) &&
                     File.Exists(resolved.InstallationManualPath),
@@ -2347,6 +2439,7 @@ namespace SSW
                 WaterCoilCircuits = IntegerValue(payload, "waterCoilCircuits", 0),
                 WaterCoilFinSpacingMm = NumberValue(payload, "waterCoilFinSpacingMm", 0),
                 InstallationMode = TextValue(payload, "installationMode"),
+                InstallationEnvironment = TextValue(payload, "installationEnvironment"),
                 LayoutCode = TextValue(payload, "layoutCode"),
                 FluidCode = TextValue(payload, "fluidCode"),
                 GlycolPercent = NumberValue(payload, "glycolPercent", 10),
@@ -2372,6 +2465,10 @@ namespace SSW
                     MinimumRegulationPercent = IntegerValue(payload, "minimumRegulationPercent", 70),
                     RotaryOnlyEnabled = BooleanValue(preselectionFilters, "rotaryOnlyEnabled"),
                     RecoveryCategory = TextValue(preselectionFilters, "recoveryCategory"),
+                    RecoveryOperation = TextValue(preselectionFilters, "recoveryOperation"),
+                    ExchangerType = TextValue(preselectionFilters, "exchangerType"),
+                    UnitApplication = TextValue(preselectionFilters, "unitApplication"),
+                    InstallationEnvironment = TextValue(preselectionFilters, "installationEnvironment"),
                     MaximumSfpEnabled = BooleanValue(preselectionFilters, "maximumSfpEnabled"),
                     MaximumSfp = NumberValue(preselectionFilters, "maximumSfp", 2),
                     SupplyNoiseEnabled = BooleanValue(preselectionFilters, "supplyNoiseEnabled"),

@@ -1027,4 +1027,5 @@ Retention: account and license records are retained for the duration of the busi
 Rights: you may request access, rectification, erasure, restriction, objection or portability where applicable, and lodge a complaint with the competent data protection authority. Contact info@avensys-srl.com.</value></data>
   <data name="DeviceLicense_PrivacyAcknowledgement" xml:space="preserve"><value>Accept the terms of use to activate SSW on this device</value></data>
   <data name="DeviceLicense_Company" xml:space="preserve"><value>Company</value></data>
+  <data name="PDF_TotalUnitPower" xml:space="preserve"><value>Total unit power [W]</value></data>
 </root>

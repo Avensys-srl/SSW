@@ -883,4 +883,5 @@ Conservation : les relevés de comptes et de licences sont conservés pendant to
 Droits : vous pouvez demander l&apos;accès, la rectification, l&apos;effacement, la restriction, l&apos;opposition ou la portabilité le cas échéant, et déposer une plainte auprès de l&apos;autorité compétente en matière de protection des données. Contactez info@avensys-srl.com.</value></data>
   <data name="DeviceLicense_PrivacyAcknowledgement" xml:space="preserve"><value>Acceptez les conditions d&apos;utilisation pour activer SSW sur cet appareil</value></data>
   <data name="DeviceLicense_Company" xml:space="preserve"><value>Company</value></data>
+  <data name="PDF_TotalUnitPower" xml:space="preserve"><value>Puissance totale de l’unité [W]</value></data>
 </root>

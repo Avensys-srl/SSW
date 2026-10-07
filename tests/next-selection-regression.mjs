@@ -36,6 +36,7 @@ for (const language of ['bg', 'cs', 'da', 'de', 'en', 'fr', 'hu', 'is', 'it', 'n
 const functions = main.slice(main.indexOf('const refreshPreselection = async'), main.indexOf('const saveDraft ='));
 function harness(bridge, input = baseline()) {
   const context = vm.createContext({ structuredClone, normalizeSelection, bridge, input,
+    selectedUnit: () => ({ installationEnvironment: 'Both' }),
     renderShell() {}, logClientError() {}, lockWorkflowAtPreselection() {}, confirmInstallationReview() {} });
   vm.runInContext(compile(`let draft=input; let result={}; let data={units:[]};
     let preselectionRequestVersion=0, calculationRequestVersion=0;

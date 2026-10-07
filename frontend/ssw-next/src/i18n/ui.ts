@@ -1,6 +1,7 @@
 import { en } from "./en";
 import { locales } from "./locales";
 import { co2SoundMessages } from "./co2Sound";
+import { documentCategoryLabels } from "../document-category-labels";
 import type {
   DomainMessages,
   FrontendMessages,
@@ -533,7 +534,7 @@ const buildUiMessages = (
     },
     co2Sound: co2SoundMessages[code],
     documents: {
-      technicalSheet: text.technicalSheet,
+      technicalSheet: (documentCategoryLabels[code] ?? documentCategoryLabels.en).sheet,
       technicalSheetDescription: text.technicalSheetDescription,
       installationManual: text.installationManual,
       installationManualDescription: text.installationManualDescription,

@@ -9,6 +9,7 @@ import type {
 export const mockUnits: UnitOption[] = [
   {
     id: "clrc-038-osc",
+    recoveryType: "Plate", exchangerType: "AL", unitApplication: "Centralized", installationEnvironment: "Both",
     family: "ECOP",
     model: "CLRC 038 OSC",
     maxAirflow: 500,
@@ -22,6 +23,7 @@ export const mockUnits: UnitOption[] = [
   },
   {
     id: "clrc-048-osc",
+    recoveryType: "Plate", exchangerType: "AL", unitApplication: "Centralized", installationEnvironment: "Both",
     family: "ECOP",
     model: "CLRC 048 OSC",
     maxAirflow: 600,
@@ -35,6 +37,7 @@ export const mockUnits: UnitOption[] = [
   },
   {
     id: "clrc-06a-osc",
+    recoveryType: "Plate", exchangerType: "AL", unitApplication: "Centralized", installationEnvironment: "Indoor",
     family: "HAKUNA",
     model: "CLRC 06A OSC",
     maxAirflow: 650,

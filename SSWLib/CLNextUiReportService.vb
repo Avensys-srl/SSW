@@ -106,7 +106,7 @@ Public NotInheritable Class CLNextUiReportService
         End If
         Using installation = CLInstallationLayoutReportRenderer.Create(
             reportModel, document.Selection.LayoutCode,
-            document.Selection.InstallationMode)
+            document.Selection.InstallationMode, document.Selection.InstallationEnvironment)
         AddRow(diagrams,
             "PressureImage", BuildPressureChart(calculation),
             "PowerImage", BuildPowerChart(calculation),
@@ -202,14 +202,15 @@ Public NotInheritable Class CLNextUiReportService
         Dim result = calculation.Result
         Dim branch = result.SupplyBranch
         Dim thermo = result.Thermodynamics
+        Dim totalFanPower = CalculateTotalFanPower(result)
         Dim workingValues As Object() = {
             "Title", scenarioName & " - " & L("PDF_WorkingPoint", "Working point"),
             "AirFlow_Caption", L("MainForm_AirFlow", "Air flow [m3/h]"),
             "AirFlow_Value", F(branch.AirflowM3h, 0),
             "MaxPressure_Caption", L("MainForm_MaxPressure", "Max. pressure [Pa]"),
             "MaxPressure_Value", F(branch.AvailablePressurePa, 0),
-            "PowerInput_Caption", L("MainForm_PowerInput", "Power input [W]"),
-            "PowerInput_Value", F(branch.AbsorbedPowerW, 0),
+            "PowerInput_Caption", L("PDF_TotalUnitPower", "Total unit power [W]"),
+            "PowerInput_Value", F(totalFanPower, 0),
             "SFP_Caption", "SFP [kW/(m3/s)]",
             "SFP_Value", F(result.CombinedSpecificFanPowerWPerM3hPerSecond, 2),
             "SEL_Caption", "SEL [J/m3]",
@@ -256,6 +257,12 @@ Public NotInheritable Class CLNextUiReportService
         AddRow(allExchanger, exchangerValues)
         AddRow(scenarioExchanger, exchangerValues)
     End Sub
+
+    Private Shared Function CalculateTotalFanPower(result As CLSeasonCalculationResult) As Double?
+        If result Is Nothing OrElse result.SupplyBranch Is Nothing OrElse result.ExtractBranch Is Nothing OrElse
+            Not result.SupplyBranch.AbsorbedPowerW.HasValue OrElse Not result.ExtractBranch.AbsorbedPowerW.HasValue Then Return Nothing
+        Return result.SupplyBranch.AbsorbedPowerW.Value + result.ExtractBranch.AbsorbedPowerW.Value
+    End Function
 
     Private Shared Function WorkingPointTable(name As String) As DataTable
         Return CreateTable(name, "Title", "AirFlow_Caption", "AirFlow_Value",

@@ -835,4 +835,5 @@ Aufbewahrung: Konto- und Lizenzdaten werden für die Dauer der Geschäftsbeziehu
 Rechte: Sie können gegebenenfalls Zugang, Berichtigung, Löschung, Einschränkung, Widerspruch oder Übertragbarkeit beantragen und eine Beschwerde bei der zuständigen Datenschutzbehörde einreichen. Kontaktieren Sie info@avensys-srl.com.</value></data>
   <data name="DeviceLicense_PrivacyAcknowledgement" xml:space="preserve"><value>Akzeptieren Sie die Nutzungsbedingungen, um SSW auf diesem Gerät zu aktivieren</value></data>
   <data name="DeviceLicense_Company" xml:space="preserve"><value>Company</value></data>
+  <data name="PDF_TotalUnitPower" xml:space="preserve"><value>Gesamtleistung des Geräts [W]</value></data>
 </root>

@@ -820,4 +820,5 @@ Hramba: evidence o računih in licencah se hranijo v času trajanja poslovnega o
 Pravice: zahtevate lahko dostop, popravek, izbris, omejitev, ugovor ali prenos, kjer je primerno, in vložite pritožbo pri pristojnem organu za varstvo podatkov. Obrnite se na info@avensys-srl.com.</value></data>
   <data name="DeviceLicense_PrivacyAcknowledgement" xml:space="preserve"><value>Sprejmite pogoje uporabe za aktiviranje SSW na tej napravi</value></data>
   <data name="DeviceLicense_Company" xml:space="preserve"><value>Company</value></data>
+  <data name="PDF_TotalUnitPower" xml:space="preserve"><value>Skupna moč enote [W]</value></data>
 </root>

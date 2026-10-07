@@ -24,7 +24,8 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
 
     Public Shared Function Create(model As CLDCHeatRecoveryModel,
         requestedConfigurationCode As String,
-        requestedInstallationMode As String) As CLInstallationLayoutReportContent
+        requestedInstallationMode As String,
+        Optional installationEnvironment As String = "Indoor") As CLInstallationLayoutReportContent
 
         If model Is Nothing Then
             Return New CLInstallationLayoutReportContent(New Bitmap(2, 2),
@@ -37,6 +38,8 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
 
         Dim snapshot = CLInstallationLayoutRepository.Create().
             GetForModel(model, requestedConfigurationCode)
+        CLUnitClassificationRepository.ApplyDimensions(model.Id, installationEnvironment, snapshot.HorizontalDimensions)
+        CLUnitClassificationRepository.ApplyDimensions(model.Id, installationEnvironment, snapshot.VerticalDimensions)
         Dim configuration = snapshot.Configurations.FirstOrDefault(Function(item) _
             String.Equals(item.Code, snapshot.ConfigurationCode,
                 StringComparison.OrdinalIgnoreCase))
@@ -66,13 +69,21 @@ Public NotInheritable Class CLInstallationLayoutReportRenderer
             canvas.TextRenderingHint = Drawing.Text.TextRenderingHint.ClearTypeGridFit
             canvas.Clear(Color.White)
             DrawSchematic(canvas, snapshot, model.Code, configurationCode, installationMode)
+            If installationEnvironment = "Outdoor" Then
+                Dim drawing = CLDimensionalDrawingService.Resolve(model.Code, configurationCode, False, installationEnvironment)
+                Dim dimensions = drawing.VisibleDimensions.Where(Function(item) item.ValueMillimeters.HasValue AndAlso {"A", "B", "C", "W", "L", "H"}.Contains(item.Code)).Select(Function(item) item.Code & ": " & item.ValueMillimeters.Value.ToString("0", Globalization.CultureInfo.InvariantCulture) & " mm")
+                canvas.ResetTransform()
+                Using dimensionFont As New Font("Arial", 14)
+                    DrawCenteredText(canvas, String.Join("     ", dimensions), dimensionFont, Brushes.Black, New RectangleF(20, 520, ImageWidth - 40, 36))
+                End Using
+            End If
         End Using
         Return New CLInstallationLayoutReportContent(bitmap,
             T("Report_InstallationLayout_Title", "Installation configuration"),
             T("Report_InstallationLayout_Configuration", "Configuration"),
             configurationCode,
             T("Report_InstallationLayout_Installation", "Installation"),
-            InstallationCaption(installationMode))
+            InstallationCaption(installationMode) & If(installationEnvironment = "Outdoor", " - Outdoor", String.Empty))
     End Function
 
     Private Shared Sub DrawSchematic(g As Graphics, snapshot As CLInstallationLayoutSnapshot,

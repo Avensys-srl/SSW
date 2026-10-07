@@ -1,6 +1,17 @@
 Registro modifiche SSW
 ======================
 
+2.0.0.26 - 2026-10-07
+---------------------
+- Il report invernale ed estivo mostra solo la potenza totale unita usata per SFP, con etichette localizzate, senza il valore del singolo ramo.
+- Rinominata la scheda commerciale in scheda tecnico-commerciale in tutte le lingue, senza cambiare PDF e regole di ricerca.
+- Aggiunte le brochure commerciali localizzate dal catalogo JSON condiviso con WebSite, con associazioni per modello/serie, fallback inglese e cache offline.
+- Aggiunti disponibilita, badge e stampa delle brochure nella dashboard documenti interna.
+- Separati i filtri di funzionamento scambiatore, tipologia EN/LT/AL, applicazione unita e installazione Indoor/Outdoor, usando la classificazione esplicita del DataCentral.
+- Per le unita convertibili, Outdoor seleziona automaticamente OKI e aggiorna le quote A/W, B/L e C/H; la scelta viene conservata nella selezione e nel report.
+- Aggiunto un pulsante localizzato per azzerare tutti i criteri aggiuntivi senza modificare il punto di lavoro.
+- Collegato il documento applicativo SG 127 ST al catalogo JSON condiviso con WebSite, con lingua richiesta, fallback EN e disponibilita offline.
+
 2.0.0.25 - 2026-10-06
 ---------------------
 - Aggiunto un archivio delle offerte definitive indipendente dai promemoria facoltativi, con revisioni locali conservate e riapertura.
@@ -17,10 +28,10 @@ Registro modifiche SSW
 ---------------------
 - Passaggio automatico da KTS BASIC a KTS EXTRA quando viene selezionato un accessorio opzionale, una batteria ad acqua o un riscaldatore elettrico.
 - Corretto il controllo di disponibilità documenti affinché trovi le schede commerciali anche tramite il nome canonico del modello quando la ricerca con il nome visualizzato localizzato non corrisponde.
-- [TODO-001] Verificare i valori di consumo dei ventilatori rispetto ai dati di riferimento approvati.
-- [TODO-002] Popolare le categorie "Brochure commerciale" e "Benchmark document (confidential)" e rinominare l'attuale categoria "Scheda commerciale" in "Scheda tecnico-commerciale".
-- [TODO-003] Aggiungere al catalogo modelli DataCentral un campo esplicito per il tipo di recuperatore; il filtro per i recuperatori a piastre dipende da questa classificazione e non deve essere dedotto dalla famiglia.
-- [TODO-004] Caricare il documento applicativo tecnico SG 127 ST nella sezione Documenti.
+- [DONE-001] Verifica del consumo dei ventilatori completata, come confermato dal responsabile del progetto.
+- [DONE-002] Aggiunte le categorie "Brochure commerciale" e "Benchmark document (confidential)" e rinominata "Scheda commerciale" in "Scheda tecnico-commerciale". Brochure collegate al catalogo condiviso; i contenuti Benchmark restano da fornire.
+- [TODO-003] Classificazione DataCentral, quattro filtri SSW e gestione Outdoor/OKI implementati: verificare l'aggiornamento pubblico 2.x con il nuovo catalogo e l'installativo prima di chiudere l'attivita.
+- [DONE-004] Documento applicativo tecnico SG 127 ST presente nella sezione Documenti e disponibile offline.
 
 2.0.0.22 - 2026-10-01
 ---------------------

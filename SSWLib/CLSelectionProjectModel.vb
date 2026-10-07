@@ -90,6 +90,7 @@ Public NotInheritable Class CLTechnicalSelection
     Public Property CustomerReference As String
     Public Property ProjectName As String
     Public Property InstallationMode As String
+    Public Property InstallationEnvironment As String = "Indoor"
     Public Property LayoutCode As String
     Public Property ImbalanceEnabled As Boolean
     Public Property Unit As New CLSelectionEntityReference()
@@ -124,6 +125,10 @@ Public NotInheritable Class CLPreselectionFilterSelection
     Public Property MinimumRegulationPercent As Integer = 70
     Public Property RotaryOnlyEnabled As Boolean
     Public Property RecoveryCategory As String = "any"
+    Public Property RecoveryOperation As String = "any"
+    Public Property ExchangerType As String = "any"
+    Public Property UnitApplication As String = "any"
+    Public Property InstallationEnvironment As String = "any"
     Public Property MaximumSfpEnabled As Boolean
     Public Property MaximumSfp As Double = 2
     Public Property SupplyNoiseEnabled As Boolean

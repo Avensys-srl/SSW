@@ -904,4 +904,5 @@ Przechowywanie: zapisy dotyczące kont i licencji są przechowywane przez czas t
 Prawa: możesz zażądać dostępu, sprostowania, usunięcia, ograniczenia, sprzeciwu lub przeniesienia, jeśli ma to zastosowanie, oraz złożyć skargę do właściwego organu ochrony danych. Skontaktuj się z nami pod adresem info@avensys-srl.com.</value></data>
   <data name="DeviceLicense_PrivacyAcknowledgement" xml:space="preserve"><value>Zaakceptuj warunki użytkowania, aby aktywować SSW na tym urządzeniu</value></data>
   <data name="DeviceLicense_Company" xml:space="preserve"><value>Company</value></data>
+  <data name="PDF_TotalUnitPower" xml:space="preserve"><value>Całkowita moc urządzenia [W]</value></data>
 </root>
