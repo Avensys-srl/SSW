@@ -62,9 +62,177 @@ Each profile maps to an `SSWInfo` class (`SSW/CLSSWInfo_*.cs`) that provides cus
 
 ## Prerequisites
 
-- Windows
-- Visual Studio 2019 or newer with ".NET desktop development" workload
-- .NET Framework 4.8 Targeting Pack
+- Windows with PowerShell and access to Avensys private dependencies.
+- [Git for Windows](https://git-scm.com/download/win).
+- [Visual Studio Build Tools](https://visualstudio.microsoft.com/downloads/) with
+  the .NET desktop build tools workload. Visual Studio 2022 Build Tools was used
+  to verify the commands below; the full Visual Studio IDE is optional.
+- [.NET Framework 4.8 Developer Pack](https://dotnet.microsoft.com/en-us/download/dotnet-framework/net48),
+  including its targeting pack and SDK. A modern `dotnet` SDK alone is insufficient.
+
+## New PC Setup
+
+The steps below prepare a fresh checkout of `master`, build the Avensys profile,
+and launch it with a compatible product database. Private package archives and
+product databases are not distributed by this public repository.
+
+### 1. Install the build tools
+
+Open PowerShell as Administrator. If `winget` is unavailable, use the download
+links above and select the same workload/components in Visual Studio Installer.
+
+```powershell
+winget install --id Git.Git -e --source winget --accept-package-agreements --accept-source-agreements
+winget install --id Microsoft.VisualStudio.2022.BuildTools -e --source winget --accept-package-agreements --accept-source-agreements --silent --override "--wait --quiet --norestart --add Microsoft.VisualStudio.Workload.ManagedDesktopBuildTools --add Microsoft.Net.Component.4.8.TargetingPack --add Microsoft.Net.Component.4.8.SDK --includeRecommended"
+```
+
+Complete any requested restart, then open a new PowerShell window. Verify Git:
+
+```powershell
+git --version
+```
+
+### 2. Create the local repository
+
+Choose an empty folder. This example uses `D:\SSW`; use another writable location
+if the PC has no `D:` drive.
+
+```powershell
+git clone --branch master https://github.com/Avensys-srl/SSW.git D:\SSW
+Set-Location D:\SSW
+git remote -v
+git status
+```
+
+`origin` must point to `https://github.com/Avensys-srl/SSW.git`.
+Read `SSWVersion.props` for the version of the selected checkout. `master` can
+be older than the versions listed under [release tags](https://github.com/Avensys-srl/SSW/tags).
+Use a database compatible with the checked-out source, not simply the newest SDF.
+
+### 3. Obtain the four private packages
+
+These exact archives are required:
+
+| Archive | Source repository (requires Avensys access) |
+| --- | --- |
+| `CLCommonLib.2018.1.24.16190.nupkg` | [CLCommonLib](https://github.com/Avensys-srl/CLCommonLib) |
+| `CLDataCentralCommonLib.2018.1.24.16193.nupkg` | [CLDataCentralCommonLib](https://github.com/Avensys-srl/CLDataCentralCommonLib) |
+| `CLDataCentralLTModel.2018.1.24.16201.nupkg` | [CLDataCentralLTModel](https://github.com/Avensys-srl/CLDataCentralLTModel) |
+| `CLEFCommonLib.2017.12.4.11112.nupkg` | [CLEFCommonLib](https://github.com/Avensys-srl/CLEFCommonLib) |
+
+The linked repositories contain library source, not the original package archives.
+Their READMEs identify the internal package feed. On the verified workstation,
+the archives were available at `T:\TECHNO_SOFT\nuget\repository`.
+Connect to the Avensys share, or obtain these archives from the package owner.
+They cannot be restored from NuGet.org.
+
+From the SSW repository root, copy the archives to the local feed:
+
+```powershell
+$packageSource = 'T:\TECHNO_SOFT\nuget\repository'
+New-Item -ItemType Directory -Path .\packages\local-feed -Force | Out-Null
+$packages = @(
+    'CLCommonLib.2018.1.24.16190',
+    'CLDataCentralCommonLib.2018.1.24.16193',
+    'CLDataCentralLTModel.2018.1.24.16201',
+    'CLEFCommonLib.2017.12.4.11112'
+)
+foreach ($package in $packages) {
+    Copy-Item -LiteralPath (Join-Path $packageSource ($package + '.nupkg')) -Destination .\packages\local-feed -ErrorAction Stop
+}
+```
+
+Set `$packageSource` to your actual archive directory if the share differs.
+[NuGet.Config](NuGet.Config) uses `packages\local-feed` and NuGet.org. Public
+dependencies, including `System.Text.Json`, restore automatically during the build.
+The `packages` directory is ignored by Git; keep private archives out of commits.
+Cloning the four library repositories is optional for inspecting their source.
+
+### 4. Compile
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\build-local.ps1 -Configuration AV
+```
+
+[build-local.ps1](build-local.ps1) finds MSBuild through `vswhere`, restores NuGet
+packages, and performs a full `AV|x86` rebuild. It stops on restore/build failure.
+The resulting executable is `SSW\bin\x86\AV\SSW.exe`. Without `-Configuration`,
+the script builds `Debug|x86` and writes `SSW\bin\Debug\SSW.exe`.
+
+Assembly and ClickOnce manifest signing are enabled when their certificate files
+are present. An unsigned development build does not require the private PFX files.
+Signed installer publication has separate requirements described below.
+
+For profiles that embed commercial PDF sheets, the build uses the mapped `M:`
+marketing share when available, with the legacy share as a fallback. To build
+without these external PDF sheets:
+
+```powershell
+$env:IncludeCSS = 'false'
+powershell -NoProfile -ExecutionPolicy Bypass -File .\build-local.ps1 -Configuration AV
+Remove-Item Env:\IncludeCSS
+```
+
+Alternatively, set `$env:SSWMarketingRoot` to the share root containing
+`MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW`, ending the root path with `\`.
+SQL Server Compact native DLLs are copied from restored packages into the output;
+a separate SQL Server installation is not required for the local product database.
+
+### 5. Prepare the runtime database
+
+Compilation does not create a product database. Obtain a profile-compatible
+`DataCentral.sdf` from an approved Avensys export or a matching installation.
+Copy it into `data` beside the executable. Work on a copy of the database.
+
+For the `master` version `1.3.0.55`, the compatibility reader supports legacy
+databases and managed schemas 1 through 3. A schema-6 database from a newer
+installation is rejected. Do not modify its schema metadata to bypass that check.
+The database must also match the customer code and minimum SSW version.
+
+The following legacy AV database was successfully used for startup on the verified
+workstation. Availability of this internal archive depends on your share access:
+
+```powershell
+$databaseSource = 'T:\TECHNO_SOFT\mercurial\SSW\SSW_1305\SSW\SSW\bin\x86\AV\data\DataCentral.sdf'
+$dataDirectory = '.\SSW\bin\x86\AV\data'
+New-Item -ItemType Directory -Path $dataDirectory -Force | Out-Null
+Copy-Item -LiteralPath $databaseSource -Destination (Join-Path $dataDirectory 'DataCentral.sdf') -ErrorAction Stop
+```
+
+This older database is suitable for legacy startup/performance checks. Features
+requiring a newer managed catalog need a compatible export with those features.
+The SDF files under `tests\fixtures` are test fixtures, not production catalogs.
+
+### 6. Launch and test
+
+```powershell
+$exe = (Resolve-Path .\SSW\bin\x86\AV\SSW.exe).Path
+Start-Process -FilePath $exe -WorkingDirectory (Split-Path $exe)
+```
+
+Verify that the performance screen opens, a product is selected, and results and
+charts are populated. Change airflow within the product's range and confirm that
+the results recalculate. Check project save/reopen and report preview separately.
+Decline software-update installation prompts when testing the local executable;
+installing a published update does not test the locally compiled build.
+
+Run the lightweight alternative-reference smoke test with 32-bit PowerShell:
+
+```powershell
+& "$env:WINDIR\SysWOW64\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -ExecutionPolicy Bypass -File .\tests\Invoke-AlternativeReferenceSmoke.ps1
+```
+
+Expected output: `Alternative reference progression passed.`
+This test and the `Debug|x86` / `AV|x86` builds were verified during local setup.
+The AV performance screen opened with calculated values using the legacy database.
+This does not establish that every workflow or API integration passes.
+
+[tests/Invoke-TechnicalSelectionReleaseTests.ps1](tests/Invoke-TechnicalSelectionReleaseTests.ps1)
+is the broader release matrix. It currently assumes a Visual Studio 2019 Enterprise
+MSBuild path, a feature-complete AV catalog, and a separate PHP/API environment.
+It needs environment-specific setup before use on a fresh PC; it is not the basic
+desktop startup test. API-connected registration and synchronization additionally
+need the appropriate service access/enrollment configuration.
 
 Optional for runtime distribution:
 
@@ -77,6 +245,16 @@ Required for installer builds:
 - A valid code-signing certificate installed in the Windows certificate store. The installer build script reads the signing certificate thumbprint from `SSW/SSW.csproj`.
 
 ## Build
+
+For a local command-line build, run `powershell -ExecutionPolicy Bypass -File .\build-local.ps1`.
+The script restores packages and rebuilds `Debug|x86`; use `-Configuration AV` for the AV profile.
+The Debug executable is written to `SSW\bin\Debug\SSW.exe`.
+
+Private package archives on this PC are stored in `packages\local-feed`, configured by `NuGet.Config`.
+Assembly and manifest signing are enabled when their certificate files are present.
+Datasheets use the mapped `M:` marketing share when available, with the legacy share as a fallback.
+Override the share root with the MSBuild property `SSWMarketingRoot`, or use `/p:IncludeCSS=false`
+to build without the external datasheets.
 
 1. Open `SSW.sln` in Visual Studio.
 2. Restore NuGet packages (solution uses `packages.config`).

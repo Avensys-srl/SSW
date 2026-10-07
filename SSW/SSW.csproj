@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\SSWVersion.props" />
   <Import Project="..\packages\Microsoft.SqlServer.Types.160.1000.6\build\net462\Microsoft.SqlServer.Types.props" Condition="Exists('..\packages\Microsoft.SqlServer.Types.160.1000.6\build\net462\Microsoft.SqlServer.Types.props')" />
@@ -8,6 +8,10 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(IncludeCSS)' == ''">
     <IncludeCSS>true</IncludeCSS>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SSWMarketingRoot Condition="'$(SSWMarketingRoot)' == '' and Exists('M:\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW')">M:\</SSWMarketingRoot>
+    <SSWMarketingRoot Condition="'$(SSWMarketingRoot)' == ''">\\server_av\MKTG\</SSWMarketingRoot>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -268,7 +272,9 @@
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests Condition="Exists('$(ManifestKeyFile)')">true</SignManifests>
+    <SignManifests Condition="!Exists('$(ManifestKeyFile)')">false</SignManifests>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'SIG|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -322,7 +328,8 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly Condition="Exists('ssw.pfx')">true</SignAssembly>
+    <SignAssembly Condition="!Exists('ssw.pfx')">false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>ssw.pfx</AssemblyOriginatorKeyFile>
@@ -419,109 +426,109 @@
       <ItemGroup>
         <EmbeddedResource Include="Resources\CL_icon.ico">
         </EmbeddedResource>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\OSC_123_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\OSC_123_EN_AETDOCCOM01V01.pdf">
           <Link>css\OSC_123_EN_AETDOCCOM01V01.pdf</Link>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\OSC_13_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\OSC_13_EN_AETDOCCOM01V01.pdf">
           <Link>css\OSC_13_EN_AETDOCCOM01V01.pdf</Link>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\OSC_163_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\OSC_163_EN_AETDOCCOM01V01.pdf">
           <Link>css\OSC_163_EN_AETDOCCOM01V01.pdf</Link>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\OSC_223_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\OSC_223_EN_AETDOCCOM01V01.pdf">
           <Link>css\OSC_223_EN_AETDOCCOM01V01.pdf</Link>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\OSC_23_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\OSC_23_EN_AETDOCCOM01V01.pdf">
           <Link>css\OSC_23_EN_AETDOCCOM01V01.pdf</Link>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\OSC_323_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\OSC_323_EN_AETDOCCOM01V01.pdf">
           <Link>css\OSC_323_EN_AETDOCCOM01V01.pdf</Link>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\OSC_423_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\OSC_423_EN_AETDOCCOM01V01.pdf">
           <Link>css\OSC_423_EN_AETDOCCOM01V01.pdf</Link>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\OSC_43_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\OSC_43_EN_AETDOCCOM01V01.pdf">
           <Link>css\OSC_43_EN_AETDOCCOM01V01.pdf</Link>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\OSC_53_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\OSC_53_EN_AETDOCCOM01V01.pdf">
           <Link>css\OSC_53_EN_AETDOCCOM01V01.pdf</Link>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\OSC_73_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\OSC_73_EN_AETDOCCOM01V01.pdf">
           <Link>css\OSC_73_EN_AETDOCCOM01V01.pdf</Link>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\OSC_93_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\OSC_93_EN_AETDOCCOM01V01.pdf">
           <Link>css\OSC_93_EN_AETDOCCOM01V01.pdf</Link>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\QTM_25_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\QTM_25_EN_AETDOCCOM01V01.pdf">
           <Link>css\QTM_25_EN_AETDOCCOM01V01.pdf</Link>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\QTM_35_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\QTM_35_EN_AETDOCCOM01V01.pdf">
           <Link>css\QTM_35_EN_AETDOCCOM01V01.pdf</Link>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\QTM_45_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\QTM_45_EN_AETDOCCOM01V01.pdf">
           <Link>css\QTM_45_EN_AETDOCCOM01V01.pdf</Link>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\QTM_55_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\QTM_55_EN_AETDOCCOM01V01.pdf">
           <Link>css\QTM_55_EN_AETDOCCOM01V01.pdf</Link>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\SSC_123_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\SSC_123_EN_AETDOCCOM01V01.pdf">
           <Link>css\SSC_123_EN_AETDOCCOM01V01.pdf</Link>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\SSC_13_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\SSC_13_EN_AETDOCCOM01V01.pdf">
           <Link>css\SSC_13_EN_AETDOCCOM01V01.pdf</Link>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\SSC_163_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\SSC_163_EN_AETDOCCOM01V01.pdf">
           <Link>css\SSC_163_EN_AETDOCCOM01V01.pdf</Link>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\SSC_223_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\SSC_223_EN_AETDOCCOM01V01.pdf">
           <Link>css\SSC_223_EN_AETDOCCOM01V01.pdf</Link>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\SSC_23_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\SSC_23_EN_AETDOCCOM01V01.pdf">
           <Link>css\SSC_23_EN_AETDOCCOM01V01.pdf</Link>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\SSC_323_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\SSC_323_EN_AETDOCCOM01V01.pdf">
           <Link>css\SSC_323_EN_AETDOCCOM01V01.pdf</Link>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\SSC_33_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\SSC_33_EN_AETDOCCOM01V01.pdf">
           <Link>css\SSC_33_EN_AETDOCCOM01V01.pdf</Link>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\SSC_423_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\SSC_423_EN_AETDOCCOM01V01.pdf">
           <Link>css\SSC_423_EN_AETDOCCOM01V01.pdf</Link>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\SSC_43_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\SSC_43_EN_AETDOCCOM01V01.pdf">
           <Link>css\SSC_43_EN_AETDOCCOM01V01.pdf</Link>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\SSC_53_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\SSC_53_EN_AETDOCCOM01V01.pdf">
           <Link>css\SSC_53_EN_AETDOCCOM01V01.pdf</Link>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\SSC_543_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\SSC_543_EN_AETDOCCOM01V01.pdf">
           <Link>css\SSC_543_EN_AETDOCCOM01V01.pdf</Link>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\SSC_73_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\SSC_73_EN_AETDOCCOM01V01.pdf">
           <Link>css\SSC_73_EN_AETDOCCOM01V01.pdf</Link>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\SSC_93_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\SSC_93_EN_AETDOCCOM01V01.pdf">
           <Link>css\SSC_93_EN_AETDOCCOM01V01.pdf</Link>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\OSC_33_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\OSC_33_EN_AETDOCCOM01V01.pdf">
           <Link>css\OSC_33_EN_AETDOCCOM01V01.pdf</Link>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\HOC_47_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\HOC_47_EN_AETDOCCOM01V01.pdf">
           <Link>css\HOC_47_EN_AETDOCCOM01V01.pdf</Link>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\HOC_77_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\HOC_77_EN_AETDOCCOM01V01.pdf">
           <Link>css\HOC_77_EN_AETDOCCOM01V01.pdf</Link>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\HOC_127_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\HOC_127_EN_AETDOCCOM01V01.pdf">
           <Link>css\HOC_127_EN_AETDOCCOM01V01.pdf</Link>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\TSC_47_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\TSC_47_EN_AETDOCCOM01V01.pdf">
           <Link>css\TSC_47_EN_AETDOCCOM01V01.pdf</Link>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\TSC_77_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\TSC_77_EN_AETDOCCOM01V01.pdf">
           <Link>css\TSC_77_EN_AETDOCCOM01V01.pdf</Link>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\TSC_127_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\CLM\TSC_127_EN_AETDOCCOM01V01.pdf">
           <Link>css\TSC_127_EN_AETDOCCOM01V01.pdf</Link>
         </Content>
       </ItemGroup>
@@ -544,119 +551,119 @@
       <ItemGroup>
         <EmbeddedResource Include="Resources\DAN_icon.ico">
         </EmbeddedResource>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\OSC_123_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\OSC_123_EN_AETDOCCOM01V01.pdf">
           <Link>css\OSC_123_EN_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\OSC_13_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\OSC_13_EN_AETDOCCOM01V01.pdf">
           <Link>css\OSC_13_EN_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\OSC_163_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\OSC_163_EN_AETDOCCOM01V01.pdf">
           <Link>css\OSC_163_EN_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\OSC_223_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\OSC_223_EN_AETDOCCOM01V01.pdf">
           <Link>css\OSC_223_EN_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\OSC_23_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\OSC_23_EN_AETDOCCOM01V01.pdf">
           <Link>css\OSC_23_EN_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\OSC_323_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\OSC_323_EN_AETDOCCOM01V01.pdf">
           <Link>css\OSC_323_EN_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\OSC_33_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\OSC_33_EN_AETDOCCOM01V01.pdf">
           <Link>css\OSC_33_EN_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\OSC_423_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\OSC_423_EN_AETDOCCOM01V01.pdf">
           <Link>css\OSC_423_EN_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\OSC_43_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\OSC_43_EN_AETDOCCOM01V01.pdf">
           <Link>css\OSC_43_EN_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\OSC_53_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\OSC_53_EN_AETDOCCOM01V01.pdf">
           <Link>css\OSC_53_EN_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\OSC_73_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\OSC_73_EN_AETDOCCOM01V01.pdf">
           <Link>css\OSC_73_EN_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\OSC_93_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\OSC_93_EN_AETDOCCOM01V01.pdf">
           <Link>css\OSC_93_EN_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\QTM_25_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\QTM_25_EN_AETDOCCOM01V01.pdf">
           <Link>css\QTM_25_EN_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\QTM_35_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\QTM_35_EN_AETDOCCOM01V01.pdf">
           <Link>css\QTM_35_EN_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\QTM_45_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\QTM_45_EN_AETDOCCOM01V01.pdf">
           <Link>css\QTM_45_EN_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\QTM_55_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\QTM_55_EN_AETDOCCOM01V01.pdf">
           <Link>css\QTM_55_EN_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\SSC_123_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\SSC_123_EN_AETDOCCOM01V01.pdf">
           <Link>css\SSC_123_EN_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\SSC_13_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\SSC_13_EN_AETDOCCOM01V01.pdf">
           <Link>css\SSC_13_EN_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\SSC_163_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\SSC_163_EN_AETDOCCOM01V01.pdf">
           <Link>css\SSC_163_EN_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\SSC_223_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\SSC_223_EN_AETDOCCOM01V01.pdf">
           <Link>css\SSC_223_EN_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\SSC_23_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\SSC_23_EN_AETDOCCOM01V01.pdf">
           <Link>css\SSC_23_EN_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\SSC_323_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\SSC_323_EN_AETDOCCOM01V01.pdf">
           <Link>css\SSC_323_EN_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\SSC_33_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\SSC_33_EN_AETDOCCOM01V01.pdf">
           <Link>css\SSC_33_EN_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\SSC_423_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\SSC_423_EN_AETDOCCOM01V01.pdf">
           <Link>css\SSC_423_EN_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\SSC_43_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\SSC_43_EN_AETDOCCOM01V01.pdf">
           <Link>css\SSC_43_EN_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\SSC_53_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\SSC_53_EN_AETDOCCOM01V01.pdf">
           <Link>css\SSC_53_EN_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\SSC_543_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\SSC_543_EN_AETDOCCOM01V01.pdf">
           <Link>css\SSC_543_EN_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\SSC_73_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\SSC_73_EN_AETDOCCOM01V01.pdf">
           <Link>css\SSC_73_EN_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\SSC_93_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\DAN\SSC_93_EN_AETDOCCOM01V01.pdf">
           <Link>css\SSC_93_EN_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
@@ -680,111 +687,111 @@
       <ItemGroup>
         <EmbeddedResource Include="Resources\FAI_icon.ico">
         </EmbeddedResource>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\OSC_123_IT_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\OSC_123_IT_AETDOCCOM01V01.pdf">
           <Link>css\OSC_123_IT_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\OSC_13_IT_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\OSC_13_IT_AETDOCCOM01V01.pdf">
           <Link>css\OSC_13_IT_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\OSC_163_IT_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\OSC_163_IT_AETDOCCOM01V01.pdf">
           <Link>css\OSC_163_IT_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\OSC_223_IT_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\OSC_223_IT_AETDOCCOM01V01.pdf">
           <Link>css\OSC_223_IT_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\OSC_23_IT_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\OSC_23_IT_AETDOCCOM01V01.pdf">
           <Link>css\OSC_23_IT_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\OSC_323_IT_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\OSC_323_IT_AETDOCCOM01V01.pdf">
           <Link>css\OSC_323_IT_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\OSC_33_IT_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\OSC_33_IT_AETDOCCOM01V01.pdf">
           <Link>css\OSC_33_IT_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\OSC_423_IT_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\OSC_423_IT_AETDOCCOM01V01.pdf">
           <Link>css\OSC_423_IT_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\OSC_43_IT_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\OSC_43_IT_AETDOCCOM01V01.pdf">
           <Link>css\OSC_43_IT_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\OSC_53_IT_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\OSC_53_IT_AETDOCCOM01V01.pdf">
           <Link>css\OSC_53_IT_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\OSC_73_IT_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\OSC_73_IT_AETDOCCOM01V01.pdf">
           <Link>css\OSC_73_IT_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\OSC_93_IT_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\OSC_93_IT_AETDOCCOM01V01.pdf">
           <Link>css\OSC_93_IT_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\SSC_123_IT_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\SSC_123_IT_AETDOCCOM01V01.pdf">
           <Link>css\SSC_123_IT_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\SSC_13_IT_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\SSC_13_IT_AETDOCCOM01V01.pdf">
           <Link>css\SSC_13_IT_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\SSC_163_IT_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\SSC_163_IT_AETDOCCOM01V01.pdf">
           <Link>css\SSC_163_IT_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\SSC_223_IT_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\SSC_223_IT_AETDOCCOM01V01.pdf">
           <Link>css\SSC_223_IT_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\SSC_23_IT_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\SSC_23_IT_AETDOCCOM01V01.pdf">
           <Link>css\SSC_23_IT_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\SSC_323_IT_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\SSC_323_IT_AETDOCCOM01V01.pdf">
           <Link>css\SSC_323_IT_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\SSC_423_IT_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\SSC_423_IT_AETDOCCOM01V01.pdf">
           <Link>css\SSC_423_IT_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\SSC_43_IT_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\SSC_43_IT_AETDOCCOM01V01.pdf">
           <Link>css\SSC_43_IT_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\SSC_53_IT_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\SSC_53_IT_AETDOCCOM01V01.pdf">
           <Link>css\SSC_53_IT_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\SSC_543_IT_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\SSC_543_IT_AETDOCCOM01V01.pdf">
           <Link>css\SSC_543_IT_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\SSC_93_IT_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\SSC_93_IT_AETDOCCOM01V01.pdf">
           <Link>css\SSC_93_IT_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\QTM_25_IT_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\QTM_25_IT_AETDOCCOM01V01.pdf">
           <Link>css\QTM_25_IT_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\QTM_35_IT_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\QTM_35_IT_AETDOCCOM01V01.pdf">
           <Link>css\QTM_35_IT_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\QTM_45_IT_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\QTM_45_IT_AETDOCCOM01V01.pdf">
           <Link>css\QTM_45_IT_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\QTM_55_IT_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FAI\QTM_55_IT_AETDOCCOM01V01.pdf">
           <Link>css\QTM_55_IT_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
@@ -798,27 +805,27 @@
       <ItemGroup>
         <EmbeddedResource Include="Resources\FS_icon.ico">
         </EmbeddedResource>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FS\OSC_13_PL_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FS\OSC_13_PL_AETDOCCOM01V01.pdf">
           <Link>css\OSC_13_PL_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FS\QTM_25_PL_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FS\QTM_25_PL_AETDOCCOM01V01.pdf">
           <Link>css\QTM_25_PL_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FS\QTM_35_PL_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FS\QTM_35_PL_AETDOCCOM01V01.pdf">
           <Link>css\QTM_35_PL_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FS\QTM_45_PL_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FS\QTM_45_PL_AETDOCCOM01V01.pdf">
           <Link>css\QTM_45_PL_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FS\QTM_55_PL_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FS\QTM_55_PL_AETDOCCOM01V01.pdf">
           <Link>css\QTM_55_PL_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FS\SSC_13_PL_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\FS\SSC_13_PL_AETDOCCOM01V01.pdf">
           <Link>css\SSC_13_PL_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
@@ -882,27 +889,27 @@
       <ItemGroup>
         <EmbeddedResource Include="Resources\CAIROX.ico">
         </EmbeddedResource>
-        <!--<Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\SIG\HOC_47_EN_AETDOCCOM01V01.pdf">
+        <!--<Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\SIG\HOC_47_EN_AETDOCCOM01V01.pdf">
           <Link>css\HOC_47_EN_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\SIG\HOC_77_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\SIG\HOC_77_EN_AETDOCCOM01V01.pdf">
           <Link>css\HOC_77_EN_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\SIG\HOC_127_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\SIG\HOC_127_EN_AETDOCCOM01V01.pdf">
           <Link>css\HOC_127_EN_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\SIG\TSC_47_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\SIG\TSC_47_EN_AETDOCCOM01V01.pdf">
           <Link>css\TSC_47_EN_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\SIG\TSC_77_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\SIG\TSC_77_EN_AETDOCCOM01V01.pdf">
           <Link>css\TSC_77_EN_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Condition="'$(IncludeCSS)' == 'true'" Include="\\server_av\MKTG\MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\SIG\TSC_127_EN_AETDOCCOM01V01.pdf">
+        <Content Condition="'$(IncludeCSS)' == 'true'" Include="$(SSWMarketingRoot)MKTG_PRODOTTO\MKTG_PR_CLRC\SORGENTE_SSW\SIG\TSC_127_EN_AETDOCCOM01V01.pdf">
           <Link>css\TSC_127_EN_AETDOCCOM01V01.pdf</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>-->
